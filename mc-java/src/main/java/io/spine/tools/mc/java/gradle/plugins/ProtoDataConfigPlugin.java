@@ -26,8 +26,10 @@
 
 package io.spine.tools.mc.java.gradle.plugins;
 
+import io.spine.logging.Logging;
 import io.spine.protodata.gradle.Extension;
 import io.spine.protodata.gradle.LaunchProtoData;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
@@ -44,49 +46,97 @@ import static java.lang.String.format;
  * configures its extension, writes the ProtoData configuration file, and adds the required
  * dependencies to the target project.
  */
-final class ProtoDataConfigPlugin implements Plugin<Project> {
+final class ProtoDataConfigPlugin implements Plugin<Project>, Logging {
+
+    /**
+     * The name of the JVM system property, which, if set to any value, <b>disables</b>
+     * the Spine Validation step, configured by this plugin.
+     *
+     * <p>The property can be set to <b>any</b> value.
+     *
+     * @see #isValidationDisabled()
+     */
+    private static final String VALIDATION_SWITCH_NAME = "spine.internal.validation.disabled";
 
     private static final String PROTO_DATA_ID = "io.spine.proto-data";
     private static final String CONFIG_SUBDIR = "protodata-config";
 
+    private final boolean validationDisabled = isValidationDisabled();
+    private final boolean validationEnabled = !validationDisabled;
+
+    private @MonotonicNonNull Project project;
+    private @MonotonicNonNull Extension ext;
 
     @Override
     public void apply(Project target) {
+        if (validationDisabled) {
+            _warn().log("The Spine Validation has been disabled via the system property.");
+        }
+        applyProtoDataPluginTo(target);
+        addValidationRenderers();
+        addOptions();
+        addValidationDependencies();
+        addTasks();
+    }
+
+    private void applyProtoDataPluginTo(Project target) {
+        this.project = target;
         target.getPluginManager()
               .apply(PROTO_DATA_ID);
-        var ext = target.getExtensions()
-                        .getByType(Extension.class);
-        ext.renderers(
-                "io.spine.validation.java.PrintValidationInsertionPoints",
-                "io.spine.validation.java.JavaValidationRenderer"
-        );
-        ext.plugins(
-                "io.spine.validation.ValidationPlugin"
-        );
+        this.ext = target.getExtensions()
+                         .getByType(Extension.class);
+    }
+
+    private void addValidationRenderers() {
+        if (validationEnabled) {
+            ext.renderers(
+                    "io.spine.validation.java.PrintValidationInsertionPoints",
+                    "io.spine.validation.java.JavaValidationRenderer"
+            );
+            ext.plugins(
+                    "io.spine.validation.ValidationPlugin"
+            );
+        }
+    }
+
+    private void addOptions() {
         ext.options(
                 "spine/options.proto",
                 "spine/time_options.proto"
         );
+    }
 
-        var dependencies = target.getDependencies();
-        dependencies.add("protoData", validationJava().notation());
-        dependencies.add("implementation", validationRuntime().notation());
+    private void addValidationDependencies() {
+        if (validationEnabled) {
+            var dependencies = project.getDependencies();
+            dependencies.add("protoData", validationJava().notation());
+            dependencies.add("implementation", validationRuntime().notation());
+        }
+    }
 
-        var tasks = target.getTasks();
+    private void addTasks() {
+        var tasks = project.getTasks();
         tasks.withType(LaunchProtoData.class, task -> {
             var name = task.getName();
             var taskName = format("writeConfigFor_%s", name);
             var configTask = tasks.create(
                     taskName,
                     GenerateProtoDataConfig.class,
-                    t -> linkConfigFile(target, task, t)
+                    t -> linkConfigFile(project, task, t)
             );
             task.dependsOn(configTask);
         });
     }
 
-    private static void linkConfigFile(Project target, LaunchProtoData task,
-                                       GenerateProtoDataConfig t) {
+    @SuppressWarnings("AccessOfSystemProperties") // Experimental shortcut.
+    private static boolean isValidationDisabled() {
+        var value = System.getProperty(VALIDATION_SWITCH_NAME);
+        var disabled = value != null;
+        return disabled;
+    }
+
+    private static
+    void linkConfigFile(Project target, LaunchProtoData task, GenerateProtoDataConfig t) {
         var targetFile = t.getTargetFile();
         var fileName = t.getName() + ".bin";
         var defaultFile = target.getLayout()
