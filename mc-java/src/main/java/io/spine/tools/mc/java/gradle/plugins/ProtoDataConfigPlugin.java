@@ -55,11 +55,11 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     public void apply(Project target) {
         target.getPluginManager()
               .apply(PROTO_DATA_ID);
-        var options = getMcJava(target).codegen.toProto();
-        var validation = options.getValidation();
-        if (validation.getSkipValidation()) {
+        var options = getMcJava(target).codegen.validation;
+        if (options.shouldSkipValidation()) {
             return;
         }
+
         var ext = target.getExtensions()
                         .getByType(Extension.class);
         ext.renderers(
