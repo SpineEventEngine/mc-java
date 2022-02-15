@@ -36,5 +36,5 @@ val mcVersion by extra("2.0.0-SNAPSHOT.88")
  */
 val validationVersion by extra("2.0.0-SNAPSHOT.12")
 
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.90")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.91")
 val versionToPublish by extra(mcJavaVersion)

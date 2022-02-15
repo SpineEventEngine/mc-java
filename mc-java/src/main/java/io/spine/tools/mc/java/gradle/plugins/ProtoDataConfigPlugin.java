@@ -33,6 +33,7 @@ import org.gradle.api.Project;
 
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJava;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationRuntime;
+import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
 
@@ -54,6 +55,11 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     public void apply(Project target) {
         target.getPluginManager()
               .apply(PROTO_DATA_ID);
+        var options = getMcJava(target).codegen.toProto();
+        var validation = options.getValidation();
+        if (validation.getSkipValidation()) {
+            return;
+        }
         var ext = target.getExtensions()
                         .getByType(Extension.class);
         ext.renderers(
