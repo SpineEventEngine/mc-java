@@ -81,6 +81,13 @@ public final class ValidationConfig extends Config<Validation> {
         skipValidatingBuilders.set(false);
     }
 
+    /**
+     * Checks if the validation code should be generated.
+     */
+    public boolean shouldSkipValidation() {
+        return skipValidation.get();
+    }
+
     @Override
     Validation toProto() {
         return Validation.newBuilder()

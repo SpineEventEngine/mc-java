@@ -70,9 +70,13 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
     private final SignalConfig rejections;
     private final EntityConfig entities;
     private final UuidConfig uuids;
-    private final ValidationConfig validation;
     private final Set<Messages> messagesConfigs = new HashSet<>();
     private final Project project;
+
+    /**
+     * Configuration for generating validation code
+     */
+    public final ValidationConfig validation;
 
     @Internal
     public CodegenOptionsConfig(Project project) {
@@ -208,9 +212,7 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
 
     private Classpath buildClasspath() {
         var classpath = Classpath.newBuilder();
-        Collection<JavaCompile> javaCompileViews =
-                project.getTasks()
-                        .withType(JavaCompile.class);
+        Collection<JavaCompile> javaCompileViews = project.getTasks().withType(JavaCompile.class);
         ImmutableList.copyOf(javaCompileViews)
                      .stream()
                      .map(JavaCompile::getClasspath)
