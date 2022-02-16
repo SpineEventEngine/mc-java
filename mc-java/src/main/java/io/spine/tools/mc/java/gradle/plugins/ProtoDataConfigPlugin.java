@@ -53,8 +53,11 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project target) {
-        target.getPluginManager()
-              .apply(PROTO_DATA_ID);
+        target.afterEvaluate(ProtoDataConfigPlugin::configureProtoData);
+        target.getPluginManager().apply(PROTO_DATA_ID);
+    }
+
+    private static void configureProtoData(Project target) {
         var options = getMcJava(target).codegen.validation;
         if (options.shouldSkipValidation()) {
             return;
