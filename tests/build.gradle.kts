@@ -112,6 +112,7 @@ allprojects {
     val baseVersion: String by extra
     val toolBaseVersion: String by extra
     val timeVersion: String by extra
+    val validationVersion: String by extra
     configurations {
         forceVersions()
         excludeProtobufLite()
@@ -123,6 +124,7 @@ allprojects {
                     "io.spine.tools:spine-testlib:$baseVersion",
                     "io.spine.tools:spine-tool-base:$toolBaseVersion",
                     "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    "io.spine.validation:spine-validation-runtime:$validationVersion",
                     Jackson.core,
                     Jackson.moduleKotlin,
                     Jackson.databind,

@@ -1,6 +1,6 @@
 
 
-# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.13.2.**No license information found**
@@ -133,27 +133,27 @@
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -163,7 +163,8 @@
 
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.6.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -413,27 +414,27 @@
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -447,11 +448,12 @@
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -528,16 +530,16 @@
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -649,17 +651,17 @@
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -680,12 +682,12 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:31 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -749,7 +751,7 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -979,27 +981,27 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -1011,11 +1013,12 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -1091,16 +1094,16 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -1212,17 +1215,17 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1243,12 +1246,12 @@ This report was generated on **Fri Jul 15 13:38:16 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:32 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -1312,7 +1315,7 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -1534,27 +1537,27 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -1566,11 +1569,12 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -1646,16 +1650,16 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -1767,17 +1771,17 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1798,12 +1802,12 @@ This report was generated on **Fri Jul 15 13:38:17 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:33 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.github.ben-manes.caffeine. **Name** : caffeine. **Version** : 3.0.5.
@@ -2158,27 +2162,27 @@ This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -2190,11 +2194,12 @@ This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -2275,16 +2280,16 @@ This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -2396,17 +2401,17 @@ This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -2427,12 +2432,12 @@ This report was generated on **Fri Jul 15 13:38:18 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:34 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -2496,7 +2501,7 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -2718,27 +2723,27 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -2750,11 +2755,12 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -2830,16 +2836,16 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -2951,17 +2957,17 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -2982,12 +2988,12 @@ This report was generated on **Fri Jul 15 13:38:19 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:35 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.13.2.**No license information found**
@@ -3072,27 +3078,27 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://github.com/square/javapoet/](http://github.com/square/javapoet/)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -3101,6 +3107,7 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.6.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3314,27 +3321,27 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -3347,11 +3354,12 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3423,16 +3431,16 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -3544,17 +3552,17 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -3575,12 +3583,12 @@ This report was generated on **Fri Jul 15 13:38:20 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:35 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -3644,7 +3652,7 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3874,27 +3882,27 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -3906,11 +3914,12 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3986,16 +3995,16 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -4107,17 +4116,17 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4138,12 +4147,12 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:36 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.95`
+# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.96`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -4412,27 +4421,27 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **Project URL:** [https://github.com/java-diff-utils/java-diff-utils](https://github.com/java-diff-utils/java-diff-utils)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.43.1.
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.45.1.
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
@@ -4444,11 +4453,12 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.5.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.5.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.19.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : runtime. **Version** : 2.0.0-SNAPSHOT.12.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-runtime. **Version** : 2.0.0-SNAPSHOT.20.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -4524,16 +4534,16 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.agent. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.ant. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.core. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.7.
+1.  **Group** : org.jacoco. **Name** : org.jacoco.report. **Version** : 0.8.8.
      * **License:** [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
 1.  **Group** : org.javassist. **Name** : javassist. **Version** : 3.28.0-GA.
@@ -4645,17 +4655,17 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-commons. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.1.
+1.  **Group** : org.ow2.asm. **Name** : asm-tree. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4676,4 +4686,4 @@ This report was generated on **Fri Jul 15 13:38:21 EEST 2022** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Fri Jul 15 13:38:22 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Jul 21 20:06:37 EEST 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
