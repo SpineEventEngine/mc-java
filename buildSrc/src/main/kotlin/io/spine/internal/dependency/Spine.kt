@@ -30,7 +30,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.extra
 
 /**
- * Dependencies on Spine `base` modules.
+ * Dependencies on Spine modules.
  *
  * @constructor
  * Creates a new instance of `Spine` taking the `baseVersion`, `mcVersion`, and `toolBaseVersion`
