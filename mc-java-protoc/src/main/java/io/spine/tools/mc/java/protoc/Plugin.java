@@ -30,7 +30,7 @@ import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
-import io.spine.code.proto.OptionExtensionRegistry;
+import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.codegen.CodegenOptions;
 import io.spine.tools.mc.java.protoc.column.ColumnGen;
 import io.spine.tools.mc.java.protoc.field.FieldGen;
@@ -90,7 +90,7 @@ public final class Plugin {
     }
 
     private static ExtensionRegistry registry() {
-        return OptionExtensionRegistry.instance();
+        return OptionsProvider.registryWithAllOptions();
     }
 
     private static CodeGeneratorRequest readRequest() {
