@@ -161,6 +161,7 @@ subprojects {
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation("io.spine:spine-base:$baseVersion")
+        implementation("io.spine:spine-validate:$baseVersion")
         testImplementation("io.spine.tools:spine-testlib:$baseVersion")
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)

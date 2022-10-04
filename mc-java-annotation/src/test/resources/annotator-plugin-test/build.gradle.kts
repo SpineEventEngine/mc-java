@@ -86,6 +86,7 @@ subprojects {
     val baseVersion: String by extra
     dependencies {
         implementation("io.spine:spine-base:$baseVersion")
+        implementation("io.spine:spine-validate:$baseVersion")
         implementation(Grpc.stub)
         implementation(Grpc.protobuf)
     }
