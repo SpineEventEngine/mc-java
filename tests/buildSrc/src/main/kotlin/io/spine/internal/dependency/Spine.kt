@@ -33,8 +33,8 @@ import org.gradle.kotlin.dsl.extra
  * Dependencies on Spine `base` modules.
  *
  * @constructor
- * Creates a new instance of `Spine` taking the `baseVersion` from the given project's
- * extra properties.
+ * Creates a new instance of `Spine` taking the `baseVersion`, `mcVersion`, and `toolBaseVersion`
+ * property values from the given project's extra properties.
  */
 class Spine(p: ExtensionAware) {
 
