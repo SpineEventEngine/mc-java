@@ -159,7 +159,7 @@ final class RThrowableBuilderSpec implements BuilderSpec {
                 .addJavadoc(javadoc.value())
                 .returns(messageClass.value())
                 .addStatement("$T message = $L.build()", messageClass.value(), BUILDER_FIELD)
-                .addStatement("$T.checkValid(message)", Validate.class)
+                .addStatement("$T.check(message)", Validate.class)
                 .addStatement("return message")
                 .build();
     }
