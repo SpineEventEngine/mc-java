@@ -31,7 +31,6 @@ import io.spine.annotation.Internal;
 import io.spine.annotation.SPI;
 import io.spine.code.proto.FileName;
 import io.spine.code.proto.FileSet;
-import io.spine.testing.TempDir;
 import io.spine.tools.gradle.testing.GradleProject;
 import io.spine.tools.java.fs.DefaultJavaPaths;
 import io.spine.tools.java.fs.SourceFile;
@@ -48,6 +47,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,11 +82,12 @@ class AnnotatorPluginTest {
     private static File moduleDir = null;
 
     @BeforeAll
-    static void compileProject() {
-        var projectDir = TempDir.forClass(AnnotatorPluginTest.class);
-        var project = GradleProject.setupAt(projectDir)
-                                   .fromResources(RESOURCE_DIR)
-                                   .copyBuildSrc().create();
+    static void compileProject(@TempDir File projectDir) {
+        var project = GradleProject
+                .setupAt(projectDir)
+                .fromResources(RESOURCE_DIR)
+                .copyBuildSrc()
+                .create();
         moduleDir = projectDir.toPath()
                               .resolve("tests")
                               .toFile();
@@ -201,8 +202,7 @@ class AnnotatorPluginTest {
 
     @Test
     @DisplayName("compile generated source with potential annotation duplication")
-    void compilingSources() {
-        var tempDir = TempDir.forClass(AnnotatorPluginTest.class);
+    void compilingSources(@TempDir File tempDir) {
         var project = GradleProject.setupAt(tempDir)
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()

@@ -116,7 +116,6 @@ allprojects {
         forceVersions()
         excludeProtobufLite()
         all {
-            exclude(group = "io.spine.validation", module = "spine-validation-runtime")
             resolutionStrategy {
                 force(
                     "io.spine:spine-base:$baseVersion",
@@ -132,6 +131,9 @@ allprojects {
                     Jackson.dataformatYaml
                 )
             }
+
+            // Exclude this stale artifact from all transitive dependencies.
+            exclude("io.spine", "spine-validate")
         }
     }
 }

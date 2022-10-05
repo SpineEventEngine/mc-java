@@ -54,10 +54,8 @@ import static javax.lang.model.element.Modifier.STATIC;
 final class ValidateMethod {
 
     static final String VIOLATIONS = "violations";
-    @SuppressWarnings("UnstableApiUsage")
     static final Type immutableListOfViolations =
             new TypeToken<ImmutableList<ConstraintViolation>>() {}.getType();
-    @SuppressWarnings("UnstableApiUsage")
     private static final Type listBuilderOfViolations =
             new TypeToken<ImmutableList.Builder<ConstraintViolation>>() {}.getType();
 

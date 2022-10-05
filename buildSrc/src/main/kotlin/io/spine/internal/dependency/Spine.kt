@@ -30,15 +30,17 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.extra
 
 /**
- * Dependencies on Spine `base` modules.
+ * Dependencies on Spine modules.
  *
  * @constructor
- * Creates a new instance of `Spine` taking the `baseVersion` from the given project's
- * extra properties.
+ * Creates a new instance of `Spine` taking the `baseVersion`, `mcVersion`, and `toolBaseVersion`
+ * property values from the given project's extra properties.
  */
 class Spine(p: ExtensionAware) {
 
     val base = "io.spine:spine-base:${p.spineVersion}"
+    @Deprecated("Please use `validation.runtime`", replaceWith = ReplaceWith("validation.runtime"))
+    val validate = "io.spine:spine-validate:${p.spineVersion}"
     val testlib = "io.spine.tools:spine-testlib:${p.spineVersion}"
 
     val toolBase = "io.spine.tools:spine-tool-base:${p.toolBaseVersion}"
@@ -63,7 +65,7 @@ class Spine(p: ExtensionAware) {
      */
     class Validation(p: ExtensionAware) {
 
-        val runtime = "io.spine.validation:spine-validation-runtime:${p.validationVersion}"
+        val runtime = "io.spine.validation:spine-validation-java-runtime:${p.validationVersion}"
         val java = "io.spine.validation:spine-validation-java:${p.validationVersion}"
         val model = "io.spine.validation:spine-validation-model:${p.validationVersion}"
         val config = "io.spine.validation:spine-validation-configuration:${p.validationVersion}"
@@ -87,7 +89,7 @@ class Spine(p: ExtensionAware) {
          * We declare ProtoData version here instead of `versions.gradle.kts` because we later use
          * it in a `plugins` section in a build script.
          */
-        const val version = "0.2.12"
+        const val version = "0.2.16"
         const val pluginLib = "io.spine:protodata:$version"
     }
 }

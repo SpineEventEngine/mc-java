@@ -34,6 +34,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaExtensions;
+import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
@@ -52,6 +53,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     private static final String CONFIG_SUBDIR = "protodata-config";
 
     private static final String PROTODATA_CONFIGURATION = "protoData";
+    private static final String IMPL_CONFIGURATION = "implementation";
 
     /**
      * Applies the {@code io.spine.protodata} plugin to the project and, if the user needs
@@ -118,6 +120,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
 
         var dependencies = target.getDependencies();
         dependencies.add(PROTODATA_CONFIGURATION, validationJavaExtensions().notation());
+        dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
     }
 
     private static void linkConfigFile(Project target, LaunchProtoData task,

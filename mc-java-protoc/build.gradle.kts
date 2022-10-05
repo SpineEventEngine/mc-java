@@ -51,6 +51,9 @@ tasks.jar {
     dependsOn(
         project(":mc-java-validation").tasks.jar
     )
+    dependsOn(
+        project(":mc-java-base").tasks.jar
+    )
 
     // See https://stackoverflow.com/questions/35704403/what-are-the-eclipsef-rsa-and-eclipsef-sf-in-a-java-jar-file
     exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
@@ -68,6 +71,7 @@ tasks.jar {
     // We should provide a classifier or else Protobuf Gradle plugin will substitute it with
     // an OS-specific one.
     archiveClassifier.set("exe")
+    setZip64(true)  /* The archive has way too many items. So using the Zip64 mode. */
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

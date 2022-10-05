@@ -53,10 +53,6 @@ plugins {
 allprojects {
     group = "io.spine.test"
     version = "3.14"
-
-    configurations.all {
-        exclude(group = "io.spine.validation", module = "spine-validation-runtime")
-    }
 }
 
 subprojects {

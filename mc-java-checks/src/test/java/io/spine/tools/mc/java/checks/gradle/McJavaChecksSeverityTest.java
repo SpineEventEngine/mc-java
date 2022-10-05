@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.checks.gradle;
 
+import io.spine.testing.logging.mute.MuteLogging;
 import io.spine.tools.mc.gradle.ModelCompilerOptions;
 import io.spine.tools.mc.java.checks.gradle.given.ProjectConfigurations;
 import io.spine.tools.mc.java.checks.gradle.given.StubProject;
@@ -72,6 +73,7 @@ class McJavaChecksSeverityTest {
 
     @Test
     @DisplayName("not add severity args if Error Prone plugin not applied")
+    @MuteLogging
     void detectErrorProne() {
         configurer.setHasErrorPronePlugin(false);
         configurer.addConfigureSeverityAction();

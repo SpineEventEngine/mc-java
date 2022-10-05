@@ -26,8 +26,9 @@
 
 package io.spine.test.options;
 
+import io.spine.option.OptionsProvider;
+
 import com.google.protobuf.Extension;
-import io.spine.code.proto.OptionExtensionRegistry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ class OptionsRegistryTest {
     }
 
     private static void assertContains(Extension<?, ?> option) {
-        var registry = OptionExtensionRegistry.instance();
+        var registry = OptionsProvider.registryWithAllOptions();
         var descriptor = option.getDescriptor();
         var name = descriptor.getFullName();
         var registeredExtension = registry.findImmutableExtensionByName(name);

@@ -106,10 +106,6 @@ allprojects {
         applyGitHubPackages("ProtoData", project)
         applyStandard()
     }
-
-    configurations.all {
-        exclude(group = "io.spine.validation", module = "spine-validation-runtime")
-    }
 }
 
 subprojects {
@@ -152,6 +148,8 @@ subprojects {
         forceVersions()
         excludeProtobufLite()
         all {
+            // Exclude in favor of `spine-validation-java-runtime`.
+            exclude("io.spine", "spine-validate")
             resolutionStrategy {
                 force(
                     "io.spine:spine-base:$baseVersion",
@@ -262,6 +260,13 @@ subprojects {
         plugins(
             "io.spine.validation.ValidationPlugin"
         )
+    }
+
+    project.afterEvaluate {
+        val sourcesJar: Task by tasks.getting
+        val launchProtoDataMain: Task by tasks.getting
+        sourcesJar.dependsOn(prepareProtocConfigVersions)
+        sourcesJar.dependsOn(launchProtoDataMain)
     }
 }
 

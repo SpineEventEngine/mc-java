@@ -28,11 +28,6 @@ import io.spine.internal.dependency.Grpc
 
 modelCompiler {
     java {
-        codegen {
-            validation {
-                skipValidation()
-            }
-        }
         generateAnnotations {
             internal = "io.spine.test.annotation.Private"
             experimental = "io.spine.test.annotation.Attempt"

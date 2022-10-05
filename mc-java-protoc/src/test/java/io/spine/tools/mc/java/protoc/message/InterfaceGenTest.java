@@ -63,7 +63,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
@@ -478,7 +477,7 @@ final class InterfaceGenTest {
 
     private static SourceFile sourceWithPackage(String typeName) {
         var fileName = FileName.forType(typeName);
-        Path packageDir = JavaFiles.toDirectory(JAVA_PACKAGE);
+        var packageDir = JavaFiles.toDirectory(JAVA_PACKAGE);
         return JavaFiles.resolve(packageDir, fileName);
     }
 
