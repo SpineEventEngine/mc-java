@@ -131,6 +131,9 @@ allprojects {
                     Jackson.dataformatYaml
                 )
             }
+
+            // Exclude this stale artifact from all transitive dependencies.
+            exclude("io.spine", "spine-validate")
         }
     }
 }
