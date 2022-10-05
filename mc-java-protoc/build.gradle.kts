@@ -68,6 +68,7 @@ tasks.jar {
     // We should provide a classifier or else Protobuf Gradle plugin will substitute it with
     // an OS-specific one.
     archiveClassifier.set("exe")
+    setZip64(true)  /* The archive has way too many items. So using the Zip64 mode. */
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
