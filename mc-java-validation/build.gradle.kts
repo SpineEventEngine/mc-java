@@ -31,7 +31,7 @@ import io.spine.internal.dependency.Spine
 dependencies {
     api(JavaPoet.lib)
     val spine = Spine(project)
-    implementation(spine.validate)
+    api(spine.validation.runtime)
     implementation(spine.toolBase)
     implementation(JavaX.annotations)
 

@@ -32,8 +32,8 @@ dependencies {
 
     val spine = Spine(project)
     api(spine.modelCompiler)
-    api(spine.validate)
     api(spine.validation.config)
+    api(spine.validation.runtime)
 
     testImplementation(spine.testlib)
     testImplementation(gradleTestKit())

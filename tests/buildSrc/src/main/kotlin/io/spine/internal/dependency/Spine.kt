@@ -39,6 +39,7 @@ import org.gradle.kotlin.dsl.extra
 class Spine(p: ExtensionAware) {
 
     val base = "io.spine:spine-base:${p.spineVersion}"
+    @Deprecated("Please use `validation.runtime`", replaceWith = ReplaceWith("validation.runtime"))
     val validate = "io.spine:spine-validate:${p.spineVersion}"
     val testlib = "io.spine.tools:spine-testlib:${p.spineVersion}"
 
