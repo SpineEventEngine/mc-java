@@ -83,7 +83,7 @@ private val validationJavaDependency =
 private val validationJavaExtensionsDependency =
     ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-extensions")
 
-private val validationJavaRuntimeExtensionsDependency =
+private val validationJavaRuntimeDependency =
     ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-runtime-extensions")
 
 
@@ -104,13 +104,13 @@ internal val validationJavaExtensions: Artifact by lazy {
 }
 
 /**
- * The Maven artifact containing the `spine-validation-java-runtime-extensions` module.
+ * The Maven artifact containing the `spine-validation-java-runtime` module.
  */
-@get:JvmName("validationJavaRuntimeExtensions")
-internal val validationJavaRuntimeExtensions: Artifact by lazy {
+@get:JvmName("validationJavaRuntime")
+internal val validationJavaRuntime: Artifact by lazy {
     Artifact.newBuilder()
-        .setName(validationJavaRuntimeExtensionsDependency.name())
-        .setGroup(validationJavaRuntimeExtensionsDependency.groupId())
+        .setName(validationJavaRuntimeDependency.name())
+        .setGroup(validationJavaRuntimeDependency.groupId())
         .setVersion(validationVersion)
         .build()
 }
