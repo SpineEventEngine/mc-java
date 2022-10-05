@@ -260,6 +260,13 @@ subprojects {
             "io.spine.validation.ValidationPlugin"
         )
     }
+
+    project.afterEvaluate {
+        val sourcesJar: Task by tasks.getting
+        val launchProtoDataMain: Task by tasks.getting
+        sourcesJar.dependsOn(prepareProtocConfigVersions)
+        sourcesJar.dependsOn(launchProtoDataMain)
+    }
 }
 
 JacocoConfig.applyTo(project)
