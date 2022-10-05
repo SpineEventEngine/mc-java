@@ -84,7 +84,7 @@ private val validationJavaExtensionsDependency =
     ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-extensions")
 
 private val validationJavaRuntimeDependency =
-    ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-runtime-extensions")
+    ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-runtime")
 
 
 private val validationVersion: String by lazy {
