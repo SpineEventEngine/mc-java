@@ -24,14 +24,4 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-modelCompiler {
-    java {
-        codegen {
-            validation {
-                skipValidation()
-            }
-        }
-    }
-}
-
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
