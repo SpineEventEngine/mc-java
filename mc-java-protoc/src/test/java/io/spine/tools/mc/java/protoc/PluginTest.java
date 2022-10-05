@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.protoc;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
-import io.spine.code.proto.OptionExtensionRegistry;
+import io.spine.option.OptionsProvider;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.tools.mc.java.codegen.CodegenOptions;
 import io.spine.tools.mc.java.codegen.Messages;
@@ -229,7 +229,7 @@ final class PluginTest {
         ) {
             withSystemStreams(testInput, testOutput, () -> Plugin.main(new String[]{}));
             return CodeGeneratorResponse.parseFrom(bos.toByteArray(),
-                                                   OptionExtensionRegistry.instance());
+                                                   OptionsProvider.registryWithAllOptions());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
