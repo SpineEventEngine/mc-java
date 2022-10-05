@@ -74,7 +74,6 @@ public final class McJavaChecksSeverity implements Logging {
      * {@code projectEvaluated} stage of the project.
      */
     public void addConfigureSeverityAction() {
-        @SuppressWarnings("RedundantExplicitVariableType") // Avoid an extra cast.
         Action<Gradle> configureCheckSeverity = g -> configureCheckSeverity();
         var gradle = project.getGradle();
         gradle.projectsEvaluated(configureCheckSeverity);
