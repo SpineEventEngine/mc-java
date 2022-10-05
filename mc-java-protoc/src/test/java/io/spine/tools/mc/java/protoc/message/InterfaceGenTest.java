@@ -478,7 +478,7 @@ final class InterfaceGenTest {
 
     private static SourceFile sourceWithPackage(String typeName) {
         var fileName = FileName.forType(typeName);
-        Path packageDir = JavaFiles.toDirectory(JAVA_PACKAGE);
+        var packageDir = JavaFiles.toDirectory(JAVA_PACKAGE);
         return JavaFiles.resolve(packageDir, fileName);
     }
 
