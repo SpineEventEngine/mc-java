@@ -46,18 +46,23 @@ import io.spine.tools.mc.java.gradle.codegen.SignalConfig
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.proto.code.ProtoTypeName
+import java.io.File
+import java.nio.file.Path
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 class `'codegen { }' block should` {
 
     private lateinit var options: McJavaOptions
 
     @BeforeEach
-    fun prepareExtension() {
-        val project = ProjectBuilder.builder().build()
+    fun prepareExtension(@TempDir projectDir: File) {
+        val project = ProjectBuilder.builder()
+            .withProjectDir(projectDir)
+            .build()
         // Add repositories for resolving locally built artifacts (via `mavenLocal()`)
         // and their dependencies via `mavenCentral()`.
         project.repositories.applyStandard()
