@@ -47,7 +47,6 @@ import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
-import java.nio.file.Path
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
