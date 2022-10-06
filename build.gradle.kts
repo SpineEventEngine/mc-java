@@ -267,6 +267,12 @@ subprojects {
         val launchProtoDataMain: Task by tasks.getting
         sourcesJar.dependsOn(prepareProtocConfigVersions)
         sourcesJar.dependsOn(launchProtoDataMain)
+
+        launchProtoDataMain.apply {
+            arrayOf("compileKotlin", "sourcesJar", "dokkaHtml").forEach {
+                tasks.findByName(it)?.dependsOn(launchProtoDataMain)
+            }
+        }
     }
 }
 
