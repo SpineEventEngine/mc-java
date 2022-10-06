@@ -25,10 +25,10 @@
  */
 
 val baseVersion by extra("2.0.0-SNAPSHOT.108")
-val timeVersion by extra("2.0.0-SNAPSHOT.96")
+val timeVersion by extra("2.0.0-SNAPSHOT.108")
 val toolBaseVersion by extra("2.0.0-SNAPSHOT.109")
 val mcVersion by extra("2.0.0-SNAPSHOT.90")
-val serverVersion by extra("2.0.0-SNAPSHOT.109")
+val serverVersion by extra("2.0.0-SNAPSHOT.111")
 
 /**
  * Version of `SpineEventEngine/validation` modules.
@@ -39,5 +39,5 @@ val serverVersion by extra("2.0.0-SNAPSHOT.109")
 val validationVersion by extra("2.0.0-SNAPSHOT.29")
 val protoDataVersion by extra("0.2.16")
 
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.101")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.102")
 val versionToPublish by extra(mcJavaVersion)
