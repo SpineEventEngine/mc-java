@@ -92,7 +92,8 @@ final class AnnotationAction implements Action<Task>, Logging {
         var dirs = protoSet.getSourceDirectories().getFiles();
         var hasProtoDir = dirs.stream()
                 .anyMatch(dir -> dir.getPath().endsWith(rootName()));
-        return hasProtoDir;
+        var isEmpty =  protoSet.isEmpty();
+        return hasProtoDir && !isEmpty;
     }
 
     private ModuleAnnotator createAnnotator(Project project) {
