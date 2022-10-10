@@ -37,24 +37,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Generated message should")
 class GeneratedMessageTest {
 
-    private final CardNumber.Builder valid = CardNumber
-            .newBuilder()
+    private final CardNumber.Builder valid = CardNumber.newBuilder()
             .setDigits("0000 0000 0000 0000");
-    private final CardNumber.Builder invalid = CardNumber
-            .newBuilder()
+    private final CardNumber.Builder invalid = CardNumber.newBuilder()
             .setDigits("zazazazazazaz");
 
     @Test
-    @DisplayName("create a valid message using `vBuild()`")
+    @DisplayName("create a valid message using `build()`")
     void obtainValid() {
-        var number = valid.vBuild();
-        checkValid(number);
+        var number = valid.build();
+        check(number);
     }
 
     @Test
     @DisplayName("throw `ValidationException` if the message is not valid")
     void throwIfInvalid() {
-        var exception = assertThrows(ValidationException.class, invalid::vBuild);
+        var exception = assertThrows(ValidationException.class, invalid::build);
         assertThat(exception.getConstraintViolations()).isNotEmpty();
     }
 
@@ -63,6 +61,6 @@ class GeneratedMessageTest {
     void ignoreIfPartial() {
         var number = invalid.buildPartial();
         assertThat(number).isNotNull();
-        assertThrows(ValidationException.class, () -> checkValid(number));
+        assertThrows(ValidationException.class, () -> check(number));
     }
 }

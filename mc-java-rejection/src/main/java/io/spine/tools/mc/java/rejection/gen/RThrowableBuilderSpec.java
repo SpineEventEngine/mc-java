@@ -58,7 +58,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  * Generates code for a rejection builder.
  *
  * <p>A generated builder validates rejection messages using
- * {@link io.spine.validate.Validate#checkValid(com.google.protobuf.Message)}.
+ * {@link io.spine.validate.Validate#check(com.google.protobuf.Message)}.
  */
 final class RThrowableBuilderSpec implements BuilderSpec {
 
