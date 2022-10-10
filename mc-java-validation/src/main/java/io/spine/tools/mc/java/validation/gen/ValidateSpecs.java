@@ -171,7 +171,7 @@ public final class ValidateSpecs {
      * Generates the {@code vBuild()} method for the message builder class.
      *
      * @return {@code vBuild()} method
-     * @see ValidatingBuilder#vBuild() for the full contract.
+     * @see ValidatingBuilder#build() for the full contract.
      */
     public MethodSpec vBuildMethod() {
         var messageClass = bestGuess(messageSimpleName.value());
