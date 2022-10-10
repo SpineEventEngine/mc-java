@@ -143,6 +143,7 @@ subprojects {
     val timeVersion: String by extra
     val toolBaseVersion: String by extra
     val serverVersion: String by extra
+    val validationVersion: String by extra
     val protoDataVersion: String by extra
     configurations {
         forceVersions()
@@ -158,6 +159,7 @@ subprojects {
                     "io.spine.tools:spine-testlib:$baseVersion",
                     "io.spine.tools:spine-tool-base:$toolBaseVersion",
                     "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    "io.spine.validation:spine-validation-java-runtime:$validationVersion",
                     "io.spine.protodata:protodata-codegen-java:$protoDataVersion",
                     "org.hamcrest:hamcrest-core:2.2",
                     Jackson.core,
@@ -262,18 +264,7 @@ subprojects {
         )
     }
 
-    project.afterEvaluate {
-        val sourcesJar: Task by tasks.getting
-        val launchProtoDataMain: Task by tasks.getting
-        sourcesJar.dependsOn(prepareProtocConfigVersions)
-        sourcesJar.dependsOn(launchProtoDataMain)
-
-        launchProtoDataMain.apply {
-            arrayOf("compileKotlin", "sourcesJar", "dokkaHtml").forEach {
-                tasks.findByName(it)?.dependsOn(launchProtoDataMain)
-            }
-        }
-    }
+    project.configureTaskDependencies()
 }
 
 JacocoConfig.applyTo(project)
