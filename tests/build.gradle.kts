@@ -110,7 +110,6 @@ allprojects {
     version = extra["versionToPublish"]!!
 
     val baseVersion: String by extra
-    val validationVersion: String by extra
     val toolBaseVersion: String by extra
     val timeVersion: String by extra
     configurations {
@@ -159,6 +158,8 @@ subprojects {
     }
 
     val baseVersion: String by extra
+    val validationVersion: String by extra
+
     dependencies {
         errorprone(ErrorProne.core)
         errorproneJavac(ErrorProne.javacPlugin)
