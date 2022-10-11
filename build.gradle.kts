@@ -153,6 +153,7 @@ subprojects {
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
                 force(
+                    Protobuf.compiler,
                     "io.spine:spine-base:$baseVersion",
                     "io.spine:spine-time:$timeVersion",
                     "io.spine:spine-server:$serverVersion",
