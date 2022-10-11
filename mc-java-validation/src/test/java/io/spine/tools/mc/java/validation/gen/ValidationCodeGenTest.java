@@ -42,7 +42,7 @@ import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
 import static io.spine.testing.DisplayNames.NOT_ACCEPT_NULLS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("`ConstraintCompiler` should")
+@DisplayName("`ValidationCodeGenerator` should")
 class ValidationCodeGenTest {
 
     @Test
