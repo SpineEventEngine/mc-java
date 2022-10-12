@@ -160,6 +160,8 @@ subprojects {
                     "io.spine.tools:spine-testlib:$baseVersion",
                     "io.spine.tools:spine-tool-base:$toolBaseVersion",
                     "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    // Force the version to avoid the version conflict for
+                    // the `:mc-java:ProtoData` configuration.
                     "io.spine.validation:spine-validation-java-runtime:$validationVersion",
                     "io.spine.protodata:protodata-codegen-java:$protoDataVersion",
                     "org.hamcrest:hamcrest-core:2.2",
