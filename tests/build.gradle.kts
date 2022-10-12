@@ -158,11 +158,14 @@ subprojects {
     }
 
     val baseVersion: String by extra
+    val validationVersion: String by extra
+
     dependencies {
         errorprone(ErrorProne.core)
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation("io.spine:spine-base:$baseVersion")
+        implementation("io.spine.validation:spine-validation-java-runtime:$validationVersion")
         testImplementation("io.spine.tools:spine-testlib:$baseVersion")
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)

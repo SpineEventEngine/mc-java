@@ -38,7 +38,7 @@ import io.spine.tools.mc.java.protoc.ProtocPluginFiles;
 import io.spine.tools.mc.java.validation.gen.ValidateSpecs;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
-import io.spine.validate.MessageWithConstraints;
+import io.spine.validate.ValidatableMessage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.mc.java.protoc.InsertionPoint.builder_scope;
@@ -112,7 +112,7 @@ public final class ValidationGen extends CodeGenerator {
     }
 
     private static ExistingInterface implementMessageWithConstraints() {
-        var baseInterface = ClassName.of(MessageWithConstraints.class);
+        var baseInterface = ClassName.of(ValidatableMessage.class);
         var result = new ExistingInterface(baseInterface);
         return result;
     }
