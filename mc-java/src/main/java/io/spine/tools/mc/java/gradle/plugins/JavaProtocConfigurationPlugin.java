@@ -46,6 +46,7 @@ import java.nio.file.Paths;
 
 import static io.spine.io.Ensure.ensureFile;
 import static io.spine.tools.gradle.ProtocPluginName.grpc;
+import static io.spine.tools.gradle.ProtocPluginName.kotlin;
 import static io.spine.tools.gradle.ProtocPluginName.spineProtoc;
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.gradle.task.JavaTaskName.processResources;
@@ -68,6 +69,7 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
     @Override
     protected void
     configureProtocPlugins(NamedDomainObjectContainer<ExecutableLocator> plugins, Project project) {
+        plugins.create(kotlin.name());
         plugins.create(grpc.name(),
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
