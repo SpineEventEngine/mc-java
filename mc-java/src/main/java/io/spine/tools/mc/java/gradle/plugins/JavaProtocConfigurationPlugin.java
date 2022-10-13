@@ -69,7 +69,6 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
     @Override
     protected void
     configureProtocPlugins(NamedDomainObjectContainer<ExecutableLocator> plugins, Project project) {
-        plugins.create(kotlin.name());
         plugins.create(grpc.name(),
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
@@ -112,9 +111,15 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
         }
 
         private void configure() {
+            enableKotlinBuiltIn();
             customizeDescriptorSetGeneration();
             addTaskDependency();
             addPlugins();
+        }
+
+        private void enableKotlinBuiltIn() {
+            var builtins = protocTask.getBuiltins();
+            builtins.maybeCreate(kotlin.name());
         }
 
         private void customizeDescriptorSetGeneration() {
