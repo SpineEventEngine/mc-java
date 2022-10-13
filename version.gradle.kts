@@ -24,9 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-val baseVersion by extra("2.0.0-SNAPSHOT.112")
+val baseVersion by extra("2.0.0-SNAPSHOT.113")
 val timeVersion by extra("2.0.0-SNAPSHOT.108")
-val toolBaseVersion by extra("2.0.0-SNAPSHOT.109")
+val toolBaseVersion by extra("2.0.0-SNAPSHOT.110")
 val mcVersion by extra("2.0.0-SNAPSHOT.90")
 val serverVersion by extra("2.0.0-SNAPSHOT.113")
 
@@ -39,5 +39,5 @@ val serverVersion by extra("2.0.0-SNAPSHOT.113")
 val validationVersion by extra("2.0.0-SNAPSHOT.32")
 val protoDataVersion by extra("0.2.18")
 
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.102")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.103")
 val versionToPublish by extra(mcJavaVersion)
