@@ -33,7 +33,6 @@ import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.WriteVersions
 
-val baseVersion: String by extra
 val protoDataVersion: String by extra
 
 val spine = Spine(project)
@@ -59,6 +58,8 @@ dependencies {
     implementation("io.spine.protodata:protodata-compiler:$protoDataVersion")
     implementation(validation.config)
 
+    testImplementation(gradleApi())
+    testImplementation(gradleKotlinDsl())
     testImplementation(gradleTestKit())
     testImplementation(spine.testlib)
     testImplementation(spine.pluginTestlib)
