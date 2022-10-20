@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.gradle.plugins;
 import com.google.protobuf.gradle.ExecutableLocator;
 import com.google.protobuf.gradle.GenerateProtoTask;
 import io.spine.code.proto.DescriptorReference;
-import io.spine.tools.gradle.ProtocConfigurationPlugin;
 import io.spine.tools.code.SourceSetName;
+import io.spine.tools.gradle.ProtocConfigurationPlugin;
 import io.spine.tools.gradle.task.GradleTask;
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
@@ -46,7 +46,6 @@ import java.nio.file.Paths;
 
 import static io.spine.io.Ensure.ensureFile;
 import static io.spine.tools.gradle.ProtocPluginName.grpc;
-import static io.spine.tools.gradle.ProtocPluginName.kotlin;
 import static io.spine.tools.gradle.ProtocPluginName.spineProtoc;
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.gradle.task.JavaTaskName.processResources;
