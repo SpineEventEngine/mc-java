@@ -119,7 +119,8 @@ subprojects {
         plugin("maven-publish")
     }
 
-    val validation = Spine(project).validation
+    val spine = Spine(project)
+    val validation = spine.validation
     dependencies {
         errorprone(ErrorProne.core)
 
@@ -139,11 +140,6 @@ subprojects {
         testImplementation(validation.runtime)
     }
 
-    val baseVersion: String by extra
-    val timeVersion: String by extra
-    val toolBaseVersion: String by extra
-    val serverVersion: String by extra
-    val validationVersion: String by extra
     val protoDataVersion: String by extra
     configurations {
         forceVersions()
@@ -154,15 +150,15 @@ subprojects {
             resolutionStrategy {
                 force(
                     Protobuf.compiler,
-                    "io.spine:spine-base:$baseVersion",
-                    "io.spine:spine-time:$timeVersion",
-                    "io.spine:spine-server:$serverVersion",
-                    "io.spine.tools:spine-testlib:$baseVersion",
-                    "io.spine.tools:spine-tool-base:$toolBaseVersion",
-                    "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    spine.base,
+                    spine.time,
+                    spine.server,
+                    spine.testlib,
+                    spine.toolBase,
+                    spine.pluginBase,
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
-                    "io.spine.validation:spine-validation-java-runtime:$validationVersion",
+                    spine.validation.runtime,
                     "io.spine.protodata:protodata-codegen-java:$protoDataVersion",
                     "org.hamcrest:hamcrest-core:2.2",
                     Jackson.core,
@@ -216,6 +212,7 @@ subprojects {
         val propertiesFile = file("$generatedResources/versions.properties")
         outputs.file(propertiesFile)
 
+        val baseVersion: String by extra
         val versions = Properties().apply {
             setProperty("baseVersion", baseVersion)
             setProperty("protobufVersion", Protobuf.version)
