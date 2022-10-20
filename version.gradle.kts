@@ -28,7 +28,7 @@ val baseVersion by extra("2.0.0-SNAPSHOT.114")
 val timeVersion by extra("2.0.0-SNAPSHOT.109")
 val toolBaseVersion by extra("2.0.0-SNAPSHOT.111")
 val mcVersion by extra("2.0.0-SNAPSHOT.90")
-val serverVersion by extra("2.0.0-SNAPSHOT.116")
+val coreVersion by extra("2.0.0-SNAPSHOT.116")
 
 /**
  * Version of `SpineEventEngine/validation` modules.
