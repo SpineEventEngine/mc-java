@@ -29,7 +29,9 @@ import io.spine.internal.dependency.JavaX
 import io.spine.internal.dependency.Spine
 
 dependencies {
-    implementation(gradleApi())
+    compileOnly(gradleApi())
+    compileOnly(gradleKotlinDsl())
+
     val spine = Spine(project)
     implementation(spine.toolBase)
     implementation(spine.pluginBase)
