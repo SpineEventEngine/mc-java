@@ -111,15 +111,9 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
         }
 
         private void configure() {
-            enableKotlinBuiltIn();
             customizeDescriptorSetGeneration();
             addTaskDependency();
             addPlugins();
-        }
-
-        private void enableKotlinBuiltIn() {
-            var builtins = protocTask.getBuiltins();
-            builtins.maybeCreate(kotlin.name());
         }
 
         private void customizeDescriptorSetGeneration() {
