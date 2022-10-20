@@ -37,7 +37,7 @@ val serverVersion by extra("2.0.0-SNAPSHOT.116")
  * of ProtoData, see `buildSrc/src/main/kotlin/io/spine/internal/dependency/Spine.kt`.
  */
 val validationVersion by extra("2.0.0-SNAPSHOT.32")
-val protoDataVersion by extra("0.2.19")
+val protoDataVersion by extra("0.2.20")
 
 val mcJavaVersion by extra("2.0.0-SNAPSHOT.103")
 val versionToPublish by extra(mcJavaVersion)
