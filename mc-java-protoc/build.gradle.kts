@@ -40,6 +40,7 @@ dependencies {
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
+    testImplementation(gradleTestKit())
     testImplementation(spine.base)
     testImplementation(spine.pluginTestlib)
 }
