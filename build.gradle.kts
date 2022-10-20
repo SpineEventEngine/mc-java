@@ -66,6 +66,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     io.spine.internal.gradle.doApplyStandard(repositories)
+
+    val spine = io.spine.internal.dependency.Spine(project)
+    io.spine.internal.gradle.doForceVersions(configurations)
+    configurations {
+        all {
+            resolutionStrategy {
+                force(spine.server)
+            }
+        }
+    }
 }
 
 plugins {
@@ -108,6 +118,7 @@ allprojects {
     }
 }
 
+val baseVersion: String by extra
 subprojects {
     apply {
         plugin("java-library")
@@ -212,7 +223,6 @@ subprojects {
         val propertiesFile = file("$generatedResources/versions.properties")
         outputs.file(propertiesFile)
 
-        val baseVersion: String by extra
         val versions = Properties().apply {
             setProperty("baseVersion", baseVersion)
             setProperty("protobufVersion", Protobuf.version)
