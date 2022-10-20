@@ -24,11 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-val baseVersion by extra("2.0.0-SNAPSHOT.112")
-val timeVersion by extra("2.0.0-SNAPSHOT.108")
-val toolBaseVersion by extra("2.0.0-SNAPSHOT.109")
+val baseVersion by extra("2.0.0-SNAPSHOT.114")
+val timeVersion by extra("2.0.0-SNAPSHOT.109")
+val toolBaseVersion by extra("2.0.0-SNAPSHOT.111")
 val mcVersion by extra("2.0.0-SNAPSHOT.90")
-val serverVersion by extra("2.0.0-SNAPSHOT.113")
+val coreVersion by extra("2.0.0-SNAPSHOT.116")
 
 /**
  * Version of `SpineEventEngine/validation` modules.
@@ -37,7 +37,7 @@ val serverVersion by extra("2.0.0-SNAPSHOT.113")
  * of ProtoData, see `buildSrc/src/main/kotlin/io/spine/internal/dependency/Spine.kt`.
  */
 val validationVersion by extra("2.0.0-SNAPSHOT.32")
-val protoDataVersion by extra("0.2.18")
+val protoDataVersion by extra("0.2.20")
 
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.102")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.103")
 val versionToPublish by extra(mcJavaVersion)

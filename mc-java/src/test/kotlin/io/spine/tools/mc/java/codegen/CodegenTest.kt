@@ -48,17 +48,26 @@ import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.CleanupMode
 import org.junit.jupiter.api.io.TempDir
 
 class `'codegen { }' block should` {
 
     private lateinit var options: McJavaOptions
+    private lateinit var projectDir: File
 
     @BeforeEach
-    fun prepareExtension(@TempDir projectDir: File) {
+    fun prepareExtension(
+        @TempDir(cleanup = CleanupMode.NEVER) /* The cleanup fails under Windows.
+         See this comment on the corresponding issue for details:
+         https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489 */
+        projectDir: File
+    ) {
+        this.projectDir = projectDir
         val project = ProjectBuilder.builder()
             .withProjectDir(projectDir)
             .build()
@@ -71,6 +80,11 @@ class `'codegen { }' block should` {
             it.plugin(McJavaPlugin::class.java)
         }
         options = project.mcJava
+    }
+
+    @AfterEach
+    fun removeTempDir() {
+        projectDir.deleteOnExit()
     }
 
     @Test
