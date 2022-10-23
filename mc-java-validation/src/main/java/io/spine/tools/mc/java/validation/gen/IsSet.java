@@ -114,7 +114,8 @@ final class IsSet {
         Expression<?> elementAccess = Expression.of("el");
         var elementIsSet = valueIsPresent(elementAccess);
         if (elementIsSet.isConstant()) {
-            checkState(elementIsSet.isConstantTrue(), "The field `%s` can never be non-default.");
+            checkState(elementIsSet.isConstantTrue(),
+                       "The field `%s` can never be non-default.", field.name());
             return collectionIsNotEmpty.returnStatement();
         } else {
             var nonDefaultField = "nonDefault";
