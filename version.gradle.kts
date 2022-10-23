@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-val baseVersion by extra("2.0.0-SNAPSHOT.114")
+val baseVersion by extra("2.0.0-SNAPSHOT.115")
 val timeVersion by extra("2.0.0-SNAPSHOT.110")
 val toolBaseVersion by extra("2.0.0-SNAPSHOT.111")
 val mcVersion by extra("2.0.0-SNAPSHOT.90")
