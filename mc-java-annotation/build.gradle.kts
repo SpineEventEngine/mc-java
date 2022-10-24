@@ -24,8 +24,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
+
+plugins {
+    `java-gradle-plugin`
+    `java-test-fixtures`
+}
+
+testing {
+    suites {
+        getByName("test", JvmTestSuite::class) {
+            dependencies {
+                implementation(gradleKotlinDsl())
+            }
+        }
+        register("functionalTest", JvmTestSuite::class) {
+            useJUnitJupiter(JUnit.version)
+        }
+    }
+}
+
+val pluginCompileOnly: Configuration by configurations.creating
+val functionalTestImplementation: Configuration by configurations.getting
+
+configurations.compileOnly { extendsFrom(pluginCompileOnly) }
+
+pluginCompileOnly.attributes {
+    attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category::class.java, "library"))
+}
 
 dependencies {
     implementation(Roaster.api) {
@@ -46,3 +74,14 @@ dependencies {
 tasks.test {
     dependsOn(rootProject.tasks.named("localPublish"))
 }
+
+//val launchProtoDataFunctionalTest by tasks.registering {
+//}
+//
+//gradlePlugin {
+//    // Source sets that require the Gradle TestKit dependency
+//    testSourceSets(
+//        sourceSets["testFixtures"],
+//        sourceSets["functionalTest"],
+//    )
+//}
