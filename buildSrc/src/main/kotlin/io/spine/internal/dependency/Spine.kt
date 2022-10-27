@@ -46,6 +46,24 @@ class Spine(p: ExtensionAware) {
     object DefaultVersion {
 
         /**
+         * The version of ProtoData to be used in the project.
+         *
+         * We do it here instead of `versions.gradle.kts` because we later use
+         * it in a `plugins` section in a build script.
+         *
+         * This version cannot be re-defined via `version.gradle.kts` like versions
+         * of other subprojects like [base] or [core]. So, if you want to use another version,
+         * please update this value in your `buildSrc.
+         *
+         * Development of ProtoData uses custom convention for using custom version
+         * of ProtoData in its integration tests. Please see `ProtoData/version.gradle.kts`
+         * for details.
+         *
+         * @see [ProtoData]
+         */
+        const val protoData = "0.2.21"
+
+        /**
          * The default version  of `base` to use.
          * @see [Spine.base]
          */
@@ -67,7 +85,7 @@ class Spine(p: ExtensionAware) {
         /**
          * The version of `mc-java` to use.
          */
-        const val mcJava = "2.0.0-SNAPSHOT.102"
+        const val mcJava = "2.0.0-SNAPSHOT.103"
 
         /**
          * The version of `base-types` to use.
@@ -112,7 +130,7 @@ class Spine(p: ExtensionAware) {
          *
          * @see [ProtoData]
          */
-        const val protoDataVersion = "0.2.21"
+        const val protoDataVersion = DefaultVersion.protoData
     }
 
     val base = "$group:spine-base:${p.baseVersion}"
