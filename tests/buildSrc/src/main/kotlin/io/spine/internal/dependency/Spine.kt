@@ -56,7 +56,7 @@ class Spine(p: ExtensionAware) {
          * @see [Spine.CoreJava.client]
          * @see [Spine.CoreJava.server]
          */
-        const val core = "2.0.0-SNAPSHOT.114"
+        const val core = "2.0.0-SNAPSHOT.118"
 
         /**
          * The version of `model-compiler` to use.
@@ -112,7 +112,7 @@ class Spine(p: ExtensionAware) {
          *
          * @see [ProtoData]
          */
-        const val protoDataVersion = "0.2.20"
+        const val protoDataVersion = "0.2.21"
     }
 
     val base = "$group:spine-base:${p.baseVersion}"
@@ -182,9 +182,12 @@ class Spine(p: ExtensionAware) {
      * See [`SpineEventEngine/ProtoData`](https://github.com/SpineEventEngine/ProtoData/).
      */
     object ProtoData {
-        const val pluginId = "io.spine.protodata"
+        const val group = "io.spine.protodata"
         const val version = protoDataVersion
-        const val pluginLib = "$group:protodata:$version"
+        const val compiler = "$group:protodata-compiler:$version"
+
+        const val pluginId = "io.spine.protodata"
+        const val pluginLib = "${Spine.group}:protodata:$version"
     }
 
     /**
