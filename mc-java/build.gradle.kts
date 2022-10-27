@@ -31,9 +31,8 @@ import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Spine.ProtoData
 import io.spine.internal.gradle.WriteVersions
-
-val protoDataVersion: String by extra
 
 val spine = Spine(project)
 val validation = spine.validation
@@ -54,8 +53,8 @@ dependencies {
     implementation(project(":mc-java-rejection"))
     implementation(project(":mc-java-protodata-params"))
 
-    implementation("io.spine:protodata:$protoDataVersion")
-    implementation("io.spine.protodata:protodata-compiler:$protoDataVersion")
+    implementation(ProtoData.pluginLib)
+    implementation(ProtoData.compiler)
     implementation(validation.config)
 
     testImplementation(gradleApi())

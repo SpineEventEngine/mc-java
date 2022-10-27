@@ -24,21 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.protobuf
-import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.JavaPoet
-import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
-import io.spine.internal.gradle.WriteVersions
-
-val baseVersion: String by extra
-val timeVersion: String by extra
-val protoDataVersion: String by extra
 
 dependencies {
-    implementation("io.spine.protodata:protodata-compiler:$protoDataVersion")
-    implementation("io.spine:spine-base:$baseVersion")
-    implementation("io.spine:spine-time:$timeVersion")
+    implementation(Spine.ProtoData.compiler)
+    val spine = Spine(project)
+    implementation(spine.base)
+    implementation(spine.time)
 }

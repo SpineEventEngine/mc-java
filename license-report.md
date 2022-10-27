@@ -1,6 +1,6 @@
 
 
-# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.13.4.**No license information found**
@@ -64,19 +64,19 @@
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -97,9 +97,6 @@
 
 1.  **Group** : com.google.guava. **Name** : guava. **Version** : 31.1-jre.
      * **Project URL:** [https://github.com/google/guava](https://github.com/google/guava)
-     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.guava. **Name** : guava-testlib. **Version** : 31.1-jre.
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.guava. **Name** : listenablefuture. **Version** : 9999.0-empty-to-avoid-conflict-with-guava.
@@ -123,18 +120,6 @@
 
 1.  **Group** : com.google.protobuf. **Name** : protobuf-kotlin. **Version** : 3.19.6.
      * **License:** [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : com.google.truth. **Name** : truth. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-java8-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-liteproto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-proto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : javapoet. **Version** : 1.13.0.
      * **Project URL:** [http://github.com/square/javapoet/](http://github.com/square/javapoet/)
@@ -176,8 +161,8 @@
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime-bundle. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -185,19 +170,11 @@
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
 
-1.  **Group** : junit. **Name** : junit. **Version** : 4.13.1.
-     * **Project URL:** [http://junit.org](http://junit.org)
-     * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
-
 1.  **Group** : kr.motd.maven. **Name** : os-maven-plugin. **Version** : 1.7.0.
      * **Project URL:** [https://github.com/trustin/os-maven-plugin/](https://github.com/trustin/os-maven-plugin/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
-1.  **Group** : org.apiguardian. **Name** : apiguardian-api. **Version** : 1.1.2.
-     * **Project URL:** [https://github.com/apiguardian-team/apiguardian](https://github.com/apiguardian-team/apiguardian)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : org.checkerframework. **Name** : checker-compat-qual. **Version** : 2.5.5.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
@@ -207,7 +184,7 @@
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -217,14 +194,6 @@
 
 1.  **Group** : org.eclipse.jgit. **Name** : org.eclipse.jgit. **Version** : 4.4.1.201607150455-r.
      * **License:** Eclipse Distribution License (New BSD License)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest-core. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
@@ -277,28 +246,6 @@
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 1.7.20.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.junit. **Name** : junit-bom. **Version** : 5.9.1.**No license information found**
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-api. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-params. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.platform. **Name** : junit-platform-commons. **Version** : 1.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.opentest4j. **Name** : opentest4j. **Version** : 1.2.0.
-     * **Project URL:** [https://github.com/ota4j-team/opentest4j](https://github.com/ota4j-team/opentest4j)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.1.
-     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
-     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.pcollections. **Name** : pcollections. **Version** : 3.1.4.
      * **Project URL:** [https://github.com/hrldcpr/pcollections](https://github.com/hrldcpr/pcollections)
@@ -374,20 +321,24 @@
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -471,10 +422,6 @@
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -515,11 +462,11 @@
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -543,15 +490,15 @@
      * **License:** [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
      * **License:** [LGPL, version 2.1](http://www.gnu.org/licenses/licenses.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 11.4.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -592,7 +539,7 @@
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -752,6 +699,11 @@
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -787,12 +739,12 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:34 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -803,7 +755,7 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -949,20 +901,24 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -1046,10 +1002,6 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1090,9 +1042,9 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -1120,10 +1072,10 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -1164,7 +1116,7 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -1304,6 +1256,11 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -1335,12 +1292,12 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:34 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -1351,7 +1308,7 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -1489,20 +1446,24 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -1586,10 +1547,6 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1630,9 +1587,9 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -1660,10 +1617,10 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -1704,7 +1661,7 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -1844,6 +1801,11 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -1875,12 +1837,12 @@ This report was generated on **Thu Oct 20 16:25:28 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:35 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.github.ben-manes.caffeine. **Name** : caffeine. **Version** : 3.0.5.
@@ -1911,19 +1873,19 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -1989,7 +1951,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/trustin/os-maven-plugin/](https://github.com/trustin/os-maven-plugin/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : org.checkerframework. **Name** : checker-compat-qual. **Version** : 2.5.5.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
@@ -1999,7 +1961,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -2083,23 +2045,27 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_test_helpers. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_test_helpers. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -2194,10 +2160,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -2238,9 +2200,9 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -2264,15 +2226,15 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **License:** [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
      * **License:** [LGPL, version 2.1](http://www.gnu.org/licenses/licenses.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 11.4.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -2313,7 +2275,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -2457,6 +2419,11 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -2488,12 +2455,12 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:35 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-plugin-bundle:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-plugin-bundle:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.13.4.**No license information found**
@@ -2557,19 +2524,19 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -2590,9 +2557,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 1.  **Group** : com.google.guava. **Name** : guava. **Version** : 31.1-jre.
      * **Project URL:** [https://github.com/google/guava](https://github.com/google/guava)
-     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.guava. **Name** : guava-testlib. **Version** : 31.1-jre.
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.guava. **Name** : listenablefuture. **Version** : 9999.0-empty-to-avoid-conflict-with-guava.
@@ -2616,18 +2580,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 1.  **Group** : com.google.protobuf. **Name** : protobuf-kotlin. **Version** : 3.19.6.
      * **License:** [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : com.google.truth. **Name** : truth. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-java8-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-liteproto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-proto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : javapoet. **Version** : 1.13.0.
      * **Project URL:** [http://github.com/square/javapoet/](http://github.com/square/javapoet/)
@@ -2669,8 +2621,8 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime-bundle. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -2678,19 +2630,11 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
 
-1.  **Group** : junit. **Name** : junit. **Version** : 4.13.1.
-     * **Project URL:** [http://junit.org](http://junit.org)
-     * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
-
 1.  **Group** : kr.motd.maven. **Name** : os-maven-plugin. **Version** : 1.7.0.
      * **Project URL:** [https://github.com/trustin/os-maven-plugin/](https://github.com/trustin/os-maven-plugin/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
-1.  **Group** : org.apiguardian. **Name** : apiguardian-api. **Version** : 1.1.2.
-     * **Project URL:** [https://github.com/apiguardian-team/apiguardian](https://github.com/apiguardian-team/apiguardian)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : org.checkerframework. **Name** : checker-compat-qual. **Version** : 2.5.5.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
@@ -2700,7 +2644,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -2710,14 +2654,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 1.  **Group** : org.eclipse.jgit. **Name** : org.eclipse.jgit. **Version** : 4.4.1.201607150455-r.
      * **License:** Eclipse Distribution License (New BSD License)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest-core. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
@@ -2770,28 +2706,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 1.7.20.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.junit. **Name** : junit-bom. **Version** : 5.9.1.**No license information found**
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-api. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-params. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.platform. **Name** : junit-platform-commons. **Version** : 1.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.opentest4j. **Name** : opentest4j. **Version** : 1.2.0.
-     * **Project URL:** [https://github.com/ota4j-team/opentest4j](https://github.com/ota4j-team/opentest4j)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.1.
-     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
-     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.pcollections. **Name** : pcollections. **Version** : 3.1.4.
      * **Project URL:** [https://github.com/hrldcpr/pcollections](https://github.com/hrldcpr/pcollections)
@@ -2867,20 +2781,24 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -2964,10 +2882,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -3008,11 +2922,11 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -3036,15 +2950,15 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **License:** [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
      * **License:** [LGPL, version 2.1](http://www.gnu.org/licenses/licenses.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 2.0.2.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.0.1.**No license information found**
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 11.4.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -3085,7 +2999,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -3245,6 +3159,11 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -3280,12 +3199,12 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:35 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -3296,7 +3215,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -3434,20 +3353,24 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -3531,10 +3454,6 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -3575,9 +3494,9 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -3605,10 +3524,10 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -3649,7 +3568,7 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -3789,6 +3708,11 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -3820,12 +3744,12 @@ This report was generated on **Thu Oct 20 16:25:29 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:36 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.13.4.**No license information found**
@@ -3861,10 +3785,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/googleapis/java-iam/proto-google-common-protos](https://github.com/googleapis/java-iam/proto-google-common-protos)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.auto.value. **Name** : auto-value-annotations. **Version** : 1.9.
-     * **Project URL:** [https://github.com/google/auto/tree/master/value](https://github.com/google/auto/tree/master/value)
-     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
      * **Project URL:** [http://findbugs.sourceforge.net/](http://findbugs.sourceforge.net/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -3873,7 +3793,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -3890,9 +3810,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 
 1.  **Group** : com.google.guava. **Name** : guava. **Version** : 31.1-jre.
      * **Project URL:** [https://github.com/google/guava](https://github.com/google/guava)
-     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.guava. **Name** : guava-testlib. **Version** : 31.1-jre.
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.guava. **Name** : listenablefuture. **Version** : 9999.0-empty-to-avoid-conflict-with-guava.
@@ -3912,18 +3829,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 
 1.  **Group** : com.google.protobuf. **Name** : protobuf-kotlin. **Version** : 3.19.6.
      * **License:** [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : com.google.truth. **Name** : truth. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-java8-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-liteproto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : com.google.truth.extensions. **Name** : truth-proto-extension. **Version** : 1.1.3.
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : javapoet. **Version** : 1.13.0.
      * **Project URL:** [http://github.com/square/javapoet/](http://github.com/square/javapoet/)
@@ -3957,19 +3862,11 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
-
-1.  **Group** : junit. **Name** : junit. **Version** : 4.13.1.
-     * **Project URL:** [http://junit.org](http://junit.org)
-     * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
-
-1.  **Group** : org.apiguardian. **Name** : apiguardian-api. **Version** : 1.1.2.
-     * **Project URL:** [https://github.com/apiguardian-team/apiguardian](https://github.com/apiguardian-team/apiguardian)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.checkerframework. **Name** : checker-compat-qual. **Version** : 2.5.5.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
@@ -3983,14 +3880,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 1.  **Group** : org.codehaus.mojo. **Name** : animal-sniffer-annotations. **Version** : 1.21.
      * **License:** [MIT license](http://www.opensource.org/licenses/mit-license.php)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
-
-1.  **Group** : org.hamcrest. **Name** : hamcrest-core. **Version** : 2.2.
-     * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
-     * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
 
 1.  **Group** : org.jetbrains. **Name** : annotations. **Version** : 13.0.
      * **Project URL:** [http://www.jetbrains.org](http://www.jetbrains.org)
@@ -4015,28 +3904,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 1.7.20.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.junit. **Name** : junit-bom. **Version** : 5.9.1.**No license information found**
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-api. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.jupiter. **Name** : junit-jupiter-params. **Version** : 5.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.junit.platform. **Name** : junit-platform-commons. **Version** : 1.9.1.
-     * **Project URL:** [https://junit.org/junit5/](https://junit.org/junit5/)
-     * **License:** [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-v20.html)
-
-1.  **Group** : org.opentest4j. **Name** : opentest4j. **Version** : 1.2.0.
-     * **Project URL:** [https://github.com/ota4j-team/opentest4j](https://github.com/ota4j-team/opentest4j)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.1.
-     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
-     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
-     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.yaml. **Name** : snakeyaml. **Version** : 1.31.
      * **Project URL:** [https://bitbucket.org/snakeyaml/snakeyaml](https://bitbucket.org/snakeyaml/snakeyaml)
@@ -4108,20 +3975,24 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -4197,10 +4068,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : info.picocli. **Name** : picocli. **Version** : 4.6.3.
      * **Project URL:** [http://picocli.info](http://picocli.info)
      * **License:** [The Apache Software License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4237,10 +4104,10 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -4264,10 +4131,10 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -4308,7 +4175,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -4444,6 +4311,11 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.2.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4483,12 +4355,12 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:36 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -4499,7 +4371,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -4645,20 +4517,24 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -4742,10 +4618,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4786,9 +4658,9 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -4816,10 +4688,10 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -4860,7 +4732,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -5000,6 +4872,11 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -5031,12 +4908,12 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:36 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.103`
+# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.104`
 
 ## Runtime
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
@@ -5047,7 +4924,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
@@ -5167,20 +5044,24 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_check_api. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_core. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.13.1.
+1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.16.
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.errorprone. **Name** : javac. **Version** : 9+181-r4173-1.
+     * **Project URL:** [https://github.com/google/error-prone-javac](https://github.com/google/error-prone-javac)
+     * **License:** [GNU General Public License, version 2, with the Classpath Exception](http://openjdk.java.net/legal/gplv2+ce.html)
 
 1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
      * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
@@ -5264,10 +5145,6 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://commons.apache.org/collections/](http://commons.apache.org/collections/)
      * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : commons-io. **Name** : commons-io. **Version** : 2.6.
-     * **Project URL:** [http://commons.apache.org/proper/commons-io/](http://commons.apache.org/proper/commons-io/)
-     * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : commons-lang. **Name** : commons-lang. **Version** : 2.6.
      * **Project URL:** [http://commons.apache.org/lang/](http://commons.apache.org/lang/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -5308,9 +5185,9 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.20.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.20.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.2.21.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.2.21.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.32.**No license information found**
@@ -5338,10 +5215,10 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-core. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
-1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.44.0.
+1.  **Group** : net.sourceforge.pmd. **Name** : pmd-java. **Version** : 6.50.0.
      * **License:** [BSD-style](http://pmd.sourceforge.net/license.html)
 
 1.  **Group** : net.sourceforge.saxon. **Name** : saxon. **Version** : 9.1.0.8.
@@ -5382,7 +5259,7 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
 
-1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.21.1.
+1.  **Group** : org.checkerframework. **Name** : dataflow-errorprone. **Version** : 3.24.0.
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
@@ -5522,6 +5399,11 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.ow2.asm. **Name** : asm. **Version** : 9.3.
+     * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
+     * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
+     * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.ow2.asm. **Name** : asm-analysis. **Version** : 9.2.
      * **Project URL:** [http://asm.ow2.io/](http://asm.ow2.io/)
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
@@ -5553,4 +5435,4 @@ This report was generated on **Thu Oct 20 16:25:30 TRT 2022** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Oct 20 16:25:31 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Thu Oct 27 13:41:36 TRT 2022** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).

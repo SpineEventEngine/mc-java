@@ -24,20 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-val baseVersion by extra("2.0.0-SNAPSHOT.114")
-val timeVersion by extra("2.0.0-SNAPSHOT.109")
-val toolBaseVersion by extra("2.0.0-SNAPSHOT.111")
-val mcVersion by extra("2.0.0-SNAPSHOT.90")
-val coreVersion by extra("2.0.0-SNAPSHOT.116")
-
 /**
- * Version of `SpineEventEngine/validation` modules.
+ * The version of McJava to publish.
  *
- * Keep in mind, the Validation library is tightly connected to ProtoData. For the version
- * of ProtoData, see `buildSrc/src/main/kotlin/io/spine/internal/dependency/Spine.kt`.
+ * Do not rename this this property as it is also used in the integration tests via its name.
+ *
+ * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
+ * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
  */
-val validationVersion by extra("2.0.0-SNAPSHOT.32")
-val protoDataVersion by extra("0.2.20")
-
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.103")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.104")
 val versionToPublish by extra(mcJavaVersion)

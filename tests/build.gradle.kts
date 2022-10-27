@@ -60,18 +60,16 @@ buildscript {
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
     }
 
-    val baseVersion: String by extra
-    val timeVersion: String by extra
-    val toolBaseVersion: String by extra
     with(configurations) {
         io.spine.internal.gradle.doForceVersions(this)
+        val spine = io.spine.internal.dependency.Spine(project)
         all {
             resolutionStrategy {
                 force(
-                    "io.spine:spine-base:$baseVersion",
-                    "io.spine:spine-time:$timeVersion",
-                    "io.spine.tools:spine-tool-base:$toolBaseVersion",
-                    "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    spine.base,
+                    spine.time,
+                    spine.toolBase,
+                    spine.pluginBase,
                     io.spine.internal.dependency.Jackson.core,
                     io.spine.internal.dependency.Jackson.moduleKotlin,
                     io.spine.internal.dependency.Jackson.databind,
@@ -109,20 +107,18 @@ allprojects {
     group = "io.spine.tools.tests"
     version = extra["versionToPublish"]!!
 
-    val baseVersion: String by extra
-    val toolBaseVersion: String by extra
-    val timeVersion: String by extra
+    val spine = io.spine.internal.dependency.Spine(project)
     configurations {
         forceVersions()
         excludeProtobufLite()
         all {
             resolutionStrategy {
                 force(
-                    "io.spine:spine-base:$baseVersion",
-                    "io.spine:spine-time:$timeVersion",
-                    "io.spine.tools:spine-testlib:$baseVersion",
-                    "io.spine.tools:spine-tool-base:$toolBaseVersion",
-                    "io.spine.tools:spine-plugin-base:$toolBaseVersion",
+                    spine.base,
+                    spine.time,
+                    spine.testlib,
+                    spine.toolBase,
+                    spine.pluginBase,
                     Jackson.core,
                     Jackson.moduleKotlin,
                     Jackson.databind,
@@ -157,16 +153,14 @@ subprojects {
         }
     }
 
-    val baseVersion: String by extra
-    val validationVersion: String by extra
-
+    val spine = io.spine.internal.dependency.Spine(project)
     dependencies {
         errorprone(ErrorProne.core)
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
-        implementation("io.spine:spine-base:$baseVersion")
-        implementation("io.spine.validation:spine-validation-java-runtime:$validationVersion")
-        testImplementation("io.spine.tools:spine-testlib:$baseVersion")
+        implementation(spine.base)
+        implementation(spine.validation.runtime)
+        testImplementation(spine.testlib)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
     }
