@@ -33,7 +33,6 @@ buildscript {
 
     io.spine.internal.gradle.doApplyStandard(repositories)
 
-    val baseVersion: String by extra
     val mcJavaVersion: String by extra
     dependencies {
         io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
@@ -72,8 +71,7 @@ subprojects {
 
     io.spine.internal.gradle.doApplyStandard(repositories)
 
-    val baseVersion: String by extra
     dependencies {
-        implementation("io.spine:spine-base:$baseVersion")
+        implementation(io.spine.internal.dependency.Spine(project).base)
     }
 }

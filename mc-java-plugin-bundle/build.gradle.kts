@@ -1,5 +1,3 @@
-import groovy.util.Node
-
 /*
  * Copyright 2022, TeamDev. All rights reserved.
  *
@@ -26,15 +24,18 @@ import groovy.util.Node
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import groovy.util.Node
+import io.spine.internal.dependency.Spine
+import io.spine.internal.gradle.publish.SpinePublishing
+
 plugins {
     application
     `maven-publish`
     id("com.github.johnrengelman.shadow").version("7.1.2")
 }
 
-
 /** The publishing settings from the root project. */
-val spinePublishing = rootProject.the<io.spine.internal.gradle.publish.SpinePublishing>()
+val spinePublishing = rootProject.the<SpinePublishing>()
 
 /**
  * The ID of the far JAR artifact.
@@ -108,7 +109,7 @@ publishing {
                 val dependency = Node(dependencies, "dependency")
                 Node(dependency, "groupId", "io.spine")
                 Node(dependency, "artifactId", "protodata")
-                Node(dependency, "version", protoDataVersion)
+                Node(dependency, "version", Spine.protoDataVersion)
                 Node(dependency, "scope", "runtime")
 
                 val exclusions = Node(dependency, "exclusions")

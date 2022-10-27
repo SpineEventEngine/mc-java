@@ -118,7 +118,6 @@ allprojects {
     }
 }
 
-val baseVersion: String by extra
 subprojects {
     apply {
         plugin("java-library")
@@ -151,7 +150,6 @@ subprojects {
         testImplementation(validation.runtime)
     }
 
-    val protoDataVersion: String by extra
     configurations {
         forceVersions()
         excludeProtobufLite()
@@ -170,7 +168,7 @@ subprojects {
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     spine.validation.runtime,
-                    "io.spine.protodata:protodata-codegen-java:$protoDataVersion",
+                    "io.spine.protodata:protodata-codegen-java:${Spine.protoDataVersion}",
                     "org.hamcrest:hamcrest-core:2.2",
                     Jackson.core,
                     Jackson.moduleKotlin,
@@ -224,7 +222,7 @@ subprojects {
         outputs.file(propertiesFile)
 
         val versions = Properties().apply {
-            setProperty("baseVersion", baseVersion)
+            setProperty("baseVersion", Spine.DefaultVersion.base)
             setProperty("protobufVersion", Protobuf.version)
             setProperty("gRPCVersion", Grpc.version)
         }
