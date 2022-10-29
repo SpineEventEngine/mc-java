@@ -76,17 +76,18 @@ buildscript {
             }
         }
     }
+    dependencies {
+        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLibAlt)
+    }
 }
 
 plugins {
     `java-library`
     idea
-    id(io.spine.internal.dependency.Protobuf.GradlePlugin.id)
-    id(io.spine.internal.dependency.ErrorProne.GradlePlugin.id)
     kotlin("jvm")
-    with(io.spine.internal.dependency.Spine.ProtoData) {
-        id(pluginId) version version
-    }
+    id("com.google.protobuf")
+    id("net.ltgt.errorprone")
+    id("io.spine.protodata") version "0.3.0"
 }
 
 spinePublishing {
@@ -127,6 +128,7 @@ subprojects {
         plugin(Protobuf.GradlePlugin.id)
         plugin("io.spine.protodata")
         plugin("maven-publish")
+        plugin("io.spine.protodata")
     }
 
     val spine = Spine(project)
