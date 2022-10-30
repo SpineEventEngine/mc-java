@@ -53,7 +53,7 @@ dependencies {
     implementation(project(":mc-java-rejection"))
     implementation(project(":mc-java-protodata-params"))
 
-    implementation(ProtoData.pluginLib)
+    implementation(ProtoData.pluginLibAlt)
     implementation(ProtoData.compiler)
     implementation(validation.config)
 
