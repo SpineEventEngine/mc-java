@@ -43,6 +43,12 @@ all modules and does not describe the project structure per-subproject.
   </dependency>
   <dependency>
     <groupId>io.spine</groupId>
+    <artifactId>protodata</artifactId>
+    <version>0.3.0</version>
+    <scope>compile</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.spine</groupId>
     <artifactId>spine-base</artifactId>
     <version>2.0.0-SNAPSHOT.120</version>
     <scope>compile</scope>
@@ -51,12 +57,6 @@ all modules and does not describe the project structure per-subproject.
     <groupId>io.spine</groupId>
     <artifactId>spine-time</artifactId>
     <version>2.0.0-SNAPSHOT.111</version>
-    <scope>compile</scope>
-  </dependency>
-  <dependency>
-    <groupId>io.spine.protodata</groupId>
-    <artifactId>gradle-plugin</artifactId>
-    <version>0.3.0</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
