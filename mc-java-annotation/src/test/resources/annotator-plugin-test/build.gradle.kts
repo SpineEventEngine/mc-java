@@ -56,7 +56,7 @@ buildscript {
             exclude(group = "com.google.guava")
         }
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
-        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLibAlt)
+        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLib)
     }
 }
 
