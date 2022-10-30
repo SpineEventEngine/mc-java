@@ -129,6 +129,7 @@ subprojects {
         plugin("io.spine.protodata")
         plugin("maven-publish")
         plugin("io.spine.protodata")
+        plugin("detekt-code-analysis")
     }
 
     val spine = Spine(project)
