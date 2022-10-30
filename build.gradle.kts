@@ -76,18 +76,15 @@ buildscript {
             }
         }
     }
-    dependencies {
-        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLibAlt)
-    }
 }
 
 plugins {
     `java-library`
     idea
     kotlin("jvm")
-    id("com.google.protobuf")
-    id("net.ltgt.errorprone")
-    id("io.spine.protodata") version "0.3.0"
+    id(errorPronePlugin)
+    id(protobufPlugin)
+    id(protoData.pluginId) version protoData.version
 }
 
 spinePublishing {
