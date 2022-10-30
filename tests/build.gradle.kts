@@ -86,8 +86,8 @@ buildscript {
 plugins {
     java
     idea
-    id(io.spine.internal.dependency.Protobuf.GradlePlugin.id)
-    id(io.spine.internal.dependency.ErrorProne.GradlePlugin.id)
+    id("com.google.protobuf")
+    id("net.ltgt.errorprone")
 }
 
 val baseRoot = "$rootDir/.."
@@ -137,8 +137,8 @@ allprojects {
 subprojects {
 
     apply {
-        plugin(ErrorProne.GradlePlugin.id)
-        plugin(Protobuf.GradlePlugin.id)
+        plugin("com.google.protobuf")
+        plugin("net.ltgt.errorprone")
         plugin("io.spine.mc-java")
         plugin("idea")
     }
@@ -165,6 +165,17 @@ subprojects {
         testRuntimeOnly(JUnit.runner)
     }
 
+    with(configurations) {
+        io.spine.internal.gradle.doForceVersions(this)
+        val spine = io.spine.internal.dependency.Spine(project)
+        all {
+            resolutionStrategy {
+                force(
+                    spine.validation.runtime,
+                )
+            }
+        }
+    }
 
     idea.module {
         generatedSourceDirs.addAll(files(
