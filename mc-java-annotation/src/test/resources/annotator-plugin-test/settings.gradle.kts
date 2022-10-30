@@ -29,3 +29,11 @@ rootProject.name = "annotator-plugin-test"
 include(
     "tests"
 )
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        mavenCentral()
+    }
+}
