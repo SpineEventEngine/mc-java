@@ -203,6 +203,7 @@ fun RepositoryHandler.applyGitHubPackages(project: Project, vararg shortReposito
  */
 @Suppress("unused")
 fun RepositoryHandler.applyStandard() {
+
     val spineRepos = listOf(
         Repos.spine,
         Repos.spineSnapshots,
