@@ -36,6 +36,14 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
+    repositories {
+        mavenLocal()
+        with(io.spine.internal.gradle.publish.PublishingRepos) {
+            gitHub("ProtoData")
+            gitHub("tool-base")
+            gitHub("validation")
+        }
+    }
     io.spine.internal.gradle.doApplyStandard(repositories)
 
     val mcJavaVersion: String by extra
@@ -48,7 +56,7 @@ buildscript {
             exclude(group = "com.google.guava")
         }
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
-        classpath("io.spine:protodata:${protoDataVersion}")
+        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLib)
     }
 }
 
@@ -64,11 +72,8 @@ allprojects {
 subprojects {
 
     apply(plugin = "java")
-
-    // NOTE: this file is copied from the root project in the test setup.
-    val commonPath = io.spine.internal.gradle.Scripts.commonPath
-
     apply(from = "$rootDir/test-env.gradle")
+
     val enclosingRootDir: String by extra
     apply {
         plugin("com.google.protobuf")
@@ -76,6 +81,13 @@ subprojects {
         from("${enclosingRootDir}/version.gradle.kts")
     }
 
+    repositories {
+        with(io.spine.internal.gradle.publish.PublishingRepos) {
+            gitHub("ProtoData")
+            gitHub("tool-base")
+            gitHub("validation")
+        }
+    }
     io.spine.internal.gradle.doApplyStandard(repositories)
 
     val spine = io.spine.internal.dependency.Spine(project)

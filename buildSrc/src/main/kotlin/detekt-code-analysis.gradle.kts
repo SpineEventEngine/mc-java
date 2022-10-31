@@ -25,12 +25,45 @@
  */
 
 /**
- * The version of McJava to publish.
+ * This script-plugin sets up Kotlin code analyzing with Detekt.
  *
- * Do not rename this this property as it is also used in the integration tests via its name.
+ * After applying, Detekt is configured to use `${rootDir}/config/quality/detekt-config.yml` file.
+ * Projects can append their own config files to override some parts of the default one or drop
+ * it at all in a favor of their own one.
  *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
+ * An example of appending a custom config file to the default one:
+ *
+ * ```
+ * detekt {
+ *     config.from("config/detekt-custom-config.yml")
+ * }
+ * ```
+ *
+ * To totally substitute it, just overwrite the corresponding property:
+ *
+ * ```
+ * detekt {
+ *     config = files("config/detekt-custom-config.yml")
+ * }
+ * ```
+ *
+ * Also, it's possible to suppress Detekt findings using [baseline](https://detekt.dev/docs/introduction/baseline/)
+ * file instead of suppressions in source code.
+ *
+ * An example of passing a baseline file:
+ *
+ * ```
+ * detekt {
+ *     baseline = file("config/detekt-baseline.yml")
+ * }
+ * ```
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.105")
-val versionToPublish by extra(mcJavaVersion)
+
+plugins {
+    id("io.gitlab.arturbosch.detekt")
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config = files("${rootDir}/config/quality/detekt-config.yml")
+}

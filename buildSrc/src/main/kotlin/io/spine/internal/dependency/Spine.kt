@@ -61,20 +61,20 @@ class Spine(p: ExtensionAware) {
          *
          * @see [ProtoData]
          */
-        const val protoData = "0.2.21"
+        const val protoData = "0.3.0"
 
         /**
          * The default version  of `base` to use.
          * @see [Spine.base]
          */
-        const val base = "2.0.0-SNAPSHOT.118"
+        const val base = "2.0.0-SNAPSHOT.120"
 
         /**
          * The default version of `core-java` to use.
          * @see [Spine.CoreJava.client]
          * @see [Spine.CoreJava.server]
          */
-        const val core = "2.0.0-SNAPSHOT.118"
+        const val core = "2.0.0-SNAPSHOT.119"
 
         /**
          * The version of `model-compiler` to use.
@@ -91,19 +91,19 @@ class Spine(p: ExtensionAware) {
          * The version of `base-types` to use.
          * @see [Spine.baseTypes]
          */
-        const val baseTypes = "2.0.0-SNAPSHOT.110"
+        const val baseTypes = "2.0.0-SNAPSHOT.112"
 
         /**
          * The version of `time` to use.
          * @see [Spine.time]
          */
-        const val time = "2.0.0-SNAPSHOT.109"
+        const val time = "2.0.0-SNAPSHOT.111"
 
         /**
          * The version of `change` to use.
          * @see [Spine.change]
          */
-        const val change = "2.0.0-SNAPSHOT.116"
+        const val change = "2.0.0-SNAPSHOT.117"
 
         /**
          * The version of `tool-base` to use.
@@ -115,7 +115,7 @@ class Spine(p: ExtensionAware) {
          * The version of `validation` to use.
          * @see [Spine.validation]
          */
-        const val validation = "2.0.0-SNAPSHOT.32"
+        const val validation = "2.0.0-SNAPSHOT.40"
     }
 
     companion object {
@@ -206,6 +206,7 @@ class Spine(p: ExtensionAware) {
 
         const val pluginId = "io.spine.protodata"
         const val pluginLib = "${Spine.group}:protodata:$version"
+        const val pluginLibAlt = "$group:gradle-plugin:$version"
     }
 
     /**
