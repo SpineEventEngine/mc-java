@@ -24,11 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.gradle.Repos
 import org.gradle.api.file.SourceDirectorySet
 import java.net.URI
 
 import io.spine.internal.dependency.Grpc
+import io.spine.internal.gradle.applyStandardWithGitHub
 
 buildscript {
 
@@ -36,15 +36,10 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    repositories {
-        mavenLocal()
-        with(io.spine.internal.gradle.publish.PublishingRepos) {
-            gitHub("ProtoData")
-            gitHub("tool-base")
-            gitHub("validation")
-        }
-    }
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    io.spine.internal.gradle.applyWithStandard(this, rootProject,
+        "base", "time", "change", "base-types", "core-java",
+        "tool-base", "ProtoData", "validation",
+    )
 
     val mcJavaVersion: String by extra
     val protoDataVersion = io.spine.internal.dependency.Spine.protoDataVersion
@@ -81,14 +76,9 @@ subprojects {
         from("${enclosingRootDir}/version.gradle.kts")
     }
 
-    repositories {
-        with(io.spine.internal.gradle.publish.PublishingRepos) {
-            gitHub("ProtoData")
-            gitHub("tool-base")
-            gitHub("validation")
-        }
-    }
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    repositories.applyStandardWithGitHub(project,
+        "ProtoData", "tool-base", "validation"
+    )
 
     val spine = io.spine.internal.dependency.Spine(project)
     dependencies {

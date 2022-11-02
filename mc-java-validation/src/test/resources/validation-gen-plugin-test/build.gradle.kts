@@ -24,9 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.gradle.Repos
 import org.gradle.api.file.SourceDirectorySet
 import java.net.URI
+
+import io.spine.internal.gradle.applyStandardWithGitHub
 
 // Common build file for the tests with same configuration
 
@@ -36,12 +37,10 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url = uri(io.spine.internal.gradle.Repos.artifactRegistry) }
-        maven { url = uri(io.spine.internal.gradle.Repos.artifactRegistrySnapshots) }
-    }
+    io.spine.internal.gradle.applyWithStandard(this, rootProject,
+        "base", "time", "change", "base-types", "core-java",
+        "tool-base", "ProtoData", "validation",
+    )
 
     val mcJavaVersion: String by extra
     dependencies {
@@ -70,12 +69,10 @@ apply {
 group = "io.spine.test"
 version = "3.14"
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url = uri(Repos.artifactRegistry) }
-    maven { url = uri(Repos.artifactRegistrySnapshots) }
-}
+repositories.applyStandardWithGitHub(project,
+    "base", "time", "change", "base-types", "core-java",
+    "tool-base", "ProtoData", "validation",
+)
 
 dependencies {
     implementation(io.spine.internal.dependency.Spine(project).base)

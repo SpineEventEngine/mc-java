@@ -42,8 +42,7 @@ import io.spine.internal.dependency.Truth
 import io.spine.internal.gradle.publish.IncrementGuard
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.VersionWriter
-import io.spine.internal.gradle.applyGitHubPackages
-import io.spine.internal.gradle.applyStandard
+import io.spine.internal.gradle.applyStandardWithGitHub
 import io.spine.internal.gradle.checkstyle.CheckStyleConfig
 import io.spine.internal.gradle.excludeProtobufLite
 import io.spine.internal.gradle.forceVersions
@@ -72,7 +71,11 @@ buildscript {
     configurations {
         all {
             resolutionStrategy {
-                force(spine.server)
+                force(
+                    spine.server,
+                    spine.validation.java,
+                    io.spine.internal.dependency.Spine.ProtoData.pluginLib
+                )
             }
         }
     }
@@ -107,172 +110,27 @@ allprojects {
     group = "io.spine.tools"
     version = extra["versionToPublish"]!!
 
-    repositories {
-        gitHub("base")
-        gitHub("tool-base")
-        gitHub("model-compiler")
-        applyGitHubPackages("ProtoData", project)
-        applyStandard()
-    }
+    repositories.applyStandardWithGitHub(project,
+        "base", "tool-base", "model-compiler", "ProtoData", "validation"
+    )
 }
 
 subprojects {
-    apply {
-        plugin("java-library")
-        plugin("kotlin")
-        plugin("net.ltgt.errorprone")
-        plugin("pmd-settings")
-        plugin(Protobuf.GradlePlugin.id)
-        plugin("io.spine.protodata")
-        plugin("maven-publish")
-        plugin("io.spine.protodata")
-        plugin("detekt-code-analysis")
-    }
+    applyPlugins()
+    addDependencies()
+    forceConfigurations()
+    configureJava()
+    configureKotlin()
+    setupTests()
 
-    val spine = Spine(project)
-    val validation = spine.validation
-    dependencies {
-        errorprone(ErrorProne.core)
-
-        protoData(validation.java)
-
-        compileOnlyApi(FindBugs.annotations)
-        compileOnlyApi(CheckerFramework.annotations)
-        ErrorProne.annotations.forEach { compileOnlyApi(it) }
-
-        implementation(Guava.lib)
-
-        testImplementation(Guava.testLib)
-        JUnit.api.forEach { testImplementation(it) }
-        Truth.libs.forEach { testImplementation(it) }
-        testRuntimeOnly(JUnit.runner)
-
-        testImplementation(validation.runtime)
-    }
-
-    configurations {
-        forceVersions()
-        excludeProtobufLite()
-        all {
-            // Exclude in favor of `spine-validation-java-runtime`.
-            exclude("io.spine", "spine-validate")
-            resolutionStrategy {
-                force(
-                    Protobuf.compiler,
-                    spine.base,
-                    spine.time,
-                    spine.server,
-                    spine.testlib,
-                    spine.toolBase,
-                    spine.pluginBase,
-                    // Force the version to avoid the version conflict for
-                    // the `:mc-java:ProtoData` configuration.
-                    spine.validation.runtime,
-                    "io.spine.protodata:protodata-codegen-java:${Spine.protoDataVersion}",
-                    "org.hamcrest:hamcrest-core:2.2",
-                    Jackson.core,
-                    Jackson.moduleKotlin,
-                    Jackson.databind,
-                    Jackson.bom,
-                    Jackson.annotations,
-                    Jackson.dataformatYaml
-                )
-            }
-        }
-    }
-
-    java {
-        tasks.withType<JavaCompile>().configureEach {
-            configureJavac()
-            configureErrorProne()
-        }
-
-        // Enforces the Java version for the output JARs
-        // in case the project is built by JDK 12 or above.
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlin {
-        explicitApi()
-
-        tasks.withType<KotlinCompile>().configureEach {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-            setFreeCompilerArgs()
-        }
-    }
-
-    tasks {
-        registerTestTasks()
-        test {
-            useJUnitPlatform {
-                includeEngines("junit-jupiter")
-            }
-            configureLogging()
-        }
-    }
+    setupCodegen()
 
     val generatedDir = "$projectDir/generated"
     val generatedResources = "$generatedDir/main/resources"
+    prepareProtocConfigVersionsTask(generatedResources)
+    setupSourceSets(generatedResources)
 
-    val prepareProtocConfigVersions by tasks.registering {
-        description = "Prepares the versions.properties file."
-
-        val propertiesFile = file("$generatedResources/versions.properties")
-        outputs.file(propertiesFile)
-
-        val versions = Properties().apply {
-            setProperty("baseVersion", Spine.DefaultVersion.base)
-            setProperty("protobufVersion", Protobuf.version)
-            setProperty("gRPCVersion", Grpc.version)
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        inputs.properties(HashMap(versions) as MutableMap<String, *>)
-
-        doLast {
-            createParentDirs(propertiesFile)
-            propertiesFile.createNewFile()
-            propertiesFile.outputStream().use {
-                versions.store(it,
-                    "Versions of dependencies of the Spine Model Compiler for Java plugin and" +
-                            " the Spine Protoc plugin.")
-            }
-        }
-    }
-
-    tasks.processResources {
-        dependsOn(prepareProtocConfigVersions)
-    }
-
-    sourceSets.main {
-        resources.srcDir(generatedResources)
-    }
-
-    apply<IncrementGuard>()
-    apply<VersionWriter>()
-
-    LicenseReporter.generateReportIn(project)
-    JavadocConfig.applyTo(project)
-    CheckStyleConfig.applyTo(project)
-
-    protobuf { protoc { artifact = Protobuf.compiler } }
-
-    protoData {
-        renderers(
-            "io.spine.validation.java.PrintValidationInsertionPoints",
-            "io.spine.validation.java.JavaValidationRenderer",
-
-            // Suppress warnings in the generated code.
-            "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
-            "io.spine.protodata.codegen.java.suppress.SuppressRenderer"
-        )
-        plugins(
-            "io.spine.validation.ValidationPlugin"
-        )
-    }
-
-    project.configureTaskDependencies()
+    configureTaskDependencies()
 }
 
 JacocoConfig.applyTo(project)
@@ -323,4 +181,182 @@ tasks.register("buildAll") {
 
 val check by tasks.existing {
     dependsOn(integrationTests)
+}
+
+typealias Subproject = Project
+
+fun Subproject.applyPlugins() {
+    apply {
+        plugin("java-library")
+        plugin("kotlin")
+        plugin("net.ltgt.errorprone")
+        plugin("pmd-settings")
+        plugin(Protobuf.GradlePlugin.id)
+        plugin("io.spine.protodata")
+        plugin("maven-publish")
+        plugin("io.spine.protodata")
+        plugin("detekt-code-analysis")
+    }
+
+    apply<IncrementGuard>()
+    apply<VersionWriter>()
+
+    LicenseReporter.generateReportIn(project)
+    JavadocConfig.applyTo(project)
+    CheckStyleConfig.applyTo(project)
+}
+
+fun Subproject.addDependencies(): Spine {
+    val spine = Spine(project)
+    val validation = spine.validation
+    dependencies {
+        errorprone(ErrorProne.core)
+
+        protoData(validation.java)
+
+        compileOnlyApi(FindBugs.annotations)
+        compileOnlyApi(CheckerFramework.annotations)
+        ErrorProne.annotations.forEach { compileOnlyApi(it) }
+
+        implementation(Guava.lib)
+
+        testImplementation(Guava.testLib)
+        JUnit.api.forEach { testImplementation(it) }
+        Truth.libs.forEach { testImplementation(it) }
+        testRuntimeOnly(JUnit.runner)
+
+        testImplementation(validation.runtime)
+    }
+    return spine
+}
+
+fun Subproject.forceConfigurations() {
+    val spine = Spine(project)
+    configurations {
+        forceVersions()
+        excludeProtobufLite()
+        all {
+            // Exclude in favor of `spine-validation-java-runtime`.
+            exclude("io.spine", "spine-validate")
+            resolutionStrategy {
+                force(
+                    Protobuf.compiler,
+                    spine.base,
+                    spine.time,
+                    spine.server,
+                    spine.testlib,
+                    spine.toolBase,
+                    spine.pluginBase,
+
+                    spine.validation.java,
+                    // Force the version to avoid the version conflict for
+                    // the `:mc-java:ProtoData` configuration.
+                    spine.validation.runtime,
+                    "io.spine.protodata:protodata-codegen-java:${Spine.protoDataVersion}",
+
+                    "org.hamcrest:hamcrest-core:2.2",
+                    Jackson.core,
+                    Jackson.moduleKotlin,
+                    Jackson.databind,
+                    Jackson.bom,
+                    Jackson.annotations,
+                    Jackson.dataformatYaml
+                )
+            }
+        }
+    }
+}
+
+fun Subproject.configureJava() {
+    java {
+        tasks.withType<JavaCompile>().configureEach {
+            configureJavac()
+            configureErrorProne()
+        }
+
+        // Enforces the Java version for the output JARs
+        // in case the project is built by JDK 12 or above.
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+fun Subproject.configureKotlin() {
+    kotlin {
+        explicitApi()
+
+        tasks.withType<KotlinCompile>().configureEach {
+            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+            setFreeCompilerArgs()
+        }
+    }
+}
+
+fun Subproject.setupTests() {
+    tasks {
+        registerTestTasks()
+        test {
+            useJUnitPlatform {
+                includeEngines("junit-jupiter")
+            }
+            configureLogging()
+        }
+    }
+}
+
+fun Subproject.prepareProtocConfigVersionsTask(generatedResources: String) {
+    val prepareProtocConfigVersions by tasks.registering {
+        description = "Prepares the versions.properties file."
+
+        val propertiesFile = file("$generatedResources/versions.properties")
+        outputs.file(propertiesFile)
+
+        val versions = Properties().apply {
+            setProperty("baseVersion", Spine.DefaultVersion.base)
+            setProperty("protobufVersion", Protobuf.version)
+            setProperty("gRPCVersion", Grpc.version)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        inputs.properties(HashMap(versions) as MutableMap<String, *>)
+
+        doLast {
+            createParentDirs(propertiesFile)
+            propertiesFile.createNewFile()
+            propertiesFile.outputStream().use {
+                versions.store(it,
+                    "Versions of dependencies of the Spine Model Compiler for Java plugin and" +
+                            " the Spine Protoc plugin.")
+            }
+        }
+    }
+
+    tasks.processResources {
+        dependsOn(prepareProtocConfigVersions)
+    }
+}
+
+fun Subproject.setupCodegen() {
+
+    protobuf { protoc { artifact = Protobuf.compiler } }
+
+    protoData {
+        renderers(
+            "io.spine.validation.java.PrintValidationInsertionPoints",
+            "io.spine.validation.java.JavaValidationRenderer",
+
+            // Suppress warnings in the generated code.
+            "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
+            "io.spine.protodata.codegen.java.suppress.SuppressRenderer"
+        )
+        plugins(
+            "io.spine.validation.ValidationPlugin"
+        )
+    }
+}
+
+fun Project.setupSourceSets(generatedResources: String) {
+    sourceSets.main {
+        resources.srcDir(generatedResources)
+    }
 }
