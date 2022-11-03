@@ -60,7 +60,7 @@ publishing {
     val pVersion = project.version.toString()
 
     publications {
-        create("fat-jar", MavenPublication::class) {
+        create("fatJar", MavenPublication::class) {
             groupId = pGroup
             artifactId = pArtifact
             version = pVersion
@@ -120,6 +120,14 @@ publishing {
             }
         }
     }
+}
+
+/**
+ * Declare dependency explicitly to address the Gradle warning.
+ */
+val publishFatJarPublicationToMavenLocal: Task by tasks.getting {
+    dependsOn(tasks.jar)
+    println("Task `${this.name}` now depends on `${tasks.jar.name}`.")
 }
 
 tasks.publish {
