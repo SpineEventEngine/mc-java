@@ -119,8 +119,10 @@ subprojects {
     applyPlugins()
     addDependencies()
     forceConfigurations()
-    configureJava()
-    configureKotlin()
+
+    val javaVersion = JavaLanguageVersion.of(11)
+    configureJava(javaVersion)
+    configureKotlin(javaVersion)
     setupTests()
 
     setupCodegen()
@@ -211,7 +213,6 @@ fun Subproject.addDependencies(): Spine {
     val validation = spine.validation
     dependencies {
         errorprone(ErrorProne.core)
-
         protoData(validation.java)
 
         compileOnlyApi(FindBugs.annotations)
@@ -267,28 +268,22 @@ fun Subproject.forceConfigurations() {
     }
 }
 
-fun Subproject.configureJava() {
-    java {
-        tasks.withType<JavaCompile>().configureEach {
-            configureJavac()
-            configureErrorProne()
-        }
-
-        // Enforces the Java version for the output JARs
-        // in case the project is built by JDK 12 or above.
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+fun Subproject.configureJava(javaVersion: JavaLanguageVersion) {
+    tasks.withType<JavaCompile>().configureEach {
+        sourceCompatibility = javaVersion.toString()
+        targetCompatibility = javaVersion.toString()
+        configureJavac()
+        configureErrorProne()
     }
 }
 
-fun Subproject.configureKotlin() {
+fun Subproject.configureKotlin(javaVersion: JavaLanguageVersion) {
     kotlin {
         explicitApi()
-
-        tasks.withType<KotlinCompile>().configureEach {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-            setFreeCompilerArgs()
-        }
+    }
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = javaVersion.toString()
+        setFreeCompilerArgs()
     }
 }
 
