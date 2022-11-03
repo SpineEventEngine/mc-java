@@ -66,13 +66,13 @@ internal val gRpcProtocPlugin: Artifact by lazy {
  */
 @get:JvmName("spineJavaAllPlugins")
 internal val spineJavaAllPlugins: Artifact by lazy {
-    Artifact.newBuilder()
-        .useSpineToolsGroup()
-        .setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
-        .setVersion(mcJavaVersion)
-        .setClassifier(ALL_CLASSIFIER)
-        .setExtension(JAR_EXTENSION)
-        .build()
+    artifact {
+        useSpineToolsGroup()
+        setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
+        setVersion(mcJavaVersion)
+        setClassifier(ALL_CLASSIFIER)
+        setExtension(JAR_EXTENSION)
+    }
 }
 
 private const val VALIDATION_GROUP = "io.spine.validation"
@@ -80,12 +80,11 @@ private const val VALIDATION_GROUP = "io.spine.validation"
 private val validationJavaDependency =
     ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java")
 
-private val validationJavaExtensionsDependency =
-    ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-extensions")
+private val validationJavaBundleDependency =
+    ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-bundle")
 
 private val validationJavaRuntimeDependency =
     ThirdPartyDependency(VALIDATION_GROUP, "spine-validation-java-runtime")
-
 
 private val validationVersion: String by lazy {
     versions.versionOf(validationJavaDependency).orElseThrow()
@@ -94,13 +93,13 @@ private val validationVersion: String by lazy {
 /**
  * The Maven artifact containing the `spine-validation-java-extensions` module.
  */
-@get:JvmName("validationJavaExtensions")
-internal val validationJavaExtensions: Artifact by lazy {
-    Artifact.newBuilder()
-        .setName(validationJavaExtensionsDependency.name())
-        .setGroup(validationJavaExtensionsDependency.groupId())
-        .setVersion(validationVersion)
-        .build()
+@Suppress("FunctionOnlyReturningConstant") // make detekt happy about the `getName()`
+@get:JvmName("validationJavaBundle")
+internal val validationJavaBundle: Artifact by lazy {
+    artifact {
+        dependency = validationJavaBundleDependency
+        version = validationVersion
+    }
 }
 
 /**
@@ -108,11 +107,10 @@ internal val validationJavaExtensions: Artifact by lazy {
  */
 @get:JvmName("validationJavaRuntime")
 internal val validationJavaRuntime: Artifact by lazy {
-    Artifact.newBuilder()
-        .setName(validationJavaRuntimeDependency.name())
-        .setGroup(validationJavaRuntimeDependency.groupId())
-        .setVersion(validationVersion)
-        .build()
+    artifact {
+        dependency = validationJavaRuntimeDependency
+        version = validationVersion
+    }
 }
 
 /**
@@ -124,5 +122,30 @@ internal val validationJavaRuntime: Artifact by lazy {
 internal val mcJavaVersion: String by lazy {
     val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
     versions.versionOf(self)
-        .orElseThrow { IllegalStateException("Unable to load versions of ${self}.") }
+        .orElseThrow { error("Unable to load versions of ${self}.") }
 }
+
+private fun artifact(action: Artifact.Builder.() -> Unit): Artifact {
+    val builder = Artifact.newBuilder()
+    action(builder)
+    return builder.build()
+}
+
+/**
+ * A hack around absence of setters in [Artifact.Builder].
+ */
+private var Artifact.Builder.dependency: ThirdPartyDependency?
+    get() = null
+    set(dependency) {
+        setName(dependency!!.name())
+        setGroup(dependency.groupId())
+    }
+
+/**
+ * A hack around absence of setters in [Artifact.Builder].
+ */
+private var Artifact.Builder.version: String
+    get() = ""
+    set(value) {
+        setVersion(value)
+    }
