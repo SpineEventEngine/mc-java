@@ -29,12 +29,14 @@ package io.spine.tools.mc.java.gradle.plugins;
 import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
-import io.spine.tools.mc.java.gradle.Projects;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
-import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaExtensions;
+import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
+import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
+import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
+import static io.spine.tools.mc.java.gradle.Projects.getGeneratedRejectionsDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
@@ -113,18 +115,18 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
                 "io.spine.validation.ValidationPlugin"
         );
         ext.setSubDirs(ImmutableList.of(
-                Projects.getGeneratedJavaDirName().value(),
-                Projects.getGeneratedRejectionsDirName().value(),
-                Projects.getGeneratedGrpcDirName().value()
+                getGeneratedJavaDirName().value(),
+                getGeneratedRejectionsDirName().value(),
+                getGeneratedGrpcDirName().value()
         ));
 
         var dependencies = target.getDependencies();
-        dependencies.add(PROTODATA_CONFIGURATION, validationJavaExtensions().notation());
+        dependencies.add(PROTODATA_CONFIGURATION, validationJavaBundle().notation());
         dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
     }
 
-    private static void linkConfigFile(Project target, LaunchProtoData task,
-                                       GenerateProtoDataConfig t) {
+    private static
+    void linkConfigFile(Project target, LaunchProtoData task, GenerateProtoDataConfig t) {
         var targetFile = t.getTargetFile();
         var fileName = t.getName() + ".bin";
         var defaultFile = target.getLayout()

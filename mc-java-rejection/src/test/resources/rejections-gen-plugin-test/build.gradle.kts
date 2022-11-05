@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.gradle.applyStandardWithGitHub
 
 buildscript {
 
@@ -31,7 +32,10 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    io.spine.internal.gradle.applyWithStandard(this, rootProject,
+        "base", "time", "change", "base-types", "core-java",
+        "tool-base", "ProtoData", "validation",
+    )
 
     val mcJavaVersion: String by extra
     dependencies {
@@ -58,9 +62,6 @@ subprojects {
 
     apply(plugin = "java")
 
-    // NOTE: this file is copied from the root project in the test setup.
-    val commonPath = io.spine.internal.gradle.Scripts.commonPath
-
     apply(from = "$rootDir/test-env.gradle")
     val enclosingRootDir: String by extra
     apply {
@@ -69,7 +70,10 @@ subprojects {
         from("${enclosingRootDir}/version.gradle.kts")
     }
 
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    repositories.applyStandardWithGitHub(project,
+        "base", "time", "change", "base-types", "core-java",
+        "tool-base", "ProtoData", "validation",
+    )
 
     dependencies {
         implementation(io.spine.internal.dependency.Spine(project).base)
