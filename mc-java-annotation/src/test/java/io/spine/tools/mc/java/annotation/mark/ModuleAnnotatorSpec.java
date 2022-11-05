@@ -40,7 +40,7 @@ import static io.spine.tools.mc.java.annotation.mark.ModuleAnnotator.translate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("`ModuleAnnotator` should")
-class ModuleAnnotatorTest {
+class ModuleAnnotatorSpec {
 
     private static final ClassName ANNOTATION = ClassName.of(Internal.class);
     private static final ApiOption OPTION = ApiOption.internal();

@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("`MethodPattern` should")
-class MethodPatternTest {
+class MethodPatternSpec {
 
     @Test
     @DisplayName("not be created with null parameters")
