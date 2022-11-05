@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.annotation.mark;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.spine.code.java.ClassName;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.regex.qual.Regex;
 
 import java.util.HashSet;
@@ -79,6 +80,7 @@ public final class ModuleAnnotator {
     /**
      * A builder for the {@code ModuleAnnotator} instances.
      */
+    @SuppressWarnings("unused") // Getters are provided for Kotlin property syntax compatibility.
     public static final class Builder {
 
         private final Set<Job> jobs;
@@ -97,6 +99,10 @@ public final class ModuleAnnotator {
         public Builder setAnnotatorFactory(AnnotatorFactory annotatorFactory) {
             this.annotatorFactory = checkNotNull(annotatorFactory);
             return this;
+        }
+
+        public @Nullable AnnotatorFactory getAnnotatorFactory() {
+            return annotatorFactory;
         }
 
         /**
@@ -124,9 +130,14 @@ public final class ModuleAnnotator {
          *         class name patterns
          * @see #setInternalAnnotation
          */
-        public Builder setInternalPatterns(ImmutableSet<@Regex String> patterns) {
-            this.internalPatterns = checkNotNull(patterns);
+        public Builder setInternalPatterns(Set<@Regex String> patterns) {
+            checkNotNull(patterns);
+            this.internalPatterns = ImmutableSet.copyOf(patterns);
             return this;
+        }
+
+        public @Nullable Set<@Regex String> getInternalPatterns() {
+            return internalPatterns;
         }
 
         /**
@@ -136,9 +147,14 @@ public final class ModuleAnnotator {
          *         the method names
          * @see #setInternalAnnotation
          */
-        public Builder setInternalMethodNames(ImmutableSet<String> methodNames) {
-            this.internalMethodNames = checkNotNull(methodNames);
+        public Builder setInternalMethodNames(Set<String> methodNames) {
+            checkNotNull(methodNames);
+            this.internalMethodNames = ImmutableSet.copyOf(methodNames);
             return this;
+        }
+
+        public @Nullable Set<String> getInternalMethodNames() {
+            return internalMethodNames;
         }
 
         /**
@@ -152,6 +168,10 @@ public final class ModuleAnnotator {
         public Builder setInternalAnnotation(ClassName internalAnnotation) {
             this.internalAnnotation = checkNotNull(internalAnnotation);
             return this;
+        }
+
+        public @Nullable ClassName getInternalAnnotation() {
+            return internalAnnotation;
         }
 
         /**

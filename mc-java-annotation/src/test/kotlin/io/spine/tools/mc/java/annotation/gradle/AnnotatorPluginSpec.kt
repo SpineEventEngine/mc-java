@@ -4,12 +4,10 @@ import com.google.common.truth.Truth
 import com.google.protobuf.Descriptors
 import io.spine.annotation.Internal
 import io.spine.annotation.SPI
-import io.spine.code.proto.FileDescriptors
 import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
 import io.spine.tools.code.SourceSetName
-import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.task.BaseTaskName.build
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
@@ -170,7 +168,11 @@ private fun checkServiceAnnotations(
     for (serviceDescriptor in services) {
         val serviceFile =
             SourceFile.forService(serviceDescriptor.toProto(), fileDescriptor.toProto())
-        val check = MainDefinitionAnnotationCheck(expectedAnnotation, shouldBeAnnotated)
+        val check =
+            MainDefinitionAnnotationCheck(
+                expectedAnnotation,
+                shouldBeAnnotated
+            )
         checkGrpcService(serviceFile, check)
     }
 }
@@ -180,7 +182,11 @@ private fun checkFieldAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: B
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val sourcePath =
         SourceFile.forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path()
-    val check = NestedTypeFieldsAnnotationCheck(messageDescriptor, shouldBeAnnotated)
+    val check =
+        NestedTypeFieldsAnnotationCheck(
+            messageDescriptor,
+            shouldBeAnnotated
+        )
     check(sourcePath, check)
 }
 
@@ -193,7 +199,12 @@ private fun checkFieldAnnotationsMultiple(
     val experimentalField = messageDescriptor.fields[0]
     val sourcePath =
         SourceFile.forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path()
-    check(sourcePath, FieldAnnotationCheck(experimentalField, shouldBeAnnotated))
+    check(sourcePath,
+        FieldAnnotationCheck(
+            experimentalField,
+            shouldBeAnnotated
+        )
+    )
 }
 
 private fun checkMainDefinitionAnnotations(
@@ -205,7 +216,10 @@ private fun checkMainDefinitionAnnotations(
         val messageProto = messageDescriptor.toProto()
         val fileProto = fileDescriptor.toProto()
         val messagePath = SourceFile.forMessage(messageProto, fileProto).path()
-        val annotationCheck: SourceCheck = MainDefinitionAnnotationCheck(shouldBeAnnotated)
+        val annotationCheck: SourceCheck =
+            MainDefinitionAnnotationCheck(
+                shouldBeAnnotated
+            )
         check(messagePath, annotationCheck)
     }
 }
@@ -216,7 +230,11 @@ private fun checkNestedTypesAnnotations(
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
-    check(sourcePath, NestedTypesAnnotationCheck(shouldBeAnnotated))
+    check(sourcePath,
+        NestedTypesAnnotationCheck(
+            shouldBeAnnotated
+        )
+    )
 }
 
 private fun check(sourcePath: Path, check: SourceCheck) {

@@ -23,80 +23,82 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.annotation.mark
 
-package io.spine.tools.mc.java.annotation.mark;
+import com.google.common.collect.ImmutableSet
+import com.google.common.truth.Truth.assertThat
+import io.spine.annotation.Internal
+import io.spine.code.java.ClassName
+import io.spine.tools.mc.jav.annotation.mark.moduleAnnotator
+import io.spine.tools.mc.java.annotation.given.FakeAnnotator
+import io.spine.tools.mc.java.annotation.mark.ModuleAnnotatorSpec.Companion.ANNOTATION
+import org.checkerframework.checker.regex.qual.Regex
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
-import com.google.common.collect.ImmutableSet;
-import io.spine.annotation.Internal;
-import io.spine.code.java.ClassName;
-import io.spine.tools.mc.java.annotation.given.FakeAnnotator;
-import org.checkerframework.checker.regex.qual.Regex;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+@DisplayName("`ModuleAnnotator` should annotate by")
+internal class ModuleAnnotatorSpec {
 
-import static io.spine.tools.mc.java.annotation.mark.ClassNamePattern.compile;
-import static io.spine.tools.mc.java.annotation.mark.MethodPattern.exactly;
-import static io.spine.tools.mc.java.annotation.mark.ModuleAnnotator.translate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@DisplayName("`ModuleAnnotator` should")
-class ModuleAnnotatorSpec {
-
-    private static final ClassName ANNOTATION = ClassName.of(Internal.class);
-    private static final ApiOption OPTION = ApiOption.internal();
-
-    @Test
-    @DisplayName("annotate by Protobuf option")
-    void annotateByOption() {
-        checkAnnotateByOption(OPTION);
+    companion object {
+        internal val ANNOTATION = ClassName.of(Internal::class.java)
+        internal val OPTION = ApiOption.internal()
     }
 
     @Test
-    @DisplayName("annotate by Protobuf option which does not support fields")
-    void annotateByNonFieldOption() {
-        checkAnnotateByOption(ApiOption.spi());
+    fun `Protobuf option`() {
+        checkAnnotateByOption(OPTION)
     }
 
     @Test
-    @DisplayName("annotate by class name pattern")
-    void annotateByClassPattern() {
-        @Regex String classNamePattern = ".+OrBuilder";
-        var factory = new FakeAnnotator.Factory();
-        var annotator = ModuleAnnotator.newBuilder()
-                .setInternalPatterns(ImmutableSet.of(classNamePattern))
-                .setAnnotatorFactory(factory)
-                .setInternalAnnotation(ANNOTATION)
-                .build();
-        annotator.annotate();
-        assertEquals(ANNOTATION, factory.getAnnotationName());
-        assertEquals(compile(classNamePattern), factory.getClassNamePattern());
+    fun `Protobuf option which does not support fields`() {
+        checkAnnotateByOption(ApiOption.spi())
     }
 
     @Test
-    @DisplayName("annotate by method name pattern")
-    void annotateByMethodPattern() {
-        var methodName = "setInternalValue";
-        var factory = new FakeAnnotator.Factory();
-        var annotator = ModuleAnnotator.newBuilder()
-                .setInternalMethodNames(ImmutableSet.of(methodName))
-                .setAnnotatorFactory(factory)
-                .setInternalAnnotation(ANNOTATION)
-                .build();
-        annotator.annotate();
-        assertEquals(ANNOTATION, factory.getAnnotationName());
-        assertEquals(ImmutableSet.of(exactly(methodName)), factory.getMethodPatterns());
+    fun `class name pattern`() {
+        val classNamePattern: @Regex String = ".+OrBuilder"
+        val factory = FakeAnnotator.Factory()
+        val annotator = moduleAnnotator {
+            internalPatterns = setOf<@Regex String?>(classNamePattern)
+            annotatorFactory = factory
+            internalAnnotation = ANNOTATION
+        }
+
+        annotator.annotate()
+
+        assertThat(factory.annotationName).isEqualTo(ANNOTATION)
+        assertThat(factory.classNamePattern).isEqualTo(ClassNamePattern.compile(classNamePattern))
+   }
+
+    @Test
+    fun `method name pattern`() {
+        val methodName = "setInternalValue"
+        val factory = FakeAnnotator.Factory()
+        val annotator = moduleAnnotator {
+            internalMethodNames = setOf(methodName)
+            annotatorFactory = factory
+            internalAnnotation = ANNOTATION
+        }
+
+        annotator.annotate()
+
+        assertThat(factory.annotationName).isEqualTo(ANNOTATION)
+        assertThat(factory.methodPatterns).containsExactly(MethodPattern.exactly(methodName))
+    }
+}
+
+private fun checkAnnotateByOption(option: ApiOption) {
+    val factory = FakeAnnotator.Factory()
+    val optionJob = ModuleAnnotator.translate(option).`as`(ANNOTATION)
+    val annotator = moduleAnnotator{
+        add(optionJob)
+        annotatorFactory = factory
+        internalAnnotation = ANNOTATION
     }
 
-    private static void checkAnnotateByOption(ApiOption option) {
-        var factory = new FakeAnnotator.Factory();
-        var optionJob = translate(option).as(ANNOTATION);
-        var annotator = ModuleAnnotator.newBuilder()
-                .add(optionJob)
-                .setAnnotatorFactory(factory)
-                .setInternalAnnotation(ANNOTATION)
-                .build();
-        annotator.annotate();
-        assertEquals(ANNOTATION, factory.getAnnotationName());
-        assertEquals(option, factory.getOption());
-    }
+    annotator.annotate()
+
+    assertThat(factory.annotationName).isEqualTo(ANNOTATION)
+    assertThat(factory.option).isEqualTo(option)
 }

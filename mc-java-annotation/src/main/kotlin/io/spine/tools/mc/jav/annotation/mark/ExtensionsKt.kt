@@ -24,41 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.jav.annotation.mark
 
-plugins {
-    `java-test-fixtures`
-}
-
-dependencies {
-    val group = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = group)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    implementation(project(":mc-java-base"))
-    val spine = Spine(project)
-
-    testFixturesImplementation(spine.toolBase)
-    testFixturesImplementation(spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    testImplementation(spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
+import io.spine.tools.mc.java.annotation.mark.ModuleAnnotator
 
 /**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ * Provides DSL for creating and customising [ModuleAnnotator].
  */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
+public fun moduleAnnotator(block: ModuleAnnotator.Builder.() -> Unit): ModuleAnnotator {
+    val builder = ModuleAnnotator.newBuilder()
+    builder.block()
+    return builder.build()
 }
