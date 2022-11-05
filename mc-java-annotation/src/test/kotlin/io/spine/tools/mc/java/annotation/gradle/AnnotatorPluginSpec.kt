@@ -1,6 +1,6 @@
 package io.spine.tools.mc.java.annotation.gradle
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.google.protobuf.Descriptors
 import io.spine.annotation.Internal
 import io.spine.annotation.SPI
@@ -149,7 +149,7 @@ internal class AnnotatorPluginSpec {
             .copyBuildSrc()
             .create()
         val result = project.executeTask(build)
-        Truth.assertThat(result[build]).isEqualTo(TaskOutcome.SUCCESS)
+        assertThat(result[build]).isEqualTo(TaskOutcome.SUCCESS)
     }
 }
 
