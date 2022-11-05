@@ -98,9 +98,6 @@ object BuildSettings {
 
 spinePublishing {
     modules = subprojects.map { it.name }.toSet()
-    modulesWithCustomPublishing = setOf(
-        "mc-java-plugin-bundle"
-    )
     destinations = PublishingRepos.run {
         setOf(
             cloudRepo,
