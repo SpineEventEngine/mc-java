@@ -91,13 +91,13 @@ class Spine(p: ExtensionAware) {
          * The version of `base-types` to use.
          * @see [Spine.baseTypes]
          */
-        const val baseTypes = "2.0.0-SNAPSHOT.112"
+        const val baseTypes = "2.0.0-SNAPSHOT.113"
 
         /**
          * The version of `time` to use.
          * @see [Spine.time]
          */
-        const val time = "2.0.0-SNAPSHOT.111"
+        const val time = "2.0.0-SNAPSHOT.120"
 
         /**
          * The version of `change` to use.
@@ -116,7 +116,7 @@ class Spine(p: ExtensionAware) {
          * The version of `tool-base` to use.
          * @see [Spine.toolBase]
          */
-        const val toolBase = "2.0.0-SNAPSHOT.111"
+        const val toolBase = "2.0.0-SNAPSHOT.120"
 
         /**
          * The version of `validation` to use.
