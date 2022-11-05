@@ -1,13 +1,13 @@
 package io.spine.tools.mc.java.annotation.gradle
 
 import com.google.common.truth.Truth.assertThat
-import com.google.protobuf.Descriptors
+import com.google.protobuf.Descriptors.FileDescriptor
 import io.spine.annotation.Internal
 import io.spine.annotation.SPI
 import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
-import io.spine.tools.code.SourceSetName
+import io.spine.tools.code.SourceSetName.Companion.main
 import io.spine.tools.gradle.task.BaseTaskName.build
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
@@ -19,12 +19,22 @@ import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.SourceCheck
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_SERVICE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPluginSpec.Companion.moduleDir
 import io.spine.tools.mc.java.gradle.McJavaTaskName
 import java.io.File
 import java.nio.file.Path
 import org.gradle.api.tasks.SourceSet
-import org.gradle.testkit.runner.TaskOutcome
+import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
 import org.jboss.forge.roaster.model.source.JavaClassSource
@@ -59,42 +69,42 @@ internal class AnnotatorPluginSpec {
 
         @Test
         fun `if file option is true`() {
-            checkNestedTypesAnnotations(GivenProtoFile.INTERNAL_ALL, true)
+            checkNestedTypesAnnotations(INTERNAL_ALL, true)
         }
 
         @Test
         fun `service if file option if true`() {
-            checkServiceAnnotations(GivenProtoFile.INTERNAL_ALL_SERVICE, true)
+            checkServiceAnnotations(INTERNAL_ALL_SERVICE, true)
         }
 
         @Test
         fun `multiple files if file option is true`() {
-            checkMainDefinitionAnnotations(GivenProtoFile.INTERNAL_ALL_MULTIPLE, true)
+            checkMainDefinitionAnnotations(INTERNAL_ALL_MULTIPLE, true)
         }
 
         @Test
         fun `if message option is true`() {
-            checkNestedTypesAnnotations(GivenProtoFile.INTERNAL_MESSAGE, true)
+            checkNestedTypesAnnotations(INTERNAL_MESSAGE, true)
         }
 
         @Test
         fun `multiple files if message option is true`() {
-            checkMainDefinitionAnnotations(GivenProtoFile.INTERNAL_MESSAGE_MULTIPLE, true)
+            checkMainDefinitionAnnotations(INTERNAL_MESSAGE_MULTIPLE, true)
         }
 
         @Test
         fun `accessors if field option is true`() {
-            checkFieldAnnotations(GivenProtoFile.INTERNAL_FIELD, true)
+            checkFieldAnnotations(INTERNAL_FIELD, true)
         }
 
         @Test
         fun `accessors in multiple files if field option is true`() {
-            checkFieldAnnotationsMultiple(GivenProtoFile.INTERNAL_FIELD_MULTIPLE, true)
+            checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
         }
 
         @Test
         fun `GRPC services if service option is true`() {
-            checkServiceAnnotations(GivenProtoFile.SPI_SERVICE.fileName(), SPI::class.java, true)
+            checkServiceAnnotations(SPI_SERVICE.fileName(), SPI::class.java, true)
         }
     }
 
@@ -103,42 +113,42 @@ internal class AnnotatorPluginSpec {
 
         @Test
         fun `if file option if false`() {
-            checkNestedTypesAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
         }
 
         @Test
         fun `service if file option is false`() {
-            checkNestedTypesAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
         }
 
         @Test
         fun `multiple files if file option is false`() {
-            checkMainDefinitionAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
         }
 
         @Test
         fun `if message option is false`() {
-            checkNestedTypesAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
         }
 
         @Test
         fun `multiple files if message option is false`() {
-            checkMainDefinitionAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
         }
 
         @Test
         fun `accessors if field option is false`() {
-            checkFieldAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, false)
+            checkFieldAnnotations(NO_INTERNAL_OPTIONS, false)
         }
 
         @Test
         fun `accessors in multiple files if field option is false`() {
-            checkFieldAnnotationsMultiple(GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, false)
         }
 
         @Test
         fun `GRPC services if service option is false`() {
-            checkServiceAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, false)
+            checkServiceAnnotations(NO_INTERNAL_OPTIONS, false)
         }
     }
 
@@ -149,10 +159,9 @@ internal class AnnotatorPluginSpec {
             .copyBuildSrc()
             .create()
         val result = project.executeTask(build)
-        assertThat(result[build]).isEqualTo(TaskOutcome.SUCCESS)
+        assertThat(result[build]).isEqualTo(SUCCESS)
     }
 }
-
 
 private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) {
     checkServiceAnnotations(testFile.fileName(), Internal::class.java, shouldBeAnnotated)
@@ -166,28 +175,18 @@ private fun checkServiceAnnotations(
     val fileDescriptor = descriptorOf(testFile)
     val services = fileDescriptor.services
     for (serviceDescriptor in services) {
-        val serviceFile =
-            SourceFile.forService(serviceDescriptor.toProto(), fileDescriptor.toProto())
-        val check =
-            MainDefinitionAnnotationCheck(
-                expectedAnnotation,
-                shouldBeAnnotated
-            )
-        checkGrpcService(serviceFile, check)
+        val serviceFile = SourceFile.forService(serviceDescriptor, fileDescriptor)
+        val check = MainDefinitionAnnotationCheck(expectedAnnotation, shouldBeAnnotated)
+        check.verifyService(serviceFile)
     }
 }
 
 private fun checkFieldAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val messageDescriptor = fileDescriptor.messageTypes[0]
-    val sourcePath =
-        SourceFile.forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path()
-    val check =
-        NestedTypeFieldsAnnotationCheck(
-            messageDescriptor,
-            shouldBeAnnotated
-        )
-    check(sourcePath, check)
+    val sourcePath = SourceFile.forMessage(messageDescriptor, fileDescriptor).path()
+
+    NestedTypeFieldsAnnotationCheck(messageDescriptor, shouldBeAnnotated).verify(sourcePath)
 }
 
 private fun checkFieldAnnotationsMultiple(
@@ -197,14 +196,9 @@ private fun checkFieldAnnotationsMultiple(
     val fileDescriptor = descriptorOf(testFile.fileName())
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val experimentalField = messageDescriptor.fields[0]
-    val sourcePath =
-        SourceFile.forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path()
-    check(sourcePath,
-        FieldAnnotationCheck(
-            experimentalField,
-            shouldBeAnnotated
-        )
-    )
+    val sourcePath = SourceFile.forMessage(messageDescriptor, fileDescriptor).path()
+
+    FieldAnnotationCheck(experimentalField, shouldBeAnnotated).verify(sourcePath)
 }
 
 private fun checkMainDefinitionAnnotations(
@@ -216,11 +210,8 @@ private fun checkMainDefinitionAnnotations(
         val messageProto = messageDescriptor.toProto()
         val fileProto = fileDescriptor.toProto()
         val messagePath = SourceFile.forMessage(messageProto, fileProto).path()
-        val annotationCheck: SourceCheck =
-            MainDefinitionAnnotationCheck(
-                shouldBeAnnotated
-            )
-        check(messagePath, annotationCheck)
+
+        MainDefinitionAnnotationCheck(shouldBeAnnotated).verify(messagePath)
     }
 }
 
@@ -230,46 +221,41 @@ private fun checkNestedTypesAnnotations(
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
-    check(sourcePath,
-        NestedTypesAnnotationCheck(
-            shouldBeAnnotated
-        )
-    )
+
+    NestedTypesAnnotationCheck(shouldBeAnnotated).verify(sourcePath)
 }
 
-private fun check(sourcePath: Path, check: SourceCheck) {
+@Suppress("UNCHECKED_CAST")
+private fun parse(file: Path): AbstractJavaSource<JavaClassSource> {
+    val javaSource = Roaster.parse(AbstractJavaSource::class.java, file.toFile())
+    return javaSource as AbstractJavaSource<JavaClassSource>
+}
+
+private fun SourceCheck.verify(sourcePath: Path) {
     val filePath = DefaultJavaPaths.at(moduleDir)
         .generatedProto()
-        .java(SourceSetName.main)
+        .java(main)
         .path()
         .resolve(sourcePath)
-    val javaSource = Roaster.parse(
-        AbstractJavaSource::class.java, filePath.toFile()
-    )
-    @Suppress("UNCHECKED_CAST")
-    check.accept(javaSource as AbstractJavaSource<JavaClassSource>)
+    val javaSource = parse(filePath)
+    accept(javaSource)
 }
 
-private fun checkGrpcService(serviceFile: SourceFile, check: SourceCheck) {
+private fun SourceCheck.verifyService(serviceFile: SourceFile) {
     val filePath = DefaultJavaPaths.at(moduleDir)
         .generatedProto()
-        .grpc(SourceSetName.main)
+        .grpc(main)
         .path()
         .resolve(serviceFile.path())
-    val javaSource = Roaster.parse(
-        AbstractJavaSource::class.java, filePath.toFile()
-    )
-    @Suppress("UNCHECKED_CAST")
-    check.accept(javaSource as AbstractJavaSource<JavaClassSource>)
+    val javaSource = parse(filePath)
+    accept(javaSource)
 }
 
-private fun descriptorOf(testFile: FileName): Descriptors.FileDescriptor {
+private fun descriptorOf(testFile: FileName): FileDescriptor {
     val mainDescriptor = mainDescriptorPath()
     val fileSet = FileSet.parse(mainDescriptor.toFile())
     val file = fileSet.tryFind(testFile)
-    check(file.isPresent) {
-        "Unable to get file descriptor for `$testFile`."
-    }
+    check(file.isPresent) { "Unable to get file descriptor for `$testFile`." }
     return file.get()
 }
 
@@ -277,10 +263,9 @@ private fun descriptorOf(testFile: FileName): Descriptors.FileDescriptor {
  * Compose the path to the main descriptor set file using the project Maven coordinates
  * as defined in the test project under `resources/annotator-plugin-test`.
  */
-private fun mainDescriptorPath(): Path {
-    return DefaultJavaPaths.at(moduleDir)
+private fun mainDescriptorPath(): Path =
+    DefaultJavaPaths.at(moduleDir)
         .buildRoot()
         .descriptors()
         .forSourceSet(SourceSet.MAIN_SOURCE_SET_NAME)
         .resolve("io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION")
-}
