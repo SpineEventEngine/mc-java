@@ -34,12 +34,11 @@ import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
-import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.JUnit
+import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Truth
-import io.spine.internal.gradle.publish.IncrementGuard
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.VersionWriter
 import io.spine.internal.gradle.applyStandardWithGitHub
@@ -50,9 +49,9 @@ import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.javadoc.JavadocConfig
 import io.spine.internal.gradle.kotlin.setFreeCompilerArgs
-import io.spine.internal.gradle.publish.SpinePublishing
+import io.spine.internal.gradle.publish.IncrementGuard
 import io.spine.internal.gradle.publish.PublishingRepos
-import io.spine.internal.gradle.publish.PublishingRepos.gitHub
+import io.spine.internal.gradle.publish.SpinePublishing
 import io.spine.internal.gradle.publish.spinePublishing
 import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
@@ -92,6 +91,11 @@ plugins {
 
 }
 
+object BuildSettings {
+    const val JAVA_VERSION = 11
+    const val TIMEOUT_MINUTES = 20L
+}
+
 spinePublishing {
     modules = subprojects.map { it.name }.toSet()
     modulesWithCustomPublishing = setOf(
@@ -127,7 +131,7 @@ subprojects {
     addDependencies()
     forceConfigurations()
 
-    val javaVersion = JavaLanguageVersion.of(11)
+    val javaVersion = JavaLanguageVersion.of(BuildSettings.JAVA_VERSION)
     configureJava(javaVersion)
     configureKotlin(javaVersion)
     setupTests()
@@ -179,7 +183,7 @@ val integrationTests by tasks.registering(RunBuild::class) {
     directory = "$rootDir/tests"
 
     /** A timeout for the case of stalled child processes under Windows. */
-    timeout.set(Duration.ofMinutes(20))
+    timeout.set(Duration.ofMinutes(BuildSettings.TIMEOUT_MINUTES))
     dependsOn(testAll)
     dependsOn(localPublish)
 }
@@ -357,7 +361,7 @@ fun Subproject.setupCodegen() {
     }
 }
 
-fun Project.setupSourceSets(generatedResources: String) {
+fun Subproject.setupSourceSets(generatedResources: String) {
     sourceSets.main {
         resources.srcDir(generatedResources)
     }
