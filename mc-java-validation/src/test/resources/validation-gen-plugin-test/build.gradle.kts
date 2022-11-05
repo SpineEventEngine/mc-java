@@ -58,8 +58,6 @@ plugins {
     java
 }
 
-// NOTE: this file is copied from the root project in the test setup.
-val commonPath = io.spine.internal.gradle.Scripts.commonPath
 apply {
     plugin("com.google.protobuf")
     plugin("io.spine.mc-java")

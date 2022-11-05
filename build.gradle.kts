@@ -85,18 +85,25 @@ plugins {
     `java-library`
     idea
     kotlin("jvm")
-    id(errorPronePlugin)
-    id(protobufPlugin)
+    errorprone
+    protobuf
+    `gradle-doctor`
     id(protoData.pluginId) version protoData.version
+
 }
 
 spinePublishing {
     modules = subprojects.map { it.name }.toSet()
-    destinations = setOf(
-        PublishingRepos.cloudRepo,
-        PublishingRepos.cloudArtifactRegistry,
-        gitHub("mc-java"),
+    modulesWithCustomPublishing = setOf(
+        "mc-java-plugin-bundle"
     )
+    destinations = PublishingRepos.run {
+        setOf(
+            cloudRepo,
+            cloudArtifactRegistry,
+            gitHub("mc-java"),
+        )
+    }
 }
 
 allprojects {

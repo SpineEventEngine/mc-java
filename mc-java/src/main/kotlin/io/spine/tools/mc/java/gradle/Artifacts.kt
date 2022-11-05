@@ -33,10 +33,13 @@ import io.spine.tools.gradle.Artifact.SPINE_TOOLS_GROUP
 import io.spine.tools.gradle.Dependency
 import io.spine.tools.gradle.DependencyVersions
 import io.spine.tools.gradle.ThirdPartyDependency
+import io.spine.tools.gradle.artifact
 
 /**
  * This file defines utilities for generating instances of [Artifact].
  */
+@Suppress("unused")
+private const val ABOUT = ""
 
 private const val JAR_EXTENSION = "jar"
 private const val GRPC_GROUP = "io.grpc"
@@ -124,28 +127,3 @@ internal val mcJavaVersion: String by lazy {
     versions.versionOf(self)
         .orElseThrow { error("Unable to load versions of ${self}.") }
 }
-
-private fun artifact(action: Artifact.Builder.() -> Unit): Artifact {
-    val builder = Artifact.newBuilder()
-    action(builder)
-    return builder.build()
-}
-
-/**
- * A hack around absence of setters in [Artifact.Builder].
- */
-private var Artifact.Builder.dependency: ThirdPartyDependency?
-    get() = null
-    set(dependency) {
-        setName(dependency!!.name())
-        setGroup(dependency.groupId())
-    }
-
-/**
- * A hack around absence of setters in [Artifact.Builder].
- */
-private var Artifact.Builder.version: String
-    get() = ""
-    set(value) {
-        setVersion(value)
-    }

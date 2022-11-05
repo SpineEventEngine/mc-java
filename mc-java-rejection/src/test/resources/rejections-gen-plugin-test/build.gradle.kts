@@ -62,9 +62,6 @@ subprojects {
 
     apply(plugin = "java")
 
-    // NOTE: this file is copied from the root project in the test setup.
-    val commonPath = io.spine.internal.gradle.Scripts.commonPath
-
     apply(from = "$rootDir/test-env.gradle")
     val enclosingRootDir: String by extra
     apply {
