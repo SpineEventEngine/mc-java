@@ -23,89 +23,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.rejection.gradle
 
-package io.spine.tools.mc.java.rejection.gradle;
+import io.spine.code.java.PackageName
+import io.spine.code.proto.FieldName
+import io.spine.tools.code.SourceSetName.Companion.main
+import io.spine.tools.java.fs.DefaultJavaPaths
+import io.spine.tools.java.fs.FileName
+import io.spine.tools.java.fs.toDirectory
+import java.nio.file.Path
 
-import io.spine.code.java.PackageName;
-import io.spine.code.proto.FieldName;
-import io.spine.tools.java.fs.DefaultJavaPaths;
-import io.spine.tools.java.fs.FileName;
-import io.spine.tools.java.fs.JavaFiles;
+internal object TestEnv {
 
-import java.nio.file.Path;
-import java.util.Arrays;
+    private const val CLASS_COMMENT = "The rejection definition to test Javadoc generation."
+    private const val REJECTION_NAME = "Rejection"
+    private const val FIRST_FIELD_COMMENT = "The rejection ID."
+    private val FIRST_FIELD = FieldName.of("id")
+    private const val SECOND_FIELD_COMMENT = "The rejection message."
+    private val SECOND_FIELD = FieldName.of("rejection_message")
+    private val JAVA_PACKAGE = PackageName.of("io.spine.sample.rejections")
+    private val REJECTION_FILE_NAME = FileName.forType(REJECTION_NAME)
 
-import static io.spine.tools.code.SourceSetName.main;
-import static java.lang.String.format;
-
-final class TestEnv {
-
-    private static final String CLASS_COMMENT =
-            "The rejection definition to test Javadoc generation.";
-    private static final String REJECTION_NAME = "Rejection";
-    private static final String FIRST_FIELD_COMMENT = "The rejection ID.";
-    private static final FieldName FIRST_FIELD = FieldName.of("id");
-    private static final String SECOND_FIELD_COMMENT = "The rejection message.";
-    private static final FieldName SECOND_FIELD = FieldName.of("rejection_message");
-
-    private static final PackageName JAVA_PACKAGE = PackageName.of("io.spine.sample.rejections");
-    private static final FileName REJECTION_FILE_NAME = FileName.forType(REJECTION_NAME);
-
-    /** Prevents instantiation of this utility class. */
-    private TestEnv() {
-    }
-
-    static Path rejectionsJavadocThrowableSource(Path projectDir) {
-        var javaPackage = JavaFiles.toDirectory(JAVA_PACKAGE);
+    fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
+        val javaPackage = JAVA_PACKAGE.toDirectory()
         return DefaultJavaPaths.at(projectDir)
-                               .generatedProto()
-                               .spine(main)
-                               .path()
-                               .resolve(javaPackage)
-                               .resolve(REJECTION_FILE_NAME.value());
+            .generatedProto()
+            .spine(main)
+            .path()
+            .resolve(javaPackage)
+            .resolve(REJECTION_FILE_NAME.value())
     }
 
-    static Iterable<String> rejectionWithJavadoc() {
-        return Arrays.asList(
-                "syntax = \"proto3\";",
-                "package spine.sample.rejections;",
-                "option java_package = \"" + JAVA_PACKAGE + "\";",
-                "option java_multiple_files = false;",
-
-                "// " + CLASS_COMMENT,
-                "message " + REJECTION_NAME + " {",
-
-                "    // " + FIRST_FIELD_COMMENT,
-                "    int32 " + FIRST_FIELD + " = 1; // Is not a part of Javadoc.",
-
-                "    // " + SECOND_FIELD_COMMENT,
-                "    string " + SECOND_FIELD + " = 2;",
-
-                "    bool hasNoComment = 3;",
-                "}"
-        );
+    fun rejectionWithJavadoc(): Iterable<String> {
+        return listOf(
+            "syntax = \"proto3\";",
+            "package spine.sample.rejections;",
+            "option java_package = \"$JAVA_PACKAGE\";",
+            "option java_multiple_files = false;",
+            "// $CLASS_COMMENT",
+            "message $REJECTION_NAME {",
+            "    // $FIRST_FIELD_COMMENT",
+            "    int32 $FIRST_FIELD = 1; // Is not a part of Javadoc.",
+            "    // $SECOND_FIELD_COMMENT",
+            "    string $SECOND_FIELD = 2;",
+            "    bool hasNoComment = 3;",
+            "}"
+        )
     }
 
-    static String expectedClassComment() {
-        return wrappedInPreTag(CLASS_COMMENT)
-                + " Rejection based on proto type  " +
-                "{@code " + JAVA_PACKAGE + '.' + REJECTION_NAME+ '}';
-    }
+    fun expectedClassComment(): String = (wrappedInPreTag(CLASS_COMMENT)
+            + " Rejection based on proto type  " +
+            "{@code $JAVA_PACKAGE.$REJECTION_NAME}")
 
-    static String expectedBuilderClassComment() {
-        return format("The builder for the  {@code %s}  rejection.", REJECTION_NAME);
-    }
+    fun expectedBuilderClassComment() =
+        "The builder for the  {@code $REJECTION_NAME}  rejection."
 
-    static String expectedFirstFieldComment() {
-        return wrappedInPreTag(FIRST_FIELD_COMMENT);
+    fun expectedFirstFieldComment(): String =
+        wrappedInPreTag(FIRST_FIELD_COMMENT)
 
-    }
+    fun expectedSecondFieldComment(): String =
+        wrappedInPreTag(SECOND_FIELD_COMMENT)
 
-    static String expectedSecondFieldComment() {
-        return wrappedInPreTag(SECOND_FIELD_COMMENT);
-    }
-
-    private static String wrappedInPreTag(String commentText) {
-        return "<pre> " + commentText + " </pre>";
-    }
+    private fun wrappedInPreTag(commentText: String) =
+        "<pre> $commentText </pre>"
 }
