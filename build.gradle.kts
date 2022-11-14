@@ -41,7 +41,6 @@ import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Truth
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.VersionWriter
-import io.spine.internal.gradle.applyStandardWithGitHub
 import io.spine.internal.gradle.checkstyle.CheckStyleConfig
 import io.spine.internal.gradle.excludeProtobufLite
 import io.spine.internal.gradle.forceVersions
@@ -56,6 +55,7 @@ import io.spine.internal.gradle.publish.spinePublishing
 import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
+import io.spine.internal.gradle.standardToSpineSdk
 import io.spine.internal.gradle.testing.configureLogging
 import io.spine.internal.gradle.testing.registerTestTasks
 import java.time.Duration
@@ -63,7 +63,7 @@ import java.util.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    standardSpineSdkRepositories()
 
     val spine = io.spine.internal.dependency.Spine(project)
     io.spine.internal.gradle.doForceVersions(configurations)
@@ -88,7 +88,6 @@ plugins {
     protobuf
     `gradle-doctor`
     id(protoData.pluginId) version protoData.version
-
 }
 
 object BuildSettings {
@@ -118,9 +117,7 @@ allprojects {
     group = "io.spine.tools"
     version = extra["versionToPublish"]!!
 
-    repositories.applyStandardWithGitHub(project,
-        "base", "tool-base", "model-compiler", "ProtoData", "validation"
-    )
+    repositories.standardToSpineSdk()
 }
 
 subprojects {
@@ -263,6 +260,7 @@ fun Subproject.forceConfigurations() {
                     spine.validation.runtime,
                     "io.spine.protodata:protodata-codegen-java:${Spine.protoDataVersion}",
 
+                    JUnit.runner,
                     "org.hamcrest:hamcrest-core:2.2",
                     Jackson.core,
                     Jackson.moduleKotlin,
