@@ -26,9 +26,10 @@
 
 package io.spine.tools.mc.java.protodata.params;
 
+import com.google.auto.service.AutoService;
 import com.google.protobuf.ExtensionRegistry;
 import io.spine.option.OptionsProto;
-import io.spine.protodata.option.OptionsProvider;
+import io.spine.option.OptionsProvider;
 import io.spine.time.validation.TimeOptionsProto;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -36,6 +37,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * Registers the definitions from {@code spine/options.proto} and {@code spine/time_options.proto}
  * in the {@code ExtensionRegistry} for ProtoData.
  */
+@AutoService(OptionsProvider.class)
 public final class DefaultOptionsProvider implements OptionsProvider {
 
     @Override
