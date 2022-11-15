@@ -32,5 +32,5 @@
  * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
  * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.106")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.110")
 val versionToPublish by extra(mcJavaVersion)
