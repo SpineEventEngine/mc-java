@@ -119,6 +119,7 @@ allprojects {
                     spine.testlib,
                     spine.toolBase,
                     spine.pluginBase,
+                    JUnit.runner,
                     Jackson.core,
                     Jackson.moduleKotlin,
                     Jackson.databind,
