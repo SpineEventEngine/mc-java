@@ -79,9 +79,8 @@ internal class GenerateUuidMethodsSpec {
     internal inner class GenerateEmptyResult {
 
         @Test
-        fun `message is not UUID value`() {
+        fun `message is not UUID value`() =
             assertEmptyResult(TestMethodFactory::class.java.name)
-        }
 
         private fun assertEmptyResult(factoryName: String) {
             val config = newTaskConfig(factoryName)
@@ -111,14 +110,11 @@ private fun newTaskConfig(factoryName: String): Uuids {
         .build()
 }
 
-private fun newTask(config: Uuids): GenerateUuidMethods {
-    return GenerateUuidMethods(testClassLoader(), config.getMethodFactory(0))
-}
+private fun newTask(config: Uuids): GenerateUuidMethods =
+    GenerateUuidMethods(testClassLoader(), config.getMethodFactory(0))
 
-private fun testClassLoader(): ExternalClassLoader<MethodFactory> {
-    return ExternalClassLoader(Classpath.getDefaultInstance(), MethodFactory::class.java)
-}
+private fun testClassLoader(): ExternalClassLoader<MethodFactory> =
+    ExternalClassLoader(Classpath.getDefaultInstance(), MethodFactory::class.java)
 
-private fun testType(): MessageType {
-    return MessageType(TestUuidValue.getDescriptor())
-}
+private fun testType(): MessageType =
+    MessageType(TestUuidValue.getDescriptor())
