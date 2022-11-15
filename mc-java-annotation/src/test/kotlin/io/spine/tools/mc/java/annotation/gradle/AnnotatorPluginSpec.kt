@@ -243,7 +243,7 @@ private fun descriptorOf(testFile: FileName): FileDescriptor {
 }
 
 /**
- * Compose the path to the main descriptor set file using the project Maven coordinates
+ * Composes the path to the main descriptor set file using the project Maven coordinates
  * as defined in the test project under `resources/annotator-plugin-test`.
  */
 private fun mainDescriptorPath(): Path =
