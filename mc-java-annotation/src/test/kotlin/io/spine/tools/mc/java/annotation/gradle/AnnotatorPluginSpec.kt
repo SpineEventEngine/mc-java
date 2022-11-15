@@ -30,7 +30,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTION
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPluginSpec.Companion.moduleDir
-import io.spine.tools.mc.java.gradle.McJavaTaskName
+import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.annotateProto
 import java.io.File
 import java.nio.file.Path
 import org.gradle.api.tasks.SourceSet
@@ -59,7 +59,7 @@ internal class AnnotatorPluginSpec {
                 .copyBuildSrc()
                 .create()
             moduleDir = projectDir.toPath().resolve("tests").toFile()
-            project.executeTask(McJavaTaskName.annotateProto)
+            project.executeTask(annotateProto)
         }
     }
 
@@ -68,88 +68,72 @@ internal class AnnotatorPluginSpec {
     internal inner class Annotating {
 
         @Test
-        fun `if file option is true`() {
+        fun `if file option is true`() =
             checkNestedTypesAnnotations(INTERNAL_ALL, true)
-        }
 
         @Test
-        fun `service if file option if true`() {
+        fun `service if file option if true`() =
             checkServiceAnnotations(INTERNAL_ALL_SERVICE, true)
-        }
 
         @Test
-        fun `multiple files if file option is true`() {
+        fun `multiple files if file option is true`() =
             checkMainDefinitionAnnotations(INTERNAL_ALL_MULTIPLE, true)
-        }
 
         @Test
-        fun `if message option is true`() {
+        fun `if message option is true`() =
             checkNestedTypesAnnotations(INTERNAL_MESSAGE, true)
-        }
 
         @Test
-        fun `multiple files if message option is true`() {
+        fun `multiple files if message option is true`() =
             checkMainDefinitionAnnotations(INTERNAL_MESSAGE_MULTIPLE, true)
-        }
 
         @Test
-        fun `accessors if field option is true`() {
+        fun `accessors if field option is true`() =
             checkFieldAnnotations(INTERNAL_FIELD, true)
-        }
 
         @Test
-        fun `accessors in multiple files if field option is true`() {
+        fun `accessors in multiple files if field option is true`() =
             checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
-        }
 
         @Test
-        fun `GRPC services if service option is true`() {
+        fun `GRPC services if service option is true`() =
             checkServiceAnnotations(SPI_SERVICE.fileName(), SPI::class.java, true)
-        }
     }
 
     @Nested
     internal inner class `not annotate` {
 
         @Test
-        fun `if file option if false`() {
+        fun `if file option if false`() =
             checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
-        }
 
         @Test
-        fun `service if file option is false`() {
+        fun `service if file option is false`() =
             checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
-        }
 
         @Test
-        fun `multiple files if file option is false`() {
+        fun `multiple files if file option is false`() =
             checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
-        }
 
         @Test
-        fun `if message option is false`() {
+        fun `if message option is false`() =
             checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
-        }
 
         @Test
-        fun `multiple files if message option is false`() {
+        fun `multiple files if message option is false`() =
             checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
-        }
 
         @Test
-        fun `accessors if field option is false`() {
+        fun `accessors if field option is false`() =
             checkFieldAnnotations(NO_INTERNAL_OPTIONS, false)
-        }
 
         @Test
-        fun `accessors in multiple files if field option is false`() {
+        fun `accessors in multiple files if field option is false`() =
             checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, false)
-        }
 
         @Test
-        fun `GRPC services if service option is false`() {
+        fun `GRPC services if service option is false`() =
             checkServiceAnnotations(NO_INTERNAL_OPTIONS, false)
-        }
     }
 
     @Test
@@ -163,9 +147,8 @@ internal class AnnotatorPluginSpec {
     }
 }
 
-private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) {
+private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) =
     checkServiceAnnotations(testFile.fileName(), Internal::class.java, shouldBeAnnotated)
-}
 
 private fun checkServiceAnnotations(
     testFile: FileName,
