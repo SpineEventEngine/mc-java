@@ -24,9 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.AutoService
 import io.spine.internal.dependency.Spine
 
 dependencies {
+    annotationProcessor(AutoService.processor)
+    compileOnlyApi(AutoService.annotations)
+
     implementation(Spine.ProtoData.compiler)
     val spine = Spine(project)
     implementation(spine.base)
