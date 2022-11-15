@@ -175,7 +175,7 @@ private fun checkServiceAnnotations(
     val fileDescriptor = descriptorOf(testFile)
     val services = fileDescriptor.services
     for (serviceDescriptor in services) {
-        val serviceFile = SourceFile.forService(serviceDescriptor, fileDescriptor)
+        val serviceFile = SourceFile.forService(serviceDescriptor)
         val check = MainDefinitionAnnotationCheck(expectedAnnotation, shouldBeAnnotated)
         check.verifyService(serviceFile)
     }
@@ -184,7 +184,7 @@ private fun checkServiceAnnotations(
 private fun checkFieldAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val messageDescriptor = fileDescriptor.messageTypes[0]
-    val sourcePath = SourceFile.forMessage(messageDescriptor, fileDescriptor).path()
+    val sourcePath = SourceFile.forMessage(messageDescriptor).path()
 
     NestedTypeFieldsAnnotationCheck(messageDescriptor, shouldBeAnnotated).verify(sourcePath)
 }
@@ -196,7 +196,7 @@ private fun checkFieldAnnotationsMultiple(
     val fileDescriptor = descriptorOf(testFile.fileName())
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val experimentalField = messageDescriptor.fields[0]
-    val sourcePath = SourceFile.forMessage(messageDescriptor, fileDescriptor).path()
+    val sourcePath = SourceFile.forMessage(messageDescriptor).path()
 
     FieldAnnotationCheck(experimentalField, shouldBeAnnotated).verify(sourcePath)
 }
