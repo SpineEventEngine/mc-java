@@ -136,7 +136,7 @@ public final class ModuleAnnotator {
             return this;
         }
 
-        public @Nullable Set<@Regex String> getInternalPatterns() {
+        public Set<@Regex String> getInternalPatterns() {
             return internalPatterns;
         }
 
@@ -153,7 +153,7 @@ public final class ModuleAnnotator {
             return this;
         }
 
-        public @Nullable Set<String> getInternalMethodNames() {
+        public Set<String> getInternalMethodNames() {
             return internalMethodNames;
         }
 
