@@ -139,7 +139,11 @@ final class InterfaceGenTest {
 
     @BeforeAll
     static void setUpConfig() {
-        var project = ProjectBuilder.builder().build();
+        var project = ProjectBuilder.builder()
+                .withName("Test")
+                .build();
+        project.getPluginManager()
+               .apply("java");
         var options = new CodegenOptionsConfig(project);
         config = options.toProto();
     }
