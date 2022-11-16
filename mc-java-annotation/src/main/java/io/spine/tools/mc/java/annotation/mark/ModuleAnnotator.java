@@ -96,11 +96,24 @@ public final class ModuleAnnotator {
             this.jobs = new HashSet<>();
         }
 
+        /**
+         * Assigns the factory of {@linkplain Annotator annotators} for the module
+         * annotator to be built.
+         *
+         * <p>A module annotator must have the assigned factory.
+         *
+         * @see #getAnnotatorFactory()
+         */
         public Builder setAnnotatorFactory(AnnotatorFactory annotatorFactory) {
             this.annotatorFactory = checkNotNull(annotatorFactory);
             return this;
         }
 
+        /**
+         * Obtains assigned annotator factory.
+         *
+         * @return the assigned factory or {@code null} if the factory was not assigned before
+         */
         public @Nullable AnnotatorFactory getAnnotatorFactory() {
             return annotatorFactory;
         }
@@ -136,6 +149,9 @@ public final class ModuleAnnotator {
             return this;
         }
 
+        /**
+         * Obtains patters for Java classes to be annotated as {@code internal}.
+         */
         public Set<@Regex String> getInternalPatterns() {
             return internalPatterns;
         }
@@ -153,6 +169,9 @@ public final class ModuleAnnotator {
             return this;
         }
 
+        /**
+         * Obtains the names of the methods to be annotated as {@code @Internal}.
+         */
         public Set<String> getInternalMethodNames() {
             return internalMethodNames;
         }
@@ -170,6 +189,9 @@ public final class ModuleAnnotator {
             return this;
         }
 
+        /**
+         * Obtains the name of the class for mark classes and methods as {@code internal}.
+         */
         public @Nullable ClassName getInternalAnnotation() {
             return internalAnnotation;
         }
