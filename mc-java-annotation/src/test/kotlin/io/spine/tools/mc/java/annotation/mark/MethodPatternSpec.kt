@@ -23,47 +23,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.annotation.mark
 
-package io.spine.tools.mc.java.annotation.mark;
-
-import com.google.common.testing.NullPointerTester;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.google.common.testing.NullPointerTester
+import com.google.common.testing.NullPointerTester.Visibility
+import java.util.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
 @DisplayName("`MethodPattern` should")
-class MethodPatternTest {
+internal class MethodPatternSpec {
 
     @Test
-    @DisplayName("not be created with null parameters")
-    void notAllowNullInCtor() {
-        new NullPointerTester()
-                .testStaticMethods(MethodPattern.class, PACKAGE);
+    fun `prohibit creation with 'null' parameters`() {
+        NullPointerTester()
+            .testStaticMethods(MethodPattern::class.java, Visibility.PACKAGE)
     }
 
     @Test
-    @DisplayName("not allow `null` parameters")
-    void notAllowNulls() {
-        new NullPointerTester()
-                .testInstanceMethods(MethodPattern.exactly("getValue"), PACKAGE);
+    fun `prohibit 'null' parameters`() {
+        NullPointerTester()
+            .testInstanceMethods(
+                MethodPattern.exactly("getValue"),
+                Visibility.PACKAGE
+            )
     }
 
     @Test
-    @DisplayName("match exactly by name")
-    void matchExactly() {
-        var methodName = "getUnknownFields";
-        var pattern = MethodPattern.exactly(methodName);
-        assertTrue(pattern.matches(methodName));
+    fun `match exactly by name`() {
+        val methodName = "getUnknownFields"
+        val pattern = MethodPattern.exactly(methodName)
+        assertTrue(pattern.matches(methodName))
     }
 
     @Test
-    @DisplayName("not match different names")
-    void notMatch() {
-        var methodName = "parseFrom";
-        var pattern = MethodPattern.exactly(methodName);
-        assertFalse(pattern.matches(methodName.toLowerCase()));
+    fun `not match different names`() {
+        val methodName = "parseFrom"
+        val pattern = MethodPattern.exactly(methodName)
+        assertFalse(pattern.matches(methodName.lowercase(Locale.getDefault())))
     }
 }

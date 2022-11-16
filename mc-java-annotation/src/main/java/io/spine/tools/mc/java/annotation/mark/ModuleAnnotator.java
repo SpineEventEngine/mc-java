@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.annotation.mark;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.spine.code.java.ClassName;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.regex.qual.Regex;
 
 import java.util.HashSet;
@@ -79,6 +80,7 @@ public final class ModuleAnnotator {
     /**
      * A builder for the {@code ModuleAnnotator} instances.
      */
+    @SuppressWarnings("unused") // Getters are provided for Kotlin property syntax compatibility.
     public static final class Builder {
 
         private final Set<Job> jobs;
@@ -94,9 +96,26 @@ public final class ModuleAnnotator {
             this.jobs = new HashSet<>();
         }
 
+        /**
+         * Assigns the factory of {@linkplain Annotator annotators} for the module
+         * annotator to be built.
+         *
+         * <p>A module annotator must have the assigned factory.
+         *
+         * @see #getAnnotatorFactory()
+         */
         public Builder setAnnotatorFactory(AnnotatorFactory annotatorFactory) {
             this.annotatorFactory = checkNotNull(annotatorFactory);
             return this;
+        }
+
+        /**
+         * Obtains assigned annotator factory.
+         *
+         * @return the assigned factory or {@code null} if the factory was not assigned before
+         */
+        public @Nullable AnnotatorFactory getAnnotatorFactory() {
+            return annotatorFactory;
         }
 
         /**
@@ -124,9 +143,17 @@ public final class ModuleAnnotator {
          *         class name patterns
          * @see #setInternalAnnotation
          */
-        public Builder setInternalPatterns(ImmutableSet<@Regex String> patterns) {
-            this.internalPatterns = checkNotNull(patterns);
+        public Builder setInternalPatterns(Set<@Regex String> patterns) {
+            checkNotNull(patterns);
+            this.internalPatterns = ImmutableSet.copyOf(patterns);
             return this;
+        }
+
+        /**
+         * Obtains patters for Java classes to be annotated as {@code internal}.
+         */
+        public Set<@Regex String> getInternalPatterns() {
+            return internalPatterns;
         }
 
         /**
@@ -136,9 +163,17 @@ public final class ModuleAnnotator {
          *         the method names
          * @see #setInternalAnnotation
          */
-        public Builder setInternalMethodNames(ImmutableSet<String> methodNames) {
-            this.internalMethodNames = checkNotNull(methodNames);
+        public Builder setInternalMethodNames(Set<String> methodNames) {
+            checkNotNull(methodNames);
+            this.internalMethodNames = ImmutableSet.copyOf(methodNames);
             return this;
+        }
+
+        /**
+         * Obtains the names of the methods to be annotated as {@code @Internal}.
+         */
+        public Set<String> getInternalMethodNames() {
+            return internalMethodNames;
         }
 
         /**
@@ -152,6 +187,13 @@ public final class ModuleAnnotator {
         public Builder setInternalAnnotation(ClassName internalAnnotation) {
             this.internalAnnotation = checkNotNull(internalAnnotation);
             return this;
+        }
+
+        /**
+         * Obtains the name of the class for mark classes and methods as {@code internal}.
+         */
+        public @Nullable ClassName getInternalAnnotation() {
+            return internalAnnotation;
         }
 
         /**

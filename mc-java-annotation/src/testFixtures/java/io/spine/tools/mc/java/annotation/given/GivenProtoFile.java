@@ -31,7 +31,7 @@ import io.spine.code.proto.FileName;
 /**
  * Test proto file names.
  *
- * See {@code resources/annotator-plugin-test/src/main/proto/} directory for the files.
+ * <p>See {@code resources/annotator-plugin-test/src/main/proto/} directory for the files.
  */
 public enum GivenProtoFile {
 
