@@ -137,8 +137,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
-    implementation(
-        "com.google.cloud.artifactregistry:artifactregistry-auth-common:$googleAuthToolVersion") {
+    implementation("com.google.cloud.artifactregistry:artifactregistry-auth-common:$googleAuthToolVersion") {
         exclude(group = "com.google.guava")
     }
     implementation("com.google.guava:guava:$guavaVersion")

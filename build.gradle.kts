@@ -71,8 +71,9 @@ buildscript {
         all {
             resolutionStrategy {
                 force(
+                    spine.base,
                     spine.server,
-                    spine.validation.java,
+                    spine.validation.runtime,
                     io.spine.internal.dependency.Spine.ProtoData.pluginLib
                 )
             }
@@ -254,7 +255,6 @@ fun Subproject.forceConfigurations() {
                     spine.toolBase,
                     spine.pluginBase,
 
-                    spine.validation.java,
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     spine.validation.runtime,
