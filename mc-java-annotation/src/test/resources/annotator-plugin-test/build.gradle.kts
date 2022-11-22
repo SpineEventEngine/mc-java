@@ -28,7 +28,10 @@ import org.gradle.api.file.SourceDirectorySet
 import java.net.URI
 
 import io.spine.internal.dependency.Grpc
-import io.spine.internal.gradle.applyStandardWithGitHub
+import io.spine.internal.gradle.standardToSpineSdk
+import org.gradle.kotlin.dsl.all
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.resolutionStrategy
 
 buildscript {
 
@@ -36,13 +39,9 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    io.spine.internal.gradle.applyWithStandard(this, rootProject,
-        "base", "time", "change", "base-types", "core-java",
-        "tool-base", "ProtoData", "validation",
-    )
+    standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
-    val protoDataVersion = io.spine.internal.dependency.Spine.protoDataVersion
     dependencies {
         io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
 
@@ -51,7 +50,6 @@ buildscript {
             exclude(group = "com.google.guava")
         }
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
-        classpath(io.spine.internal.dependency.Spine.ProtoData.pluginLib)
     }
 }
 
@@ -76,9 +74,7 @@ subprojects {
         from("${enclosingRootDir}/version.gradle.kts")
     }
 
-    repositories.applyStandardWithGitHub(project,
-        "ProtoData", "tool-base", "validation"
-    )
+    repositories.standardToSpineSdk()
 
     val spine = io.spine.internal.dependency.Spine(project)
     dependencies {
