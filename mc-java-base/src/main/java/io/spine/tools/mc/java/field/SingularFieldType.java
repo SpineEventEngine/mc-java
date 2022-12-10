@@ -31,7 +31,6 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
-import io.spine.code.java.PrimitiveType;
 import io.spine.code.proto.FieldDeclaration;
 
 import static com.google.protobuf.Descriptors.FieldDescriptor.JavaType.STRING;
