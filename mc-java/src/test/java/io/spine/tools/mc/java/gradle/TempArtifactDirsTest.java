@@ -61,7 +61,6 @@ class TempArtifactDirsTest {
         var repositories = project.getRepositories();
         applyStandard(repositories);
         var plugins = project.getPluginManager();
-        plugins.apply("java");
         plugins.apply("com.google.protobuf");
         plugins.apply(MC_JAVA_GRADLE_PLUGIN_ID);
         options = getMcJava(project);
