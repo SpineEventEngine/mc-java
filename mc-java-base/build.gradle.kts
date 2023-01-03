@@ -39,3 +39,9 @@ dependencies {
     testImplementation(gradleTestKit())
     testImplementation(spine.pluginTestlib)
 }
+
+project.afterEvaluate {
+    (tasks.getByName("sourcesJar") as Jar).apply {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
