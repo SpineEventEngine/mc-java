@@ -31,7 +31,6 @@ import com.google.errorprone.annotations.Immutable;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import io.spine.code.java.PrimitiveType;
 import io.spine.code.proto.FieldDeclaration;
 
 import java.util.List;
