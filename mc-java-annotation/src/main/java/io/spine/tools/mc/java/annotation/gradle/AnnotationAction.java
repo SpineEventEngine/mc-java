@@ -39,9 +39,9 @@ import org.gradle.api.logging.Logger;
 import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.gradle.ProtobufDependencies.sourceSetExtensionName;
-import static io.spine.tools.gradle.project.Projects.descriptorSetFile;
-import static io.spine.tools.gradle.project.Projects.protoDirectorySet;
+import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
+import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
+import static io.spine.tools.gradle.protobuf.Projects.protoDirectorySet;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.beta;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.experimental;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.internal;
