@@ -25,7 +25,6 @@
  */
 package io.spine.tools.mc.java.annotation.mark
 
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.spine.annotation.Internal
