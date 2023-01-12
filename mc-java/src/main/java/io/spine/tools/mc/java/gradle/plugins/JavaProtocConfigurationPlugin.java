@@ -121,7 +121,14 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
             var writeRef = GradleTask.newBuilder(taskName, writeRefFile())
                     .insertBeforeTask(processResources(sourceSetName))
                     .applyNowTo(project);
+
+            var log = project.getLogger();
+            log.debug("The task `{}` has been created.", writeRef.getName());
+
             protocTask.finalizedBy(writeRef.getTask());
+
+            log.debug("The task `{}` is configured to be finalized by `{}`.",
+                       protocTask.getName(), writeRef.getName());
         }
 
         private void setResourceDirectory() {
