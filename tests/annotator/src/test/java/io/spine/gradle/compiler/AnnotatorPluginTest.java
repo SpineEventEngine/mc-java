@@ -38,7 +38,7 @@ import static io.spine.gradle.compiler.Assertions.assertNotInternal;
 import static io.spine.gradle.compiler.Assertions.assertNotSpi;
 import static io.spine.gradle.compiler.Assertions.assertSpi;
 
-@DisplayName("`AnnotatorPlugin` should")
+@DisplayName("`AnnotatorPlugin` when applied should")
 class AnnotatorPluginTest {
 
     @Test
