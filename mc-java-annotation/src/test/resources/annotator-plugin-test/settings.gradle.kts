@@ -27,5 +27,5 @@
 rootProject.name = "annotator-plugin-test"
 
 include(
-    "tests"
+    "typedefs"
 )
