@@ -123,11 +123,11 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
                     .applyNowTo(project);
 
             var log = project.getLogger();
-            log.debug("The task `{}` has been created.", writeRef.getName());
+            log.debug("McJava: The task `{}` has been created.", writeRef.getName());
 
             protocTask.finalizedBy(writeRef.getTask());
 
-            log.debug("The task `{}` is configured to be finalized by `{}`.",
+            log.debug("McJava: The task `{}` is configured to be finalized by `{}`.",
                        protocTask.getName(), writeRef.getName());
         }
 
