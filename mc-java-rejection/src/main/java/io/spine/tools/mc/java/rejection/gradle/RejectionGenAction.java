@@ -31,7 +31,6 @@ import io.spine.base.RejectionThrowable;
 import io.spine.code.java.PackageName;
 import io.spine.code.java.SimpleClassName;
 import io.spine.code.proto.FileSet;
-import io.spine.code.proto.RejectionsFile;
 import io.spine.code.proto.SourceFile;
 import io.spine.tools.code.Indent;
 import io.spine.tools.gradle.CodeGenerationAction;

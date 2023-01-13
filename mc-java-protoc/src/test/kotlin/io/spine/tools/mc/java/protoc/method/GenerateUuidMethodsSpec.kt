@@ -68,8 +68,8 @@ internal class GenerateUuidMethodsSpec {
 
     @ParameterizedTest(name = "\"{0}\"")
     @ValueSource(strings = ["", "  "])
-    @DisplayName("")
-    fun `throw 'IllegalArgumentException' if factory name is `(factoryName: String) {
+    @DisplayName("throw 'IllegalArgumentException' if factory name is ")
+    fun throwIAE(factoryName: String) {
         val config = newTaskConfig(factoryName)
         assertIllegalArgument { newTask(config) }
     }

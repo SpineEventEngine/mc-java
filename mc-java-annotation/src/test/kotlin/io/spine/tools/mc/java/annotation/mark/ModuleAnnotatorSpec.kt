@@ -25,15 +25,14 @@
  */
 package io.spine.tools.mc.java.annotation.mark
 
-import com.google.common.collect.ImmutableSet
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import io.spine.annotation.Internal
 import io.spine.code.java.ClassName
 import io.spine.tools.mc.jav.annotation.mark.moduleAnnotator
 import io.spine.tools.mc.java.annotation.given.FakeAnnotator
 import io.spine.tools.mc.java.annotation.mark.ModuleAnnotatorSpec.Companion.ANNOTATION
 import org.checkerframework.checker.regex.qual.Regex
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -67,8 +66,8 @@ internal class ModuleAnnotatorSpec {
 
         annotator.annotate()
 
-        assertThat(factory.annotationName).isEqualTo(ANNOTATION)
-        assertThat(factory.classNamePattern).isEqualTo(ClassNamePattern.compile(classNamePattern))
+        factory.annotationName shouldBe ANNOTATION
+        factory.classNamePattern shouldBe ClassNamePattern.compile(classNamePattern)
    }
 
     @Test
@@ -83,8 +82,8 @@ internal class ModuleAnnotatorSpec {
 
         annotator.annotate()
 
-        assertThat(factory.annotationName).isEqualTo(ANNOTATION)
-        assertThat(factory.methodPatterns).containsExactly(MethodPattern.exactly(methodName))
+        factory.annotationName shouldBe ANNOTATION
+        factory.methodPatterns shouldContainExactly listOf(MethodPattern.exactly(methodName))
     }
 }
 
@@ -99,6 +98,6 @@ private fun checkAnnotateByOption(option: ApiOption) {
 
     annotator.annotate()
 
-    assertThat(factory.annotationName).isEqualTo(ANNOTATION)
-    assertThat(factory.option).isEqualTo(option)
+    factory.annotationName shouldBe ANNOTATION
+    factory.option shouldBe option
 }

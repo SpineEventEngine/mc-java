@@ -77,6 +77,7 @@ internal class AnnotatorPluginSpec {
 
     companion object {
         private const val RESOURCE_DIR = "annotator-plugin-test"
+        private const val RESOURCE_SUB_DIR = "typedefs"
         lateinit var moduleDir: File
 
         @BeforeAll
@@ -85,8 +86,12 @@ internal class AnnotatorPluginSpec {
             val project = GradleProject.setupAt(projectDir)
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()
+                /* Uncomment the following line to be able to debug the build.
+                   Do not forget to turn off so that tests run faster AND Windows build does not
+                    fail with the error on Windows Registry unavailability. */
+                //.enableRunnerDebug()
                 .create()
-            moduleDir = projectDir.toPath().resolve("tests").toFile()
+            moduleDir = projectDir.toPath().resolve(RESOURCE_SUB_DIR).toFile()
             project.executeTask(annotateProto)
         }
     }
@@ -129,7 +134,8 @@ internal class AnnotatorPluginSpec {
     }
 
     @Nested
-    internal inner class `not annotate` {
+    @DisplayName("not annotate")
+    internal inner class NotAnnotate {
 
         @Test
         fun `if file option if false`() =

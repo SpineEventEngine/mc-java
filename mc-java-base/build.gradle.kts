@@ -27,7 +27,10 @@
 import io.spine.internal.dependency.Spine
 
 dependencies {
-    compileOnlyApi(gradleApi())
+    /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
+       Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
+       executes this code and its API is automatically provided. */
+    implementation(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
     val spine = Spine(project)
@@ -38,4 +41,10 @@ dependencies {
     testImplementation(spine.testlib)
     testImplementation(gradleTestKit())
     testImplementation(spine.pluginTestlib)
+}
+
+project.afterEvaluate {
+    (tasks.getByName("sourcesJar") as Jar).apply {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
 }

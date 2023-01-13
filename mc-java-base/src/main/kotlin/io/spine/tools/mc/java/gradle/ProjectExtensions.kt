@@ -28,13 +28,13 @@
 
 package io.spine.tools.mc.java.gradle
 
-import com.google.protobuf.gradle.ProtobufConvention
+import com.google.protobuf.gradle.ProtobufExtension
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.spine
-import io.spine.tools.gradle.ProtobufDependencies
+import io.spine.tools.gradle.protobuf.ProtobufDependencies
 import io.spine.tools.gradle.project.sourceSet
 import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.mc.gradle.modelCompiler
@@ -76,7 +76,7 @@ public fun Project.protoFiles(ssn: SourceSetName): FileCollection? {
  * Obtains the path to the generated code directory of this project.
  */
 public val Project.generatedDir: Path
-    get() = Path(the<ProtobufConvention>().protobuf.generatedFilesBaseDir)
+    get() = Path(the<ProtobufExtension>().generatedFilesBaseDir)
 
 /**
  * The short name of the directory containing generated Java source code.

@@ -26,7 +26,9 @@
 package io.spine.tools.mc.java.codegen
 
 import com.google.common.truth.Truth.assertThat
-import com.google.common.truth.extensions.proto.ProtoTruth.assertThat
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import io.spine.base.CommandMessage
 import io.spine.base.EntityState
 import io.spine.base.EventMessage
@@ -50,12 +52,14 @@ import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.CleanupMode
 import org.junit.jupiter.api.io.TempDir
 
-class `'codegen { }' block should` {
+@DisplayName("`codegen { }` block should`")
+class CodegenBlockSpec {
 
     private lateinit var options: McJavaOptions
     private lateinit var projectDir: File
@@ -96,18 +100,16 @@ class `'codegen { }' block should` {
             }
         }
         val config = options.codegen.toProto()
-        assertThat(config.uuids.methodFactoryList)
-            .hasSize(1)
-        assertThat(
-            config.uuids
-                .methodFactoryList[0]
-                .className
-                .canonical
-        ).isEqualTo(factoryName)
+        config.uuids.methodFactoryList shouldHaveSize 1
+        config.uuids
+            .methodFactoryList[0]
+            .className
+            .canonical shouldBe factoryName
     }
 
     @Nested
-    inner class `configure generation of` {
+    @DisplayName("configure generation of")
+    inner class ConfigureGeneration {
 
         @Test
         fun commands() {
@@ -117,22 +119,22 @@ class `'codegen { }' block should` {
             val suffix = "_my_commands.proto"
             options.codegen { config: CodegenOptionsConfig ->
                 config.forCommands { commands: SignalConfig ->
-                    commands.includeFiles(commands.by().suffix(suffix))
-                    commands.markAs(firstInterface)
-                    commands.markAs(secondInterface)
-                    commands.markFieldsAs(fieldSuperclass)
+                    with(commands) {
+                        includeFiles(by().suffix(suffix))
+                        markAs(firstInterface)
+                        markAs(secondInterface)
+                        markFieldsAs(fieldSuperclass)
+                    }
                 }
             }
             val config = options.codegen.toProto()
             val commands = config.commands
-            assertThat(commands.patternList)
-                .hasSize(1)
-            assertThat(commands.patternList[0].suffix)
-                .isEqualTo(suffix)
-            assertThat(commands.addInterfaceList.map { it.name.canonical })
-                .containsExactly(firstInterface, secondInterface)
-            assertThat(commands.generateFields.superclass.canonical)
-                .isEqualTo(fieldSuperclass)
+
+            commands.patternList shouldHaveSize 1
+            commands.patternList[0].suffix shouldBe suffix
+            commands.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(firstInterface, secondInterface)
+            commands.generateFields.superclass.canonical shouldBe fieldSuperclass
         }
 
         @Test
@@ -142,21 +144,21 @@ class `'codegen { }' block should` {
             val prefix = "my_"
             options.codegen { config: CodegenOptionsConfig ->
                 config.forEvents { events: SignalConfig ->
-                    events.includeFiles(events.by().prefix(prefix))
-                    events.markAs(iface)
-                    events.markFieldsAs(fieldSuperclass)
+                    with(events) {
+                        includeFiles(by().prefix(prefix))
+                        markAs(iface)
+                        markFieldsAs(fieldSuperclass)
+                    }
                 }
             }
             val config = options.codegen.toProto()
             val events = config.events
-            assertThat(events.patternList)
-                .hasSize(1)
-            assertThat(events.patternList[0].prefix)
-                .isEqualTo(prefix)
-            assertThat(events.addInterfaceList.map { it.name.canonical })
-                .containsExactly(iface)
-            assertThat(events.generateFields.superclass.canonical)
-                .isEqualTo(fieldSuperclass)
+
+            events.patternList shouldHaveSize 1
+            events.patternList[0].prefix shouldBe prefix
+
+            events.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+            events.generateFields.superclass.canonical shouldBe fieldSuperclass
         }
 
         @Test
@@ -173,14 +175,11 @@ class `'codegen { }' block should` {
             }
             val config = options.codegen.toProto()
             val events = config.events
-            assertThat(events.patternList)
-                .hasSize(1)
-            assertThat(events.patternList[0].regex)
-                .isEqualTo(regex)
-            assertThat(events.addInterfaceList.map { it.name.canonical })
-                .containsExactly(iface)
-            assertThat(events.generateFields.superclass.canonical)
-                .isEqualTo(fieldSuperclass)
+
+            events.patternList shouldHaveSize 1
+            events.patternList[0].regex shouldBe regex
+            events.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+            events.generateFields.superclass.canonical shouldBe fieldSuperclass
         }
 
         @Test
@@ -198,14 +197,11 @@ class `'codegen { }' block should` {
             val config = options.codegen.toProto()
             val eventInterfaces = config.events.addInterfaceList
             val rejectionInterfaces = config.rejections.addInterfaceList
-            assertThat(eventInterfaces)
-                .hasSize(1)
-            assertThat(rejectionInterfaces)
-                .hasSize(1)
-            assertThat(eventInterfaces.first().name.canonical)
-                .isEqualTo(eventInterface)
-            assertThat(rejectionInterfaces.first().name.canonical)
-                .isEqualTo(rejectionInterface)
+
+            eventInterfaces shouldHaveSize 1
+            rejectionInterfaces shouldHaveSize 1
+            eventInterfaces.first().name.canonical shouldBe eventInterface
+            rejectionInterfaces.first().name.canonical shouldBe rejectionInterface
         }
 
         @Test
@@ -224,18 +220,13 @@ class `'codegen { }' block should` {
                 }
             }
             val config = options.codegen.toProto().entities
-            assertThat(config.addInterfaceList.map { it.name.canonical })
-                .containsExactly(iface)
-            assertThat(config.generateFields.superclass.canonical)
-                .isEqualTo(fieldSupertype)
-            assertThat(config.patternList)
-                .hasSize(1)
-            assertThat(config.patternList.first().suffix)
-                .isEqualTo(suffix)
-            assertThat(config.optionList)
-                .hasSize(1)
-            assertThat(config.optionList.first().name)
-                .isEqualTo(option)
+
+            config.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+            config.generateFields.superclass.canonical shouldBe fieldSupertype
+            config.patternList shouldHaveSize 1
+            config.patternList.first().suffix shouldBe suffix
+            config.optionList shouldHaveSize 1
+            config.optionList.first().name shouldBe option
         }
 
         @Test
@@ -249,12 +240,10 @@ class `'codegen { }' block should` {
                 }
             }
             val config = options.codegen.toProto().uuids
-            assertThat(config.addInterfaceList.map { it.name.canonical })
-                .containsExactly(iface)
-            assertThat(config.methodFactoryList)
-                .hasSize(1)
-            assertThat(config.methodFactoryList.first().className.canonical)
-                .isEqualTo(methodFactory)
+
+            config.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+            config.methodFactoryList shouldHaveSize 1
+            config.methodFactoryList.first().className.canonical shouldBe methodFactory
         }
 
         @Test
@@ -277,8 +266,9 @@ class `'codegen { }' block should` {
                 }
             }
             val configs = options.codegen.toProto().messagesList
-            assertThat(configs)
-                .hasSize(2)
+
+            configs shouldHaveSize 2
+
             var (first, second) = configs
 
             // Restore ordering. When generating code, it does not matter which group goes
@@ -289,23 +279,16 @@ class `'codegen { }' block should` {
                 first = t
             }
 
-            assertThat(first.pattern.type.expectedType.value)
-                .isEqualTo(firstMessageType)
-            assertThat(first.addInterfaceList.first().name.canonical)
-                .isEqualTo(firstInterface)
-            assertThat(first.generateFields.superclass.canonical)
-                .isEqualTo(fieldSuperclass)
-            assertThat(first.generateNestedClassesList)
-                .hasSize(1)
-            assertThat(first.generateNestedClassesList.first().factory.className.canonical)
-                .isEqualTo(classFactory)
+            first.pattern.type.expectedType.value shouldBe firstMessageType
+            first.addInterfaceList.first().name.canonical shouldBe firstInterface
+            first.generateFields.superclass.canonical shouldBe fieldSuperclass
+            first.generateNestedClassesList shouldHaveSize 1
+            first.generateNestedClassesList.first().factory.className.canonical shouldBe
+                    classFactory
 
-            assertThat(second.pattern.file.hasRegex())
-                .isTrue()
-            assertThat(second.addInterfaceList.first().name.canonical)
-                .isEqualTo(secondInterface)
-            assertThat(second.generateMethodsList.first().factory.className.canonical)
-                .isEqualTo(methodFactory)
+            second.pattern.file.hasRegex() shouldBe true
+            second.addInterfaceList.first().name.canonical shouldBe secondInterface
+            second.generateMethodsList.first().factory.className.canonical shouldBe methodFactory
         }
 
         @Test
@@ -317,122 +300,116 @@ class `'codegen { }' block should` {
                 }
             }
             val validation = options.codegen.toProto().validation
-            assertThat(validation.skipBuilders)
-                .isTrue()
-            assertThat(validation.skipValidation)
-                .isTrue()
+
+            validation.skipBuilders shouldBe true
+            validation.skipValidation shouldBe true
         }
     }
 
     @Nested
-    inner class `provide reasonable defaults for` {
+    @DisplayName("provide reasonable defaults for")
+    inner class ProvideDefaults {
 
         @Test
         fun commands() {
             val config = options.codegen.toProto()
             val commands = config.commands
-            assertThat(commands.patternList)
-                .hasSize(1)
-            assertThat(commands.patternList[0].suffix)
-                .isEqualTo(COMMANDS.suffix())
-            assertThat(commands.addInterfaceList.map { it.name.canonical })
-                .containsExactly(CommandMessage::class.qualifiedName)
-            assertThat(commands.generateFields)
-                .isEqualTo(GenerateFields.getDefaultInstance())
+
+            commands.patternList shouldHaveSize 1
+            commands.patternList[0].suffix shouldBe COMMANDS.suffix()
+            commands.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(CommandMessage::class.qualifiedName)
+            commands.generateFields shouldBe GenerateFields.getDefaultInstance()
         }
 
         @Test
         fun events() {
             val config = options.codegen.toProto()
             val events = config.events
-            assertThat(events.patternList)
-                .hasSize(1)
-            assertThat(events.patternList[0].suffix)
-                .isEqualTo(EVENTS.suffix())
-            assertThat(events.addInterfaceList.map { it.name.canonical })
-                .containsExactly(EventMessage::class.qualifiedName)
-            assertThat(events.generateFields.superclass.canonical)
-                .isEqualTo(EventMessageField::class.qualifiedName)
+
+            events.patternList shouldHaveSize 1
+            events.patternList[0].suffix shouldBe EVENTS.suffix()
+            events.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(EventMessage::class.qualifiedName)
+            events.generateFields.superclass.canonical shouldBe
+                    EventMessageField::class.qualifiedName
         }
 
         @Test
         fun rejections() {
             val config = options.codegen.toProto()
             val events = config.rejections
-            assertThat(events.patternList)
-                .hasSize(1)
-            assertThat(events.patternList[0].suffix)
-                .isEqualTo(MessageFile.REJECTIONS.suffix())
-            assertThat(events.addInterfaceList.map { it.name.canonical })
-                .containsExactly(RejectionMessage::class.qualifiedName)
-            assertThat(events.generateFields.superclass.canonical)
-                .isEqualTo(EventMessageField::class.qualifiedName)
+
+            events.patternList shouldHaveSize 1
+            events.patternList[0].suffix shouldBe MessageFile.REJECTIONS.suffix()
+            events.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(RejectionMessage::class.qualifiedName)
+            events.generateFields.superclass.canonical shouldBe
+                    EventMessageField::class.qualifiedName
         }
 
         @Test
         fun entities() {
             val config = options.codegen.toProto().entities
-            assertThat(config.addInterfaceList.map { it.name.canonical })
-                .containsExactly(EntityState::class.qualifiedName)
-            assertThat(config.generateFields.superclass.canonical)
-                .isEqualTo(EntityStateField::class.qualifiedName)
-            assertThat(config.patternList)
-                .isEmpty()
-            assertThat(config.optionList)
-                .hasSize(1)
-            assertThat(config.optionList.first().name)
-                .isEqualTo(OptionsProto.entity.descriptor.name)
+
+            config.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(EntityState::class.qualifiedName)
+            config.generateFields.superclass.canonical shouldBe
+                    EntityStateField::class.qualifiedName
+            config.patternList shouldBe emptyList()
+            config.optionList shouldHaveSize 1
+            config.optionList.first().name shouldBe
+                    OptionsProto.entity.descriptor.name
         }
 
         @Test
         fun `UUID messages`() {
             val config = options.codegen.toProto().uuids
-            assertThat(config.addInterfaceList.map { it.name.canonical })
-                .containsExactly(UuidValue::class.qualifiedName)
-            assertThat(config.methodFactoryList)
-                .hasSize(1)
-            assertThat(config.methodFactoryList.first().className.canonical)
-                .isEqualTo(UuidMethodFactory::class.qualifiedName)
+
+            config.addInterfaceList.map { it.name.canonical } shouldContainExactly
+                    listOf(UuidValue::class.qualifiedName)
+            config.methodFactoryList shouldHaveSize 1
+            config.methodFactoryList.first().className.canonical shouldBe
+                    UuidMethodFactory::class.qualifiedName
         }
 
         @Test
         fun `arbitrary message groups`() {
             val config = options.codegen.toProto()
-            assertThat(config.messagesList)
-                .isEmpty()
+
+            config.messagesList shouldBe emptyList()
 
             val type = "test.Message"
             options.codegen {
                 it.forMessage(type) { /* Do nothing. */ }
             }
             val updatedConfig = options.codegen.toProto()
-            assertThat(updatedConfig.messagesList)
-                .hasSize(1)
+
+            updatedConfig.messagesList shouldHaveSize 1
             val typeName = ProtoTypeName.newBuilder().setValue(type)
             val typePattern = TypePattern.newBuilder()
                 .setExpectedType(typeName)
             val pattern = Pattern.newBuilder()
                 .setType(typePattern)
-            assertThat(updatedConfig.messagesList.first())
-                .isEqualTo(
+
+            updatedConfig.messagesList.first() shouldBe
                     Messages.newBuilder()
                         .setPattern(pattern)
                         .buildPartial()
-                )
         }
 
         @Test
         fun validation() {
             val validation = options.codegen.toProto().validation
-            assertThat(validation.skipBuilders)
-                .isFalse()
-            assertThat(validation.skipValidation)
-                .isFalse()
+
+            validation.skipBuilders shouldBe false
+            validation.skipValidation shouldBe false
         }
     }
 
     @Nested
-    inner class `allow configuring generation of queries` {
+    @DisplayName("allow configuring generation of queries")
+    inner class AllowConfiguring {
 
         @Test
         fun `having queries turned by default`() {

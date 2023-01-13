@@ -133,7 +133,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
                                 .getBuildDirectory()
                                 .file(CONFIG_SUBDIR + separatorChar + fileName);
         targetFile.convention(defaultFile);
-        task.getConfiguration()
+        task.getConfigurationFile()
             .set(targetFile);
     }
 }

@@ -30,15 +30,14 @@ import io.spine.tools.code.SourceSetName;
 import io.spine.tools.gradle.task.GradleTask;
 import io.spine.tools.type.FileDescriptorSuperset;
 import org.gradle.api.Action;
-import org.gradle.api.Buildable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 
 import static io.spine.tools.gradle.JavaConfigurationName.runtimeClasspath;
 import static io.spine.tools.gradle.project.Projects.configuration;
-import static io.spine.tools.gradle.project.Projects.descriptorSetFile;
 import static io.spine.tools.gradle.project.Projects.getSourceSetNames;
+import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
 import static io.spine.tools.gradle.task.JavaTaskName.processResources;
 import static io.spine.tools.gradle.task.ProtobufTaskName.generateProto;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeDescriptorSet;
