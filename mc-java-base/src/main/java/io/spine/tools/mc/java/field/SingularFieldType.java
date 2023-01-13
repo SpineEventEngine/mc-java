@@ -99,7 +99,7 @@ final class SingularFieldType implements FieldType {
     }
 
     private static TypeName constructTypeNameFor(String name) {
-        var boxedScalarPrimitive = PrimitiveType.getWrapperClass(name);
+        var boxedScalarPrimitive = PrimitiveType.wrapperFor(name);
 
         if (boxedScalarPrimitive.isPresent()) {
             var unboxed = TypeName.get(boxedScalarPrimitive.get()).unbox();
