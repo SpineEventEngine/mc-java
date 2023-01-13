@@ -55,7 +55,7 @@ import static io.spine.base.RejectionType.isValidOuterClassName;
  *
  * </ul>
  */
-public final class RejectionsFile extends SourceFile {
+final class RejectionsFile extends SourceFile {
 
     private RejectionsFile(FileDescriptor descriptor) {
         super(descriptor);
@@ -64,7 +64,7 @@ public final class RejectionsFile extends SourceFile {
     /**
      * Creates an instance by the passed rejections file.
      */
-    public static RejectionsFile from(SourceFile file) {
+    private static RejectionsFile from(SourceFile file) {
         checkNotNull(file);
         checkMatchesConvention(file);
 
@@ -94,8 +94,7 @@ public final class RejectionsFile extends SourceFile {
     /**
      * Obtains rejection messages declared in the file.
      */
-    @SuppressWarnings("unused") /* Part of the public API. */
-    public List<RejectionType> rejectionDeclarations() {
+    List<RejectionType> rejectionDeclarations() {
         ImmutableList.Builder<RejectionType> result = ImmutableList.builder();
         var file = descriptor();
         for (var type : file.getMessageTypes()) {
@@ -113,8 +112,7 @@ public final class RejectionsFile extends SourceFile {
     /**
      * Obtains rejection files from the passed set of files.
      */
-    @SuppressWarnings("unused") /* Part of the public API. */
-    public static ImmutableSet<RejectionsFile> findAll(FileSet fileSet) {
+    static ImmutableSet<RejectionsFile> findAll(FileSet fileSet) {
         checkNotNull(fileSet);
         var result = fileSet.files()
                 .stream()
