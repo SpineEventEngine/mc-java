@@ -53,31 +53,23 @@ enum PrimitiveType {
     /**
      * Returns the boxed {@link Class} for the Protobuf scalar primitive name.
      *
-     * @param primitiveType the primitive type name
+     * @param primitiveType
+     *         the primitive type name
      * @return the wrapper class or {@link Optional#empty() Optional.empty()}
-     * if the specified primitive name does not belong to {@link ScalarType}.
+     *         if the specified primitive name does not belong to {@link ScalarType}.
      */
-    public static Optional<? extends Class<?>> getWrapperClass(String primitiveType) {
+    static Optional<? extends Class<?>> wrapperFor(String primitiveType) {
         checkNotEmptyOrBlank(primitiveType);
         for (var simpleType : values()) {
             if (simpleType.matchesName(primitiveType)) {
-                return Optional.of(simpleType.getWrapperClass());
+                return Optional.of(simpleType.wrapperClass);
             }
         }
 
         return Optional.empty();
     }
 
-    boolean matchesName(String typeName) {
-        var result = getName().equals(typeName);
-        return result;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Class<?> getWrapperClass() {
-        return wrapperClass;
+    private boolean matchesName(String typeName) {
+        return name.equals(typeName);
     }
 }

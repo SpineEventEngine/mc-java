@@ -92,7 +92,7 @@ final class RepeatedFieldType implements FieldType {
     }
 
     private static TypeName typeNameFor(String componentTypeName) {
-        var wrapper = PrimitiveType.getWrapperClass(componentTypeName);
+        var wrapper = PrimitiveType.wrapperFor(componentTypeName);
         var componentType = wrapper.isPresent()
                             ? TypeName.get(wrapper.get())
                             : ClassName.bestGuess(componentTypeName);

@@ -85,7 +85,7 @@ tasks {
     }
 
     withType<WriteVersions>().configureEach {
-        version(Grpc.protobufPlugin)
+        version(Grpc.ProtocPlugin.artifact)
         version(validation.java)
     }
 }
