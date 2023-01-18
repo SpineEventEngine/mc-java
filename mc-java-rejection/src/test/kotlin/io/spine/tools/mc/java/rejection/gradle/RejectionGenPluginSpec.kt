@@ -60,7 +60,7 @@ internal class RejectionGenPluginSpec {
                 .copyBuildSrc()
                 .create()
             moduleDir = projectDir.toPath()
-                .resolve("tests")
+                .resolve("sub-module")
                 .toFile()
             // Executing the `compileTestJava` task should generate rejection types from both
             // `test` and `main` source sets.
@@ -87,7 +87,8 @@ internal class RejectionGenPluginSpec {
     }
 
     @Nested
-    internal inner class `place generated code under the 'spine' directory for` {
+    @DisplayName("place generated code under the `spine` directory for")
+    internal inner class SourceSetDirs {
 
         @Test
         fun `'main' source set`() {
@@ -101,7 +102,8 @@ internal class RejectionGenPluginSpec {
     }
 
     @Nested
-    internal inner class `use the package specified in proto file options` {
+    @DisplayName("use the package specified in proto file options")
+    internal inner class PackageName {
 
         @Test
         fun `for 'main' source set`() {
