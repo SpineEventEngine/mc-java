@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":mc-java-rejection"))
     implementation(project(":mc-java-protodata-params"))
 
+    implementation(spine.pluginBase)
     implementation(ProtoData.pluginLib)
     implementation(ProtoData.compiler)
     implementation(validation.config)

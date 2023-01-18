@@ -37,6 +37,7 @@ dependencies {
     api(spine.modelCompiler)
     api(spine.validation.config)
     api(spine.validation.runtime)
+    implementation(spine.pluginBase)
 
     testImplementation(spine.testlib)
     testImplementation(gradleTestKit())
