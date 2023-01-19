@@ -50,18 +50,19 @@ public final class RejectionGenPlugin implements Plugin<Project> {
     /**
      * Applies the plug-in to a project.
      *
-     * <p>Adds {@code :generateRejections} tasks for all source sets of the project.
+     * <p>Adds {@code :generateRejections} tasks for all source sets of the project
+     * after the project is evaluated.
      *
      * <p>Tasks depend on corresponding {@code :generateProto} tasks and are executed
      * before corresponding {@code :compileJava} tasks.
      */
     @Override
     public void apply(Project project) {
-        var tasks = createTasks(project);
-        project.getLogger().info(
-                "Rejection generation plugin initialized with tasks: `{}`.",
-                tasks
-        );
+        project.afterEvaluate(p -> {
+            var tasks = createTasks(p);
+            p.getLogger()
+             .info("Rejection generation plugin initialized with tasks: `{}`.", tasks);
+        });
     }
 
     private static ImmutableList<GradleTask> createTasks(Project project) {
