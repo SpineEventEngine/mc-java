@@ -50,7 +50,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@DisplayName("Rejection code generator should")
+@DisplayName("Rejection code generator for Javadoc should")
 internal class RejectionJavadocSpec {
 
     companion object {
