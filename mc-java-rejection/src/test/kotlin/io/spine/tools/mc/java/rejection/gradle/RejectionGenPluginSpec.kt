@@ -40,7 +40,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.isDirectory
-import org.gradle.api.Project
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
