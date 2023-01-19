@@ -28,23 +28,21 @@
 
 package io.spine.tools.mc.java.gradle
 
-import com.google.protobuf.gradle.ProtobufExtension
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.spine
-import io.spine.tools.gradle.protobuf.ProtobufDependencies
 import io.spine.tools.gradle.project.sourceSet
+import io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName
+import io.spine.tools.gradle.protobuf.generated
 import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.mc.gradle.modelCompiler
 import java.nio.file.Path
-import kotlin.io.path.Path
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.the
 
 /**
  * Obtains options of Model Compiler for Java.
@@ -60,7 +58,7 @@ private val Project.defaultPaths: DefaultJavaPaths
  */
 public fun Project.protoDir(ss: SourceSetName): Path {
     val sourceSetDir = defaultPaths.src().path().resolve(ss.value)
-    return sourceSetDir.resolve(ProtobufDependencies.sourceSetExtensionName)
+    return sourceSetDir.resolve(sourceSetExtensionName)
 }
 
 /**
@@ -68,15 +66,9 @@ public fun Project.protoDir(ss: SourceSetName): Path {
  */
 public fun Project.protoFiles(ssn: SourceSetName): FileCollection? {
     val sourceSet = sourceSet(ssn)
-    val extension = sourceSet.extensions.findByName(ProtobufDependencies.sourceSetExtensionName)
+    val extension = sourceSet.extensions.findByName(sourceSetExtensionName)
     return extension as FileCollection?
 }
-
-/**
- * Obtains the path to the generated code directory of this project.
- */
-public val Project.generatedDir: Path
-    get() = Path(the<ProtobufExtension>().generatedFilesBaseDir)
 
 /**
  * The short name of the directory containing generated Java source code.
@@ -94,25 +86,9 @@ public val generatedGrpcDirName: DirectoryName = grpc
 public val generatedRejectionsDirName: DirectoryName = spine
 
 /**
- * Obtains the directory containing generated Java source code for the specified source set.
- */
-public fun Project.generatedJavaDir(ss: SourceSetName): Path =
-    generated(ss).resolve(generatedJavaDirName)
-
-/**
- * Obtains the directory with the generated gRPC code for the specified source set.
- */
-public fun Project.generatedGrpcDir(ss: SourceSetName): Path =
-    generated(ss).resolve(generatedGrpcDirName)
-
-/**
  * Obtains the directory with the rejections source code generated for the specified source set.
  */
 public fun Project.generatedRejectionsDir(ss: SourceSetName): Path =
     generated(ss).resolve(generatedRejectionsDirName)
-
-private fun Project.generated(ss: SourceSetName): Path {
-    return generatedDir.resolve(ss.value)
-}
 
 private fun Path.resolve(dir: DirectoryName) = this.resolve(dir.value())
