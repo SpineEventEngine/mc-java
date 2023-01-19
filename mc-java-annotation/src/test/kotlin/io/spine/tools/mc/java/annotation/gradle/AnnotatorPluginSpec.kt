@@ -89,7 +89,7 @@ internal class AnnotatorPluginSpec {
                 /* Uncomment the following line to be able to debug the build.
                    Do not forget to turn off so that tests run faster AND Windows build does not
                     fail with the error on Windows Registry unavailability. */
-                //.enableRunnerDebug()
+                .enableRunnerDebug()
                 .create()
             moduleDir = projectDir.toPath().resolve(RESOURCE_SUB_DIR).toFile()
             project.executeTask(annotateProto)

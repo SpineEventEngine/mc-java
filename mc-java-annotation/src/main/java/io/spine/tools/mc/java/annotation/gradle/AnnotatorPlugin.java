@@ -32,8 +32,9 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.tasks.SourceSet;
 
-import static io.spine.tools.gradle.project.Projects.getSourceSetNames;
+import static io.spine.tools.gradle.project.Projects.getSourceSets;
 import static io.spine.tools.gradle.task.JavaTaskName.compileJava;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.annotateProto;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeDescriptorSet;
@@ -169,11 +170,13 @@ public final class AnnotatorPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
-        getSourceSetNames(project).forEach(ssn -> createTask(project, ssn));
+        var sourceSets = getSourceSets(project);
+        sourceSets.forEach(ss -> createTask(project, ss));
     }
 
-    private static void createTask(Project project, SourceSetName ssn) {
-        Action<Task> action = new AnnotationAction(ssn);
+    private static void createTask(Project project, SourceSet ss) {
+        Action<Task> action = new AnnotationAction(ss);
+        var ssn = new SourceSetName(ss.getName());
         GradleTask.newBuilder(annotateProto(ssn), action)
                 .insertAfterTask(mergeDescriptorSet(ssn))
                 .insertBeforeTask(compileJava(ssn))
