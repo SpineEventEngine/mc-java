@@ -25,7 +25,9 @@
  */
 package io.spine.tools.mc.java.gradle.plugins;
 
+import com.google.protobuf.gradle.ExecutableLocator;
 import io.spine.logging.Logging;
+import io.spine.tools.gradle.DependencyVersions;
 import io.spine.tools.mc.gradle.LanguagePlugin;
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPlugin;
 import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin;
@@ -36,6 +38,9 @@ import org.gradle.api.Project;
 
 import java.util.stream.Stream;
 
+import static io.spine.tools.gradle.Artifact.PLUGIN_BASE_ID;
+import static io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler;
+import static io.spine.tools.gradle.protobuf.ProtobufGradlePluginAdapterKt.getProtobufGradlePluginAdapter;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static kotlin.jvm.JvmClassMappingKt.getKotlinClass;
 
@@ -53,11 +58,18 @@ public class McJavaPlugin extends LanguagePlugin implements Logging {
     @Override
     public void apply(Project project) {
         super.apply(project);
+        setProtocArtifact(project);
         var extension = getMcJava(project);
         extension.injectProject(project);
         createAndApplyPluginsIn(project);
     }
 
+    private static void setProtocArtifact(Project project) {
+        var protobuf = getProtobufGradlePluginAdapter(project);
+        var ofPluginBase = DependencyVersions.loadFor(PLUGIN_BASE_ID);
+        var protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation();
+        protobuf.protoc((ExecutableLocator locator) -> locator.setArtifact(protocArtifact));
+    }
     /**
      * Creates all the plugins that are parts of {@code mc-java} and applies them to
      * the given project.
