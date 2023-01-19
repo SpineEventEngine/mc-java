@@ -87,7 +87,6 @@ final class RejectionGenAction extends CodeGenerationAction {
      * Creates an action for generating Java source code for rejection types defined in proto
      * files in the given sources set of the project.
      */
-    @SuppressWarnings("RedundantExplicitVariableType") // Avoid extra casts.
     static Action<Task> create(Project project, SourceSetName ssn) {
         Supplier<String> protoSrcDir = () -> protoDir(project, ssn).toString();
         var protoFiles = ProtoFiles.collect(project, ssn);
