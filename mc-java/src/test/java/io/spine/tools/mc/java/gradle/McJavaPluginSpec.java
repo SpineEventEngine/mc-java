@@ -29,7 +29,7 @@ import io.spine.tools.gradle.task.TaskName;
 import io.spine.tools.mc.java.gradle.given.StubProject;
 import org.gradle.api.Task;
 import org.gradle.api.tasks.TaskContainer;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,19 +48,23 @@ import static io.spine.tools.mc.java.gradle.McJavaTaskName.preClean;
 import static io.spine.tools.mc.java.gradle.given.ModelCompilerTestEnv.MC_JAVA_GRADLE_PLUGIN_ID;
 
 @DisplayName("`McJavaPlugin` should")
-class McJavaPluginTest {
+class McJavaPluginSpec {
 
-    private TaskContainer tasks;
+    private static TaskContainer tasks = null;
 
-    @BeforeEach
-    void createProjectWithPlugin() {
-        var project = StubProject.createFor(getClass())
+    @BeforeAll
+    static void createProjectWithPlugin() {
+        var project = StubProject.createFor(McJavaPluginSpec.class)
                                  .withMavenRepositories()
                                  .get();
         var plugins = project.getPluginManager();
         plugins.apply("java");
         plugins.apply("com.google.protobuf");
         plugins.apply(MC_JAVA_GRADLE_PLUGIN_ID);
+
+        // Evaluate the project.
+        project.getTasksByName("fooBar", false);
+
         tasks = project.getTasks();
     }
 
