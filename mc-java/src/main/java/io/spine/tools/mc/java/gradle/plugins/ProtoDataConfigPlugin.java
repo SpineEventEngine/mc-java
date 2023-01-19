@@ -117,7 +117,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         ext.setSubDirs(ImmutableList.of(
                 getGeneratedJavaDirName().value(),
                 getGeneratedRejectionsDirName().value(),
-                getGeneratedGrpcDirName().value()
+                getGeneratedGrpcDirName().value(),
+                "kotlin"
         ));
 
         var dependencies = target.getDependencies();
