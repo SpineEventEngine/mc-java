@@ -47,7 +47,7 @@ internal object TestEnv {
     fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
         val javaPackage = JAVA_PACKAGE.toDirectory()
         return DefaultJavaPaths.at(projectDir)
-            .generatedProto()
+            .generated()
             .spine(main)
             .path()
             .resolve(javaPackage)
