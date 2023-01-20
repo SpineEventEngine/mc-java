@@ -61,7 +61,7 @@ public final class RejectionGenPlugin implements Plugin<Project> {
         project.afterEvaluate(p -> {
             var tasks = createTasks(p);
             p.getLogger()
-             .info("Rejection generation plugin initialized with tasks: `{}`.", tasks);
+             .debug("Rejection generation plugin initialized with tasks: `{}`.", tasks);
         });
     }
 
