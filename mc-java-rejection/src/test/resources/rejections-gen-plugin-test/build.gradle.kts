@@ -51,6 +51,7 @@ buildscript {
 
 plugins {
     java
+    `java-test-fixtures`
 }
 
 allprojects {

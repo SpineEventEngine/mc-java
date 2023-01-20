@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:JvmName("ModuleAnnotators")
+
 package io.spine.tools.mc.jav.annotation.mark
 
 import io.spine.tools.mc.java.annotation.mark.ModuleAnnotator

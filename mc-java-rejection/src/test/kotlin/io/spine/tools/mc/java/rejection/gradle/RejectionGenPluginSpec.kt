@@ -25,19 +25,21 @@
  */
 package io.spine.tools.mc.java.rejection.gradle
 
-import com.google.common.base.Preconditions
+import io.kotest.matchers.shouldBe
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.code.SourceSetName.Companion.main
 import io.spine.tools.code.SourceSetName.Companion.test
+import io.spine.tools.fs.DirectoryName.generated
+import io.spine.tools.fs.DirectoryName.spine
 import io.spine.tools.gradle.task.JavaTaskName
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
-import io.spine.tools.java.fs.DefaultJavaPaths
+import io.spine.tools.resolve
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull
+import kotlin.io.path.isDirectory
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
@@ -58,9 +60,13 @@ internal class RejectionGenPluginSpec {
             val project: GradleProject = setupAt(projectDir)
                 .fromResources("rejections-gen-plugin-test")
                 .copyBuildSrc()
+                 /* Uncomment the following line to be able to debug the build.
+                    Do not forget to turn off so that tests run faster AND Windows build does not
+                    fail with the error on Windows Registry unavailability. */
+                 //.enableRunnerDebug()
                 .create()
             moduleDir = projectDir.toPath()
-                .resolve("tests")
+                .resolve("sub-module")
                 .toFile()
             // Executing the `compileTestJava` task should generate rejection types from both
             // `test` and `main` source sets.
@@ -69,10 +75,7 @@ internal class RejectionGenPluginSpec {
     }
 
     private fun generatedRoot(sourceSetName: SourceSetName): Path =
-        DefaultJavaPaths.at(moduleDir)
-            .generatedProto()
-            .spine(sourceSetName)
-            .path()
+        moduleDir.toPath().resolve(generated).resolve(sourceSetName.value)
 
     private fun targetMainDir(): Path = generatedRoot(main)
 
@@ -87,26 +90,42 @@ internal class RejectionGenPluginSpec {
     }
 
     @Nested
-    internal inner class `place generated code under the 'spine' directory for` {
+    @DisplayName("place generated code under the `spine` directory for")
+    internal inner class SourceSetDirs {
 
         @Test
         fun `'main' source set`() {
-            assertExists(targetMainDir())
+            val mainSpine = targetMainDir().resolve(spine)
+            assertExists(mainSpine)
+            mainSpine.isDirectory() shouldBe true
+            mainSpine.containsJavaFiles() shouldBe true
         }
 
         @Test
         fun `'test' source set`() {
-            assertExists(targetTestDir())
+            val testSpine = targetTestDir().resolve(spine)
+            assertExists(testSpine)
+            testSpine.isDirectory() shouldBe true
+            testSpine.containsJavaFiles() shouldBe true
+        }
+
+        @Test
+        fun `'testFixtures' source set`() {
+            val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(spine)
+            assertExists(testFixturesSpine)
+            testFixturesSpine.isDirectory() shouldBe true
+            testFixturesSpine.containsJavaFiles() shouldBe true
         }
     }
 
     @Nested
-    internal inner class `use the package specified in proto file options` {
+    @DisplayName("use the package specified in proto file options")
+    internal inner class PackageName {
 
         @Test
         fun `for 'main' source set`() {
             // As defined in `resources/.../main_rejections.proto`.
-            val packageDir = targetMainDir().resolve("io/spine/sample/rejections")
+            val packageDir = targetMainDir().resolve(spine).resolve("io/spine/sample/rejections")
             assertExists(packageDir)
 
             // As defined in `resources/.../main_rejections.proto`.
@@ -121,7 +140,7 @@ internal class RejectionGenPluginSpec {
         @Test
         fun `for 'test' source set`() {
             // As defined in `resources/.../test_rejections.proto`.
-            val packageDir = targetTestDir().resolve("io/spine/sample/rejections")
+            val packageDir = targetTestDir().resolve(spine).resolve("io/spine/sample/rejections")
             assertExists(packageDir)
 
             // As defined in `resources/.../test_rejections.proto`.
@@ -129,4 +148,9 @@ internal class RejectionGenPluginSpec {
             assertJavaFileExists(packageDir, "TestRejection2")
         }
     }
+}
+
+private fun Path.containsJavaFiles(): Boolean {
+    val found = toFile().walk().find { file -> file.name.endsWith(".java") }
+    return found != null
 }

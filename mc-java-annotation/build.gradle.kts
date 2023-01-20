@@ -42,6 +42,7 @@ dependencies {
 
     implementation(project(":mc-java-base"))
     val spine = Spine(project)
+    implementation(spine.pluginBase)
 
     testFixturesImplementation(spine.toolBase)
     testFixturesImplementation(spine.testlib)

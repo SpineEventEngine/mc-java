@@ -24,13 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this this property as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.132")
-val versionToPublish by extra(mcJavaVersion)
+plugins {
+    `java-test-fixtures`
+}
+
+dependencies {
+    io.spine.internal.dependency.Protobuf.libs.forEach {
+        testFixturesImplementation(it)
+    }
+    val spine = io.spine.internal.dependency.Spine(project)
+    testFixturesImplementation(spine.base)
+    testFixturesImplementation(spine.validation.runtime)
+}
+
+tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE

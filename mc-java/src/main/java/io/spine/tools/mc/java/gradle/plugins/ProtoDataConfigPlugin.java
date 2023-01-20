@@ -32,11 +32,11 @@ import io.spine.protodata.gradle.plugin.LaunchProtoData;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import static io.spine.tools.fs.DirectoryName.kotlin;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
-import static io.spine.tools.mc.java.gradle.Projects.getGeneratedRejectionsDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
@@ -116,8 +116,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         );
         ext.setSubDirs(ImmutableList.of(
                 getGeneratedJavaDirName().value(),
-                getGeneratedRejectionsDirName().value(),
-                getGeneratedGrpcDirName().value()
+                getGeneratedGrpcDirName().value(),
+                kotlin.value()
         ));
 
         var dependencies = target.getDependencies();

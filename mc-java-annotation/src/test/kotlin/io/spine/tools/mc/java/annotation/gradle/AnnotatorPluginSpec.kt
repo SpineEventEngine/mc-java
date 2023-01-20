@@ -35,11 +35,16 @@ import io.spine.annotation.SPI
 import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
-import io.spine.tools.code.SourceSetName.Companion.main
-import io.spine.tools.gradle.task.BaseTaskName.build
+import io.spine.tools.div
+import io.spine.tools.fs.DirectoryName.build
+import io.spine.tools.fs.DirectoryName.descriptors
+import io.spine.tools.fs.DirectoryName.generatedProto
+import io.spine.tools.fs.DirectoryName.grpc
+import io.spine.tools.fs.DirectoryName.java
+import io.spine.tools.fs.DirectoryName.main
+import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
-import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.java.fs.SourceFile
 import io.spine.tools.mc.java.annotation.check.FieldAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.MainDefinitionAnnotationCheck
@@ -61,7 +66,9 @@ import io.spine.tools.mc.java.annotation.gradle.AnnotatorPluginSpec.Companion.mo
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.annotateProto
 import java.io.File
 import java.nio.file.Path
-import org.gradle.api.tasks.SourceSet
+import kotlin.io.path.div
+import kotlin.io.path.name
+import org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
@@ -78,7 +85,7 @@ internal class AnnotatorPluginSpec {
     companion object {
         private const val RESOURCE_DIR = "annotator-plugin-test"
         private const val RESOURCE_SUB_DIR = "typedefs"
-        lateinit var moduleDir: File
+        lateinit var moduleDir: Path
 
         @BeforeAll
         @JvmStatic
@@ -91,7 +98,7 @@ internal class AnnotatorPluginSpec {
                     fail with the error on Windows Registry unavailability. */
                 //.enableRunnerDebug()
                 .create()
-            moduleDir = projectDir.toPath().resolve(RESOURCE_SUB_DIR).toFile()
+            moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             project.executeTask(annotateProto)
         }
     }
@@ -176,8 +183,8 @@ internal class AnnotatorPluginSpec {
             .fromResources(RESOURCE_DIR)
             .copyBuildSrc()
             .create()
-        val result = project.executeTask(build)
-        assertThat(result[build]).isEqualTo(SUCCESS)
+        val result = project.executeTask(BaseTaskName.build)
+        assertThat(result[BaseTaskName.build]).isEqualTo(SUCCESS)
     }
 }
 
@@ -249,21 +256,14 @@ private fun parse(file: Path): AbstractJavaSource<JavaClassSource> {
 }
 
 private fun SourceCheck.verify(sourcePath: Path) {
-    val filePath = DefaultJavaPaths.at(moduleDir)
-        .generatedProto()
-        .java(main)
-        .path()
-        .resolve(sourcePath)
+    val filePath = moduleDir / build / generatedProto / main / java / sourcePath
     val javaSource = parse(filePath)
     accept(javaSource)
 }
 
 private fun SourceCheck.verifyService(serviceFile: SourceFile) {
-    val filePath = DefaultJavaPaths.at(moduleDir)
-        .generatedProto()
-        .grpc(main)
-        .path()
-        .resolve(serviceFile.path())
+    val grpcMain = moduleDir / build / generatedProto / main / grpc
+    val filePath = grpcMain / serviceFile.path()
     val javaSource = parse(filePath)
     accept(javaSource)
 }
@@ -281,8 +281,5 @@ private fun descriptorOf(testFile: FileName): FileDescriptor {
  * as defined in the test project under `resources/annotator-plugin-test`.
  */
 private fun mainDescriptorPath(): Path =
-    DefaultJavaPaths.at(moduleDir)
-        .buildRoot()
-        .descriptors()
-        .forSourceSet(SourceSet.MAIN_SOURCE_SET_NAME)
-        .resolve("io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION")
+    moduleDir / build / descriptors / MAIN_SOURCE_SET_NAME /
+            "io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION"

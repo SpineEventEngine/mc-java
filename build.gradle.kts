@@ -297,10 +297,8 @@ fun Subproject.configureKotlin(javaVersion: JavaLanguageVersion) {
 fun Subproject.setupTests() {
     tasks {
         registerTestTasks()
-        test {
-            useJUnitPlatform {
-                includeEngines("junit-jupiter")
-            }
+        withType<Test> {
+            useJUnitPlatform()
             configureLogging()
         }
     }

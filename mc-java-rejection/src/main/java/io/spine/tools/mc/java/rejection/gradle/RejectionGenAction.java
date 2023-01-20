@@ -87,13 +87,12 @@ final class RejectionGenAction extends CodeGenerationAction {
      * Creates an action for generating Java source code for rejection types defined in proto
      * files in the given sources set of the project.
      */
-    @SuppressWarnings("RedundantExplicitVariableType") // Avoid extra casts.
     static Action<Task> create(Project project, SourceSetName ssn) {
         Supplier<String> protoSrcDir = () -> protoDir(project, ssn).toString();
         var protoFiles = ProtoFiles.collect(project, ssn);
         Supplier<String> targetDir = () -> generatedRejectionsDir(project, ssn).toString();
 
-        prepareSourceSets(project, ssn, targetDir);
+        extendSourceSet(project, ssn, targetDir);
 
         return new RejectionGenAction(project, ssn, protoSrcDir, protoFiles, targetDir);
     }
@@ -101,9 +100,9 @@ final class RejectionGenAction extends CodeGenerationAction {
     /**
      * Adds the given {@code targetDir} to the source set with the given name.
      */
-    private static void prepareSourceSets(Project project,
-                                          SourceSetName ssn,
-                                          Supplier<String> targetDir) {
+    private static void extendSourceSet(Project project,
+                                        SourceSetName ssn,
+                                        Supplier<String> targetDir) {
         var sourceSets = getSourceSets(project);
         var sourceSet = sourceSets.getByName(ssn.getValue());
         var dir = project.provider(targetDir::get);
@@ -146,9 +145,7 @@ final class RejectionGenAction extends CodeGenerationAction {
                 .collect(toImmutableSet());
         return file -> {
             var sourceFile = file.path();
-            return protoFiles.stream().anyMatch(
-                    path -> path.endsWith(sourceFile)
-            );
+            return protoFiles.stream().anyMatch(path -> path.endsWith(sourceFile));
         };
     }
 

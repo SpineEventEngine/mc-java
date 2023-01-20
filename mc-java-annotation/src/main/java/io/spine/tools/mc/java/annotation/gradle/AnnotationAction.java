@@ -35,13 +35,16 @@ import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.logging.Logger;
+import org.gradle.api.tasks.SourceSet;
 
 import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
 import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
-import static io.spine.tools.gradle.protobuf.Projects.protoDirectorySet;
+import static io.spine.tools.gradle.protobuf.Projects.generatedProtoGrpcDir;
+import static io.spine.tools.gradle.protobuf.Projects.generatedProtoJavaDir;
+import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
+import static io.spine.tools.gradle.protobuf.SourceSetExtsKt.containsProtoFiles;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.beta;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.experimental;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.internal;
@@ -50,9 +53,6 @@ import static io.spine.tools.mc.java.annotation.mark.ModuleAnnotator.translate;
 import static io.spine.tools.mc.java.gradle.McJavaOptions.getCodeGenAnnotations;
 import static io.spine.tools.mc.java.gradle.McJavaOptions.getInternalClassPatterns;
 import static io.spine.tools.mc.java.gradle.McJavaOptions.getInternalMethodNames;
-import static io.spine.tools.mc.java.gradle.Projects.generatedGrpcDir;
-import static io.spine.tools.mc.java.gradle.Projects.generatedJavaDir;
-import static io.spine.tools.proto.fs.Directory.rootName;
 
 /**
  * A task action which annotates the generated code.
@@ -60,18 +60,19 @@ import static io.spine.tools.proto.fs.Directory.rootName;
 final class AnnotationAction implements Action<Task>, Logging {
 
     private final SourceSetName sourceSetName;
-
+    private final SourceSet sourceSet;
     /**
      * Creates a new action instance.
      */
-    AnnotationAction(SourceSetName ssn) {
-        this.sourceSetName = checkNotNull(ssn);
+    AnnotationAction(SourceSet ss) {
+        this.sourceSet = checkNotNull(ss);
+        this.sourceSetName = new SourceSetName(ss.getName());
     }
 
     @Override
     public void execute(Task task) {
         var project = task.getProject();
-        if (!containsProtoCode(project)) {
+        if (!containsProtoFiles(sourceSet)) {
             return;
         }
         var descriptorSetFile = descriptorSetFile(project, sourceSetName);
@@ -81,19 +82,6 @@ final class AnnotationAction implements Action<Task>, Logging {
         }
         var annotator = createAnnotator(project);
         annotator.annotate();
-    }
-
-    /** Verifies of the source set of the given project contains Protobuf source code. */
-    private boolean containsProtoCode(Project project) {
-        var protoSet = protoDirectorySet(project, sourceSetName);
-        if (protoSet == null) {
-            return false;
-        }
-        var dirs = protoSet.getSourceDirectories().getFiles();
-        var hasProtoDir = dirs.stream()
-                .anyMatch(dir -> dir.getPath().endsWith(rootName()));
-        var isEmpty =  protoSet.isEmpty();
-        return hasProtoDir && !isEmpty;
     }
 
     private ModuleAnnotator createAnnotator(Project project) {
@@ -117,8 +105,8 @@ final class AnnotationAction implements Action<Task>, Logging {
     private AnnotatorFactory createAnnotationFactory(Project project) {
         var ssn = sourceSetName;
         var descriptorSetFile = descriptorSetFile(project, ssn);
-        var generatedJavaPath = generatedJavaDir(project, ssn);
-        var generatedGrpcPath = generatedGrpcDir(project, ssn);
+        var generatedJavaPath = generatedProtoJavaDir(project, ssn);
+        var generatedGrpcPath = generatedProtoGrpcDir(project, ssn);
         var annotatorFactory = DefaultAnnotatorFactory.newInstance(
                 descriptorSetFile, generatedJavaPath, generatedGrpcPath
         );

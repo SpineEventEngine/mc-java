@@ -31,15 +31,16 @@ import io.spine.internal.dependency.Spine
 dependencies {
     annotationProcessor(AutoService.processor)
     compileOnlyApi(AutoService.annotations)
+    compileOnly(gradleApi())
 
     api(ErrorProne.core)
     ErrorProne.annotations.forEach { api(it) }
+    implementation(ErrorProne.GradlePlugin.lib)
 
     val spine = Spine(project)
 
-    implementation(gradleApi())
-    implementation(ErrorProne.GradlePlugin.lib)
     implementation(spine.base)
+    implementation(spine.pluginBase)
     implementation(spine.modelCompiler)
 
     testImplementation(ErrorProne.testHelpers)

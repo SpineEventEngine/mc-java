@@ -75,8 +75,6 @@ public final class StubProject {
         var project = ProjectBuilder.builder()
                 .withProjectDir(projectDir)
                 .build();
-        project.getPluginManager()
-               .apply("java");
         return project;
     }
 

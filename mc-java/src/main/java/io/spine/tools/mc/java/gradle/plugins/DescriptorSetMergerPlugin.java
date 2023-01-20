@@ -51,9 +51,21 @@ import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeDescriptorSet;
  */
 final class DescriptorSetMergerPlugin implements Plugin<Project> {
 
+    /**
+     * Applies the plugin to the project, creating the tasks on
+     * {@link Project#afterEvaluate(Action)}.
+     *
+     * <p>The tasks creation is delayed so that <em>all</em> source sets are created.
+     * Some plugins (e.g. {@code java-test-fixtures}) add custom source sets, and they may be
+     * applied after this plugin.
+     *
+     * @param project The target object
+     */
     @Override
     public void apply(Project project) {
-        getSourceSetNames(project).forEach(ssn -> createTask(project, ssn));
+        project.afterEvaluate(
+                p -> getSourceSetNames(p).forEach(ssn -> createTask(p, ssn))
+        );
     }
 
     private static void createTask(Project project, SourceSetName ssn) {

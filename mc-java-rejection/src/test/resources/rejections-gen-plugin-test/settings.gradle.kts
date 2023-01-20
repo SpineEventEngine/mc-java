@@ -27,5 +27,5 @@
 rootProject.name = "rejection-gen-test"
 
 include(
-    "tests"
+    "sub-module"
 )
