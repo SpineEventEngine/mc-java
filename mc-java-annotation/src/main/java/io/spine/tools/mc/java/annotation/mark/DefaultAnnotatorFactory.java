@@ -76,8 +76,8 @@ public final class DefaultAnnotatorFactory implements AnnotatorFactory {
     public static AnnotatorFactory newInstance(File descriptorSetFile,
                                                Path generatedProtoDir,
                                                Path generatedGrpcDir) {
-        var files = FileSet.parseAsKnownFiles(descriptorSetFile);
-        return new DefaultAnnotatorFactory(files.files(), generatedProtoDir, generatedGrpcDir);
+        var fileSet = FileSet.parseAsKnownFiles(descriptorSetFile);
+        return new DefaultAnnotatorFactory(fileSet.files(), generatedProtoDir, generatedGrpcDir);
     }
 
     @Override
