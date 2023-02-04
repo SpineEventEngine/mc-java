@@ -26,9 +26,7 @@
 
 @file:JvmName("ModuleAnnotators")
 
-package io.spine.tools.mc.jav.annotation.mark
-
-import io.spine.tools.mc.java.annotation.mark.ModuleAnnotator
+package io.spine.tools.mc.java.annotation.mark
 
 /**
  * Provides DSL for creating and customising [ModuleAnnotator].
