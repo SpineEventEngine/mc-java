@@ -347,7 +347,7 @@ fun Subproject.setupCodegen() {
 
             // Suppress warnings in the generated code.
             "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
-            "io.spine.protodata.codegen.java.suppress.SuppressRenderer"
+            "io.spine.protodata.codegen.java.annotation.SuppressWarningsAnnotation"
         )
         plugins(
             "io.spine.validation.ValidationPlugin"
