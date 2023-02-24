@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.rejection.gen;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -59,9 +60,12 @@ import static javax.lang.model.element.Modifier.STATIC;
  * <p>A generated builder validates rejection messages using
  * {@link io.spine.validate.Validate#check(com.google.protobuf.Message)}.
  */
-final class RThrowableBuilderSpec implements BuilderSpec {
+public final class RThrowableBuilderSpec implements BuilderSpec {
 
-    private static final NoArgMethod newBuilder = new NoArgMethod("newBuilder");
+    @VisibleForTesting
+    public static final String NEW_BUILDER_METHOD = "newBuilder";
+
+    private static final NoArgMethod newBuilder = new NoArgMethod(NEW_BUILDER_METHOD);
     private static final String BUILDER_FIELD = "builder";
 
     private final RejectionType rejection;
