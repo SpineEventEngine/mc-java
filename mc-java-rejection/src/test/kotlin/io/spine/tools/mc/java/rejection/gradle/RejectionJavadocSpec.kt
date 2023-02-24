@@ -27,7 +27,6 @@ package io.spine.tools.mc.java.rejection.gradle
 
 import com.google.common.truth.Truth.assertThat
 import io.spine.code.java.SimpleClassName
-import io.spine.protobuf.Messages
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName.Companion.main
 import io.spine.tools.gradle.testing.GradleProject
@@ -40,7 +39,6 @@ import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedFirstFieldComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedSecondFieldComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionWithJavadoc
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionsJavadocThrowableSource
-import io.spine.util.Exceptions
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
@@ -77,7 +75,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedClassComment(), rejection)
         assertMethodDoc(
             "@return a new builder for the rejection", rejection,
-            Messages.METHOD_NEW_BUILDER
+            "newBuilder"
         )
     }
 

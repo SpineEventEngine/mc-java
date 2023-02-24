@@ -25,7 +25,7 @@
  */
 syntax = "proto3";
 
-package spine.test.annotator;
+package given.annotation;
 
 import "spine/options.proto";
 

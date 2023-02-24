@@ -23,34 +23,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-syntax = "proto3";
 
-package given.annotation;
+@file:JvmName("ModuleAnnotators")
 
-import "spine/options.proto";
+package io.spine.tools.mc.java.annotation.mark
 
-option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.test.annotator";
-option java_outer_classname = "DiverseProto";
-option java_multiple_files = true;
-
-import "google/protobuf/timestamp.proto";
-
-message Diverse {
-
-    string text = 1;
-
-    google.protobuf.Timestamp time = 2;
-
-    repeated google.protobuf.Timestamp list = 3;
-
-    map<string, google.protobuf.Timestamp> dictionary = 4;
-}
-
-enum Region {
-
-    ENGLAND = 0;
-    SCOTLAND = 1;
-    WALES = 2;
-    NORTHERN_IRELAND = 3;
+/**
+ * Provides DSL for creating and customising [ModuleAnnotator].
+ */
+public fun moduleAnnotator(block: ModuleAnnotator.Builder.() -> Unit): ModuleAnnotator {
+    val builder = ModuleAnnotator.newBuilder()
+    builder.block()
+    return builder.build()
 }

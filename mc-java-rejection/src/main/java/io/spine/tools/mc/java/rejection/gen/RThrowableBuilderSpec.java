@@ -35,7 +35,6 @@ import io.spine.base.RejectionType;
 import io.spine.code.java.PackageName;
 import io.spine.code.java.SimpleClassName;
 import io.spine.code.proto.FieldDeclaration;
-import io.spine.protobuf.Messages;
 import io.spine.tools.java.code.BuilderSpec;
 import io.spine.tools.java.code.JavaPoetName;
 import io.spine.tools.java.javadoc.JavadocText;
@@ -62,7 +61,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  */
 final class RThrowableBuilderSpec implements BuilderSpec {
 
-    private static final NoArgMethod newBuilder = new NoArgMethod(Messages.METHOD_NEW_BUILDER);
+    private static final NoArgMethod newBuilder = new NoArgMethod("newBuilder");
     private static final String BUILDER_FIELD = "builder";
 
     private final RejectionType rejection;
@@ -105,9 +104,6 @@ final class RThrowableBuilderSpec implements BuilderSpec {
      * @return the {@code newInstance} specification
      */
     MethodSpec newBuilder() {
-        @SuppressWarnings("DuplicateStringLiteralInspection") /* The duplicated string is in
-                tests of the code which cannot share common constants with this class.
-                For the time being let's keep it as is. */
         var javadoc = fromEscaped("@return a new builder for the rejection").withNewLine();
         return methodBuilder(newBuilder.name())
                 .addModifiers(PUBLIC, STATIC)
@@ -164,7 +160,6 @@ final class RThrowableBuilderSpec implements BuilderSpec {
                 .build();
     }
 
-    @SuppressWarnings("DuplicateStringLiteralInspection") // The same string has different semantics
     private MethodSpec build() {
         var rawJavadoc = "Creates the rejection from the builder and validates it.";
         var javadoc = fromEscaped(rawJavadoc).withNewLine();

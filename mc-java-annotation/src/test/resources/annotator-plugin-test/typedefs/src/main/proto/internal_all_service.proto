@@ -25,7 +25,9 @@
  */
 syntax = "proto3";
 
-package spine.test.annotator;
+package given.annotation;
+
+option java_outer_classname = "InternalAllServiceProto";
 
 import "spine/options.proto";
 
