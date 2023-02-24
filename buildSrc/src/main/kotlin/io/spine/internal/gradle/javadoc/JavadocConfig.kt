@@ -43,7 +43,7 @@ object JavadocConfig {
     /**
      * Link to the documentation for Java 11 Standard Library API.
      *
-     * OpenJDK SE 11 is used for the reference.
+     * Oracle JDK SE 11 is used for the reference.
      */
     private const val standardLibraryAPI = "https://docs.oracle.com/en/java/javase/11/docs/api/"
 
