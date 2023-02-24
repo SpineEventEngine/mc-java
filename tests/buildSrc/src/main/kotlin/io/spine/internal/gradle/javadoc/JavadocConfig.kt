@@ -45,7 +45,7 @@ object JavadocConfig {
      *
      * OpenJDK SE 11 is used for the reference.
      */
-    private const val standardLibraryAPI = "https://cr.openjdk.java.net/~iris/se/11/latestSpec/api/"
+    private const val standardLibraryAPI = "https://docs.oracle.com/en/java/javase/11/docs/api/"
 
     @Suppress("MemberVisibilityCanBePrivate") // opened to be visible from docs.
     val tags = listOf(
