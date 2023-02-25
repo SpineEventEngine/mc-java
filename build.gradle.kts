@@ -26,8 +26,6 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.publish.PublishingRepos
 import io.spine.internal.gradle.publish.SpinePublishing
@@ -63,9 +61,6 @@ plugins {
     jacoco
     `gradle-doctor`
     id("project-report")
-    protobuf
-    java
-    id(protoData.pluginId) version protoData.version
 }
 
 private object BuildSettings {
@@ -92,11 +87,6 @@ allprojects {
 
 subprojects {
     apply(plugin = "module")
-    apply(plugin = "io.spine.protodata")
-    dependencies {
-        protoData(Spine(this).validation.java)
-    }
-    setupCodegen()
 }
 
 JacocoConfig.applyTo(project)
@@ -145,31 +135,4 @@ tasks.register("buildAll") {
 
 val check by tasks.existing {
     dependsOn(integrationTests)
-}
-
-typealias Module = Project
-
-/**
- * We configure ProtoData at the project level (and not in the `module.gradle.kts` script plugin)
- * because here the Gradle plugin is already applied and its extension is available.
- */
-fun Module.setupCodegen() {
-
-    protobuf {
-        protoc { artifact = Protobuf.compiler }
-    }
-
-    protoData {
-        renderers(
-            "io.spine.validation.java.PrintValidationInsertionPoints",
-            "io.spine.validation.java.JavaValidationRenderer",
-
-            // Suppress warnings in the generated code.
-            "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
-            "io.spine.protodata.codegen.java.annotation.SuppressWarningsAnnotation"
-        )
-        plugins(
-            "io.spine.validation.ValidationPlugin"
-        )
-    }
 }
