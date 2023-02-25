@@ -65,7 +65,7 @@ plugins {
     id("project-report")
     protobuf
     java
-    id(protoData.pluginId) version protoData.version //apply false
+    id(protoData.pluginId) version protoData.version
 }
 
 private object BuildSettings {
@@ -93,10 +93,10 @@ allprojects {
 subprojects {
     apply(plugin = "module")
     apply(plugin = "io.spine.protodata")
-    setupCodegen()
     dependencies {
         protoData(Spine(this).validation.java)
     }
+    setupCodegen()
 }
 
 JacocoConfig.applyTo(project)
