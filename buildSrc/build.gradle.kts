@@ -109,6 +109,8 @@ val dokkaVersion = "1.7.20"
  */
 val detektVersion = "1.22.0"
 
+val jvmVersion = JavaLanguageVersion.of(11)
+
 configurations.all {
     resolutionStrategy {
         force(
@@ -121,8 +123,6 @@ configurations.all {
         )
     }
 }
-
-val jvmVersion = JavaLanguageVersion.of(11)
 
 java {
     toolchain.languageVersion.set(jvmVersion)
