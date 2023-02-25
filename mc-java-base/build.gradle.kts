@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,15 @@
 
 import io.spine.internal.dependency.Spine
 
+buildscript {
+    standardSpineSdkRepositories()
+}
+
+plugins {
+    protobuf
+    id(protoData.pluginId) version protoData.version
+}
+
 dependencies {
     /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
        Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
@@ -39,9 +48,25 @@ dependencies {
     api(spine.validation.runtime)
     implementation(spine.pluginBase)
 
+    protoData(Spine(this).validation.java)
+
     testImplementation(spine.testlib)
     testImplementation(gradleTestKit())
     testImplementation(spine.pluginTestlib)
+}
+
+protoData {
+    renderers(
+        "io.spine.validation.java.PrintValidationInsertionPoints",
+        "io.spine.validation.java.JavaValidationRenderer",
+
+        // Suppress warnings in the generated code.
+        "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
+        "io.spine.protodata.codegen.java.annotation.SuppressWarningsAnnotation"
+    )
+    plugins(
+        "io.spine.validation.ValidationPlugin"
+    )
 }
 
 project.afterEvaluate {
