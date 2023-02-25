@@ -63,20 +63,6 @@ dependencies {
     testImplementation(spine.pluginTestlib)
 }
 
-protobuf {
-    generateProtoTasks {
-        all().forEach { task ->
-            val scope = task.sourceSet.name
-            task.generateDescriptorSet = true
-            with(task.descriptorSetOptions) {
-                path = "$buildDir/descriptors/${scope}/io.spine.tools.spine-mc-java-${scope}.desc"
-                includeImports = true
-                includeSourceInfo = true
-            }
-        }
-    }
-}
-
 tasks {
     /**
      * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
