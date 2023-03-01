@@ -27,8 +27,6 @@ syntax = "proto3";
 
 package given.annotation;
 
-import "spine/options.proto";
-
 option java_multiple_files = true;
 
 message FirstHere {

@@ -27,8 +27,6 @@ syntax = "proto3";
 
 package given.annotation;
 
-import "spine/options.proto";
-
 message FirstToCome {
     string value = 1;
 }
