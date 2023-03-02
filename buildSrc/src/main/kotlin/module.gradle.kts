@@ -48,20 +48,7 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.testing.configureLogging
 import io.spine.internal.gradle.testing.registerTestTasks
 import java.util.*
-import org.gradle.api.Project
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.api.tasks.testing.Test
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.exclude
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.idea
 import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.`maven-publish`
-import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.registering
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -86,8 +73,7 @@ CheckStyleConfig.applyTo(project)
 
 private object BuildSettings {
     private const val JAVA_VERSION = 11
-
-    val javaVersion = JavaLanguageVersion.of(JAVA_VERSION)
+    val javaVersion: JavaLanguageVersion = JavaLanguageVersion.of(JAVA_VERSION)
 }
 
 project.run {
@@ -229,7 +215,6 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
         dependsOn(prepareProtocConfigVersions)
     }
 }
-
 
 fun Module.setupSourceSets(generatedResources: String) {
     sourceSets.main {
