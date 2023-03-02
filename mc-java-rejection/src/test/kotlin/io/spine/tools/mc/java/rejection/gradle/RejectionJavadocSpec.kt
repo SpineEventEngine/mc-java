@@ -33,6 +33,7 @@ import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.generateRejections
+import io.spine.tools.mc.java.rejection.gen.RThrowableBuilderSpec.NEW_BUILDER_METHOD
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedBuilderClassComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedClassComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedFirstFieldComment
@@ -75,7 +76,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedClassComment(), rejection)
         assertMethodDoc(
             "@return a new builder for the rejection", rejection,
-            "newBuilder"
+            NEW_BUILDER_METHOD
         )
     }
 
