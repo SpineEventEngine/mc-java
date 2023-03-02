@@ -227,6 +227,9 @@ subprojects {
     // see https://github.com/SpineEventEngine/base/issues/657
     tasks.processTestResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
+    fun File.residesIn(directory: File): Boolean =
+        canonicalFile.startsWith(directory.absolutePath)
+
     /**
      * Exclude generated vanilla proto code from inputs of `JavaCompile` and `KotlinCompile`.
      */
@@ -248,7 +251,4 @@ subprojects {
             }
         }
     }
-
-    fun File.residesIn(directory: File): Boolean =
-        canonicalFile.startsWith(directory.absolutePath)
 }
