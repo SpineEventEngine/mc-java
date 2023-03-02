@@ -24,4 +24,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.gradle.kotlin.dsl.withType
+import io.spine.protodata.gradle.plugin.LaunchProtoData
+import org.gradle.api.file.SourceDirectorySet
+
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+/**
+ * Remove the generated vanilla proto code.
+ */
+tasks.withType<LaunchProtoData>().forEach { task ->
+    task.doLast {
+        delete("$buildDir/generated-proto")
+        delete("$buildDir/generated/source/proto")
+    }
+}
