@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import Build_gradle.Module
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.RunBuild
@@ -36,8 +37,9 @@ import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.protodata.gradle.plugin.LaunchProtoData
 import java.time.Duration
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 buildscript {
     standardSpineSdkRepositories()
@@ -158,6 +160,7 @@ typealias Module = Project
 fun Module.setupCodegen() {
 
     protobuf {
+        //generatedFilesBaseDir = "$projectDir/generated"
         protoc { artifact = Protobuf.compiler }
     }
 
@@ -175,13 +178,28 @@ fun Module.setupCodegen() {
         )
     }
 
+    val generatedSourceProto = "$buildDir/generated/source/proto"
+
     /**
      * Remove the generated vanilla proto code.
      */
-    tasks.withType<LaunchProtoData>().forEach { task ->
-        task.doLast {
-            delete("$buildDir/generated-proto")
-            delete("$buildDir/generated/source/proto")
+    project.afterEvaluate {
+        val generatedSourceProtoDir = File(generatedSourceProto)
+        val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
+
+        tasks.withType<JavaCompile>().forEach {
+            it.source = it.source.filter(notInSourceDir).asFileTree
+        }
+
+        tasks.withType<KotlinCompile<*>>().forEach {
+            val thisTask = it as KotlinCompileTool
+            val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
+            with(thisTask.sources as ConfigurableFileCollection) {
+                setFrom(filteredKotlin)
+            }
         }
     }
 }
+
+fun File.residesIn(directory: File): Boolean =
+    canonicalFile.startsWith(directory.absolutePath)
