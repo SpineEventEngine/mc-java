@@ -36,6 +36,7 @@ import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
+import io.spine.protodata.gradle.plugin.LaunchProtoData
 import java.time.Duration
 
 buildscript {
@@ -172,5 +173,15 @@ fun Module.setupCodegen() {
         plugins(
             "io.spine.validation.ValidationPlugin"
         )
+    }
+
+    /**
+     * Remove the generated vanilla proto code.
+     */
+    tasks.withType<LaunchProtoData>().forEach { task ->
+        task.doLast {
+            delete("$buildDir/generated-proto")
+            delete("$buildDir/generated/source/proto")
+        }
     }
 }
