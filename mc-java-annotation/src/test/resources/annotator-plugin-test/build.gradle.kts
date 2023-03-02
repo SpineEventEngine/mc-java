@@ -77,6 +77,17 @@ subprojects {
     repositories.standardToSpineSdk()
 
     val spine = io.spine.internal.dependency.Spine(project)
+
+    configurations {
+        all {
+            resolutionStrategy {
+                force(
+                    spine.base,
+                )
+            }
+        }
+    }
+
     dependencies {
         implementation(spine.base)
         implementation(Grpc.stub)

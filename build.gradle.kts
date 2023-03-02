@@ -48,6 +48,7 @@ buildscript {
             resolutionStrategy {
                 force(
                     spine.base,
+                    spine.toolBase,
                     spine.server,
                     spine.validation.runtime,
                     io.spine.internal.dependency.Spine.ProtoData.pluginLib
