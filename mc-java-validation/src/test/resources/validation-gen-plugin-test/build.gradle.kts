@@ -24,10 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.gradle.api.file.SourceDirectorySet
-import java.net.URI
-
 import io.spine.internal.gradle.applyStandardWithGitHub
+import java.io.File
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.SourceDirectorySet
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 // Common build file for the tests with same configuration
 
@@ -83,3 +87,28 @@ sourceSets {
         (extensions.getByName("proto") as SourceDirectorySet).srcDir("$projectDir/src/main/proto")
     }
 }
+
+val generatedSourceProto = "$buildDir/generated/source/proto"
+
+/**
+ * Remove the generated vanilla proto code.
+ */
+project.afterEvaluate {
+    val generatedSourceProtoDir = File(generatedSourceProto)
+    val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
+
+    tasks.withType<JavaCompile>().forEach {
+        it.source = it.source.filter(notInSourceDir).asFileTree
+    }
+
+    tasks.withType<KotlinCompile<*>>().forEach {
+        val thisTask = it as KotlinCompileTool
+        val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
+        with(thisTask.sources as ConfigurableFileCollection) {
+            setFrom(filteredKotlin)
+        }
+    }
+}
+
+fun File.residesIn(directory: File): Boolean =
+    canonicalFile.startsWith(directory.absolutePath)

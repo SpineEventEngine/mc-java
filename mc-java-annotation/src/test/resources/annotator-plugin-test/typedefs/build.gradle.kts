@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,4 +24,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
+
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+val generatedSourceProto = "$buildDir/generated/source/proto"
+
+/**
+ * Remove the generated vanilla proto code.
+ */
+project.afterEvaluate {
+    val generatedSourceProtoDir = File(generatedSourceProto)
+    val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
+
+    tasks.withType<JavaCompile>().forEach {
+        it.source = it.source.filter(notInSourceDir).asFileTree
+    }
+
+    tasks.withType<KotlinCompile<*>>().forEach {
+        val thisTask = it as KotlinCompileTool
+        val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
+        with(thisTask.sources as ConfigurableFileCollection) {
+            setFrom(filteredKotlin)
+        }
+    }
+}
+
+fun File.residesIn(directory: File): Boolean =
+    canonicalFile.startsWith(directory.absolutePath)
