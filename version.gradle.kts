@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,5 +32,5 @@
  * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
  * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.134")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.140")
 val versionToPublish by extra(mcJavaVersion)

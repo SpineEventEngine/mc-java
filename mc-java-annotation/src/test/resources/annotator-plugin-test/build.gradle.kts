@@ -24,9 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.gradle.api.file.SourceDirectorySet
-import java.net.URI
-
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.gradle.standardToSpineSdk
 import org.gradle.kotlin.dsl.all
@@ -77,6 +74,17 @@ subprojects {
     repositories.standardToSpineSdk()
 
     val spine = io.spine.internal.dependency.Spine(project)
+
+    configurations {
+        all {
+            resolutionStrategy {
+                force(
+                    spine.base,
+                )
+            }
+        }
+    }
+
     dependencies {
         implementation(spine.base)
         implementation(Grpc.stub)

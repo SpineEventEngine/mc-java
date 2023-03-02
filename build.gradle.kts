@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
 import java.time.Duration
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 buildscript {
     standardSpineSdkRepositories()
@@ -46,6 +48,7 @@ buildscript {
             resolutionStrategy {
                 force(
                     spine.base,
+                    spine.toolBase,
                     spine.server,
                     spine.validation.runtime,
                     io.spine.internal.dependency.Spine.ProtoData.pluginLib
