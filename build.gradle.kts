@@ -35,8 +35,6 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
 import java.time.Duration
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 buildscript {
     standardSpineSdkRepositories()

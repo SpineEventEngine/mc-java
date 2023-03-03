@@ -106,12 +106,11 @@ tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-val generatedSourceProto = "$buildDir/generated/source/proto"
-
 /**
  * Remove the generated vanilla proto code.
  */
 project.afterEvaluate {
+    val generatedSourceProto = "$buildDir/generated/source/proto"
     val generatedSourceProtoDir = File(generatedSourceProto)
     val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
 
