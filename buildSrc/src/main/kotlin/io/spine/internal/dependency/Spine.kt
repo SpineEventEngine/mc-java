@@ -61,7 +61,7 @@ class Spine(p: ExtensionAware) {
          *
          * @see [ProtoData]
          */
-        const val protoData = "0.7.5"
+        const val protoData = "0.7.9"
 
         /**
          * The default version of `base` to use.
@@ -249,6 +249,7 @@ class Spine(p: ExtensionAware) {
 
         const val pluginId = "io.spine.protodata"
         const val pluginLib = "${Spine.group}:protodata:$version"
+        const val gradleApi = "${group}:protodata-gradle-api:$version"
     }
 
     /**
