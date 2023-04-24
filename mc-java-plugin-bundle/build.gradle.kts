@@ -142,8 +142,9 @@ tasks.shadowJar {
          * The ProtoData plugin will be added to the user's build via a dependency.
          * See the `pom.xml` manipulations above.
          */
-        "io/spine/protodata/**",
-        "META-INF/gradle-plugins/io.spine.protodata.properties",
+        "io/spine/protodata/**",  // Java classes
+        "spine/protodata/**", // Protobuf definitions
+        "META-INF/gradle-plugins/io.spine.protodata.properties",  // Plugin declaration
 
         /**
          * Exclude Gradle types to reduce the size of the resulting JAR.
