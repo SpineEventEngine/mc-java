@@ -249,7 +249,6 @@ class Spine(p: ExtensionAware) {
 
         const val pluginId = "io.spine.protodata"
         const val pluginLib = "${Spine.group}:protodata:$version"
-        const val gradleApi = "${group}:protodata-gradle-api:$version"
     }
 
     /**
