@@ -113,7 +113,6 @@ publishing {
                 Node(dependency, "scope", "runtime")
 
                 val exclusions = Node(dependency, "exclusions")
-                excludeGroupId(exclusions, "io.spine.protodata")
                 excludeGroupId(exclusions, "org.jetbrains.kotlin")
                 excludeGroupId(exclusions, "com.google.protobuf")
                 excludeGroupId(exclusions, "io.spine.tools")
