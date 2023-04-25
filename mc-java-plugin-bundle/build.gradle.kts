@@ -42,7 +42,7 @@ val spinePublishing = rootProject.the<SpinePublishing>()
  *
  * This value is also used in `io.spine.tools.mc.java.gradle.Artifacts.kt`.
  */
-val artifactId = spinePublishing.artifactPrefix + "mc-java-plugins"
+val projectArtifact = spinePublishing.artifactPrefix + "mc-java-plugins"
 
 val protoDataVersion: String by extra
 
@@ -62,7 +62,7 @@ publishing {
     publications {
         create("fatJar", MavenPublication::class) {
             groupId = groupName
-            artifactId = artifactId
+            artifactId = projectArtifact
             version = versionName
             artifact(tasks.shadowJar)
 
