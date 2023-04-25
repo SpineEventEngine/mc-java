@@ -29,7 +29,6 @@
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
-import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Truth
 import io.spine.internal.gradle.applyStandard
 import io.spine.internal.gradle.excludeProtobufLite
@@ -39,14 +38,11 @@ import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
 import io.spine.internal.gradle.testing.configureLogging
 import java.io.File
-
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
-
-
 
 buildscript {
 
@@ -79,6 +75,7 @@ buildscript {
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
+                    spine.validation.runtime,
                     io.spine.internal.dependency.Jackson.core,
                     io.spine.internal.dependency.Jackson.moduleKotlin,
                     io.spine.internal.dependency.Jackson.databind,
@@ -128,6 +125,7 @@ allprojects {
                     spine.testlib,
                     spine.toolBase,
                     spine.pluginBase,
+                    spine.validation.runtime,
                     JUnit.runner,
                     Jackson.core,
                     Jackson.moduleKotlin,
