@@ -42,7 +42,7 @@ val spinePublishing = rootProject.the<SpinePublishing>()
  *
  * This value is also used in `io.spine.tools.mc.java.gradle.Artifacts.kt`.
  */
-val pArtifact = spinePublishing.artifactPrefix + "mc-java-plugins"
+val projectArtifact = spinePublishing.artifactPrefix + "mc-java-plugins"
 
 val protoDataVersion: String by extra
 
@@ -56,14 +56,14 @@ application {
 }
 
 publishing {
-    val pGroup = project.group.toString()
-    val pVersion = project.version.toString()
+    val groupName = project.group.toString()
+    val versionName = project.version.toString()
 
     publications {
         create("fatJar", MavenPublication::class) {
-            groupId = pGroup
-            artifactId = pArtifact
-            version = pVersion
+            groupId = groupName
+            artifactId = projectArtifact
+            version = versionName
             artifact(tasks.shadowJar)
 
             /**
@@ -113,7 +113,6 @@ publishing {
                 Node(dependency, "scope", "runtime")
 
                 val exclusions = Node(dependency, "exclusions")
-                excludeGroupId(exclusions, "io.spine.protodata")
                 excludeGroupId(exclusions, "org.jetbrains.kotlin")
                 excludeGroupId(exclusions, "com.google.protobuf")
                 excludeGroupId(exclusions, "io.spine.tools")
@@ -137,14 +136,14 @@ tasks.publish {
 tasks.shadowJar {
     exclude(
         /**
-         * Excluding this type to avoid it being located in the fat JAR.
+         * Excluding these types to avoid clashes at user's build classpath.
          *
-         * Locating this type in its own `io:spine:protodata` artifact is crucial
-         * for obtaining proper version values from the manifest file.
-         * This file is only present in `io:spine:protodata` artifact.
+         * The ProtoData plugin will be added to the user's build via a dependency.
+         * See the `pom.xml` manipulations above.
          */
-        "io/spine/protodata/gradle/plugin/Plugin.class",
-        "META-INF/gradle-plugins/io.spine.protodata.properties",
+        "io/spine/protodata/**",  // Java classes
+        "spine/protodata/**", // Protobuf definitions
+        "META-INF/gradle-plugins/io.spine.protodata.properties",  // Plugin declaration
 
         /**
          * Exclude Gradle types to reduce the size of the resulting JAR.

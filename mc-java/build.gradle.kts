@@ -53,7 +53,6 @@ dependencies {
 
     implementation(spine.pluginBase)
     implementation(ProtoData.pluginLib)
-    implementation(ProtoData.compiler)
     implementation(validation.config)
 
     testImplementation(gradleApi())
