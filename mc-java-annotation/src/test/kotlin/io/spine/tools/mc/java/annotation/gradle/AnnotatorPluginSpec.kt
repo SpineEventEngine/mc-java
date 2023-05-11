@@ -38,10 +38,8 @@ import io.spine.code.proto.FileSet
 import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName.build
 import io.spine.tools.fs.DirectoryName.descriptors
-import io.spine.tools.fs.DirectoryName.generatedProto
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
-import io.spine.tools.fs.DirectoryName.main
 import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
@@ -188,6 +186,9 @@ internal class AnnotatorPluginSpec {
     }
 }
 
+private val Path.generatedFromProto: Path
+    get() = this / "build/generated/source/proto/main"
+
 private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) =
     checkServiceAnnotations(testFile.fileName(), Internal::class.java, shouldBeAnnotated)
 
@@ -256,14 +257,13 @@ private fun parse(file: Path): AbstractJavaSource<JavaClassSource> {
 }
 
 private fun SourceCheck.verify(sourcePath: Path) {
-    val filePath = moduleDir / build / generatedProto / main / java / sourcePath
+    val filePath = moduleDir.generatedFromProto / java / sourcePath
     val javaSource = parse(filePath)
     accept(javaSource)
 }
 
 private fun SourceCheck.verifyService(serviceFile: SourceFile) {
-    val grpcMain = moduleDir / build / generatedProto / main / grpc
-    val filePath = grpcMain / serviceFile.path()
+    val filePath = moduleDir.generatedFromProto / grpc / serviceFile.path()
     val javaSource = parse(filePath)
     accept(javaSource)
 }
