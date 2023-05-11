@@ -38,11 +38,14 @@ import org.gradle.api.logging.Logger;
 import org.gradle.api.tasks.SourceSet;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.spine.tools.fs.DirectoryName.grpc;
+import static io.spine.tools.fs.DirectoryName.java;
 import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
-import static io.spine.tools.gradle.protobuf.Projects.generatedProtoGrpcDir;
-import static io.spine.tools.gradle.protobuf.Projects.generatedProtoJavaDir;
+import static io.spine.tools.gradle.protobuf.Projects.getGeneratedFilesBaseDir;
 import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
 import static io.spine.tools.gradle.protobuf.SourceSetExtsKt.containsProtoFiles;
 import static io.spine.tools.mc.java.annotation.mark.ApiOption.beta;
@@ -126,5 +129,15 @@ final class AnnotationAction implements Action<Task>, Logging {
                 sourceSetName,
                 sourceSetExtensionName
         );
+    }
+
+    private static Path generatedProtoJavaDir(Project project, SourceSetName ssn) {
+        var baseDir = Paths.get(getGeneratedFilesBaseDir(project));
+        return baseDir.resolve(ssn.getValue()).resolve(java.value());
+    }
+
+    private static Path generatedProtoGrpcDir(Project project, SourceSetName ssn) {
+        var baseDir = Paths.get(getGeneratedFilesBaseDir(project));
+        return baseDir.resolve(ssn.getValue()).resolve(grpc.value());
     }
 }
