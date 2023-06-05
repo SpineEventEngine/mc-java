@@ -162,7 +162,6 @@ typealias Module = Project
 fun Module.setupCodegen() {
 
     protobuf {
-        //generatedFilesBaseDir = "$projectDir/generated"
         protoc { artifact = Protobuf.compiler }
     }
 
@@ -170,37 +169,11 @@ fun Module.setupCodegen() {
         renderers(
             "io.spine.validation.java.PrintValidationInsertionPoints",
             "io.spine.validation.java.JavaValidationRenderer",
-
-            // Suppress warnings in the generated code.
-//            "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
-//            "io.spine.protodata.codegen.java.annotation.SuppressWarningsAnnotation"
         )
         plugins(
             "io.spine.validation.ValidationPlugin"
         )
     }
-//
-//    val generatedSourceProto = "$buildDir/generated/source/proto"
-//
-//    /**
-//     * Remove the generated vanilla proto code.
-//     */
-//    project.afterEvaluate {
-//        val generatedSourceProtoDir = File(generatedSourceProto)
-//        val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
-//
-//        tasks.withType<JavaCompile>().forEach {
-//            it.source = it.source.filter(notInSourceDir).asFileTree
-//        }
-//
-//        tasks.withType<KotlinCompile<*>>().forEach {
-//            val thisTask = it as KotlinCompileTool
-//            val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
-//            with(thisTask.sources as ConfigurableFileCollection) {
-//                setFrom(filteredKotlin)
-//            }
-//        }
-//    }
 }
 
 fun File.residesIn(directory: File): Boolean =
