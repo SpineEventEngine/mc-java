@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.dependency
+import io.spine.internal.dependency.Protobuf
+import io.spine.internal.gradle.protobuf.setup
 
-// https://github.com/google/flogger
-object Flogger {
-    internal const val version = "0.7.4"
-    const val lib     = "com.google.flogger:flogger:${version}"
-    @Suppress("unused")
-    object Runtime {
-        const val systemBackend = "com.google.flogger:flogger-system-backend:${version}"
-        const val log4j2Backend = "com.google.flogger:flogger-log4j2-backend:${version}"
-        const val slf4JBackend  = "com.google.flogger:flogger-slf4j-backend:${version}"
-        const val grpcContext   = "com.google.flogger:flogger-grpc-context:${version}"
+plugins {
+    id("java-library")
+    id("com.google.protobuf")
+}
+
+
+// For generating test fixtures. See `src/test/proto`.
+protobuf {
+    configurations.excludeProtobufLite()
+    protoc {
+        artifact = Protobuf.compiler
+    }
+    generateProtoTasks.all().configureEach {
+        setup()
     }
 }

@@ -29,10 +29,10 @@
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
+import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Truth
+import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.applyStandard
-import io.spine.internal.gradle.excludeProtobufLite
-import io.spine.internal.gradle.forceVersions
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
@@ -66,16 +66,16 @@ buildscript {
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
-        val spine = io.spine.internal.dependency.Spine(project)
+        doForceVersions(this)
         all {
             resolutionStrategy {
                 force(
-                    spine.base,
-                    spine.time,
-                    spine.toolBase,
-                    spine.pluginBase,
-                    spine.validation.runtime,
+                    io.spine.internal.dependency.Spine.base,
+                    io.spine.internal.dependency.Spine.logging,
+                    io.spine.internal.dependency.Spine.time,
+                    io.spine.internal.dependency.Spine.toolBase,
+                    io.spine.internal.dependency.Spine.pluginBase,
+                    io.spine.internal.dependency.Validation.runtime,
                     io.spine.internal.dependency.Jackson.core,
                     io.spine.internal.dependency.Jackson.moduleKotlin,
                     io.spine.internal.dependency.Jackson.databind,
@@ -113,19 +113,19 @@ allprojects {
     group = "io.spine.tools.tests"
     version = extra["versionToPublish"]!!
 
-    val spine = io.spine.internal.dependency.Spine(project)
     configurations {
         forceVersions()
         excludeProtobufLite()
         all {
             resolutionStrategy {
                 force(
-                    spine.base,
-                    spine.time,
-                    spine.testlib,
-                    spine.toolBase,
-                    spine.pluginBase,
-                    spine.validation.runtime,
+                    Spine.base,
+                    Spine.logging,
+                    Spine.time,
+                    Spine.testlib,
+                    Spine.toolBase,
+                    Spine.pluginBase,
+                    Spine.validation.runtime,
                     JUnit.runner,
                     Jackson.core,
                     Jackson.moduleKotlin,
@@ -161,25 +161,25 @@ subprojects {
         }
     }
 
-    val spine = io.spine.internal.dependency.Spine(project)
+    val spine = io.spine.internal.dependency.Spine
     dependencies {
         errorprone(ErrorProne.core)
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
-        implementation(spine.base)
-        implementation(spine.validation.runtime)
-        testImplementation(spine.testlib)
+        implementation(Spine.base)
+        implementation(Spine.logging)
+        testImplementation(Spine.testlib)
+        implementation(Validation.runtime)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
-        val spine = io.spine.internal.dependency.Spine(project)
+        doForceVersions(this)
         all {
             resolutionStrategy {
                 force(
-                    spine.validation.runtime,
+                    Validation.runtime,
                 )
             }
         }

@@ -77,7 +77,7 @@ repositories.applyStandardWithGitHub(project,
 )
 
 dependencies {
-    implementation(io.spine.internal.dependency.Spine(project).base)
+    implementation(io.spine.internal.dependency.Spine.base)
 }
 
 sourceSets {

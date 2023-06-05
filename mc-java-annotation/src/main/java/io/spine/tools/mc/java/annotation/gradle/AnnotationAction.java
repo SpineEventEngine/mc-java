@@ -45,6 +45,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.fs.DirectoryName.grpc;
 import static io.spine.tools.fs.DirectoryName.java;
 import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
+import static io.spine.tools.gradle.protobuf.Projects.getGeneratedDir;
 import static io.spine.tools.gradle.protobuf.Projects.getGeneratedFilesBaseDir;
 import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
 import static io.spine.tools.gradle.protobuf.SourceSetExtsKt.containsProtoFiles;

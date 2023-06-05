@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.validation.gen;
 
 import com.squareup.javapoet.CodeBlock;
 import io.spine.code.proto.FieldDeclaration;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 
 import java.util.function.Function;
 
@@ -39,7 +39,7 @@ import static java.lang.System.lineSeparator;
 /**
  * Conditional code which checks a validation constraint.
  */
-final class ConstraintCode implements Logging {
+final class ConstraintCode implements WithLogging {
 
     private static final CodeBlock EMPTY = CodeBlock.of("");
     private final Function<FieldAccess, CodeBlock> declarations;
@@ -113,7 +113,9 @@ final class ConstraintCode implements Logging {
     private CodeBlock
     evaluateConstantCondition(BooleanExpression condition, CodeBlock onViolation) {
         if (condition.isConstantTrue()) {
-            _warn().log("Violation is always produced as validation check is a constant.");
+            getLogger().atWarning().log(() ->
+                "Violation is always produced because validation check is a constant."
+            );
             return onViolation;
         } else {
             return empty();

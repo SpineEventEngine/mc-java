@@ -24,12 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.Spine
+
 plugins {
     java
     id("io.spine.mc-java")
 }
 
 dependencies {
+    implementation(Spine.logging)
     testImplementation(project(":factories"))
 }
 

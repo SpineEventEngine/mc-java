@@ -34,7 +34,7 @@ import io.spine.validate.ValidationException;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
-import static io.spine.json.Json.toJson;
+import static io.spine.type.Json.toJson;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.fail;
 

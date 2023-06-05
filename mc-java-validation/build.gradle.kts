@@ -27,17 +27,18 @@
 import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.JavaX
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
 dependencies {
     api(JavaPoet.lib)
-    val spine = Spine(project)
-    api(spine.validation.runtime)
-    implementation(spine.toolBase)
+    api(Validation.runtime)
+    implementation(Spine.toolBase)
+    implementation(Spine.logging)
     implementation(JavaX.annotations)
 
-    testImplementation(spine.testlib)
+    testImplementation(Spine.testlib)
 
     testImplementation(gradleTestKit())
-    testImplementation(spine.pluginBase)
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.pluginBase)
+    testImplementation(Spine.pluginTestlib)
 }

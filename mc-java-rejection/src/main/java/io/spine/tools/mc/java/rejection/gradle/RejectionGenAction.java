@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.rejection.gradle;
 
 import com.google.common.collect.ImmutableSet;
 import io.spine.base.RejectionThrowable;
+import io.spine.logging.WithLogging;
 import io.spine.code.java.PackageName;
 import io.spine.code.java.SimpleClassName;
 import io.spine.code.proto.FileSet;
@@ -56,10 +57,10 @@ import java.util.function.Supplier;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
-import static com.google.common.flogger.LazyArgs.lazy;
 import static io.spine.tools.gradle.project.Projects.getSourceSets;
 import static io.spine.tools.mc.java.gradle.Projects.generatedRejectionsDir;
 import static io.spine.tools.mc.java.gradle.Projects.protoDir;
+import static java.lang.String.format;
 
 /**
  * Generates source code of rejections.
@@ -70,7 +71,7 @@ import static io.spine.tools.mc.java.gradle.Projects.protoDir;
  *
  * <p>The {@link McJavaOptions#indent} option sets the indentation of the generated source files.
  */
-final class RejectionGenAction extends CodeGenerationAction {
+final class RejectionGenAction extends CodeGenerationAction implements WithLogging {
 
     private final SourceSetName ssn;
 
@@ -168,15 +169,17 @@ final class RejectionGenAction extends CodeGenerationAction {
     }
 
     private void logGeneratingForFile(Path outputDir, RejectionsFile source) {
-        _debug().log(
-                "Generating rejections from the file: `%s`" +
-                        " `javaPackage`: `%s`," +
-                        " `javaOuterClassName`: `%s`." +
-                        " Output directory: `%s`.",
-                source.path(),
-                lazy(() -> PackageName.resolve(source.descriptor().toProto())),
-                lazy(() -> SimpleClassName.outerOf(source.descriptor())),
-                outputDir
+        getLogger().atDebug().log(
+                () ->
+                        format(
+                                "Generating rejections from the file: `%s`" +
+                                        " `javaPackage`: `%s`," +
+                                        " `javaOuterClassName`: `%s`." +
+                                        " Output directory: `%s`.",
+                                source.path(),
+                                PackageName.resolve(source.descriptor().toProto()),
+                                SimpleClassName.outerOf(source.descriptor()),
+                                outputDir)
         );
     }
 

@@ -25,6 +25,7 @@
  */
 
 import io.spine.internal.gradle.applyStandardWithGitHub
+import io.spine.internal.dependency.Spine
 
 buildscript {
 
@@ -77,6 +78,6 @@ subprojects {
     )
 
     dependencies {
-        implementation(io.spine.internal.dependency.Spine(project).base)
+        implementation(Spine.base)
     }
 }

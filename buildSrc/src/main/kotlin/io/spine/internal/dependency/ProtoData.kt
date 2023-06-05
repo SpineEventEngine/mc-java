@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,19 @@
 
 package io.spine.internal.dependency
 
-// https://github.com/google/flogger
-object Flogger {
-    internal const val version = "0.7.4"
-    const val lib     = "com.google.flogger:flogger:${version}"
-    @Suppress("unused")
-    object Runtime {
-        const val systemBackend = "com.google.flogger:flogger-system-backend:${version}"
-        const val log4j2Backend = "com.google.flogger:flogger-log4j2-backend:${version}"
-        const val slf4JBackend  = "com.google.flogger:flogger-slf4j-backend:${version}"
-        const val grpcContext   = "com.google.flogger:flogger-grpc-context:${version}"
-    }
+/**
+ * Dependencies on ProtoData modules.
+ *
+ * See [`SpineEventEngine/ProtoData`](https://github.com/SpineEventEngine/ProtoData/).
+ */
+@Suppress("unused")
+object ProtoData {
+    const val version = "0.8.0"
+    const val group = "io.spine.protodata"
+    const val compiler = "$group:protodata-compiler:$version"
+
+    const val codegenJava = "io.spine.protodata:protodata-codegen-java:$version"
+
+    const val pluginId = "io.spine.protodata"
+    const val pluginLib = "${Spine.group}:protodata:$version"
 }

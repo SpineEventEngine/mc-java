@@ -76,6 +76,9 @@ public final class Plugin {
     public static void main(String[] args) {
         var request = readRequest();
         var config = readConfig(request);
+
+        // todo: Add Logging
+
         var generator = CompositeGenerator.of(
                 InterfaceGen.instance(config),
                 MethodGen.instance(config),

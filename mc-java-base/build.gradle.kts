@@ -25,6 +25,7 @@
  */
 
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
 dependencies {
     /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
@@ -33,15 +34,15 @@ dependencies {
     implementation(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
-    val spine = Spine(project)
-    api(spine.modelCompiler)
-    api(spine.validation.config)
-    api(spine.validation.runtime)
-    implementation(spine.pluginBase)
+    api(Spine.modelCompiler)
+    api(Validation.config)
+    api(Validation.runtime)
+    implementation(Spine.pluginBase)
+    implementation(Spine.logging)
 
-    testImplementation(spine.testlib)
+    testImplementation(Spine.testlib)
     testImplementation(gradleTestKit())
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.pluginTestlib)
 }
 
 project.afterEvaluate {

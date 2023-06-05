@@ -39,7 +39,7 @@ dependencies {
     io.spine.internal.dependency.Protobuf.libs.forEach {
         testFixturesImplementation(it)
     }
-    val spine = io.spine.internal.dependency.Spine(project)
+    val spine = io.spine.internal.dependency.Spine
     testFixturesImplementation(spine.base)
     testFixturesImplementation(spine.validation.runtime)
 }

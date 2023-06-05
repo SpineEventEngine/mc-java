@@ -41,11 +41,11 @@ dependencies {
     }
 
     implementation(project(":mc-java-base"))
-    val spine = Spine(project)
-    implementation(spine.pluginBase)
+    implementation(Spine.pluginBase)
+    implementation(Spine.logging)
 
-    testFixturesImplementation(spine.toolBase)
-    testFixturesImplementation(spine.testlib)
+    testFixturesImplementation(Spine.toolBase)
+    testFixturesImplementation(Spine.testlib)
     testFixturesImplementation(Roaster.api) {
         exclude(group = group)
     }
@@ -53,7 +53,7 @@ dependencies {
         exclude(group = group)
     }
 
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.pluginTestlib)
     testImplementation(gradleTestKit())
 }
 
