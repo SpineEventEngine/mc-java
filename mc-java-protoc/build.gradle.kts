@@ -80,28 +80,3 @@ tasks.jar {
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
-
-val generatedSourceProto = "$buildDir/generated/source/proto"
-
-/**
- * Remove the generated vanilla proto code.
- */
-project.afterEvaluate {
-    val generatedSourceProtoDir = File(generatedSourceProto)
-    val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
-
-    tasks.withType<JavaCompile>().forEach {
-        it.source = it.source.filter(notInSourceDir).asFileTree
-    }
-
-    tasks.withType<KotlinCompile<*>>().forEach {
-        val thisTask = it as KotlinCompileTool
-        val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
-        with(thisTask.sources as ConfigurableFileCollection) {
-            setFrom(filteredKotlin)
-        }
-    }
-}
-
-fun File.residesIn(directory: File): Boolean =
-    canonicalFile.startsWith(directory.absolutePath)
