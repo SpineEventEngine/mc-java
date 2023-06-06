@@ -32,14 +32,16 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
-import io.spine.base.RejectionType;
 import io.spine.code.java.PackageName;
 import io.spine.code.java.SimpleClassName;
-import io.spine.code.proto.FieldDeclaration;
+import io.spine.protodata.Field;
 import io.spine.tools.java.code.BuilderSpec;
 import io.spine.tools.java.code.JavaPoetName;
+import io.spine.tools.java.code.field.FieldName;
 import io.spine.tools.java.javadoc.JavadocText;
 import io.spine.tools.mc.java.field.FieldType;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.rejection.v2.RejectionTypeInfo;
 import io.spine.validate.Validate;
 
 import java.util.ArrayList;
@@ -68,24 +70,26 @@ public final class RThrowableBuilderSpec implements BuilderSpec {
     private static final NoArgMethod newBuilder = new NoArgMethod(NEW_BUILDER_METHOD);
     private static final String BUILDER_FIELD = "builder";
 
-    private final RejectionType rejection;
+    private final RejectionTypeInfo rejection;
     private final JavaPoetName messageClass;
     private final JavaPoetName throwableClass;
     private final SimpleClassName name;
+    private final CodegenContext context;
 
-    RThrowableBuilderSpec(RejectionType rejection,
+    RThrowableBuilderSpec(RejectionTypeInfo rejection,
                           JavaPoetName messageClass,
-                          JavaPoetName throwableClass) {
+                          JavaPoetName throwableClass,
+                          CodegenContext context) {
         this.rejection = rejection;
         this.messageClass = messageClass;
         this.throwableClass = throwableClass;
         this.name = SimpleClassName.ofBuilder();
+        this.context = context;
     }
 
     @Override
     public PackageName packageName() {
-        var packageName = rejection.javaPackage();
-        return packageName;
+        return PackageName.of(rejection.javaPackage());
     }
 
     @Override
@@ -176,7 +180,7 @@ public final class RThrowableBuilderSpec implements BuilderSpec {
     }
 
     private JavadocText classJavadoc() {
-        var rejectionName = rejection.simpleJavaClassName().value();
+        var rejectionName = rejection.simpleJavaClassName();
         var javadocText = CodeBlock.builder()
                 .add("The builder for the {@code $L} rejection.", rejectionName)
                 .build()
@@ -199,27 +203,29 @@ public final class RThrowableBuilderSpec implements BuilderSpec {
         List<MethodSpec> methods = new ArrayList<>();
         var fields = rejection.fields();
         for (var field : fields) {
-            var fieldType = FieldType.of(field);
+            var fieldType = FieldType.of(field, context);
             var setter = fieldSetter(field, fieldType);
             methods.add(setter);
         }
         return methods;
     }
 
-    private MethodSpec fieldSetter(FieldDeclaration field, FieldType fieldType) {
-        var fieldName = field.name();
+    private MethodSpec fieldSetter(Field field, FieldType fieldType) {
+        var fieldName = io.spine.code.proto.FieldName.of(field.getName().getValue());
         var parameterName = fieldName.javaCase();
         var methodName = fieldType.primarySetter()
-                                  .format(io.spine.tools.java.code.field.FieldName.from(fieldName));
+                                  .format(FieldName.from(fieldName));
         var methodBuilder = methodBuilder(methodName)
                 .addModifiers(PUBLIC)
                 .returns(thisType())
                 .addParameter(fieldType.name(), parameterName)
                 .addStatement("$L.$L($L)", BUILDER_FIELD, methodName, parameterName)
                 .addStatement(BuilderSpec.RETURN_STATEMENT);
-        field.leadingComments()
-             .map(RThrowableBuilderSpec::wrapInPre)
-             .ifPresent(methodBuilder::addJavadoc);
+
+        var leadingComment = field.getDoc().getLeadingComment();
+        if (!leadingComment.isEmpty()) {
+            methodBuilder.addJavadoc(wrapInPre(leadingComment));
+        }
         return methodBuilder.build();
     }
 

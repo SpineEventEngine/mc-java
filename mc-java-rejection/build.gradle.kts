@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
 

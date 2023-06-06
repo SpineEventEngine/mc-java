@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
@@ -37,6 +38,8 @@ dependencies {
     api(Spine.modelCompiler)
     api(Validation.config)
     api(Validation.runtime)
+    api(ProtoData.codegenJava)
+
     implementation(Spine.pluginBase)
     implementation(Spine.logging)
 

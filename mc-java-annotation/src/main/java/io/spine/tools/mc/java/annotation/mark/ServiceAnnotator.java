@@ -31,6 +31,7 @@ import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.Descriptors.ServiceDescriptor;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.code.java.ClassName;
+import io.spine.tools.mc.java.CodegenContext;
 
 import java.nio.file.Path;
 
@@ -46,8 +47,9 @@ final class ServiceAnnotator extends OptionAnnotator<ServiceDescriptor> {
     ServiceAnnotator(ClassName annotation,
                      ApiOption option,
                      ImmutableList<FileDescriptor> fileDescriptors,
-                     Path genProtoDir) {
-        super(annotation, option, fileDescriptors, genProtoDir);
+                     Path genProtoDir,
+                     CodegenContext context) {
+        super(annotation, option, fileDescriptors, genProtoDir, context);
     }
 
     @Override

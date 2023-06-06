@@ -34,6 +34,7 @@ import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.Descriptors.GenericDescriptor;
 import io.spine.code.java.ClassName;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 
 import java.nio.file.Path;
 
@@ -63,8 +64,9 @@ public abstract class OptionAnnotator<D extends GenericDescriptor> extends Annot
     protected OptionAnnotator(ClassName annotation,
                               ApiOption option,
                               ImmutableList<FileDescriptor> fileDescriptors,
-                              Path genProtoDir) {
-        super(annotation, fileDescriptors, genProtoDir);
+                              Path genProtoDir,
+                              CodegenContext context) {
+        super(annotation, fileDescriptors, genProtoDir, context);
         this.option = checkNotNull(option);
     }
 

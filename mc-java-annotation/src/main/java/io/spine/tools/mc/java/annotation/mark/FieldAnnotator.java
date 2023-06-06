@@ -35,6 +35,7 @@ import io.spine.code.java.ClassName;
 import io.spine.code.java.SimpleClassName;
 import io.spine.code.proto.FieldDeclaration;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 import io.spine.tools.mc.java.field.Accessors;
 import io.spine.tools.mc.java.field.FieldType;
 import org.jboss.forge.roaster.model.JavaType;
@@ -48,6 +49,7 @@ import java.nio.file.Path;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static io.spine.tools.mc.java.annotation.mark.MessageAnnotator.findNestedType;
+import static io.spine.tools.mc.java.field.TypeExtsKt.toField;
 import static io.spine.util.Exceptions.newIllegalStateException;
 
 /**
@@ -62,8 +64,9 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
     FieldAnnotator(ClassName annotation,
                    ApiOption option,
                    ImmutableList<FileDescriptor> fileDescriptors,
-                   Path genProtoDir) {
-        super(annotation, option, fileDescriptors, genProtoDir);
+                   Path genProtoDir,
+                   CodegenContext context) {
+        super(annotation, option, fileDescriptors, genProtoDir, context);
     }
 
     @Override
@@ -77,7 +80,7 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
     protected void annotateOneFile(FileDescriptor file) {
         if (shouldAnnotate(file)) {
             var outerClass = SourceFile.forOuterClassOf(file.toProto());
-            rewriteSource(outerClass, new FileFieldAnnotation(this, file));
+            rewriteSource(outerClass, new FileFieldAnnotation(this, file, context()));
         }
     }
 
@@ -85,7 +88,8 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
     protected void annotateMultipleFiles(FileDescriptor file) {
         for (var type : file.getMessageTypes()) {
             if (shouldAnnotate(type)) {
-                SourceVisitor<JavaClassSource> annotation = new MessageFieldAnnotation(this, type);
+                SourceVisitor<JavaClassSource> annotation =
+                        new MessageFieldAnnotation(this, type, context());
                 var sourceFile = SourceFile.forMessage(type.toProto(), file.toProto());
                 rewriteSource(sourceFile, annotation);
             }
@@ -149,13 +153,15 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
     private abstract static class AnnotatingFieldVisitor implements SourceVisitor<JavaClassSource> {
 
         private final FieldAnnotator annotator;
+        private final CodegenContext context;
 
-        private AnnotatingFieldVisitor(FieldAnnotator annotator) {
+        private AnnotatingFieldVisitor(FieldAnnotator annotator, CodegenContext context) {
             this.annotator = annotator;
+            this.context = context;
         }
 
         final void annotate(JavaSource<?> source, FieldDescriptor field) {
-            annotateMessageField(castToClass(source), new FieldDeclaration(field));
+            annotateMessageField(castToClass(source), new FieldDeclaration(field), context);
         }
 
         final boolean shouldAnnotate(FieldDescriptor field) {
@@ -170,10 +176,12 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
          * @param field
          *         the field descriptor to get field name
          */
-        private void annotateMessageField(JavaClassSource message, FieldDeclaration field) {
+        private void annotateMessageField(JavaClassSource message,
+                                          FieldDeclaration field,
+                                          CodegenContext context) {
             var messageBuilder = builderOf(message);
-            annotateAccessors(message, field);
-            annotateAccessors(messageBuilder, field);
+            annotateAccessors(message, field, context);
+            annotateAccessors(messageBuilder, field, context);
         }
 
         private static JavaClassSource builderOf(JavaClassSource messageSource) {
@@ -190,8 +198,10 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
          * @param field
          *         the declaration of the field to be annotated
          */
-        private void annotateAccessors(JavaClassSource javaSource, FieldDeclaration field) {
-            var names = Accessors.forField(field.name(), FieldType.of(field))
+        private void annotateAccessors(JavaClassSource javaSource,
+                                       FieldDeclaration field,
+                                       CodegenContext context) {
+            var names = Accessors.forField(field.name(), FieldType.of(toField(field), context))
                                  .names();
             javaSource.getMethods().stream()
                     .filter(MethodSource::isPublic)
@@ -226,8 +236,10 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
          */
         private final Descriptor message;
 
-        private MessageFieldAnnotation(FieldAnnotator annotator, Descriptor message) {
-            super(annotator);
+        private MessageFieldAnnotation(FieldAnnotator annotator,
+                                       Descriptor message,
+                                       CodegenContext context) {
+            super(annotator, context);
             checkMultipleFilesOption(message.getFile(), true);
             this.message = message;
         }
@@ -259,8 +271,10 @@ final class FieldAnnotator extends OptionAnnotator<FieldDescriptor> {
          */
         private final FileDescriptor file;
 
-        private FileFieldAnnotation(FieldAnnotator annotator, FileDescriptor file) {
-            super(annotator);
+        private FileFieldAnnotation(FieldAnnotator annotator,
+                                    FileDescriptor file,
+                                    CodegenContext context) {
+            super(annotator, context);
             checkMultipleFilesOption(file, false);
             this.file = file;
         }

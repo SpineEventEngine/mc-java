@@ -32,6 +32,7 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import io.spine.code.java.ClassName;
 import io.spine.code.proto.FileSet;
+import io.spine.tools.mc.java.CodegenContext;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -62,9 +63,13 @@ public final class DefaultAnnotatorFactory implements AnnotatorFactory {
      */
     private final Path genGrpcDir;
 
+    private final CodegenContext context;
+
     private DefaultAnnotatorFactory(Collection<FileDescriptor> fileDescriptors,
                                     Path genJavaDir,
-                                    Path genGrpcDir) {
+                                    Path genGrpcDir,
+                                    CodegenContext context) {
+        this.context = context;
         checkNotNull(fileDescriptors);
         checkNotNull(genJavaDir);
         checkNotNull(genGrpcDir);
@@ -75,39 +80,42 @@ public final class DefaultAnnotatorFactory implements AnnotatorFactory {
 
     public static AnnotatorFactory newInstance(File descriptorSetFile,
                                                Path generatedProtoDir,
-                                               Path generatedGrpcDir) {
+                                               Path generatedGrpcDir,
+                                               CodegenContext context) {
         var fileSet = FileSet.parseAsKnownFiles(descriptorSetFile);
-        return new DefaultAnnotatorFactory(fileSet.files(), generatedProtoDir, generatedGrpcDir);
+        return new DefaultAnnotatorFactory(fileSet.files(), generatedProtoDir, generatedGrpcDir,
+                                           context);
     }
 
     @Override
     public Annotator createFileAnnotator(ClassName annotation, ApiOption option) {
-        return new FileAnnotator(annotation, option, fileDescriptors, genJavaDir, genGrpcDir);
+        return new FileAnnotator(annotation, option, fileDescriptors, genJavaDir, genGrpcDir,
+                                 context);
     }
 
     @Override
     public Annotator createMessageAnnotator(ClassName annotation, ApiOption option) {
-        return new MessageAnnotator(annotation, option, fileDescriptors, genJavaDir);
+        return new MessageAnnotator(annotation, option, fileDescriptors, genJavaDir, context);
     }
 
     @Override
     public Annotator createFieldAnnotator(ClassName annotation, ApiOption option) {
-        return new FieldAnnotator(annotation, option, fileDescriptors, genJavaDir);
+        return new FieldAnnotator(annotation, option, fileDescriptors, genJavaDir, context);
     }
 
     @Override
     public Annotator createServiceAnnotator(ClassName annotation, ApiOption option) {
-        return new ServiceAnnotator(annotation, option, fileDescriptors, genGrpcDir);
+        return new ServiceAnnotator(annotation, option, fileDescriptors, genGrpcDir, context);
     }
 
     @Override
     public Annotator createPatternAnnotator(ClassName annotation, ClassNamePattern pattern) {
-        return new PatternAnnotator(annotation, pattern, fileDescriptors, genJavaDir);
+        return new PatternAnnotator(annotation, pattern, fileDescriptors, genJavaDir, context);
     }
 
     @Override
     public Annotator createMethodAnnotator(ClassName annotation,
                                            ImmutableSet<MethodPattern> patterns) {
-        return new MethodNameAnnotator(annotation, patterns, fileDescriptors, genJavaDir);
+        return new MethodNameAnnotator(annotation, patterns, fileDescriptors, genJavaDir, context);
     }
 }

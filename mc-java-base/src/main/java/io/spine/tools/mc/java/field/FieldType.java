@@ -29,7 +29,11 @@ package io.spine.tools.mc.java.field;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
 import com.squareup.javapoet.TypeName;
-import io.spine.code.proto.FieldDeclaration;
+import io.spine.protodata.Field;
+import io.spine.tools.mc.java.CodegenContext;
+
+import static io.spine.protodata.Ast.isMap;
+import static io.spine.protodata.Ast.isRepeated;
 
 /**
  * Field type information for the needs of code generation.
@@ -57,13 +61,13 @@ public interface FieldType {
     /**
      * Creates an instance for the passed field declaration.
      */
-    static FieldType of(FieldDeclaration field) {
-        if (field.isMap()) {
-            return new MapFieldType(field);
-        } else if (field.isRepeated()) {
-            return new RepeatedFieldType(field);
+    static FieldType of(Field field, CodegenContext context) {
+        if (isMap(field)) {
+            return new MapFieldType(field, context);
+        } else if (isRepeated(field)) {
+            return new RepeatedFieldType(field, context);
         } else {
-            return new SingularFieldType(field);
+            return new SingularFieldType(field, context);
         }
     }
 }

@@ -31,6 +31,7 @@ import com.google.protobuf.DescriptorProtos.FileOptions;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import io.spine.code.java.ClassName;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import java.nio.file.Path;
@@ -53,8 +54,9 @@ final class FileAnnotator extends OptionAnnotator<FileDescriptor> {
                   ApiOption option,
                   ImmutableList<FileDescriptor> files,
                   Path genProtoDir,
-                  Path genGrpcDir) {
-        super(annotation, option, files, genProtoDir);
+                  Path genGrpcDir,
+                  CodegenContext context) {
+        super(annotation, option, files, genProtoDir, context);
         checkNotNull(genGrpcDir);
         this.genGrpcDir = genGrpcDir;
     }

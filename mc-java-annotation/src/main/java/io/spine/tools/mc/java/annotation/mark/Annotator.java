@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import io.spine.code.java.ClassName;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.AnnotationSource;
@@ -63,13 +64,20 @@ public abstract class Annotator {
     /** Absolute path to the Java sources to annotate. */
     private final Path genJavaDir;
 
+    private final CodegenContext context;
+
     protected Annotator(ClassName annotation,
                         ImmutableList<FileDescriptor> fileDescriptors,
-                        Path genJavaDir) {
+                        Path genJavaDir, CodegenContext context) {
         this.annotation = checkNotNull(annotation);
+        this.context = context;
         checkNotNull(fileDescriptors);
         this.fileDescriptors = fileDescriptors;
         this.genJavaDir = checkNotNull(genJavaDir);
+    }
+
+    protected final CodegenContext context() {
+        return context;
     }
 
     /**

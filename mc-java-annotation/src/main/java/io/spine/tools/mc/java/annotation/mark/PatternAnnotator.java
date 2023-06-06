@@ -32,6 +32,7 @@ import io.spine.code.java.ClassName;
 import io.spine.code.proto.TypeSet;
 import io.spine.tools.java.code.NestedClassName;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.AnnotationTargetSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -54,8 +55,9 @@ final class PatternAnnotator extends Annotator {
     PatternAnnotator(ClassName annotation,
                      ClassNamePattern pattern,
                      ImmutableList<FileDescriptor> fileDescriptors,
-                     Path genProtoDir) {
-        super(annotation, fileDescriptors, genProtoDir);
+                     Path genProtoDir,
+                     CodegenContext context) {
+        super(annotation, fileDescriptors, genProtoDir, context);
         this.pattern = pattern;
     }
 

@@ -32,6 +32,8 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import io.spine.code.proto.FieldDeclaration;
+import io.spine.protodata.Field;
+import io.spine.tools.mc.java.CodegenContext;
 
 import java.util.List;
 
@@ -65,11 +67,12 @@ final class RepeatedFieldType implements FieldType {
     /**
      * Constructs a new instance based on component type.
      *
-     * @param declaration
+     * @param field
      *         the declaration of the field
      */
-    RepeatedFieldType(FieldDeclaration declaration) {
-        this.typeName = typeNameFor(declaration.javaTypeName());
+    RepeatedFieldType(Field field, CodegenContext context) {
+        var javaTypeName = context.getTypeSystem().javaTypeName(field.getType());
+        this.typeName = typeNameFor(javaTypeName);
     }
 
     @Override

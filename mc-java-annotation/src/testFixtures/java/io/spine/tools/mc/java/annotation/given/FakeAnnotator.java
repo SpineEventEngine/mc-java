@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.annotation.Internal;
 import io.spine.code.java.ClassName;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.TypeSystem;
 import io.spine.tools.mc.java.annotation.mark.Annotator;
 import io.spine.tools.mc.java.annotation.mark.AnnotatorFactory;
 import io.spine.tools.mc.java.annotation.mark.ApiOption;
@@ -46,7 +48,8 @@ import java.nio.file.Paths;
 public final class FakeAnnotator extends Annotator {
 
     private FakeAnnotator() {
-        super(ClassName.of(Internal.class), ImmutableList.of(), Paths.get("./"));
+        super(ClassName.of(Internal.class), ImmutableList.of(), Paths.get("./"),
+              new CodegenContext(TypeSystem.newBuilder().build()));
     }
 
     @Override

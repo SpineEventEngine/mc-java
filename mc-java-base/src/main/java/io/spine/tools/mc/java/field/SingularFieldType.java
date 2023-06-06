@@ -32,13 +32,19 @@ import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import io.spine.code.proto.FieldDeclaration;
+import io.spine.code.proto.ScalarType;
+import io.spine.protodata.Field;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.TypeSystem;
 
 import static com.google.protobuf.Descriptors.FieldDescriptor.JavaType.STRING;
+import static io.spine.protodata.PrimitiveType.TYPE_STRING;
 import static io.spine.tools.mc.java.field.Accessor.prefix;
 import static io.spine.tools.mc.java.field.Accessor.prefixAndPostfix;
 import static io.spine.tools.mc.java.field.StandardAccessor.clear;
 import static io.spine.tools.mc.java.field.StandardAccessor.get;
 import static io.spine.tools.mc.java.field.StandardAccessor.set;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents singular {@linkplain FieldType field type}.
@@ -62,14 +68,17 @@ final class SingularFieldType implements FieldType {
 
     @SuppressWarnings("Immutable") // effectively
     private final TypeName typeName;
-    private final JavaType javaType;
+    private final Field field;
 
     /**
      * Creates a new instance based on field type name.
      */
-    SingularFieldType(FieldDeclaration declaration) {
-        this.typeName = constructTypeNameFor(declaration.javaTypeName());
-        this.javaType = declaration.javaType();
+    SingularFieldType(Field field, CodegenContext context) {
+        var typeSystem = context.getTypeSystem();
+        var javaTypeName = typeSystem.javaTypeName(field.getType());
+
+        this.typeName = constructTypeNameFor(javaTypeName);
+        this.field = field;
     }
 
     @Override
@@ -79,7 +88,7 @@ final class SingularFieldType implements FieldType {
 
     @Override
     public ImmutableSet<Accessor> accessors() {
-        return javaType == STRING
+        return (field.getType().getPrimitive() == TYPE_STRING)
              ? ImmutableSet.<Accessor>builder()
                            .addAll(ACCESSORS)
                            .addAll(STRING_ACCESSORS)
@@ -98,7 +107,7 @@ final class SingularFieldType implements FieldType {
         return set();
     }
 
-    private static TypeName constructTypeNameFor(String name) {
+    public static TypeName constructTypeNameFor(String name) {
         var boxedScalarPrimitive = PrimitiveType.wrapperFor(name);
 
         if (boxedScalarPrimitive.isPresent()) {

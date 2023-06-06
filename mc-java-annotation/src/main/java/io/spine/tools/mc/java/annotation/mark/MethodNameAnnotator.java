@@ -32,6 +32,7 @@ import com.google.protobuf.Descriptors.FileDescriptor;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.code.java.ClassName;
 import io.spine.code.proto.TypeSet;
+import io.spine.tools.mc.java.CodegenContext;
 import io.spine.type.Type;
 import org.jboss.forge.roaster.model.Method;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
@@ -56,8 +57,9 @@ final class MethodNameAnnotator extends Annotator {
     MethodNameAnnotator(ClassName annotation,
                         ImmutableSet<MethodPattern> patterns,
                         ImmutableList<FileDescriptor> descriptors,
-                        Path genProtoDir) {
-        super(annotation, descriptors, genProtoDir);
+                        Path genProtoDir,
+                        CodegenContext context) {
+        super(annotation, descriptors, genProtoDir, context);
         this.patterns = patterns;
     }
 

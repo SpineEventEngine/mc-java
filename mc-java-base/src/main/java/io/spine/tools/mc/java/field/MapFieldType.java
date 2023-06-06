@@ -28,18 +28,21 @@ package io.spine.tools.mc.java.field;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
-import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import io.spine.code.proto.FieldDeclaration;
+import io.spine.code.proto.ScalarType;
+import io.spine.protodata.Field;
+import io.spine.tools.mc.java.CodegenContext;
 
 import java.util.AbstractMap;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static io.spine.protodata.Ast.isMap;
 import static io.spine.tools.mc.java.field.Accessor.prefix;
 import static io.spine.tools.mc.java.field.Accessor.prefixAndPostfix;
+import static io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor;
 import static io.spine.tools.mc.java.field.StandardAccessor.clear;
 import static io.spine.tools.mc.java.field.StandardAccessor.get;
 import static io.spine.tools.mc.java.field.StandardAccessor.getCount;
@@ -47,6 +50,7 @@ import static io.spine.tools.mc.java.field.StandardAccessor.getMap;
 import static io.spine.tools.mc.java.field.StandardAccessor.put;
 import static io.spine.tools.mc.java.field.StandardAccessor.putAll;
 import static io.spine.tools.mc.java.field.StandardAccessor.remove;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents map {@linkplain FieldType field type}.
@@ -75,8 +79,8 @@ final class MapFieldType implements FieldType {
     /**
      * Constructs the new instance based on the key and the value type names.
      */
-    MapFieldType(FieldDeclaration field) {
-        var entryTypeNames = entryTypeNames(field);
+    MapFieldType(Field field, CodegenContext context) {
+        var entryTypeNames = entryTypeNames(field, context);
         var keyType = boxIfPrimitive(entryTypeNames.getKey());
         var valueType = boxIfPrimitive(entryTypeNames.getValue());
         this.typeName = ParameterizedTypeName.get(ClassName.get(Map.class), keyType, valueType);
@@ -88,12 +92,12 @@ final class MapFieldType implements FieldType {
     }
 
     /**
-     * Returns "putAll" setter prefix,
+     * {@inheritDoc}
+     *
+     * <p>Returns "putAll" setter prefix,
      * used to initialize a map field using a protobuf message builder.
      *
      * <p>Call should be like `builder.putAllFieldName({@link Map})`.
-     *
-     * {@inheritDoc}
      */
     @Override
     public Accessor primarySetter() {
@@ -121,21 +125,20 @@ final class MapFieldType implements FieldType {
      * Returns the key and the value type names for the map field
      * based on the passed nested types.
      */
-    private static Map.Entry<TypeName, TypeName> entryTypeNames(FieldDeclaration mapField) {
-        checkArgument(mapField.isMap());
-        var keyFieldIndex = 0;
-        var valueFieldIndex = 1;
-        var mapEntry = mapField.descriptor().getMessageType();
-        var fields = mapEntry.getFields();
-        var keyField = fields.get(keyFieldIndex);
-        var valueField = fields.get(valueFieldIndex);
-        var keyTypeName = typeNameOf(keyField);
-        var valueTypeName = typeNameOf(valueField);
+    private static Map.Entry<TypeName, TypeName>
+    entryTypeNames(Field mapField, CodegenContext context) {
+        checkArgument(isMap(mapField));
+        var descrType = requireNonNull(
+                TypeConverter.INSTANCE.reverse()
+                                      .convert(mapField.getMap().getKeyType())
+        );
+        var scalarTypeName = ScalarType.javaTypeName(descrType.toProto());
+        var keyTypeName = constructTypeNameFor(scalarTypeName);
+        var valueTypeName = typeNameOf(mapField, context);
         return new AbstractMap.SimpleEntry<>(keyTypeName, valueTypeName);
     }
 
-    private static TypeName typeNameOf(FieldDescriptor descr) {
-        var decl = new FieldDeclaration(descr);
-        return FieldType.of(decl).name();
+    private static TypeName typeNameOf(Field field, CodegenContext context) {
+        return FieldType.of(field, context).name();
     }
 }

@@ -28,6 +28,8 @@ package io.spine.tools.mc.java.annotation.gradle;
 
 import io.spine.logging.Logging;
 import io.spine.tools.code.SourceSetName;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.TypeSystem;
 import io.spine.tools.mc.java.annotation.mark.AnnotatorFactory;
 import io.spine.tools.mc.java.annotation.mark.DefaultAnnotatorFactory;
 import io.spine.tools.mc.java.annotation.mark.ModuleAnnotator;
@@ -45,7 +47,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.fs.DirectoryName.grpc;
 import static io.spine.tools.fs.DirectoryName.java;
 import static io.spine.tools.gradle.protobuf.Projects.descriptorSetFile;
-import static io.spine.tools.gradle.protobuf.Projects.getGeneratedDir;
 import static io.spine.tools.gradle.protobuf.Projects.getGeneratedFilesBaseDir;
 import static io.spine.tools.gradle.protobuf.ProtobufDependencies.sourceSetExtensionName;
 import static io.spine.tools.gradle.protobuf.SourceSetExtsKt.containsProtoFiles;
@@ -111,8 +112,9 @@ final class AnnotationAction implements Action<Task>, Logging {
         var descriptorSetFile = descriptorSetFile(project, ssn);
         var generatedJavaPath = generatedProtoJavaDir(project, ssn);
         var generatedGrpcPath = generatedProtoGrpcDir(project, ssn);
+        var codegenContext = new CodegenContext(TypeSystem.newBuilder().build());
         var annotatorFactory = DefaultAnnotatorFactory.newInstance(
-                descriptorSetFile, generatedJavaPath, generatedGrpcPath
+                descriptorSetFile, generatedJavaPath, generatedGrpcPath, codegenContext
         );
         return annotatorFactory;
     }

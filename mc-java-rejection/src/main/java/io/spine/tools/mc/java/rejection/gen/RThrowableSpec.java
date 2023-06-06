@@ -31,15 +31,22 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import io.spine.base.RejectionThrowable;
 import io.spine.base.RejectionType;
+import io.spine.code.java.ClassName;
 import io.spine.code.java.PackageName;
+import io.spine.code.java.SimpleClassName;
 import io.spine.logging.Logging;
+import io.spine.protodata.MessageType;
+import io.spine.protodata.ProtobufSourceFile;
 import io.spine.tools.java.code.GeneratedBy;
 import io.spine.tools.java.code.JavaPoetName;
 import io.spine.tools.java.code.TypeSpec;
 import io.spine.tools.java.code.field.FieldName;
 import io.spine.tools.java.javadoc.JavadocText;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.rejection.v2.RejectionTypeInfo;
 
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
+import static io.spine.tools.mc.java.rejection.v2.RejectionRendererKt.outerClassName;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -55,7 +62,7 @@ public final class RThrowableSpec implements TypeSpec, Logging {
 
     private static final NoArgMethod messageThrown = new NoArgMethod("messageThrown");
 
-    private final RejectionType declaration;
+    private final RejectionTypeInfo declaration;
     private final JavaPoetName messageClass;
 
     private final RThrowableBuilderSpec builder;
@@ -66,24 +73,41 @@ public final class RThrowableSpec implements TypeSpec, Logging {
      *  @param type
      *         a rejection declaration
      */
-    public RThrowableSpec(RejectionType type) {
-        this.declaration = type;
+    public RThrowableSpec(RejectionType type, CodegenContext context) {
+        this.declaration = new RejectionTypeInfo(type);
         this.messageClass = JavaPoetName.of(type.messageClass());
+        var typeDecl = new RejectionTypeInfo(type);
         this.builder = new RThrowableBuilderSpec(
-                type, messageClass, JavaPoetName.of(type.throwableClass())
+                typeDecl, messageClass, JavaPoetName.of(type.throwableClass()), context
+        );
+    }
+
+    public RThrowableSpec(ProtobufSourceFile file, MessageType type, CodegenContext context) {
+        this.declaration = new RejectionTypeInfo(file, type);
+        var javaPackage = PackageName.of(declaration.javaPackage());
+        var outerClassName = ClassName.of(
+                javaPackage,
+                SimpleClassName.create(outerClassName(file)));
+        this.messageClass = JavaPoetName.of(outerClassName);
+        var classOfThrowable = ClassName.of(
+                javaPackage,
+                SimpleClassName.create(type.getName().getSimpleName())
+        );
+        var typeDecl = new RejectionTypeInfo(file, type);
+        this.builder = new RThrowableBuilderSpec(
+                typeDecl, messageClass, JavaPoetName.of(classOfThrowable), context
         );
     }
 
     @Override
     public PackageName packageName() {
-        var packageName = declaration.javaPackage();
-        return packageName;
+        return PackageName.of(declaration.javaPackage());
     }
 
     @Override
     public com.squareup.javapoet.TypeSpec toPoet() {
         var className = declaration.simpleJavaClassName();
-        var rejection = com.squareup.javapoet.TypeSpec.classBuilder(className.value())
+        var rejection = com.squareup.javapoet.TypeSpec.classBuilder(className)
                         .addJavadoc(classJavadoc())
                         .addAnnotation(GeneratedBy.spineModelCompiler())
                         .addModifiers(PUBLIC)
@@ -129,11 +153,11 @@ public final class RThrowableSpec implements TypeSpec, Logging {
      */
     private CodeBlock classJavadoc() {
         var leadingComments =
-                declaration.leadingComments()
-                           .map(text -> JavadocText.fromUnescaped(text)
-                                                   .inPreTags()
-                                                   .withNewLine())
-                           .orElse(JavadocText.fromEscaped(""));
+                declaration.leadingComments().isEmpty()
+                ? JavadocText.fromEscaped("")
+                : JavadocText.fromUnescaped(declaration.leadingComments())
+                             .inPreTags()
+                             .withNewLine();
         var rejectionPackage = declaration.javaPackage();
         var sourceProtoNote = CodeBlock.builder()
                 .add("Rejection based on proto type ")
@@ -169,8 +193,7 @@ public final class RThrowableSpec implements TypeSpec, Logging {
 
     private static FieldSpec serialVersionUID() {
         return FieldSpec.builder(long.class,
-                                 FieldName.serialVersionUID()
-                                          .value(),
+                                 FieldName.serialVersionUID().value(),
                                  PRIVATE, STATIC, FINAL)
                         .initializer("0L")
                         .build();

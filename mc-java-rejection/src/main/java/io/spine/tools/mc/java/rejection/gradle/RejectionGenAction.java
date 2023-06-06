@@ -39,6 +39,8 @@ import io.spine.tools.gradle.ProtoFiles;
 import io.spine.tools.code.SourceSetName;
 import io.spine.tools.java.code.TypeSpec;
 import io.spine.tools.java.code.TypeSpecWriter;
+import io.spine.tools.mc.java.CodegenContext;
+import io.spine.tools.mc.java.TypeSystem;
 import io.spine.tools.mc.java.gradle.McJavaOptions;
 import io.spine.tools.mc.java.gradle.Projects;
 import io.spine.tools.mc.java.rejection.gen.RThrowableSpec;
@@ -157,12 +159,16 @@ final class RejectionGenAction extends CodeGenerationAction implements WithLoggi
         }
         var outputDir = targetDir().toPath();
         logGeneratingForFile(outputDir, source);
+
+        // TODO: Remove this Action altogether with old codegen.
+        var dummyContext = new CodegenContext(TypeSystem.newBuilder().build());
+
         for (var rejectionType : rejections) {
             // The name of the generated `ThrowableMessage` will be the same
             // as for the Protobuf message.
             _debug().log("Processing rejection `%s`.", rejectionType.simpleJavaClassName());
 
-            TypeSpec spec = new RThrowableSpec(rejectionType);
+            TypeSpec spec = new RThrowableSpec(rejectionType, dummyContext);
             var writer = new TypeSpecWriter(spec, indent());
             writer.write(outputDir);
         }

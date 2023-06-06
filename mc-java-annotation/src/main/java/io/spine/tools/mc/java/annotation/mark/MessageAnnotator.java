@@ -32,6 +32,7 @@ import com.google.protobuf.Descriptors.FileDescriptor;
 import io.spine.code.java.ClassName;
 import io.spine.code.java.SimpleClassName;
 import io.spine.tools.java.fs.SourceFile;
+import io.spine.tools.mc.java.CodegenContext;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
@@ -51,8 +52,9 @@ final class MessageAnnotator extends OptionAnnotator<Descriptor> {
     MessageAnnotator(ClassName annotation,
                      ApiOption option,
                      ImmutableList<FileDescriptor> files,
-                     Path genProtoDir) {
-        super(annotation, option, files, genProtoDir);
+                     Path genProtoDir,
+                     CodegenContext context) {
+        super(annotation, option, files, genProtoDir, context);
     }
 
     @Override
