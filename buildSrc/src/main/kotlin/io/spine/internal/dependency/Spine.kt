@@ -61,13 +61,13 @@ class Spine(p: ExtensionAware) {
          *
          * @see [ProtoData]
          */
-        const val protoData = "0.8.1"
+        const val protoData = "0.8.5"
 
         /**
          * The default version of `base` to use.
          * @see [Spine.base]
          */
-        const val base = "2.0.0-SNAPSHOT.162"
+        const val base = "2.0.0-SNAPSHOT.180"
 
         /**
          * The default version of `core-java` to use.
@@ -116,7 +116,7 @@ class Spine(p: ExtensionAware) {
          * The version of `tool-base` to use.
          * @see [Spine.toolBase]
          */
-        const val toolBase = "2.0.0-SNAPSHOT.161"
+        const val toolBase = "2.0.0-SNAPSHOT.171"
 
         /**
          * The version of `validation` to use.
@@ -152,7 +152,7 @@ class Spine(p: ExtensionAware) {
     val change = "$group:spine-change:${p.changeVersion}"
     val text = "$group:spine-text:${p.textVersion}"
 
-    val testlib = "$toolsGroup:spine-testlib:${p.baseVersion}"
+    val testlib = "$toolsGroup:spine-testlib:2.0.0-SNAPSHOT.183"
     val testUtilTime = "$toolsGroup:spine-testutil-time:${p.timeVersion}"
     val toolBase = "$toolsGroup:spine-tool-base:${p.toolBaseVersion}"
     val pluginBase = "$toolsGroup:spine-plugin-base:${p.toolBaseVersion}"

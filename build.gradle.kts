@@ -54,7 +54,8 @@ buildscript {
                     spine.toolBase,
                     spine.server,
                     spine.validation.runtime,
-                    io.spine.internal.dependency.Spine.ProtoData.pluginLib
+                    io.spine.internal.dependency.Spine.ProtoData.pluginLib,
+                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
                 )
             }
         }

@@ -81,7 +81,8 @@ buildscript {
                     io.spine.internal.dependency.Jackson.databind,
                     io.spine.internal.dependency.Jackson.bom,
                     io.spine.internal.dependency.Jackson.annotations,
-                    io.spine.internal.dependency.Jackson.dataformatYaml
+                    io.spine.internal.dependency.Jackson.dataformatYaml,
+                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
                 )
             }
         }
@@ -132,7 +133,8 @@ allprojects {
                     Jackson.databind,
                     Jackson.bom,
                     Jackson.annotations,
-                    Jackson.dataformatYaml
+                    Jackson.dataformatYaml,
+                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
                 )
             }
 
@@ -168,6 +170,7 @@ subprojects {
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation(spine.base)
         implementation(spine.validation.runtime)
+        implementation("io.spine:spine-logging:2.0.0-SNAPSHOT.184")
         testImplementation(spine.testlib)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
@@ -199,6 +202,7 @@ subprojects {
             proto.srcDir("$projectDir/src/main/proto")
             java.srcDirs("$projectDir/generated/main/java",
                          "$projectDir/generated/main/spine",
+                         "$projectDir/generated/main/grpc",
                          "$projectDir/src/main/java")
             resources.srcDir("$projectDir/generated/main/resources")
         }
@@ -207,6 +211,7 @@ subprojects {
             proto.srcDir("$projectDir/src/test/proto")
             java.srcDirs("$projectDir/generated/test/java",
                          "$projectDir/generated/test/spine",
+                         "$projectDir/generated/test/grpc",
                          "$projectDir/src/test/java")
             resources.srcDir("$projectDir/generated/test/resources")
         }

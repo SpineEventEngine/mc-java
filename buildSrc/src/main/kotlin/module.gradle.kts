@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
@@ -105,6 +106,9 @@ fun Module.addDependencies() {
         ErrorProne.annotations.forEach { compileOnlyApi(it) }
 
         implementation(Guava.lib)
+        implementation("io.spine:spine-logging:2.0.0-SNAPSHOT.184")
+        implementation("io.spine:spine-logging-backend:2.0.0-SNAPSHOT.184")
+        implementation("io.spine:spine-logging-context:2.0.0-SNAPSHOT.184")
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -132,6 +136,7 @@ fun Module.forceConfigurations() {
                     spine.testlib,
                     spine.toolBase,
                     spine.pluginBase,
+                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184",
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
