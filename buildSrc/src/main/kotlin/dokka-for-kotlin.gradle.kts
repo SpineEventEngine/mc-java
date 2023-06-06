@@ -24,28 +24,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import org.jetbrains.dokka.gradle.DokkaTask
 
-dependencies {
-    /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
-       Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
-       executes this code and its API is automatically provided. */
-    implementation(gradleApi())
-    compileOnlyApi(gradleKotlinDsl())
-
-    api(Spine.modelCompiler)
-    api(Validation.config)
-    api(Validation.runtime)
-    implementation(Spine.pluginBase)
-
-    testImplementation(Spine.testlib)
-    testImplementation(gradleTestKit())
-    testImplementation(Spine.pluginTestlib)
+plugins {
+    id("org.jetbrains.dokka") // Cannot use `Dokka` dependency object here yet.
 }
 
-project.afterEvaluate {
-    (tasks.getByName("sourcesJar") as Jar).apply {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
+dependencies {
+    useDokkaWithSpineExtensions()
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    configureForKotlin()
 }

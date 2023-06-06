@@ -28,8 +28,8 @@ package io.spine.internal.gradle.dart.task
 
 import io.spine.internal.gradle.TaskName
 import io.spine.internal.gradle.base.assemble
-import io.spine.internal.gradle.publish.publish
 import io.spine.internal.gradle.named
+import io.spine.internal.gradle.publish.publish
 import io.spine.internal.gradle.register
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Exec
@@ -110,7 +110,7 @@ private fun DartTasks.stagePubPublication(): TaskProvider<Copy> =
         into(publicationDir)
 
         doLast {
-            logger.debug("Pub publication is prepared in directory `$publicationDir`.")
+            logger.debug("Pub publication is prepared in directory `{}`.", publicationDir)
         }
     }
 

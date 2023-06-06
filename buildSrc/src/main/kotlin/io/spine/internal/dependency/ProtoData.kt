@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,28 +24,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.internal.dependency
 
-dependencies {
-    /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
-       Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
-       executes this code and its API is automatically provided. */
-    implementation(gradleApi())
-    compileOnlyApi(gradleKotlinDsl())
+/**
+ * Dependencies on ProtoData modules.
+ *
+ * See [`SpineEventEngine/ProtoData`](https://github.com/SpineEventEngine/ProtoData/).
+ */
+@Suppress("unused")
+object ProtoData {
+    const val version = "0.8.5"
+    const val group = "io.spine.protodata"
+    const val compiler = "$group:protodata-compiler:$version"
 
-    api(Spine.modelCompiler)
-    api(Validation.config)
-    api(Validation.runtime)
-    implementation(Spine.pluginBase)
+    const val codegenJava = "io.spine.protodata:protodata-codegen-java:$version"
 
-    testImplementation(Spine.testlib)
-    testImplementation(gradleTestKit())
-    testImplementation(Spine.pluginTestlib)
-}
-
-project.afterEvaluate {
-    (tasks.getByName("sourcesJar") as Jar).apply {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
+    const val pluginId = "io.spine.protodata"
+    const val pluginLib = "${Spine.group}:protodata:$version"
 }

@@ -33,5 +33,5 @@ import io.spine.internal.dependency.JavaPoet
 
 dependencies {
     implementation(JavaPoet.lib)
-    implementation(io.spine.internal.dependency.Spine(project).toolBase)
+    implementation(io.spine.internal.dependency.Spine.toolBase)
 }

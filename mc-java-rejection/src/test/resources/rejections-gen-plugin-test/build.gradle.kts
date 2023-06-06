@@ -77,6 +77,6 @@ subprojects {
     )
 
     dependencies {
-        implementation(io.spine.internal.dependency.Spine(project).base)
+        implementation(io.spine.internal.dependency.Spine.base)
     }
 }

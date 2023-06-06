@@ -26,13 +26,13 @@
 
 import io.spine.internal.dependency.AutoService
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.ProtoData
 
 dependencies {
     annotationProcessor(AutoService.processor)
     compileOnlyApi(AutoService.annotations)
 
-    implementation(Spine.ProtoData.compiler)
-    val spine = Spine(project)
-    implementation(spine.base)
-    implementation(spine.time)
+    implementation(ProtoData.compiler)
+    implementation(Spine.base)
+    implementation(Spine.time)
 }

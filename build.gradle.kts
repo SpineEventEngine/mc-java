@@ -44,7 +44,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.internal.dependency.Spine(project)
+    val spine = io.spine.internal.dependency.Spine
     io.spine.internal.gradle.doForceVersions(configurations)
     configurations {
         all {
@@ -54,7 +54,7 @@ buildscript {
                     spine.toolBase,
                     spine.server,
                     spine.validation.runtime,
-                    io.spine.internal.dependency.Spine.ProtoData.pluginLib,
+                    io.spine.internal.dependency.ProtoData.pluginLib,
                     "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
                 )
             }
@@ -99,7 +99,7 @@ subprojects {
     apply(plugin = "module")
     apply(plugin = "io.spine.protodata")
     dependencies {
-        protoData(Spine(this).validation.java)
+        protoData(Spine.validation.java)
     }
     setupCodegen()
 }

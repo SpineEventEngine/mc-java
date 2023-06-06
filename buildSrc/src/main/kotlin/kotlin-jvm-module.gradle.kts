@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,28 +24,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.JUnit
+import io.spine.internal.dependency.Kotest
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.gradle.kotlin.applyJvmToolchain
+import io.spine.internal.gradle.kotlin.setFreeCompilerArgs
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-dependencies {
-    /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
-       Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
-       executes this code and its API is automatically provided. */
-    implementation(gradleApi())
-    compileOnlyApi(gradleKotlinDsl())
-
-    api(Spine.modelCompiler)
-    api(Validation.config)
-    api(Validation.runtime)
-    implementation(Spine.pluginBase)
-
-    testImplementation(Spine.testlib)
-    testImplementation(gradleTestKit())
-    testImplementation(Spine.pluginTestlib)
+plugins {
+    id("java-module")
+    kotlin("jvm")
+    id("io.kotest")
+    id("org.jetbrains.kotlinx.kover")
+    id("detekt-code-analysis")
+    id("dokka-for-kotlin")
 }
 
-project.afterEvaluate {
-    (tasks.getByName("sourcesJar") as Jar).apply {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+kotlin {
+    applyJvmToolchain(BuildSettings.javaVersion.asInt())
+    explicitApi()
+}
+
+dependencies {
+    testImplementation(Spine.testlib)
+    testImplementation(Kotest.frameworkEngine)
+    testImplementation(Kotest.datatest)
+    testImplementation(Kotest.runnerJUnit5Jvm)
+    testImplementation(JUnit.runner)
+}
+
+tasks {
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = BuildSettings.javaVersion.toString()
+        setFreeCompilerArgs()
+    }
+}
+
+kover {
+    useJacocoTool()
+}
+
+koverReport {
+    defaults {
+        xml {
+            onCheck = true
+        }
     }
 }

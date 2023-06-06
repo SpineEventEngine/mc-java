@@ -29,11 +29,9 @@ import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Spine.ProtoData
+import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.WriteVersions
-
-val spine = Spine(project)
-val validation = spine.validation
 
 dependencies {
     implementation(JavaPoet.lib)
@@ -51,15 +49,15 @@ dependencies {
     implementation(project(":mc-java-rejection"))
     implementation(project(":mc-java-protodata-params"))
 
-    implementation(spine.pluginBase)
+    implementation(Spine.pluginBase)
     implementation(ProtoData.pluginLib)
-    implementation(validation.config)
+    implementation(Validation.config)
 
     testImplementation(gradleApi())
     testImplementation(gradleKotlinDsl())
     testImplementation(gradleTestKit())
-    testImplementation(spine.testlib)
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.testlib)
+    testImplementation(Spine.pluginTestlib)
 }
 
 protobuf {
@@ -86,6 +84,6 @@ tasks {
 
     withType<WriteVersions>().configureEach {
         version(Grpc.ProtocPlugin.artifact)
-        version(validation.java)
+        version(Validation.java)
     }
 }

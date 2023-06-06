@@ -37,15 +37,13 @@ dependencies {
     ErrorProne.annotations.forEach { api(it) }
     implementation(ErrorProne.GradlePlugin.lib)
 
-    val spine = Spine(project)
-
-    implementation(spine.base)
-    implementation(spine.pluginBase)
-    implementation(spine.modelCompiler)
+    implementation(Spine.base)
+    implementation(Spine.pluginBase)
+    implementation(Spine.modelCompiler)
 
     testImplementation(ErrorProne.testHelpers)
     testImplementation(gradleKotlinDsl())
-    testImplementation(spine.testlib)
+    testImplementation(Spine.testlib)
 }
 
 /**
