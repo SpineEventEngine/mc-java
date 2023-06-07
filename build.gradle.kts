@@ -141,6 +141,10 @@ val integrationTests by tasks.registering(RunBuild::class) {
         }
     }
     dependsOn(localPublish)
+    doLast {
+        val f = file("$directory/_out/error-out.txt")
+        project.logger.error(f.readText())
+    }
 }
 
 tasks.register("buildAll") {
