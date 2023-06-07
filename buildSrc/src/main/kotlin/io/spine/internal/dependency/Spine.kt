@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ object Spine {
         const val mc = "2.0.0-SNAPSHOT.130"
 
         /** The version of [McJava]. */
-        const val mcJava = "2.0.0-SNAPSHOT.147"
+        const val mcJava = "2.0.0-SNAPSHOT.132"
 
         /** The version of [Spine.baseTypes]. */
         const val baseTypes = "2.0.0-SNAPSHOT.120"
@@ -79,13 +79,10 @@ object Spine {
         const val change = "2.0.0-SNAPSHOT.118"
 
         /** The version of [Spine.text]. */
-        const val text = "2.0.0-SNAPSHOT.5"
+        const val text = "2.0.0-SNAPSHOT.3"
 
-        /**
-         * The version of `tool-base` to use.
-         * @see [Spine.toolBase]
-         */
-        const val toolBase = "2.0.0-SNAPSHOT.171"
+        /** The version of [Spine.toolBase]. */
+        const val toolBase = "2.0.0-SNAPSHOT.156"
 
         /** The version of [Spine.validation]. */
         @Deprecated("Please use `Validation.version` instead.")
