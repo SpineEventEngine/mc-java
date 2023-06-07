@@ -67,7 +67,7 @@ object Spine {
         const val mc = "2.0.0-SNAPSHOT.130"
 
         /** The version of [McJava]. */
-        const val mcJava = "2.0.0-SNAPSHOT.132"
+        const val mcJava = "2.0.0-SNAPSHOT.147"
 
         /** The version of [Spine.baseTypes]. */
         const val baseTypes = "2.0.0-SNAPSHOT.120"
@@ -79,10 +79,10 @@ object Spine {
         const val change = "2.0.0-SNAPSHOT.118"
 
         /** The version of [Spine.text]. */
-        const val text = "2.0.0-SNAPSHOT.3"
+        const val text = "2.0.0-SNAPSHOT.5"
 
         /** The version of [Spine.toolBase]. */
-        const val toolBase = "2.0.0-SNAPSHOT.156"
+        const val toolBase = "2.0.0-SNAPSHOT.171"
 
         /** The version of [Spine.validation]. */
         @Deprecated("Please use `Validation.version` instead.")
