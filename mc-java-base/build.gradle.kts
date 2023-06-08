@@ -34,6 +34,7 @@ dependencies {
     implementation(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
+    api(Spine.logging)
     api(Spine.modelCompiler)
     api(Validation.config)
     api(Validation.runtime)
