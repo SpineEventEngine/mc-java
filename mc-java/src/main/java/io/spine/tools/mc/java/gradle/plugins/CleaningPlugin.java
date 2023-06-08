@@ -25,6 +25,7 @@
  */
 package io.spine.tools.mc.java.gradle.plugins;
 
+import com.google.common.base.Joiner;
 import io.spine.tools.gradle.task.GradleTask;
 import io.spine.tools.mc.java.gradle.TempArtifactDirs;
 import org.gradle.api.Action;
@@ -34,7 +35,6 @@ import org.gradle.api.Task;
 
 import java.io.File;
 
-import static com.google.common.flogger.LazyArgs.lazy;
 import static io.spine.io.Delete.deleteRecursively;
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.preClean;
@@ -71,9 +71,10 @@ public final class CleaningPlugin implements Plugin<Project> {
         public void execute(Task task) {
             var logger = project.getLogger();
             var dirsToClean = TempArtifactDirs.getFor(project);
-            logger.debug(
-                    "Pre-clean: deleting the directories (`{}`).", lazy(dirsToClean::toString)
-            );
+            if (logger.isDebugEnabled()) {
+                var dirs = Joiner.on(", ").join(dirsToClean);
+                logger.debug("Pre-clean: deleting the directories (`{}`).", dirs);
+            }
             dirsToClean.stream()
                     .map(File::toPath)
                     .forEach(dir -> {
@@ -83,4 +84,3 @@ public final class CleaningPlugin implements Plugin<Project> {
         }
     }
 }
-
