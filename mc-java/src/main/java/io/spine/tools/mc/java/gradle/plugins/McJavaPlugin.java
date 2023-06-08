@@ -26,7 +26,7 @@
 package io.spine.tools.mc.java.gradle.plugins;
 
 import com.google.protobuf.gradle.ExecutableLocator;
-import io.spine.logging.Logging;
+import com.google.protobuf.gradle.ProtobufExtension;
 import io.spine.tools.gradle.DependencyVersions;
 import io.spine.tools.mc.gradle.LanguagePlugin;
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPlugin;
@@ -40,7 +40,6 @@ import java.util.stream.Stream;
 
 import static io.spine.tools.gradle.Artifact.PLUGIN_BASE_ID;
 import static io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler;
-import static io.spine.tools.gradle.protobuf.ProtobufGradlePluginAdapterKt.getProtobufGradlePluginAdapter;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static kotlin.jvm.JvmClassMappingKt.getKotlinClass;
 
@@ -49,7 +48,7 @@ import static kotlin.jvm.JvmClassMappingKt.getKotlinClass;
  *
  * <p>Applies dependent plugins.
  */
-public class McJavaPlugin extends LanguagePlugin implements Logging {
+public class McJavaPlugin extends LanguagePlugin {
 
     public McJavaPlugin() {
         super(McJavaOptions.name(), getKotlinClass(McJavaOptions.class));
@@ -65,7 +64,7 @@ public class McJavaPlugin extends LanguagePlugin implements Logging {
     }
 
     private static void setProtocArtifact(Project project) {
-        var protobuf = getProtobufGradlePluginAdapter(project);
+        var protobuf = project.getExtensions().getByType(ProtobufExtension.class);
         var ofPluginBase = DependencyVersions.loadFor(PLUGIN_BASE_ID);
         var protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation();
         protobuf.protoc((ExecutableLocator locator) -> locator.setArtifact(protocArtifact));
@@ -78,7 +77,7 @@ public class McJavaPlugin extends LanguagePlugin implements Logging {
      *         {@code mergeDescriptorSet} and {@code mergeTestDescriptorSet} tasks to be able to
      *         access every declared type in the project classpath.
      */
-    private void createAndApplyPluginsIn(Project project) {
+    private static void createAndApplyPluginsIn(Project project) {
         Stream.of(new CleaningPlugin(),
                   new DescriptorSetMergerPlugin(),
                   new RejectionGenPlugin(),
@@ -89,9 +88,12 @@ public class McJavaPlugin extends LanguagePlugin implements Logging {
               .forEach(plugin -> apply(plugin, project));
     }
 
-    private void apply(Plugin<Project> plugin, Project project) {
-        _debug().log("Applying plugin `%s` to project `%s`.",
-                     plugin.getClass().getName(), project.getName());
+    private static void apply(Plugin<Project> plugin, Project project) {
+        project.getLogger()
+               .debug(
+                       "Applying plugin `{}` to project `{}`.",
+                       plugin.getClass().getName(), project.getName()
+               );
         plugin.apply(project);
     }
 }
