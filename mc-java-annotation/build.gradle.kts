@@ -41,7 +41,6 @@ dependencies {
     }
 
     implementation(project(":mc-java-base"))
-    implementation(Spine.pluginBase)
 
     testFixturesImplementation(Spine.toolBase)
     testFixturesImplementation(Spine.testlib)
