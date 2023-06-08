@@ -34,17 +34,16 @@ dependencies {
     compileOnly(gradleApi())
     compileOnly(gradleKotlinDsl())
 
-    val spine = Spine(project)
-    implementation(spine.toolBase)
-    implementation(spine.pluginBase)
+    implementation(Spine.toolBase)
+    implementation(Spine.pluginBase)
     implementation(project(":mc-java-base"))
     implementation(project(":mc-java-validation"))
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
     testImplementation(gradleTestKit())
-    testImplementation(spine.base)
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.base)
+    testImplementation(Spine.pluginTestlib)
 }
 
 tasks.jar {

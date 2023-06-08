@@ -100,7 +100,7 @@ val protobufPluginVersion = "0.9.2"
  * @see <a href="https://github.com/Kotlin/dokka/releases">
  *     Dokka Releases</a>
  */
-val dokkaVersion = "1.7.20"
+val dokkaVersion = "1.8.10"
 
 /**
  * The version of Detekt Gradle Plugin.
@@ -108,6 +108,16 @@ val dokkaVersion = "1.7.20"
  * @see <a href="https://github.com/detekt/detekt/releases">Detekt Releases</a>
  */
 val detektVersion = "1.22.0"
+
+/**
+ * @see [io.spine.internal.dependency.Kotest]
+ */
+val kotestJvmPluginVersion = "0.4.10"
+
+/**
+ * @see [io.spine.internal.dependency.Kover]
+ */
+val koverVersion = "0.7.0-Beta"
 
 configurations.all {
     resolutionStrategy {
@@ -156,4 +166,7 @@ dependencies {
 
     // https://github.com/srikanth-lingala/zip4j
     implementation("net.lingala.zip4j:zip4j:2.10.0")
+
+    implementation("io.kotest:kotest-gradle-plugin:$kotestJvmPluginVersion")
+    implementation("org.jetbrains.kotlinx:kover-gradle-plugin:$koverVersion")
 }

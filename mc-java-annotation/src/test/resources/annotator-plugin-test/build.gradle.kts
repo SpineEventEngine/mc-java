@@ -25,6 +25,7 @@
  */
 
 import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.standardToSpineSdk
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.invoke
@@ -73,20 +74,18 @@ subprojects {
 
     repositories.standardToSpineSdk()
 
-    val spine = io.spine.internal.dependency.Spine(project)
-
     configurations {
         all {
             resolutionStrategy {
                 force(
-                    spine.base,
+                    Spine.base,
                 )
             }
         }
     }
 
     dependencies {
-        implementation(spine.base)
+        implementation(Spine.base)
         implementation(Grpc.stub)
         implementation(Grpc.protobuf)
     }

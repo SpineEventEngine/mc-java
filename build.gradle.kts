@@ -26,7 +26,6 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import Build_gradle.Module
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.RunBuild
@@ -44,7 +43,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.internal.dependency.Spine(project)
+    val spine = io.spine.internal.dependency.Spine
     io.spine.internal.gradle.doForceVersions(configurations)
     configurations {
         all {
@@ -53,8 +52,9 @@ buildscript {
                     spine.base,
                     spine.toolBase,
                     spine.server,
-                    spine.validation.runtime,
-                    io.spine.internal.dependency.Spine.ProtoData.pluginLib
+                    spine.logging,
+                    io.spine.internal.dependency.Validation.runtime,
+                    io.spine.internal.dependency.ProtoData.pluginLib
                 )
             }
         }
@@ -98,7 +98,7 @@ subprojects {
     apply(plugin = "module")
     apply(plugin = "io.spine.protodata")
     dependencies {
-        protoData(Spine(this).validation.java)
+        protoData(Spine.validation.java)
     }
     setupCodegen()
 }
@@ -141,6 +141,10 @@ val integrationTests by tasks.registering(RunBuild::class) {
         }
     }
     dependsOn(localPublish)
+    doLast {
+        val f = file("$directory/_out/error-out.txt")
+        project.logger.error(f.readText())
+    }
 }
 
 tasks.register("buildAll") {

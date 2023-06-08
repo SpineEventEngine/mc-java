@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
@@ -33,8 +34,10 @@ import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Protobuf
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Truth
+import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.VersionWriter
 import io.spine.internal.gradle.checkstyle.CheckStyleConfig
 import io.spine.internal.gradle.excludeProtobufLite
@@ -96,7 +99,6 @@ project.run {
 typealias Module = Project
 
 fun Module.addDependencies() {
-    val validation = Spine(project).validation
     dependencies {
         errorprone(ErrorProne.core)
 
@@ -105,18 +107,20 @@ fun Module.addDependencies() {
         ErrorProne.annotations.forEach { compileOnlyApi(it) }
 
         implementation(Guava.lib)
+        implementation("io.spine:spine-logging:2.0.0-SNAPSHOT.184")
+        implementation("io.spine:spine-logging-backend:2.0.0-SNAPSHOT.184")
+        implementation("io.spine:spine-logging-context:2.0.0-SNAPSHOT.184")
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
 
-        testImplementation(validation.runtime)
+        testImplementation(Validation.runtime)
     }
 }
 
 fun Module.forceConfigurations() {
-    val spine = Spine(project)
     configurations {
         forceVersions()
         excludeProtobufLite()
@@ -126,17 +130,20 @@ fun Module.forceConfigurations() {
             resolutionStrategy {
                 force(
                     Protobuf.compiler,
-                    spine.base,
-                    spine.time,
-                    spine.server,
-                    spine.testlib,
-                    spine.toolBase,
-                    spine.pluginBase,
+                    Spine.base,
+                    Spine.time,
+                    Spine.server,
+                    Spine.testlib,
+                    Spine.toolBase,
+                    Spine.pluginBase,
+                    Spine.logging,
+                    Spine.loggingBackend,
+                    Spine.loggingContext,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
-                    spine.validation.runtime,
-                    "io.spine.protodata:protodata-codegen-java:${Spine.protoDataVersion}",
+                    Validation.runtime,
+                    "io.spine.protodata:protodata-codegen-java:${ProtoData.version}",
 
                     JUnit.runner,
                     "org.hamcrest:hamcrest-core:2.2",
@@ -192,7 +199,7 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
         outputs.file(propertiesFile)
 
         val versions = Properties().apply {
-            setProperty("baseVersion", Spine.DefaultVersion.base)
+            setProperty("baseVersion", Spine.ArtifactVersion.base)
             setProperty("protobufVersion", Protobuf.version)
             setProperty("gRPCVersion", Grpc.version)
         }

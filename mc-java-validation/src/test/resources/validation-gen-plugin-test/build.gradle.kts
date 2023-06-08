@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.applyStandardWithGitHub
 import java.io.File
 import org.gradle.api.file.ConfigurableFileCollection
@@ -77,7 +78,7 @@ repositories.applyStandardWithGitHub(project,
 )
 
 dependencies {
-    implementation(io.spine.internal.dependency.Spine(project).base)
+    implementation(Spine.base)
 }
 
 sourceSets {

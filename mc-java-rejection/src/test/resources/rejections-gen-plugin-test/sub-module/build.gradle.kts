@@ -30,18 +30,20 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.Protobuf
 
 plugins {
     `java-test-fixtures`
 }
 
 dependencies {
-    io.spine.internal.dependency.Protobuf.libs.forEach {
+    Protobuf.libs.forEach {
         testFixturesImplementation(it)
     }
-    val spine = io.spine.internal.dependency.Spine(project)
-    testFixturesImplementation(spine.base)
-    testFixturesImplementation(spine.validation.runtime)
+    testFixturesImplementation(Spine.base)
+    testFixturesImplementation(Validation.runtime)
 }
 
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE

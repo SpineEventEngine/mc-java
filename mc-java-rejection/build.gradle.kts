@@ -37,10 +37,9 @@ dependencies {
 
     implementation(project(":mc-java-base"))
 
-    val spine = Spine(project)
-    implementation(spine.pluginBase)
+    implementation(Spine.pluginBase)
 
-    testImplementation(spine.pluginTestlib)
+    testImplementation(Spine.pluginTestlib)
     testImplementation(gradleTestKit())
 }
 

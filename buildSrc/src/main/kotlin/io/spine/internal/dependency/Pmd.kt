@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,5 +28,5 @@ package io.spine.internal.dependency
 
 // https://pmd.github.io/
 object Pmd {
-    const val version = "6.51.0"
+    const val version = "6.55.0"
 }
