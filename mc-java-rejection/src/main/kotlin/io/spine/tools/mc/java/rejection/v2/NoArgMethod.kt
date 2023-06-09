@@ -23,29 +23,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.rejection.v2
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
-
-dependencies {
-    implementation(Roaster.api) {
-        exclude(group = "com.google.guava")
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = "com.google.guava")
-    }
-
-    implementation(project(":mc-java-base"))
-    implementation(ProtoData.codegenJava)
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
+import com.google.errorprone.annotations.Immutable
+import io.spine.tools.java.code.Method
 
 /**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ * A reference to a method with no arguments.
  */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
+@Immutable
+internal class NoArgMethod(methodName: String) : Method(methodName) {
+    fun name(): String {
+        return value()
+    }
+
+    fun signature(): String {
+        return value() + "()"
+    }
+
+    companion object {
+        private const val serialVersionUID = 0L
+    }
 }
