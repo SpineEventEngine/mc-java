@@ -35,7 +35,6 @@ dependencies {
     compileOnly(gradleKotlinDsl())
 
     implementation(Spine.toolBase)
-    implementation(Spine.pluginBase)
     implementation(project(":mc-java-base"))
     implementation(project(":mc-java-validation"))
     implementation(JavaPoet.lib)

@@ -37,8 +37,6 @@ dependencies {
 
     implementation(project(":mc-java-base"))
 
-    implementation(Spine.pluginBase)
-
     testImplementation(Spine.pluginTestlib)
     testImplementation(gradleTestKit())
 }

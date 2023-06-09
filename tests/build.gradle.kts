@@ -33,8 +33,6 @@ import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.applyStandard
-import io.spine.internal.gradle.excludeProtobufLite
-import io.spine.internal.gradle.forceVersions
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
@@ -68,7 +66,7 @@ buildscript {
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
+        doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
         val jackson = io.spine.internal.dependency.Jackson
         all {
@@ -178,7 +176,7 @@ subprojects {
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
+        doForceVersions(this)
         all {
             resolutionStrategy {
                 force(

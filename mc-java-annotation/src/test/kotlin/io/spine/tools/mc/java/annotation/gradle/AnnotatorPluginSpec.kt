@@ -68,6 +68,7 @@ import kotlin.io.path.div
 import kotlin.io.path.name
 import org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
 import org.jboss.forge.roaster.model.source.JavaClassSource
@@ -96,6 +97,9 @@ internal class AnnotatorPluginSpec {
                     fail with the error on Windows Registry unavailability. */
                 //.enableRunnerDebug()
                 .create()
+            (project.runner as DefaultGradleRunner).withJvmArguments(
+                "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
+            )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             project.executeTask(annotateProto)
         }
