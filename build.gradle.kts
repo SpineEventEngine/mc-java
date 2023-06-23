@@ -26,7 +26,9 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
+import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.publish.PublishingRepos
@@ -178,3 +180,24 @@ fun Module.setupCodegen() {
 
 fun File.residesIn(directory: File): Boolean =
     canonicalFile.startsWith(directory.absolutePath)
+
+apply(from = "version.gradle.kts")
+val mcJavaVersion: String by extra
+
+val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
+    environment(
+        "MC_JAVA_VERSION" to mcJavaVersion,
+        "CORE_VERSION" to Spine.ArtifactVersion.core,
+        "PROTO_DATA_VERSION" to ProtoData.version,
+        "VALIDATION_VERSION" to Validation.version
+    )
+    workingDir = File(rootDir, "BuildPerformance")
+    commandLine("./substitute-settings.py")
+}
+
+tasks.register<RunBuild>("checkPerformance") {
+    directory = "$rootDir/BuildPerformance"
+
+    dependsOn(prepareBuildPerformanceSettings, localPublish)
+    shouldRunAfter(check)
+}
