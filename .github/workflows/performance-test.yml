@@ -17,6 +17,6 @@ jobs:
           distribution: zulu
           cache: gradle
 
-      - name: Build project and run tests
+      - name: Measure build performance
         shell: bash
         run: ./gradlew checkPerformance --stacktrace
