@@ -44,7 +44,7 @@ import static io.spine.tools.mc.java.field.StandardAccessor.set;
  * Represents singular {@linkplain FieldType field type}.
  */
 @Immutable
-final class SingularFieldType implements FieldType {
+public final class SingularFieldType implements FieldType {
 
     private static final String BYTES = "Bytes";
 
@@ -98,7 +98,7 @@ final class SingularFieldType implements FieldType {
         return set();
     }
 
-    private static TypeName constructTypeNameFor(String name) {
+    public static TypeName constructTypeNameFor(String name) {
         var boxedScalarPrimitive = PrimitiveType.wrapperFor(name);
 
         if (boxedScalarPrimitive.isPresent()) {

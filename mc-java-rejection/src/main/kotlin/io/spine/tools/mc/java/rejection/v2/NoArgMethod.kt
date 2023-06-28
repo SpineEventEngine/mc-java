@@ -33,6 +33,7 @@ import io.spine.tools.java.code.Method
  */
 @Immutable
 internal class NoArgMethod(methodName: String) : Method(methodName) {
+
     fun name(): String {
         return value()
     }

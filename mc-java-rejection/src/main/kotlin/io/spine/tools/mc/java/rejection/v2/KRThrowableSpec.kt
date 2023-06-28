@@ -31,52 +31,55 @@ import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
-import io.spine.base.RejectionType
-import io.spine.code.java.PackageName
-import io.spine.logging.Logging
+import io.spine.logging.WithLogging
+import io.spine.protodata.MessageType
 import io.spine.tools.java.code.GeneratedBy
-import io.spine.tools.java.code.JavaPoetName
 import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.javadoc.JavadocText
-import javax.lang.model.element.Modifier
+import javax.lang.model.element.Modifier.FINAL
+import javax.lang.model.element.Modifier.PRIVATE
+import javax.lang.model.element.Modifier.PUBLIC
+import javax.lang.model.element.Modifier.STATIC
+import com.squareup.javapoet.ClassName as PoClassName
 
 /**
  * A spec for a generated rejection type.
  *
- *
  * The generated type extends [RejectionThrowable] and encloses an instance of the
  * corresponding [rejection message][io.spine.base.RejectionMessage].
+ *
+ * @param rejection
+ *         a rejection declaration.
  */
-internal class KRThrowableSpec(private val declaration: RejectionType) :
-    io.spine.tools.java.code.TypeSpec,
-    Logging {
-        
-    private val messageClass: JavaPoetName
+internal class KRThrowableSpec(
+    val packageName: String,
+    val rejection: MessageType,
+    typeSystem: TypeSystem
+) : WithLogging {
+
+    private val simpleClassName: String = rejection.name.simpleName
+    private val messageClass: PoClassName = PoClassName.get(
+        packageName,
+        rejection.declaredIn.simpleName, // Outer class name.
+        simpleClassName
+    )
     private val builder: KRThrowableBuilderSpec
 
-    /**
-     * Creates a new instance.
-     *
-     * @param type
-     *         a rejection declaration
-     */
     init {
-        messageClass = JavaPoetName.of(declaration.messageClass())
+        val throwableClass = PoClassName.get(packageName, simpleClassName)
         builder = KRThrowableBuilderSpec(
-            declaration, messageClass, JavaPoetName.of(declaration.throwableClass())
+            rejection,
+            messageClass,
+            throwableClass,
+            typeSystem
         )
     }
 
-    override fun packageName(): PackageName {
-        return declaration.javaPackage()
-    }
-
-    override fun toPoet(): TypeSpec {
-        val className = declaration.simpleJavaClassName()
-        return TypeSpec.classBuilder(className.value())
+    fun toPoet(): TypeSpec {
+        return TypeSpec.classBuilder(simpleClassName)
             .addJavadoc(classJavadoc())
             .addAnnotation(GeneratedBy.spineModelCompiler())
-            .addModifiers(Modifier.PUBLIC)
+            .addModifiers(PUBLIC)
             .superclass(RejectionThrowable::class.java)
             .addField(serialVersionUID())
             .addMethod(constructor())
@@ -87,15 +90,14 @@ internal class KRThrowableSpec(private val declaration: RejectionType) :
     }
 
     private fun constructor(): MethodSpec {
-        _debug().log(
-            "Creating the constructor for the type `%s`.",
-            declaration.simpleJavaClassName()
-        )
+        logger.atDebug().log {
+            "Creating the constructor for the type `${rejection}`."
+        }
         val builderParameter = builder.asParameter()
         val buildRejectionMessage = builder.buildRejectionMessage()
         return MethodSpec.constructorBuilder()
             .addJavadoc(constructorJavadoc(builderParameter))
-            .addModifiers(Modifier.PRIVATE)
+            .addModifiers(PRIVATE)
             .addParameter(builderParameter)
             .addStatement("super(\$L)", buildRejectionMessage.toString())
             .build()
@@ -103,11 +105,13 @@ internal class KRThrowableSpec(private val declaration: RejectionType) :
 
     private fun messageThrown(): MethodSpec {
         val methodSignature = messageThrown.signature()
-        _debug().log("Adding method `%s`.", methodSignature)
-        val returnType = messageClass.value()
+        logger.atDebug().log {
+            "Adding method `$methodSignature`."
+        }
+        val returnType = messageClass
         return MethodSpec.methodBuilder(messageThrown.name())
             .addAnnotation(Override::class.java)
-            .addModifiers(Modifier.PUBLIC)
+            .addModifiers(PUBLIC)
             .returns(returnType)
             .addStatement("return (\$T) super.\$L", returnType, methodSignature)
             .build()
@@ -119,59 +123,53 @@ internal class KRThrowableSpec(private val declaration: RejectionType) :
      * @return the class-level Javadoc content
      */
     private fun classJavadoc(): CodeBlock {
-        val leadingComments = declaration.leadingComments()
-            .map { text: String ->
-                JavadocText.fromUnescaped(text)
+        val leadingComments = with(rejection.doc.leadingComment) {
+            if (isEmpty()) {
+                JavadocText.fromEscaped("")
+            } else {
+                JavadocText.fromUnescaped(this)
                     .inPreTags()
                     .withNewLine()
             }
-            .orElse(JavadocText.fromEscaped(""))
-        val rejectionPackage = declaration.javaPackage()
+        }
         val sourceProtoNote = CodeBlock.builder()
             .add("Rejection based on proto type ")
-            .add("{@code \$L.\$L}", rejectionPackage, declaration.simpleJavaClassName())
+            .add("{@code \$L.\$L}", packageName, simpleClassName)
             .build()
         return CodeBlock.builder()
             .add(leadingComments.value())
-            .add(
-                JavadocText.fromEscaped(sourceProtoNote.toString())
-                    .withNewLine()
-                    .value()
-            )
+            .add(JavadocText.fromEscaped(sourceProtoNote.toString()).withNewLine().value())
             .build()
     }
-
-    companion object {
-        private val messageThrown = NoArgMethod("messageThrown")
-
-        /**
-         * A Javadoc content for the rejection constructor.
-         *
-         * @param builderParameter
-         * the name of a rejection builder parameter
-         * @return the constructor Javadoc content
-         */
-        private fun constructorJavadoc(builderParameter: ParameterSpec): CodeBlock {
-            val generalPart = JavadocText.fromUnescaped("Creates a new instance.")
-                .withNewLine()
-                .withNewLine()
-            val paramsBlock =
-                CodeBlock.of("@param \$N the builder for the rejection", builderParameter)
-            val paramsPart = JavadocText.fromEscaped(paramsBlock.toString()).withNewLine()
-            return CodeBlock.builder()
-                .add(generalPart.value())
-                .add(paramsPart.value())
-                .build()
-        }
-
-        private fun serialVersionUID(): FieldSpec {
-            return FieldSpec.builder(
-                Long::class.javaPrimitiveType,
-                FieldName.serialVersionUID()
-                    .value(), Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL
-            )
-                .initializer("0L")
-                .build()
-        }
-    }
 }
+
+private val messageThrown = NoArgMethod("messageThrown")
+
+/**
+ * A Javadoc content for the rejection constructor.
+ *
+ * @param builderParameter
+ *          the name of a rejection builder parameter
+ * @return the constructor Javadoc content
+ */
+private fun constructorJavadoc(builderParameter: ParameterSpec): CodeBlock {
+    val generalPart = JavadocText.fromUnescaped("Creates a new instance.")
+        .withNewLine()
+        .withNewLine()
+    val paramsBlock =
+        CodeBlock.of("@param \$N the builder for the rejection", builderParameter)
+    val paramsPart = JavadocText.fromEscaped(paramsBlock.toString()).withNewLine()
+    return CodeBlock.builder()
+        .add(generalPart.value())
+        .add(paramsPart.value())
+        .build()
+}
+
+private fun serialVersionUID(): FieldSpec {
+    return FieldSpec.builder(
+        Long::class.javaPrimitiveType,
+        FieldName.serialVersionUID().value(), PRIVATE, STATIC, FINAL)
+        .initializer("0L")
+        .build()
+}
+

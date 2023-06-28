@@ -105,7 +105,8 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private fun generateRejectionsFor(proto: ProtobufSourceFile, context: CodegenContext) {
         proto.typeMap.values.forEach {
-            val spec = KRThrowableSpec(proto, it)
+            val packageName = proto.javaPackage()
+            val spec = KRThrowableSpec(packageName, it, context.typeSystem)
             val file = sources.outputRoot.resolve(it.name.toString() + ".java")
             spec.writeToFile(file)
         }
@@ -113,7 +114,6 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private fun KRThrowableSpec.writeToFile(file: Path) {
         val typeSpec = toPoet()
-        val packageName = packageName().value()
         val indent = Indent.of4()
         val javaFile = JavaFile.builder(packageName, typeSpec)
             .skipJavaLangImports(true)
