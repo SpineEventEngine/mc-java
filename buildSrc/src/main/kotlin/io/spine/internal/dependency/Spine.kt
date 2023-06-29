@@ -61,7 +61,7 @@ object Spine {
          * @see [Spine.CoreJava.client]
          * @see [Spine.CoreJava.server]
          */
-        const val core = "2.0.0-SNAPSHOT.141"
+        const val core = "2.0.0-SNAPSHOT.149"
 
         /** The version of [Spine.modelCompiler]. */
         const val mc = "2.0.0-SNAPSHOT.132"
