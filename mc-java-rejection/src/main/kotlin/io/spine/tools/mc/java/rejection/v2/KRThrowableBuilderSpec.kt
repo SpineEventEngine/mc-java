@@ -42,6 +42,7 @@ import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
+import io.spine.string.titleCase
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
 import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
@@ -54,7 +55,6 @@ import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC
 import javax.lang.model.element.Modifier.STATIC
-import org.gradle.configurationcache.extensions.capitalized
 import com.squareup.javapoet.ClassName as PoClassName
 import com.squareup.javapoet.TypeName as PoTypeName
 
@@ -277,7 +277,7 @@ private fun FieldName.javaCase(): String {
 }
 
 private fun Field.primarySetter(): String {
-    val capName = name.javaCase().capitalized()
+    val capName = name.javaCase().titleCase()
     return when {
         isMap() -> "putAll$capName"
         isRepeated() -> "addAll$capName"
