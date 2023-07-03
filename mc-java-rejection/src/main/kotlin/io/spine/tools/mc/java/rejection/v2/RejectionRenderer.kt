@@ -36,6 +36,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.ti
 import io.spine.tools.code.Indent
@@ -51,10 +52,14 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
     private lateinit var sources: SourceFileSet
 
     override fun render(sources: SourceFileSet) {
+        // We could receive `grpc` or `kotlin` output roots here. Now we do only `java`.
+        if (!sources.outputRoot.endsWith("java")) {
+            return
+        }
         this.sources = sources
         val rejectionFiles = findRejectionFiles()
         rejectionFiles.forEach {
-            generateRejection(it, context)
+            generateRejection(it)
         }
     }
 
@@ -84,41 +89,60 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
             .all()
             .filter { it.isRejections() }
         result.forEach { it.checkConventions() }
+
+        logger.atDebug().log {
+            val nl = System.lineSeparator()
+            val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
+            "Found ${result.size} rejection files:$nl$fileList"
+        }
+
         return result
     }
 
-    private fun generateRejection(proto: ProtobufSourceFile, context: CodegenContext) {
-        if (proto.typeMap.isEmpty()) {
+    private fun generateRejection(protoFile: ProtobufSourceFile) {
+        if (protoFile.typeMap.isEmpty()) {
             logger.atWarning().log {
-                "No rejection types found in the file `${proto.filePath}`."
+                "No rejection types found in the file `${protoFile.filePath.value}`."
             }
             return
         }
-        logger.atDebug().log {
-            """${System.lineSeparator()}
-            Generating rejection classes for `${proto.filePath.value}`.
-            Java package: `${proto.javaPackage()}`.
-            Outer class name: `${proto.outerClassName()}`.
-            Output directory: `${sources.outputRoot}`.            
-            """.ti()
-        }
-        generateRejectionsFor(proto, context)
+        generateRejectionsFor(protoFile)
     }
 
-    private fun generateRejectionsFor(proto: ProtobufSourceFile, context: CodegenContext) {
-        proto.typeMap.values
+    private fun generateRejectionsFor(protoFile: ProtobufSourceFile) {
+        logger.atDebug().log {
+            """
+            Generating rejection classes for `${protoFile.filePath.value}`.
+                  Java package: `${protoFile.javaPackage()}`.
+                  Outer class name: `${protoFile.outerClassName()}`.
+                  Output directory: `${sources.outputRoot}`.            
+            """.ti()
+        }
+
+        protoFile.typeMap.values
             .filter { it.isTopLevel() }
             .forEach {
-                val packageName = proto.javaPackage()
-                val spec = KRThrowableSpec(packageName, it, context.typeSystem)
-                val packageDir = sources.outputRoot.resolve(packageName.replace('.', '/'))
-                val fileName = it.name.simpleName
-                val file = packageDir.resolve("$fileName.java")
-
-                println("**** Generating ${it.name.simpleName} to $file")
-
-                spec.writeToFile(file)
+                generateRejection(protoFile, it)
             }
+    }
+
+    private fun generateRejection(
+        protoFile: ProtobufSourceFile,
+        rejectionType: MessageType
+    ) {
+        val javaPackage = protoFile.javaPackage()
+        val spec = KRThrowableSpec(javaPackage, rejectionType, context.typeSystem)
+        val packageDir = sources.outputRoot.resolve(javaPackage.replace('.', '/'))
+        val fileName = rejectionType.name.simpleName
+        val file = packageDir.resolve("$fileName.java")
+        spec.writeToFile(file)
+
+        logger.atDebug().log {
+            val nl = System.lineSeparator()
+            val rejectionName = "`${rejectionType.qualifiedName()}`"
+            val padding = " ".repeat(6)
+            "$rejectionName ->$nl$padding`$file`"
+        }
     }
 
     private fun KRThrowableSpec.writeToFile(file: Path) {
