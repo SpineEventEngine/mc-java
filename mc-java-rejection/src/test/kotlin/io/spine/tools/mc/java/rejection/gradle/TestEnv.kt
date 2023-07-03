@@ -29,6 +29,7 @@ import io.spine.code.java.PackageName
 import io.spine.code.proto.FieldName
 import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName.generated
+import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
 import io.spine.tools.fs.DirectoryName.spine
 import io.spine.tools.java.fs.FileName
@@ -49,7 +50,7 @@ internal object TestEnv {
 
     fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
         val javaPackage = JAVA_PACKAGE.toDirectory()
-        return projectDir / generated / main / spine / javaPackage / REJECTION_FILE_NAME.value()
+        return projectDir / generated / main / java / javaPackage / REJECTION_FILE_NAME.value()
     }
 
     fun rejectionWithJavadoc(): Iterable<String> {
