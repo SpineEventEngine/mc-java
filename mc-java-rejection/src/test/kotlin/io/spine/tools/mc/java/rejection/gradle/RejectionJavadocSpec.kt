@@ -28,11 +28,10 @@ package io.spine.tools.mc.java.rejection.gradle
 import com.google.common.truth.Truth.assertThat
 import io.spine.code.java.SimpleClassName
 import io.spine.testing.TempDir
-import io.spine.tools.code.SourceSetName.Companion.main
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
 import io.spine.tools.java.code.BuilderSpec
-import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.generateRejections
+import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import io.spine.tools.mc.java.rejection.gen.RThrowableBuilderSpec.NEW_BUILDER_METHOD
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedBuilderClassComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedClassComment
@@ -64,7 +63,7 @@ internal class RejectionJavadocSpec {
                 .fromResources("rejection-javadoc-test") // Contains `build.gradle.kts`
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionWithJavadoc())
                 .create()
-            project.executeTask(generateRejections(main))
+            project.executeTask(launchProtoData)
             val generatedFile = rejectionsJavadocThrowableSource(projectDir.toPath()).toFile()
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
