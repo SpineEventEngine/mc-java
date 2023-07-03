@@ -32,7 +32,6 @@ import io.spine.tools.mc.gradle.LanguagePlugin;
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPlugin;
 import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin;
 import io.spine.tools.mc.java.gradle.McJavaOptions;
-import io.spine.tools.mc.java.rejection.gradle.RejectionGenPlugin;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
@@ -80,7 +79,6 @@ public class McJavaPlugin extends LanguagePlugin {
     private static void createAndApplyPluginsIn(Project project) {
         Stream.of(new CleaningPlugin(),
                   new DescriptorSetMergerPlugin(),
-                  new RejectionGenPlugin(),
                   new AnnotatorPlugin(),
                   new JavaProtocConfigurationPlugin(),
                   new McJavaChecksPlugin(),
