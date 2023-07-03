@@ -31,6 +31,7 @@ import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.RunBuild
+import io.spine.internal.gradle.RunGradle
 import io.spine.internal.gradle.publish.PublishingRepos
 import io.spine.internal.gradle.publish.SpinePublishing
 import io.spine.internal.gradle.publish.spinePublishing
@@ -191,13 +192,15 @@ val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
         "PROTO_DATA_VERSION" to ProtoData.version,
         "VALIDATION_VERSION" to Validation.version
     )
-    workingDir = File(rootDir, "BuildPerformance")
+    workingDir = File(rootDir, "BuildSpeed")
     commandLine("./substitute-settings.py")
 }
 
-tasks.register<RunBuild>("checkPerformance") {
-    directory = "$rootDir/BuildPerformance"
+tasks.register<RunGradle>("checkPerformance") {
+    directory = "$rootDir/BuildSpeed"
 
     dependsOn(prepareBuildPerformanceSettings, localPublish)
     shouldRunAfter(check)
+
+    task("clean", "build")
 }
