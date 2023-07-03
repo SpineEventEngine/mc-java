@@ -32,6 +32,7 @@ import com.squareup.javapoet.JavaFile
 import io.spine.code.proto.FileName
 import io.spine.logging.WithLogging
 import io.spine.protobuf.unpack
+import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
@@ -93,23 +94,31 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
             }
             return
         }
-        logger.atDebug().log { """
-            Generating rejection classes for `${proto.filePath}`.
+        logger.atDebug().log {
+            """${System.lineSeparator()}
+            Generating rejection classes for `${proto.filePath.value}`.
             Java package: `${proto.javaPackage()}`.
             Outer class name: `${proto.outerClassName()}`.
             Output directory: `${sources.outputRoot}`.            
-        """.ti()
+            """.ti()
         }
         generateRejectionsFor(proto, context)
     }
 
     private fun generateRejectionsFor(proto: ProtobufSourceFile, context: CodegenContext) {
-        proto.typeMap.values.forEach {
-            val packageName = proto.javaPackage()
-            val spec = KRThrowableSpec(packageName, it, context.typeSystem)
-            val file = sources.outputRoot.resolve(it.name.toString() + ".java")
-            spec.writeToFile(file)
-        }
+        proto.typeMap.values
+            .filter { it.isTopLevel() }
+            .forEach {
+                val packageName = proto.javaPackage()
+                val spec = KRThrowableSpec(packageName, it, context.typeSystem)
+                val packageDir = sources.outputRoot.resolve(packageName.replace('.', '/'))
+                val fileName = it.name.simpleName
+                val file = packageDir.resolve("$fileName.java")
+
+                println("**** Generating ${it.name.simpleName} to $file")
+
+                spec.writeToFile(file)
+            }
     }
 
     private fun KRThrowableSpec.writeToFile(file: Path) {
@@ -127,6 +136,10 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
 private fun ProtobufSourceFile.isRejections(): Boolean {
     return filePath.value.endsWith("rejections.proto")
+}
+
+private fun MessageType.isTopLevel(): Boolean {
+    return !hasDeclaredIn()
 }
 
 internal typealias RejectionFile = ProtobufSourceFile
