@@ -15,7 +15,6 @@ jobs:
         with:
           java-version: 11
           distribution: zulu
-          cache: gradle
 
       - name: Measure build performance
         shell: bash
