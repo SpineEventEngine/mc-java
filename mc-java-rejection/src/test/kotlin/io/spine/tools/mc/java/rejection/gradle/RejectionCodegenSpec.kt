@@ -46,8 +46,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@DisplayName("`RejectionGenPlugin` should")
-internal class RejectionGenPluginSpec {
+@DisplayName("Code generation of rejections should")
+internal class RejectionCodegenSpec {
 
     companion object {
 
@@ -56,9 +56,9 @@ internal class RejectionGenPluginSpec {
         @BeforeAll
         @JvmStatic
         fun generateRejections() {
-            val projectDir = TempDir.forClass(RejectionGenPluginSpec::class.java)
+            val projectDir = TempDir.forClass(RejectionCodegenSpec::class.java)
             val project: GradleProject = setupAt(projectDir)
-                .fromResources("rejections-gen-plugin-test")
+                .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
                  /* Uncomment the following line to be able to debug the build.
                     Do not forget to turn off so that tests run faster AND Windows build does not
