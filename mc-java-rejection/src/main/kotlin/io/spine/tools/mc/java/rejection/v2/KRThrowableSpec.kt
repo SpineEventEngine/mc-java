@@ -58,14 +58,12 @@ internal class KRThrowableSpec(
 ) : WithLogging {
 
     private val simpleClassName: String = rejection.name.simpleName
-    private val messageClass: PoClassName = PoClassName.get(
-        packageName,
-        rejection.declaredIn.simpleName, // Outer class name.
-        simpleClassName
-    )
+    private val messageClass: PoClassName
     private val builder: KRThrowableBuilderSpec
 
     init {
+        val clsName = typeSystem.classNameFor(rejection.name).canonical
+        messageClass = PoClassName.bestGuess(clsName)
         val throwableClass = PoClassName.get(packageName, simpleClassName)
         builder = KRThrowableBuilderSpec(
             rejection,
