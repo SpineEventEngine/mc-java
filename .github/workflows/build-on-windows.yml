@@ -15,12 +15,12 @@ jobs:
         with:
           java-version: 11
           distribution: zulu
-#          cache: gradle
+          cache: gradle
 
       - name: Build project and run tests
         shell: cmd
         # For the reason on `--no-daemon` see https://github.com/actions/cache/issues/454
-        run: gradlew.bat build --stacktrace --no-daemon
+        run: gradlew.bat build --stacktrace --no-daemon --debug
 
       # See: https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
