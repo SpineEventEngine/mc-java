@@ -58,6 +58,14 @@ See the common parts of Model Compiler at [SpineEventEngine/model-compiler][mode
 
 The modules in this repository are built with Java 11.
 
+### Performance testing
+
+This repo includes the `BuildSpeed` submodule with the performance tests for the Spine tools.
+The tests are executed in a GH Action. To run the tests locally, launch the `checkPerformance`
+Gradle task. The task execution time will be printed to the console and 
+the [journal file](./BuildSpeed/journal.log) will be updated.
+
+
 [model-compiler]: https://github.com/SpineEventEngine/model-compiler
 [mc-js]: https://github.com/SpineEventEngine/mc-js
 [mc-dart]: https://github.com/SpineEventEngine/mc-dart
