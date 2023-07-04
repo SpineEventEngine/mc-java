@@ -140,8 +140,7 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         logger.atDebug().log {
             val nl = System.lineSeparator()
             val rejectionName = "`${rejectionType.qualifiedName()}`"
-            val padding = " ".repeat(6)
-            "$rejectionName ->$nl$padding`$file`"
+            "$rejectionName ->$nl$PADDING`$file`"
         }
     }
 
@@ -155,6 +154,14 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         val appendable = StringBuilder()
         javaFile.writeTo(appendable)
         sources.createFile(file, appendable.toString())
+    }
+
+    private companion object {
+        /**
+         * The padding to be used in the log messages displaying file names with
+         * the generated Java code.
+         */
+        private const val PADDING = "      "
     }
 }
 
