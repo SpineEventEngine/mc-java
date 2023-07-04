@@ -33,8 +33,6 @@ import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.applyStandard
-import io.spine.internal.gradle.excludeProtobufLite
-import io.spine.internal.gradle.forceVersions
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
@@ -68,7 +66,7 @@ buildscript {
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
+        doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
         val jackson = io.spine.internal.dependency.Jackson
         all {
@@ -178,7 +176,7 @@ subprojects {
     }
 
     with(configurations) {
-        io.spine.internal.gradle.doForceVersions(this)
+        doForceVersions(this)
         all {
             resolutionStrategy {
                 force(
@@ -229,29 +227,4 @@ subprojects {
     //TODO:2021-07-22:alexander.yevsyukov: Turn to WARN and investigate duplicates.
     // see https://github.com/SpineEventEngine/base/issues/657
     tasks.processTestResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-    fun File.residesIn(directory: File): Boolean =
-        canonicalFile.startsWith(directory.absolutePath)
-
-    /**
-     * Exclude generated vanilla proto code from inputs of `JavaCompile` and `KotlinCompile`.
-     */
-    val generatedSourceProto = "$buildDir/generated/source/proto"
-
-    project.afterEvaluate {
-        val generatedSourceProtoDir = File(generatedSourceProto)
-        val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
-
-        tasks.withType<JavaCompile>().forEach {
-            it.source = it.source.filter(notInSourceDir).asFileTree
-        }
-
-        tasks.withType<KotlinCompile<*>>().forEach {
-            val thisTask = it as KotlinCompileTool
-            val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
-            with(thisTask.sources as ConfigurableFileCollection) {
-                setFrom(filteredKotlin)
-            }
-        }
-    }
 }

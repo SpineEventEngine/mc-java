@@ -40,8 +40,6 @@ import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.VersionWriter
 import io.spine.internal.gradle.checkstyle.CheckStyleConfig
-import io.spine.internal.gradle.excludeProtobufLite
-import io.spine.internal.gradle.forceVersions
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.javadoc.JavadocConfig

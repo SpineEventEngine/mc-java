@@ -26,9 +26,12 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.RunBuild
+import io.spine.internal.gradle.RunGradle
 import io.spine.internal.gradle.publish.PublishingRepos
 import io.spine.internal.gradle.publish.SpinePublishing
 import io.spine.internal.gradle.publish.spinePublishing
@@ -37,22 +40,20 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
 import java.time.Duration
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 buildscript {
     standardSpineSdkRepositories()
 
     val spine = io.spine.internal.dependency.Spine
-    io.spine.internal.gradle.doForceVersions(configurations)
+    doForceVersions(configurations)
     configurations {
         all {
             resolutionStrategy {
                 force(
                     spine.base,
+                    spine.logging,
                     spine.toolBase,
                     spine.server,
-                    spine.logging,
                     io.spine.internal.dependency.Validation.runtime,
                     io.spine.internal.dependency.ProtoData.pluginLib
                 )
@@ -98,7 +99,7 @@ subprojects {
     apply(plugin = "module")
     apply(plugin = "io.spine.protodata")
     dependencies {
-        protoData(Spine.validation.java)
+        protoData(Validation.java)
     }
     setupCodegen()
 }
@@ -164,7 +165,6 @@ typealias Module = Project
 fun Module.setupCodegen() {
 
     protobuf {
-        //generatedFilesBaseDir = "$projectDir/generated"
         protoc { artifact = Protobuf.compiler }
     }
 
@@ -172,38 +172,35 @@ fun Module.setupCodegen() {
         renderers(
             "io.spine.validation.java.PrintValidationInsertionPoints",
             "io.spine.validation.java.JavaValidationRenderer",
-
-            // Suppress warnings in the generated code.
-            "io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration",
-            "io.spine.protodata.codegen.java.annotation.SuppressWarningsAnnotation"
         )
         plugins(
             "io.spine.validation.ValidationPlugin"
         )
     }
-
-    val generatedSourceProto = "$buildDir/generated/source/proto"
-
-    /**
-     * Remove the generated vanilla proto code.
-     */
-    project.afterEvaluate {
-        val generatedSourceProtoDir = File(generatedSourceProto)
-        val notInSourceDir: (File) -> Boolean = { file -> !file.residesIn(generatedSourceProtoDir) }
-
-        tasks.withType<JavaCompile>().forEach {
-            it.source = it.source.filter(notInSourceDir).asFileTree
-        }
-
-        tasks.withType<KotlinCompile<*>>().forEach {
-            val thisTask = it as KotlinCompileTool
-            val filteredKotlin = thisTask.sources.filter(notInSourceDir).toSet()
-            with(thisTask.sources as ConfigurableFileCollection) {
-                setFrom(filteredKotlin)
-            }
-        }
-    }
 }
 
 fun File.residesIn(directory: File): Boolean =
     canonicalFile.startsWith(directory.absolutePath)
+
+apply(from = "version.gradle.kts")
+val mcJavaVersion: String by extra
+
+val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
+    environment(
+        "MC_JAVA_VERSION" to mcJavaVersion,
+        "CORE_VERSION" to Spine.ArtifactVersion.core,
+        "PROTO_DATA_VERSION" to ProtoData.version,
+        "VALIDATION_VERSION" to Validation.version
+    )
+    workingDir = File(rootDir, "BuildSpeed")
+    commandLine("./substitute-settings.py")
+}
+
+tasks.register<RunGradle>("checkPerformance") {
+    directory = "$rootDir/BuildSpeed"
+
+    dependsOn(prepareBuildPerformanceSettings, localPublish)
+    shouldRunAfter(check)
+
+    task("clean", "build")
+}

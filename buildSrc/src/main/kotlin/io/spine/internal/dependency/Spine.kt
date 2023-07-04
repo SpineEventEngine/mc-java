@@ -51,7 +51,7 @@ object Spine {
         const val reflect = "2.0.0-SNAPSHOT.182"
 
         /** The version of [Spine.logging]. */
-        const val logging = "2.0.0-SNAPSHOT.183"
+        const val logging = "2.0.0-SNAPSHOT.186"
 
         /** The version of [Spine.testlib]. */
         const val testlib = "2.0.0-SNAPSHOT.183"
@@ -70,10 +70,10 @@ object Spine {
         const val mcJava = "2.0.0-SNAPSHOT.147"
 
         /** The version of [Spine.baseTypes]. */
-        const val baseTypes = "2.0.0-SNAPSHOT.120"
+        const val baseTypes = "2.0.0-SNAPSHOT.121"
 
         /** The version of [Spine.time]. */
-        const val time = "2.0.0-SNAPSHOT.121"
+        const val time = "2.0.0-SNAPSHOT.131"
 
         /** The version of [Spine.change]. */
         const val change = "2.0.0-SNAPSHOT.118"

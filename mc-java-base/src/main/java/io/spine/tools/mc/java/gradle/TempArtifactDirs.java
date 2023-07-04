@@ -27,7 +27,8 @@
 package io.spine.tools.mc.java.gradle;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.flogger.FluentLogger;
+import io.spine.logging.Logger;
+import io.spine.logging.LoggingFactory;
 import io.spine.tools.java.fs.DefaultJavaPaths;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
@@ -40,14 +41,18 @@ import java.util.List;
 import static io.spine.tools.mc.java.gradle.McJavaOptions.def;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static io.spine.util.Exceptions.newIllegalStateException;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
+import static kotlin.jvm.JvmClassMappingKt.getKotlinClass;
 
 /**
  * Calculates directories to be cleaned for a given project.
  */
 public class TempArtifactDirs {
 
-    private static final FluentLogger log = FluentLogger.forEnclosingClass();
+    private static final Logger<?> log = LoggingFactory.getLogger(
+            getKotlinClass(TempArtifactDirs.class)
+    );
 
     /** Prevents instantiation of this utility class. */
     private TempArtifactDirs() {
@@ -62,13 +67,13 @@ public class TempArtifactDirs {
         result.addAll(tempArtifactDirsOf(project));
         var dirs = fromOptionsOf(project);
         if (!dirs.isEmpty()) {
-            log.atFine()
-               .log("Found %d directories to clean: `%s`.", dirs.size(), dirs);
+            log.atDebug()
+               .log(() -> format("Found %d directories to clean: `%s`.", dirs.size(), dirs));
             result.addAll(dirs);
         } else {
             var defaultValue = def(project).generated().toString();
-            log.atFine()
-               .log("Default directory to clean: `%s`.", defaultValue);
+            log.atDebug()
+               .log(() -> format("Default directory to clean: `%s`.", defaultValue));
             result.add(new File(defaultValue));
         }
         return result.build();

@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
@@ -34,10 +35,12 @@ dependencies {
     implementation(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
+    api(Spine.logging)
     api(Spine.modelCompiler)
+    api(ProtoData.codegenJava)
     api(Validation.config)
     api(Validation.runtime)
-    implementation(Spine.pluginBase)
+    api(Spine.pluginBase)
 
     testImplementation(Spine.testlib)
     testImplementation(gradleTestKit())
