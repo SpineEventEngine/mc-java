@@ -125,7 +125,7 @@ internal class KRThrowableSpec(
             if (isEmpty()) {
                 JavadocText.fromEscaped("")
             } else {
-                JavadocText.fromUnescaped(this)
+                JavadocText.fromUnescaped(this@with + System.lineSeparator())
                     .inPreTags()
                     .withNewLine()
             }
@@ -134,9 +134,11 @@ internal class KRThrowableSpec(
             .add("Rejection based on proto type ")
             .add("{@code \$L.\$L}", packageName, simpleClassName)
             .build()
+        val protoNoteBlock = JavadocText.fromEscaped(sourceProtoNote.toString())
+                .withNewLine()
         return CodeBlock.builder()
             .add(leadingComments.value())
-            .add(JavadocText.fromEscaped(sourceProtoNote.toString()).withNewLine().value())
+            .add(protoNoteBlock.value())
             .build()
     }
 }

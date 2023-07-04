@@ -193,7 +193,8 @@ internal class KRThrowableBuilderSpec internal constructor(
             .addStatement("\$L.\$L(\$L)", BUILDER_FIELD, methodName, parameterName)
             .addStatement(RETURN_STATEMENT)
 
-        val leadingComment = field.doc.leadingComment
+        val leadingComment = field.doc.leadingComment + System.lineSeparator()
+
         if (leadingComment.isNotEmpty()) {
             methodBuilder.addJavadoc(wrapInPre(leadingComment))
         }
