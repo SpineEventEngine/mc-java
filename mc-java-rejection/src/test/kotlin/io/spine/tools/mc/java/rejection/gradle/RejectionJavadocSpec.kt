@@ -37,7 +37,7 @@ import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedBuilderClassComme
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedClassComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedFirstFieldComment
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedSecondFieldComment
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionWithJavadoc
+import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionFileContent
 import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionsJavadocThrowableSource
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
@@ -60,8 +60,8 @@ internal class RejectionJavadocSpec {
             val projectDir = TempDir.forClass(RejectionJavadocSpec::class.java)
             val project: GradleProject = setupAt(projectDir)
                 .copyBuildSrc()
-                .fromResources("rejection-javadoc-test") // Contains `build.gradle.kts`
-                .addFile("src/main/proto/javadoc_rejections.proto", rejectionWithJavadoc())
+                .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
+                .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
             project.executeTask(launchProtoData)
             val generatedFile = rejectionsJavadocThrowableSource(projectDir.toPath()).toFile()
