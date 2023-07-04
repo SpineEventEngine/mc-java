@@ -1,3 +1,6 @@
 [submodule "config"]
 	path = config
 	url = https://github.com/SpineEventEngine/config
+[submodule "BuildSpeed"]
+	path = BuildSpeed
+	url = https://github.com/SpineEventEngine/BuildSpeed
