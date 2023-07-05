@@ -17,18 +17,13 @@ jobs:
           distribution: zulu
           cache: gradle
 
-      - name: SetPageFile
-        run: |
-          Invoke-WebRequest http://www.paraglidernc.com/Files/SetPageFile1008.cab -OutFile SetPageFile1008.cab
-          expand.exe SetPageFile1008.cab -F:* C:\
-          C:\files\SetPageFile.exe /f D:\pagefile.sys /m 8192
+      - name: Configure Pagefile
+        uses: al-cheb/configure-pagefile-action@v1.2
 
       - name: Build project and run tests
         shell: cmd
         # For the reason on `--no-daemon` see https://github.com/actions/cache/issues/454
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-          gradlew.bat build --stacktrace --no-daemon
+        run: gradlew.bat build --stacktrace --no-daemon
 
       # See: https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
