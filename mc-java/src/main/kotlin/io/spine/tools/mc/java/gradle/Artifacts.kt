@@ -104,8 +104,6 @@ internal val mcJavaBase: Artifact by lazy {
     }
 }
 
-
-
 /**
  * The version of the Model Compiler Java modules.
  *
