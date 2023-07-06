@@ -120,7 +120,6 @@ internal class KRThrowableBuilderSpec internal constructor(
     /**
      * A code block, which builds and validates the rejection message.
      *
-     *
      * The code block is not a statement (there is no semicolon) since
      * it is intended to be passes to a constructor.
      *
@@ -131,8 +130,9 @@ internal class KRThrowableBuilderSpec internal constructor(
         .build()
 
     private fun rejectionMessage(): MethodSpec {
-        val javadoc =
-            JavadocText.fromEscaped("Obtains the rejection and validates it.").withNewLine()
+        val javadoc = JavadocText.fromEscaped(
+            "Obtains the rejection and validates it."
+        ).withNewLine()
         return MethodSpec.methodBuilder("rejectionMessage")
             .addModifiers(PRIVATE)
             .addJavadoc(javadoc.value())
@@ -144,8 +144,9 @@ internal class KRThrowableBuilderSpec internal constructor(
     }
 
     private fun build(): MethodSpec {
-        val rawJavadoc = "Creates the rejection from the builder and validates it."
-        val javadoc = JavadocText.fromEscaped(rawJavadoc).withNewLine()
+        val javadoc = JavadocText.fromEscaped(
+            "Creates the rejection from the builder and validates it."
+        ).withNewLine()
         return MethodSpec.methodBuilder(BUILD_METHOD_NAME)
             .addModifiers(PUBLIC)
             .addJavadoc(javadoc.value())
@@ -244,8 +245,9 @@ private val newBuilder = NoArgMethod("newBuilder")
 private const val BUILDER_FIELD = "builder"
 
 private fun constructor(): MethodSpec {
-    val rawJavadoc = "Prevent direct instantiation of the builder."
-    val javadoc = JavadocText.fromEscaped(rawJavadoc).withNewLine()
+    val javadoc = JavadocText.fromEscaped(
+        "Prevent direct instantiation of the builder."
+    ).withNewLine()
     return MethodSpec.constructorBuilder()
         .addJavadoc(javadoc.value())
         .addModifiers(PRIVATE)
