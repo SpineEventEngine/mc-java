@@ -39,7 +39,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @SuppressWarnings("PublicField" /* required for exposing the property in Gradle. */)
 public class McJavaChecksExtension {
 
-    //TODO:2021-10-12:alexander.yevsyukov: Have `modelCompiler/java/checks` instead.
     private static final String EXTENSION_NAME = "modelChecks";
 
     public Severity useValidatingBuilderSeverity;
