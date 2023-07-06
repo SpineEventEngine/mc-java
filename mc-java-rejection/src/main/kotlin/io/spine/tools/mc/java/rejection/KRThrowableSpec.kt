@@ -173,4 +173,3 @@ private fun serialVersionUID(): FieldSpec {
         .initializer("0L")
         .build()
 }
-
