@@ -104,7 +104,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-configuration</artifactId>
-    <version>2.0.0-SNAPSHOT.97</version>
+    <version>2.0.0-SNAPSHOT.96</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -188,7 +188,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-java-runtime</artifactId>
-    <version>2.0.0-SNAPSHOT.97</version>
+    <version>2.0.0-SNAPSHOT.96</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -283,7 +283,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-java</artifactId>
-    <version>2.0.0-SNAPSHOT.97</version>
+    <version>2.0.0-SNAPSHOT.96</version>
   </dependency>
   <dependency>
     <groupId>net.sourceforge.pmd</groupId>
