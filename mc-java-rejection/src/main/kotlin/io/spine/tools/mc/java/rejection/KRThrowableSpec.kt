@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection.v2
+package io.spine.tools.mc.java.rejection
 
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec

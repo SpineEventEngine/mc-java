@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection.gradle
+
+package io.spine.tools.mc.java.rejection
 
 import io.spine.code.java.PackageName
 import io.spine.code.proto.FieldName
 import io.spine.tools.div
-import io.spine.tools.fs.DirectoryName.generated
-import io.spine.tools.fs.DirectoryName.java
-import io.spine.tools.fs.DirectoryName.main
+import io.spine.tools.fs.DirectoryName
 import io.spine.tools.java.fs.FileName
 import io.spine.tools.java.fs.toDirectory
 import java.nio.file.Path
@@ -49,7 +48,7 @@ internal object TestEnv {
 
     fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
         val javaPackage = JAVA_PACKAGE.toDirectory()
-        return projectDir / generated / main / java / javaPackage / REJECTION_FILE_NAME.value()
+        return projectDir / DirectoryName.generated / DirectoryName.main / DirectoryName.java / javaPackage / REJECTION_FILE_NAME.value()
     }
 
     fun rejectionFileContent(): Iterable<String> {
