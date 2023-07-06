@@ -109,7 +109,6 @@ internal class KRThrowableBuilderSpec internal constructor(
             .build()
     }
 
-
     /**
      * Obtains the builder as a parameter.
      *
@@ -117,6 +116,7 @@ internal class KRThrowableBuilderSpec internal constructor(
      */
     fun asParameter(): ParameterSpec =
         ParameterSpec.builder(thisType(), BUILDER_FIELD).build()
+
     /**
      * A code block, which builds and validates the rejection message.
      *
