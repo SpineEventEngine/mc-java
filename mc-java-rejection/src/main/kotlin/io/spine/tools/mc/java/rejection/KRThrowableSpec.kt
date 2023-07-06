@@ -157,8 +157,9 @@ private fun constructorJavadoc(builderParameter: ParameterSpec): CodeBlock {
     val generalPart = JavadocText.fromUnescaped("Creates a new instance.")
         .withNewLine()
         .withNewLine()
-    val paramsBlock =
-        CodeBlock.of("@param \$N the builder for the rejection", builderParameter)
+    val paramsBlock = CodeBlock.of(
+        "@param \$N the builder for the rejection", builderParameter
+    )
     val paramsPart = JavadocText.fromEscaped(paramsBlock.toString()).withNewLine()
     return CodeBlock.builder()
         .add(generalPart.value())
