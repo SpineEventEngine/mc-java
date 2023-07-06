@@ -157,9 +157,6 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         javaFile.writeTo(appendable)
         sources.createFile(file, appendable.toString())
     }
-
-    private companion object {
-    }
 }
 
 private fun ProtobufSourceFile.isRejections(): Boolean {
