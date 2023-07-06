@@ -92,7 +92,7 @@ internal val mcJavaRejection: Artifact by lazy {
 }
 
 /**
- * The Maven artifact containing the `spine-mc-java-rejection` module.
+ * The Maven artifact containing the `spine-mc-java-base` module.
  */
 @get:JvmName("mcJavaBase")
 internal val mcJavaBase: Artifact by lazy {
