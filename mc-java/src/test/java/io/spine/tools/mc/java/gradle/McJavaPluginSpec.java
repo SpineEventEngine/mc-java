@@ -79,22 +79,6 @@ class McJavaPluginSpec {
                                    .isTrue();
         }
 
-        @Disabled("Because there's no separate task for rejection generation")
-        @Test
-        void generateRejections() {
-            assertDependencies(
-                    generateRejections, mergeDescriptorSet, compileJava
-            );
-        }
-
-        @Disabled("Because there's no separate task for test rejection generation")
-        @Test
-        void generateTestRejections() {
-            assertDependencies(
-                    generateTestRejections, mergeTestDescriptorSet, compileTestJava
-            );
-        }
-
         @Test
         void annotateProto() {
             assertDependencies(
