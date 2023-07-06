@@ -30,7 +30,7 @@
  * Do not rename this this property as it is also used in the integration tests via its name.
  *
  * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- * Keep in mind that changind it under `buildSrc` also requires sync. with `tests/buildSrc`.
+ * Keep in mind that changing it under `buildSrc` also requires sync. with `tests/buildSrc`.
  */
 val mcJavaVersion by extra("2.0.0-SNAPSHOT.160")
 val versionToPublish by extra(mcJavaVersion)
