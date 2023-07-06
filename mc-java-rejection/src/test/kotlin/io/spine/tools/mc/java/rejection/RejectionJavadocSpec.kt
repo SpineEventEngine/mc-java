@@ -32,6 +32,12 @@ import io.spine.testing.TempDir
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.mc.java.gradle.McJavaTaskName
+import io.spine.tools.mc.java.rejection.TestEnv.expectedBuilderClassComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedClassComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedFirstFieldComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedSecondFieldComment
+import io.spine.tools.mc.java.rejection.TestEnv.rejectionFileContent
+import io.spine.tools.mc.java.rejection.TestEnv.rejectionsJavadocThrowableSource
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
