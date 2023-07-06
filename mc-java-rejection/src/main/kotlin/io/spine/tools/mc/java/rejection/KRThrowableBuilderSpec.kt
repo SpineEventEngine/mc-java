@@ -49,6 +49,7 @@ import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
+import io.spine.tools.mc.java.rejection.KRThrowableBuilderSpec.Companion.NEW_BUILDER_METHOD_NAME
 import io.spine.validate.Validate
 import java.util.regex.Pattern
 import javax.lang.model.element.Modifier.FINAL
@@ -239,9 +240,17 @@ internal class KRThrowableBuilderSpec internal constructor(
     private fun thisType(): ClassName =
         throwableClass.nestedClass(simpleClassName.value())
 
+
+    internal companion object {
+
+        /**
+         * The name of the `newBuilder()` method.
+         */
+        internal const val NEW_BUILDER_METHOD_NAME = "newBuilder"
+    }
 }
 
-private val newBuilder = NoArgMethod("newBuilder")
+private val newBuilder = NoArgMethod(NEW_BUILDER_METHOD_NAME)
 private const val BUILDER_FIELD = "builder"
 
 private fun constructor(): MethodSpec {

@@ -29,16 +29,18 @@ package io.spine.tools.mc.java.rejection
 import io.kotest.matchers.shouldBe
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
-import io.spine.tools.fs.DirectoryName
+import io.spine.tools.code.SourceSetName.Companion.main
+import io.spine.tools.code.SourceSetName.Companion.test
+import io.spine.tools.fs.DirectoryName.generated
 import io.spine.tools.fs.DirectoryName.java
-import io.spine.tools.gradle.task.JavaTaskName
+import io.spine.tools.gradle.task.JavaTaskName.Companion.compileTestJava
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.resolve
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.isDirectory
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -68,19 +70,19 @@ internal class RejectionCodegenSpec {
                 .toFile()
             // Executing the `compileTestJava` task should generate rejection types from both
             // `test` and `main` source sets.
-            project.executeTask(JavaTaskName.compileTestJava)
+            project.executeTask(compileTestJava)
         }
     }
 
     private fun generatedRoot(sourceSetName: SourceSetName): Path =
-        moduleDir.toPath().resolve(DirectoryName.generated).resolve(sourceSetName.value)
+        moduleDir.toPath().resolve(generated).resolve(sourceSetName.value)
 
-    private fun targetMainDir(): Path = generatedRoot(SourceSetName.main)
+    private fun targetMainDir(): Path = generatedRoot(main)
 
-    private fun targetTestDir(): Path = generatedRoot(SourceSetName.test)
+    private fun targetTestDir(): Path = generatedRoot(test)
 
     private fun assertExists(path: Path) =
-        Assertions.assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
+        assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
 
     private fun assertJavaFileExists(packageDir: Path, typeName: String) {
         val file = packageDir.resolve("$typeName.java")

@@ -26,13 +26,13 @@
 
 package io.spine.tools.mc.java.rejection
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import io.spine.code.java.SimpleClassName
 import io.spine.testing.TempDir
-import io.spine.tools.gradle.testing.GradleProject
-import io.spine.tools.java.code.BuilderSpec
-import io.spine.tools.mc.java.gradle.McJavaTaskName
+import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
+import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
+import io.spine.tools.mc.java.rejection.KRThrowableBuilderSpec.Companion.NEW_BUILDER_METHOD_NAME
 import io.spine.tools.mc.java.rejection.TestEnv.expectedBuilderClassComment
 import io.spine.tools.mc.java.rejection.TestEnv.expectedClassComment
 import io.spine.tools.mc.java.rejection.TestEnv.expectedFirstFieldComment
@@ -58,7 +58,7 @@ internal class RejectionJavadocSpec {
         @JvmStatic
         fun generateSources() {
             val projectDir = TempDir.forClass(RejectionJavadocSpec::class.java)
-            val project: GradleProject = GradleProject.setupAt(projectDir)
+            val project = setupAt(projectDir)
                 .copyBuildSrc()
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
@@ -75,7 +75,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedClassComment(), rejection)
         assertMethodDoc(
             "@return a new builder for the rejection", rejection,
-            "newBuilder"
+            NEW_BUILDER_METHOD_NAME
         )
     }
 
@@ -83,7 +83,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedBuilderClassComment(), builder)
         assertMethodDoc(
             "Creates the rejection from the builder and validates it.", builder,
-            BuilderSpec.BUILD_METHOD_NAME
+            BUILD_METHOD_NAME
         )
         assertMethodDoc(expectedFirstFieldComment(), builder, "setId")
         assertMethodDoc(expectedSecondFieldComment(), builder, "setRejectionMessage")
@@ -110,8 +110,7 @@ internal class RejectionJavadocSpec {
 
     private fun assertDoc(expectedText: String, source: JavaDocCapableSource<*>) {
         val javadoc = source.javaDoc
-        Truth.assertThat(javadoc.fullText)
-            .isEqualTo(expectedText)
+        assertThat(javadoc.fullText).isEqualTo(expectedText)
     }
 
     @Nested
