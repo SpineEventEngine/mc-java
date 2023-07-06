@@ -32,6 +32,7 @@ import io.spine.testing.TempDir
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.mc.java.gradle.McJavaTaskName
+import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import io.spine.tools.mc.java.rejection.TestEnv.expectedBuilderClassComment
 import io.spine.tools.mc.java.rejection.TestEnv.expectedClassComment
 import io.spine.tools.mc.java.rejection.TestEnv.expectedFirstFieldComment
@@ -62,7 +63,7 @@ internal class RejectionJavadocSpec {
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
-            project.executeTask(McJavaTaskName.launchProtoData)
+            project.executeTask(launchProtoData)
             val generatedFile = rejectionsJavadocThrowableSource(projectDir.toPath()).toFile()
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
