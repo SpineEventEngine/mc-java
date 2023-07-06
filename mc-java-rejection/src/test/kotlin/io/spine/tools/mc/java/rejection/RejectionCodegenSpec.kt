@@ -30,6 +30,7 @@ import io.kotest.matchers.shouldBe
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.fs.DirectoryName
+import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.gradle.task.JavaTaskName
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.resolve
@@ -92,7 +93,7 @@ internal class RejectionCodegenSpec {
 
         @Test
         fun `'main' source set`() {
-            val mainSpine = targetMainDir().resolve(DirectoryName.java)
+            val mainSpine = targetMainDir().resolve(java)
             assertExists(mainSpine)
             mainSpine.isDirectory() shouldBe true
             mainSpine.containsJavaFiles() shouldBe true
@@ -100,7 +101,7 @@ internal class RejectionCodegenSpec {
 
         @Test
         fun `'test' source set`() {
-            val testSpine = targetTestDir().resolve(DirectoryName.java)
+            val testSpine = targetTestDir().resolve(java)
             assertExists(testSpine)
             testSpine.isDirectory() shouldBe true
             testSpine.containsJavaFiles() shouldBe true
@@ -109,7 +110,7 @@ internal class RejectionCodegenSpec {
         @Test
         fun `'testFixtures' source set`() {
             val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(
-                DirectoryName.java
+                java
             )
             assertExists(testFixturesSpine)
             testFixturesSpine.isDirectory() shouldBe true
@@ -124,7 +125,7 @@ internal class RejectionCodegenSpec {
         @Test
         fun `for 'main' source set`() {
             // As defined in `resources/.../main_rejections.proto`.
-            val packageDir = targetMainDir().resolve(DirectoryName.java).resolve("io/spine/sample/rejections")
+            val packageDir = targetMainDir().resolve(java).resolve("io/spine/sample/rejections")
             assertExists(packageDir)
 
             // As defined in `resources/.../main_rejections.proto`.
@@ -139,7 +140,7 @@ internal class RejectionCodegenSpec {
         @Test
         fun `for 'test' source set`() {
             // As defined in `resources/.../test_rejections.proto`.
-            val packageDir = targetTestDir().resolve(DirectoryName.java).resolve("io/spine/sample/rejections")
+            val packageDir = targetTestDir().resolve(java).resolve("io/spine/sample/rejections")
             assertExists(packageDir)
 
             // As defined in `resources/.../test_rejections.proto`.
