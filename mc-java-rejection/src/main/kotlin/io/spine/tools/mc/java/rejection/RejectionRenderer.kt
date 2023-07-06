@@ -42,11 +42,16 @@ import io.spine.string.ti
 import io.spine.tools.code.Indent
 import java.nio.file.Path
 
+/**
+ * A renderer of rejection classes.
+ *
+ * The output is placed in the `java` subdirectory under the [outputRoot][SourceFileSet.outputRoot]
+ * directory of the given [sources]. Other subdirectories, such as `grpc` or `kotlin`, are ignored.
+ */
 public class RejectionRenderer: JavaRenderer(), WithLogging {
 
-    private val context: CodegenContext by lazy {
-        val typeSystem = bakeTypeSystem()
-        CodegenContext(typeSystem)
+    private val typeSystem: TypeSystem by lazy {
+        bakeTypeSystem()
     }
 
     private lateinit var sources: SourceFileSet
@@ -63,24 +68,23 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         }
     }
 
-    private fun bakeTypeSystem(): TypeSystem {
-        val types = TypeSystem.newBuilder()
-        addSourceFiles(types)
-        addDependencies(types)
-        return types.build()
+    private fun bakeTypeSystem(): TypeSystem =
+        TypeSystem.newBuilder().also {
+            addSourceFiles(it)
+            addDependencies(it)
+        }.build()
+
+    private fun addSourceFiles(types: TypeSystem.Builder) {
+        val files = select(ProtobufSourceFile::class.java).all()
+        for (file in files) {
+            types.addFrom(file)
+        }
     }
 
     private fun addDependencies(types: TypeSystem.Builder) {
         val dependencies = select(ProtobufDependency::class.java).all()
         for (d in dependencies) {
             types.addFrom(d.file)
-        }
-    }
-
-    private fun addSourceFiles(types: TypeSystem.Builder) {
-        val files = select(ProtobufSourceFile::class.java).all()
-        for (file in files) {
-            types.addFrom(file)
         }
     }
 
@@ -126,20 +130,17 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
             }
     }
 
-    private fun generateRejection(
-        protoFile: ProtobufSourceFile,
-        rejectionType: MessageType
-    ) {
+    private fun generateRejection(protoFile: ProtobufSourceFile, rejection: MessageType) {
         val javaPackage = protoFile.javaPackage()
-        val spec = KRThrowableSpec(javaPackage, rejectionType, context.typeSystem)
+        val spec = KRThrowableSpec(javaPackage, rejection, typeSystem)
         val packageDir = sources.outputRoot.resolve(javaPackage.replace('.', '/'))
-        val fileName = rejectionType.name.simpleName
+        val fileName = rejection.name.simpleName
         val file = packageDir.resolve("$fileName.java")
         spec.writeToFile(file)
 
         logger.atDebug().log {
             val nl = System.lineSeparator()
-            val rejectionName = "`${rejectionType.qualifiedName()}`"
+            val rejectionName = "`${rejection.qualifiedName()}`"
             "$rejectionName ->$nl$PADDING`$file`"
         }
     }
@@ -224,8 +225,11 @@ private fun RejectionFile.checkOuterClassName() {
     }
 }
 
-@JvmName("javaPackageOf")
-internal fun RejectionFile.javaPackage(): String {
+/**
+ * Obtains the Java package name for the given rejection file, taking into account
+ * the `java_package` option.
+ */
+private fun RejectionFile.javaPackage(): String {
     val optionName = "java_package"
     val javaPackage = file.optionList.find { it.name == optionName }
     return javaPackage?.value?.unpack<StringValue>()?.value ?: file.packageName

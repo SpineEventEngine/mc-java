@@ -159,19 +159,6 @@ private constructor(
     }
 }
 
-/**
- * Obtains the canonical name of the class representing the given [type] in Java.
- *
- * For Java primitive types, obtains wrapper classes.
- *
- * @throws IllegalStateException if the type is unknown
- */
-private fun TypeSystem.toClass(type: Type): ClassName = when (type.kindCase) {
-    PRIMITIVE -> type.primitive.toClass()
-    MESSAGE, ENUMERATION -> classNameFor(type.message)
-    else -> throw IllegalArgumentException("Type is empty.")
-}
-
 private fun unknownType(type: Type): Nothing =
     error("Unknown type: `${type}`.")
 
