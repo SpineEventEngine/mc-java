@@ -193,6 +193,7 @@ internal class KRThrowableBuilderSpec internal constructor(
             .addStatement("\$L.\$L(\$L)", BUILDER_FIELD, methodName, parameterName)
             .addStatement(RETURN_STATEMENT)
 
+        // Add line separator to simulate behavior of native Protobuf API.
         val leadingComment = field.doc.leadingComment + System.lineSeparator()
 
         if (leadingComment.isNotEmpty()) {

@@ -125,6 +125,7 @@ internal class KRThrowableSpec(
             if (isEmpty()) {
                 JavadocText.fromEscaped("")
             } else {
+                // Add line separator to simulate behavior of native Protobuf API.
                 JavadocText.fromUnescaped(this@with + System.lineSeparator())
                     .inPreTags()
                     .withNewLine()
