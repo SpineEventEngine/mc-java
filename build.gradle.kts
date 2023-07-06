@@ -74,7 +74,7 @@ plugins {
 }
 
 private object BuildSettings {
-    const val TIMEOUT_MINUTES = 20L
+    const val TIMEOUT_MINUTES = 42L
 }
 
 spinePublishing {
