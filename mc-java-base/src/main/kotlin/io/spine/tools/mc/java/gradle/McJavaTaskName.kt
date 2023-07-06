@@ -81,6 +81,17 @@ public class McJavaTaskName(value: String, ssn: SourceSetName) : TaskWithSourceS
         public fun writeDescriptorReference(ssn: SourceSetName): TaskName =
             McJavaTaskName("write${ssn.toInfix()}DescriptorReferences", ssn)
 
+        /**
+         * Obtains the name of the task which launches ProtoData for the given source set.
+         */
+        @JvmStatic
+        public fun launchProtoData(ssn: SourceSetName): TaskName =
+            McJavaTaskName("launch${ssn.toInfix()}ProtoData", ssn)
+
+        /** The name of the task which launches ProtoData for the main source set. */
+        @JvmField
+        public val launchProtoData: TaskName = launchProtoData(main)
+
         /** Generates source code of rejections in the `main` source set. */
         @JvmField
         public val generateRejections: TaskName = generateRejections(main)

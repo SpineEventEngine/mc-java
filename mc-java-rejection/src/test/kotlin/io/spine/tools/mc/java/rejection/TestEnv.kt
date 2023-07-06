@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection.gradle
+
+package io.spine.tools.mc.java.rejection
 
 import io.spine.code.java.PackageName
 import io.spine.code.proto.FieldName
 import io.spine.tools.div
+import io.spine.tools.fs.DirectoryName
 import io.spine.tools.fs.DirectoryName.generated
+import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
-import io.spine.tools.fs.DirectoryName.spine
 import io.spine.tools.java.fs.FileName
 import io.spine.tools.java.fs.toDirectory
 import java.nio.file.Path
@@ -38,27 +40,27 @@ import kotlin.io.path.div
 
 internal object TestEnv {
 
-    private const val CLASS_COMMENT = "The rejection definition to test Javadoc generation."
+    private val JAVA_PACKAGE = PackageName.of("io.spine.sample.rejections")
+    private const val TYPE_COMMENT = "The rejection definition to test Javadoc generation."
     private const val REJECTION_NAME = "Rejection"
     private const val FIRST_FIELD_COMMENT = "The rejection ID."
     private val FIRST_FIELD = FieldName.of("id")
     private const val SECOND_FIELD_COMMENT = "The rejection message."
     private val SECOND_FIELD = FieldName.of("rejection_message")
-    private val JAVA_PACKAGE = PackageName.of("io.spine.sample.rejections")
     private val REJECTION_FILE_NAME = FileName.forType(REJECTION_NAME)
 
     fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
         val javaPackage = JAVA_PACKAGE.toDirectory()
-        return projectDir / generated / main / spine / javaPackage / REJECTION_FILE_NAME.value()
+        return projectDir / generated / main / java / javaPackage / REJECTION_FILE_NAME.value()
     }
 
-    fun rejectionWithJavadoc(): Iterable<String> {
+    fun rejectionFileContent(): Iterable<String> {
         return listOf(
             "syntax = \"proto3\";",
             "package spine.sample.rejections;",
             "option java_package = \"$JAVA_PACKAGE\";",
             "option java_multiple_files = false;",
-            "// $CLASS_COMMENT",
+            "// $TYPE_COMMENT",
             "message $REJECTION_NAME {",
             "    // $FIRST_FIELD_COMMENT",
             "    int32 $FIRST_FIELD = 1; // Is not a part of Javadoc.",
@@ -69,9 +71,11 @@ internal object TestEnv {
         )
     }
 
-    fun expectedClassComment(): String = (wrappedInPreTag(CLASS_COMMENT)
+    fun expectedClassComment(): String = (
+            wrappedInPreTag(TYPE_COMMENT)
             + " Rejection based on proto type  " +
-            "{@code $JAVA_PACKAGE.$REJECTION_NAME}")
+            "{@code $JAVA_PACKAGE.$REJECTION_NAME}"
+        )
 
     fun expectedBuilderClassComment() =
         "The builder for the  {@code $REJECTION_NAME}  rejection."

@@ -74,7 +74,7 @@ plugins {
 }
 
 private object BuildSettings {
-    const val TIMEOUT_MINUTES = 20L
+    const val TIMEOUT_MINUTES = 42L
 }
 
 spinePublishing {
@@ -197,6 +197,7 @@ val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
 }
 
 tasks.register<RunGradle>("checkPerformance") {
+    maxDurationMins = BuildSettings.TIMEOUT_MINUTES
     directory = "$rootDir/BuildSpeed"
 
     dependsOn(prepareBuildPerformanceSettings, localPublish)

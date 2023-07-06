@@ -47,7 +47,7 @@ import static io.spine.tools.mc.java.field.StandardAccessor.set;
  * Represents repeated {@linkplain FieldType field type}.
  */
 @Immutable
-final class RepeatedFieldType implements FieldType {
+public final class RepeatedFieldType implements FieldType {
 
     private static final ImmutableSet<Accessor> ACCESSORS = ImmutableSet.of(
             get(),
@@ -91,7 +91,7 @@ final class RepeatedFieldType implements FieldType {
         return addAll();
     }
 
-    private static TypeName typeNameFor(String componentTypeName) {
+    public static TypeName typeNameFor(String componentTypeName) {
         var wrapper = PrimitiveType.wrapperFor(componentTypeName);
         var componentType = wrapper.isPresent()
                             ? TypeName.get(wrapper.get())

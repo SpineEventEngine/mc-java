@@ -33,6 +33,8 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 import static io.spine.tools.fs.DirectoryName.kotlin;
+import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaRejection;
+import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaBase;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
@@ -77,7 +79,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     private static void configureProtoData(Project target) {
-        configureValidation(target);
+        configureRenderers(target);
 
         var tasks = target.getTasks();
         tasks.withType(LaunchProtoData.class, task -> {
@@ -93,27 +95,35 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     /**
-     * Configures ProtoData with the required Validation library extensions,
+     * Configures ProtoData with the renderers and plugins,
      * for the passed Gradle project.
      *
      * <p>In case the Validation
      * {@linkplain io.spine.tools.mc.java.gradle.codegen.ValidationConfig#shouldSkipValidation()
-     * is disabled}, does nothing.
+     * is disabled}, its renderers and the plugin are not added.
      */
-    private static void configureValidation(Project target) {
+    private static void configureRenderers(Project target) {
         var options = getMcJava(target).codegen.validation();
-        if (options.shouldSkipValidation()) {
-            return;
-        }
         var ext = target.getExtensions()
                         .getByType(CodegenSettings.class);
+
+        // Validation rendering.
+        var validationEnabled = !options.shouldSkipValidation();
+        if (validationEnabled) {
+            ext.renderers(
+                    "io.spine.validation.java.PrintValidationInsertionPoints",
+                    "io.spine.validation.java.JavaValidationRenderer"
+            );
+            ext.plugins(
+                    "io.spine.validation.ValidationPlugin"
+            );
+        }
+
+        // Rejection rendering.
         ext.renderers(
-                "io.spine.validation.java.PrintValidationInsertionPoints",
-                "io.spine.validation.java.JavaValidationRenderer"
+                "io.spine.tools.mc.java.rejection.RejectionRenderer"
         );
-        ext.plugins(
-                "io.spine.validation.ValidationPlugin"
-        );
+
         ext.setSubDirs(ImmutableList.of(
                 getGeneratedJavaDirName().value(),
                 getGeneratedGrpcDirName().value(),
@@ -121,8 +131,14 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         ));
 
         var dependencies = target.getDependencies();
-        dependencies.add(PROTODATA_CONFIGURATION, validationJavaBundle().notation());
-        dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
+
+        if (validationEnabled) {
+            dependencies.add(PROTODATA_CONFIGURATION, validationJavaBundle().notation());
+            dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
+        }
+
+        dependencies.add(PROTODATA_CONFIGURATION, mcJavaRejection().notation());
+        dependencies.add(PROTODATA_CONFIGURATION, mcJavaBase().notation());
     }
 
     private static

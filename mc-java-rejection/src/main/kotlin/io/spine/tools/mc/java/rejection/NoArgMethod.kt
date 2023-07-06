@@ -23,29 +23,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.rejection
 
-package io.spine.tools.mc.java.rejection.gen;
-
-import com.google.errorprone.annotations.Immutable;
-import io.spine.tools.java.code.Method;
+import com.google.errorprone.annotations.Immutable
+import io.spine.tools.java.code.Method
 
 /**
  * A reference to a method with no arguments.
  */
 @Immutable
-final class NoArgMethod extends Method {
+internal class NoArgMethod(methodName: String) : Method(methodName) {
 
-    private static final long serialVersionUID = 0L;
-
-    NoArgMethod(String methodName) {
-        super(methodName);
+    fun name(): String {
+        return value()
     }
 
-    public String name() {
-        return value();
+    fun signature(): String {
+        return value() + "()"
     }
 
-    String signature() {
-        return value() + "()";
+    companion object {
+        private const val serialVersionUID = 0L
     }
 }

@@ -40,10 +40,6 @@ object Spine {
      */
     object ArtifactVersion {
 
-        /** The version of [ProtoData]. */
-        @Deprecated("Please use `ProtoData.version` instead.")
-        const val protoData = ProtoData.version
-
         /** The version of [Spine.base]. */
         const val base = "2.0.0-SNAPSHOT.180"
 
@@ -51,7 +47,7 @@ object Spine {
         const val reflect = "2.0.0-SNAPSHOT.182"
 
         /** The version of [Spine.logging]. */
-        const val logging = "2.0.0-SNAPSHOT.186"
+        const val logging = "2.0.0-SNAPSHOT.188"
 
         /** The version of [Spine.testlib]. */
         const val testlib = "2.0.0-SNAPSHOT.183"
@@ -61,13 +57,13 @@ object Spine {
          * @see [Spine.CoreJava.client]
          * @see [Spine.CoreJava.server]
          */
-        const val core = "2.0.0-SNAPSHOT.141"
+        const val core = "2.0.0-SNAPSHOT.149"
 
         /** The version of [Spine.modelCompiler]. */
         const val mc = "2.0.0-SNAPSHOT.132"
 
         /** The version of [McJava]. */
-        const val mcJava = "2.0.0-SNAPSHOT.147"
+        const val mcJava = "2.0.0-SNAPSHOT.151"
 
         /** The version of [Spine.baseTypes]. */
         const val baseTypes = "2.0.0-SNAPSHOT.121"
@@ -84,17 +80,9 @@ object Spine {
         /** The version of [Spine.toolBase]. */
         const val toolBase = "2.0.0-SNAPSHOT.171"
 
-        /** The version of [Spine.validation]. */
-        @Deprecated("Please use `Validation.version` instead.")
-        const val validation = Validation.version
-
         /** The version of [Spine.javadocTools]. */
         const val javadocTools = "2.0.0-SNAPSHOT.75"
     }
-
-    /** The version of ProtoData to be used in the project. */
-    @Deprecated("Please use `ProtoData.version` instead.")
-    const val protoDataVersion = ProtoData.version
 
     const val base = "$group:spine-base:${ArtifactVersion.base}"
     const val logging = "$group:spine-logging:${ArtifactVersion.logging}"

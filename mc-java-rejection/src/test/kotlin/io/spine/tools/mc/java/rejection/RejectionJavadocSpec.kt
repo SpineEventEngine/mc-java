@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection.gradle
+
+package io.spine.tools.mc.java.rejection
 
 import com.google.common.truth.Truth.assertThat
 import io.spine.code.java.SimpleClassName
 import io.spine.testing.TempDir
-import io.spine.tools.code.SourceSetName.Companion.main
-import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
-import io.spine.tools.java.code.BuilderSpec
-import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.generateRejections
-import io.spine.tools.mc.java.rejection.gen.RThrowableBuilderSpec.NEW_BUILDER_METHOD
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedBuilderClassComment
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedClassComment
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedFirstFieldComment
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.expectedSecondFieldComment
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionWithJavadoc
-import io.spine.tools.mc.java.rejection.gradle.TestEnv.rejectionsJavadocThrowableSource
+import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
+import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
+import io.spine.tools.mc.java.rejection.KRThrowableBuilderSpec.Companion.NEW_BUILDER_METHOD_NAME
+import io.spine.tools.mc.java.rejection.TestEnv.expectedBuilderClassComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedClassComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedFirstFieldComment
+import io.spine.tools.mc.java.rejection.TestEnv.expectedSecondFieldComment
+import io.spine.tools.mc.java.rejection.TestEnv.rejectionFileContent
+import io.spine.tools.mc.java.rejection.TestEnv.rejectionsJavadocThrowableSource
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
@@ -59,12 +58,12 @@ internal class RejectionJavadocSpec {
         @JvmStatic
         fun generateSources() {
             val projectDir = TempDir.forClass(RejectionJavadocSpec::class.java)
-            val project: GradleProject = setupAt(projectDir)
+            val project = setupAt(projectDir)
                 .copyBuildSrc()
-                .fromResources("rejection-javadoc-test") // Contains `build.gradle.kts`
-                .addFile("src/main/proto/javadoc_rejections.proto", rejectionWithJavadoc())
+                .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
+                .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
-            project.executeTask(generateRejections(main))
+            project.executeTask(launchProtoData)
             val generatedFile = rejectionsJavadocThrowableSource(projectDir.toPath()).toFile()
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
@@ -76,7 +75,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedClassComment(), rejection)
         assertMethodDoc(
             "@return a new builder for the rejection", rejection,
-            NEW_BUILDER_METHOD
+            NEW_BUILDER_METHOD_NAME
         )
     }
 
@@ -84,7 +83,7 @@ internal class RejectionJavadocSpec {
         assertDoc(expectedBuilderClassComment(), builder)
         assertMethodDoc(
             "Creates the rejection from the builder and validates it.", builder,
-            BuilderSpec.BUILD_METHOD_NAME
+            BUILD_METHOD_NAME
         )
         assertMethodDoc(expectedFirstFieldComment(), builder, "setId")
         assertMethodDoc(expectedSecondFieldComment(), builder, "setRejectionMessage")
@@ -111,8 +110,7 @@ internal class RejectionJavadocSpec {
 
     private fun assertDoc(expectedText: String, source: JavaDocCapableSource<*>) {
         val javadoc = source.javaDoc
-        assertThat(javadoc.fullText)
-            .isEqualTo(expectedText)
+        assertThat(javadoc.fullText).isEqualTo(expectedText)
     }
 
     @Nested

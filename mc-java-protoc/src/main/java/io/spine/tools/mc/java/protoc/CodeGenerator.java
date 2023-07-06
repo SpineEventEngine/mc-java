@@ -59,8 +59,8 @@ import static java.util.stream.Collectors.toSet;
  * optionally generates some Java code in response to it regarding {@linkplain FileDescriptorProto
  * its file}.
  *
- * <a name="contract"></a>
- * <p>Each message type is processed separately. As the result of processing, a generator may
+ * <p><a name="contract"></a>
+ * Each message type is processed separately. As the result of processing, a generator may
  * produce instances of {@link File CodeGeneratorResponse.File}.
  *
  * <p>The {@code CodeGeneratorResponse.File} has three fields: {@code name}, {@code insertionPoint},
@@ -72,7 +72,7 @@ import static java.util.stream.Collectors.toSet;
  * <p>The {@code content} field represents the code snippet to write into the file. This field is
  * required.
  *
- * <p>To make the {@code protoc} generate a new file from the scratch, the the generator should
+ * <p>To make the {@code protoc} generate a new file from the scratch, the generator should
  * produce {@code CodeGeneratorResponse.File} instance with the {@code name} and {@code content}
  * fields. The {@code insertionPoint} field is omitted in this case.
  *

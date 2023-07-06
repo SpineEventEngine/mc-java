@@ -40,8 +40,6 @@ import static io.spine.tools.gradle.task.JavaTaskName.compileTestJava;
 import static io.spine.tools.gradle.testing.GradleTruth.assertThat;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.annotateProto;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.annotateTestProto;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.generateRejections;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.generateTestRejections;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeDescriptorSet;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeTestDescriptorSet;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.preClean;
@@ -76,20 +74,6 @@ class McJavaPluginSpec {
         void preClean() {
             assertThat(task(clean)).dependsOn(task(preClean))
                                    .isTrue();
-        }
-
-        @Test
-        void generateRejections() {
-            assertDependencies(
-                    generateRejections, mergeDescriptorSet, compileJava
-            );
-        }
-
-        @Test
-        void generateTestRejections() {
-            assertDependencies(
-                    generateTestRejections, mergeTestDescriptorSet, compileTestJava
-            );
         }
 
         @Test

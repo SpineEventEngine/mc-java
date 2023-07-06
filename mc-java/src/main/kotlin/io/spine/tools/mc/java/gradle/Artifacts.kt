@@ -36,7 +36,7 @@ import io.spine.tools.gradle.ThirdPartyDependency
 import io.spine.tools.gradle.artifact
 
 /**
- * This file defines utilities for generating instances of [Artifact].
+ * This file declares artifacts used and exposed by McJava.
  */
 @Suppress("unused")
 private const val ABOUT = ""
@@ -78,6 +78,44 @@ internal val spineJavaAllPlugins: Artifact by lazy {
     }
 }
 
+/**
+ * The Maven artifact containing the `spine-mc-java-rejection` module.
+ */
+@get:JvmName("mcJavaRejection")
+internal val mcJavaRejection: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        setName("spine-mc-java-rejection")
+        setVersion(mcJavaVersion)
+        setExtension(JAR_EXTENSION)
+    }
+}
+
+/**
+ * The Maven artifact containing the `spine-mc-java-base` module.
+ */
+@get:JvmName("mcJavaBase")
+internal val mcJavaBase: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        setName("spine-mc-java-base")
+        setVersion(mcJavaVersion)
+        setExtension(JAR_EXTENSION)
+    }
+}
+
+/**
+ * The version of the Model Compiler Java modules.
+ *
+ * This is the version of all the modules declared in this project.
+ */
+@get:JvmName("mcJavaVersion")
+internal val mcJavaVersion: String by lazy {
+    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
+    versions.versionOf(self)
+        .orElseThrow { error("Unable to load versions of ${self}.") }
+}
+
 private const val VALIDATION_GROUP = "io.spine.validation"
 
 private val validationJavaDependency =
@@ -114,16 +152,4 @@ internal val validationJavaRuntime: Artifact by lazy {
         dependency = validationJavaRuntimeDependency
         version = validationVersion
     }
-}
-
-/**
- * The version of the Model Compiler Java modules.
- *
- * This is the version of all the modules declared in this project.
- */
-@get:JvmName("mcJavaVersion")
-internal val mcJavaVersion: String by lazy {
-    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
-    versions.versionOf(self)
-        .orElseThrow { error("Unable to load versions of ${self}.") }
 }
