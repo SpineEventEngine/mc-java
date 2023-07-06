@@ -121,7 +121,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
 
         // Rejection rendering.
         ext.renderers(
-                "io.spine.tools.mc.java.rejection.v2.RejectionRenderer"
+                "io.spine.tools.mc.java.rejection.RejectionRenderer"
         );
 
         ext.setSubDirs(ImmutableList.of(
