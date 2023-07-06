@@ -197,6 +197,7 @@ val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
 }
 
 tasks.register<RunGradle>("checkPerformance") {
+    maxDurationMins = BuildSettings.TIMEOUT_MINUTES
     directory = "$rootDir/BuildSpeed"
 
     dependsOn(prepareBuildPerformanceSettings, localPublish)
