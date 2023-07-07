@@ -23,12 +23,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+@file:Suppress("TooManyFunctions")
+
 package io.spine.tools.mc.java.rejection
 
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
+import com.squareup.javapoet.MethodSpec.constructorBuilder
+import com.squareup.javapoet.MethodSpec.methodBuilder
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeSpec
@@ -44,12 +48,13 @@ import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.string.titleCase
 import io.spine.tools.java.code.BuilderSpec
-import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
 import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
-import io.spine.tools.mc.java.rejection.RThrowableBuilderCode.Companion.NEW_BUILDER_METHOD_NAME
+import io.spine.tools.mc.java.rejection.Method.BUILD
+import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
+import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
 import io.spine.validate.Validate
 import java.util.regex.Pattern
 import javax.lang.model.element.Modifier.FINAL
@@ -73,21 +78,18 @@ internal class RThrowableBuilderCode internal constructor(
 
     private val simpleClassName: SimpleClassName = SimpleClassName.ofBuilder()
 
-    override fun packageName(): PackageName {
-        return rejection.javaPackage()
-    }
+    override fun packageName(): PackageName = rejection.javaPackage()
 
-    override fun toPoet(): TypeSpec {
-        return TypeSpec.classBuilder(simpleClassName.value())
-            .addModifiers(PUBLIC, STATIC)
-            .addJavadoc(classJavadoc().value())
-            .addField(initializedProtoBuilder())
-            .addMethod(constructor())
-            .addMethods(setters())
-            .addMethod(rejectionMessage())
-            .addMethod(build())
-            .build()
-    }
+    override fun toPoet(): TypeSpec =
+        TypeSpec.classBuilder(simpleClassName.value()).apply {
+            addModifiers(PUBLIC, STATIC)
+            addJavadoc(Javadoc.forType(rejection))
+            addField(messageClass.builderField())
+            addMethod(constructor())
+            addMethods(setters())
+            addMethod(messageClass.rejectionMessageMethod())
+            addMethod(throwableClass.buildMethod())
+        }.build()
 
     private fun MessageType.javaPackage(): PackageName {
         val binaryName = typeSystem.classNameFor(this@javaPackage.name).binary
@@ -96,27 +98,19 @@ internal class RThrowableBuilderCode internal constructor(
 
     /**
      * Obtains the method to create the builder.
-     *
-     * @return the `newInstance` specification
      */
-    fun newBuilder(): MethodSpec {
-        val javadoc =
-            JavadocText.fromEscaped("@return a new builder for the rejection").withNewLine()
-        return MethodSpec.methodBuilder(newBuilder.name())
-            .addModifiers(PUBLIC, STATIC)
-            .addJavadoc(javadoc.value())
-            .returns(thisType())
-            .addStatement("return new \$L()", simpleClassName.value())
-            .build()
-    }
+    fun newBuilder(): MethodSpec = methodBuilder(newBuilder.name()).apply {
+        addModifiers(PUBLIC, STATIC)
+        addJavadoc(Javadoc.newBuilderMethodAbstract)
+        returns(builderClass())
+        addStatement("return new \$L()", simpleClassName.value())
+    }.build()
 
     /**
-     * Obtains the builder as a parameter.
-     *
-     * @return the parameter specification for this builder
+     * Obtains the builder class as a parameter.
      */
     fun asParameter(): ParameterSpec =
-        ParameterSpec.builder(thisType(), BUILDER_FIELD).build()
+        ParameterSpec.builder(builderClass(), BUILDER_FIELD).build()
 
     /**
      * A code block, which builds and validates the rejection message.
@@ -127,53 +121,8 @@ internal class RThrowableBuilderCode internal constructor(
      * @return the code block to obtain a rejection message
      */
     fun buildRejectionMessage(): CodeBlock = CodeBlock.builder()
-        .add("\$N.\$N()", asParameter(), rejectionMessage())
+        .add("\$N.\$N()", asParameter(), messageClass.rejectionMessageMethod())
         .build()
-
-    private fun rejectionMessage(): MethodSpec {
-        val javadoc = JavadocText.fromEscaped(
-            "Obtains the rejection and validates it."
-        ).withNewLine()
-        return MethodSpec.methodBuilder("rejectionMessage")
-            .addModifiers(PRIVATE)
-            .addJavadoc(javadoc.value())
-            .returns(messageClass)
-            .addStatement("\$T message = \$L.build()", messageClass, BUILDER_FIELD)
-            .addStatement("\$T.check(message)", Validate::class.java)
-            .addStatement("return message")
-            .build()
-    }
-
-    private fun build(): MethodSpec {
-        val javadoc = JavadocText.fromEscaped(
-            "Creates the rejection from the builder and validates it."
-        ).withNewLine()
-        return MethodSpec.methodBuilder(BUILD_METHOD_NAME)
-            .addModifiers(PUBLIC)
-            .addJavadoc(javadoc.value())
-            .returns(throwableClass)
-            .addStatement("return new \$T(this)", throwableClass)
-            .build()
-    }
-
-    private fun classJavadoc(): JavadocText {
-        val rejectionName = rejection.name.simpleName
-        val javadocText = CodeBlock.builder()
-            .add("The builder for the {@code \$L} rejection.", rejectionName)
-            .build()
-            .toString()
-        return JavadocText.fromEscaped(javadocText)
-            .withNewLine()
-    }
-
-    private fun initializedProtoBuilder(): FieldSpec {
-        val builder = SimpleClassName.ofBuilder().value()
-        val builderClass = messageClass.nestedClass(builder)
-        return FieldSpec
-            .builder(builderClass, BUILDER_FIELD, PRIVATE, FINAL)
-            .initializer("\$T.newBuilder()", messageClass)
-            .build()
-    }
 
     private fun setters(): List<MethodSpec> {
         val methods: MutableList<MethodSpec> = ArrayList()
@@ -188,9 +137,9 @@ internal class RThrowableBuilderCode internal constructor(
     private fun fieldSetter(field: Field): MethodSpec {
         val parameterName = field.name.javaCase()
         val methodName = field.primarySetter()
-        val methodBuilder = MethodSpec.methodBuilder(methodName)
+        val methodBuilder = methodBuilder(methodName)
             .addModifiers(PUBLIC)
-            .returns(thisType())
+            .returns(builderClass())
             .addParameter(field.poetTypeName(), parameterName)
             .addStatement("\$L.\$L(\$L)", BUILDER_FIELD, methodName, parameterName)
             .addStatement(RETURN_STATEMENT)
@@ -233,40 +182,25 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     /**
-     * Obtains the class name of this builder.
-     *
-     * @return class name for the builder
+     * Obtains the class name of the builder to generate.
      */
-    private fun thisType(): ClassName =
+    private fun builderClass(): ClassName =
         throwableClass.nestedClass(simpleClassName.value())
-
-
-    internal companion object {
-
-        /**
-         * The name of the `newBuilder()` method.
-         */
-        internal const val NEW_BUILDER_METHOD_NAME = "newBuilder"
-    }
 }
 
-private val newBuilder = NoArgMethod(NEW_BUILDER_METHOD_NAME)
+private val newBuilder = NoArgMethod(NEW_BUILDER)
 private const val BUILDER_FIELD = "builder"
 
-private fun constructor(): MethodSpec {
-    val javadoc = JavadocText.fromEscaped(
-        "Prevent direct instantiation of the builder."
-    ).withNewLine()
-    return MethodSpec.constructorBuilder()
-        .addJavadoc(javadoc.value())
-        .addModifiers(PRIVATE)
-        .build()
-}
+private fun constructor(): MethodSpec =
+    constructorBuilder().apply {
+        addJavadoc(Javadoc.builderConstructor)
+        addModifiers(PRIVATE)
+    }.build()
 
-private fun wrapInPre(text: String): String {
-    val javaDoc = JavadocText.fromUnescaped(text).inPreTags()
-    return javaDoc.value()
-}
+private fun wrapInPre(text: String): String =
+    JavadocText.fromUnescaped(text)
+        .inPreTags()
+        .value()
 
 /**
  * The separator is an underscore or a digit.
@@ -298,16 +232,46 @@ private fun Field.primarySetter(): String {
     }
 }
 
-private fun singularNameOf(primitiveType: PrimitiveType): PoTypeName {
-    val javaType = primitiveType.toPrimitiveName()
-    return typeNameOf(javaType)
+private fun singularNameOf(primitiveType: PrimitiveType): PoTypeName =
+    typeNameOf(primitiveType.toPrimitiveName())
+
+private fun typeNameOf(javaType: String): PoTypeName =
+    constructTypeNameFor(javaType).boxIfPrimitive()
+
+private fun PoTypeName.boxIfPrimitive(): PoTypeName = if (isPrimitive) box() else this
+
+private fun PoClassName.builderField(): FieldSpec {
+    val builder = SimpleClassName.ofBuilder().value()
+    val builderClass = nestedClass(builder)
+    return FieldSpec
+        .builder(builderClass, BUILDER_FIELD, PRIVATE, FINAL)
+        .initializer("\$T.newBuilder()", this)
+        .build()
 }
 
-private fun typeNameOf(javaType: String): PoTypeName {
-    val po = constructTypeNameFor(javaType)
-    return po.boxIfPrimitive()
-}
+private fun PoClassName.buildMethod(): MethodSpec =
+    methodBuilder(BUILD).apply {
+        val messageClass = this@buildMethod
+        addModifiers(PUBLIC)
+        addJavadoc(Javadoc.buildMethod)
+        returns(messageClass)
+        addStatement("return new \$T(this)", messageClass)
+    }.build()
 
-private fun PoTypeName.boxIfPrimitive(): PoTypeName {
-    return if (isPrimitive) box() else this
-}
+/**
+ * Generates the code for the method named as defined by the [REJECTION_MESSAGE] constant.
+ *
+ * The method creates a new instance by calling the builder's `build()` method.
+ * Then it validates the new instance via [Validate.check] and returns it.
+ */
+private fun PoClassName.rejectionMessageMethod(): MethodSpec =
+    methodBuilder(REJECTION_MESSAGE).apply {
+        val messageType = this@rejectionMessageMethod
+        addModifiers(PRIVATE)
+        addJavadoc(Javadoc.rejectionMessage)
+        returns(messageType)
+        addStatement("\$T message = \$L.build()", messageType, BUILDER_FIELD)
+        addStatement("\$T.check(message)", Validate::class.java)
+        addStatement("return message")
+    }.build()
+

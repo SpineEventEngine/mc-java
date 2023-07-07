@@ -56,6 +56,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     private static final String PROTO_DATA_ID = "io.spine.protodata";
     private static final String CONFIG_SUBDIR = "protodata-config";
 
+    @SuppressWarnings("DuplicateStringLiteralInspection")
+        // Could be duplicated in auto-generated Gradle code via script plugins in `buildSrc`.
     private static final String PROTODATA_CONFIGURATION = "protoData";
     private static final String IMPL_CONFIGURATION = "implementation";
 

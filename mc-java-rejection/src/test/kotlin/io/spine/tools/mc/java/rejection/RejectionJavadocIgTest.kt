@@ -31,15 +31,17 @@ import io.spine.code.java.SimpleClassName
 import io.spine.testing.SlowTest
 import io.spine.testing.TempDir
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
-import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
-import io.spine.tools.mc.java.rejection.RThrowableBuilderCode.Companion.NEW_BUILDER_METHOD_NAME
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedBuilderClassComment
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedClassComment
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedFirstFieldComment
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedSecondFieldComment
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionFileContent
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionsJavadocThrowableSource
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionJavaFile
+import io.spine.tools.mc.java.rejection.Javadoc.BUILD_METHOD_ABSTRACT
+import io.spine.tools.mc.java.rejection.Javadoc.NEW_BUILDER_METHOD_ABSTRACT
+import io.spine.tools.mc.java.rejection.Method.BUILD
+import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
@@ -66,7 +68,7 @@ internal class RejectionJavadocIgTest {
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
             project.executeTask(launchProtoData)
-            val generatedFile = rejectionsJavadocThrowableSource(projectDir.toPath()).toFile()
+            val generatedFile = rejectionJavaFile(projectDir.toPath()).toFile()
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
             )
@@ -76,10 +78,7 @@ internal class RejectionJavadocIgTest {
     @Test
     fun `rejection type`() {
         assertDoc(expectedClassComment(), generatedSource)
-        assertMethodDoc(
-            "@return a new builder for the rejection", generatedSource,
-            NEW_BUILDER_METHOD_NAME
-        )
+        assertMethodDoc(NEW_BUILDER_METHOD_ABSTRACT, generatedSource, NEW_BUILDER)
     }
 
     @Test
@@ -89,10 +88,7 @@ internal class RejectionJavadocIgTest {
 
         assertDoc(expectedBuilderClassComment(), builderType)
 
-        assertMethodDoc(
-            "Creates the rejection from the builder and validates it.", builderType,
-            BUILD_METHOD_NAME
-        )
+        assertMethodDoc(BUILD_METHOD_ABSTRACT, builderType, BUILD)
         assertMethodDoc(expectedFirstFieldComment(), builderType, "setId")
         assertMethodDoc(expectedSecondFieldComment(), builderType, "setRejectionMessage")
     }

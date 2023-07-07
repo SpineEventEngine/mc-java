@@ -47,12 +47,37 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+/**
+ * Tests the code generation of rejections.
+ *
+ * The test project is located in `rejection-codegen-test` directory in the test resources.
+ * Static initialization of the test class copies the project to a temporary directory and
+ * configures Gradle to run the code generation task by executing the [compileTestJava] task,
+ * which depends on code generation tasks.
+ *
+ * Running Java compilation ensures that:
+ *  1. The code generation is executed for both `main` and `test` source sets.
+ *  2. The generated code is compiled.
+ *
+ * Test methods of this test suite check the presence of the generated code in
+ * the expected locations.
+ *
+ * The content of the generated code is partially tested in [RejectionJavadocIgTest] suite
+ * dedicated to checking the correctness of Javadoc comments.
+ *
+ * @see RejectionJavadocIgTest
+ */
 @SlowTest
 @DisplayName("Code generation of rejections should")
 internal class RejectionCodegenIgTest {
 
     companion object {
 
+        /**
+         * The directory where the generated code is expected to be located.
+         */
+        private const val PACKAGE_DIR = "io/spine/sample/rejections"
+        
         private lateinit var moduleDir: File
 
         @BeforeAll
@@ -127,7 +152,7 @@ internal class RejectionCodegenIgTest {
         @Test
         fun `for 'main' source set`() {
             // As defined in `resources/.../main_rejections.proto`.
-            val packageDir = targetMainDir().resolve(java).resolve("io/spine/sample/rejections")
+            val packageDir = targetMainDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
 
             // As defined in `resources/.../main_rejections.proto`.
@@ -142,7 +167,7 @@ internal class RejectionCodegenIgTest {
         @Test
         fun `for 'test' source set`() {
             // As defined in `resources/.../test_rejections.proto`.
-            val packageDir = targetTestDir().resolve(java).resolve("io/spine/sample/rejections")
+            val packageDir = targetTestDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
 
             // As defined in `resources/.../test_rejections.proto`.

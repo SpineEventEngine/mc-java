@@ -73,7 +73,7 @@ internal object JavadocTestEnv {
        }     
        """.ti().lines()
 
-    fun rejectionsJavadocThrowableSource(projectDir: Path): Path {
+    fun rejectionJavaFile(projectDir: Path): Path {
         val javaPackage = PackageName.of(JAVA_PACKAGE).toDirectory()
         return projectDir / generated / main / java / javaPackage / "$REJECTION_NAME.java"
     }
