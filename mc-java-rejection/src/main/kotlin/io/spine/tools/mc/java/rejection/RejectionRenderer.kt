@@ -132,7 +132,7 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private fun generateRejection(protoFile: ProtobufSourceFile, rejection: MessageType) {
         val javaPackage = protoFile.javaPackage()
-        val spec = KRThrowableSpec(javaPackage, rejection, typeSystem)
+        val spec = RThrowableCode(javaPackage, rejection, typeSystem)
         val packageDir = sources.outputRoot.resolve(javaPackage.replace('.', '/'))
         val fileName = rejection.name.simpleName
         val file = packageDir.resolve("$fileName.java")
@@ -146,7 +146,7 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         }
     }
 
-    private fun KRThrowableSpec.writeToFile(file: Path) {
+    private fun RThrowableCode.writeToFile(file: Path) {
         val typeSpec = toPoet()
         val indent = Indent.of4()
         val javaFile = JavaFile.builder(packageName, typeSpec)

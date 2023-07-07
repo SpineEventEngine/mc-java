@@ -51,7 +51,7 @@ import com.squareup.javapoet.ClassName as PoClassName
  * @param rejection
  *         a rejection declaration.
  */
-internal class KRThrowableSpec(
+internal class RThrowableCode(
     val packageName: String,
     val rejection: MessageType,
     typeSystem: TypeSystem
@@ -59,13 +59,13 @@ internal class KRThrowableSpec(
 
     private val simpleClassName: String = rejection.name.simpleName
     private val messageClass: PoClassName
-    private val builder: KRThrowableBuilderSpec
+    private val builder: RThrowableBuilderCode
 
     init {
         val clsName = typeSystem.classNameFor(rejection.name).canonical
         messageClass = PoClassName.bestGuess(clsName)
         val throwableClass = PoClassName.get(packageName, simpleClassName)
-        builder = KRThrowableBuilderSpec(
+        builder = RThrowableBuilderCode(
             rejection,
             messageClass,
             throwableClass,
@@ -121,26 +121,48 @@ internal class KRThrowableSpec(
      * @return the class-level Javadoc content
      */
     private fun classJavadoc(): CodeBlock {
-        val leadingComments = with(rejection.doc.leadingComment) {
-            if (isEmpty()) {
-                JavadocText.fromEscaped("")
-            } else {
-                // Add line separator to simulate behavior of native Protobuf API.
-                JavadocText.fromUnescaped(this@with + System.lineSeparator())
-                    .inPreTags()
-                    .withNewLine()
-            }
-        }
-        val sourceProtoNote = CodeBlock.builder()
-            .add("Rejection based on proto type ")
-            .add("{@code \$L.\$L}", packageName, simpleClassName)
-            .build()
-        val protoNoteBlock = JavadocText.fromEscaped(sourceProtoNote.toString())
-                .withNewLine()
+        val javadocAbstract = javadocAbstract()
+        val protoSourceNote = protoMessageNote()
         return CodeBlock.builder()
-            .add(leadingComments.value())
-            .add(protoNoteBlock.value())
+            .add(javadocAbstract)
+            .add(protoSourceNote)
             .build()
+    }
+
+    /**
+     * Creates a piece of Javadoc referencing a proto message type which is
+     * used as a rejection message.
+     */
+    private fun protoMessageNote(): String {
+        val codeBlock = CodeBlock.builder()
+            .add("<p>The rejection message proto type is {@code \$L.\$L}",
+                rejection.name.packageName, simpleClassName)
+            .build()
+        val javadoc = JavadocText.fromEscaped(codeBlock.toString())
+            .withNewLine()
+        return javadoc.value
+    }
+
+    /**
+     * Obtains the first paragraph of the rejection Javadoc.
+     *
+     * The text is taken as a leading comment of the rejection message
+     * declaration wrapped in `<pre>` tags.
+     */
+    private fun javadocAbstract(): String {
+        val leadingComment = rejection.doc.leadingComment
+        if (leadingComment.isEmpty()) {
+            return ""
+        }
+        val javadoc = JavadocText.fromUnescaped(
+            // Add line separator to simulate behavior of native Protobuf API.
+            leadingComment + System.lineSeparator())
+            // Wrap the comment in `<pre>` tags similarly to how Protobuf does
+            // it for Javadocs of message types.
+            .inPreTags()
+            // Add new line to separate the comment from the rest of the Javadoc.
+            .withNewLine()
+        return javadoc.value
     }
 }
 
@@ -160,7 +182,8 @@ private fun constructorJavadoc(builderParameter: ParameterSpec): CodeBlock {
     val paramsBlock = CodeBlock.of(
         "@param \$N the builder for the rejection", builderParameter
     )
-    val paramsPart = JavadocText.fromEscaped(paramsBlock.toString()).withNewLine()
+    val paramsPart = JavadocText.fromEscaped(paramsBlock.toString())
+        .withNewLine()
     return CodeBlock.builder()
         .add(generalPart.value())
         .add(paramsPart.value())

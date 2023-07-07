@@ -26,38 +26,40 @@
 
 package io.spine.tools.mc.java.rejection
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import io.spine.code.java.SimpleClassName
+import io.spine.testing.SlowTest
 import io.spine.testing.TempDir
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
 import io.spine.tools.java.code.BuilderSpec.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
-import io.spine.tools.mc.java.rejection.KRThrowableBuilderSpec.Companion.NEW_BUILDER_METHOD_NAME
-import io.spine.tools.mc.java.rejection.TestEnv.expectedBuilderClassComment
-import io.spine.tools.mc.java.rejection.TestEnv.expectedClassComment
-import io.spine.tools.mc.java.rejection.TestEnv.expectedFirstFieldComment
-import io.spine.tools.mc.java.rejection.TestEnv.expectedSecondFieldComment
-import io.spine.tools.mc.java.rejection.TestEnv.rejectionFileContent
-import io.spine.tools.mc.java.rejection.TestEnv.rejectionsJavadocThrowableSource
+import io.spine.tools.mc.java.rejection.RThrowableBuilderCode.Companion.NEW_BUILDER_METHOD_NAME
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedBuilderClassComment
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedClassComment
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedFirstFieldComment
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedSecondFieldComment
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionFileContent
+import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionsJavadocThrowableSource
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
 import org.jboss.forge.roaster.model.source.MethodSource
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@DisplayName("Rejection code generator for Javadoc should")
-internal class RejectionJavadocSpec {
+@SlowTest
+@DisplayName("Rejection code generator should generate Javadoc for")
+internal class RejectionJavadocIgTest {
 
     companion object {
+
         private lateinit var generatedSource: JavaClassSource
 
         @BeforeAll
         @JvmStatic
         fun generateSources() {
-            val projectDir = TempDir.forClass(RejectionJavadocSpec::class.java)
+            val projectDir = TempDir.forClass(RejectionJavadocIgTest::class.java)
             val project = setupAt(projectDir)
                 .copyBuildSrc()
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
@@ -71,61 +73,52 @@ internal class RejectionJavadocSpec {
         }
     }
 
-    private fun assertRejectionJavadoc(rejection: JavaClassSource) {
-        assertDoc(expectedClassComment(), rejection)
+    @Test
+    fun `rejection type`() {
+        assertDoc(expectedClassComment(), generatedSource)
         assertMethodDoc(
-            "@return a new builder for the rejection", rejection,
+            "@return a new builder for the rejection", generatedSource,
             NEW_BUILDER_METHOD_NAME
         )
     }
 
-    private fun assertBuilderJavadoc(builder: JavaClassSource) {
-        assertDoc(expectedBuilderClassComment(), builder)
+    @Test
+    fun `'Builder' of rejection`() {
+        val builderTypeName = SimpleClassName.ofBuilder().value()
+        val builderType = generatedSource.getNestedType(builderTypeName) as JavaClassSource
+
+        assertDoc(expectedBuilderClassComment(), builderType)
+
         assertMethodDoc(
-            "Creates the rejection from the builder and validates it.", builder,
+            "Creates the rejection from the builder and validates it.", builderType,
             BUILD_METHOD_NAME
         )
-        assertMethodDoc(expectedFirstFieldComment(), builder, "setId")
-        assertMethodDoc(expectedSecondFieldComment(), builder, "setRejectionMessage")
-    }
-
-    private fun assertMethodDoc(
-        expectedComment: String,
-        source: JavaClassSource,
-        methodName: String
-    ) {
-        val method = findMethod(source, methodName)
-        assertDoc(expectedComment, method)
-    }
-
-    private fun findMethod(
-        source: JavaClassSource,
-        methodName: String
-    ): MethodSource<JavaClassSource> {
-        return source.methods.stream()
-            .filter { m -> methodName == m.name }
-            .findFirst()
-            .orElseThrow { error("Cannot find the method `$methodName`.") }
-    }
-
-    private fun assertDoc(expectedText: String, source: JavaDocCapableSource<*>) {
-        val javadoc = source.javaDoc
-        assertThat(javadoc.fullText).isEqualTo(expectedText)
-    }
-
-    @Nested
-    internal inner class `generate Javadoc for` {
-
-        @Test
-        fun `rejection type`() {
-            assertRejectionJavadoc(generatedSource)
-        }
-
-        @Test
-        fun `'Builder' of rejection`() {
-            val builderTypeName = SimpleClassName.ofBuilder().value()
-            val builderType = generatedSource.getNestedType(builderTypeName)
-            assertBuilderJavadoc(builderType as JavaClassSource)
-        }
+        assertMethodDoc(expectedFirstFieldComment(), builderType, "setId")
+        assertMethodDoc(expectedSecondFieldComment(), builderType, "setRejectionMessage")
     }
 }
+
+private fun assertDoc(expectedText: String, source: JavaDocCapableSource<*>) {
+    val javadoc = source.javaDoc
+    javadoc.fullText shouldBe expectedText
+}
+
+private fun assertMethodDoc(
+    expectedComment: String,
+    source: JavaClassSource,
+    methodName: String
+) {
+    val method = findMethod(source, methodName)
+    assertDoc(expectedComment, method)
+}
+
+private fun findMethod(
+    source: JavaClassSource,
+    methodName: String
+): MethodSource<JavaClassSource> {
+    return source.methods.stream()
+        .filter { m -> methodName == m.name }
+        .findFirst()
+        .orElseThrow { error("Cannot find the method `$methodName`.") }
+}
+

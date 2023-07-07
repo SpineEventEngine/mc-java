@@ -49,7 +49,7 @@ import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
-import io.spine.tools.mc.java.rejection.KRThrowableBuilderSpec.Companion.NEW_BUILDER_METHOD_NAME
+import io.spine.tools.mc.java.rejection.RThrowableBuilderCode.Companion.NEW_BUILDER_METHOD_NAME
 import io.spine.validate.Validate
 import java.util.regex.Pattern
 import javax.lang.model.element.Modifier.FINAL
@@ -64,7 +64,7 @@ import com.squareup.javapoet.TypeName as PoTypeName
  *
  * A generated builder validates rejection messages using [Validate.check].
  */
-internal class KRThrowableBuilderSpec internal constructor(
+internal class RThrowableBuilderCode internal constructor(
     private val rejection: MessageType,
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,

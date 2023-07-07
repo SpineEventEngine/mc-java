@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.rejection
 import io.spine.code.java.PackageName
 import io.spine.code.proto.FieldName
 import io.spine.tools.div
-import io.spine.tools.fs.DirectoryName
 import io.spine.tools.fs.DirectoryName.generated
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
@@ -38,9 +37,16 @@ import io.spine.tools.java.fs.toDirectory
 import java.nio.file.Path
 import kotlin.io.path.div
 
-internal object TestEnv {
+/**
+ * The environment for the integration tests checking Javadocs in
+ * the generated rejections code.
+ *
+ * @see RejectionJavadocIgTest
+ */
+internal object JavadocTestEnv {
 
     private val JAVA_PACKAGE = PackageName.of("io.spine.sample.rejections")
+    private const val PROTO_PACKAGE = "spine.sample.rejections"
     private const val TYPE_COMMENT = "The rejection definition to test Javadoc generation."
     private const val REJECTION_NAME = "Rejection"
     private const val FIRST_FIELD_COMMENT = "The rejection ID."
@@ -73,8 +79,8 @@ internal object TestEnv {
 
     fun expectedClassComment(): String = (
             wrappedInPreTag(TYPE_COMMENT)
-            + " Rejection based on proto type  " +
-            "{@code $JAVA_PACKAGE.$REJECTION_NAME}"
+            + " <p>The rejection message proto type is " +
+            " {@code $PROTO_PACKAGE.$REJECTION_NAME}"
         )
 
     fun expectedBuilderClassComment() =
