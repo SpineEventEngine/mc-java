@@ -31,8 +31,6 @@ import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
-import com.squareup.javapoet.MethodSpec.constructorBuilder
-import com.squareup.javapoet.MethodSpec.methodBuilder
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeSpec
@@ -80,16 +78,15 @@ internal class RThrowableBuilderCode internal constructor(
 
     override fun packageName(): PackageName = rejection.javaPackage()
 
-    override fun toPoet(): TypeSpec =
-        TypeSpec.classBuilder(simpleClassName.value()).apply {
-            addModifiers(PUBLIC, STATIC)
-            addJavadoc(Javadoc.forType(rejection))
-            addField(messageClass.builderField())
-            addMethod(constructor())
-            addMethods(setters())
-            addMethod(messageClass.rejectionMessageMethod())
-            addMethod(throwableClass.buildMethod())
-        }.build()
+    override fun toPoet(): TypeSpec = classSpec(simpleClassName.value()) {
+        addModifiers(PUBLIC, STATIC)
+        addJavadoc(Javadoc.forType(rejection))
+        addField(messageClass.builderField())
+        addMethod(constructor())
+        addMethods(setters())
+        addMethod(messageClass.rejectionMessageMethod())
+        addMethod(throwableClass.buildMethod())
+    }
 
     private fun MessageType.javaPackage(): PackageName {
         val binaryName = typeSystem.classNameFor(this@javaPackage.name).binary
@@ -99,12 +96,12 @@ internal class RThrowableBuilderCode internal constructor(
     /**
      * Obtains the method to create the builder.
      */
-    fun newBuilder(): MethodSpec = methodBuilder(newBuilder.name()).apply {
+    fun newBuilder(): MethodSpec = methodSpec(newBuilder.name()) {
         addModifiers(PUBLIC, STATIC)
         addJavadoc(Javadoc.newBuilderMethodAbstract)
         returns(builderClass())
         addStatement("return new \$L()", simpleClassName.value())
-    }.build()
+    }
 
     /**
      * Obtains the builder class as a parameter.
@@ -120,37 +117,30 @@ internal class RThrowableBuilderCode internal constructor(
      *
      * @return the code block to obtain a rejection message
      */
-    fun buildRejectionMessage(): CodeBlock = CodeBlock.builder()
-        .add("\$N.\$N()", asParameter(), messageClass.rejectionMessageMethod())
-        .build()
-
-    private fun setters(): List<MethodSpec> {
-        val methods: MutableList<MethodSpec> = ArrayList()
-        val fields = rejection.fieldList
-        for (field in fields) {
-            val setter = fieldSetter(field)
-            methods.add(setter)
-        }
-        return methods
+    fun buildRejectionMessage(): CodeBlock = codeBlock {
+        add("\$N.\$N()", asParameter(), messageClass.rejectionMessageMethod())
     }
 
-    private fun fieldSetter(field: Field): MethodSpec {
-        val parameterName = field.name.javaCase()
-        val methodName = field.primarySetter()
-        val methodBuilder = methodBuilder(methodName)
-            .addModifiers(PUBLIC)
-            .returns(builderClass())
-            .addParameter(field.poetTypeName(), parameterName)
-            .addStatement("\$L.\$L(\$L)", BUILDER_FIELD, methodName, parameterName)
-            .addStatement(RETURN_STATEMENT)
+    private fun setters(): List<MethodSpec> = buildList {
+        for (field in rejection.fieldList) {
+            add(field.setterMethod())
+        }
+    }
+
+    private fun Field.setterMethod(): MethodSpec = methodSpec(primarySetterName()) {
+        val parameterName = name.javaCase()
+        addModifiers(PUBLIC)
+        returns(builderClass())
+        addParameter(poetTypeName(), parameterName)
+        addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName(), parameterName)
+        addStatement(RETURN_STATEMENT)
 
         // Add line separator to simulate behavior of native Protobuf API.
-        val leadingComment = field.doc.leadingComment + System.lineSeparator()
+        val leadingComment = doc.leadingComment + System.lineSeparator()
 
         if (leadingComment.isNotEmpty()) {
-            methodBuilder.addJavadoc(wrapInPre(leadingComment))
+            addJavadoc(wrapInPre(leadingComment))
         }
-        return methodBuilder.build()
     }
 
     private fun Field.poetTypeName(): PoTypeName {
@@ -168,8 +158,7 @@ internal class RThrowableBuilderCode internal constructor(
 
     private fun repeatedNameOf(type: Type): PoTypeName {
         val elementType = typeSystem.javaTypeName(type)
-        val result = RepeatedFieldType.typeNameFor(elementType)
-        return result
+        return RepeatedFieldType.typeNameFor(elementType)
     }
 
     private fun mapType(keyType: PrimitiveType, valueType: Type): PoTypeName {
@@ -191,11 +180,10 @@ internal class RThrowableBuilderCode internal constructor(
 private val newBuilder = NoArgMethod(NEW_BUILDER)
 private const val BUILDER_FIELD = "builder"
 
-private fun constructor(): MethodSpec =
-    constructorBuilder().apply {
-        addJavadoc(Javadoc.builderConstructor)
-        addModifiers(PRIVATE)
-    }.build()
+private fun constructor(): MethodSpec = constructorSpec {
+    addJavadoc(Javadoc.builderConstructor)
+    addModifiers(PRIVATE)
+}
 
 private fun wrapInPre(text: String): String =
     JavadocText.fromUnescaped(text)
@@ -223,7 +211,7 @@ private fun FieldName.javaCase(): String {
     return camelCase.replaceFirstChar { it.lowercaseChar() }
 }
 
-private fun Field.primarySetter(): String {
+private fun Field.primarySetterName(): String {
     val capName = name.javaCase().titleCase()
     return when {
         isMap() -> "putAll$capName"
@@ -249,14 +237,13 @@ private fun PoClassName.builderField(): FieldSpec {
         .build()
 }
 
-private fun PoClassName.buildMethod(): MethodSpec =
-    methodBuilder(BUILD).apply {
-        val messageClass = this@buildMethod
-        addModifiers(PUBLIC)
-        addJavadoc(Javadoc.buildMethod)
-        returns(messageClass)
-        addStatement("return new \$T(this)", messageClass)
-    }.build()
+private fun PoClassName.buildMethod(): MethodSpec = methodSpec(BUILD) {
+    val messageClass = this@buildMethod
+    addModifiers(PUBLIC)
+    addJavadoc(Javadoc.buildMethod)
+    returns(messageClass)
+    addStatement("return new \$T(this)", messageClass)
+}
 
 /**
  * Generates the code for the method named as defined by the [REJECTION_MESSAGE] constant.
@@ -264,14 +251,13 @@ private fun PoClassName.buildMethod(): MethodSpec =
  * The method creates a new instance by calling the builder's `build()` method.
  * Then it validates the new instance via [Validate.check] and returns it.
  */
-private fun PoClassName.rejectionMessageMethod(): MethodSpec =
-    methodBuilder(REJECTION_MESSAGE).apply {
-        val messageType = this@rejectionMessageMethod
-        addModifiers(PRIVATE)
-        addJavadoc(Javadoc.rejectionMessage)
-        returns(messageType)
-        addStatement("\$T message = \$L.build()", messageType, BUILDER_FIELD)
-        addStatement("\$T.check(message)", Validate::class.java)
-        addStatement("return message")
-    }.build()
+private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECTION_MESSAGE) {
+    val messageType = this@rejectionMessageMethod
+    addModifiers(PRIVATE)
+    addJavadoc(Javadoc.rejectionMessage)
+    returns(messageType)
+    addStatement("\$T message = \$L.build()", messageType, BUILDER_FIELD)
+    addStatement("\$T.check(message)", Validate::class.java)
+    addStatement("return message")
+}
 
