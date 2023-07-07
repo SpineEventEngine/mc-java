@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @DisplayName("Code generation of rejections should")
-internal class RejectionCodegenSpec {
+internal class RejectionCodegenIgTest {
 
     companion object {
 
@@ -56,13 +56,21 @@ internal class RejectionCodegenSpec {
         @BeforeAll
         @JvmStatic
         fun generateRejections() {
-            val projectDir = TempDir.forClass(RejectionCodegenSpec::class.java)
+            val projectDir = TempDir.forClass(RejectionCodegenIgTest::class.java)
             val project: GradleProject = GradleProject.setupAt(projectDir)
                 .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
-                 /* Uncomment the following line to be able to debug the build.
-                    Do not forget to turn off so that tests run faster AND Windows build does not
-                    fail with the error on Windows Registry unavailability. */
+                 /*
+                    Running tests with `enableRunnerDebug()` turned on
+                    ---------------------------------------------------
+                    Uncomment the following line to be able to debug the Gradle build process.
+                    Do not forget to turn it OFF before committing your code so that
+                    tests run faster.
+
+                    IMPORTANT: Running with `enableRunnerDebug()` turned on fails
+                    under Windows in CI environment because internally Gradle tries to
+                    access Windows Registry which requires special permissions for a process.
+                 */
                  //.enableRunnerDebug()
                 .create()
             moduleDir = projectDir.toPath()
@@ -81,39 +89,29 @@ internal class RejectionCodegenSpec {
 
     private fun targetTestDir(): Path = generatedRoot(test)
 
-    private fun assertExists(path: Path) =
-        assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
-
-    private fun assertJavaFileExists(packageDir: Path, typeName: String) {
-        val file = packageDir.resolve("$typeName.java")
-        assertExists(file)
-    }
-
     @Nested
     @DisplayName("place generated code under the `spine` directory for")
     internal inner class SourceSetDirs {
 
         @Test
         fun `'main' source set`() {
-            val mainSpine = targetMainDir().resolve(java)
-            assertExists(mainSpine)
-            mainSpine.isDirectory() shouldBe true
-            mainSpine.containsJavaFiles() shouldBe true
+            val mainJava = targetMainDir().resolve(java)
+            assertExists(mainJava)
+            mainJava.isDirectory() shouldBe true
+            mainJava.containsJavaFiles() shouldBe true
         }
 
         @Test
         fun `'test' source set`() {
-            val testSpine = targetTestDir().resolve(java)
-            assertExists(testSpine)
-            testSpine.isDirectory() shouldBe true
-            testSpine.containsJavaFiles() shouldBe true
+            val testJava = targetTestDir().resolve(java)
+            assertExists(testJava)
+            testJava.isDirectory() shouldBe true
+            testJava.containsJavaFiles() shouldBe true
         }
 
         @Test
         fun `'testFixtures' source set`() {
-            val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(
-                java
-            )
+            val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(java)
             assertExists(testFixturesSpine)
             testFixturesSpine.isDirectory() shouldBe true
             testFixturesSpine.containsJavaFiles() shouldBe true
@@ -155,4 +153,12 @@ internal class RejectionCodegenSpec {
 private fun Path.containsJavaFiles(): Boolean {
     val found = toFile().walk().find { file -> file.name.endsWith(".java") }
     return found != null
+}
+
+private fun assertExists(path: Path) =
+    assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
+
+private fun assertJavaFileExists(packageDir: Path, typeName: String) {
+    val file = packageDir.resolve("$typeName.java")
+    assertExists(file)
 }
