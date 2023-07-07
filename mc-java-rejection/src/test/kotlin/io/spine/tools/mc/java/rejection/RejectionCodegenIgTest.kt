@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.rejection
 
 import io.kotest.matchers.shouldBe
+import io.spine.testing.SlowTest
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.code.SourceSetName.Companion.main
@@ -46,6 +47,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+@SlowTest
 @DisplayName("Code generation of rejections should")
 internal class RejectionCodegenIgTest {
 
