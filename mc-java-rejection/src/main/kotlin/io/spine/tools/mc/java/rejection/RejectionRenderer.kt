@@ -39,7 +39,6 @@ import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.ti
-import io.spine.tools.code.Indent
 import java.nio.file.Path
 
 /**
@@ -56,6 +55,15 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private lateinit var sources: SourceFileSet
 
+    private fun bakeTypeSystem(): TypeSystem = typeSystem {
+        select(ProtobufSourceFile::class.java).all().forEach { file ->
+            addFrom(file)
+        }
+        select(ProtobufDependency::class.java).all().forEach { dependency ->
+            addFrom(dependency.file)
+        }
+    }
+
     override fun render(sources: SourceFileSet) {
         // We could receive `grpc` or `kotlin` output roots here. Now we do only `java`.
         if (!sources.outputRoot.endsWith("java")) {
@@ -64,34 +72,14 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         this.sources = sources
         val rejectionFiles = findRejectionFiles()
         rejectionFiles.forEach {
-            generateRejection(it)
-        }
-    }
-
-    private fun bakeTypeSystem(): TypeSystem =
-        TypeSystem.newBuilder().also {
-            addSourceFiles(it)
-            addDependencies(it)
-        }.build()
-
-    private fun addSourceFiles(types: TypeSystem.Builder) {
-        val files = select(ProtobufSourceFile::class.java).all()
-        for (file in files) {
-            types.addFrom(file)
-        }
-    }
-
-    private fun addDependencies(types: TypeSystem.Builder) {
-        val dependencies = select(ProtobufDependency::class.java).all()
-        for (d in dependencies) {
-            types.addFrom(d.file)
+            generateRejections(it)
         }
     }
 
     private fun findRejectionFiles(): List<ProtobufSourceFile> {
-        val result = select(ProtobufSourceFile::class.java)
-            .all()
+        val result = select(ProtobufSourceFile::class.java).all()
             .filter { it.isRejections() }
+
         result.forEach { it.checkConventions() }
 
         logger.atDebug().log {
@@ -103,17 +91,13 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         return result
     }
 
-    private fun generateRejection(protoFile: ProtobufSourceFile) {
+    private fun generateRejections(protoFile: ProtobufSourceFile) {
         if (protoFile.typeMap.isEmpty()) {
             logger.atWarning().log {
                 "No rejection types found in the file `${protoFile.filePath.value}`."
             }
             return
         }
-        generateRejectionsFor(protoFile)
-    }
-
-    private fun generateRejectionsFor(protoFile: ProtobufSourceFile) {
         logger.atDebug().log {
             """
             Generating rejection classes for `${protoFile.filePath.value}`.
@@ -122,7 +106,6 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
                   Output directory: `${sources.outputRoot}`.            
             """.ti()
         }
-
         protoFile.typeMap.values
             .filter { it.isTopLevel() }
             .forEach {
@@ -131,12 +114,9 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
     }
 
     private fun generateRejection(protoFile: ProtobufSourceFile, rejection: MessageType) {
-        val javaPackage = protoFile.javaPackage()
-        val spec = RThrowableCode(javaPackage, rejection, typeSystem)
-        val packageDir = sources.outputRoot.resolve(javaPackage.replace('.', '/'))
-        val fileName = rejection.name.simpleName
-        val file = packageDir.resolve("$fileName.java")
-        spec.writeToFile(file)
+        val rtCode = RThrowableCode(protoFile.javaPackage(), rejection, typeSystem)
+        val file = rejection.throwableJavaFile(protoFile)
+        rtCode.writeToFile(file)
 
         logger.atDebug().log {
             val nl = System.lineSeparator()
@@ -146,16 +126,35 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         }
     }
 
+    /**
+     * Obtains a name of the Java file corresponding to this [rejection message][MessageType] type.
+     *
+     * @param protoFile
+     *         the file which declares this rejection type. Serves for calculating the Java package.
+     */
+    private fun MessageType.throwableJavaFile(protoFile: ProtobufSourceFile): Path {
+        val javaPackage = protoFile.javaPackage()
+        val packageDir = sources.outputRoot.resolve(javaPackage.replace('.', '/'))
+        val file = packageDir.resolve("${name.simpleName}.java")
+        return file
+    }
+
     private fun RThrowableCode.writeToFile(file: Path) {
         val typeSpec = toPoet()
-        val indent = Indent.of4()
         val javaFile = JavaFile.builder(packageName, typeSpec)
             .skipJavaLangImports(true)
-            .indent(indent.toString())
+            .indent(INDENT)
             .build()
         val appendable = StringBuilder()
         javaFile.writeTo(appendable)
         sources.createFile(file, appendable.toString())
+    }
+
+    private companion object {
+        /**
+         * The indentation used in the generated Java code.
+         */
+        const val INDENT: String = "    "
     }
 }
 

@@ -27,6 +27,7 @@
 
 package io.spine.tools.mc.java.rejection
 
+import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec
@@ -54,6 +55,7 @@ import io.spine.tools.mc.java.rejection.Method.BUILD
 import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
 import io.spine.validate.Validate
+import io.spine.validate.Validated
 import java.util.regex.Pattern
 import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
@@ -253,11 +255,12 @@ private fun PoClassName.buildMethod(): MethodSpec = methodSpec(BUILD) {
  */
 private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECTION_MESSAGE) {
     val messageType = this@rejectionMessageMethod
+    val annotatedType = messageType.annotated(
+        AnnotationSpec.builder(Validated::class.java).build()
+    )
     addModifiers(PRIVATE)
     addJavadoc(Javadoc.rejectionMessage)
-    returns(messageType)
-    addStatement("\$T message = \$L.build()", messageType, BUILDER_FIELD)
-    addStatement("\$T.check(message)", Validate::class.java)
-    addStatement("return message")
+    returns(annotatedType)
+    addStatement("return \$L.build()", BUILDER_FIELD)
 }
 
