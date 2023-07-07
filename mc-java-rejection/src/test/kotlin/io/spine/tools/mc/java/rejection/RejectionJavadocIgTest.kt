@@ -49,7 +49,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @SlowTest
-@DisplayName("Rejection code generator should generate Javadoc for")
+@DisplayName("Rejection code generator should produce Javadoc for")
 internal class RejectionJavadocIgTest {
 
     companion object {
