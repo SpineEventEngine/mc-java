@@ -36,6 +36,7 @@ import io.spine.protodata.MessageType
 import io.spine.tools.java.code.GeneratedBy
 import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.javadoc.JavadocText
+import io.spine.tools.mc.java.rejection.Javadoc.classJavadocFor
 import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC
@@ -75,7 +76,7 @@ internal class RThrowableCode(
 
     fun toPoet(): TypeSpec {
         return TypeSpec.classBuilder(simpleClassName)
-            .addJavadoc(classJavadoc())
+            .addJavadoc(classJavadocFor(rejection))
             .addAnnotation(GeneratedBy.spineModelCompiler())
             .addModifiers(PUBLIC)
             .superclass(RejectionThrowable::class.java)
@@ -113,56 +114,6 @@ internal class RThrowableCode(
             .returns(returnType)
             .addStatement("return (\$T) super.\$L", returnType, methodSignature)
             .build()
-    }
-
-    /**
-     * A Javadoc content for the rejection.
-     *
-     * @return the class-level Javadoc content
-     */
-    private fun classJavadoc(): CodeBlock {
-        val javadocAbstract = javadocAbstract()
-        val protoSourceNote = protoMessageNote()
-        return CodeBlock.builder()
-            .add(javadocAbstract)
-            .add(protoSourceNote)
-            .build()
-    }
-
-    /**
-     * Creates a piece of Javadoc referencing a proto message type which is
-     * used as a rejection message.
-     */
-    private fun protoMessageNote(): String {
-        val codeBlock = CodeBlock.builder()
-            .add("<p>The rejection message proto type is {@code \$L.\$L}",
-                rejection.name.packageName, simpleClassName)
-            .build()
-        val javadoc = JavadocText.fromEscaped(codeBlock.toString())
-            .withNewLine()
-        return javadoc.value
-    }
-
-    /**
-     * Obtains the first paragraph of the rejection Javadoc.
-     *
-     * The text is taken as a leading comment of the rejection message
-     * declaration wrapped in `<pre>` tags.
-     */
-    private fun javadocAbstract(): String {
-        val leadingComment = rejection.doc.leadingComment
-        if (leadingComment.isEmpty()) {
-            return ""
-        }
-        val javadoc = JavadocText.fromUnescaped(
-            // Add line separator to simulate behavior of native Protobuf API.
-            leadingComment + System.lineSeparator())
-            // Wrap the comment in `<pre>` tags similarly to how Protobuf does
-            // it for Javadocs of message types.
-            .inPreTags()
-            // Add new line to separate the comment from the rest of the Javadoc.
-            .withNewLine()
-        return javadoc.value
     }
 }
 

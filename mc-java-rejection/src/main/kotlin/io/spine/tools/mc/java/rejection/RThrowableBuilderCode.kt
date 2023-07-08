@@ -82,7 +82,7 @@ internal class RThrowableBuilderCode internal constructor(
 
     override fun toPoet(): TypeSpec = classSpec(simpleClassName.value()) {
         addModifiers(PUBLIC, STATIC)
-        addJavadoc(Javadoc.forType(rejection))
+        addJavadoc(Javadoc.forBuilderOf(rejection))
         addField(messageClass.builderField())
         addMethod(constructor())
         addMethods(setters())

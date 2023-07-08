@@ -81,7 +81,7 @@ internal object JavadocTestEnv {
     fun expectedClassComment(): String = (
             wrappedInPreTag(TYPE_COMMENT)
             + " <p>The rejection message proto type is "
-            + " {@code $PROTO_PACKAGE.$REJECTION_NAME}"
+            + " {@code $PROTO_PACKAGE.$REJECTION_NAME} ."
         )
 
     fun expectedBuilderClassComment() =
