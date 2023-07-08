@@ -104,17 +104,13 @@ private fun assertMethodDoc(
     source: JavaClassSource,
     methodName: String
 ) {
-    val method = findMethod(source, methodName)
+    val method = source.findMethod(methodName)
     assertDoc(expectedComment, method)
 }
 
-private fun findMethod(
-    source: JavaClassSource,
-    methodName: String
-): MethodSource<JavaClassSource> {
-    return source.methods.stream()
-        .filter { m -> methodName == m.name }
+private fun JavaClassSource.findMethod(methodName: String): MethodSource<JavaClassSource> =
+    methods.stream()
+        .filter { methodName == it.name }
         .findFirst()
         .orElseThrow { error("Cannot find the method `$methodName`.") }
-}
 
