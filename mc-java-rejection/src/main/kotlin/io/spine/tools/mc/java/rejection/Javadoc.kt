@@ -86,7 +86,7 @@ internal object Javadoc {
      *          the name of a rejection builder parameter.
      */
     fun forConstructorOfThrowable(builder: ParameterSpec): CodeBlock = codeBlock {
-        val generalPart = fromUnescaped("Creates a new instance.")
+        val generalPart = fromEscaped("Creates a new instance.")
             .withNewLine()
             .withNewLine()
         val paramsPart = fromEscaped(codeBlock(
