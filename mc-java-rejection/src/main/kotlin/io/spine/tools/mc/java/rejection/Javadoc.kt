@@ -48,7 +48,7 @@ internal object Javadoc {
     @VisibleForTesting
     const val BUILD_METHOD_ABSTRACT = "Creates the rejection from the builder and validates it."
 
-    private const val REJECTION_MESSAGE_METHOD_ABSTRACT = "Obtains the rejection and validates it."
+    private const val REJECTION_MESSAGE_METHOD_ABSTRACT = "Obtains the rejection message."
     private const val BUILDER_CONSTRUCTOR_ABSTRACT = "Prevent direct instantiation of the builder."
     private const val BUILDER_ABSTRACT_TEMPLATE = "The builder for the {@code \$L} rejection."
 
@@ -75,10 +75,8 @@ internal object Javadoc {
      * the given rejection type.
      */
     fun forThrowableOf(rejection: MessageType): CodeBlock = codeBlock {
-        val javadocAbstract = classAbstractFor(rejection)
-        val protoSourceNote = protoMessageNote(rejection)
-        add(javadocAbstract)
-        add(protoSourceNote)
+        add(classAbstractFor(rejection))
+        add(protoMessageNote(rejection))
     }
 
     /**
