@@ -35,7 +35,7 @@ import io.spine.tools.java.javadoc.JavadocText.fromUnescaped
 import io.spine.tools.mc.java.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
 
 /**
- * Pieces of Javadoc code used in the generated code.
+ * Pieces of Javadoc code used in the generated code of rejections.
  */
 internal object Javadoc {
 
