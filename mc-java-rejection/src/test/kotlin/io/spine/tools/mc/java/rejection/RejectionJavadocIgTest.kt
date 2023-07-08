@@ -57,6 +57,7 @@ internal class RejectionJavadocIgTest {
     companion object {
 
         private lateinit var generatedSource: JavaClassSource
+        private lateinit var builderType: JavaClassSource
 
         @BeforeAll
         @JvmStatic
@@ -72,23 +73,33 @@ internal class RejectionJavadocIgTest {
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
             )
+            val builderTypeName = SimpleClassName.ofBuilder().value
+            builderType = generatedSource.getNestedType(builderTypeName) as JavaClassSource
         }
     }
 
     @Test
-    fun `rejection type`() {
+    fun `'RejectionThrowable' class`() {
         assertDoc(expectedClassComment(), generatedSource)
+    }
+
+    @Test
+    fun `'newBuilder' method`() {
         assertMethodDoc(NEW_BUILDER_METHOD_ABSTRACT, generatedSource, NEW_BUILDER)
     }
 
     @Test
-    fun `'Builder' of rejection`() {
-        val builderTypeName = SimpleClassName.ofBuilder().value()
-        val builderType = generatedSource.getNestedType(builderTypeName) as JavaClassSource
-
+    fun `'Builder' class under the 'RejectionThrowable'`() {
         assertDoc(expectedBuilderClassComment(), builderType)
+    }
 
+    @Test
+    fun `'build()' method of the 'Builder' class`() {
         assertMethodDoc(BUILD_METHOD_ABSTRACT, builderType, BUILD)
+    }
+
+    @Test
+    fun `property setters of the builder`() {
         assertMethodDoc(expectedFirstFieldComment(), builderType, "setId")
         assertMethodDoc(expectedSecondFieldComment(), builderType, "setRejectionMessage")
     }

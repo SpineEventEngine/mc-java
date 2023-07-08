@@ -81,11 +81,11 @@ internal class RThrowableBuilderCode internal constructor(
     private val typeSystem: TypeSystem
 ) : BuilderSpec {
 
-    private val simpleClassName: SimpleClassName = SimpleClassName.ofBuilder()
+    private val simpleClassName: String = SimpleClassName.ofBuilder().value
 
     override fun packageName(): PackageName = rejection.javaPackage()
 
-    override fun toPoet(): TypeSpec = classSpec(simpleClassName.value()) {
+    override fun toPoet(): TypeSpec = classSpec(simpleClassName) {
         addModifiers(PUBLIC, STATIC)
         addJavadoc(forBuilderOf(rejection))
         addField(messageClass.builderField())
@@ -107,7 +107,7 @@ internal class RThrowableBuilderCode internal constructor(
         addModifiers(PUBLIC, STATIC)
         addJavadoc(ofNewBuilderMethod)
         returns(builderClass())
-        addStatement("return new \$L()", simpleClassName.value())
+        addStatement("return new \$L()", simpleClassName)
     }
 
     /**
@@ -181,7 +181,7 @@ internal class RThrowableBuilderCode internal constructor(
      * Obtains the class name of the builder to generate.
      */
     private fun builderClass(): ClassName =
-        throwableClass.nestedClass(simpleClassName.value())
+        throwableClass.nestedClass(simpleClassName)
 }
 
 private val newBuilder = NoArgMethod(NEW_BUILDER)
