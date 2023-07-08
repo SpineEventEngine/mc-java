@@ -140,13 +140,16 @@ private fun classAbstractFor(messageType: MessageType): String {
     return javadoc.value
 }
 
+/**
+ * Obtains a Javadoc note about the rejection message type which is used together
+ * with a `RejectionThrowable` class.
+ */
 private fun protoMessageNote(messageType: MessageType): String {
     val protoType = messageType.name
-    val protoMessageNote = CodeBlock.builder()
-        .add(PROTO_MESSAGE_NOTE_TEMPLATE, protoType.packageName, protoType.simpleName)
-        .build()
-        .toString()
-    return fromEscaped(protoMessageNote)
+    val protoMessageNote = codeBlock {
+        add(PROTO_MESSAGE_NOTE_TEMPLATE, protoType.packageName, protoType.simpleName)
+    }
+    return fromEscaped(protoMessageNote.toString())
         .withNewLine()
         .value
 }
