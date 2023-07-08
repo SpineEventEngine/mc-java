@@ -33,6 +33,8 @@ import io.spine.tools.fs.DirectoryName.generated
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
 import io.spine.tools.java.fs.toDirectory
+import io.spine.tools.mc.java.rejection.Javadoc.BUILDER_ABSTRACT_TEMPLATE
+import io.spine.tools.mc.java.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
 import java.io.File
 import kotlin.io.path.div
 
@@ -84,14 +86,12 @@ internal object JavadocTestEnv {
         return filePath.toFile()
     }
 
-    fun expectedClassComment(): String = (
-            wrappedInPreTag(TYPE_COMMENT)
-            + " <p>The rejection message proto type is "
-            + "{@code $PROTO_PACKAGE.$REJECTION_NAME}."
-        )
-
+    fun expectedClassComment(): String =
+        wrappedInPreTag(TYPE_COMMENT) +
+                PROTO_MESSAGE_NOTE_TEMPLATE.replace("\$L.\$L", "$PROTO_PACKAGE.$REJECTION_NAME")
+    
     fun expectedBuilderClassComment() =
-        "The builder for the {@code $REJECTION_NAME} rejection."
+        BUILDER_ABSTRACT_TEMPLATE.replace("\$L", REJECTION_NAME)
 
     fun expectedFirstFieldComment(): String =
         wrappedInPreTag(FIRST_FIELD_COMMENT)

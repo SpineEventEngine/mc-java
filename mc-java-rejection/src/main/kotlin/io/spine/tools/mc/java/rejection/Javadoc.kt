@@ -50,7 +50,9 @@ internal object Javadoc {
 
     private const val REJECTION_MESSAGE_METHOD_ABSTRACT = "Obtains the rejection message."
     private const val BUILDER_CONSTRUCTOR_ABSTRACT = "Prevent direct instantiation of the builder."
-    private const val BUILDER_ABSTRACT_TEMPLATE = "The builder for the {@code \$L} rejection."
+
+    @VisibleForTesting
+    const val BUILDER_ABSTRACT_TEMPLATE = "The builder for the {@code \$L} rejection."
 
     val ofNewBuilderMethod: String by lazy {
         fromEscaped(NEW_BUILDER_METHOD_ABSTRACT)
