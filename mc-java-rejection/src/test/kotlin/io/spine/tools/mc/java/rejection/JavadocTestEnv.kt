@@ -87,7 +87,7 @@ internal object JavadocTestEnv {
     }
 
     fun expectedClassComment(): String =
-        wrappedInPreTag(TYPE_COMMENT) +
+        wrappedInPreTag(TYPE_COMMENT) + " " +
                 PROTO_MESSAGE_NOTE_TEMPLATE.replace("\$L.\$L", "$PROTO_PACKAGE.$REJECTION_NAME")
     
     fun expectedBuilderClassComment() =
