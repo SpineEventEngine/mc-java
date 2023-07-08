@@ -141,7 +141,7 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private fun RThrowableCode.writeToFile(file: Path) {
         val typeSpec = toPoet()
-        val javaFile = JavaFile.builder(packageName, typeSpec)
+        val javaFile = JavaFile.builder(javaPackage, typeSpec)
             .skipJavaLangImports(true)
             .indent(INDENT)
             .build()

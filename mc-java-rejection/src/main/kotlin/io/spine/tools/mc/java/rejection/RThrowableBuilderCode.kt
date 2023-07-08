@@ -100,7 +100,7 @@ internal class RThrowableBuilderCode internal constructor(
      */
     fun newBuilder(): MethodSpec = methodSpec(newBuilder.name()) {
         addModifiers(PUBLIC, STATIC)
-        addJavadoc(Javadoc.newBuilderMethodAbstract)
+        addJavadoc(Javadoc.newBuilderMethod)
         returns(builderClass())
         addStatement("return new \$L()", simpleClassName.value())
     }
@@ -259,7 +259,7 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
         AnnotationSpec.builder(Validated::class.java).build()
     )
     addModifiers(PRIVATE)
-    addJavadoc(Javadoc.rejectionMessage)
+    addJavadoc(Javadoc.rejectionMessageMethod)
     returns(annotatedType)
     addStatement("return \$L.build()", BUILDER_FIELD)
 }

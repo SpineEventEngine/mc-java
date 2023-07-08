@@ -28,9 +28,10 @@ package io.spine.tools.mc.java.rejection
 
 import com.google.common.annotations.VisibleForTesting
 import com.squareup.javapoet.CodeBlock
+import com.squareup.javapoet.ParameterSpec
 import io.spine.protodata.MessageType
-import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.java.javadoc.JavadocText.fromEscaped
+import io.spine.tools.java.javadoc.JavadocText.fromUnescaped
 import io.spine.tools.mc.java.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
 
 /**
@@ -51,7 +52,7 @@ internal object Javadoc {
     private const val BUILDER_CONSTRUCTOR_ABSTRACT = "Prevent direct instantiation of the builder."
     private const val BUILDER_ABSTRACT_TEMPLATE = "The builder for the {@code \$L} rejection."
 
-    val newBuilderMethodAbstract: String by lazy {
+    val newBuilderMethod: String by lazy {
         fromEscaped(NEW_BUILDER_METHOD_ABSTRACT)
             .withNewLine()
             .value
@@ -61,7 +62,7 @@ internal object Javadoc {
         fromEscaped(BUILDER_CONSTRUCTOR_ABSTRACT).withNewLine().value
     }
 
-    val rejectionMessage: String by lazy {
+    val rejectionMessageMethod: String by lazy {
         fromEscaped(REJECTION_MESSAGE_METHOD_ABSTRACT).withNewLine().value
     }
 
@@ -69,6 +70,42 @@ internal object Javadoc {
         fromEscaped(BUILD_METHOD_ABSTRACT).withNewLine().value
     }
 
+    /**
+     * Generated Javadoc for the `RejectionThrowable` class corresponding
+     * the given rejection type.
+     */
+    fun forThrowableOf(rejection: MessageType): CodeBlock {
+        val javadocAbstract = classAbstractFor(rejection)
+        val protoSourceNote = protoMessageNote(rejection)
+        return CodeBlock.builder()
+            .add(javadocAbstract)
+            .add(protoSourceNote)
+            .build()
+    }
+
+    /**
+     * A Javadoc content for the rejection constructor.
+     *
+     * @param builder
+     *          the name of a rejection builder parameter.
+     */
+    fun forConstructorOfThrowable(builder: ParameterSpec): CodeBlock {
+        val generalPart = fromUnescaped("Creates a new instance.")
+            .withNewLine()
+            .withNewLine()
+        val paramsPart = fromEscaped(codeBlock(
+                "@param \$N the builder for the rejection", builder
+            )).withNewLine()
+        return codeBlock {
+            add(generalPart.value())
+            add(paramsPart.value())
+        }
+    }
+
+    /**
+     * Generates a JavaDoc comment for the builder of the `RejectionThrowable`
+     * class corresponding the given rejection type.
+     */
     fun forBuilderOf(rejection: MessageType): String {
         val rejectionName = rejection.name.simpleName
         val javadocText = CodeBlock.builder()
@@ -78,20 +115,6 @@ internal object Javadoc {
         return fromEscaped(javadocText)
             .withNewLine()
             .value
-    }
-
-    /**
-     * A Javadoc content for the rejection.
-     *
-     * @return the class-level Javadoc content
-     */
-    fun classJavadocFor(rejection: MessageType): CodeBlock {
-        val javadocAbstract = classAbstractFor(rejection)
-        val protoSourceNote = protoMessageNote(rejection)
-        return CodeBlock.builder()
-            .add(javadocAbstract)
-            .add(protoSourceNote)
-            .build()
     }
 }
 
@@ -106,7 +129,7 @@ private fun classAbstractFor(messageType: MessageType): String {
     if (leadingComment.isEmpty()) {
         return ""
     }
-    val javadoc = JavadocText.fromUnescaped(
+    val javadoc = fromUnescaped(
         // Add line separator to simulate behavior of native Protobuf API.
         leadingComment + System.lineSeparator())
         // Wrap the comment in `<pre>` tags similarly to how Protobuf does

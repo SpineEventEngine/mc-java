@@ -36,7 +36,8 @@ import io.spine.protodata.MessageType
 import io.spine.tools.java.code.GeneratedBy
 import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.javadoc.JavadocText
-import io.spine.tools.mc.java.rejection.Javadoc.classJavadocFor
+import io.spine.tools.mc.java.rejection.Javadoc.forConstructorOfThrowable
+import io.spine.tools.mc.java.rejection.Javadoc.forThrowableOf
 import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC
@@ -49,11 +50,13 @@ import com.squareup.javapoet.ClassName as PoClassName
  * The generated type extends [RejectionThrowable] and encloses an instance of the
  * corresponding [rejection message][io.spine.base.RejectionMessage].
  *
+ * @param javaPackage
+ *         a name of the Java package where the rejection type should be generated.
  * @param rejection
  *         a rejection declaration.
  */
 internal class RThrowableCode(
-    val packageName: String,
+    val javaPackage: String,
     val rejection: MessageType,
     typeSystem: TypeSystem
 ) : WithLogging {
@@ -65,7 +68,7 @@ internal class RThrowableCode(
     init {
         val clsName = typeSystem.classNameFor(rejection.name).canonical
         messageClass = PoClassName.bestGuess(clsName)
-        val throwableClass = PoClassName.get(packageName, simpleClassName)
+        val throwableClass = PoClassName.get(javaPackage, simpleClassName)
         builder = RThrowableBuilderCode(
             rejection,
             messageClass,
@@ -74,32 +77,31 @@ internal class RThrowableCode(
         )
     }
 
-    fun toPoet(): TypeSpec {
-        return TypeSpec.classBuilder(simpleClassName)
-            .addJavadoc(classJavadocFor(rejection))
-            .addAnnotation(GeneratedBy.spineModelCompiler())
-            .addModifiers(PUBLIC)
-            .superclass(RejectionThrowable::class.java)
-            .addField(serialVersionUID())
-            .addMethod(constructor())
-            .addMethod(messageThrown())
-            .addMethod(builder.newBuilder())
-            .addType(builder.toPoet())
-            .build()
+    fun toPoet(): TypeSpec = classSpec(simpleClassName) {
+        addJavadoc(forThrowableOf(rejection))
+        addAnnotation(GeneratedBy.spineModelCompiler())
+        addModifiers(PUBLIC)
+        superclass(RejectionThrowable::class.java)
+        addField(serialVersionUID())
+        addMethod(constructor())
+        addMethod(messageThrown())
+        addMethod(builder.newBuilder())
+        addType(builder.toPoet())
     }
 
     private fun constructor(): MethodSpec {
         logger.atDebug().log {
             "Creating the constructor for the type `${rejection}`."
         }
-        val builderParameter = builder.asParameter()
-        val buildRejectionMessage = builder.buildRejectionMessage()
-        return MethodSpec.constructorBuilder()
-            .addJavadoc(constructorJavadoc(builderParameter))
-            .addModifiers(PRIVATE)
-            .addParameter(builderParameter)
-            .addStatement("super(\$L)", buildRejectionMessage.toString())
-            .build()
+        return constructorSpec {
+            val builderParameter = builder.asParameter()
+            val buildRejectionMessage = builder.buildRejectionMessage()
+
+            addJavadoc(forConstructorOfThrowable(builderParameter))
+            addModifiers(PRIVATE)
+            addParameter(builderParameter)
+            addStatement("super(\$L)", buildRejectionMessage.toString())
+        }
     }
 
     private fun messageThrown(): MethodSpec {
@@ -107,39 +109,17 @@ internal class RThrowableCode(
         logger.atDebug().log {
             "Adding method `$methodSignature`."
         }
-        val returnType = messageClass
-        return MethodSpec.methodBuilder(messageThrown.name())
-            .addAnnotation(Override::class.java)
-            .addModifiers(PUBLIC)
-            .returns(returnType)
-            .addStatement("return (\$T) super.\$L", returnType, methodSignature)
-            .build()
+        return methodSpec(messageThrown.name()) {
+            val returnType = messageClass
+            addAnnotation(Override::class.java)
+            addModifiers(PUBLIC)
+            returns(returnType)
+            addStatement("return (\$T) super.\$L", returnType, methodSignature)
+        }
     }
 }
 
 private val messageThrown = NoArgMethod("messageThrown")
-
-/**
- * A Javadoc content for the rejection constructor.
- *
- * @param builderParameter
- *          the name of a rejection builder parameter
- * @return the constructor Javadoc content
- */
-private fun constructorJavadoc(builderParameter: ParameterSpec): CodeBlock {
-    val generalPart = JavadocText.fromUnescaped("Creates a new instance.")
-        .withNewLine()
-        .withNewLine()
-    val paramsBlock = CodeBlock.of(
-        "@param \$N the builder for the rejection", builderParameter
-    )
-    val paramsPart = JavadocText.fromEscaped(paramsBlock.toString())
-        .withNewLine()
-    return CodeBlock.builder()
-        .add(generalPart.value())
-        .add(paramsPart.value())
-        .build()
-}
 
 private fun serialVersionUID(): FieldSpec {
     return FieldSpec.builder(

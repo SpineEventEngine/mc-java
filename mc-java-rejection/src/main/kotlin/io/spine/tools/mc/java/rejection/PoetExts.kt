@@ -77,3 +77,9 @@ internal fun codeBlock(action: CodeBlock.Builder.() -> Unit): CodeBlock {
     action(builder)
     return builder.build()
 }
+
+/**
+ * A shortcut for [CodeBlock.of] converted to `String`.
+ */
+internal fun codeBlock(format: String, vararg args: Any): String =
+    CodeBlock.of(format, *args).toString()
