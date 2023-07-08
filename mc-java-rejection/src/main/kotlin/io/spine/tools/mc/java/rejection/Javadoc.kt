@@ -52,21 +52,21 @@ internal object Javadoc {
     private const val BUILDER_CONSTRUCTOR_ABSTRACT = "Prevent direct instantiation of the builder."
     private const val BUILDER_ABSTRACT_TEMPLATE = "The builder for the {@code \$L} rejection."
 
-    val newBuilderMethod: String by lazy {
+    val ofNewBuilderMethod: String by lazy {
         fromEscaped(NEW_BUILDER_METHOD_ABSTRACT)
             .withNewLine()
             .value
     }
 
-    val builderConstructor: String by lazy {
+    val ofBuilderConstructor: String by lazy {
         fromEscaped(BUILDER_CONSTRUCTOR_ABSTRACT).withNewLine().value
     }
 
-    val rejectionMessageMethod: String by lazy {
+    val ofRejectionMessageMethod: String by lazy {
         fromEscaped(REJECTION_MESSAGE_METHOD_ABSTRACT).withNewLine().value
     }
 
-    val buildMethod: String by lazy {
+    val ofBuildMethod: String by lazy {
         fromEscaped(BUILD_METHOD_ABSTRACT).withNewLine().value
     }
 

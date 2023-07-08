@@ -51,6 +51,11 @@ import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
+import io.spine.tools.mc.java.rejection.Javadoc.forBuilderOf
+import io.spine.tools.mc.java.rejection.Javadoc.ofBuildMethod
+import io.spine.tools.mc.java.rejection.Javadoc.ofBuilderConstructor
+import io.spine.tools.mc.java.rejection.Javadoc.ofNewBuilderMethod
+import io.spine.tools.mc.java.rejection.Javadoc.ofRejectionMessageMethod
 import io.spine.tools.mc.java.rejection.Method.BUILD
 import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
@@ -82,7 +87,7 @@ internal class RThrowableBuilderCode internal constructor(
 
     override fun toPoet(): TypeSpec = classSpec(simpleClassName.value()) {
         addModifiers(PUBLIC, STATIC)
-        addJavadoc(Javadoc.forBuilderOf(rejection))
+        addJavadoc(forBuilderOf(rejection))
         addField(messageClass.builderField())
         addMethod(constructor())
         addMethods(setters())
@@ -100,7 +105,7 @@ internal class RThrowableBuilderCode internal constructor(
      */
     fun newBuilder(): MethodSpec = methodSpec(newBuilder.name()) {
         addModifiers(PUBLIC, STATIC)
-        addJavadoc(Javadoc.newBuilderMethod)
+        addJavadoc(ofNewBuilderMethod)
         returns(builderClass())
         addStatement("return new \$L()", simpleClassName.value())
     }
@@ -183,7 +188,7 @@ private val newBuilder = NoArgMethod(NEW_BUILDER)
 private const val BUILDER_FIELD = "builder"
 
 private fun constructor(): MethodSpec = constructorSpec {
-    addJavadoc(Javadoc.builderConstructor)
+    addJavadoc(ofBuilderConstructor)
     addModifiers(PRIVATE)
 }
 
@@ -242,7 +247,7 @@ private fun PoClassName.builderField(): FieldSpec {
 private fun PoClassName.buildMethod(): MethodSpec = methodSpec(BUILD) {
     val messageClass = this@buildMethod
     addModifiers(PUBLIC)
-    addJavadoc(Javadoc.buildMethod)
+    addJavadoc(ofBuildMethod)
     returns(messageClass)
     addStatement("return new \$T(this)", messageClass)
 }
@@ -259,7 +264,7 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
         AnnotationSpec.builder(Validated::class.java).build()
     )
     addModifiers(PRIVATE)
-    addJavadoc(Javadoc.rejectionMessageMethod)
+    addJavadoc(ofRejectionMessageMethod)
     returns(annotatedType)
     addStatement("return \$L.build()", BUILDER_FIELD)
 }
