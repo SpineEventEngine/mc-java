@@ -74,13 +74,11 @@ internal object Javadoc {
      * Generated Javadoc for the `RejectionThrowable` class corresponding
      * the given rejection type.
      */
-    fun forThrowableOf(rejection: MessageType): CodeBlock {
+    fun forThrowableOf(rejection: MessageType): CodeBlock = codeBlock {
         val javadocAbstract = classAbstractFor(rejection)
         val protoSourceNote = protoMessageNote(rejection)
-        return CodeBlock.builder()
-            .add(javadocAbstract)
-            .add(protoSourceNote)
-            .build()
+        add(javadocAbstract)
+        add(protoSourceNote)
     }
 
     /**
@@ -89,17 +87,15 @@ internal object Javadoc {
      * @param builder
      *          the name of a rejection builder parameter.
      */
-    fun forConstructorOfThrowable(builder: ParameterSpec): CodeBlock {
+    fun forConstructorOfThrowable(builder: ParameterSpec): CodeBlock = codeBlock {
         val generalPart = fromUnescaped("Creates a new instance.")
             .withNewLine()
             .withNewLine()
         val paramsPart = fromEscaped(codeBlock(
-                "@param \$N the builder for the rejection", builder
-            )).withNewLine()
-        return codeBlock {
-            add(generalPart.value())
-            add(paramsPart.value())
-        }
+            "@param \$N the builder for the rejection", builder
+        )).withNewLine()
+        add(generalPart.value())
+        add(paramsPart.value())
     }
 
     /**
@@ -107,12 +103,10 @@ internal object Javadoc {
      * class corresponding the given rejection type.
      */
     fun forBuilderOf(rejection: MessageType): String {
-        val rejectionName = rejection.name.simpleName
-        val javadocText = CodeBlock.builder()
-            .add(BUILDER_ABSTRACT_TEMPLATE, rejectionName)
-            .build()
-            .toString()
-        return fromEscaped(javadocText)
+        val javadocText = codeBlock {
+            add(BUILDER_ABSTRACT_TEMPLATE, rejection.name.simpleName)
+        }
+        return fromEscaped(javadocText.toString())
             .withNewLine()
             .value
     }
