@@ -69,7 +69,7 @@ internal class RejectionJavadocIgTest {
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
             project.executeTask(launchProtoData)
-            val generatedFile = rejectionJavaFile(projectDir.toPath()).toFile()
+            val generatedFile = rejectionJavaFile(projectDir)
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
             )
@@ -107,7 +107,7 @@ internal class RejectionJavadocIgTest {
 
 private fun assertDoc(expectedText: String, source: JavaDocCapableSource<*>) {
     val javadoc = source.javaDoc
-    javadoc.fullText shouldBe expectedText
+    javadoc.fullTextNormalized() shouldBe expectedText
 }
 
 private fun assertMethodDoc(

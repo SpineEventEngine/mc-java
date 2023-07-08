@@ -33,12 +33,16 @@ import io.spine.tools.fs.DirectoryName.generated
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
 import io.spine.tools.java.fs.toDirectory
-import java.nio.file.Path
+import java.io.File
 import kotlin.io.path.div
 
 /**
  * The environment for the integration tests checking Javadocs in
  * the generated rejections code.
+ *
+ * This object provides methods for checking the Javadoc comments in the generated code that
+ * provide values assuming that the text is obtained via
+ * the [org.jboss.forge.roaster.model.JavaDoc.getFullText] method.
  *
  * @see RejectionJavadocIgTest
  */
@@ -73,19 +77,21 @@ internal object JavadocTestEnv {
        }     
        """.ti().lines()
 
-    fun rejectionJavaFile(projectDir: Path): Path {
+    fun rejectionJavaFile(projectDir: File): File {
         val javaPackage = PackageName.of(JAVA_PACKAGE).toDirectory()
-        return projectDir / generated / main / java / javaPackage / "$REJECTION_NAME.java"
+        val filePath =
+            projectDir.toPath() / generated / main / java / javaPackage / "$REJECTION_NAME.java"
+        return filePath.toFile()
     }
 
     fun expectedClassComment(): String = (
             wrappedInPreTag(TYPE_COMMENT)
             + " <p>The rejection message proto type is "
-            + " {@code $PROTO_PACKAGE.$REJECTION_NAME} ."
+            + "{@code $PROTO_PACKAGE.$REJECTION_NAME}."
         )
 
     fun expectedBuilderClassComment() =
-        "The builder for the  {@code $REJECTION_NAME}  rejection."
+        "The builder for the {@code $REJECTION_NAME} rejection."
 
     fun expectedFirstFieldComment(): String =
         wrappedInPreTag(FIRST_FIELD_COMMENT)
