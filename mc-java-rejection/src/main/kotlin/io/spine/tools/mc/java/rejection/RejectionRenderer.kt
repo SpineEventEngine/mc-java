@@ -38,6 +38,7 @@ import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.ti
 import java.nio.file.Path
 
@@ -143,18 +144,11 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
         val typeSpec = toPoet()
         val javaFile = JavaFile.builder(javaPackage, typeSpec)
             .skipJavaLangImports(true)
-            .indent(INDENT)
+            .indent(defaultJavaIndent.value)
             .build()
         val appendable = StringBuilder()
         javaFile.writeTo(appendable)
         sources.createFile(file, appendable.toString())
-    }
-
-    private companion object {
-        /**
-         * The indentation used in the generated Java code.
-         */
-        const val INDENT: String = "    "
     }
 }
 
