@@ -124,4 +124,3 @@ private fun JavaClassSource.findMethod(methodName: String): MethodSource<JavaCla
         .filter { methodName == it.name }
         .findFirst()
         .orElseThrow { error("Cannot find the method `$methodName`.") }
-

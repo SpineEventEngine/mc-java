@@ -77,7 +77,7 @@ internal object Javadoc {
      * the given rejection type.
      */
     fun forThrowableOf(rejection: MessageType): CodeBlock = codeBlock {
-        add(classAbstractFor(rejection))
+        add(classSummaryFor(rejection))
         add(protoMessageNote(rejection))
     }
 
@@ -118,7 +118,7 @@ internal object Javadoc {
  * The text is taken as a leading comment of the rejection message
  * declaration wrapped in `<pre>` tags.
  */
-private fun classAbstractFor(messageType: MessageType): String {
+private fun classSummaryFor(messageType: MessageType): String {
     val leadingComment = messageType.doc.leadingComment
     if (leadingComment.isEmpty()) {
         return ""
@@ -147,4 +147,3 @@ private fun protoMessageNote(messageType: MessageType): String {
         .withNewLine()
         .value
 }
-
