@@ -64,6 +64,17 @@ import io.spine.type.KnownTypes
 import kotlin.reflect.KClass
 
 /**
+ * Configures and builds a TypeSystem object.
+ *
+ * @param action an action for configuring the `TypeSystem` properties.
+ */
+public fun typeSystem(action: TypeSystem.Builder.() -> Unit): TypeSystem {
+    val builder = TypeSystem.newBuilder()
+    builder.action()
+    return builder.build()
+}
+
+/**
  * A type system of an application.
  *
  * Includes all the types known to the app at runtime.
@@ -164,14 +175,6 @@ private fun unknownType(type: Type): Nothing =
 
 private fun unknownType(typeName: TypeName): Nothing =
     error("Unknown type: `${typeName.typeUrl}`.")
-
-/**
- * Obtains a name of the class which corresponds to this primitive type.
- */
-internal fun PrimitiveType.toClass(): ClassName {
-    val klass = primitiveClass()
-    return ClassName(klass.javaObjectType)
-}
 
 /**
  * Obtains a name of the class which corresponds to this primitive type.

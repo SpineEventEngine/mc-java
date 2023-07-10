@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,15 @@ import com.google.errorprone.annotations.Immutable
 import io.spine.tools.java.code.Method
 
 /**
+ * Method names used in the generated code.
+ */
+internal object Method {
+    const val NEW_BUILDER = "newBuilder"
+    const val REJECTION_MESSAGE = "rejectionMessage"
+    const val BUILD = "build"
+}
+
+/**
  * A reference to a method with no arguments.
  */
 @Immutable
@@ -42,6 +51,7 @@ internal class NoArgMethod(methodName: String) : Method(methodName) {
         return value() + "()"
     }
 
+    @Suppress("ConstPropertyName") // As required by Java conventions for serialization.
     companion object {
         private const val serialVersionUID = 0L
     }

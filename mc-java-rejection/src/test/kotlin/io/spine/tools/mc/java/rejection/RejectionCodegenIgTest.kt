@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.rejection
 
 import io.kotest.matchers.shouldBe
+import io.spine.testing.SlowTest
 import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.code.SourceSetName.Companion.main
@@ -46,23 +47,57 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+/**
+ * Tests the code generation of rejections.
+ *
+ * The test project is located in `rejection-codegen-test` directory in the test resources.
+ * Static initialization of the test class copies the project to a temporary directory and
+ * configures Gradle to run the code generation task by executing the [compileTestJava] task,
+ * which depends on code generation tasks.
+ *
+ * Running Java compilation ensures that:
+ *  1. The code generation is executed for both `main` and `test` source sets.
+ *  2. The generated code is compiled.
+ *
+ * Test methods of this test suite check the presence of the generated code in
+ * the expected locations.
+ *
+ * The content of the generated code is partially tested in [RejectionJavadocIgTest] suite
+ * dedicated to checking the correctness of Javadoc comments.
+ *
+ * @see RejectionJavadocIgTest
+ */
+@SlowTest
 @DisplayName("Code generation of rejections should")
-internal class RejectionCodegenSpec {
+internal class RejectionCodegenIgTest {
 
     companion object {
 
+        /**
+         * The directory where the generated code is expected to be located.
+         */
+        private const val PACKAGE_DIR = "io/spine/sample/rejections"
+        
         private lateinit var moduleDir: File
 
         @BeforeAll
         @JvmStatic
         fun generateRejections() {
-            val projectDir = TempDir.forClass(RejectionCodegenSpec::class.java)
+            val projectDir = TempDir.forClass(RejectionCodegenIgTest::class.java)
             val project: GradleProject = GradleProject.setupAt(projectDir)
                 .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
-                 /* Uncomment the following line to be able to debug the build.
-                    Do not forget to turn off so that tests run faster AND Windows build does not
-                    fail with the error on Windows Registry unavailability. */
+                 /*
+                    Running tests with `enableRunnerDebug()` turned on
+                    ---------------------------------------------------
+                    Uncomment the following line to be able to debug the Gradle build process.
+                    Do not forget to turn it OFF before committing your code so that
+                    tests run faster.
+
+                    IMPORTANT: Running with `enableRunnerDebug()` turned on fails
+                    under Windows in CI environment because internally Gradle tries to
+                    access Windows Registry which requires special permissions for a process.
+                 */
                  //.enableRunnerDebug()
                 .create()
             moduleDir = projectDir.toPath()
@@ -81,39 +116,29 @@ internal class RejectionCodegenSpec {
 
     private fun targetTestDir(): Path = generatedRoot(test)
 
-    private fun assertExists(path: Path) =
-        assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
-
-    private fun assertJavaFileExists(packageDir: Path, typeName: String) {
-        val file = packageDir.resolve("$typeName.java")
-        assertExists(file)
-    }
-
     @Nested
     @DisplayName("place generated code under the `spine` directory for")
     internal inner class SourceSetDirs {
 
         @Test
         fun `'main' source set`() {
-            val mainSpine = targetMainDir().resolve(java)
-            assertExists(mainSpine)
-            mainSpine.isDirectory() shouldBe true
-            mainSpine.containsJavaFiles() shouldBe true
+            val mainJava = targetMainDir().resolve(java)
+            assertExists(mainJava)
+            mainJava.isDirectory() shouldBe true
+            mainJava.containsJavaFiles() shouldBe true
         }
 
         @Test
         fun `'test' source set`() {
-            val testSpine = targetTestDir().resolve(java)
-            assertExists(testSpine)
-            testSpine.isDirectory() shouldBe true
-            testSpine.containsJavaFiles() shouldBe true
+            val testJava = targetTestDir().resolve(java)
+            assertExists(testJava)
+            testJava.isDirectory() shouldBe true
+            testJava.containsJavaFiles() shouldBe true
         }
 
         @Test
         fun `'testFixtures' source set`() {
-            val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(
-                java
-            )
+            val testFixturesSpine = generatedRoot(SourceSetName("testFixtures")).resolve(java)
             assertExists(testFixturesSpine)
             testFixturesSpine.isDirectory() shouldBe true
             testFixturesSpine.containsJavaFiles() shouldBe true
@@ -127,7 +152,7 @@ internal class RejectionCodegenSpec {
         @Test
         fun `for 'main' source set`() {
             // As defined in `resources/.../main_rejections.proto`.
-            val packageDir = targetMainDir().resolve(java).resolve("io/spine/sample/rejections")
+            val packageDir = targetMainDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
 
             // As defined in `resources/.../main_rejections.proto`.
@@ -142,7 +167,7 @@ internal class RejectionCodegenSpec {
         @Test
         fun `for 'test' source set`() {
             // As defined in `resources/.../test_rejections.proto`.
-            val packageDir = targetTestDir().resolve(java).resolve("io/spine/sample/rejections")
+            val packageDir = targetTestDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
 
             // As defined in `resources/.../test_rejections.proto`.
@@ -155,4 +180,12 @@ internal class RejectionCodegenSpec {
 private fun Path.containsJavaFiles(): Boolean {
     val found = toFile().walk().find { file -> file.name.endsWith(".java") }
     return found != null
+}
+
+private fun assertExists(path: Path) =
+    assertTrue(Files.exists(path)) { "The path `$path` is expected to exist." }
+
+private fun assertJavaFileExists(packageDir: Path, typeName: String) {
+    val file = packageDir.resolve("$typeName.java")
+    assertExists(file)
 }

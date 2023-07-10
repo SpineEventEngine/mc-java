@@ -24,13 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package io.spine.tools.mc.java.rejection
+
+import org.jboss.forge.roaster.model.JavaDoc
+
 /**
- * The version of McJava to publish.
+ * Obtains the full text of the Javadoc and normalizes it.
  *
- * Do not rename this this property as it is also used in the integration tests via its name.
+ * This extension function should be used instead of [JavaDoc.getFullText] to avoid
+ * issues with extra spaces that implementers of the `JavaDoc` interface may add.
  *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- * Keep in mind that changing it under `buildSrc` also requires sync. with `tests/buildSrc`.
+ * The following actions are performed:
+ *  1. All double spaces are replaced with single spaces.
+ *  2. All `} .` are replaced with `}.`.
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.161")
-val versionToPublish by extra(mcJavaVersion)
+public fun JavaDoc<*>.fullTextNormalized(): String {
+    val normalized = fullText
+        .replace("  ", " ")
+        .replace("} .", "}.")
+    return normalized
+}
