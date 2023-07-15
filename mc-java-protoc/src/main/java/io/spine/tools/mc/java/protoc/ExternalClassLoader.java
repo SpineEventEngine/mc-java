@@ -109,7 +109,7 @@ public final class ExternalClassLoader<T> implements Logging {
 
     private static URL[] classPathUrls(Classpath classpath) {
         return classpath
-                .getJarList()
+                .getItemList()
                 .stream()
                 .map(File::new)
                 .map(File::toURI)
