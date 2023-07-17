@@ -53,6 +53,7 @@ import io.spine.tools.java.codeBlock
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.java.methodSpec
+import io.spine.tools.mc.java.TypeSystem
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
 import io.spine.tools.mc.java.rejection.Javadoc.forBuilderOf
@@ -63,6 +64,7 @@ import io.spine.tools.mc.java.rejection.Javadoc.ofRejectionMessageMethod
 import io.spine.tools.mc.java.rejection.Method.BUILD
 import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
+import io.spine.tools.mc.java.toPrimitiveName
 import io.spine.validate.Validate
 import io.spine.validate.Validated
 import java.util.regex.Pattern
