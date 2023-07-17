@@ -217,7 +217,7 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
                      .map(FileCollection::getFiles)
                      .flatMap(Set::stream)
                      .map(File::getAbsolutePath)
-                     .forEach(classpath::addJar);
+                     .forEach(classpath::addItem);
         return classpath.build();
     }
 
