@@ -31,8 +31,11 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
+import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.GeneratedBy
 import io.spine.tools.java.code.field.FieldName
+import io.spine.tools.java.constructorSpec
+import io.spine.tools.java.methodSpec
 import io.spine.tools.mc.java.rejection.Javadoc.forConstructorOfThrowable
 import io.spine.tools.mc.java.rejection.Javadoc.forThrowableOf
 import javax.lang.model.element.Modifier.FINAL
