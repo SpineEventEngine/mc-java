@@ -46,9 +46,13 @@ import io.spine.protodata.Type
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.string.titleCase
+import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
+import io.spine.tools.java.codeBlock
+import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.javadoc.JavadocText
+import io.spine.tools.java.methodSpec
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
 import io.spine.tools.mc.java.rejection.Javadoc.forBuilderOf
