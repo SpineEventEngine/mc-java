@@ -143,7 +143,7 @@ message RpcOption {
 
 // The API level options applied to a proto file.
 message FileOptions {
-    option (entity).kind = VIEW;
+    option (entity).kind = PROCESS_MANAGER;
 
     // The name of the file.
     protodata.FilePath file = 1;
