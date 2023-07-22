@@ -31,8 +31,8 @@ package spine.mc.annotation;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.mc.annotation";
-option java_outer_classname = "AnnotatedTypeProto";
+option java_package = "io.spine.tools.mc.annotation";
+option java_outer_classname = "AnnotatedTypesProto";
 option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
@@ -68,10 +68,10 @@ import "spine/protodata/ast.proto";
 //
 // Multiple options may be applied to the same element of proto code.
 //
-message AnnotatedType {
+message AnnotatedMessage {
     option (entity).kind = VIEW;
 
-    // The name of the type.
+    // The name of the message type.
     protodata.TypeName type = 1;
 
     // The options applied to the type.
@@ -93,5 +93,61 @@ message FieldOption {
     protodata.Field field = 1 [(required) = true];
 
     // One or more applied options.
+    repeated protodata.Option option = 2 [(required) = true];
+}
+
+// The API level options applied to an enum.
+message AnnotatedEnum {
+    option (entity).kind = VIEW;
+
+    // The name of the enum.
+    protodata.TypeName type = 1;
+
+    // The options applied to the enum.
+    repeated protodata.Option option = 2 [(required) = true];
+
+    // The options applied to the enum constants.
+    repeated EnumConstantOption constant_option = 3 [(required) = true];
+}
+
+// The API level options applied to an enum constant.
+message EnumConstantOption {
+
+    // The enum constant with the options applied.
+    protodata.EnumConstant constant = 1 [(required) = true];
+
+    // One or more applied options.
+    repeated protodata.Option option = 2 [(required) = true];
+}
+
+// The API level options applied to a service.
+message AnnotatedService {
+    option (entity).kind = VIEW;
+
+    // The name of the service.
+    protodata.ServiceName service = 1;
+
+    // The options applied to the service.
+    repeated protodata.Option option = 2 [(required) = true];
+}
+
+// The API level options applied to a method of a service.
+message RpcOption {
+
+    // The RPC with the options applied.
+    protodata.Rpc rpc = 1 [(required) = true];
+
+    // One or more applied options.
+    repeated protodata.Option option = 2 [(required) = true];
+}
+
+// The API level options applied to a proto file.
+message FileOptions {
+    option (entity).kind = VIEW;
+
+    // The name of the file.
+    protodata.FilePath file = 1;
+
+    // The options applied to the file.
     repeated protodata.Option option = 2 [(required) = true];
 }
