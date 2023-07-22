@@ -589,14 +589,9 @@
 1.  **Group** : io.spine.protodata. **Name** : protodata-cli-api. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -689,15 +684,7 @@
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -893,7 +880,7 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:41 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -1364,6 +1351,10 @@ This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
+1.  **Group** : io.grpc. **Name** : protoc-gen-grpc-java. **Version** : 1.53.0.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api. **Version** : 5.6.1.**No license information found**
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api-jvm. **Version** : 5.6.1.
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
@@ -1394,10 +1385,8 @@ This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java-bundle. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -1415,6 +1404,7 @@ This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-Lic
      * **License:** [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
      * **License:** [LGPL, version 2.1](http://www.gnu.org/licenses/licenses.html)
 
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 11.4.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -1485,15 +1475,7 @@ This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -1660,7 +1642,7 @@ This report was generated on **Tue Jul 18 19:39:10 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:41 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -2131,6 +2113,10 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
+1.  **Group** : io.grpc. **Name** : protoc-gen-grpc-java. **Version** : 1.53.0.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api. **Version** : 5.6.1.**No license information found**
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api-jvm. **Version** : 5.6.1.
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
@@ -2161,10 +2147,8 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-java-bundle. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -2182,6 +2166,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **License:** [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
      * **License:** [LGPL, version 2.1](http://www.gnu.org/licenses/licenses.html)
 
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 11.4.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -2252,15 +2237,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -2427,7 +2404,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:41 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -2592,14 +2569,6 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
 1.  **Group** : com.github.kevinstern. **Name** : software-and-algorithms. **Version** : 1.0.
      * **Project URL:** [https://www.github.com/KevinStern/software-and-algorithms](https://www.github.com/KevinStern/software-and-algorithms)
      * **License:** [MIT License](http://www.opensource.org/licenses/mit-license.php)
-
-1.  **Group** : com.google.android. **Name** : annotations. **Version** : 4.1.1.4.
-     * **Project URL:** [http://source.android.com/](http://source.android.com/)
-     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-1.  **Group** : com.google.api.grpc. **Name** : proto-google-common-protos. **Version** : 2.9.0.
-     * **Project URL:** [https://github.com/googleapis/java-iam/proto-google-common-protos](https://github.com/googleapis/java-iam/proto-google-common-protos)
-     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.auto. **Name** : auto-common. **Version** : 1.2.2.
      * **Project URL:** [https://github.com/google/auto/tree/main/common](https://github.com/google/auto/tree/main/common)
@@ -2846,30 +2815,6 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://detekt.dev](https://detekt.dev)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api. **Version** : 5.6.1.**No license information found**
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api-jvm. **Version** : 5.6.1.
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
@@ -2890,18 +2835,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
      * **License:** [Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.perfmark. **Name** : perfmark-api. **Version** : 0.25.0.
-     * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -2972,10 +2906,6 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
-1.  **Group** : org.codehaus.mojo. **Name** : animal-sniffer-annotations. **Version** : 1.21.
-     * **License:** [MIT license](http://www.opensource.org/licenses/mit-license.php)
-     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
@@ -2994,15 +2924,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -3165,7 +3087,7 @@ This report was generated on **Tue Jul 18 19:39:11 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:42 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -3739,14 +3661,9 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-cli-api. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-gradle-api. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3839,15 +3756,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -4029,7 +3938,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:42 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -4527,13 +4436,8 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-api. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -4621,15 +4525,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -4796,7 +4692,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:42 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -5270,15 +5166,8 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
      * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
 
 1.  **Group** : io.spine.protodata. **Name** : protodata-api. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -5366,15 +5255,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -5527,7 +5408,7 @@ This report was generated on **Tue Jul 18 19:39:12 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:42 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -6025,13 +5906,8 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
 1.  **Group** : io.spine.protodata. **Name** : protodata-api. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -6119,15 +5995,7 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -6294,7 +6162,7 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:43 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -6411,14 +6279,6 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
 1.  **Group** : com.github.kevinstern. **Name** : software-and-algorithms. **Version** : 1.0.
      * **Project URL:** [https://www.github.com/KevinStern/software-and-algorithms](https://www.github.com/KevinStern/software-and-algorithms)
      * **License:** [MIT License](http://www.opensource.org/licenses/mit-license.php)
-
-1.  **Group** : com.google.android. **Name** : annotations. **Version** : 4.1.1.4.
-     * **Project URL:** [http://source.android.com/](http://source.android.com/)
-     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-1.  **Group** : com.google.api.grpc. **Name** : proto-google-common-protos. **Version** : 2.9.0.
-     * **Project URL:** [https://github.com/googleapis/java-iam/proto-google-common-protos](https://github.com/googleapis/java-iam/proto-google-common-protos)
-     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.auto. **Name** : auto-common. **Version** : 1.2.2.
      * **Project URL:** [https://github.com/google/auto/tree/main/common](https://github.com/google/auto/tree/main/common)
@@ -6643,30 +6503,6 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://detekt.dev](https://detekt.dev)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.52.1.
-     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api. **Version** : 5.6.1.**No license information found**
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api-jvm. **Version** : 5.6.1.
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
@@ -6687,18 +6523,7 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
      * **License:** [Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
-1.  **Group** : io.perfmark. **Name** : perfmark-api. **Version** : 0.25.0.
-     * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
-     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
-
-1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-fat-cli. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.protodata. **Name** : protodata-protoc. **Version** : 0.9.6.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-context. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
-1.  **Group** : io.spine.validation. **Name** : spine-validation-model. **Version** : 2.0.0-SNAPSHOT.97.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -6768,10 +6593,6 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
      * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
 
-1.  **Group** : org.codehaus.mojo. **Name** : animal-sniffer-annotations. **Version** : 1.21.
-     * **License:** [MIT license](http://www.opensource.org/licenses/mit-license.php)
-     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
      * **License:** [BSD License 3](http://opensource.org/licenses/BSD-3-Clause)
@@ -6786,15 +6607,7 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
      * **License:** [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
      * **License:** [MPL 1.1](http://www.mozilla.org/MPL/MPL-1.1.html)
 
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.24.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
-     * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
-     * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
-
-1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-jdt. **Version** : 2.24.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
      * **License:** [Public Domain](http://repository.jboss.org/licenses/cc0-1.0.txt)
 
@@ -6957,4 +6770,4 @@ This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Jul 18 19:39:13 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Jul 22 21:58:43 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
