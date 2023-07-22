@@ -29,6 +29,7 @@ import io.spine.internal.dependency.Spine
 
 plugins {
     `java-test-fixtures`
+    id("io.spine.mc-java")
 }
 
 dependencies {
@@ -41,6 +42,7 @@ dependencies {
     }
 
     implementation(project(":mc-java-base"))
+    implementation(Spine.server)
 
     testFixturesImplementation(Spine.toolBase)
     testFixturesImplementation(Spine.testlib)
@@ -60,4 +62,8 @@ dependencies {
  */
 tasks.test {
     dependsOn(rootProject.tasks.named("localPublish"))
+}
+
+tasks.withType<ProcessResources>().configureEach {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

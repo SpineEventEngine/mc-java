@@ -33,9 +33,10 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
-import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Spine.Logging
 import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.VersionWriter
@@ -105,9 +106,9 @@ fun Module.addDependencies() {
         ErrorProne.annotations.forEach { compileOnlyApi(it) }
 
         implementation(Guava.lib)
-        implementation("io.spine:spine-logging:2.0.0-SNAPSHOT.184")
-        implementation("io.spine:spine-logging-backend:2.0.0-SNAPSHOT.184")
-        implementation("io.spine:spine-logging-context:2.0.0-SNAPSHOT.184")
+        implementation(Logging.lib)
+        implementation(Logging.backend)
+        implementation(Logging.context)
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -134,9 +135,9 @@ fun Module.forceConfigurations() {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
-                    Spine.logging,
-                    Spine.loggingBackend,
-                    Spine.loggingContext,
+                    Logging.lib,
+                    Logging.backend,
+                    Logging.context,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
