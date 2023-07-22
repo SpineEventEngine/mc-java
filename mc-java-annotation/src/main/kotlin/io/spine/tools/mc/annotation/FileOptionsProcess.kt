@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("UNUSED_PARAMETER")
+
 package io.spine.tools.mc.annotation
 
 import io.spine.base.EventMessage
