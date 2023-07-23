@@ -79,6 +79,19 @@ internal val spineJavaAllPlugins: Artifact by lazy {
 }
 
 /**
+ * The Maven artifact containing the `spine-mc-java-annotation` module.
+ */
+@get:JvmName("mcJavaAnnotation")
+internal val mcJavaAnnotation: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        setName("spine-mc-java-annotation")
+        setVersion(mcJavaVersion)
+        setExtension(JAR_EXTENSION)
+    }
+}
+
+/**
  * The Maven artifact containing the `spine-mc-java-rejection` module.
  */
 @get:JvmName("mcJavaRejection")
