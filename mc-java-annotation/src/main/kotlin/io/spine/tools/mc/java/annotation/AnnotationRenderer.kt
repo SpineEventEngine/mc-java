@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.annotation.v2
+package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
@@ -57,9 +57,5 @@ public class AnnotationRenderer: JavaRenderer() {
         if (!sources.outputRoot.endsWith("java")) {
             return
         }
-
-
-        TODO("Not yet implemented")
     }
-
 }
