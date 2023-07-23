@@ -38,12 +38,12 @@ import io.spine.protodata.plugin.View
 internal class AnnotatedEnumView : View<TypeName, AnnotatedEnum, AnnotatedEnum.Builder>() {
 
     @Subscribe
-    internal fun on(@External e: EnumOptionDiscovered) {
+    fun on(@External e: EnumOptionDiscovered) {
         // TODO: Implement.
     }
 
     @Subscribe
-    internal fun on(@External e: EnumConstantOptionDiscovered) {
+    fun on(@External e: EnumConstantOptionDiscovered) {
         // TODO: Implement.
     }
 }

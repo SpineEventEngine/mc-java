@@ -39,12 +39,12 @@ internal class AnnotatedServiceView :
     View<ServiceName, AnnotatedService, AnnotatedService.Builder>() {
 
     @Subscribe
-    internal fun on(@External e: ServiceOptionDiscovered) {
+    fun on(@External e: ServiceOptionDiscovered) {
         // TODO: Implement.
     }
 
     @Subscribe
-    internal fun on(@External e: RpcOptionDiscovered) {
+    fun on(@External e: RpcOptionDiscovered) {
         // TODO: Implement.
     }
 }

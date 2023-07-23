@@ -41,13 +41,13 @@ import io.spine.server.procman.ProcessManager
 internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
 
     @Subscribe
-    internal fun on(@External e: FileEntered) = alter {
+    fun on(@External e: FileEntered) = alter {
         file = e.file.path
         // TODO: Go through options and collect only those that are for API level.
     }
 
     @React
-    internal fun on(@External e: FileExited): Iterable<EventMessage> {
+    fun on(@External e: FileExited): Iterable<EventMessage> {
         // TODO: Iterate through all the types present in this file via `ProtobufSourceFile` and
         //  emit events for each of them.
         return emptyList()

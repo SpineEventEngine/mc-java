@@ -40,22 +40,22 @@ import io.spine.protodata.plugin.View
 internal class AnnotatedMessageView: View<TypeName, AnnotatedMessage, AnnotatedMessage.Builder>() {
 
     @Subscribe
-    internal fun on(@External e: TypeOptionDiscovered) {
+    fun on(@External e: TypeOptionDiscovered) {
         // TODO: Implement.
     }
 
     @Subscribe
-    internal fun on(@External e: FieldOptionDiscovered) {
+    fun on(@External e: FieldOptionDiscovered) {
         // TODO: Implement.
     }
 
     @Subscribe
-    internal fun on(@External e: ServiceOptionDiscovered) {
+    fun on(@External e: ServiceOptionDiscovered) {
         // TODO: Implement.
     }
 
     @Subscribe
-    internal fun on(@External e: RpcOptionDiscovered) {
+    fun on(@External e: RpcOptionDiscovered) {
         // TODO: Implement.
     }
 }
