@@ -79,6 +79,19 @@ internal val spineJavaAllPlugins: Artifact by lazy {
 }
 
 /**
+ * The Maven artifact containing the `spine-mc-java-annotation` module.
+ */
+@get:JvmName("mcJavaAnnotation")
+internal val mcJavaAnnotation: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        setName("spine-mc-java-annotation")
+        setVersion(mcJavaVersion)
+        setExtension(JAR_EXTENSION)
+    }
+}
+
+/**
  * The Maven artifact containing the `spine-mc-java-rejection` module.
  */
 @get:JvmName("mcJavaRejection")
@@ -91,6 +104,16 @@ internal val mcJavaRejection: Artifact by lazy {
     }
 }
 
+@get:JvmName("toolBase")
+internal val toolBase: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        name = "spine-tool-base"
+        version = toolBaseVersion
+        extension = JAR_EXTENSION
+    }
+}
+
 /**
  * The Maven artifact containing the `spine-mc-java-base` module.
  */
@@ -98,9 +121,9 @@ internal val mcJavaRejection: Artifact by lazy {
 internal val mcJavaBase: Artifact by lazy {
     artifact {
         useSpineToolsGroup()
-        setName("spine-mc-java-base")
-        setVersion(mcJavaVersion)
-        setExtension(JAR_EXTENSION)
+        name = "spine-mc-java-base"
+        version = mcJavaVersion
+        extension = JAR_EXTENSION
     }
 }
 
@@ -112,6 +135,13 @@ internal val mcJavaBase: Artifact by lazy {
 @get:JvmName("mcJavaVersion")
 internal val mcJavaVersion: String by lazy {
     val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
+    versions.versionOf(self)
+        .orElseThrow { error("Unable to load versions of ${self}.") }
+}
+
+@get:JvmName("toolBaseVersion")
+internal val toolBaseVersion: String by lazy {
+    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
     versions.versionOf(self)
         .orElseThrow { error("Unable to load versions of ${self}.") }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,6 @@ buildscript {
     with(configurations) {
         doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
-        val jackson = io.spine.internal.dependency.Jackson
         all {
             resolutionStrategy {
                 force(
@@ -76,14 +75,8 @@ buildscript {
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
-                    spine.logging,
+                    io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Validation.runtime,
-                    jackson.core,
-                    jackson.moduleKotlin,
-                    jackson.databind,
-                    jackson.bom,
-                    jackson.annotations,
-                    jackson.dataformatYaml,
                 )
             }
         }
@@ -126,15 +119,8 @@ allprojects {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
+                    Spine.Logging.lib,
                     Validation.runtime,
-                    JUnit.runner,
-                    Jackson.core,
-                    Jackson.moduleKotlin,
-                    Jackson.databind,
-                    Jackson.bom,
-                    Jackson.annotations,
-                    Jackson.dataformatYaml,
-                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
                 )
             }
 

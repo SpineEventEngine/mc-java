@@ -51,14 +51,17 @@ buildscript {
             resolutionStrategy {
                 force(
                     spine.base,
-                    spine.logging,
                     spine.toolBase,
                     spine.server,
+                    io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Validation.runtime,
-                    io.spine.internal.dependency.ProtoData.pluginLib
+                    io.spine.internal.dependency.ProtoData.pluginLib,
                 )
             }
         }
+    }
+    dependencies {
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
     }
 }
 
@@ -97,11 +100,7 @@ allprojects {
 
 subprojects {
     apply(plugin = "module")
-    apply(plugin = "io.spine.protodata")
-    dependencies {
-        protoData(Validation.java)
-    }
-    setupCodegen()
+    setupProtocArtifact()
 }
 
 JacocoConfig.applyTo(project)
@@ -159,28 +158,13 @@ val check by tasks.existing {
 typealias Module = Project
 
 /**
- * We configure ProtoData at the project level (and not in the `module.gradle.kts` script plugin)
- * because here the Gradle plugin is already applied and its extension is available.
+ * Specify `protoc` artifact for all the modules for simplicity.
  */
-fun Module.setupCodegen() {
-
+fun Module.setupProtocArtifact() {
     protobuf {
         protoc { artifact = Protobuf.compiler }
     }
-
-    protoData {
-        renderers(
-            "io.spine.validation.java.PrintValidationInsertionPoints",
-            "io.spine.validation.java.JavaValidationRenderer",
-        )
-        plugins(
-            "io.spine.validation.ValidationPlugin"
-        )
-    }
 }
-
-fun File.residesIn(directory: File): Boolean =
-    canonicalFile.startsWith(directory.absolutePath)
 
 apply(from = "version.gradle.kts")
 val mcJavaVersion: String by extra

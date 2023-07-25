@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue
 import com.google.protobuf.ByteString
@@ -53,9 +53,6 @@ import io.spine.protodata.PrimitiveType.TYPE_UINT64
 import io.spine.protodata.PrimitiveType.UNRECOGNIZED
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.Type
-import io.spine.protodata.Type.KindCase.ENUMERATION
-import io.spine.protodata.Type.KindCase.MESSAGE
-import io.spine.protodata.Type.KindCase.PRIMITIVE
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.javaClassName
@@ -108,7 +105,7 @@ private constructor(
     /**
      * Obtains the name of the class from a given name of a Protobuf type.
      */
-    internal fun classNameFor(type: TypeName) =
+    public fun classNameFor(type: TypeName): ClassName =
         knownTypes[type] ?: unknownType(type)
 
     /**
@@ -179,7 +176,7 @@ private fun unknownType(typeName: TypeName): Nothing =
 /**
  * Obtains a name of the class which corresponds to this primitive type.
  */
-internal fun PrimitiveType.toPrimitiveName(): String {
+public fun PrimitiveType.toPrimitiveName(): String {
     val klass = primitiveClass()
     val primitiveClass = klass.javaPrimitiveType ?: klass.java
     return primitiveClass.name

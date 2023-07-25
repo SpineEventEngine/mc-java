@@ -28,6 +28,10 @@ import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
+plugins {
+    id("io.spine.mc-java")
+}
+
 dependencies {
     /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
        Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle

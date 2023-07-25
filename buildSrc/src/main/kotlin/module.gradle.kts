@@ -26,6 +26,7 @@
 
 import Module_gradle.Module
 import com.google.common.io.Files
+import io.spine.internal.dependency.Asm
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
@@ -33,9 +34,11 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
-import io.spine.internal.dependency.Protobuf
+import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Spine.Logging
 import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.VersionWriter
@@ -105,9 +108,9 @@ fun Module.addDependencies() {
         ErrorProne.annotations.forEach { compileOnlyApi(it) }
 
         implementation(Guava.lib)
-        implementation("io.spine:spine-logging:2.0.0-SNAPSHOT.184")
-        implementation("io.spine:spine-logging-backend:2.0.0-SNAPSHOT.184")
-        implementation("io.spine:spine-logging-context:2.0.0-SNAPSHOT.184")
+        implementation(Logging.lib)
+        implementation(Logging.backend)
+        implementation(Logging.context)
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -134,26 +137,15 @@ fun Module.forceConfigurations() {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
-                    Spine.logging,
-                    Spine.loggingBackend,
-                    Spine.loggingContext,
+                    Logging.lib,
+                    Logging.backend,
+                    Logging.context,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
-                    "io.spine.protodata:protodata-codegen-java:${ProtoData.version}",
-
-                    JUnit.runner,
-                    "org.hamcrest:hamcrest-core:2.2",
-                    Jackson.core,
-                    Jackson.moduleKotlin,
-                    Jackson.databind,
-                    Jackson.bom,
-                    Jackson.annotations,
-                    Jackson.dataformatYaml,
-
-                    // Transitive dependency.
-                    "io.github.java-diff-utils:java-diff-utils:4.12"
+                    ProtoData.compiler,
+                    ProtoData.codegenJava,
                 )
             }
         }

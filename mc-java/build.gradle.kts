@@ -34,6 +34,8 @@ import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.WriteVersions
 
 dependencies {
+
+    // Dependencies related to code generation
     implementation(JavaPoet.lib)
     implementation(Roaster.api) {
         exclude(group = "com.google.guava")
@@ -41,22 +43,34 @@ dependencies {
     implementation(Roaster.jdt) {
         exclude(group = "com.google.guava")
     }
-    implementation(Protobuf.GradlePlugin.lib)
-
-    implementation(project(":mc-java-base"))
-    implementation(project(":mc-java-annotation"))
-    implementation(project(":mc-java-checks"))
-    implementation(project(":mc-java-rejection"))
-    implementation(project(":mc-java-protodata-params"))
 
     implementation(ProtoData.pluginLib)
     implementation(Validation.config)
 
-    testImplementation(gradleApi())
-    testImplementation(gradleKotlinDsl())
-    testImplementation(gradleTestKit())
-    testImplementation(Spine.testlib)
-    testImplementation(Spine.pluginTestlib)
+    // We access the Protobuf Gradle Plugin extension, so we need it as a dependency.
+    implementation(Protobuf.GradlePlugin.lib)
+
+    // Module dependencies
+    listOf(
+        ":mc-java-base",
+        ":mc-java-annotation",
+        ":mc-java-checks",
+        ":mc-java-rejection",
+        ":mc-java-protodata-params"
+    ).forEach {
+        implementation(project(it))
+    }
+
+    // Test dependencies
+    listOf(
+        gradleApi(),
+        gradleKotlinDsl(),
+        gradleTestKit(),
+        Spine.testlib,
+        Spine.pluginTestlib
+    ).forEach {
+        testImplementation(it)
+    }
 }
 
 protobuf {
@@ -84,5 +98,6 @@ tasks {
     withType<WriteVersions>().configureEach {
         version(Grpc.ProtocPlugin.artifact)
         version(Validation.java)
+        version(Spine.toolBase)
     }
 }

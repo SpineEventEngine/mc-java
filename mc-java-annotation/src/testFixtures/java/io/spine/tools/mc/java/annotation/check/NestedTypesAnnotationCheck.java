@@ -52,12 +52,14 @@ public final class NestedTypesAnnotationCheck extends SourceCheck {
         requireNonNull(outerClass);
         for (var nestedType : outerClass.getNestedTypes()) {
             Optional<?> annotation = findInternalAnnotation(nestedType);
+            var qualifiedName = nestedType.getQualifiedName();
+            var annotated = annotation.isPresent();
             if (shouldBeAnnotated()) {
-                assertTrue(annotation.isPresent(), () ->
-                        format("`%s` is not annotated.", nestedType.getQualifiedName()));
+                assertTrue(annotated,
+                           () -> format("`%s` is not annotated but should be.", qualifiedName));
             } else {
-                assertFalse(annotation.isPresent(), () ->
-                        format("`%s` is annotated.", nestedType.getQualifiedName()));
+                assertFalse(annotated,
+                            () -> format("`%s` is annotated but should not be.", qualifiedName));
             }
         }
     }

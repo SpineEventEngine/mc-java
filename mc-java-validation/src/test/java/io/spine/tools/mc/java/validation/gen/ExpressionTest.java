@@ -36,6 +36,7 @@ class ExpressionTest {
 
     @Test
     @DisplayName("create formatted expressions")
+    @SuppressWarnings("UnnecessaryStringBuilder") // For testing purposes.
     void format() {
         var expression = Expression.formatted("%s %s %d!", "hello", new StringBuilder("world"), 42);
         var code = expression.toCode();

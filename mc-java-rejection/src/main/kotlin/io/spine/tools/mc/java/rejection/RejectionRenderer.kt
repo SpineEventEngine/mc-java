@@ -40,6 +40,8 @@ import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.ti
+import io.spine.tools.mc.java.TypeSystem
+import io.spine.tools.mc.java.typeSystem
 import java.nio.file.Path
 
 /**

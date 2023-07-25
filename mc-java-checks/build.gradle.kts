@@ -73,6 +73,7 @@ fun CompileOptions.exportsSunJavacPackages(vararg subpackages: String) {
 tasks.withType<JavaCompile>().configureEach {
     options.exportsSunJavacPackages(
         "api",
+        "code",
         "file",
         "code",
         "util",
@@ -83,4 +84,8 @@ tasks.withType<JavaCompile>().configureEach {
         "processing",
         "tree"
     )
+}
+
+tasks.withType<Javadoc>().configureEach {
+    enabled = false
 }
