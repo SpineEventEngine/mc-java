@@ -112,9 +112,18 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
 
         configureValidationRendering(project, codegen);
 
+        codegen.plugins(
+                "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
+        );
+
         codegen.renderers(
                 // Rejection rendering.
-                "io.spine.tools.mc.java.rejection.RejectionRenderer"
+                "io.spine.tools.mc.java.rejection.RejectionRenderer",
+
+                // API options annotation rendering.
+                // It must go after `RejectionRenderer` so that generated `RejectionThrowable`
+                // classes are also annotated.
+                "io.spine.tools.mc.java.annotation.AnnotationRenderer"
         );
 
         codegen.setSubDirs(ImmutableList.of(
