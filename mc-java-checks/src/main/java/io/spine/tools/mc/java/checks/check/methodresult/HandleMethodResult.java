@@ -37,7 +37,7 @@ import com.google.errorprone.bugpatterns.checkreturnvalue.PackagesRule;
 import com.google.errorprone.bugpatterns.checkreturnvalue.ResultUsePolicy;
 import com.google.errorprone.bugpatterns.checkreturnvalue.ResultUsePolicyEvaluator;
 import com.google.errorprone.bugpatterns.checkreturnvalue.ResultUsePolicyEvaluator.MethodInfo;
-import com.google.errorprone.bugpatterns.checkreturnvalue.ResultUseRule;
+import com.google.errorprone.bugpatterns.checkreturnvalue.ResultUseRule.RuleScope;
 import com.google.errorprone.bugpatterns.threadsafety.ConstantExpressions;
 import com.google.errorprone.matchers.Matcher;
 import com.google.errorprone.matchers.method.MethodMatchers;
@@ -106,7 +106,7 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
             new MethodInfo<>() {
                 @Override
                 public Stream<Symbol> scopeMembers(
-                        ResultUseRule.RuleScope scope, MethodSymbol method, VisitorState context) {
+                        RuleScope scope, MethodSymbol method, VisitorState context) {
                     switch (scope) {
                         case ENCLOSING_ELEMENTS:
                             return enclosingElements(method)
@@ -135,7 +135,7 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
             };
 
     @SuppressWarnings("NonSerializableFieldInSerializableClass")
-    private final ResultUsePolicyEvaluator<VisitorState, Symbol, Symbol.MethodSymbol> evaluator;
+    private final ResultUsePolicyEvaluator<VisitorState, Symbol, MethodSymbol> evaluator;
 
     public HandleMethodResult() {
         super(ConstantExpressions.fromFlags(ErrorProneFlags.empty()));
@@ -195,10 +195,10 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
                 .orElse(UNSPECIFIED);
     }
 
-    private static Optional<Symbol.MethodSymbol> methodSymbol(ExpressionTree tree) {
+    private static Optional<MethodSymbol> methodSymbol(ExpressionTree tree) {
         var sym = ASTHelpers.getSymbol(tree);
-        return sym instanceof Symbol.MethodSymbol
-               ? Optional.of((Symbol.MethodSymbol) sym)
+        return sym instanceof MethodSymbol
+               ? Optional.of((MethodSymbol) sym)
                : Optional.empty();
     }
 
