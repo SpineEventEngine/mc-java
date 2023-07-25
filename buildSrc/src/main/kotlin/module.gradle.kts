@@ -146,7 +146,6 @@ fun Module.forceConfigurations() {
                     ProtoData.codegenJava,
 
                     JUnit.runner,
-                    "org.hamcrest:hamcrest-core:2.2",
                     Jackson.core,
                     Jackson.moduleKotlin,
                     Jackson.databind,
@@ -155,6 +154,7 @@ fun Module.forceConfigurations() {
                     Jackson.dataformatYaml,
 
                     // Transitive dependency.
+                    "org.hamcrest:hamcrest-core:2.2",
                     "io.github.java-diff-utils:java-diff-utils:4.12",
                     "org.opentest4j:opentest4j:1.3.0",
                     "org.ow2.asm:asm:9.5",
