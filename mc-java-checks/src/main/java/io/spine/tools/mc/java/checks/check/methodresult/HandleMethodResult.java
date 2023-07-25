@@ -121,6 +121,7 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
     public HandleMethodResult() {
         super(ConstantExpressions.fromFlags(ErrorProneFlags.empty()));
 
+        @SuppressWarnings("unchecked") // All the rules are of the same type.
         var builder = ResultUsePolicyEvaluator.builder(METHOD_INFO).addRules(
                 // The order of these rules matters somewhat because when checking a method, we'll
                 // evaluate them in the order they're listed here and stop as soon as one of them
@@ -205,7 +206,7 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
         }
 
         @Override
-        @SuppressWarnings("EnumSwitchStatementWhichMissesCases") // fallback to
+        @SuppressWarnings("EnumSwitchStatementWhichMissesCases") // fallback to `default:`.
         public MethodKind getMethodKind(MethodSymbol method) {
             switch (method.getKind()) {
                 case METHOD:
