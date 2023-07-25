@@ -98,5 +98,6 @@ tasks {
     withType<WriteVersions>().configureEach {
         version(Grpc.ProtocPlugin.artifact)
         version(Validation.java)
+        version(Spine.toolBase)
     }
 }

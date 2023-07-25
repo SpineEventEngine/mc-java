@@ -36,6 +36,7 @@ import static io.spine.tools.fs.DirectoryName.kotlin;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaBase;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaRejection;
+import static io.spine.tools.mc.java.gradle.Artifacts.toolBase;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
@@ -136,6 +137,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         dependencies.add(PROTODATA_CONFIGURATION, mcJavaBase().notation());
         dependencies.add(PROTODATA_CONFIGURATION, mcJavaAnnotation().notation());
         dependencies.add(PROTODATA_CONFIGURATION, mcJavaRejection().notation());
+        dependencies.add(PROTODATA_CONFIGURATION, toolBase().notation());
     }
 
     private static void configureValidationRendering(Project project, CodegenSettings codegen) {

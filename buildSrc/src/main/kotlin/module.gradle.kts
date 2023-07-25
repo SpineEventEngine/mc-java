@@ -142,7 +142,8 @@ fun Module.forceConfigurations() {
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
-                    "io.spine.protodata:protodata-codegen-java:${ProtoData.version}",
+                    ProtoData.compiler,
+                    ProtoData.codegenJava,
 
                     JUnit.runner,
                     "org.hamcrest:hamcrest-core:2.2",
@@ -154,7 +155,9 @@ fun Module.forceConfigurations() {
                     Jackson.dataformatYaml,
 
                     // Transitive dependency.
-                    "io.github.java-diff-utils:java-diff-utils:4.12"
+                    "io.github.java-diff-utils:java-diff-utils:4.12",
+                    "org.opentest4j:opentest4j:1.3.0",
+                    "org.ow2.asm:asm:9.5",
                 )
             }
         }

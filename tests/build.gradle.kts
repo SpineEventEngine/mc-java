@@ -134,7 +134,9 @@ allprojects {
                     Jackson.bom,
                     Jackson.annotations,
                     Jackson.dataformatYaml,
-                    "io.spine:spine-logging:2.0.0-SNAPSHOT.184"
+                    Spine.Logging.lib,
+                    "org.opentest4j:opentest4j:1.3.0",
+                    "org.ow2.asm:asm:9.5",
                 )
             }
 

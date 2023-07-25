@@ -51,11 +51,11 @@ buildscript {
             resolutionStrategy {
                 force(
                     spine.base,
-                    spine.logging,
                     spine.toolBase,
                     spine.server,
+                    io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Validation.runtime,
-                    io.spine.internal.dependency.ProtoData.pluginLib
+                    io.spine.internal.dependency.ProtoData.pluginLib,
                 )
             }
         }

@@ -59,7 +59,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/logging">spine-logging</a>
          */
-        const val logging = "2.0.0-SNAPSHOT.186"
+        const val logging = "2.0.0-SNAPSHOT.197"
 
         /**
          * The version of [Spine.testlib].
@@ -188,9 +188,10 @@ object Spine {
      * See [`SpineEventEngine/core-java`](https://github.com/SpineEventEngine/core-java/).
      */
     object CoreJava {
-        const val core = "$group:spine-core:${ArtifactVersion.core}"
-        const val client = "$group:spine-client:${ArtifactVersion.core}"
-        const val server = "$group:spine-server:${ArtifactVersion.core}"
-        const val testUtilServer = "$toolsGroup:spine-testutil-server:${ArtifactVersion.core}"
+        const val version = ArtifactVersion.core
+        const val core = "$group:spine-core:$version"
+        const val client = "$group:spine-client:$version"
+        const val server = "$group:spine-server:$version"
+        const val testUtilServer = "$toolsGroup:spine-testutil-server:$version"
     }
 }
