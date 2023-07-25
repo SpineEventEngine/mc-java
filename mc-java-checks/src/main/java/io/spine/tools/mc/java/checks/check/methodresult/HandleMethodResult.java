@@ -97,10 +97,10 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
     private static final String CHECK_RETURN_VALUE = "CheckReturnValue";
     private static final String CAN_IGNORE_RETURN_VALUE = "CanIgnoreReturnValue";
 
-    public static final String CHECK_ALL_CONSTRUCTORS = "CheckReturnValue:CheckAllConstructors";
-    public static final String CHECK_ALL_METHODS = "CheckReturnValue:CheckAllMethods";
+    private static final String CHECK_ALL_CONSTRUCTORS = "CheckReturnValue:CheckAllConstructors";
+    private static final String CHECK_ALL_METHODS = "CheckReturnValue:CheckAllMethods";
 
-    static final String CRV_PACKAGES = "CheckReturnValue:Packages";
+    private static final String CRV_PACKAGES = "CheckReturnValue:Packages";
 
     private static final MethodInfo<VisitorState, Symbol, MethodSymbol> METHOD_INFO =
             new MethodInfo<>() {
