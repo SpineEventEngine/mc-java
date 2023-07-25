@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ allprojects {
                     Jackson.dataformatYaml,
                     Spine.Logging.lib,
                     "org.opentest4j:opentest4j:1.3.0",
-                    "org.ow2.asm:asm:9.5",
+                    io.spine.internal.dependency.Asm.lib,
                 )
             }
 

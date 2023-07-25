@@ -26,6 +26,7 @@
 
 import Module_gradle.Module
 import com.google.common.io.Files
+import io.spine.internal.dependency.Asm
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
@@ -157,7 +158,7 @@ fun Module.forceConfigurations() {
                     "org.hamcrest:hamcrest-core:2.2",
                     "io.github.java-diff-utils:java-diff-utils:4.12",
                     "org.opentest4j:opentest4j:1.3.0",
-                    "org.ow2.asm:asm:9.5",
+                    Asm.lib,
                 )
             }
         }
