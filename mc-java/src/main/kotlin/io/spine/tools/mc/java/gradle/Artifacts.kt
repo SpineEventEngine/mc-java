@@ -114,7 +114,6 @@ internal val toolBase: Artifact by lazy {
     }
 }
 
-
 /**
  * The Maven artifact containing the `spine-mc-java-base` module.
  */
