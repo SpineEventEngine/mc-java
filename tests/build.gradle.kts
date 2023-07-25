@@ -127,16 +127,6 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Validation.runtime,
-                    JUnit.runner,
-                    Jackson.core,
-                    Jackson.moduleKotlin,
-                    Jackson.databind,
-                    Jackson.bom,
-                    Jackson.annotations,
-                    Jackson.dataformatYaml,
-                    Spine.Logging.lib,
-                    "org.opentest4j:opentest4j:1.3.0",
-                    io.spine.internal.dependency.Asm.lib,
                 )
             }
 

@@ -34,6 +34,7 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
+import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -145,20 +146,6 @@ fun Module.forceConfigurations() {
                     Validation.runtime,
                     ProtoData.compiler,
                     ProtoData.codegenJava,
-
-                    JUnit.runner,
-                    Jackson.core,
-                    Jackson.moduleKotlin,
-                    Jackson.databind,
-                    Jackson.bom,
-                    Jackson.annotations,
-                    Jackson.dataformatYaml,
-
-                    // Transitive dependency.
-                    "org.hamcrest:hamcrest-core:2.2",
-                    "io.github.java-diff-utils:java-diff-utils:4.12",
-                    "org.opentest4j:opentest4j:1.3.0",
-                    Asm.lib,
                 )
             }
         }
