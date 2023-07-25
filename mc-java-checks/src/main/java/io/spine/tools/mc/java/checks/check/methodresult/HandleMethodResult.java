@@ -69,6 +69,7 @@ import static com.google.errorprone.bugpatterns.checkreturnvalue.Rules.mapAnnota
 import static com.google.errorprone.matchers.Matchers.allOf;
 import static com.google.errorprone.matchers.Matchers.not;
 import static com.google.errorprone.util.ASTHelpers.enclosingElements;
+import static io.spine.tools.mc.java.checks.check.methodresult.HandleMethodResult.CHECK_RETURN_VALUE;
 
 /**
  * An ErrorProne check which ensures that the values returned from methods are not
@@ -78,10 +79,17 @@ import static com.google.errorprone.util.ASTHelpers.enclosingElements;
  * The difference is that this check ignores invocations of mutating methods on message builders.
  *
  * <p>The check may be suppressed in the same ways as {@link CheckReturnValue}.
+ *
+ * @implNote This class now contains significant portions of
+ *           {@link com.google.errorprone.bugpatterns.CheckReturnValue CheckReturnValue} of which
+ *           it used to be derived before. As of ErrorProne 2.20.0, the {@code CheckReturnValue}
+ *           class no longer has a public or protected constructor, which makes it impossible to
+ *           extend it. Therefore, we had to copy some the code here, deriving from the same
+ *           abstract base class as {@code CheckReturnValue} does.
  */
 @AutoService(BugChecker.class)
 @BugPattern(
-        altNames = {"CheckReturnValue", "ResultOfMethodCallIgnored", "ReturnValueIgnored"},
+        altNames = {CHECK_RETURN_VALUE, "ResultOfMethodCallIgnored", "ReturnValueIgnored"},
         summary = HandleMethodResult.SUMMARY,
         severity = ERROR,
         linkType = NONE
@@ -90,11 +98,8 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
 
     private static final long serialVersionUID = 0L;
 
-    static final String SUMMARY =
-            "Ignored return value of method that is annotated with `@CheckReturnValue`";
-    private static final Pattern ACCESSOR_PREFIX = Pattern.compile("(set|add|put|merge|remove).+");
+    static final String CHECK_RETURN_VALUE = "CheckReturnValue";
 
-    private static final String CHECK_RETURN_VALUE = "CheckReturnValue";
     private static final String CAN_IGNORE_RETURN_VALUE = "CanIgnoreReturnValue";
 
     private static final String CHECK_ALL_CONSTRUCTORS = "CheckReturnValue:CheckAllConstructors";
@@ -102,37 +107,13 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
 
     private static final String CRV_PACKAGES = "CheckReturnValue:Packages";
 
-    private static final MethodInfo<VisitorState, Symbol, MethodSymbol> METHOD_INFO =
-            new MethodInfo<>() {
-                @Override
-                public Stream<Symbol> scopeMembers(
-                        RuleScope scope, MethodSymbol method, VisitorState context) {
-                    switch (scope) {
-                        case ENCLOSING_ELEMENTS:
-                            return enclosingElements(method)
-                                    .filter(s -> s instanceof ClassSymbol
-                                                 || s instanceof PackageSymbol);
-                        case GLOBAL:
-                        case METHOD:
-                            return Stream.of(method);
-                        default:
-                            break;
-                    }
-                    throw new AssertionError(scope);
-                }
+    static final String SUMMARY =
+            "Ignored return value of method that is annotated with `@CheckReturnValue`";
+    private static final Pattern ACCESSOR_PREFIX = Pattern.compile("(set|add|put|merge|remove).+");
 
-                @Override
-                public MethodKind getMethodKind(MethodSymbol method) {
-                    switch (method.getKind()) {
-                        case METHOD:
-                            return MethodKind.METHOD;
-                        case CONSTRUCTOR:
-                            return MethodKind.CONSTRUCTOR;
-                        default:
-                            return MethodKind.OTHER;
-                    }
-                }
-            };
+
+    private static final MethodInfo<VisitorState, Symbol, MethodSymbol> METHOD_INFO =
+            new MethodWithResult();
 
     @SuppressWarnings("NonSerializableFieldInSerializableClass")
     private final ResultUsePolicyEvaluator<VisitorState, Symbol, MethodSymbol> evaluator;
@@ -163,13 +144,10 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
         flags.getList(CRV_PACKAGES)
              .ifPresent(packagePatterns -> builder.addRule(
                      PackagesRule.fromPatterns(packagePatterns)));
-        this.evaluator = builder
-                .addRule(
-                        globalDefault(
-                                defaultPolicy(flags, CHECK_ALL_METHODS),
-                                defaultPolicy(flags, CHECK_ALL_CONSTRUCTORS))
-                )
-                .build();
+        this.evaluator = builder.addRule(
+            globalDefault(defaultPolicy(flags, CHECK_ALL_METHODS),
+                          defaultPolicy(flags, CHECK_ALL_CONSTRUCTORS))
+        ).build();
     }
 
     @Override
@@ -204,5 +182,39 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
 
     private static Optional<ResultUsePolicy> defaultPolicy(ErrorProneFlags flags, String flag) {
         return flags.getBoolean(flag).map(check -> check ? EXPECTED : OPTIONAL);
+    }
+
+    private static class MethodWithResult
+            implements MethodInfo<VisitorState, Symbol, MethodSymbol> {
+
+        @Override
+        public Stream<Symbol> scopeMembers(
+                RuleScope scope, MethodSymbol method, VisitorState context) {
+            switch (scope) {
+                case ENCLOSING_ELEMENTS:
+                    return enclosingElements(method)
+                            .filter(s -> s instanceof ClassSymbol
+                                         || s instanceof PackageSymbol);
+                case GLOBAL:
+                case METHOD:
+                    return Stream.of(method);
+                default:
+                    break;
+            }
+            throw new AssertionError(scope);
+        }
+
+        @Override
+        @SuppressWarnings("EnumSwitchStatementWhichMissesCases") // fallback to
+        public MethodKind getMethodKind(MethodSymbol method) {
+            switch (method.getKind()) {
+                case METHOD:
+                    return MethodKind.METHOD;
+                case CONSTRUCTOR:
+                    return MethodKind.CONSTRUCTOR;
+                default:
+                    return MethodKind.OTHER;
+            }
+        }
     }
 }
