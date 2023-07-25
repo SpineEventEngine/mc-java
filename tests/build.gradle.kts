@@ -68,7 +68,6 @@ buildscript {
     with(configurations) {
         doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
-        val jackson = io.spine.internal.dependency.Jackson
         all {
             resolutionStrategy {
                 force(
@@ -76,14 +75,8 @@ buildscript {
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
-                    spine.logging,
+                    io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Validation.runtime,
-                    jackson.core,
-                    jackson.moduleKotlin,
-                    jackson.databind,
-                    jackson.bom,
-                    jackson.annotations,
-                    jackson.dataformatYaml,
                 )
             }
         }
@@ -126,6 +119,7 @@ allprojects {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
+                    Spine.Logging.lib,
                     Validation.runtime,
                 )
             }
