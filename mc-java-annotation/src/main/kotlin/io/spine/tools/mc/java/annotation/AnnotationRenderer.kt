@@ -52,10 +52,11 @@ public class AnnotationRenderer: JavaRenderer() {
 
     override fun render(sources: SourceFileSet) {
         this.sources = sources
-
         // See https://github.com/SpineEventEngine/ProtoData/issues/150
-        if (!sources.outputRoot.endsWith("java")) {
+        val outputRoot = sources.outputRoot
+        if (!(outputRoot.endsWith("java") || outputRoot.endsWith("grpc"))) {
             return
         }
+        // TODO:2023-07-30:alexander.yevsyukov: Support rendering of annotations.
     }
 }
