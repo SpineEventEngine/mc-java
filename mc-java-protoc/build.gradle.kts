@@ -52,9 +52,6 @@ tasks.jar {
     //   https://docs.gradle.org/current/userguide/userguide_single.html?&_ga=2.136886832.1455643218.1627825963-149591519.1626535262#sec:link_output_dir_to_input_files
     //
     dependsOn(
-        project(":mc-java-validation").tasks.jar
-    )
-    dependsOn(
         project(":mc-java-base").tasks.jar
     )
 
