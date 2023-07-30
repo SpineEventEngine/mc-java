@@ -81,12 +81,12 @@ public final class ValidationGen extends CodeGenerator {
      * Generates the validation code for several insertion points of the given {@code Message} type.
      *
      * <p>The returned compiler output explicitly marks the given type with
-     * the {@link MessageWithConstraints} interface and includes the code pieces to comply with
+     * the {@link ValidatableMessage} interface and includes the code pieces to comply with
      * its contract, such as the implementation of {@code MessageWithConstraints} API and
      * the nested {@code Validator} type.
      *
      * <p>In case the processed type is a {@linkplain MessageType#isSignal() signal},
-     * the {@link MessageWithConstraints} marker interface is <em>not</em> appended. This is so,
+     * the {@link ValidatableMessage} marker interface is <em>not</em> appended. This is so,
      * because the contract of signals (e.g. {@link EventMessage} contract) already implies
      * them being a constrained message.
      *
