@@ -28,21 +28,37 @@ package io.spine.tools.mc.annotation
 
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
+import io.spine.server.BoundedContextBuilder
+import io.spine.server.entity.Entity
 import kotlin.reflect.KClass
 
+/**
+ * A ProtoData plugin which expose
+ */
 public class ApiAnnotationsPlugin : Plugin {
 
-    override fun viewRepositories(): Set<ViewRepository<*, *, *>> = buildSet {
-        addDefault(AnnotatedMessageView::class)
-        addDefault(AnnotatedServiceView::class)
-        addDefault(AnnotatedEnumView::class)
+    override fun views(): Set<Class<out View<*, *, *>>> = buildSet {
+        add(AnnotatedMessageView::class)
+        add(AnnotatedServiceView::class)
+        add(AnnotatedEnumView::class)
+    }
+
+    override fun extend(context: BoundedContextBuilder) {
+        context.add(FileOptionsProcess::class)
     }
 }
 
 /**
- * Adds the default `ViewRepository` instance for the specified view class to this `MutableSet`.
+ * Adds the specified view class to this `MutableSet`.
  */
-public fun MutableSet<ViewRepository<*, *, *>>.addDefault(view: KClass<out View<*, *, *>>) {
-    add(ViewRepository.default(view.java))
+public fun MutableSet<Class<out View<*,  *, *>>>.add(view: KClass<out View<*, *, *>>) {
+    add(view.java)
+}
+
+/**
+ * Adds specified entity class to this `BoundedContextBuilder`.
+ */
+public inline fun <reified I, reified E : Entity<I, *>>
+        BoundedContextBuilder.add(entity: KClass<out E>) {
+    add(entity.java)
 }
