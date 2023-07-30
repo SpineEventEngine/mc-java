@@ -81,9 +81,7 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = subprojects.map { it.name }
-        // Use the `mc-java-validation` module only for testing.
-        .filter { !it.contains("validation") }.toSet()
+    modules = subprojects.map { it.name }.toSet()
     destinations = PublishingRepos.run {
         setOf(
             cloudRepo,

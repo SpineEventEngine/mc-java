@@ -36,6 +36,7 @@ dependencies {
 
     implementation(Spine.toolBase)
     implementation(project(":mc-java-base"))
+    implementation(project(":mc-java-validation"))
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
@@ -50,6 +51,9 @@ tasks.jar {
     //   https://discuss.gradle.org/t/gradle-7-0-seems-to-take-an-overzealous-approach-to-inter-task-dependencies/39656/4
     //   https://docs.gradle.org/current/userguide/userguide_single.html?&_ga=2.136886832.1455643218.1627825963-149591519.1626535262#sec:link_output_dir_to_input_files
     //
+    dependsOn(
+        project(":mc-java-validation").tasks.jar
+    )
     dependsOn(
         project(":mc-java-base").tasks.jar
     )
