@@ -24,43 +24,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package io.spine.tools.mc.annotation
 
-import io.spine.base.EventMessage
-import io.spine.core.External
-import io.spine.core.Subscribe
-import io.spine.protodata.FilePath
-import io.spine.protodata.event.FileEntered
-import io.spine.protodata.event.FileExited
-import io.spine.server.entity.alter
-import io.spine.server.event.React
-import io.spine.server.procman.ProcessManager
+import com.google.protobuf.BoolValue
+import io.spine.protobuf.pack
+import io.spine.protodata.Option
+import io.spine.protodata.option
 
-internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
+internal object ApiOptions {
 
-    /**
-     * Adds the API options from the file to the state of this process.
-     */
-    @Subscribe
-    fun on(@External e: FileEntered) = alter {
-        file = e.file.path
-        e.file.optionList
-            .filter { ApiOptions.contains(it) }
-            .forEach(::addOption)
+    val internalAll: Option by lazy {
+        option("internal_all")
     }
 
-    @React
-    fun on(@External e: FileExited): Iterable<EventMessage> {
-        if (state().optionList.isEmpty()) {
-            // There are no API-related options in this file.
-            return emptyList()
-        }
-
-        // TODO: Iterate through all the types present in this file via `ProtobufSourceFile` and
-        //  emit events for each of them.
-        return emptyList()
+    val spiAll: Option by lazy {
+        option("SPI_all")
     }
 
+    val experimentalApi: Option by lazy {
+        option("experimental_all")
+    }
+
+    val betaAll: Option by lazy {
+        option("beta_all")
+    }
+
+    val values: List<Option> by lazy {
+        listOf(internalAll, spiAll, experimentalApi, betaAll)
+    }
+}
+
+internal fun ApiOptions.contains(option: Option): Boolean =
+    values.contains(option)
+
+/**
+ * Creates an option with the given name and `true` value.
+ */
+private fun option(name: String): Option = option {
+    this.name = name
+    value = BoolValue.of(true).pack()
 }
