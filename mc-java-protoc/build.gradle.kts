@@ -27,8 +27,6 @@
 import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.JavaX
 import io.spine.internal.dependency.Spine
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 dependencies {
     compileOnly(gradleApi())
@@ -36,7 +34,6 @@ dependencies {
 
     implementation(Spine.toolBase)
     implementation(project(":mc-java-base"))
-    implementation(project(":mc-java-validation"))
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
