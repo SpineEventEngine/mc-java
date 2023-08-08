@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.validation.gen;
 
 import com.squareup.javapoet.CodeBlock;
 import io.spine.code.proto.FieldDeclaration;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 
 import java.util.function.Function;
 
@@ -39,7 +39,7 @@ import static java.lang.System.lineSeparator;
 /**
  * Conditional code which checks a validation constraint.
  */
-final class ConstraintCode implements Logging {
+final class ConstraintCode implements WithLogging {
 
     private static final CodeBlock EMPTY = CodeBlock.of("");
     private final Function<FieldAccess, CodeBlock> declarations;
@@ -113,7 +113,8 @@ final class ConstraintCode implements Logging {
     private CodeBlock
     evaluateConstantCondition(BooleanExpression condition, CodeBlock onViolation) {
         if (condition.isConstantTrue()) {
-            _warn().log("Violation is always produced as validation check is a constant.");
+            logger().atWarning().log(() ->
+                 "Violation is always produced as validation check is a constant.");
             return onViolation;
         } else {
             return empty();
@@ -125,14 +126,14 @@ final class ConstraintCode implements Logging {
      *
      * @return new builder
      */
-    public static Builder forField(FieldDeclaration field) {
+    static Builder forField(FieldDeclaration field) {
         return new Builder(field);
     }
 
     /**
      * A builder for the {@code ConstraintCode} instances.
      */
-    public static final class Builder {
+    static final class Builder {
 
         private final FieldDeclaration field;
         private MessageAccess messageAccess;
@@ -147,7 +148,7 @@ final class ConstraintCode implements Logging {
             this.field = checkNotNull(field);
         }
 
-        public Builder messageAccess(MessageAccess messageAccess) {
+        Builder messageAccess(MessageAccess messageAccess) {
             this.messageAccess = checkNotNull(messageAccess);
             return this;
         }
@@ -158,22 +159,22 @@ final class ConstraintCode implements Logging {
          * <p>The result of the preliminary code may be used by the condition and violation
          * expressions.
          */
-        public Builder preparingDeclarations(Function<FieldAccess, CodeBlock> declarations) {
+        Builder preparingDeclarations(Function<FieldAccess, CodeBlock> declarations) {
             this.declarations = checkNotNull(declarations);
             return this;
         }
 
-        public Builder conditionCheck(Check conditionCheck) {
+        Builder conditionCheck(Check conditionCheck) {
             this.conditionCheck = checkNotNull(conditionCheck);
             return this;
         }
 
-        public Builder createViolation(CreateViolation createViolation) {
+        Builder createViolation(CreateViolation createViolation) {
             this.createViolation = checkNotNull(createViolation);
             return this;
         }
 
-        public Builder onViolation(AccumulateViolations onViolation) {
+        Builder onViolation(AccumulateViolations onViolation) {
             this.onViolation = checkNotNull(onViolation);
             return this;
         }
@@ -181,7 +182,7 @@ final class ConstraintCode implements Logging {
         /**
          * Configures the built code to validate the field as a whole, even if it's a collection.
          */
-        public Builder validateAsWhole() {
+        Builder validateAsWhole() {
             this.forceSingular = true;
             return this;
         }
@@ -189,7 +190,7 @@ final class ConstraintCode implements Logging {
         /**
          * Configures the built code to run validation only on non-default values of the field.
          */
-        public Builder validateOnlyIfSet() {
+        Builder validateOnlyIfSet() {
             this.onlyIfSet = true;
             return this;
         }

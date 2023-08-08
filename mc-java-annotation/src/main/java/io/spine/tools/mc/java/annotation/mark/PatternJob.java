@@ -27,7 +27,9 @@
 package io.spine.tools.mc.java.annotation.mark;
 
 import io.spine.code.java.ClassName;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
+
+import static java.lang.String.format;
 
 /**
  * An annotation {@link Job} which covers generated Java classes which have a
@@ -35,7 +37,7 @@ import io.spine.logging.Logging;
  *
  * <p>For example, all classes ending with {@code OrBuilder}.
  */
-final class PatternJob extends AnnotationJob implements Logging {
+final class PatternJob extends AnnotationJob implements WithLogging {
 
     private final ClassNamePattern pattern;
 
@@ -48,9 +50,10 @@ final class PatternJob extends AnnotationJob implements Logging {
     public void execute(AnnotatorFactory factory) {
         var annotation = annotation();
         var pattern = this.pattern;
-        _debug().log("Annotating classes matching `%s` with `%s`.", pattern, annotation);
+        logger().atDebug().log(() -> format(
+            "Annotating classes matching `%s` with `%s`.", pattern, annotation));
         factory.createPatternAnnotator(annotation, pattern)
                .annotate();
-        _debug().log("Pattern `%s` processed.", pattern);
+        logger().atDebug().log(() -> format("Pattern `%s` processed.", pattern));
     }
 }

@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.checks.gradle;
 
 import io.spine.tools.mc.checks.Severity;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -52,7 +53,7 @@ public class McJavaChecksExtension {
                .create(name(), McJavaChecksExtension.class);
     }
 
-    public static Severity getUseValidatingBuilderSeverity(Project project) {
+    public static @Nullable Severity getUseValidatingBuilderSeverity(Project project) {
         var extension = (McJavaChecksExtension) project.getExtensions().getByName(name());
         return extension.useValidatingBuilderSeverity;
     }

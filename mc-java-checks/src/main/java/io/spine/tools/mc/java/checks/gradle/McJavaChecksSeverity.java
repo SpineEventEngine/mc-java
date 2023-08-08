@@ -27,15 +27,18 @@
 package io.spine.tools.mc.java.checks.gradle;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 import io.spine.tools.mc.checks.Severity;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.invocation.Gradle;
 
+import java.util.Optional;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.mc.java.checks.gradle.McJavaChecksExtension.getUseValidatingBuilderSeverity;
+import static java.lang.String.format;
 
 /**
  * The helper for the Spine-custom Error Prone checks configuration of the {@link Project}.
@@ -43,7 +46,7 @@ import static io.spine.tools.mc.java.checks.gradle.McJavaChecksExtension.getUseV
  * <p>This class cannot configure the check severities without the Error Prone plugin applied to
  * the project.
  */
-public final class McJavaChecksSeverity implements Logging {
+public final class McJavaChecksSeverity implements WithLogging {
 
     static final String ERROR_PRONE_PLUGIN_ID = "net.ltgt.errorprone";
 
@@ -85,8 +88,9 @@ public final class McJavaChecksSeverity implements Logging {
      */
     private void configureCheckSeverity() {
         if (!hasErrorPronePlugin()) {
-            _error().log("Cannot configure Spine Java Checks severity as the Error Prone " +
-                                 "plugin is not applied to the project `%s`.", project.getName());
+            logger().atError().log(() -> format(
+                    "Cannot configure Spine Java Checks severity as the Error Prone " +
+                                 "plugin is not applied to the project `%s`.", project.getName()));
             return;
         }
         configureSeverities();
@@ -107,14 +111,13 @@ public final class McJavaChecksSeverity implements Logging {
      * Configures default level of check severities.
      */
     private void configureSeverities() {
-        var severity = getUseValidatingBuilderSeverity(project);
-        if (severity == null) {
-            severity = Severity.WARN;
-        }
-        _debug().log(
+        final var severity =
+                Optional.ofNullable(getUseValidatingBuilderSeverity(project))
+                        .orElse(Severity.WARN);
+        logger().atDebug().log(() -> format(
                 "Setting `UseValidatingBuilder` checker severity to `%s` for the project `%s`.",
                 severity.name(), project.getName()
-        );
+        ));
 
         // String severityArg = "-Xep:UseValidatingBuilder:" + severity.name();
         ErrorProneOptionsAccess

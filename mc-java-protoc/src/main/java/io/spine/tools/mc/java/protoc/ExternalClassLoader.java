@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.protoc;
 
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 import io.spine.tools.java.code.Classpath;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 
@@ -39,6 +39,7 @@ import java.net.URLClassLoader;
 
 import static io.spine.util.Exceptions.newIllegalArgumentException;
 import static io.spine.util.Preconditions2.checkNotEmptyOrBlank;
+import static java.lang.String.format;
 
 /**
  * A utility for instantiating a particular class from its {@linkplain FullyQualifiedName FQN}
@@ -47,7 +48,7 @@ import static io.spine.util.Preconditions2.checkNotEmptyOrBlank;
  * @param <T>
  *         the loaded class
  */
-public final class ExternalClassLoader<T> implements Logging {
+public final class ExternalClassLoader<T> implements WithLogging {
 
     private final ClassLoader classLoader;
     private final Class<T> loadedClass;
@@ -73,8 +74,8 @@ public final class ExternalClassLoader<T> implements Logging {
             return instance;
         } catch (InstantiationException | IllegalAccessException
                 | NoSuchMethodException | InvocationTargetException e) {
-            _error().withCause(e)
-                    .log("Unable to instantiate the class `%s`.", fqn);
+            logger().atError().withCause(e).log(() -> format(
+                    "Unable to instantiate the class `%s`.", fqn));
             throw new ClassInstantiationException(fqn, e);
         }
     }
@@ -85,7 +86,8 @@ public final class ExternalClassLoader<T> implements Logging {
         if (loadedClass.isAssignableFrom(factory)) {
             return (Class<T>) factory;
         }
-        _error().log("Class `%s` does not implement `%s`.", fqn, loadedClass.getName());
+        logger().atError().log(() -> format(
+                "Class `%s` does not implement `%s`.", fqn, loadedClass.getName()));
         throw new ClassInstantiationException(fqn);
     }
 
@@ -94,8 +96,8 @@ public final class ExternalClassLoader<T> implements Logging {
             var factory = classLoader.loadClass(fqn);
             return factory;
         } catch (ClassNotFoundException e) {
-            _error().withCause(e)
-                    .log("Unable to resolve the class `%s`.", fqn);
+            logger().atError().withCause(e).log(() -> format(
+                    "Unable to resolve the class `%s`.", fqn));
             throw new ClassInstantiationException(fqn, e);
         }
     }

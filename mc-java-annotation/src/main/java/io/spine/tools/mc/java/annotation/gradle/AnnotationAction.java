@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.annotation.gradle;
 
-import io.spine.logging.Logging;
 import io.spine.tools.code.SourceSetName;
 import io.spine.tools.mc.java.annotation.mark.AnnotatorFactory;
 import io.spine.tools.mc.java.annotation.mark.DefaultAnnotatorFactory;
@@ -60,7 +59,7 @@ import static io.spine.tools.mc.java.gradle.McJavaOptions.getInternalMethodNames
 /**
  * A task action which annotates the generated code.
  */
-final class AnnotationAction implements Action<Task>, Logging {
+final class AnnotationAction implements Action<Task> {
 
     private final SourceSetName sourceSetName;
     private final SourceSet sourceSet;
