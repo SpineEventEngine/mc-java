@@ -85,10 +85,12 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
         result.forEach { it.checkConventions() }
 
-        logger.atDebug().log {
-            val nl = System.lineSeparator()
-            val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
-            "Found ${result.size} rejection files:$nl$fileList"
+        if (result.isNotEmpty()) {
+            logger.atDebug().log {
+                val nl = System.lineSeparator()
+                val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
+                "Found ${result.size} rejection files:$nl$fileList"
+            }
         }
 
         return result
