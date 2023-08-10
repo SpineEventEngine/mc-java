@@ -145,6 +145,7 @@ fun Module.forceConfigurations() {
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
                     ProtoData.compiler,
+                    ProtoData.api,
                     ProtoData.codegenJava,
                 )
             }
