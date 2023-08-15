@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc.message;
+package io.spine.tools.mc.java.validation.gen;
 
 import com.google.common.collect.ImmutableSet;
 import io.spine.base.EventMessage;
@@ -35,7 +35,7 @@ import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.InsertionPoint;
 import io.spine.tools.mc.java.protoc.NoOpGenerator;
 import io.spine.tools.mc.java.protoc.ProtocPluginFiles;
-import io.spine.tools.mc.java.validation.gen.ValidateSpecs;
+import io.spine.tools.mc.java.protoc.message.ExistingInterface;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 import io.spine.validate.ValidatableMessage;
@@ -81,12 +81,12 @@ public final class ValidationGen extends CodeGenerator {
      * Generates the validation code for several insertion points of the given {@code Message} type.
      *
      * <p>The returned compiler output explicitly marks the given type with
-     * the {@link MessageWithConstraints} interface and includes the code pieces to comply with
+     * the {@link ValidatableMessage} interface and includes the code pieces to comply with
      * its contract, such as the implementation of {@code MessageWithConstraints} API and
      * the nested {@code Validator} type.
      *
      * <p>In case the processed type is a {@linkplain MessageType#isSignal() signal},
-     * the {@link MessageWithConstraints} marker interface is <em>not</em> appended. This is so,
+     * the {@link ValidatableMessage} marker interface is <em>not</em> appended. This is so,
      * because the contract of signals (e.g. {@link EventMessage} contract) already implies
      * them being a constrained message.
      *

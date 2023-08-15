@@ -35,6 +35,7 @@ package io.spine.internal.dependency
 object ProtoData {
     const val version = "0.9.11"
     const val group = "io.spine.protodata"
+    const val api = "$group:protodata-api:$version"
     const val compiler = "$group:protodata-compiler:$version"
 
     const val codegenJava = "io.spine.protodata:protodata-codegen-java:$version"

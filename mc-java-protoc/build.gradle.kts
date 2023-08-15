@@ -27,8 +27,6 @@
 import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.JavaX
 import io.spine.internal.dependency.Spine
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 dependencies {
     compileOnly(gradleApi())
@@ -36,7 +34,6 @@ dependencies {
 
     implementation(Spine.toolBase)
     implementation(project(":mc-java-base"))
-    implementation(project(":mc-java-validation"))
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
@@ -51,9 +48,6 @@ tasks.jar {
     //   https://discuss.gradle.org/t/gradle-7-0-seems-to-take-an-overzealous-approach-to-inter-task-dependencies/39656/4
     //   https://docs.gradle.org/current/userguide/userguide_single.html?&_ga=2.136886832.1455643218.1627825963-149591519.1626535262#sec:link_output_dir_to_input_files
     //
-    dependsOn(
-        project(":mc-java-validation").tasks.jar
-    )
     dependsOn(
         project(":mc-java-base").tasks.jar
     )
@@ -74,7 +68,7 @@ tasks.jar {
     // We should provide a classifier or else Protobuf Gradle plugin will substitute it with
     // an OS-specific one.
     archiveClassifier.set("exe")
-    setZip64(true)  /* The archive has way too many items. So using the Zip64 mode. */
+    isZip64 = true  /* The archive has way too many items. So using the Zip64 mode. */
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
