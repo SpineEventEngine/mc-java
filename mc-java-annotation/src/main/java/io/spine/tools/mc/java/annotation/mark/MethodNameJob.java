@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,15 @@ package io.spine.tools.mc.java.annotation.mark;
 
 import com.google.common.collect.ImmutableSet;
 import io.spine.code.java.ClassName;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 
 /**
  * An annotation {@link Job} which annotates methods matching certain naming patterns.
  */
-final class MethodNameJob extends AnnotationJob implements Logging {
+final class MethodNameJob extends AnnotationJob implements WithLogging {
 
     private final ImmutableSet<MethodPattern> patterns;
 
@@ -47,7 +48,8 @@ final class MethodNameJob extends AnnotationJob implements Logging {
     @Override
     public void execute(AnnotatorFactory factory) {
         var annotation = annotation();
-        _debug().log("Annotating methods matching patterns `%s` with `%s`.", patterns, annotation);
+        logger().atDebug().log(() -> format(
+                "Annotating methods matching patterns `%s` with `%s`.", patterns, annotation));
         factory.createMethodAnnotator(annotation, patterns)
                .annotate();
     }

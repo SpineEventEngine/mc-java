@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.checks.gradle;
 
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 import io.spine.tools.mc.java.checks.Artifacts;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
@@ -46,7 +46,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Adds a {@code spine-mc-java-checks} dependency to the given project {@link Configuration}.
  */
-public final class McJavaChecksDependency implements Logging {
+public final class McJavaChecksDependency implements WithLogging {
 
     /** The configuration to be extended. */
     private final Configuration configuration;
@@ -101,7 +101,8 @@ public final class McJavaChecksDependency implements Logging {
      * Adds the dependency to the project configuration.
      */
     private void addDependencyTo(Configuration cfg) {
-        _debug().log("Adding a dependency on `%s` to the `%s` configuration.", mcJavaChecks(), cfg);
+        logger().atDebug().log(() -> format(
+            "Adding a dependency on `%s` to the `%s` configuration.", mcJavaChecks(), cfg));
         var dependencies = cfg.getDependencies();
         dependencies.add(dependency);
     }
@@ -151,12 +152,11 @@ public final class McJavaChecksDependency implements Logging {
 
         private void logUnresolved() {
             var problemReport = toErrorMessage(requireNonNull(unresolved));
-            _warn().log(
+            logger().atWarning().log(() -> format(
                     "Unable to add a dependency on `%s` to the configuration `%s` because some " +
                             "dependencies could not be resolved: " +
                             "%s.",
-                    mcJavaChecks(), configuration.getName(), problemReport
-            );
+                    mcJavaChecks(), configuration.getName(), problemReport));
         }
 
         private String toErrorMessage(UnresolvedDependencyResult entry) {
