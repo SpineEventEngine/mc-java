@@ -906,7 +906,7 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:28 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:18 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -1686,7 +1686,7 @@ This report was generated on **Tue Aug 15 17:50:28 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:31 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:19 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -2466,7 +2466,7 @@ This report was generated on **Tue Aug 15 17:50:31 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:31 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:19 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -3163,7 +3163,7 @@ This report was generated on **Tue Aug 15 17:50:31 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:19 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -4040,7 +4040,7 @@ This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:20 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -4812,7 +4812,7 @@ This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:20 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -5546,7 +5546,7 @@ This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:20 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -6318,7 +6318,7 @@ This report was generated on **Tue Aug 15 17:50:32 WEST 2023** using [Gradle-Lic
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:20 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -6326,6 +6326,39 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
 # Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.167`
 
 ## Runtime
+1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.15.2.**No license information found**
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-annotations. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson](https://github.com/FasterXML/jackson)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-core. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-core](https://github.com/FasterXML/jackson-core)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-databind. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson](https://github.com/FasterXML/jackson)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.dataformat. **Name** : jackson-dataformat-yaml. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-dataformats-text](https://github.com/FasterXML/jackson-dataformats-text)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.module. **Name** : jackson-module-kotlin. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-module-kotlin](https://github.com/FasterXML/jackson-module-kotlin)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.android. **Name** : annotations. **Version** : 4.1.1.4.
+     * **Project URL:** [http://source.android.com/](http://source.android.com/)
+     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+1.  **Group** : com.google.api.grpc. **Name** : proto-google-common-protos. **Version** : 2.9.0.
+     * **Project URL:** [https://github.com/googleapis/java-iam/proto-google-common-protos](https://github.com/googleapis/java-iam/proto-google-common-protos)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
      * **Project URL:** [http://findbugs.sourceforge.net/](http://findbugs.sourceforge.net/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -6341,6 +6374,14 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
 1.  **Group** : com.google.errorprone. **Name** : error_prone_type_annotations. **Version** : 2.20.0.
      * **Project URL:** [https://errorprone.info/error_prone_type_annotations](https://errorprone.info/error_prone_type_annotations)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.flogger. **Name** : flogger. **Version** : 0.7.4.
+     * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
+     * **License:** [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.flogger. **Name** : flogger-system-backend. **Version** : 0.7.4.
+     * **Project URL:** [https://github.com/google/flogger](https://github.com/google/flogger)
+     * **License:** [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.guava. **Name** : failureaccess. **Version** : 1.0.1.
      * **Project URL:** [https://github.com/google/guava/](https://github.com/google/guava/)
@@ -6370,14 +6411,55 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **Project URL:** [http://github.com/square/javapoet/](http://github.com/square/javapoet/)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.perfmark. **Name** : perfmark-api. **Version** : 0.25.0.
+     * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.spine.protodata. **Name** : protodata-api. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.99.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.99.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
 
+1.  **Group** : org.checkerframework. **Name** : checker-compat-qual. **Version** : 2.5.3.
+     * **Project URL:** [https://checkerframework.org](https://checkerframework.org)
+     * **License:** [GNU General Public License, version 2 (GPL2), with the classpath exception](http://www.gnu.org/software/classpath/license.html)
+     * **License:** [The MIT License](http://opensource.org/licenses/MIT)
+
 1.  **Group** : org.checkerframework. **Name** : checker-qual. **Version** : 3.36.0.
      * **Project URL:** [https://checkerframework.org/](https://checkerframework.org/)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
+
+1.  **Group** : org.codehaus.mojo. **Name** : animal-sniffer-annotations. **Version** : 1.21.
+     * **License:** [MIT license](http://www.opensource.org/licenses/mit-license.php)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jboss.forge.roaster. **Name** : roaster-api. **Version** : 2.28.0.Final.
      * **License:** [Eclipse Public License version 1.0](http://www.eclipse.org/legal/epl-v10.html)
@@ -6416,6 +6498,10 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **License:** [BSD-3-Clause](https://asm.ow2.io/license.html)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.yaml. **Name** : snakeyaml. **Version** : 2.0.
+     * **Project URL:** [https://bitbucket.org/snakeyaml/snakeyaml](https://bitbucket.org/snakeyaml/snakeyaml)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 ## Compile, tests, and tooling
 1.  **Group** : aopalliance. **Name** : aopalliance. **Version** : 1.0.
      * **Project URL:** [http://aopalliance.sourceforge.net](http://aopalliance.sourceforge.net)
@@ -6429,6 +6515,31 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://jcommander.org](https://jcommander.org)
      * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.15.2.**No license information found**
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-annotations. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson](https://github.com/FasterXML/jackson)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-core. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-core](https://github.com/FasterXML/jackson-core)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.core. **Name** : jackson-databind. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson](https://github.com/FasterXML/jackson)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.dataformat. **Name** : jackson-dataformat-yaml. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-dataformats-text](https://github.com/FasterXML/jackson-dataformats-text)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.fasterxml.jackson.module. **Name** : jackson-module-kotlin. **Version** : 2.15.2.
+     * **Project URL:** [https://github.com/FasterXML/jackson-module-kotlin](https://github.com/FasterXML/jackson-module-kotlin)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.github.ben-manes.caffeine. **Name** : caffeine. **Version** : 3.0.5.
      * **Project URL:** [https://github.com/ben-manes/caffeine](https://github.com/ben-manes/caffeine)
      * **License:** [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -6436,6 +6547,14 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
 1.  **Group** : com.github.kevinstern. **Name** : software-and-algorithms. **Version** : 1.0.
      * **Project URL:** [https://www.github.com/KevinStern/software-and-algorithms](https://www.github.com/KevinStern/software-and-algorithms)
      * **License:** [MIT License](http://www.opensource.org/licenses/mit-license.php)
+
+1.  **Group** : com.google.android. **Name** : annotations. **Version** : 4.1.1.4.
+     * **Project URL:** [http://source.android.com/](http://source.android.com/)
+     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+1.  **Group** : com.google.api.grpc. **Name** : proto-google-common-protos. **Version** : 2.9.0.
+     * **Project URL:** [https://github.com/googleapis/java-iam/proto-google-common-protos](https://github.com/googleapis/java-iam/proto-google-common-protos)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.auto. **Name** : auto-common. **Version** : 1.2.2.
      * **Project URL:** [https://github.com/google/auto/tree/main/common](https://github.com/google/auto/tree/main/common)
@@ -6673,6 +6792,30 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://detekt.dev](https://detekt.dev)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : io.grpc. **Name** : grpc-api. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-context. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-core. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-protobuf. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-protobuf-lite. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.grpc. **Name** : grpc-stub. **Version** : 1.52.1.
+     * **Project URL:** [https://github.com/grpc/grpc-java](https://github.com/grpc/grpc-java)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api. **Version** : 5.6.2.**No license information found**
 1.  **Group** : io.kotest. **Name** : kotest-assertions-api-jvm. **Version** : 5.6.2.
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
@@ -6693,6 +6836,14 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/kotest/kotest](https://github.com/kotest/kotest)
      * **License:** [Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
+1.  **Group** : io.perfmark. **Name** : perfmark-api. **Version** : 0.25.0.
+     * **Project URL:** [https://github.com/perfmark/perfmark](https://github.com/perfmark/perfmark)
+     * **License:** [Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+1.  **Group** : io.spine.protodata. **Name** : protodata-api. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-codegen-java. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.protodata. **Name** : protodata-compiler. **Version** : 0.9.11.**No license information found**
+1.  **Group** : io.spine.validation. **Name** : spine-validation-configuration. **Version** : 2.0.0-SNAPSHOT.99.**No license information found**
 1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.99.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
@@ -6758,6 +6909,10 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
 1.  **Group** : org.checkerframework. **Name** : checker-qual. **Version** : 3.36.0.
      * **Project URL:** [https://checkerframework.org/](https://checkerframework.org/)
      * **License:** [The MIT License](http://opensource.org/licenses/MIT)
+
+1.  **Group** : org.codehaus.mojo. **Name** : animal-sniffer-annotations. **Version** : 1.21.
+     * **License:** [MIT license](http://www.opensource.org/licenses/mit-license.php)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.hamcrest. **Name** : hamcrest. **Version** : 2.2.
      * **Project URL:** [http://hamcrest.org/JavaHamcrest/](http://hamcrest.org/JavaHamcrest/)
@@ -6928,7 +7083,11 @@ This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-Lic
      * **Project URL:** [https://github.com/xmlresolver/xmlresolver](https://github.com/xmlresolver/xmlresolver)
      * **License:** [Apache License version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
+1.  **Group** : org.yaml. **Name** : snakeyaml. **Version** : 2.0.
+     * **Project URL:** [https://bitbucket.org/snakeyaml/snakeyaml](https://bitbucket.org/snakeyaml/snakeyaml)
+     * **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Tue Aug 15 17:50:33 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Tue Aug 15 18:30:21 WEST 2023** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
