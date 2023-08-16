@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,16 @@
 package io.spine.tools.mc.java.annotation.mark;
 
 import io.spine.code.java.ClassName;
-import io.spine.logging.Logging;
+import io.spine.logging.WithLogging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 
 /**
  * An annotation {@link Job} which covers Java sources generated from Protobuf
  * marked with a certain {@link ApiOption}.
  */
-final class OptionJob extends AnnotationJob implements Logging {
+final class OptionJob extends AnnotationJob implements WithLogging {
 
     private final ApiOption protobufOption;
 
@@ -48,27 +49,26 @@ final class OptionJob extends AnnotationJob implements Logging {
     // See: https://github.com/SpineEventEngine/base/issues/612
     @Override
     public void execute(AnnotatorFactory factory) {
-        var debug = _debug();
         var annotation = annotation();
         var option = protobufOption;
-        debug.log("Annotating sources marked as `%s` with `%s`.",
-                  option, annotation);
-        debug.log("Annotating by the file option.");
+        logger().atDebug().log(() -> format("Annotating sources marked as `%s` with `%s`.",
+                  option, annotation));
+        logger().atDebug().log(() -> "Annotating by the file option.");
         factory.createFileAnnotator(annotation, option)
                .annotate();
-        debug.log("Annotating by the message option.");
+        logger().atDebug().log(() -> "Annotating by the message option.");
         factory.createMessageAnnotator(annotation, option)
                .annotate();
         if (option.supportsServices()) {
-            debug.log("Annotating by the service option.");
+            logger().atDebug().log(() -> "Annotating by the service option.");
             factory.createServiceAnnotator(annotation, option)
                    .annotate();
         }
         if (option.supportsFields()) {
-            debug.log("Annotating by the field option.");
+            logger().atDebug().log(() -> "Annotating by the field option.");
             factory.createFieldAnnotator(annotation, option)
                    .annotate();
         }
-        debug.log("Option `%s` processed.", option);
+        logger().atDebug().log(() -> format("Option `%s` processed.", option));
     }
 }

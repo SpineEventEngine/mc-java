@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.annotation.gradle;
 
-import io.spine.logging.Logging;
 import io.spine.tools.code.SourceSetName;
 import io.spine.tools.mc.java.annotation.mark.AnnotatorFactory;
 import io.spine.tools.mc.java.annotation.mark.DefaultAnnotatorFactory;
@@ -60,10 +59,11 @@ import static io.spine.tools.mc.java.gradle.McJavaOptions.getInternalMethodNames
 /**
  * A task action which annotates the generated code.
  */
-final class AnnotationAction implements Action<Task>, Logging {
+final class AnnotationAction implements Action<Task> {
 
     private final SourceSetName sourceSetName;
     private final SourceSet sourceSet;
+
     /**
      * Creates a new action instance.
      */

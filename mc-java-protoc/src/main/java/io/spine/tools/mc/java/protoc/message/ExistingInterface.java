@@ -30,8 +30,11 @@ import io.spine.code.java.ClassName;
 
 /**
  * An interface which already exists.
+ *
+ * @apiNote Temporarily exposed as {@code public} for being visible to
+ *          {@code ValidationGen} from {@code mc-java-validation} module.
  */
-final class ExistingInterface implements Interface {
+public final class ExistingInterface implements Interface {
 
     private final ClassName name;
     private final InterfaceParameters parameters;
@@ -41,7 +44,7 @@ final class ExistingInterface implements Interface {
         this.parameters = params;
     }
 
-    ExistingInterface(ClassName name) {
+    public ExistingInterface(ClassName name) {
         this(name, InterfaceParameters.empty());
     }
 

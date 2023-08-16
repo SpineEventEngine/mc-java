@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,31 @@ import io.spine.internal.dependency.JavaX
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
+// IMPORTANT: This module is deprecated and will be removed in the future.
+// It is no longer used in the production code, and is kept for historical purposes,
+// until we fully migrate to ProtoData-based validation.
+// This module is not published, and excluded from the dependencies in other modules.
+// It is still referenced in `settings.gradle.kts` to keep the project structure
+// intact, so that IDEA can pick up and index the code.
+//
+
 dependencies {
     api(JavaPoet.lib)
     api(Validation.runtime)
     implementation(Spine.toolBase)
     implementation(JavaX.annotations)
+
+    // These dependencies are required for the `ValidationGen` class to compile.
+    //
+    // Previously, `ValidationGen` was a part of `mc-java-protoc` module
+    // and imported the classes from `io.spine.validation.gen` package of this module.
+    // Since we now use ProtoData-based validation code generation, the `ValidationGen` class
+    // was no longer used in `mc-java-protoc` and was moved to this module for the sake of
+    // historical reference, until we remove it completely along with the rest of
+    // the outdated validation code.
+    //
+    implementation(project(":mc-java-protoc"))
+    implementation(project(":mc-java-base"))
 
     testImplementation(Spine.testlib)
 
