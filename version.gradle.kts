@@ -27,9 +27,9 @@
 /**
  * The version of McJava to publish.
  *
- * Do not rename this this property as it is also used in the integration tests via its name.
+ * Do not rename this property, as it is also used in the integration tests via its name.
  *
  * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.168")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.169")
 val versionToPublish by extra(mcJavaVersion)
