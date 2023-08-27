@@ -55,6 +55,7 @@ buildscript {
                     spine.server,
                     io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Spine.Logging.backend,
+                    io.spine.internal.dependency.Spine.Logging.floggerApi,
                     io.spine.internal.dependency.Validation.runtime,
                     io.spine.internal.dependency.ProtoData.pluginLib,
                 )

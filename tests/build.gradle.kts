@@ -77,6 +77,7 @@ buildscript {
                     spine.pluginBase,
                     io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Spine.Logging.backend,
+                    io.spine.internal.dependency.Spine.Logging.floggerApi,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -121,6 +122,7 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
+                    Spine.Logging.backend,
                     Validation.runtime,
                 )
             }

@@ -140,12 +140,12 @@ fun Module.forceConfigurations() {
                     Logging.lib,
                     Logging.backend,
                     Logging.context,
+                    Logging.floggerApi,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
                     ProtoData.compiler,
-                    ProtoData.api,
                     ProtoData.codegenJava,
                 )
             }
