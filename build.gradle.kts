@@ -54,8 +54,9 @@ buildscript {
                     spine.toolBase,
                     spine.server,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Validation.runtime,
-                    io.spine.internal.dependency.ProtoData.pluginLib,
+                    io.spine.internal.dependency.Spine.Logging.backend,
+                    io.spine.internal.dependency.Spine.Logging.floggerApi,
+                    io.spine.internal.dependency.Validation.runtime
                 )
             }
         }
@@ -73,7 +74,7 @@ plugins {
     id("project-report")
     protobuf
     java
-    id(protoData.pluginId) version protoData.version
+    id(protoData.pluginId) version protoData.dogfoodingVersion
 }
 
 private object BuildSettings {
