@@ -103,7 +103,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/time">spine-time</a>
          */
-        const val time = "2.0.0-SNAPSHOT.133"
+        const val time = "2.0.0-SNAPSHOT.134"
 
         /**
          * The version of [Spine.change].
@@ -117,7 +117,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/text">spine-text</a>
          */
-        const val text = "2.0.0-SNAPSHOT.5"
+        const val text = "2.0.0-SNAPSHOT.6"
 
         /**
          * The version of [Spine.toolBase].
