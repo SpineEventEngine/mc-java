@@ -24,22 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.dependency
+package io.spine.tools.mc.java.rejection
+
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.renderer.Renderer
 
 /**
- * Dependencies on ProtoData modules.
- *
- * See [`SpineEventEngine/ProtoData`](https://github.com/SpineEventEngine/ProtoData/).
+ * A ProtoData plugin for generating rejection Java classes.
  */
-@Suppress("unused", "ConstPropertyName")
-object ProtoData {
-    const val version = "0.11.0"
-    const val dogfoodingVersion = "0.9.11"
-    const val group = "io.spine.protodata"
-    const val compiler = "$group:protodata-compiler:$version"
+public class RejectionPlugin: Plugin {
 
-    const val codegenJava = "io.spine.protodata:protodata-codegen-java:$version"
-
-    const val pluginId = "io.spine.protodata"
-    const val pluginLib = "${Spine.group}:protodata:$version"
+    override fun renderers(): List<Renderer<*>> {
+        return listOf(RejectionRenderer())
+    }
 }
