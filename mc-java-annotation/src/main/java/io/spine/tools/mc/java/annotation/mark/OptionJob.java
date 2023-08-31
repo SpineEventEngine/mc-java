@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,8 @@ final class OptionJob extends AnnotationJob implements WithLogging {
         var option = protobufOption;
         logger().atDebug().log(() -> format(
             "Annotating sources marked as `%s` with `%s`.",
-                  option, annotation));
+                  option, annotation)
+        );
         logger().atDebug().log(() -> "Annotating by the file option.");
         factory.createFileAnnotator(annotation, option)
                .annotate();

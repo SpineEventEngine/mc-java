@@ -113,17 +113,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         configureValidationRendering(project, codegen);
 
         codegen.plugins(
-                "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
-        );
-
-        codegen.renderers(
-                // Rejection rendering.
-                "io.spine.tools.mc.java.rejection.RejectionRenderer",
-
-                // API options annotation rendering.
-                // It must go after `RejectionRenderer` so that generated `RejectionThrowable`
-                // classes are also annotated.
-                "io.spine.tools.mc.java.annotation.AnnotationRenderer"
+                "io.spine.tools.mc.java.rejection.RejectionPlugin"
         );
 
         codegen.setSubDirs(ImmutableList.of(
@@ -145,13 +135,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         if (options.shouldSkipValidation()) {
             return;
         }
-
-        codegen.renderers(
-                "io.spine.validation.java.PrintValidationInsertionPoints",
-                "io.spine.validation.java.JavaValidationRenderer"
-        );
         codegen.plugins(
-                "io.spine.validation.ValidationPlugin"
+                "io.spine.validation.java.JavaValidationPlugin"
         );
 
         var dependencies = project.getDependencies();

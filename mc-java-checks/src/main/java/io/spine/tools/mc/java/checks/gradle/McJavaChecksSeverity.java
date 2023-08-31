@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public final class McJavaChecksSeverity implements WithLogging {
     }
 
     /**
-     * Create the {@code SeverityConfigurer} instance for the given project.
+     * Create a new instance for the given project.
      *
      * @param project
      *         the project
@@ -89,8 +89,9 @@ public final class McJavaChecksSeverity implements WithLogging {
     private void configureCheckSeverity() {
         if (!hasErrorPronePlugin()) {
             logger().atError().log(() -> format(
-                    "Cannot configure Spine Java Checks severity as the Error Prone " +
-                                 "plugin is not applied to the project `%s`.", project.getName()));
+                "Cannot configure Spine Java Checks severity as the Error Prone " +
+                                 "plugin is not applied to the project `%s`.", project.getName())
+            );
             return;
         }
         configureSeverities();
@@ -111,13 +112,12 @@ public final class McJavaChecksSeverity implements WithLogging {
      * Configures default level of check severities.
      */
     private void configureSeverities() {
-        final var severity =
-                Optional.ofNullable(getUseValidatingBuilderSeverity(project))
-                        .orElse(Severity.WARN);
+        final var severity = Optional.ofNullable(getUseValidatingBuilderSeverity(project))
+                                     .orElse(Severity.WARN);
         logger().atDebug().log(() -> format(
                 "Setting `UseValidatingBuilder` checker severity to `%s` for the project `%s`.",
-                severity.name(), project.getName()
-        ));
+                severity.name(), project.getName())
+        );
 
         // String severityArg = "-Xep:UseValidatingBuilder:" + severity.name();
         ErrorProneOptionsAccess

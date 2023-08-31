@@ -54,9 +54,9 @@ buildscript {
                     spine.toolBase,
                     spine.server,
                     io.spine.internal.dependency.Spine.Logging.lib,
+                    io.spine.internal.dependency.Spine.Logging.backend,
                     io.spine.internal.dependency.Spine.Logging.floggerApi,
-                    io.spine.internal.dependency.Validation.runtime,
-                    io.spine.internal.dependency.ProtoData.pluginLib,
+                    io.spine.internal.dependency.Validation.runtime
                 )
             }
         }
@@ -74,7 +74,7 @@ plugins {
     id("project-report")
     protobuf
     java
-    id(protoData.pluginId) version protoData.version
+    id(protoData.pluginId) version protoData.dogfoodingVersion
 }
 
 private object BuildSettings {
@@ -82,7 +82,12 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = subprojects.map { it.name }.toSet()
+    modules = subprojects.map { it.name }
+        // Do not publish the validation codegen module as it is deprecated in favor of
+        // ProtoData-based code generation of the Validation library.
+        // The module is still kept for the sake of historical reference.
+        .filter { !it.contains("mc-java-validation") }
+        .toSet()
     destinations = PublishingRepos.run {
         setOf(
             cloudRepo,

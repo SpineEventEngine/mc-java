@@ -26,8 +26,9 @@
 package io.spine.tools.mc.java.gradle;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.flogger.FluentLogger;
 import groovy.lang.Closure;
+import io.spine.logging.Logger;
+import io.spine.logging.LoggingFactory;
 import io.spine.tools.code.Indent;
 import io.spine.tools.java.fs.DefaultJavaPaths;
 import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
+import static java.lang.String.format;
 
 /**
  * A configuration for the Spine Model Compiler for Java.
@@ -51,7 +53,7 @@ import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 })
 public class McJavaOptions {
 
-    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    private static final Logger<?> logger = LoggingFactory.forEnclosingClass();
 
     /**
      * The name of the extension, as it appears in a Gradle build script.
@@ -109,24 +111,16 @@ public class McJavaOptions {
         return DefaultJavaPaths.at(project.getProjectDir());
     }
 
-    @SuppressWarnings({
-            "PMD.MethodNamingConventions",
-            "FloggerSplitLogStatement" // See: https://github.com/SpineEventEngine/base/issues/612
-    })
-    private static FluentLogger.Api _debug() {
-        return logger.atFine();
-    }
-
     public static Indent getIndent(Project project) {
         var result = getMcJava(project).indent;
-        _debug().log("The current indent is %d.", result.size());
+        logger.atDebug().log(() -> format("The current indent is %d.", result.size()));
         return result;
     }
 
     @SuppressWarnings("unused")
     public void setIndent(int indent) {
         this.indent = Indent.of(indent);
-        _debug().log("Indent has been set to %d.", indent);
+        logger.atDebug().log(() -> format("Indent has been set to %d.", indent));
     }
 
     @SuppressWarnings("unused") // Configures `generateAnnotations` closure.

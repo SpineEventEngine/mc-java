@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ final class ConstraintCode implements WithLogging {
     evaluateConstantCondition(BooleanExpression condition, CodeBlock onViolation) {
         if (condition.isConstantTrue()) {
             logger().atWarning().log(() ->
-                 "Violation is always produced as validation check is a constant.");
+                     "Violation is always produced as validation check is a constant.");
             return onViolation;
         } else {
             return empty();
@@ -198,7 +198,7 @@ final class ConstraintCode implements WithLogging {
         /**
          * Creates a new instance of a {@link ConstraintCode}.
          */
-        public ConstraintCode build() {
+        ConstraintCode build() {
             checkNotNull(messageAccess);
             checkNotNull(conditionCheck);
             checkNotNull(createViolation);

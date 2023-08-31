@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ final class MethodNameJob extends AnnotationJob implements WithLogging {
     public void execute(AnnotatorFactory factory) {
         var annotation = annotation();
         logger().atDebug().log(() -> format(
-            "Annotating methods matching patterns `%s` with `%s`.", patterns, annotation));
+                "Annotating methods matching patterns `%s` with `%s`.", patterns, annotation));
         factory.createMethodAnnotator(annotation, patterns)
                .annotate();
     }

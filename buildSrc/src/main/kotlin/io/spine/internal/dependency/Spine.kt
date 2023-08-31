@@ -45,7 +45,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/base">spine-base</a>
          */
-        const val base = "2.0.0-SNAPSHOT.184"
+        const val base = "2.0.0-SNAPSHOT.187"
 
         /**
          * The version of [Spine.reflect].
@@ -59,7 +59,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/logging">spine-logging</a>
          */
-        const val logging = "2.0.0-SNAPSHOT.199"
+        const val logging = "2.0.0-SNAPSHOT.209"
 
         /**
          * The version of [Spine.testlib].
@@ -75,35 +75,35 @@ object Spine {
          * @see [Spine.CoreJava.server]
          * @see <a href="https://github.com/SpineEventEngine/core-java">core-java</a>
          */
-        const val core = "2.0.0-SNAPSHOT.154"
+        const val core = "2.0.0-SNAPSHOT.157"
 
         /**
          * The version of [Spine.modelCompiler].
          *
          * @see <a href="https://github.com/SpineEventEngine/model-compiler">spine-model-compiler</a>
          */
-        const val mc = "2.0.0-SNAPSHOT.132"
+        const val mc = "2.0.0-SNAPSHOT.133"
 
         /**
          * The version of [McJava].
          *
          * @see <a href="https://github.com/SpineEventEngine/mc-java">spine-mc-java</a>
          */
-        const val mcJava = "2.0.0-SNAPSHOT.163"
+        const val mcJava = "2.0.0-SNAPSHOT.168"
 
         /**
          * The version of [Spine.baseTypes].
          *
          * @see <a href="https://github.com/SpineEventEngine/base-types">spine-base-types</a>
          */
-        const val baseTypes = "2.0.0-SNAPSHOT.123"
+        const val baseTypes = "2.0.0-SNAPSHOT.125"
 
         /**
          * The version of [Spine.time].
          *
          * @see <a href="https://github.com/SpineEventEngine/time">spine-time</a>
          */
-        const val time = "2.0.0-SNAPSHOT.131"
+        const val time = "2.0.0-SNAPSHOT.134"
 
         /**
          * The version of [Spine.change].
@@ -117,14 +117,14 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/text">spine-text</a>
          */
-        const val text = "2.0.0-SNAPSHOT.5"
+        const val text = "2.0.0-SNAPSHOT.6"
 
         /**
          * The version of [Spine.toolBase].
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.180"
+        const val toolBase = "2.0.0-SNAPSHOT.183"
 
         /**
          * The version of [Spine.javadocTools].
@@ -167,6 +167,8 @@ object Spine {
         const val backend = "$group:spine-logging-backend:$version"
         const val context = "$group:spine-logging-context:$version"
         const val floggerApi = "$group:spine-flogger-api:$version"
+        const val floggerGrpcContext = "$group:spine-flogger-grpc-context:$version"
+        const val smokeTest = "$group:spine-logging-smoke-test:$version"
     }
 
     /**
@@ -180,7 +182,9 @@ object Spine {
         const val pluginLib = "$toolsGroup:spine-mc-java-plugins:${version}:all"
     }
 
+    @Deprecated("Please use `javadocFilter` instead.", ReplaceWith("javadocFilter"))
     const val javadocTools = "$toolsGroup::${ArtifactVersion.javadocTools}"
+    const val javadocFilter = "$toolsGroup:spine-javadoc-filter:${ArtifactVersion.javadocTools}"
 
     const val client = CoreJava.client // Added for brevity.
     const val server = CoreJava.server // Added for brevity.

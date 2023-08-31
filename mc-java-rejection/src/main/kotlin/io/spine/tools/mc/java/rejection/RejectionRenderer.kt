@@ -50,7 +50,7 @@ import java.nio.file.Path
  * The output is placed in the `java` subdirectory under the [outputRoot][SourceFileSet.outputRoot]
  * directory of the given [sources]. Other subdirectories, such as `grpc` or `kotlin`, are ignored.
  */
-public class RejectionRenderer: JavaRenderer(), WithLogging {
+internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private val typeSystem: TypeSystem by lazy {
         bakeTypeSystem()
@@ -85,10 +85,12 @@ public class RejectionRenderer: JavaRenderer(), WithLogging {
 
         result.forEach { it.checkConventions() }
 
-        logger.atDebug().log {
-            val nl = System.lineSeparator()
-            val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
-            "Found ${result.size} rejection files:$nl$fileList"
+        if (result.isNotEmpty()) {
+            logger.atDebug().log {
+                val nl = System.lineSeparator()
+                val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
+                "Found ${result.size} rejection files:$nl$fileList"
+            }
         }
 
         return result

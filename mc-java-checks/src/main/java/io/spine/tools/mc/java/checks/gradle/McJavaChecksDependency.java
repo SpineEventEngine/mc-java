@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public final class McJavaChecksDependency implements WithLogging {
      */
     private void addDependencyTo(Configuration cfg) {
         logger().atDebug().log(() -> format(
-                "Adding a dependency on `%s` to the `%s` configuration.", mcJavaChecks(), cfg));
+            "Adding a dependency on `%s` to the `%s` configuration.", mcJavaChecks(), cfg));
         var dependencies = cfg.getDependencies();
         dependencies.add(dependency);
     }
