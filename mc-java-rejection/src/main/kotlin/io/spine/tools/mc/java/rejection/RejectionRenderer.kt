@@ -33,15 +33,13 @@ import io.spine.code.proto.FileName
 import io.spine.logging.WithLogging
 import io.spine.protobuf.unpack
 import io.spine.protodata.MessageType
-import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.type.TypeSystem
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.ti
-import io.spine.tools.mc.java.TypeSystem
-import io.spine.tools.mc.java.typeSystem
 import java.nio.file.Path
 
 /**
@@ -53,19 +51,10 @@ import java.nio.file.Path
 internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private val typeSystem: TypeSystem by lazy {
-        bakeTypeSystem()
+        TypeSystem.from(this)
     }
 
     private lateinit var sources: SourceFileSet
-
-    private fun bakeTypeSystem(): TypeSystem = typeSystem {
-        select(ProtobufSourceFile::class.java).all().forEach { file ->
-            addFrom(file)
-        }
-        select(ProtobufDependency::class.java).all().forEach { dependency ->
-            addFrom(dependency.file)
-        }
-    }
 
     override fun render(sources: SourceFileSet) {
         // We could receive `grpc` or `kotlin` output roots here. Now we do only `java`.

@@ -26,29 +26,13 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.ProtobufDependency
-import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.java.TypeSystem
-import io.spine.tools.mc.java.typeSystem
+import io.spine.protodata.type.TypeSystem
 
 public class AnnotationRenderer: JavaRenderer() {
 
     private lateinit var sources: SourceFileSet
-
-    private val typeSystem: TypeSystem by lazy {
-        bakeTypeSystem()
-    }
-
-    private fun bakeTypeSystem(): TypeSystem = typeSystem {
-        select(ProtobufSourceFile::class.java).all().forEach { file ->
-            addFrom(file)
-        }
-        select(ProtobufDependency::class.java).all().forEach { dependency ->
-            addFrom(dependency.file)
-        }
-    }
 
     override fun render(sources: SourceFileSet) {
         this.sources = sources
