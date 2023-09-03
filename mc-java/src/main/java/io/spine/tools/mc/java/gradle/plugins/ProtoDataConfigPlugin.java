@@ -29,8 +29,11 @@ package io.spine.tools.mc.java.gradle.plugins;
 import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
+import io.spine.tools.gradle.Artifact;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.Dependency;
 
 import static io.spine.tools.fs.DirectoryName.kotlin;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
@@ -83,7 +86,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     private static void configureProtoData(Project target) {
-        configureRenderers(target);
+        configurePlugins(target);
 
         var tasks = target.getTasks();
         tasks.withType(LaunchProtoData.class, task -> {
@@ -98,15 +101,34 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         });
     }
 
+    private static void addDependency(
+            Project project,
+            String configurationName,
+            Artifact artifact
+    ) {
+        var dependencies = project.getDependencies();
+        var dependency = findDependency(project, artifact);
+        if (dependency == null) {
+            dependencies.add(configurationName, artifact.notation());
+        } else {
+            dependencies.add(configurationName, dependency);
+        }
+    }
+
+    private static void addDependencies(
+            Project project,
+            String configurationName,
+            Artifact... artifacts
+    ) {
+        for (var artifact : artifacts) {
+            addDependency(project, configurationName, artifact);
+        }
+    }
+
     /**
-     * Configures ProtoData with the renderers and plugins,
-     * for the passed Gradle project.
-     *
-     * <p>In case the Validation
-     * {@linkplain io.spine.tools.mc.java.gradle.codegen.ValidationConfig#shouldSkipValidation()
-     * is disabled}, its renderers and the plugin are not added.
+     * Configures ProtoData with the renderers and plugins, for the passed Gradle project.
      */
-    private static void configureRenderers(Project project) {
+    private static void configurePlugins(Project project) {
         var codegen = project.getExtensions()
                              .getByType(CodegenSettings.class);
 
@@ -122,12 +144,13 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
                 kotlin.value()
         ));
 
-        var dependencies = project.getDependencies();
-
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaBase().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaAnnotation().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaRejection().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, toolBase().notation());
+        addDependencies(
+                project, PROTODATA_CONFIGURATION,
+                mcJavaBase(),
+                mcJavaAnnotation(),
+                mcJavaRejection(),
+                toolBase()
+        );
     }
 
     private static void configureValidationRendering(Project project, CodegenSettings codegen) {
@@ -139,9 +162,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
                 "io.spine.validation.java.JavaValidationPlugin"
         );
 
-        var dependencies = project.getDependencies();
-        dependencies.add(PROTODATA_CONFIGURATION, validationJavaBundle().notation());
-        dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
+        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle());
+        addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
     }
 
     private static
@@ -154,5 +176,17 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         targetFile.convention(defaultFile);
         task.getConfigurationFile()
             .set(targetFile);
+    }
+
+    private static @Nullable Dependency findDependency(Project project, Artifact artifact) {
+        var dependencies = project.getConfigurations().stream()
+                .flatMap(c -> c.getDependencies().stream());
+
+        var found = dependencies.filter((d) ->
+            d.getGroup() != null
+                    && d.getGroup().equals(artifact.group())
+                    && d.getName().equals(artifact.name())
+        ).findFirst().orElse(null);
+        return found;
     }
 }
