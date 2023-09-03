@@ -44,9 +44,9 @@ import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNullElseGet;
 
 /**
  * The plugin that configures ProtoData for the associated project.
@@ -106,13 +106,9 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
             String configurationName,
             Artifact artifact
     ) {
-        var dependencies = project.getDependencies();
         var dependency = findDependency(project, artifact);
-        if (dependency == null) {
-            dependencies.add(configurationName, artifact.notation());
-        } else {
-            dependencies.add(configurationName, dependency);
-        }
+        project.getDependencies()
+               .add(configurationName, requireNonNullElseGet(dependency, artifact::notation));
     }
 
     private static void addDependencies(
@@ -154,14 +150,9 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     private static void configureValidationRendering(Project project, CodegenSettings codegen) {
-        var options = getMcJava(project).codegen.validation();
-        if (options.shouldSkipValidation()) {
-            return;
-        }
         codegen.plugins(
                 "io.spine.validation.java.JavaValidationPlugin"
         );
-
         addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle());
         addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
     }
