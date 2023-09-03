@@ -53,6 +53,7 @@ buildscript {
                     spine.base,
                     spine.toolBase,
                     spine.server,
+                    io.spine.internal.dependency.ProtoData.pluginLib,
                     io.spine.internal.dependency.Spine.Logging.lib,
                     io.spine.internal.dependency.Spine.Logging.backend,
                     io.spine.internal.dependency.Spine.Logging.floggerApi,
