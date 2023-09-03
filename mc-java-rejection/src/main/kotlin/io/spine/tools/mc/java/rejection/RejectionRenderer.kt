@@ -27,14 +27,14 @@
 package io.spine.tools.mc.java.rejection
 
 import com.google.protobuf.BoolValue
-import com.google.protobuf.StringValue
 import com.squareup.javapoet.JavaFile
-import io.spine.code.proto.FileName
 import io.spine.logging.WithLogging
-import io.spine.protobuf.unpack
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.codegen.java.javaOuterClassName
+import io.spine.protodata.codegen.java.javaPackage
+import io.spine.protodata.find
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.type.TypeSystem
@@ -166,15 +166,15 @@ private fun RejectionFile.checkConventions() {
     checkOuterClassName()
 }
 
+private const val JAVA_MULTIPLE_FILES: String = "java_multiple_files"
+
 private fun RejectionFile.checkNotMultipleFiles() {
-    val optionName = "java_multiple_files"
-    val javaMultipleFiles = file.optionList.find { it.name == optionName }
+    val javaMultipleFiles = file.optionList.find(JAVA_MULTIPLE_FILES, BoolValue::class.java)
     javaMultipleFiles?.let {
-        val explicitlySet = it.value.unpack<BoolValue>()
-        check(!explicitlySet.value) {
+        check(!it.value) {
             "A rejection file (`${filePath.value}`) should generate" +
                     " Java classes into a single source code file." +
-                    " Please set `$optionName` option to `false`."
+                    " Please set `$JAVA_MULTIPLE_FILES` option to `false`."
         }
     }
 }
@@ -183,14 +183,7 @@ private const val OUTER_CLASS_NAME: String = "java_outer_classname"
 private const val REJECTIONS_CLASS_SUFFIX: String = "Rejections"
 
 internal fun RejectionFile.outerClassName(): String {
-    val outerClassName = file.optionList.find { it.name == OUTER_CLASS_NAME }
-    outerClassName?.let {
-        val explicitlySet = it.value.unpack<StringValue>().value
-        return explicitlySet
-    }
-    val nameOnly = file.path.value.substringAfterLast('/')
-    val fn = FileName.of(nameOnly)
-    return fn.toCamelCase()
+    return file.javaOuterClassName()
 }
 
 private fun RejectionFile.checkOuterClassName() {
@@ -208,8 +201,4 @@ private fun RejectionFile.checkOuterClassName() {
  * Obtains the Java package name for the given rejection file, taking into account
  * the `java_package` option.
  */
-private fun RejectionFile.javaPackage(): String {
-    val optionName = "java_package"
-    val javaPackage = file.optionList.find { it.name == optionName }
-    return javaPackage?.value?.unpack<StringValue>()?.value ?: file.packageName
-}
+private fun RejectionFile.javaPackage(): String = file.javaPackage()
