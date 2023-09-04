@@ -74,7 +74,7 @@ plugins {
     id("project-report")
     protobuf
     java
-    id(protoData.pluginId) version protoData.dogfoodingVersion
+//    id(protoData.pluginId) version protoData.dogfoodingVersion
 }
 
 private object BuildSettings {
