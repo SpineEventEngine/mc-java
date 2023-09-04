@@ -31,7 +31,7 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
-import io.spine.protodata.codegen.java.MessageTypeConvention
+import io.spine.protodata.codegen.java.JavaImplConvention
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.GeneratedBy
@@ -63,7 +63,7 @@ internal class RThrowableCode(
     typeSystem: TypeSystem
 ) : WithLogging {
 
-    private val messageOrEnumConvention = MessageTypeConvention(typeSystem)
+    private val messageOrEnumConvention = JavaImplConvention(typeSystem)
     private val simpleClassName: String = rejection.name.simpleName
     private val messageClass: PoClassName
     private val builder: RThrowableBuilderCode

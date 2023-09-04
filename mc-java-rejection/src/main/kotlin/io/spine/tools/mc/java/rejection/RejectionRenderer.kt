@@ -51,7 +51,7 @@ import java.nio.file.Path
 internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
     private val typeSystem: TypeSystem by lazy {
-        TypeSystem.from(this)
+        TypeSystem.serving(this)
     }
 
     private lateinit var sources: SourceFileSet
@@ -182,9 +182,7 @@ private fun RejectionFile.checkNotMultipleFiles() {
 private const val OUTER_CLASS_NAME: String = "java_outer_classname"
 private const val REJECTIONS_CLASS_SUFFIX: String = "Rejections"
 
-internal fun RejectionFile.outerClassName(): String {
-    return file.javaOuterClassName()
-}
+internal fun RejectionFile.outerClassName(): String = file.javaOuterClassName()
 
 private fun RejectionFile.checkOuterClassName() {
     val outerClassName = outerClassName()

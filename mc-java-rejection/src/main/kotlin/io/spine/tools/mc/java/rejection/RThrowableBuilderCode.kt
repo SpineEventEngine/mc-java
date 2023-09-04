@@ -44,9 +44,8 @@ import io.spine.protodata.FieldName
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
-import io.spine.protodata.TypeName
-import io.spine.protodata.codegen.java.JavaRejectionConvention
-import io.spine.protodata.codegen.java.MessageTypeConvention
+import io.spine.protodata.codegen.java.JavaImplConvention
+import io.spine.protodata.codegen.java.RejectionThrowableConvention
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem
@@ -88,11 +87,11 @@ internal class RThrowableBuilderCode internal constructor(
     private val rejection: MessageType,
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,
-    private val typeSystem: TypeSystem
+    typeSystem: TypeSystem
 ) : BuilderSpec {
 
-    private val messageOrEnumConvention = MessageTypeConvention(typeSystem)
-    private val rejectionConvention = JavaRejectionConvention(typeSystem)
+    private val messageOrEnumConvention = JavaImplConvention(typeSystem)
+    private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
 
