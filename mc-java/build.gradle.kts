@@ -26,10 +26,10 @@
 
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.JavaPoet
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.WriteVersions
 
