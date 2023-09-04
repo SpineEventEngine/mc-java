@@ -96,8 +96,19 @@ tasks {
     }
 
     withType<WriteVersions>().configureEach {
+
+        // Store the version of gRPC so that we can set the artifact for `protoc`.
+        // See `io.spine.tools.mc.java.gradle.plugins.JavaProtocConfigurationPlugin` for details.
         version(Grpc.ProtocPlugin.artifact)
+
+        // Store the version of Validation so that we can add the dependency for
+        // the `protoData` configuration.
+        // See `io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigurationPlugin` for details.
         version(Validation.java)
+
+        // Store the version of `tool-base` so that we can add the dependency for
+        // the `protoData` configuration when configuring rejection codegen.
+        // See `io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigurationPlugin` for details.
         version(Spine.toolBase)
     }
 }
