@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.annotation
 
-plugins {
-    `java-test-fixtures`
-    id("io.spine.mc-java")
+import com.google.protobuf.BoolValue
+import io.spine.protobuf.pack
+import io.spine.protodata.Option
+import io.spine.protodata.option
+
+internal object ApiOptions {
+
+    val internalAll: Option by lazy {
+        option("internal_all")
+    }
+
+    val spiAll: Option by lazy {
+        option("SPI_all")
+    }
+
+    val experimentalApi: Option by lazy {
+        option("experimental_all")
+    }
+
+    val betaAll: Option by lazy {
+        option("beta_all")
+    }
+
+    val values: List<Option> by lazy {
+        listOf(internalAll, spiAll, experimentalApi, betaAll)
+    }
 }
 
-dependencies {
-    val group = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = group)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
+internal fun ApiOptions.contains(option: Option): Boolean =
+    values.contains(option)
 
 /**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ * Creates an option with the given name and `true` value.
  */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
-}
-
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+private fun option(name: String): Option = option {
+    this.name = name
+    value = BoolValue.of(true).pack()
 }

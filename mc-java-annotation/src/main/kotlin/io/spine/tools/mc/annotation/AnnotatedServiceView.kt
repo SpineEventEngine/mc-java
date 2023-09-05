@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+@file:Suppress("UNUSED_PARAMETER")
 
-plugins {
-    `java-test-fixtures`
-    id("io.spine.mc-java")
-}
+package io.spine.tools.mc.annotation
 
-dependencies {
-    val group = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = group)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = group)
-    }
+import io.spine.core.External
+import io.spine.core.Subscribe
+import io.spine.protodata.ServiceName
+import io.spine.protodata.event.RpcOptionDiscovered
+import io.spine.protodata.event.ServiceOptionDiscovered
+import io.spine.protodata.plugin.View
 
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
+internal class AnnotatedServiceView :
+    View<ServiceName, AnnotatedService, AnnotatedService.Builder>() {
 
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
+    @Subscribe
+    fun on(@External e: ServiceOptionDiscovered) {
+        // TODO: Implement.
     }
 
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
-
-/**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
- */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
-}
-
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    @Subscribe
+    fun on(@External e: RpcOptionDiscovered) {
+        // TODO: Implement.
+    }
 }

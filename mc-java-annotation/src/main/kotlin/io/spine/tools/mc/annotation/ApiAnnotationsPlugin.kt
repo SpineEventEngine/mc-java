@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.annotation
 
-plugins {
-    `java-test-fixtures`
-    id("io.spine.mc-java")
-}
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.plugin.View
+import io.spine.server.BoundedContextBuilder
+import io.spine.server.entity.Entity
+import kotlin.reflect.KClass
 
-dependencies {
-    val group = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = group)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = group)
-    }
+/**
+ * A ProtoData plugin which expose
+ */
+public class ApiAnnotationsPlugin : Plugin {
 
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
+    override fun views(): Set<Class<out View<*, *, *>>> = buildSet {
+        add(AnnotatedMessageView::class)
+        add(AnnotatedServiceView::class)
+        add(AnnotatedEnumView::class)
     }
 
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
+    override fun extend(context: BoundedContextBuilder) {
+        context.add(FileOptionsProcess::class)
+    }
 }
 
 /**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ * Adds the specified view class to this `MutableSet`.
  */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
+public fun MutableSet<Class<out View<*,  *, *>>>.add(view: KClass<out View<*, *, *>>) {
+    add(view.java)
 }
 
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+/**
+ * Adds specified entity class to this `BoundedContextBuilder`.
+ */
+public inline fun <reified I, reified E : Entity<I, *>>
+        BoundedContextBuilder.add(entity: KClass<out E>) {
+    add(entity.java)
 }

@@ -51,8 +51,10 @@ final class OptionJob extends AnnotationJob implements WithLogging {
     public void execute(AnnotatorFactory factory) {
         var annotation = annotation();
         var option = protobufOption;
-        logger().atDebug().log(() -> format("Annotating sources marked as `%s` with `%s`.",
-                  option, annotation));
+        logger().atDebug().log(() -> format(
+            "Annotating sources marked as `%s` with `%s`.",
+                  option, annotation)
+        );
         logger().atDebug().log(() -> "Annotating by the file option.");
         factory.createFileAnnotator(annotation, option)
                .annotate();

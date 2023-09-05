@@ -29,8 +29,11 @@ package io.spine.tools.mc.java.gradle.plugins;
 import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
+import io.spine.tools.gradle.Artifact;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.Dependency;
 
 import static io.spine.tools.fs.DirectoryName.kotlin;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
@@ -41,9 +44,9 @@ import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNullElseGet;
 
 /**
  * The plugin that configures ProtoData for the associated project.
@@ -98,6 +101,26 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         });
     }
 
+    private static void addDependency(
+            Project project,
+            String configurationName,
+            Artifact artifact
+    ) {
+        var dependency = findDependency(project, artifact);
+        project.getDependencies()
+               .add(configurationName, requireNonNullElseGet(dependency, artifact::notation));
+    }
+
+    private static void addDependencies(
+            Project project,
+            String configurationName,
+            Artifact... artifacts
+    ) {
+        for (var artifact : artifacts) {
+            addDependency(project, configurationName, artifact);
+        }
+    }
+
     /**
      * Configures ProtoData with plugins, for the given Gradle project.
      */
@@ -117,26 +140,21 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
                 kotlin.value()
         ));
 
-        var dependencies = project.getDependencies();
-
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaBase().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaAnnotation().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, mcJavaRejection().notation());
-        dependencies.add(PROTODATA_CONFIGURATION, toolBase().notation());
+        addDependencies(
+                project, PROTODATA_CONFIGURATION,
+                mcJavaBase(),
+                mcJavaAnnotation(),
+                mcJavaRejection(),
+                toolBase()
+        );
     }
 
     private static void configureValidationRendering(Project project, CodegenSettings codegen) {
-        var options = getMcJava(project).codegen.validation();
-        if (options.shouldSkipValidation()) {
-            return;
-        }
         codegen.plugins(
                 "io.spine.validation.java.JavaValidationPlugin"
         );
-
-        var dependencies = project.getDependencies();
-        dependencies.add(PROTODATA_CONFIGURATION, validationJavaBundle().notation());
-        dependencies.add(IMPL_CONFIGURATION, validationJavaRuntime().notation());
+        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle());
+        addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
     }
 
     private static
@@ -149,5 +167,17 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         targetFile.convention(defaultFile);
         task.getConfigurationFile()
             .set(targetFile);
+    }
+
+    private static @Nullable Dependency findDependency(Project project, Artifact artifact) {
+        var dependencies = project.getConfigurations().stream()
+                .flatMap(c -> c.getDependencies().stream());
+
+        var found = dependencies.filter((d) ->
+            d.getGroup() != null
+                    && d.getGroup().equals(artifact.group())
+                    && d.getName().equals(artifact.name())
+        ).findFirst().orElse(null);
+        return found;
     }
 }

@@ -156,7 +156,8 @@ public final class McJavaChecksDependency implements WithLogging {
                     "Unable to add a dependency on `%s` to the configuration `%s` because some " +
                             "dependencies could not be resolved: " +
                             "%s.",
-                    mcJavaChecks(), configuration.getName(), problemReport));
+                    mcJavaChecks(), configuration.getName(), problemReport
+            ));
         }
 
         private String toErrorMessage(UnresolvedDependencyResult entry) {

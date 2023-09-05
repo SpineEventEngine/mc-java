@@ -74,8 +74,8 @@ public final class ExternalClassLoader<T> implements WithLogging {
             return instance;
         } catch (InstantiationException | IllegalAccessException
                 | NoSuchMethodException | InvocationTargetException e) {
-            logger().atError().withCause(e)
-                    .log(() -> format("Unable to instantiate the class `%s`.", fqn));
+            logger().atError().withCause(e).log(() -> format(
+                    "Unable to instantiate the class `%s`.", fqn));
             throw new ClassInstantiationException(fqn, e);
         }
     }
@@ -87,7 +87,7 @@ public final class ExternalClassLoader<T> implements WithLogging {
             return (Class<T>) factory;
         }
         logger().atError().log(() -> format(
-                "Class `%s` does not implement `%s`.", fqn, loadedClass.getName()));
+                "The class `%s` does not implement `%s`.", fqn, loadedClass.getName()));
         throw new ClassInstantiationException(fqn);
     }
 
@@ -96,8 +96,8 @@ public final class ExternalClassLoader<T> implements WithLogging {
             var factory = classLoader.loadClass(fqn);
             return factory;
         } catch (ClassNotFoundException e) {
-            logger().atError().withCause(e)
-                    .log(() -> format("Unable to resolve the class `%s`.", fqn));
+            logger().atError().withCause(e).log(() -> format(
+                    "Unable to resolve the class `%s`.", fqn));
             throw new ClassInstantiationException(fqn, e);
         }
     }

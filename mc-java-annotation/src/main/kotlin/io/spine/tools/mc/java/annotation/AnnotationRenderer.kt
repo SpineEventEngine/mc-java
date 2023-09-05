@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.java.annotation
 
-plugins {
-    `java-test-fixtures`
-    id("io.spine.mc-java")
-}
+import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.type.TypeSystem
 
-dependencies {
-    val group = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = group)
+public class AnnotationRenderer: JavaRenderer() {
+
+    private lateinit var sources: SourceFileSet
+
+    override fun render(sources: SourceFileSet) {
+        this.sources = sources
+        // See https://github.com/SpineEventEngine/ProtoData/issues/150
+        val outputRoot = sources.outputRoot
+        if (!(outputRoot.endsWith("java") || outputRoot.endsWith("grpc"))) {
+            return
+        }
+        // TODO:2023-07-30:alexander.yevsyukov: Support rendering of annotations.
     }
-    implementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
-    }
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
-
-/**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
- */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
-}
-
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

@@ -126,14 +126,14 @@ final class ConstraintCode implements WithLogging {
      *
      * @return new builder
      */
-    public static Builder forField(FieldDeclaration field) {
+    static Builder forField(FieldDeclaration field) {
         return new Builder(field);
     }
 
     /**
      * A builder for the {@code ConstraintCode} instances.
      */
-    public static final class Builder {
+    static final class Builder {
 
         private final FieldDeclaration field;
         private MessageAccess messageAccess;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,41 +24,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.checks.gradle;
+@file:Suppress("UNUSED_PARAMETER")
 
-import io.spine.tools.mc.checks.Severity;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.gradle.api.Project;
+package io.spine.tools.mc.annotation
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import io.spine.base.EventMessage
+import io.spine.core.External
+import io.spine.core.Subscribe
+import io.spine.protodata.FilePath
+import io.spine.protodata.event.FileEntered
+import io.spine.protodata.event.FileExited
+import io.spine.server.entity.alter
+import io.spine.server.event.React
+import io.spine.server.procman.ProcessManager
 
-/**
- * Allows configuring severity for all the Spine Java Checks applied to the project.
- *
- * @see Severity
- */
-@SuppressWarnings("PublicField" /* required for exposing the property in Gradle. */)
-public class McJavaChecksExtension {
-
-    private static final String EXTENSION_NAME = "modelChecks";
-
-    public Severity useValidatingBuilderSeverity;
+internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
 
     /**
-     * Creates an instance of the extension in the given project.
+     * Adds the API options from the file to the state of this process.
      */
-    static void createIn(Project project) {
-        checkNotNull(project);
-        project.getExtensions()
-               .create(name(), McJavaChecksExtension.class);
+    @Subscribe
+    fun on(@External e: FileEntered) = alter {
+        file = e.file.path
+        e.file.optionList
+            .filter { ApiOptions.contains(it) }
+            .forEach(::addOption)
     }
 
-    public static @Nullable Severity getUseValidatingBuilderSeverity(Project project) {
-        var extension = (McJavaChecksExtension) project.getExtensions().getByName(name());
-        return extension.useValidatingBuilderSeverity;
+    @React
+    fun on(@External e: FileExited): Iterable<EventMessage> {
+        if (state().optionList.isEmpty()) {
+            // There are no API-related options in this file.
+            return emptyList()
+        }
+
+        // TODO: Iterate through all the types present in this file via `ProtobufSourceFile` and
+        //  emit events for each of them.
+        return emptyList()
     }
 
-    public static String name() {
-        return EXTENSION_NAME;
-    }
 }
