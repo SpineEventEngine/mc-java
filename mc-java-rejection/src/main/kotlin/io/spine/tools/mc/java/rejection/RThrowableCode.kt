@@ -31,12 +31,13 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
+import io.spine.protodata.codegen.java.JavaImplConvention
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.GeneratedBy
 import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.methodSpec
-import io.spine.tools.mc.java.TypeSystem
 import io.spine.tools.mc.java.rejection.Javadoc.forConstructorOfThrowable
 import io.spine.tools.mc.java.rejection.Javadoc.forThrowableOf
 import javax.lang.model.element.Modifier.FINAL
@@ -62,12 +63,13 @@ internal class RThrowableCode(
     typeSystem: TypeSystem
 ) : WithLogging {
 
+    private val messageOrEnumConvention = JavaImplConvention(typeSystem)
     private val simpleClassName: String = rejection.name.simpleName
     private val messageClass: PoClassName
     private val builder: RThrowableBuilderCode
 
     init {
-        val clsName = typeSystem.classNameFor(rejection.name).canonical
+        val clsName = messageOrEnumConvention.declarationFor(rejection.name).name.canonical
         messageClass = PoClassName.bestGuess(clsName)
         val throwableClass = PoClassName.get(javaPackage, simpleClassName)
         builder = RThrowableBuilderCode(

@@ -141,9 +141,9 @@ internal val mcJavaVersion: String by lazy {
 
 @get:JvmName("toolBaseVersion")
 internal val toolBaseVersion: String by lazy {
-    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
-    versions.versionOf(self)
-        .orElseThrow { error("Unable to load versions of ${self}.") }
+    val toolBase: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
+    versions.versionOf(toolBase)
+        .orElseThrow { error("Unable to load versions of ${toolBase}.") }
 }
 
 private const val VALIDATION_GROUP = "io.spine.validation"

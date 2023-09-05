@@ -83,7 +83,7 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     private static void configureProtoData(Project target) {
-        configureRenderers(target);
+        configurePlugins(target);
 
         var tasks = target.getTasks();
         tasks.withType(LaunchProtoData.class, task -> {
@@ -99,14 +99,9 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
     }
 
     /**
-     * Configures ProtoData with the renderers and plugins,
-     * for the passed Gradle project.
-     *
-     * <p>In case the Validation
-     * {@linkplain io.spine.tools.mc.java.gradle.codegen.ValidationConfig#shouldSkipValidation()
-     * is disabled}, its renderers and the plugin are not added.
+     * Configures ProtoData with plugins, for the given Gradle project.
      */
-    private static void configureRenderers(Project project) {
+    private static void configurePlugins(Project project) {
         var codegen = project.getExtensions()
                              .getByType(CodegenSettings.class);
 

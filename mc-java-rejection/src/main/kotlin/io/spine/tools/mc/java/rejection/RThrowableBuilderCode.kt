@@ -27,6 +27,7 @@
 
 package io.spine.tools.mc.java.rejection
 
+import com.google.protobuf.ByteString
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
@@ -43,8 +44,11 @@ import io.spine.protodata.FieldName
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
+import io.spine.protodata.codegen.java.JavaImplConvention
+import io.spine.protodata.codegen.java.RejectionThrowableConvention
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
+import io.spine.protodata.type.TypeSystem
 import io.spine.string.titleCase
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.BuilderSpec
@@ -53,7 +57,6 @@ import io.spine.tools.java.codeBlock
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.java.methodSpec
-import io.spine.tools.mc.java.TypeSystem
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
 import io.spine.tools.mc.java.rejection.Javadoc.forBuilderOf
@@ -64,7 +67,6 @@ import io.spine.tools.mc.java.rejection.Javadoc.ofRejectionMessageMethod
 import io.spine.tools.mc.java.rejection.Method.BUILD
 import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
-import io.spine.tools.mc.java.toPrimitiveName
 import io.spine.validate.Validate
 import io.spine.validate.Validated
 import java.util.regex.Pattern
@@ -72,6 +74,7 @@ import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC
 import javax.lang.model.element.Modifier.STATIC
+import kotlin.reflect.KClass
 import com.squareup.javapoet.ClassName as PoClassName
 import com.squareup.javapoet.TypeName as PoTypeName
 
@@ -84,8 +87,11 @@ internal class RThrowableBuilderCode internal constructor(
     private val rejection: MessageType,
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,
-    private val typeSystem: TypeSystem
+    typeSystem: TypeSystem
 ) : BuilderSpec {
+
+    private val messageOrEnumConvention = JavaImplConvention(typeSystem)
+    private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
 
@@ -102,7 +108,7 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun MessageType.javaPackage(): PackageName {
-        val binaryName = typeSystem.classNameFor(this@javaPackage.name).binary
+        val binaryName = rejectionConvention.declarationFor(this@javaPackage.name)!!.name.binary
         return PackageName.of(binaryName.substringBeforeLast("."))
     }
 
@@ -165,12 +171,22 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun singularNameOf(type: Type): PoTypeName {
-        val javaType = typeSystem.javaTypeName(type)
+        val javaType = when {
+            type.hasMessage() ->
+                messageOrEnumConvention.declarationFor(type.message).name.canonical
+            type.hasEnumeration() ->
+                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
+            type.hasPrimitive() ->
+                type.primitive.toPrimitiveName()
+            else -> {
+                unknownType(type)
+            }
+        }
         return typeNameOf(javaType)
     }
 
     private fun repeatedNameOf(type: Type): PoTypeName {
-        val elementType = typeSystem.javaTypeName(type)
+        val elementType = javaTypeName(type)
         return RepeatedFieldType.typeNameFor(elementType)
     }
 
@@ -179,7 +195,7 @@ internal class RThrowableBuilderCode internal constructor(
         val valueTypeName = singularNameOf(valueType)
         val result = ParameterizedTypeName.get(
             ClassName.get(MutableMap::class.java), keyTypeName, valueTypeName
-        );
+        )
         return result
     }
 
@@ -188,6 +204,21 @@ internal class RThrowableBuilderCode internal constructor(
      */
     private fun builderClass(): ClassName =
         throwableClass.nestedClass(simpleClassName)
+
+    /**
+     * Obtains the name of the Java class generated from a Protobuf type with the given name.
+     */
+    private fun javaTypeName(type: Type): String {
+        return when {
+            type.hasPrimitive() ->
+                type.primitive.toPrimitiveName()
+            type.hasMessage() ->
+                messageOrEnumConvention.declarationFor(type.message).name.canonical
+            type.hasEnumeration() ->
+                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
+            else -> unknownType(type)
+        }
+    }
 }
 
 private val newBuilder = NoArgMethod(NEW_BUILDER)
@@ -275,3 +306,35 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
     addStatement("return \$L.build()", BUILDER_FIELD)
 }
 
+/**
+ * Obtains a name of the class which corresponds to this primitive type.
+ */
+private fun PrimitiveType.toPrimitiveName(): String {
+    val klass = primitiveClass()
+    val primitiveClass = klass.javaPrimitiveType ?: klass.java
+    return primitiveClass.name
+}
+
+private fun PrimitiveType.primitiveClass(): KClass<*> =
+    when (this) {
+        PrimitiveType.TYPE_DOUBLE -> Double::class
+        PrimitiveType.TYPE_FLOAT -> Float::class
+
+        PrimitiveType.TYPE_INT64, PrimitiveType.TYPE_UINT64, PrimitiveType.TYPE_SINT64,
+        PrimitiveType.TYPE_FIXED64, PrimitiveType.TYPE_SFIXED64 -> Long::class
+
+        PrimitiveType.TYPE_INT32, PrimitiveType.TYPE_UINT32, PrimitiveType.TYPE_SINT32,
+        PrimitiveType.TYPE_FIXED32, PrimitiveType.TYPE_SFIXED32 -> Int::class
+
+        PrimitiveType.TYPE_BOOL -> Boolean::class
+        PrimitiveType.TYPE_STRING -> String::class
+        PrimitiveType.TYPE_BYTES -> ByteString::class
+        PrimitiveType.UNRECOGNIZED, PrimitiveType.PT_UNKNOWN -> unknownType(this)
+    }
+
+private fun unknownType(type: PrimitiveType): Nothing {
+    error("Unknown primitive type: `$type`.")
+}
+
+private fun unknownType(type: Type): Nothing =
+    error("Unknown type: `${type}`.")

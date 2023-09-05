@@ -34,7 +34,7 @@ plugins {
     java
     groovy
     `kotlin-dsl`
-    val licenseReportVersion = "2.1"
+    val licenseReportVersion = "2.5"
     id("com.github.jk1.dependency-license-report").version(licenseReportVersion)
 }
 
