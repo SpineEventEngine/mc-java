@@ -31,6 +31,7 @@ package io.spine.tools.mc.annotation
 import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ServiceName
+import io.spine.protodata.event.FileOptionDiscovered
 import io.spine.protodata.event.RpcOptionDiscovered
 import io.spine.protodata.event.ServiceOptionDiscovered
 import io.spine.protodata.plugin.View
@@ -39,12 +40,17 @@ internal class AnnotatedServiceView :
     View<ServiceName, AnnotatedService, AnnotatedService.Builder>() {
 
     @Subscribe
+    fun on(@External e: FileOptionDiscovered) {
+        // TODO: Map file option to a service option and store it.
+    }
+
+    @Subscribe
     fun on(@External e: ServiceOptionDiscovered) {
-        // TODO: Implement.
+        // TODO: Keep service option, and make all RPC methods have appropriate annotation.
     }
 
     @Subscribe
     fun on(@External e: RpcOptionDiscovered) {
-        // TODO: Implement.
+        // TODO: Associated an option with an RPC.
     }
 }
