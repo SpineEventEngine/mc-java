@@ -24,44 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.annotation
+package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
-import io.spine.server.BoundedContextBuilder
-import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.annotation.EnumAnnotationRenderer
-import io.spine.tools.mc.java.annotation.MessageAnnotationRenderer
-import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
-import kotlin.reflect.KClass
+import io.spine.protodata.renderer.SourceFileSet
 
-/**
- * A ProtoData plugin which expose
- */
-public class ApiAnnotationsPlugin : Plugin {
+internal class MessageAnnotationRenderer: AnnotationRenderer() {
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        AnnotatedMessageView::class.java,
-        AnnotatedServiceView::class.java,
-        AnnotatedEnumView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        MessageAnnotationRenderer(),
-        ServiceAnnotationRenderer(),
-        EnumAnnotationRenderer()
-    )
-
-    override fun extend(context: BoundedContextBuilder) {
-        context.add(FileOptionsProcess::class)
+    override fun doRender(sources: SourceFileSet) {
+        // TODO("Not yet implemented")
     }
-}
-
-/**
- * Adds specified entity class to this `BoundedContextBuilder`.
- */
-public inline fun <reified I, reified E : Entity<I, *>>
-        BoundedContextBuilder.add(entity: KClass<out E>) {
-    add(entity.java)
 }

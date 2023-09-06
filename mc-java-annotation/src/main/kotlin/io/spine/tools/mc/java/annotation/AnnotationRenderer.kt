@@ -26,21 +26,24 @@
 
 package io.spine.tools.mc.java.annotation
 
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.type.TypeSystem
 
-public class AnnotationRenderer: JavaRenderer() {
+internal sealed class AnnotationRenderer: JavaRenderer() {
 
-    private lateinit var sources: SourceFileSet
-
-    override fun render(sources: SourceFileSet) {
-        this.sources = sources
-        // See https://github.com/SpineEventEngine/ProtoData/issues/150
-        val outputRoot = sources.outputRoot
-        if (!(outputRoot.endsWith("java") || outputRoot.endsWith("grpc"))) {
-            return
+    // See https://github.com/SpineEventEngine/ProtoData/issues/150
+    final override fun render(sources: SourceFileSet) {
+        if (handlesJavaOrGprc(sources)) {
+            doRender(sources)
         }
-        // TODO:2023-07-30:alexander.yevsyukov: Support rendering of annotations.
+    }
+
+    abstract fun doRender(sources: SourceFileSet)
+
+    private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
+        val outputRoot = sources.outputRoot
+        return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
     }
 }
