@@ -31,34 +31,46 @@ import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.option
 
-internal object ApiOptions {
+internal enum class ApiOption(
+    val fileOption: Option,
+    val messageOption: Option,
+    val enumOption: Option? = null,
+    val serviceOption: Option? = null
+) {
 
-    val internalAll: Option by lazy {
-        option("internal_all")
-    }
+    BETA(
+        fileOption = option("beta_all"),
+        messageOption = option("beta")
+    ),
 
-    val spiAll: Option by lazy {
-        option("SPI_all")
-    }
+    EXPERIMENTAL(
+        fileOption = option("experimental_all"),
+        messageOption = option("experimental_type")
+    ),
 
-    val experimentalApi: Option by lazy {
-        option("experimental_all")
-    }
+    INTERNAL(
+        fileOption = option("internal_all"),
+        messageOption = option("internal")
+    ),
 
-    val betaAll: Option by lazy {
-        option("beta_all")
-    }
+    SPI(
+        fileOption = option("SPI_all"),
+        messageOption = option("SPI_type"),
+        serviceOption = option("SPI_Service")
+    );
 
-    val values: List<Option> by lazy {
-        listOf(internalAll, spiAll, experimentalApi, betaAll)
+    companion object {
+        fun findMatching(fileOption: Option): ApiOption? {
+            return values().find { it.fileOption == fileOption }
+        }
     }
 }
 
-internal fun ApiOptions.contains(option: Option): Boolean =
-    values.contains(option)
-
 /**
  * Creates an option with the given name and `true` value.
+ *
+ * We set the value to `true` because setting an API option to `false` does
+ * not make much sense and is equivalent to not setting it at all.
  */
 private fun option(name: String): Option = option {
     this.name = name

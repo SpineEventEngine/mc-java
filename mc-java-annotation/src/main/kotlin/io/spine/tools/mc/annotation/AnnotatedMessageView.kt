@@ -41,11 +41,6 @@ import io.spine.protodata.plugin.View
 internal class AnnotatedMessageView: View<TypeName, AnnotatedMessage, AnnotatedMessage.Builder>() {
 
     @Subscribe
-    fun on(@External e: FileOptionDiscovered) {
-        // TODO: Implement.
-    }
-
-    @Subscribe
     fun on(@External e: TypeOptionDiscovered) {
         // TODO: Implement.
     }

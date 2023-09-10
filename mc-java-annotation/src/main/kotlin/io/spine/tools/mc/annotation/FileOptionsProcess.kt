@@ -32,8 +32,13 @@ import io.spine.base.EventMessage
 import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.FilePath
+import io.spine.protodata.Option
+import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.event.FileEntered
 import io.spine.protodata.event.FileExited
+import io.spine.protodata.event.enumOptionDiscovered
+import io.spine.protodata.event.serviceOptionDiscovered
+import io.spine.protodata.event.typeOptionDiscovered
 import io.spine.server.entity.alter
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
@@ -47,7 +52,7 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
     fun on(@External e: FileEntered) = alter {
         file = e.file.path
         e.file.optionList
-            .filter { ApiOptions.contains(it) }
+            .filter { ApiOption.findMatching(it) != null }
             .forEach(::addOption)
     }
 
@@ -57,10 +62,70 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
             // There are no API-related options in this file.
             return emptyList()
         }
-
-        // TODO: Iterate through all the types present in this file via `ProtobufSourceFile` and
-        //  emit events for each of them.
-        return emptyList()
+        return emitEvents()
     }
 
+    private fun emitEvents(): Iterable<EventMessage> {
+        val currentFile = state().file
+        val protoSrc = select(ProtobufSourceFile::class.java).findById(currentFile)
+        check(protoSrc != null) {
+            "Unable to load type data of the Protobuf source file with path `$currentFile`."
+        }
+        val events = mutableListOf<EventMessage>()
+
+        state().optionList.forEach { option ->
+            val apiOption = ApiOption.findMatching(option)
+            if (apiOption != null) {
+                val messageOption = apiOption.messageOption
+                protoSrc.addMessageEvents(events, messageOption)
+                apiOption.enumOption?.let{
+                    protoSrc.addEnumEvents(events, it)
+                }
+                apiOption.serviceOption?.let {
+                    protoSrc.addServiceEvents(events, it)
+                }
+            }
+        }
+        return events
+    }
 }
+
+private fun ProtobufSourceFile.addMessageEvents(
+    events: MutableList<EventMessage>,
+    typeOption: Option
+) {
+    typeMap.values.forEach {
+        events.add(typeOptionDiscovered {
+            file = filePath
+            type = it.name
+            option = typeOption
+        })
+    }
+}
+
+private fun ProtobufSourceFile.addEnumEvents(
+    events: MutableList<EventMessage>,
+    enumOption: Option
+) {
+    enumTypeMap.values.forEach {
+        events.add(enumOptionDiscovered {
+            file = filePath
+            type = it.name
+            option = enumOption
+        })
+    }
+}
+
+private fun ProtobufSourceFile.addServiceEvents(
+    events: MutableList<EventMessage>,
+    serviceOption: Option
+) {
+    serviceMap.values.forEach {
+        events.add(serviceOptionDiscovered {
+            file = filePath
+            service = it.name
+            option = serviceOption
+        })
+    }
+}
+
