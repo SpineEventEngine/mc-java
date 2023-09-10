@@ -27,36 +27,46 @@
 package io.spine.tools.mc.annotation
 
 import com.google.protobuf.BoolValue
+import io.spine.annotation.Beta
+import io.spine.annotation.Experimental
+import io.spine.annotation.Internal
+import io.spine.annotation.SPI as Spi
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.option
+import kotlin.reflect.KClass
 
 internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,
     val enumOption: Option? = null,
-    val serviceOption: Option? = null
+    val serviceOption: Option? = null,
+    val annotationClass: KClass<out Annotation>
 ) {
 
     BETA(
         fileOption = option("beta_all"),
-        messageOption = option("beta")
+        messageOption = option("beta"),
+        annotationClass = Beta::class
     ),
 
     EXPERIMENTAL(
         fileOption = option("experimental_all"),
-        messageOption = option("experimental_type")
+        messageOption = option("experimental_type"),
+        annotationClass = Experimental::class
     ),
 
     INTERNAL(
         fileOption = option("internal_all"),
-        messageOption = option("internal")
+        messageOption = option("internal"),
+        annotationClass = Internal::class,
     ),
 
     SPI(
         fileOption = option("SPI_all"),
         messageOption = option("SPI_type"),
-        serviceOption = option("SPI_Service")
+        serviceOption = option("SPI_Service"),
+        annotationClass = Spi::class
     );
 
     companion object {
