@@ -26,12 +26,13 @@
 
 package io.spine.tools.mc.java.annotation
 
-import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
+import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.type.TypeSystem
 
-internal sealed class AnnotationRenderer: JavaRenderer() {
+internal sealed class AnnotationRenderer<T: EntityState<*>>(
+    private val viewClass: Class<T>
+): JavaRenderer() {
 
     // See https://github.com/SpineEventEngine/ProtoData/issues/150
     final override fun render(sources: SourceFileSet) {
@@ -40,7 +41,14 @@ internal sealed class AnnotationRenderer: JavaRenderer() {
         }
     }
 
-    abstract fun doRender(sources: SourceFileSet)
+    private fun doRender(sources: SourceFileSet) {
+        val annotated: Set<T> = select(viewClass).all()
+        annotated.forEach {
+            annotate(sources, it)
+        }
+    }
+
+    abstract fun annotate(sources: SourceFileSet, state: T)
 
     private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
         val outputRoot = sources.outputRoot

@@ -27,10 +27,13 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.AnnotatedMessage
 
-internal class MessageAnnotationRenderer: AnnotationRenderer() {
+internal class MessageAnnotationRenderer :
+    AnnotationRenderer<AnnotatedMessage>(AnnotatedMessage::class.java) {
 
-    override fun doRender(sources: SourceFileSet) {
+    override fun annotate(sources: SourceFileSet, state: AnnotatedMessage) {
         // TODO("Not yet implemented")
+        println(state)
     }
 }
