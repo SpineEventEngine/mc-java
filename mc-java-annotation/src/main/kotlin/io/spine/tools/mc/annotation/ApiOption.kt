@@ -65,7 +65,7 @@ internal enum class ApiOption(
     SPI(
         fileOption = option("SPI_all"),
         messageOption = option("SPI_type"),
-        serviceOption = option("SPI_Service"),
+        serviceOption = option("SPI_service"),
         annotationClass = Spi::class
     );
 

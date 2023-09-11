@@ -70,6 +70,7 @@ import "spine/protodata/ast.proto";
 //
 message AnnotatedMessage {
     option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
 
     // The name of the message type.
     protodata.TypeName type = 1;
@@ -79,9 +80,7 @@ message AnnotatedMessage {
 
     // The options applied to the fields of the type.
     //
-    // Could be empty, if:
-    // 1. The type is not a message (e.g. an enum or a service).
-    // 2. The type is a message, but has no fields with options applied.
+    // Could be empty if the message has no fields with options applied.
     //
     repeated FieldOption field_option = 3;
 }
@@ -90,7 +89,7 @@ message AnnotatedMessage {
 message FieldOption {
 
     // The field with the options applied.
-    protodata.Field field = 1 [(required) = true];
+    protodata.FieldName field = 1 [(required) = true];
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
@@ -99,6 +98,7 @@ message FieldOption {
 // The API level options applied to an enum.
 message AnnotatedEnum {
     option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
 
     // The name of the enum.
     protodata.TypeName type = 1;
@@ -107,14 +107,14 @@ message AnnotatedEnum {
     repeated protodata.Option option = 2 [(required) = true];
 
     // The options applied to the enum constants.
-    repeated EnumConstantOption constant_option = 3 [(required) = true];
+    repeated EnumConstantOption constant_option = 3;
 }
 
 // The API level options applied to an enum constant.
 message EnumConstantOption {
 
     // The enum constant with the options applied.
-    protodata.EnumConstant constant = 1 [(required) = true];
+    protodata.ConstantName constant = 1 [(required) = true];
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
@@ -123,19 +123,24 @@ message EnumConstantOption {
 // The API level options applied to a service.
 message AnnotatedService {
     option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
 
     // The name of the service.
     protodata.ServiceName service = 1;
 
     // The options applied to the service.
     repeated protodata.Option option = 2 [(required) = true];
+
+    // The options applied to the methods of the service.
+    repeated RpcOption rpc_option = 3;
 }
 
 // The API level options applied to a method of a service.
 message RpcOption {
+    option (is).java_type = "WithOptions";
 
     // The RPC with the options applied.
-    protodata.Rpc rpc = 1 [(required) = true];
+    protodata.RpcName rpc = 1 [(required) = true];
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
@@ -144,6 +149,7 @@ message RpcOption {
 // The API level options applied to a proto file.
 message FileOptions {
     option (entity).kind = PROCESS_MANAGER;
+    option (is).java_type = "WithOptions";
 
     // The name of the file.
     protodata.FilePath file = 1;

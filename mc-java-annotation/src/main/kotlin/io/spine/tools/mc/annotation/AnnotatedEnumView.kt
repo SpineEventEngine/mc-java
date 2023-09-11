@@ -24,8 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package io.spine.tools.mc.annotation
 
 import io.spine.core.External
@@ -33,18 +31,31 @@ import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.EnumConstantOptionDiscovered
 import io.spine.protodata.event.EnumOptionDiscovered
-import io.spine.protodata.event.FileOptionDiscovered
 import io.spine.protodata.plugin.View
+import io.spine.server.entity.alter
+import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 internal class AnnotatedEnumView : View<TypeName, AnnotatedEnum, AnnotatedEnum.Builder>() {
 
     @Subscribe
-    fun on(@External e: EnumOptionDiscovered) {
-        // TODO: Implement.
+    fun on(@External e: EnumOptionDiscovered) = alter {
+        optionList.add(e.option)
     }
 
     @Subscribe
-    fun on(@External e: EnumConstantOptionDiscovered) {
-        // TODO: Implement.
+    fun on(@External e: EnumConstantOptionDiscovered) = alter {
+        constantOptionList.add(
+            enumConstantOption {
+                constant = e.constant
+                option.add(e.option)
+            }
+        )
+    }
+
+    @Subscribe
+    fun on(@External e: FileOptionMatched) = alter {
+        if (!state().revertsFileWide(e)) {
+            optionList.add(e.assumed)
+        }
     }
 }

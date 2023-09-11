@@ -26,41 +26,32 @@
 
 package io.spine.tools.mc.annotation
 
-import io.spine.core.External
-import io.spine.core.Subscribe
-import io.spine.protodata.TypeName
-import io.spine.protodata.event.FieldOptionDiscovered
-import io.spine.protodata.event.TypeOptionDiscovered
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
+import com.google.protobuf.BoolValue
+import io.spine.protodata.Option
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
-internal class AnnotatedMessageView: View<TypeName, AnnotatedMessage, AnnotatedMessage.Builder>() {
+/**
+ * Common interface for views that deal with API options.
+ */
+public interface WithOptions {
 
-    @Subscribe
-    fun on(@External e: TypeOptionDiscovered) = alter {
-        optionList.add(e.option)
-    }
+    public fun getOptionList(): List<Option>
 
-    @Subscribe
-    fun on(@External e: FieldOptionDiscovered) = alter {
-        val fieldOption = fieldOptionBuilderList.find { it.field == e.field }
-        fieldOption?.let {
-            optionList.add(e.option)
-            return@alter
+    /**
+     * Checks if an API option is set on the file level and
+     * is reverted on the type or `assumed` level.
+     */
+    public fun revertsFileWide(option: FileOptionMatched): Boolean {
+        val alreadySetOption = getOptionList().find {
+            it.name == option.assumed.name
         }
-        fieldOptionList.add(
-            fieldOption {
-                field = e.field
-                option.add(e.option)
-            }
-        )
-    }
-
-    @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
-            optionList.add(e.assumed)
+        alreadySetOption?.let {
+            // File-wide options are only handled and matched iff they set to `true`.
+            //
+            // If the type has an option set to `false`, it means that the file-wide
+            // option is explicitly reverted.
+            return !(it.value.unpack(BoolValue::class.java).value)
         }
+        return false
     }
 }

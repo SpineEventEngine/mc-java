@@ -24,43 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.annotation
+syntax = "proto3";
 
-import io.spine.core.External
-import io.spine.core.Subscribe
-import io.spine.protodata.TypeName
-import io.spine.protodata.event.FieldOptionDiscovered
-import io.spine.protodata.event.TypeOptionDiscovered
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.annotation.event.FileOptionMatched
+package spine.tools.mc.annotation;
 
-internal class AnnotatedMessageView: View<TypeName, AnnotatedMessage, AnnotatedMessage.Builder>() {
+import "spine/options.proto";
 
-    @Subscribe
-    fun on(@External e: TypeOptionDiscovered) = alter {
-        optionList.add(e.option)
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.annotation.event";
+option java_outer_classname = "EventsProto";
+option java_multiple_files = true;
+
+import "spine/protodata/ast.proto";
+
+// Emitted when a file-wide API option is matched to a message, an enum, or a service
+// declared in a protobuf file.
+message FileOptionMatched {
+
+    // The file where the API option was declared.
+    protodata.FilePath file = 1;
+
+    // The file-wide option declared in the file.
+    protodata.Option file_option = 2;
+
+    // The target of the option.
+    oneof target {
+
+        // The name of a message type or an enum declared in the file.
+        protodata.TypeName type = 3;
+
+        // The name of the service declared in the file.
+        protodata.ServiceName service = 4;
     }
 
-    @Subscribe
-    fun on(@External e: FieldOptionDiscovered) = alter {
-        val fieldOption = fieldOptionBuilderList.find { it.field == e.field }
-        fieldOption?.let {
-            optionList.add(e.option)
-            return@alter
-        }
-        fieldOptionList.add(
-            fieldOption {
-                field = e.field
-                option.add(e.option)
-            }
-        )
-    }
-
-    @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
-            optionList.add(e.assumed)
-        }
-    }
+    // The option assumed to be applied to the target.
+    protodata.Option assumed = 5;
 }
+
