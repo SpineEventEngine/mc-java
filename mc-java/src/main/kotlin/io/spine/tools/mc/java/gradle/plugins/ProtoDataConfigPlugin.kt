@@ -49,7 +49,6 @@ import org.gradle.api.artifacts.Dependency
 /**
  * The plugin that configures ProtoData for the associated project.
  *
- *
  * We use ProtoData and the Validation library to generate validation code right inside
  * the Protobuf message classes. This plugin applies the `io.spine.protodata` plugin,
  * configures its extension, writes the ProtoData configuration file, and adds the required
