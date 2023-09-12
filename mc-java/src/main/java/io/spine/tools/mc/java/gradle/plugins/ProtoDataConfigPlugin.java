@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
 import io.spine.tools.gradle.Artifact;
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin;
+import io.spine.tools.mc.java.rejection.RejectionPlugin;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -131,7 +133,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         configureValidationRendering(project, codegen);
 
         codegen.plugins(
-                "io.spine.tools.mc.java.rejection.RejectionPlugin"
+                RejectionPlugin.class.getName(),
+                ApiAnnotationsPlugin.class.getName()
         );
 
         codegen.setSubDirs(ImmutableList.of(

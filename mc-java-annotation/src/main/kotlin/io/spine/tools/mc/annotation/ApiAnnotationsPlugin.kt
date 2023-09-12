@@ -37,7 +37,7 @@ import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
 import kotlin.reflect.KClass
 
 /**
- * A ProtoData plugin which expose
+ * A ProtoData plugin which provides code generation for API level annotations.
  */
 public class ApiAnnotationsPlugin : Plugin {
 
