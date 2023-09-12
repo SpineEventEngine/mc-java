@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,70 +23,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.plugins
 
-package io.spine.tools.mc.java.gradle.plugins;
-
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.proto.code.ProtoOption;
-import io.spine.validation.MessageMarkers;
-import io.spine.validation.ValidationConfig;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.tasks.OutputFile;
-import org.gradle.api.tasks.TaskAction;
-
-import java.io.IOException;
-
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
-import static java.nio.file.Files.write;
-import static java.util.stream.Collectors.toSet;
+import io.spine.protodata.gradle.plugin.LaunchProtoData
+import io.spine.tools.mc.java.codegen.CodegenOptions
+import io.spine.tools.mc.java.gradle.mcJava
+import io.spine.tools.mc.java.gradle.plugins.GenerateProtoDataConfig.Companion.CONFIG_SUBDIR
+import io.spine.validation.messageMarkers
+import io.spine.validation.validationConfig
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
 
 /**
  * A task that writes the ProtoData configuration into a file.
  *
- * <p>The {@link #getTargetFile() targetFile} property defines the destination file.
+ * The [targetFile] property defines the destination file.
  *
- * <p>This task configures ProtoData-based validation codegen. It tells which files and types
+ * This task configures ProtoData-based validation codegen. It tells which files and types
  * are considered entities and signals, so that the Validation library may add extra constraints
  * for those types.
  */
-@SuppressWarnings({"AbstractClassNeverImplemented", "unused"})
-    // Gradle creates a subtype for this class.
-public abstract class GenerateProtoDataConfig extends DefaultTask {
+@Suppress("unused") // Gradle creates a subtype for this class.
+public abstract class GenerateProtoDataConfig : DefaultTask() {
 
-    /**
-     * The file where the config is written.
-     *
-     * <p>It's recommended to put this file under the {@code build} directory of the associated
-     * project, so that it is deleted upon {@code clean}-ing the project.
-     */
-    @OutputFile
-    public abstract RegularFileProperty getTargetFile();
+    @get:OutputFile
+    public abstract val targetFile: RegularFileProperty
 
     @TaskAction
-    private void writeFile() throws IOException {
-        var options = getMcJava(getProject());
-        var codegen = options.codegen.toProto();
-        var makers = MessageMarkers.newBuilder()
-                .addAllCommandPattern(codegen.getCommands().getPatternList())
-                .addAllEventPattern(codegen.getEvents().getPatternList())
-                .addAllRejectionPattern(codegen.getRejections().getPatternList())
-                .addAllEntityPattern(codegen.getEntities().getPatternList())
-                .addAllEntityOptionName(entityOptionsNames(codegen))
-                .build();
-        var config = ValidationConfig.newBuilder()
-                .setMessageMarkers(makers)
-                .build();
-        var file = getProject().file(getTargetFile());
-        file.getParentFile().mkdirs();
-        write(file.toPath(), config.toByteArray());
+    @Throws(IOException::class)
+    private fun writeFile() {
+        val options = project.mcJava
+        val codegen = options.codegen.toProto()
+
+        val makers = codegen.let {
+            messageMarkers {
+                commandPattern.addAll(it.commands.patternList)
+                eventPattern.addAll(it.events.patternList)
+                rejectionPattern.addAll(it.rejections.patternList)
+                entityOptionName.addAll(it.entityOptionsNames())
+            }
+        }
+        val config = validationConfig {
+            messageMarkers = makers
+        }
+
+        val file = project.file(targetFile)
+        file.parentFile.mkdirs()
+        file.writeBytes(config.toByteArray())
     }
 
-    private static Iterable<String> entityOptionsNames(CodegenOptions codegen) {
-        return codegen.getEntities()
-                      .getOptionList()
-                      .stream()
-                      .map(ProtoOption::getName)
-                      .collect(toSet());
+    internal companion object {
+
+        internal fun taskNameFor(launchTask: LaunchProtoData): String =
+            "writeConfigFor_${launchTask.name}"
+
+        const val CONFIG_SUBDIR = "protodata-config"
     }
+}
+
+private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
+    entities.optionList.map { it.name }
+
+internal fun GenerateProtoDataConfig.defaultFileName(): String {
+    return CONFIG_SUBDIR + File.separatorChar + "$name.bin"
 }

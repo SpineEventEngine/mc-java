@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,164 +23,148 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.plugins
 
-package io.spine.tools.mc.java.gradle.plugins;
-
-import com.google.common.collect.ImmutableList;
-import io.spine.protodata.gradle.CodegenSettings;
-import io.spine.protodata.gradle.plugin.LaunchProtoData;
-import io.spine.tools.gradle.Artifact;
-import io.spine.tools.mc.annotation.ApiAnnotationsPlugin;
-import io.spine.tools.mc.java.rejection.RejectionPlugin;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.artifacts.Dependency;
-
-import static io.spine.tools.fs.DirectoryName.kotlin;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaBase;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaRejection;
-import static io.spine.tools.mc.java.gradle.Artifacts.toolBase;
-import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
-import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
-import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
-import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
-import static java.io.File.separatorChar;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNullElseGet;
+import com.google.common.collect.ImmutableList
+import io.spine.protodata.gradle.CodegenSettings
+import io.spine.protodata.gradle.plugin.LaunchProtoData
+import io.spine.tools.fs.DirectoryName
+import io.spine.tools.gradle.Artifact
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
+import io.spine.tools.mc.java.gradle.generatedGrpcDirName
+import io.spine.tools.mc.java.gradle.generatedJavaDirName
+import io.spine.tools.mc.java.gradle.mcJavaAnnotation
+import io.spine.tools.mc.java.gradle.mcJavaBase
+import io.spine.tools.mc.java.gradle.mcJavaRejection
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.IMPL_CONFIGURATION
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.PROTODATA_CONFIGURATION
+import io.spine.tools.mc.java.gradle.toolBase
+import io.spine.tools.mc.java.gradle.validationJavaBundle
+import io.spine.tools.mc.java.gradle.validationJavaRuntime
+import io.spine.tools.mc.java.rejection.RejectionPlugin
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
 
 /**
  * The plugin that configures ProtoData for the associated project.
  *
- * <p>We use ProtoData and the Validation library to generate validation code right inside
- * the Protobuf message classes. This plugin applies the {@code io.spine.protodata} plugin,
+ *
+ * We use ProtoData and the Validation library to generate validation code right inside
+ * the Protobuf message classes. This plugin applies the `io.spine.protodata` plugin,
  * configures its extension, writes the ProtoData configuration file, and adds the required
  * dependencies to the target project.
  */
-final class ProtoDataConfigPlugin implements Plugin<Project> {
-
-    private static final String PROTO_DATA_ID = "io.spine.protodata";
-    private static final String CONFIG_SUBDIR = "protodata-config";
-
-    @SuppressWarnings("DuplicateStringLiteralInspection")
-        // Could be duplicated in auto-generated Gradle code via script plugins in `buildSrc`.
-    private static final String PROTODATA_CONFIGURATION = "protoData";
-    private static final String IMPL_CONFIGURATION = "implementation";
+internal class ProtoDataConfigPlugin : Plugin<Project> {
 
     /**
-     * Applies the {@code io.spine.protodata} plugin to the project and, if the user needs
+     * Applies the `io.spine.protodata` plugin to the project and, if the user needs
      * validation code generation, configures ProtoData to generate Java validation code.
      *
-     * <p>ProtoData configuration is a tricky operation because of Gradle's lifecycle. On one hand,
-     * to check if the user disables validation via
-     * {@link io.spine.tools.mc.java.gradle.codegen.ValidationConfig#skipValidation()},
-     * we need to run configuration after the project is evaluated. At the same time, we need to
-     * squeeze our configuration before the {@code LaunchProtoData} task is configured. This means
-     * adding the {@code afterEvaluate(..)} hook before the ProtoData Gradle plugin is applied to
-     * the project.
+     * ProtoData configuration is a tricky operation because of Gradle's lifecycle.
+     * On one hand, to check if the user disables validation via
+     * [skipValidation][io.spine.tools.mc.java.gradle.codegen.ValidationConfig.skipValidation],
+     * we need to run configuration after the project is evaluated.
+     *
+     * At the same time, we need to squeeze our configuration before the `LaunchProtoData` task
+     * is configured. This means adding the `afterEvaluate(..)` hook before the ProtoData Gradle
+     * plugin is applied to the project.
      */
-    @Override
-    public void apply(Project project) {
-        project.afterEvaluate(ProtoDataConfigPlugin::configureProtoData);
-        project.getPluginManager()
-              .apply(PROTO_DATA_ID);
-    }
-
-    private static void configureProtoData(Project project) {
-        configurePlugins(project);
-
-        var tasks = project.getTasks();
-        tasks.withType(LaunchProtoData.class, task -> {
-            var name = task.getName();
-            var taskName = format("writeConfigFor_%s", name);
-            var configTask = tasks.create(
-                    taskName,
-                    GenerateProtoDataConfig.class,
-                    t -> linkConfigFile(project, task, t)
-            );
-            task.dependsOn(configTask);
-        });
-    }
-
-    private static void addDependency(
-            Project project,
-            String configurationName,
-            Artifact artifact
-    ) {
-        var dependency = findDependency(project, artifact);
-        project.getDependencies()
-               .add(configurationName, requireNonNullElseGet(dependency, artifact::notation));
-    }
-
-    private static void addDependencies(
-            Project project,
-            String configurationName,
-            Artifact... artifacts
-    ) {
-        for (var artifact : artifacts) {
-            addDependency(project, configurationName, artifact);
+    override fun apply(project: Project) {
+        project.afterEvaluate {
+            it.configureProtoData()
         }
+        project.pluginManager.apply(PROTO_DATA_ID)
     }
 
-    /**
-     * Configures ProtoData with plugins, for the given Gradle project.
-     */
-    private static void configurePlugins(Project project) {
-        var codegen = project.getExtensions()
-                             .getByType(CodegenSettings.class);
+    companion object {
+        const val PROTO_DATA_ID = "io.spine.protodata"
 
-        configureValidationRendering(project, codegen);
-
-        codegen.plugins(
-                RejectionPlugin.class.getName(),
-                ApiAnnotationsPlugin.class.getName()
-        );
-
-        codegen.setSubDirs(ImmutableList.of(
-                getGeneratedJavaDirName().value(),
-                getGeneratedGrpcDirName().value(),
-                kotlin.value()
-        ));
-
-        addDependencies(
-                project, PROTODATA_CONFIGURATION,
-                mcJavaBase(),
-                mcJavaAnnotation(),
-                mcJavaRejection(),
-                toolBase()
-        );
-    }
-
-    private static void configureValidationRendering(Project project, CodegenSettings codegen) {
-        codegen.plugins(
-                "io.spine.validation.java.JavaValidationPlugin"
-        );
-        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle());
-        addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
-    }
-
-    private static
-    void linkConfigFile(Project target, LaunchProtoData task, GenerateProtoDataConfig t) {
-        var targetFile = t.getTargetFile();
-        var fileName = t.getName() + ".bin";
-        var defaultFile = target.getLayout()
-                                .getBuildDirectory()
-                                .file(CONFIG_SUBDIR + separatorChar + fileName);
-        targetFile.convention(defaultFile);
-        task.getConfigurationFile()
-            .set(targetFile);
-    }
-
-    private static @Nullable Dependency findDependency(Project project, Artifact artifact) {
-        var dependencies = project.getConfigurations().stream()
-                .flatMap(c -> c.getDependencies().stream());
-
-        var found = dependencies.filter((d) ->
-            d.getGroup() != null
-                    && d.getGroup().equals(artifact.group())
-                    && d.getName().equals(artifact.name())
-        ).findFirst().orElse(null);
-        return found;
+        // Could be duplicated in auto-generated Gradle code via script plugins in `buildSrc`.
+        const val PROTODATA_CONFIGURATION = "protoData"
+        const val IMPL_CONFIGURATION = "implementation"
     }
 }
+
+private fun Project.configureProtoData() {
+    configurePlugins()
+    tasks.withType(LaunchProtoData::class.java) { launchTask ->
+        val taskName = GenerateProtoDataConfig.taskNameFor(launchTask)
+        val configTask = tasks.create(taskName, GenerateProtoDataConfig::class.java) {
+            linkConfigFile(launchTask, it)
+        }
+        launchTask.dependsOn(configTask)
+    }
+}
+
+/**
+ * Configures ProtoData with plugins, for the given Gradle project.
+ */
+private fun Project.configurePlugins() {
+    val codegen = extensions.getByType(CodegenSettings::class.java)
+    configureValidationRendering(codegen)
+    codegen.plugins(
+        RejectionPlugin::class.java.getName(),
+        ApiAnnotationsPlugin::class.java.getName()
+    )
+    codegen.subDirs = ImmutableList.of(
+        generatedJavaDirName.value(),
+        generatedGrpcDirName.value(),
+        DirectoryName.kotlin.value()
+    )
+    project.addDependencies(
+        PROTODATA_CONFIGURATION,
+        mcJavaBase,
+        mcJavaAnnotation,
+        mcJavaRejection,
+        toolBase
+    )
+}
+
+private fun Project.configureValidationRendering(codegen: CodegenSettings) {
+    codegen.plugins(
+        "io.spine.validation.java.JavaValidationPlugin"
+    )
+    addDependency(PROTODATA_CONFIGURATION, validationJavaBundle)
+    addDependency(IMPL_CONFIGURATION, validationJavaRuntime)
+}
+
+private fun Project.linkConfigFile(
+    launchTask: LaunchProtoData,
+    configTask: GenerateProtoDataConfig
+) {
+    configTask.apply {
+        targetFile.convention(layout.buildDirectory.file(defaultFileName()))
+    }
+    launchTask.configurationFile.set(configTask.targetFile)
+}
+
+private fun Project.addDependencies(configurationName: String, vararg artifacts: Artifact) {
+    for (artifact in artifacts) {
+        addDependency(configurationName, artifact)
+    }
+}
+
+private fun Project.addDependency(configurationName: String, artifact: Artifact) {
+    val dependency = findDependency(artifact)
+    dependencies.add(
+        configurationName,
+        dependency ?: artifact.notation()
+    )
+}
+
+private fun Project.findDependency(artifact: Artifact): Dependency? {
+    val dependencies =
+        configurations.stream()
+            .flatMap { c ->
+                c.dependencies.stream()
+            }
+    val result = dependencies.filter { d ->
+        d.group != null
+                && d.group == artifact.group()
+                && d.name == artifact.name()
+    }.findFirst()
+        .orElse(null)
+    return result
+}
+
