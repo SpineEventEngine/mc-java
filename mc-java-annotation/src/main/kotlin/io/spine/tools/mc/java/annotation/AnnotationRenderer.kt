@@ -29,10 +29,16 @@ package io.spine.tools.mc.java.annotation
 import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.WithOptions
 
-internal sealed class AnnotationRenderer<T: EntityState<*>>(
+/**
+ * An abstract base for annotation renderers.
+ *
+ * @param T the type of the view state which contains information about annotated types.
+ */
+internal sealed class AnnotationRenderer<T>(
     private val viewClass: Class<T>
-): JavaRenderer() {
+) : JavaRenderer() where T : EntityState<*>, T : WithOptions {
 
     // See https://github.com/SpineEventEngine/ProtoData/issues/150
     final override fun render(sources: SourceFileSet) {

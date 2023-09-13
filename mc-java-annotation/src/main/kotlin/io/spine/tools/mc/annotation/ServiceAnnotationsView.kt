@@ -35,8 +35,8 @@ import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
-internal class AnnotatedServiceView :
-    View<ServiceName, AnnotatedService, AnnotatedService.Builder>() {
+internal class ServiceAnnotationsView :
+    View<ServiceName, ServiceAnnotations, ServiceAnnotations.Builder>() {
 
     @Subscribe
     fun on(@External e: ServiceOptionDiscovered) = alter {

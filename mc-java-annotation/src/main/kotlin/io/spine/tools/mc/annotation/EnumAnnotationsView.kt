@@ -35,7 +35,7 @@ import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
-internal class AnnotatedEnumView : View<TypeName, AnnotatedEnum, AnnotatedEnum.Builder>() {
+internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotations.Builder>() {
 
     @Subscribe
     fun on(@External e: EnumOptionDiscovered) = alter {

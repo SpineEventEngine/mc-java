@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.annotation
 
+import io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
@@ -42,12 +43,13 @@ import kotlin.reflect.KClass
 public class ApiAnnotationsPlugin : Plugin {
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        AnnotatedMessageView::class.java,
-        AnnotatedServiceView::class.java,
-        AnnotatedEnumView::class.java
+        MessageAnnotationsView::class.java,
+        ServiceAnnotationsView::class.java,
+        EnumAnnotationsView::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
+        PrintBeforePrimaryDeclaration(),
         MessageAnnotationRenderer(),
         ServiceAnnotationRenderer(),
         EnumAnnotationRenderer()

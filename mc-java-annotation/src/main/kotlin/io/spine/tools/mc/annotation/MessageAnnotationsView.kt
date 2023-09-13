@@ -35,7 +35,8 @@ import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
-internal class AnnotatedMessageView: View<TypeName, AnnotatedMessage, AnnotatedMessage.Builder>() {
+internal class MessageAnnotationsView :
+    View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
 
     @Subscribe
     fun on(@External e: TypeOptionDiscovered) = alter {

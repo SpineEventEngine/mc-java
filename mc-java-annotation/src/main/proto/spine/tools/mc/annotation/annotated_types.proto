@@ -68,7 +68,7 @@ import "spine/protodata/ast.proto";
 //
 // Multiple options may be applied to the same element of proto code.
 //
-message AnnotatedMessage {
+message MessageAnnotations {
     option (entity).kind = VIEW;
     option (is).java_type = "WithOptions";
 
@@ -96,7 +96,7 @@ message FieldOption {
 }
 
 // The API level options applied to an enum.
-message AnnotatedEnum {
+message EnumAnnotations {
     option (entity).kind = VIEW;
     option (is).java_type = "WithOptions";
 
@@ -104,7 +104,7 @@ message AnnotatedEnum {
     protodata.TypeName type = 1;
 
     // The options applied to the enum.
-    repeated protodata.Option option = 2 [(required) = true];
+    repeated protodata.Option option = 2;
 
     // The options applied to the enum constants.
     repeated EnumConstantOption constant_option = 3;
@@ -121,7 +121,7 @@ message EnumConstantOption {
 }
 
 // The API level options applied to a service.
-message AnnotatedService {
+message ServiceAnnotations {
     option (entity).kind = VIEW;
     option (is).java_type = "WithOptions";
 
@@ -129,7 +129,7 @@ message AnnotatedService {
     protodata.ServiceName service = 1;
 
     // The options applied to the service.
-    repeated protodata.Option option = 2 [(required) = true];
+    repeated protodata.Option option = 2;
 
     // The options applied to the methods of the service.
     repeated RpcOption rpc_option = 3;

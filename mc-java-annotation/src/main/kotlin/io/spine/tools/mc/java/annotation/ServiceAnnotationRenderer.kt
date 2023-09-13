@@ -27,12 +27,13 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.AnnotatedService
+import io.spine.tools.mc.annotation.ServiceAnnotations
 
 internal class ServiceAnnotationRenderer :
-    AnnotationRenderer<AnnotatedService>(AnnotatedService::class.java) {
+    AnnotationRenderer<ServiceAnnotations>(
+        ServiceAnnotations::class.java) {
 
-    override fun annotate(sources: SourceFileSet, state: AnnotatedService) {
+    override fun annotate(sources: SourceFileSet, state: ServiceAnnotations) {
         // TODO("Not yet implemented")
         println(state)
     }
