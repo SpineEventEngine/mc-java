@@ -34,6 +34,7 @@ import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.annotation.event.FileOptionMatched
+import io.spine.server.entity.state
 
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
@@ -60,7 +61,7 @@ internal class MessageAnnotationsView :
 
     @Subscribe
     fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
+        if (!state.revertsFileWide(e)) {
             optionList.add(e.assumed)
         }
     }

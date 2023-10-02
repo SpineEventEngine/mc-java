@@ -27,14 +27,20 @@
 package io.spine.tools.mc.annotation
 
 import com.google.protobuf.BoolValue
+import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.Option
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
  * Common interface for views that deal with API options.
  */
+@GeneratedMixin
 public interface WithOptions {
 
+    /**
+     * Obtains a list of options in a corresponding Protobuf code element like
+     * (e.g. file, message, enum, or service).
+     */
     public fun getOptionList(): List<Option>
 
     /**
@@ -42,16 +48,24 @@ public interface WithOptions {
      * is reverted on the type or `assumed` level.
      */
     public fun revertsFileWide(option: FileOptionMatched): Boolean {
-        val alreadySetOption = getOptionList().find {
+        val alreadySetOption = optionList.find {
             it.name == option.assumed.name
         }
         alreadySetOption?.let {
-            // File-wide options are only handled and matched iff they set to `true`.
+            // File-wide options are only handled and matched iff they are set to `true`.
             //
             // If the type has an option set to `false`, it means that the file-wide
             // option is explicitly reverted.
-            return !(it.value.unpack(BoolValue::class.java).value)
+            val unpacked = it.value.unpack(BoolValue::class.java).value
+            return !unpacked
         }
         return false
     }
 }
+
+/**
+ * Shortcut for [WithOptions.getOptionList].
+ */
+@get:JvmName("optionList")
+public val WithOptions.optionList: List<Option>
+    get() = getOptionList()
