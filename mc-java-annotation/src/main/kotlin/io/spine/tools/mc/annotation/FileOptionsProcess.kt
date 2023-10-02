@@ -28,6 +28,9 @@
 
 package io.spine.tools.mc.annotation
 
+import com.google.protobuf.BoolValue
+import com.google.protobuf.kotlin.isA
+import com.google.protobuf.kotlin.unpack
 import io.spine.base.EventMessage
 import io.spine.core.External
 import io.spine.core.Subscribe
@@ -40,25 +43,29 @@ import io.spine.protodata.event.enumOptionDiscovered
 import io.spine.protodata.event.serviceOptionDiscovered
 import io.spine.protodata.event.typeOptionDiscovered
 import io.spine.server.entity.alter
+import io.spine.server.entity.state
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 
 internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
 
     /**
-     * Adds the API options from the file to the state of this process.
+     * Adds the API options from the file to the state of this process IFF their
+     * values are set to `true`.
      */
     @Subscribe
     fun on(@External e: FileEntered) = alter {
         file = e.file.path
         e.file.optionList
             .filter { ApiOption.findMatching(it) != null }
+            .filter { it.value.isA<BoolValue>() }
+            .filter { it.value.unpack<BoolValue>().value }
             .forEach(::addOption)
     }
 
     @React
     fun on(@External e: FileExited): Iterable<EventMessage> {
-        if (state().optionList.isEmpty()) {
+        if (state.optionList.isEmpty()) {
             // There are no API-related options in this file.
             return emptyList()
         }
@@ -73,15 +80,15 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
         }
         val events = mutableListOf<EventMessage>()
 
-        state().optionList.forEach { option ->
+        state.optionList.forEach { option ->
             val apiOption = ApiOption.findMatching(option)
-            if (apiOption != null) {
-                val messageOption = apiOption.messageOption
+            apiOption?.let {
+                val messageOption = it.messageOption
                 protoSrc.addMessageEvents(events, messageOption)
-                apiOption.enumOption?.let{
+                it.enumOption?.let{
                     protoSrc.addEnumEvents(events, it)
                 }
-                apiOption.serviceOption?.let {
+                it.serviceOption?.let {
                     protoSrc.addServiceEvents(events, it)
                 }
             }
