@@ -61,6 +61,19 @@ import "spine/protodata/ast.proto";
 // API level options are used to produce corresponding annotations in the generated code.
 //
 
+
+// The API level options applied to a proto file.
+message FileOptions {
+    option (entity).kind = PROCESS_MANAGER;
+    option (is).java_type = "WithOptions";
+
+    // The name of the file.
+    protodata.FilePath file = 1;
+
+    // The options applied to the file.
+    repeated protodata.Option option = 2 [(required) = true];
+}
+
 // A type which has been annotated with one or several API level options.
 //
 // The type may be a message, an enum, or a service.
@@ -143,17 +156,5 @@ message RpcOption {
     protodata.RpcName rpc = 1 [(required) = true];
 
     // One or more applied options.
-    repeated protodata.Option option = 2 [(required) = true];
-}
-
-// The API level options applied to a proto file.
-message FileOptions {
-    option (entity).kind = PROCESS_MANAGER;
-    option (is).java_type = "WithOptions";
-
-    // The name of the file.
-    protodata.FilePath file = 1;
-
-    // The options applied to the file.
     repeated protodata.Option option = 2 [(required) = true];
 }
