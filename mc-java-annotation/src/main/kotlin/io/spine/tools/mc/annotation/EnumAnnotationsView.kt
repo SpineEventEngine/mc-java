@@ -33,6 +33,7 @@ import io.spine.protodata.event.EnumConstantOptionDiscovered
 import io.spine.protodata.event.EnumOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
+import io.spine.server.entity.state
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotations.Builder>() {
@@ -54,7 +55,7 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
 
     @Subscribe
     fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
+        if (!state.revertsFileWide(e)) {
             optionList.add(e.assumed)
         }
     }

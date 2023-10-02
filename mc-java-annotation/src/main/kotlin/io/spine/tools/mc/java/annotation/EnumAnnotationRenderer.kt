@@ -26,14 +26,13 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.EnumAnnotations
 
 internal class EnumAnnotationRenderer :
-    AnnotationRenderer<EnumAnnotations>(
-        EnumAnnotations::class.java) {
+    AnnotationRenderer<EnumAnnotations>(EnumAnnotations::class.java) {
 
-    override fun annotate(sources: SourceFileSet, state: EnumAnnotations) {
+    override fun annotateType(state: EnumAnnotations, apiOption: ApiOption) {
         // TODO("Not yet implemented")
         println(state)
     }

@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.annotation
 import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.WithOptions
 
 /**
@@ -40,24 +41,39 @@ internal sealed class AnnotationRenderer<T>(
     private val viewClass: Class<T>
 ) : JavaRenderer() where T : EntityState<*>, T : WithOptions {
 
+    protected lateinit var sources: SourceFileSet
+
     // See https://github.com/SpineEventEngine/ProtoData/issues/150
     final override fun render(sources: SourceFileSet) {
         if (handlesJavaOrGprc(sources)) {
-            doRender(sources)
+            this.sources = sources
+            doRender()
         }
     }
 
-    private fun doRender(sources: SourceFileSet) {
+    private fun doRender() {
         val annotated: Set<T> = select(viewClass).all()
         annotated.forEach {
-            annotate(sources, it)
+            annotate(it)
         }
     }
 
-    abstract fun annotate(sources: SourceFileSet, state: T)
-
-    private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
-        val outputRoot = sources.outputRoot
-        return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
+    private fun annotate(state: T) {
+        state.getOptionList()
+            .mapNotNull { ApiOption.findMatching(it) }
+            .forEach { apiOption ->
+                annotateType(state, apiOption)
+            }
     }
+
+    abstract fun annotateType(state: T, apiOption: ApiOption)
+}
+
+/**
+ * Tells if the given set of source files contains Java or gRPC files as output
+ * of the source code transformation.
+ */
+private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
+    val outputRoot = sources.outputRoot
+    return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
 }
