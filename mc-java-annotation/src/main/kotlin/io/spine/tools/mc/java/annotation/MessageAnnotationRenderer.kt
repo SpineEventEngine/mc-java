@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.TypeName
-import io.spine.protodata.codegen.java.ClassName
+import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.annotation.MessageAnnotations
 
@@ -55,11 +55,10 @@ private class MessageApiAnnotation<T : Annotation>(
     annotationClass: Class<T>
 ) : ApiTypeAnnotation<T>(annotationClass) {
 
+    private val convention = MessageOrEnumConvention(typeSystem)
+
     override fun shouldAnnotate(file: SourceFile): Boolean {
-        val declarations = knownTypeConventions<ClassName>().allDeclarationsFor(typeName)
-        val declaration = declarations.firstOrNull {
-            it.path.endsWith(file.relativePath)
-        }
-        return declaration != null
+        val declaration = convention.declarationFor(typeName)
+        return declaration.path.endsWith(file.relativePath)
     }
 }
