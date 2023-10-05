@@ -29,7 +29,6 @@ package io.spine.tools.mc.annotation
 import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
-import io.spine.protodata.event.EnumConstantOptionDiscovered
 import io.spine.protodata.event.EnumOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
@@ -41,16 +40,6 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
     @Subscribe
     fun on(@External e: EnumOptionDiscovered) = alter {
         optionList.add(e.option)
-    }
-
-    @Subscribe
-    fun on(@External e: EnumConstantOptionDiscovered) = alter {
-        constantOptionList.add(
-            enumConstantOption {
-                constant = e.constant
-                option.add(e.option)
-            }
-        )
     }
 
     @Subscribe

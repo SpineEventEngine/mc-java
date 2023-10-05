@@ -39,34 +39,38 @@ import kotlin.reflect.KClass
 internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,
+    val fieldOption: Option? = null,
     val enumOption: Option? = null,
     val serviceOption: Option? = null,
-    val annotationClass: KClass<out Annotation>
+    val annotationClass: Class<out Annotation>
 ) {
 
     BETA(
         fileOption = option("beta_all"),
-        messageOption = option("beta"),
-        annotationClass = Beta::class
+        messageOption = option("beta_type"),
+        fieldOption = option("beta"),
+        annotationClass = Beta::class.java
     ),
 
     EXPERIMENTAL(
         fileOption = option("experimental_all"),
         messageOption = option("experimental_type"),
-        annotationClass = Experimental::class
+        fieldOption = option("experimental"),
+        annotationClass = Experimental::class.java
     ),
 
     INTERNAL(
         fileOption = option("internal_all"),
         messageOption = option("internal"),
-        annotationClass = Internal::class,
+        fieldOption = option("internal"),
+        annotationClass = Internal::class.java,
     ),
 
     SPI(
         fileOption = option("SPI_all"),
         messageOption = option("SPI_type"),
         serviceOption = option("SPI_service"),
-        annotationClass = Spi::class
+        annotationClass = Spi::class.java
     );
 
     companion object {

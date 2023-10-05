@@ -26,11 +26,15 @@
 
 package io.spine.tools.mc.java.annotation
 
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.codegen.java.annotation.TypeAnnotation
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.WithOptions
+import io.spine.tools.mc.annotation.optionList
 
 /**
  * An abstract base for annotation renderers.
@@ -58,15 +62,16 @@ internal sealed class AnnotationRenderer<T>(
         }
     }
 
-    private fun annotate(state: T) {
-        state.getOptionList()
+    @OverridingMethodsMustInvokeSuper
+    protected open fun annotate(state: T) {
+        state.optionList
             .mapNotNull { ApiOption.findMatching(it) }
             .forEach { apiOption ->
-                annotateType(state, apiOption)
+                annotateType(state, apiOption.annotationClass)
             }
     }
 
-    abstract fun annotateType(state: T, apiOption: ApiOption)
+    abstract fun annotateType(state: T, annotationClass: Class<out Annotation>)
 }
 
 /**
@@ -76,4 +81,10 @@ internal sealed class AnnotationRenderer<T>(
 private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
     val outputRoot = sources.outputRoot
     return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
+}
+
+internal abstract class ApiTypeAnnotation<T : Annotation>(annotationClass: Class<T>) :
+    TypeAnnotation<T>(annotationClass) {
+
+    override fun renderAnnotationArguments(file: SourceFile): String = ""
 }

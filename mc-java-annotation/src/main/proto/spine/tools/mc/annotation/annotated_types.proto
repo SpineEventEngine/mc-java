@@ -100,6 +100,7 @@ message MessageAnnotations {
 
 // The API level options applied to a field of a message.
 message FieldOption {
+    option (is).java_type = "WithOptions";
 
     // The field with the options applied.
     protodata.FieldName field = 1 [(required) = true];
@@ -118,19 +119,6 @@ message EnumAnnotations {
 
     // The options applied to the enum.
     repeated protodata.Option option = 2;
-
-    // The options applied to the enum constants.
-    repeated EnumConstantOption constant_option = 3;
-}
-
-// The API level options applied to an enum constant.
-message EnumConstantOption {
-
-    // The enum constant with the options applied.
-    protodata.ConstantName constant = 1 [(required) = true];
-
-    // One or more applied options.
-    repeated protodata.Option option = 2 [(required) = true];
 }
 
 // The API level options applied to a service.
@@ -143,18 +131,4 @@ message ServiceAnnotations {
 
     // The options applied to the service.
     repeated protodata.Option option = 2;
-
-    // The options applied to the methods of the service.
-    repeated RpcOption rpc_option = 3;
-}
-
-// The API level options applied to a method of a service.
-message RpcOption {
-    option (is).java_type = "WithOptions";
-
-    // The RPC with the options applied.
-    protodata.RpcName rpc = 1 [(required) = true];
-
-    // One or more applied options.
-    repeated protodata.Option option = 2 [(required) = true];
 }

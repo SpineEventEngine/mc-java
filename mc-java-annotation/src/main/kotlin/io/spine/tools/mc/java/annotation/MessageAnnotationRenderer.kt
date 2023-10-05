@@ -26,14 +26,40 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.tools.mc.annotation.ApiOption
+import io.spine.protodata.TypeName
+import io.spine.protodata.codegen.java.ClassName
+import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
     AnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
 
-    override fun annotateType(state: MessageAnnotations, apiOption: ApiOption) {
-        // TODO("Not yet implemented")
-        println(state)
+    override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
+        val annotation = MessageApiAnnotation(state.type, annotationClass)
+        annotation.renderSources(sources)
+    }
+
+    override fun annotate(state: MessageAnnotations) {
+        super.annotate(state)
+
+        state.fieldOptionList.forEach { fieldOption ->
+            fieldOption.optionList.forEach { option ->
+                println("Field option: $option")
+            }
+        }
+    }
+}
+
+private class MessageApiAnnotation<T : Annotation>(
+    private val typeName: TypeName,
+    annotationClass: Class<T>
+) : ApiTypeAnnotation<T>(annotationClass) {
+
+    override fun shouldAnnotate(file: SourceFile): Boolean {
+        val declarations = knownTypeConventions<ClassName>().allDeclarationsFor(typeName)
+        val declaration = declarations.firstOrNull {
+            it.path.endsWith(file.relativePath)
+        }
+        return declaration != null
     }
 }

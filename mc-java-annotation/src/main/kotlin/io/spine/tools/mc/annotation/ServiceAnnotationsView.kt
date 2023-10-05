@@ -29,7 +29,6 @@ package io.spine.tools.mc.annotation
 import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ServiceName
-import io.spine.protodata.event.RpcOptionDiscovered
 import io.spine.protodata.event.ServiceOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
@@ -41,21 +40,6 @@ internal class ServiceAnnotationsView :
     @Subscribe
     fun on(@External e: ServiceOptionDiscovered) = alter {
         optionList.add(e.option)
-    }
-
-    @Subscribe
-    fun on(@External e: RpcOptionDiscovered) = alter {
-        val rpcOption = rpcOptionBuilderList.find { it.rpc == e.rpc }
-        rpcOption?.let {
-            optionList.add(e.option)
-            return@alter
-        }
-        rpcOptionList.add(
-            rpcOption {
-                rpc = e.rpc
-                option.add(e.option)
-            }
-        )
     }
 
     @Subscribe
