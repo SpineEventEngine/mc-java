@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.annotation
 
+import io.spine.protodata.FieldName
+import io.spine.protodata.Option
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
@@ -41,12 +43,15 @@ internal class MessageAnnotationRenderer :
 
     override fun annotate(state: MessageAnnotations) {
         super.annotate(state)
-
         state.fieldOptionList.forEach { fieldOption ->
             fieldOption.optionList.forEach { option ->
-                println("Field option: $option")
+                annotateFieldMethods(fieldOption.field, option)
             }
         }
+    }
+
+    private fun annotateFieldMethods(field: FieldName, option: Option) {
+        println("Annotating field methods `$field` with option `$option`.")
     }
 }
 
