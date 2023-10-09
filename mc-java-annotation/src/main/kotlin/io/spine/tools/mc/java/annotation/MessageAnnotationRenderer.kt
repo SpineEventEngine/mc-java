@@ -28,16 +28,13 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.FieldName
 import io.spine.protodata.Option
-import io.spine.protodata.TypeName
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
     AnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
 
     override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val annotation = MessageApiAnnotation(state.type, annotationClass)
+        val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass)
         annotation.renderSources(sources)
     }
 
@@ -51,19 +48,7 @@ internal class MessageAnnotationRenderer :
     }
 
     private fun annotateFieldMethods(field: FieldName, option: Option) {
+        // TODO: Implement.
         println("Annotating field methods `$field` with option `$option`.")
-    }
-}
-
-private class MessageApiAnnotation<T : Annotation>(
-    private val typeName: TypeName,
-    annotationClass: Class<T>
-) : ApiTypeAnnotation<T>(annotationClass) {
-
-    private val convention = MessageOrEnumConvention(typeSystem)
-
-    override fun shouldAnnotate(file: SourceFile): Boolean {
-        val declaration = convention.declarationFor(typeName)
-        return declaration.path.endsWith(file.relativePath)
     }
 }

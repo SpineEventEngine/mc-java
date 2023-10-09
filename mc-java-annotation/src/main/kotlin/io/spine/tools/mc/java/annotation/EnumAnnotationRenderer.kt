@@ -32,7 +32,7 @@ internal class EnumAnnotationRenderer :
     AnnotationRenderer<EnumAnnotations>(EnumAnnotations::class.java) {
 
     override fun annotateType(state: EnumAnnotations, annotationClass: Class<out Annotation>) {
-        // TODO("Not yet implemented")
-        println(state)
+        val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass)
+        annotation.renderSources(sources)
     }
 }

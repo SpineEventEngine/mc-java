@@ -26,29 +26,19 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.ServiceName
-import io.spine.protodata.codegen.java.GrpcServiceConvention
+import io.spine.protodata.TypeName
+import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.mc.annotation.ServiceAnnotations
 
-internal class ServiceAnnotationRenderer :
-    AnnotationRenderer<ServiceAnnotations>(ServiceAnnotations::class.java) {
-
-    override fun annotateType(state: ServiceAnnotations, annotationClass: Class<out Annotation>) {
-        val annotation = ServiceAnnotation(state.service, annotationClass)
-        annotation.renderSources(sources)
-    }
-}
-
-private class ServiceAnnotation<T : Annotation>(
-    private val serviceName: ServiceName,
+internal class MessageOrEnumApiAnnotation<T : Annotation>(
+    private val typeName: TypeName,
     annotationClass: Class<T>
 ) : ApiTypeAnnotation<T>(annotationClass) {
 
-    private val convention = GrpcServiceConvention(typeSystem)
+    private val convention = MessageOrEnumConvention(typeSystem)
 
     override fun shouldAnnotate(file: SourceFile): Boolean {
-        val declaration = convention.declarationFor(serviceName)
+        val declaration = convention.declarationFor(typeName)
         return declaration.path.endsWith(file.relativePath)
     }
 }
