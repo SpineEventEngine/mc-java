@@ -26,8 +26,12 @@
 
 package io.spine.tools.mc.java.annotation
 
+import io.spine.protodata.Field
 import io.spine.protodata.FieldName
 import io.spine.protodata.Option
+import io.spine.protodata.renderer.NonRepeatingInsertionPoint
+import io.spine.text.Text
+import io.spine.text.TextCoordinates
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
@@ -51,4 +55,15 @@ internal class MessageAnnotationRenderer :
         // TODO: Implement.
         println("Annotating field methods `$field` with option `$option`.")
     }
+}
+
+private class FieldGetter(private val field: Field): NonRepeatingInsertionPoint {
+
+    override val label: String
+        get() = ""
+
+    override fun locateOccurrence(text: Text): TextCoordinates {
+        TODO("Not yet implemented")
+    }
+
 }
