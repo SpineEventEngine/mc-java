@@ -68,6 +68,7 @@ tasks.jar {
         "kotlin/**",
         "mozilla*",
         "com/amazonaws/**",
+        "com/github/javaparser",
         "com/google/api/**",
         "com/google/cloud/**",
         "images/ant*.*",
