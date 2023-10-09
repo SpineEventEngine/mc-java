@@ -51,8 +51,8 @@ public class ApiAnnotationsPlugin : Plugin {
     override fun renderers(): List<Renderer<*>> = listOf(
         PrintBeforePrimaryDeclaration(),
         MessageAnnotationRenderer(),
-        ServiceAnnotationRenderer(),
-        EnumAnnotationRenderer()
+        EnumAnnotationRenderer(),
+        ServiceAnnotationRenderer()
     )
 
     override fun extend(context: BoundedContextBuilder) {
