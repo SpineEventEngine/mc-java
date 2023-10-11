@@ -30,6 +30,7 @@ import com.google.protobuf.BoolValue
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.option
+import com.google.protobuf.Any as ProtoAny
 
 /**
  * This object simulates an enum of options, which are used to mark API elements.
@@ -37,36 +38,25 @@ import io.spine.protodata.option
  * We use this arrangement to allow lazy instantiation of elements, also avoiding
  * boilerplate code of enum declaration in this particular case.
  */
-internal object ApiOption {
+internal enum class ApiOption(optionName: String) {
 
-    val internalAll: Option by lazy {
-        option("internal_all")
+    INTERNAL_ALL("internal_all"),
+    SPI_ALL("SPI_all"),
+    EXPERIMENTAL_API("experimental_all"),
+    BETA_ALL("beta_all");
+
+    internal val option: Option = option {
+        name = optionName
+        value = trueValue
     }
 
-    val spiAll: Option by lazy {
-        option("SPI_all")
-    }
-
-    val experimentalApi: Option by lazy {
-        option("experimental_all")
-    }
-
-    val betaAll: Option by lazy {
-        option("beta_all")
-    }
-
-    val values: List<Option> by lazy {
-        listOf(internalAll, spiAll, experimentalApi, betaAll)
+    private val trueValue: ProtoAny by lazy {
+        BoolValue.of(true).pack()
     }
 }
 
 internal fun ApiOption.contains(option: Option): Boolean =
-    values.contains(option)
+    enumValues<ApiOption>().any { it.option == option }
 
-/**
- * Creates an option with the given name and `true` value.
- */
-private fun option(name: String): Option = option {
-    this.name = name
-    value = BoolValue.of(true).pack()
-}
+internal fun ApiOption.contains(option: String): Boolean =
+    enumValues<ApiOption>().any { it.option.name == option }
