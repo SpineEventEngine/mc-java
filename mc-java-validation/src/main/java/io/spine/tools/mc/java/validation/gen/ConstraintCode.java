@@ -127,6 +127,7 @@ final class ConstraintCode implements WithLogging {
      * @return new builder
      */
     static Builder forField(FieldDeclaration field) {
+        checkNotNull(field);
         return new Builder(field);
     }
 

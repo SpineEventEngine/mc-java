@@ -33,9 +33,6 @@ plugins {
 }
 
 dependencies {
-    /* Use `implementation` dependency on `gradleApi()` to make PMD code analysis see
-       Gradle API classes. Otherwise, it should have been `compileOnlyApi` since Gradle
-       executes this code and its API is automatically provided. */
     compileOnlyApi(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
