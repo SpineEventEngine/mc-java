@@ -54,7 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class OptionAnnotator<D extends GenericDescriptor> extends Annotator {
 
     /**
-     * An Protobuf option, that tells whether generated program elements should be annotated.
+     * A Protobuf option, that tells whether generated program elements should be annotated.
      *
      * <p>Can be of any option type, which is {@code boolean}.
      */

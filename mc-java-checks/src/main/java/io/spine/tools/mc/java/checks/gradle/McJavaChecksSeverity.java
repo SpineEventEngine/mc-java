@@ -90,7 +90,8 @@ public final class McJavaChecksSeverity implements WithLogging {
         if (!hasErrorPronePlugin()) {
             logger().atError().log(() -> format(
                 "Cannot configure Spine Java Checks severity as the Error Prone " +
-                                 "plugin is not applied to the project `%s`.", project.getName()));
+                                 "plugin is not applied to the project `%s`.", project.getName())
+            );
             return;
         }
         configureSeverities();
@@ -115,7 +116,8 @@ public final class McJavaChecksSeverity implements WithLogging {
                                      .orElse(Severity.WARN);
         logger().atDebug().log(() -> format(
                 "Setting `UseValidatingBuilder` checker severity to `%s` for the project `%s`.",
-                severity.name(), project.getName()));
+                severity.name(), project.getName())
+        );
 
         // String severityArg = "-Xep:UseValidatingBuilder:" + severity.name();
         ErrorProneOptionsAccess

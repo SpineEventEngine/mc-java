@@ -50,10 +50,6 @@ import java.nio.file.Path
  */
 internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
-    private val typeSystem: TypeSystem by lazy {
-        TypeSystem.serving(this)
-    }
-
     private lateinit var sources: SourceFileSet
 
     override fun render(sources: SourceFileSet) {

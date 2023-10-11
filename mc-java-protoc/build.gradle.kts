@@ -52,8 +52,63 @@ tasks.jar {
         project(":mc-java-base").tasks.jar
     )
 
-    // See https://stackoverflow.com/questions/35704403/what-are-the-eclipsef-rsa-and-eclipsef-sf-in-a-java-jar-file
-    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
+    exclude(
+        // See https://stackoverflow.com/questions/35704403/what-are-the-eclipsef-rsa-and-eclipsef-sf-in-a-java-jar-file
+        "META-INF/*.RSA",
+        "META-INF/*.SF",
+        "META-INF/*.DSA",
+
+        // Manually exclude the given runtime dependencies until we specify our dependencies in
+        // a more precise way. These dependencies are transitive, e.g. from Gradle and are
+        // available to McJava in runtime.
+        "ant_tasks/",
+        "bsh/",
+        "checkstyle*",
+        "images*",
+        "kotlin/**",
+        "mozilla*",
+        "com/amazonaws/**",
+        "com/github/javaparser",
+        "com/google/api/**",
+        "com/google/cloud/**",
+        "images/ant*.*",
+        "jcifs/", // Unused *.idl files.
+        "com/sun/xml/**", // Strange HTML files.
+        "net/rubygrapefruit/**",
+        "org/apache/**",
+        "org/bouncycastle/**",
+        "org/checkerframework/**",
+        "org/codehaus/**",
+        "org/fusesource/**",
+        "org/glassfish/**",
+        "org/gradle/**",
+        "org/intellij/**",
+        "org/jboss/**",
+        "org/jetbrains/**",
+        "org/joda/**",
+        "org/slf4j/**",
+        "org/groovy/**",
+        "OSGI-*/", // from Eclipse.
+        "groovy*/**",
+        ".api_description", // from Eclipse.
+        ".options", // from Eclipse.
+        "api-mapping.txt", // from Gradle.
+        "about.html", // from Eclipse.
+        "default-imports.txt", // from Gradle.
+        "jdtCompilerAdapter.jar", // from Gradle.
+        "release-features.txt", // from Gradle.
+        "systembundle.properties", // from Eclipse.
+        "storage.v1.json", // from Google Cloud.
+        "CDC-*.profile", // from Eclipse.
+        "junit/**",
+        "testng*.*", // from TestNG.
+        "mozilla/**",
+        "gradle-*",
+        "J2SE-*",
+        "JavaSE*",
+        "JRE*",
+        "OSGi*",
+    )
 
     manifest {
         attributes(mapOf("Main-Class" to "io.spine.tools.mc.java.protoc.Plugin"))
