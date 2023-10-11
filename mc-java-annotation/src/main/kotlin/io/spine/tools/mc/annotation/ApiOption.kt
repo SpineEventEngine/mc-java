@@ -31,7 +31,13 @@ import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.option
 
-internal object ApiOptions {
+/**
+ * This object simulates an enum of options, which are used to mark API elements.
+ *
+ * We use this arrangement to allow lazy instantiation of elements, also avoiding
+ * boilerplate code of enum declaration in this particular case.
+ */
+internal object ApiOption {
 
     val internalAll: Option by lazy {
         option("internal_all")
@@ -54,7 +60,7 @@ internal object ApiOptions {
     }
 }
 
-internal fun ApiOptions.contains(option: Option): Boolean =
+internal fun ApiOption.contains(option: Option): Boolean =
     values.contains(option)
 
 /**
