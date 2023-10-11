@@ -28,10 +28,17 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.Field
 import io.spine.protodata.FieldName
-import io.spine.protodata.Option
+import io.spine.protodata.TypeName
+import io.spine.protodata.codegen.java.ClassName
+import io.spine.protodata.codegen.java.FieldConventions
+import io.spine.protodata.codegen.java.MessageOrBuilderConvention
+import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.NonRepeatingInsertionPoint
+import io.spine.protodata.type.Declaration
 import io.spine.text.Text
 import io.spine.text.TextCoordinates
+import io.spine.tools.code.Java
+import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
@@ -44,26 +51,65 @@ internal class MessageAnnotationRenderer :
 
     override fun annotate(state: MessageAnnotations) {
         super.annotate(state)
+        annotateFields(state)
+    }
+
+    private fun annotateFields(state: MessageAnnotations) {
+        val typeName = state.type
+        val messageDeclaration = MessageOrEnumConvention(typeSystem)
+            .declarationFor(typeName)
+        val messageOrBuilderDeclaration = MessageOrBuilderConvention(typeSystem)
+            .declarationFor(typeName)
+
         state.fieldOptionList.forEach { fieldOption ->
             fieldOption.optionList.forEach { option ->
-                annotateFieldMethods(fieldOption.field, option)
+                val annotationClass = ApiOption.findMatching(option)!!.annotationClass
+                annotateFieldMethods(
+                    typeName,
+                    messageDeclaration,
+                    messageOrBuilderDeclaration,
+                    fieldOption.field,
+                    annotationClass
+                )
             }
         }
     }
 
-    private fun annotateFieldMethods(field: FieldName, option: Option) {
-        // TODO: Implement.
-        println("Annotating field methods `$field` with option `$option`.")
+    private fun annotateFieldMethods(
+        typeName: TypeName,
+        messageDeclaration: Declaration<Java, ClassName>,
+        messageOrBuilderDeclaration: Declaration<Java, ClassName>,
+        fieldName: FieldName,
+        annotationClass: Class<out Annotation>
+    ) {
+        val messageFile = sources.file(messageDeclaration.path)
+        val messageType = typeSystem.findMessage(typeName)!!.first
+        val field = messageType.fieldList.find { it.name == fieldName }!!
+
+        val annotationLine = "@${annotationClass.canonicalName}"
+        val fieldGetter = FieldGetter(field)
+        messageFile.at(fieldGetter).add(annotationLine)
+
+        val messageOrBuilderFile = sources.file(messageOrBuilderDeclaration.path)
+        messageOrBuilderFile.at(fieldGetter).add(annotationLine)
+        // TODO: Annotate builder methods for setters too.
     }
 }
 
-private class FieldGetter(private val field: Field): NonRepeatingInsertionPoint {
+private class FieldGetter(private val field: Field) :
+    NonRepeatingInsertionPoint,
+    FieldConventions(field.name, field.cardinalityCase) {
 
     override val label: String
         get() = ""
 
     override fun locateOccurrence(text: Text): TextCoordinates {
-        TODO("Not yet implemented")
+        val regex = Regex("public .+ $getterName")
+        text.lines().mapIndexed { index, line ->
+            if (regex.containsMatchIn(line)) {
+                return atLine(index)
+            }
+        }
+        error("No getter found for field `${field.name.value}`.")
     }
-
 }
