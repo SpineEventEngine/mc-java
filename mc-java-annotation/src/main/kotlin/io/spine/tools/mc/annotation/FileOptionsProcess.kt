@@ -46,6 +46,7 @@ import io.spine.server.entity.alter
 import io.spine.server.entity.state
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
+import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 
 internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
 
@@ -57,7 +58,7 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
     fun on(@External e: FileEntered) = alter {
         file = e.file.path
         e.file.optionList
-            .filter { ApiOption.findMatching(it) != null }
+            .filter { findMatching(it) != null }
             .filter { it.value.isA<BoolValue>() }
             .filter { it.value.unpack<BoolValue>().value }
             .forEach(::addOption)
@@ -81,13 +82,10 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
         val events = mutableListOf<EventMessage>()
 
         state.optionList.forEach { option ->
-            val apiOption = ApiOption.findMatching(option)
+            val apiOption = findMatching(option)
             apiOption?.let {
                 val messageOption = it.messageOption
                 protoSrc.addMessageEvents(events, messageOption)
-                it.enumOption?.let{
-                    protoSrc.addEnumEvents(events, it)
-                }
                 it.serviceOption?.let {
                     protoSrc.addServiceEvents(events, it)
                 }

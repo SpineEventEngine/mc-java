@@ -38,7 +38,7 @@ import io.spine.protodata.type.Declaration
 import io.spine.text.Text
 import io.spine.text.TextCoordinates
 import io.spine.tools.code.Java
-import io.spine.tools.mc.annotation.ApiOption
+import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
@@ -63,7 +63,7 @@ internal class MessageAnnotationRenderer :
 
         state.fieldOptionList.forEach { fieldOption ->
             fieldOption.optionList.forEach { option ->
-                val annotationClass = ApiOption.findMatching(option)!!.annotationClass
+                val annotationClass = findMatching(option)!!.annotationClass
                 annotateFieldMethods(
                     typeName,
                     messageDeclaration,

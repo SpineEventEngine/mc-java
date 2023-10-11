@@ -32,7 +32,7 @@ import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.codegen.java.annotation.TypeAnnotation
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
+import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.WithOptions
 import io.spine.tools.mc.annotation.optionList
 
@@ -65,7 +65,7 @@ internal sealed class AnnotationRenderer<T>(
     @OverridingMethodsMustInvokeSuper
     protected open fun annotate(state: T) {
         state.optionList
-            .mapNotNull { ApiOption.findMatching(it) }
+            .mapNotNull { findMatching(it) }
             .forEach { apiOption ->
                 annotateType(state, apiOption.annotationClass)
             }

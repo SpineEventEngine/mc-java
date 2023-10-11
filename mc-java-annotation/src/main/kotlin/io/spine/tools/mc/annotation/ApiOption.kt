@@ -39,7 +39,6 @@ internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,
     val fieldOption: Option? = null,
-    val enumOption: Option? = null,
     val serviceOption: Option? = null,
     val annotationClass: Class<out Annotation>
 ) {
@@ -60,7 +59,7 @@ internal enum class ApiOption(
 
     INTERNAL(
         fileOption = option("internal_all"),
-        messageOption = option("internal"),
+        messageOption = option("internal_type"),
         fieldOption = option("internal"),
         annotationClass = Internal::class.java,
     ),
@@ -73,8 +72,18 @@ internal enum class ApiOption(
     );
 
     companion object {
-        fun findMatching(fileOption: Option): ApiOption? {
-            return values().find { it.fileOption == fileOption }
+
+        /**
+         * Finds an [ApiOption] matching the given [Option] by its name.
+         */
+        fun findMatching(option: Option): ApiOption? {
+            val optionName = option.name
+            return values().find {
+                it.fileOption.name == optionName ||
+                it.messageOption.name == optionName ||
+                it.fieldOption?.name == optionName ||
+                it.serviceOption?.name == optionName
+            }
         }
     }
 }
