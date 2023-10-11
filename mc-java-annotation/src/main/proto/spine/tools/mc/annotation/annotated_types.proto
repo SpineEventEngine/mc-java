@@ -63,7 +63,7 @@ import "spine/protodata/ast.proto";
 
 // A type which has been annotated with one or several API level options.
 //
-// The type may be a message, an enum, or a service.
+// The type may be a message or an enum.
 // It can be annotated directly inside the type, or indirectly, via a file-wide option.
 //
 // Multiple options may be applied to the same element of proto code.
