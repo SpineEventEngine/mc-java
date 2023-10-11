@@ -30,11 +30,10 @@ import com.google.protobuf.BoolValue
 import io.spine.annotation.Beta
 import io.spine.annotation.Experimental
 import io.spine.annotation.Internal
-import io.spine.annotation.SPI as Spi
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.option
-import kotlin.reflect.KClass
+import io.spine.annotation.SPI as Spi
 
 internal enum class ApiOption(
     val fileOption: Option,
