@@ -102,10 +102,12 @@ public class McJavaTaskName(value: String, ssn: SourceSetName) : TaskWithSourceS
 
         /** Annotates the Java sources generated from `.proto` files the `main` scope. */
         @JvmField
+        @Deprecated("No longer used")
         public val annotateProto: TaskName = annotateProto(main)
 
         /** Annotates the Java sources generated from `.proto` files the `test` scope. */
         @JvmField
+        @Deprecated("No longer used")
         public val annotateTestProto: TaskName = annotateProto(test)
 
         /**

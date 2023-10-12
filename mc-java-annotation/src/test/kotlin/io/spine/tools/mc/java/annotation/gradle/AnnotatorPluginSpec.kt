@@ -61,7 +61,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTION
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
 import io.spine.tools.mc.java.annotation.gradle.AnnotatorPluginSpec.Companion.moduleDir
-import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.annotateProto
+import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -101,7 +101,7 @@ internal class AnnotatorPluginSpec {
                 "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
-            project.executeTask(annotateProto)
+            project.executeTask(launchProtoData)
         }
     }
 
