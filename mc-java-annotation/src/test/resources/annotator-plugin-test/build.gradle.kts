@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.standardToSpineSdk
+import io.spine.protodata.gradle.RemoteDebugSettings
+import io.spine.protodata.gradle.plugin.LaunchProtoData
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.resolutionStrategy
@@ -82,6 +84,17 @@ subprojects {
                 )
             }
         }
+    }
+
+    tasks.findByName("launchProtoData")?.apply {this as LaunchProtoData
+        debugOptions {
+            // Set this option to `true` to enable remote debugging.
+            enabled.set(false)
+            port.set(5566)
+            server.set(true)
+            suspend.set(true)
+        }
+        System.err.println("Debug session for `LaunchProtoData` configured.")
     }
 
     dependencies {

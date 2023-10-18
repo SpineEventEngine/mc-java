@@ -94,11 +94,11 @@ message MessageAnnotations {
     //
     // Could be empty if the message has no fields with options applied.
     //
-    repeated FieldOption field_option = 3;
+    repeated FieldOptions field_options = 3;
 }
 
 // The API level options applied to a field of a message.
-message FieldOption {
+message FieldOptions {
     option (is).java_type = "WithOptions";
 
     // The field with the options applied.

@@ -28,7 +28,7 @@ package io.spine.tools.mc.annotation
 
 import io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.View
+import io.spine.protodata.plugin.ViewRepository
 import io.spine.protodata.renderer.Renderer
 import io.spine.server.BoundedContextBuilder
 import io.spine.server.entity.Entity
@@ -42,10 +42,10 @@ import kotlin.reflect.KClass
  */
 public class ApiAnnotationsPlugin : Plugin {
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        MessageAnnotationsView::class.java,
-        ServiceAnnotationsView::class.java,
-        EnumAnnotationsView::class.java
+    override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
+        MessageAnnotationsView.Repository(),
+        EnumAnnotationsView.Repository(),
+        ServiceAnnotationsView.Repository()
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
@@ -64,6 +64,6 @@ public class ApiAnnotationsPlugin : Plugin {
  * Adds specified entity class to this `BoundedContextBuilder`.
  */
 public inline fun <reified I, reified E : Entity<I, *>>
-        BoundedContextBuilder.add(entity: KClass<out E>) {
-    add(entity.java)
+        BoundedContextBuilder.add(entityClass: KClass<out E>) {
+    add(entityClass.java)
 }

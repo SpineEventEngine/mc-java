@@ -68,6 +68,7 @@ buildscript {
     with(configurations) {
         doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
+        val logging = io.spine.internal.dependency.Spine.Logging
         all {
             resolutionStrategy {
                 force(
@@ -75,9 +76,9 @@ buildscript {
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
-                    io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.backend,
-                    io.spine.internal.dependency.Spine.Logging.floggerApi,
+                    logging.lib,
+                    logging.backend,
+                    logging.floggerApi,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }

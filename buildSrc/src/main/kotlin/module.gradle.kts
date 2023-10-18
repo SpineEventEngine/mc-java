@@ -109,7 +109,7 @@ fun Module.addDependencies() {
 
         implementation(Guava.lib)
         implementation(Logging.lib)
-        implementation(Logging.backend)
+        implementation(Logging.middleware)
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -125,6 +125,9 @@ fun Module.forceConfigurations() {
         forceVersions()
         excludeProtobufLite()
         all {
+            // Exclude outdated module.
+            exclude(group = "io.spine", module = "spine-logging-backend")
+
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
@@ -138,6 +141,7 @@ fun Module.forceConfigurations() {
                     Spine.pluginBase,
                     Logging.lib,
                     Logging.backend,
+                    Logging.middleware,
                     Logging.floggerApi,
 
                     // Force the version to avoid the version conflict for
@@ -155,8 +159,9 @@ fun Module.forceConfigurations() {
 
 fun Module.configureJava(javaVersion: JavaLanguageVersion) {
     tasks.withType<JavaCompile>().configureEach {
-        sourceCompatibility = javaVersion.toString()
-        targetCompatibility = javaVersion.toString()
+        val javaVer = javaVersion.toString()
+        sourceCompatibility = javaVer
+        targetCompatibility = javaVer
         configureJavac()
         configureErrorProne()
     }

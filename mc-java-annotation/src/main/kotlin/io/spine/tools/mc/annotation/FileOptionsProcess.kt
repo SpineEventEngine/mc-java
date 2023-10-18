@@ -33,7 +33,6 @@ import com.google.protobuf.kotlin.isA
 import com.google.protobuf.kotlin.unpack
 import io.spine.base.EventMessage
 import io.spine.core.External
-import io.spine.core.Subscribe
 import io.spine.protodata.FilePath
 import io.spine.protodata.Option
 import io.spine.protodata.ProtobufSourceFile
@@ -47,6 +46,7 @@ import io.spine.server.entity.state
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
+import io.spine.server.model.Nothing as NoEvents
 
 internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
 
@@ -54,14 +54,17 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
      * Adds the API options from the file to the state of this process IFF their
      * values are set to `true`.
      */
-    @Subscribe
-    fun on(@External e: FileEntered) = alter {
-        file = e.file.path
-        e.file.optionList
-            .filter { findMatching(it) != null }
-            .filter { it.value.isA<BoolValue>() }
-            .filter { it.value.unpack<BoolValue>().value }
-            .forEach(::addOption)
+    @React
+    fun on(@External e: FileEntered): NoEvents {
+        alter {
+            file = e.file.path
+            e.file.optionList
+                .filter { findMatching(it) != null }
+                .filter { it.value.isA<BoolValue>() }
+                .filter { it.value.unpack<BoolValue>().value }
+                .forEach(::addOption)
+        }
+        return nothing()
     }
 
     @React

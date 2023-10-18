@@ -61,7 +61,7 @@ internal class MessageAnnotationRenderer :
         val messageOrBuilderDeclaration = MessageOrBuilderConvention(typeSystem)
             .declarationFor(typeName)
 
-        state.fieldOptionList.forEach { fieldOption ->
+        state.fieldOptionsList.forEach { fieldOption ->
             fieldOption.optionList.forEach { option ->
                 val annotationClass = findMatching(option)!!.annotationClass
                 annotateFieldMethods(

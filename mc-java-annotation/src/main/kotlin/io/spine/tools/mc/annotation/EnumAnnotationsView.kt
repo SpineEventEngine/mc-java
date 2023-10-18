@@ -31,21 +31,35 @@ import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.EnumOptionDiscovered
 import io.spine.protodata.plugin.View
+import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
 import io.spine.server.entity.state
+import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotations.Builder>() {
 
     @Subscribe
     fun on(@External e: EnumOptionDiscovered) = alter {
-        optionList.add(e.option)
+        addOption(e.option)
     }
 
     @Subscribe
     fun on(@External e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
-            optionList.add(e.assumed)
+            addOption(e.assumed)
+        }
+    }
+
+    class Repository: ViewRepository<TypeName, EnumAnnotationsView, EnumAnnotations>() {
+
+        override fun setupEventRouting(routing: EventRouting<TypeName>) {
+            super.setupEventRouting(routing)
+            routing.route<FileOptionMatched> { e, _ ->
+                e.toTypeName()
+            }.unicast<EnumOptionDiscovered> { e, _ ->
+                e.type
+            }
         }
     }
 }

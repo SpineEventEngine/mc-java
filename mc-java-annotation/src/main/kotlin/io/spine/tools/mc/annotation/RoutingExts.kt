@@ -26,41 +26,30 @@
 
 package io.spine.tools.mc.annotation
 
-import io.spine.core.External
-import io.spine.core.Subscribe
 import io.spine.protodata.ServiceName
 import io.spine.protodata.TypeName
-import io.spine.protodata.event.ServiceOptionDiscovered
-import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
-import io.spine.server.entity.alter
-import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
+import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.TYPE
+import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.SERVICE
 
-internal class ServiceAnnotationsView :
-    View<ServiceName, ServiceAnnotations, ServiceAnnotations.Builder>() {
-
-    @Subscribe
-    fun on(@External e: ServiceOptionDiscovered) = alter {
-        addOption(e.option)
+/**
+ * A routing function which obtains a single-item set for the target entity,
+ * IFF the target is a `type`. Otherwise, returns an empty set.
+ */
+internal fun FileOptionMatched.toTypeName(): Set<TypeName> =
+    if (targetCase == TYPE) {
+        setOf(type)
+    } else {
+        setOf()
     }
 
-    @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
-            addOption(e.assumed)
-        }
+/**
+ * A routing function which obtains a single-item set for the target entity,
+ * IFF the target is a `service`. Otherwise, returns an empty set.
+ */
+internal fun FileOptionMatched.toServiceName(): Set<ServiceName> =
+    if (targetCase == SERVICE) {
+        setOf(service)
+    } else {
+        setOf()
     }
-
-    class Repository: ViewRepository<ServiceName, ServiceAnnotationsView, ServiceAnnotations>() {
-
-        override fun setupEventRouting(routing: EventRouting<ServiceName>) {
-            super.setupEventRouting(routing)
-            routing.route<FileOptionMatched> { e, _ ->
-                e.toServiceName()
-            }.unicast<ServiceOptionDiscovered> { e, _ ->
-                e.service
-            }
-        }
-    }
-}

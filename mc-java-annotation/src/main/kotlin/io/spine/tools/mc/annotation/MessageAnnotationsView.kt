@@ -32,9 +32,11 @@ import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
 import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
+import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 import io.spine.server.entity.state
+import io.spine.server.route.EventRouting
 
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
@@ -46,13 +48,13 @@ internal class MessageAnnotationsView :
 
     @Subscribe
     fun on(@External e: FieldOptionDiscovered) = alter {
-        val fieldOption = fieldOptionBuilderList.find { it.field == e.field }
-        fieldOption?.let {
-            optionList.add(e.option)
+        val fieldOptions = fieldOptionsBuilderList.find { it.field == e.field }
+        fieldOptions?.let {
+            it.addOption(e.option)
             return@alter
         }
-        fieldOptionList.add(
-            fieldOption {
+        addFieldOptions(
+            fieldOptions {
                 field = e.field
                 option.add(e.option)
             }
@@ -63,6 +65,20 @@ internal class MessageAnnotationsView :
     fun on(@External e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
             optionList.add(e.assumed)
+        }
+    }
+
+    class Repository: ViewRepository<TypeName, MessageAnnotationsView, MessageAnnotations>() {
+
+        override fun setupEventRouting(routing: EventRouting<TypeName>) {
+            super.setupEventRouting(routing)
+            routing.route<FileOptionMatched> { e, _ ->
+                e.toTypeName()
+            }.unicast<TypeOptionDiscovered> { e, _ ->
+                e.type
+            }.unicast<FieldOptionDiscovered> { e, _ ->
+                e.type
+            }
         }
     }
 }
