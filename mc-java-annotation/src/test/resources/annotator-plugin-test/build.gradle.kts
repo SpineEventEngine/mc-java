@@ -27,7 +27,6 @@
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.protodata.gradle.RemoteDebugSettings
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.invoke
@@ -49,7 +48,8 @@ buildscript {
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
+        classpath(io.spine.internal.dependency.ProtoData.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
     }
 }
 

@@ -50,6 +50,8 @@ buildscript {
     doForceVersions(configurations)
     configurations {
         all {
+            exclude(group = "io.spine", module = "spine-logging-backend")
+
             resolutionStrategy {
                 force(
                     spine.base,

@@ -50,7 +50,7 @@ buildscript {
     val versionGradle = "${baseRoot}/version.gradle.kts"
     apply(from = versionGradle)
 
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    standatardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
 
@@ -62,7 +62,8 @@ buildscript {
         classpath(io.spine.internal.dependency.ErrorProne.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
+        classpath(io.spine.internal.dependency.ProtoData.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
     }
 
     with(configurations) {
