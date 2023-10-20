@@ -60,7 +60,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE_M
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
-import io.spine.tools.mc.java.annotation.gradle.AnnotatorPluginSpec.Companion.moduleDir
+import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginITest.Companion.moduleDir
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import java.io.File
 import java.nio.file.Path
@@ -78,8 +78,48 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`AnnotatorPlugin` should")
-internal class AnnotatorPluginSpec {
+/**
+ * Tests annotating generated Java code with API level annotations, such as
+ * [Internal] or [SPI].
+ *
+ * The subject of test is [io.spine.tools.mc.annotation.ApiAnnotationsPlugin] which is
+ * a plugin to ProtoData. We test the plugin as a part of the Gradle build performed by
+ * McJava Gradle plugin.
+ *
+ * The test project is located in `resources/annotator-plugin-test` directory.
+ *
+ * ### Enabling remote debugging for ProtoData CLI
+ * Since ProtoData launches the code generation in a separate JVM, it is not possible to debug
+ * it directly in an IDE. To debug the code generation perform the following steps:
+ *  1. Open the resource file `resources/annotator-plugin-test/build.gradle.kts`.
+ *  2. Find the `debugOptions` block.
+ *  3. Set the value of the `enabled` property to `true`. Pay attention to the fact that when
+ *     enabled the ProtoData CLI process will be suspended until a debugger is attached.
+ *
+ * ### Creating a remote debugging configuration in IDEA
+ *  Check or create `LaunchProtoData Remote Debug` Run/Debug configuration is available in IDEA:
+ *  1. Open the Run/Debug configuration window.
+ *  2. Under "Remote JVM Debug" on the left, check if the `LaunchProtoData Remote Debug` is
+ *     present, if not, create it via the "+" button at the top left of the dialog.
+ *  3. Under "Debugger mode" select "Attach to remote JVM".
+ *  4. Under "Host" enter `localhost`.
+ *  5. Under "Port" enter `5566`.
+ *  6. Under "Use module classpath" selection `io.spine.tools.mc-java-annotations.test`.
+ *
+ *  ### Starting debugging session
+ *  1. Put a breakpoint on `project.executeTask(launchProtoData)` in the `AnnotatorPluginSpec`.
+ *  2. Run "Debug 'AnnotatorPluginSpec'" configuration.
+ *  3. Once the breakpoint is reached, hit F8 or F9 to run the `launchProtoData` task.
+ *     It would take several seconds, depending on the performance of your workstation.
+ *     The task will be suspended until the debugger is attached.
+ *  4. Once the task is suspended, put a breakpoint in the place of interest of your
+ *     [Plugin] or [Renderer] code, which is called by ProtoData.
+ *  5. Run the "LaunchProtoData Remote Debug" configuration. You should see a console message
+ *     about attaching to a process. If attaching to a process fails, it could mean that
+ *     ProtoData CLI has not been started yet. Repeat the attempt in a few seconds.
+ */
+@DisplayName("`ApiAnnotationsPlugin` should")
+internal class ApiAnnotationsPluginITest {
 
     companion object {
         private const val RESOURCE_DIR = "annotator-plugin-test"
