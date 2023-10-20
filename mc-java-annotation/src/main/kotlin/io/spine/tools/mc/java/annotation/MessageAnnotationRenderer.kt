@@ -45,7 +45,7 @@ internal class MessageAnnotationRenderer :
     AnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
 
     override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass)
+        val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass, typeSystem!!)
         annotation.renderSources(sources)
     }
 
@@ -56,9 +56,9 @@ internal class MessageAnnotationRenderer :
 
     private fun annotateFields(state: MessageAnnotations) {
         val typeName = state.type
-        val messageDeclaration = MessageOrEnumConvention(typeSystem)
+        val messageDeclaration = MessageOrEnumConvention(typeSystem!!)
             .declarationFor(typeName)
-        val messageOrBuilderDeclaration = MessageOrBuilderConvention(typeSystem)
+        val messageOrBuilderDeclaration = MessageOrBuilderConvention(typeSystem!!)
             .declarationFor(typeName)
 
         state.fieldOptionsList.forEach { fieldOption ->
@@ -83,7 +83,7 @@ internal class MessageAnnotationRenderer :
         annotationClass: Class<out Annotation>
     ) {
         val messageFile = sources.file(messageDeclaration.path)
-        val messageType = typeSystem.findMessage(typeName)!!.first
+        val messageType = typeSystem?.findMessage(typeName)!!.first
         val field = messageType.fieldList.find { it.name == fieldName }!!
 
         val annotationLine = "@${annotationClass.canonicalName}"

@@ -104,7 +104,7 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
     }
 
     private fun generateRejection(protoFile: ProtobufSourceFile, rejection: MessageType) {
-        val rtCode = RThrowableCode(protoFile.javaPackage(), rejection, typeSystem)
+        val rtCode = RThrowableCode(protoFile.javaPackage(), rejection, typeSystem!!)
         val file = rejection.throwableJavaFile(protoFile)
         rtCode.writeToFile(file)
 

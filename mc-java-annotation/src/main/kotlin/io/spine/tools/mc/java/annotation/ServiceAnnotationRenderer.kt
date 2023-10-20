@@ -29,21 +29,23 @@ package io.spine.tools.mc.java.annotation
 import io.spine.protodata.ServiceName
 import io.spine.protodata.codegen.java.GrpcServiceConvention
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.annotation.ServiceAnnotations
 
 internal class ServiceAnnotationRenderer :
     AnnotationRenderer<ServiceAnnotations>(ServiceAnnotations::class.java) {
 
     override fun annotateType(state: ServiceAnnotations, annotationClass: Class<out Annotation>) {
-        val annotation = ServiceAnnotation(state.service, annotationClass)
+        val annotation = ServiceAnnotation(state.service, annotationClass, typeSystem!!)
         annotation.renderSources(sources)
     }
 }
 
 private class ServiceAnnotation<T : Annotation>(
     private val serviceName: ServiceName,
-    annotationClass: Class<T>
-) : ApiTypeAnnotation<T>(annotationClass) {
+    annotationClass: Class<T>,
+    typeSystem: TypeSystem
+) : ApiTypeAnnotation<T>(annotationClass, typeSystem) {
 
     private val convention = GrpcServiceConvention(typeSystem)
 

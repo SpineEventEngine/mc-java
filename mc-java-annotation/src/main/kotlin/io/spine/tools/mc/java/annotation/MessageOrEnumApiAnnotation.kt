@@ -29,11 +29,13 @@ package io.spine.tools.mc.java.annotation
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.type.TypeSystem
 
 internal class MessageOrEnumApiAnnotation<T : Annotation>(
     private val typeName: TypeName,
-    annotationClass: Class<T>
-) : ApiTypeAnnotation<T>(annotationClass) {
+    annotationClass: Class<T>,
+    typeSystem: TypeSystem
+) : ApiTypeAnnotation<T>(annotationClass, typeSystem) {
 
     private val convention = MessageOrEnumConvention(typeSystem)
 

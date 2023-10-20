@@ -32,6 +32,7 @@ import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.codegen.java.annotation.TypeAnnotation
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.WithOptions
 import io.spine.tools.mc.annotation.optionList
@@ -83,8 +84,14 @@ private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
     return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
 }
 
-internal abstract class ApiTypeAnnotation<T : Annotation>(annotationClass: Class<T>) :
-    TypeAnnotation<T>(annotationClass) {
+internal abstract class ApiTypeAnnotation<T : Annotation>(
+    annotationClass: Class<T>,
+    typeSystem: TypeSystem
+) : TypeAnnotation<T>(annotationClass) {
+
+    init {
+        injectTypeSystem(typeSystem)
+    }
 
     override fun renderAnnotationArguments(file: SourceFile): String = ""
 }
