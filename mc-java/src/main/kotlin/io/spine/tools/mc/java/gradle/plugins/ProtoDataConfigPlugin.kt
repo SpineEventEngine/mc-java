@@ -38,6 +38,7 @@ import io.spine.tools.mc.java.gradle.mcJavaBase
 import io.spine.tools.mc.java.gradle.mcJavaRejection
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.IMPL_CONFIGURATION
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.PROTODATA_CONFIGURATION
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.gradle.validationJavaBundle
 import io.spine.tools.mc.java.gradle.validationJavaRuntime
@@ -82,11 +83,13 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         // Could be duplicated in auto-generated Gradle code via script plugins in `buildSrc`.
         const val PROTODATA_CONFIGURATION = "protoData"
         const val IMPL_CONFIGURATION = "implementation"
+
+        const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
     }
 }
 
 private fun Project.configureProtoData() {
-    configurePlugins()
+    configureProtoDataPlugins()
     tasks.withType(LaunchProtoData::class.java) { launchTask ->
         val taskName = GenerateProtoDataConfig.taskNameFor(launchTask)
         val configTask = tasks.create(taskName, GenerateProtoDataConfig::class.java) {
@@ -99,11 +102,12 @@ private fun Project.configureProtoData() {
 /**
  * Configures ProtoData with plugins, for the given Gradle project.
  */
-private fun Project.configurePlugins() {
+private fun Project.configureProtoDataPlugins() {
     val codegen = extensions.getByType(CodegenSettings::class.java)
     configureValidationRendering(codegen)
     codegen.plugins(
         RejectionPlugin::class.java.getName(),
+        // It should follow `RejectionPlugin` so that rejection throwable types are annotated too.
         ApiAnnotationsPlugin::class.java.getName()
     )
     codegen.subDirs = ImmutableList.of(
@@ -122,7 +126,7 @@ private fun Project.configurePlugins() {
 
 private fun Project.configureValidationRendering(codegen: CodegenSettings) {
     codegen.plugins(
-        "io.spine.validation.java.JavaValidationPlugin"
+        VALIDATION_PLUGIN_CLASS
     )
     addDependency(PROTODATA_CONFIGURATION, validationJavaBundle)
     addDependency(IMPL_CONFIGURATION, validationJavaRuntime)
