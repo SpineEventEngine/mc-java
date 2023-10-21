@@ -27,6 +27,7 @@ package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.common.collect.ImmutableList
 import io.spine.protodata.gradle.CodegenSettings
+import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
@@ -78,16 +79,18 @@ internal class ProtoDataDecoratorPlugin : Plugin<Project> {
         project.afterEvaluate {
             it.configureProtoData()
         }
-        project.pluginManager.apply(PROTO_DATA_ID)
+        project.pluginManager.apply(GRADLE_PLUGIN_ID)
     }
 
     companion object {
-        const val PROTO_DATA_ID = "io.spine.protodata"
 
         // Could be duplicated in auto-generated Gradle code via script plugins in `buildSrc`.
         const val PROTODATA_CONFIGURATION = "protoData"
         const val IMPL_CONFIGURATION = "implementation"
 
+        /**
+         * The name of the Validation plugin for ProtoData.
+         */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
     }
 }
