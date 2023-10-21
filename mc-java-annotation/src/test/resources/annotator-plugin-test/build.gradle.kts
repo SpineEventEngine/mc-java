@@ -27,7 +27,7 @@
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.protodata.gradle.plugin.LaunchProtoData
+import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.resolutionStrategy
@@ -48,8 +48,7 @@ buildscript {
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath(io.spine.internal.dependency.ProtoData.pluginLib)
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
     }
 }
 
@@ -86,7 +85,7 @@ subprojects {
         }
     }
 
-    tasks.findByName("launchProtoData")?.apply {this as LaunchProtoData
+    tasks.findByName("launchProtoData")?.apply {this as JavaExec
         debugOptions {
             // Set this option to `true` to enable remote debugging.
             enabled.set(false)
