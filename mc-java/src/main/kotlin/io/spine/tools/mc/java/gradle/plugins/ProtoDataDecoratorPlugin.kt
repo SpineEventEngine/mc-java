@@ -36,9 +36,9 @@ import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJavaAnnotation
 import io.spine.tools.mc.java.gradle.mcJavaBase
 import io.spine.tools.mc.java.gradle.mcJavaRejection
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.IMPL_CONFIGURATION
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.PROTODATA_CONFIGURATION
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataDecoratorPlugin.Companion.IMPL_CONFIGURATION
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataDecoratorPlugin.Companion.PROTODATA_CONFIGURATION
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataDecoratorPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.gradle.validationJavaBundle
 import io.spine.tools.mc.java.gradle.validationJavaRuntime
@@ -46,16 +46,20 @@ import io.spine.tools.mc.java.rejection.RejectionPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
+import org.gradle.kotlin.dsl.getByType
 
 /**
  * The plugin that configures ProtoData for the associated project.
  *
- * We use ProtoData and the Validation library to generate validation code right inside
- * the Protobuf message classes. This plugin applies the `io.spine.protodata` plugin,
- * configures its extension, writes the ProtoData configuration file, and adds the required
- * dependencies to the target project.
+ * This plugin does the following:
+ *   1. Applies the `io.spine.protodata` plugin.
+ *   2. Configures the ProtoData extension of a Gradle project, passing codegen plugins, such
+ *      as [JavaValidationPlugin][io.spine.validation.java.JavaValidationPlugin].
+ *   3. Creates a [GenerateProtoDataConfig] for passing configuration to ProtoData, and
+ *      links it to the [LaunchProtoData] task.
+ *   4. Adds required dependencies.
  */
-internal class ProtoDataConfigPlugin : Plugin<Project> {
+internal class ProtoDataDecoratorPlugin : Plugin<Project> {
 
     /**
      * Applies the `io.spine.protodata` plugin to the project and, if the user needs
@@ -91,11 +95,7 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
 private fun Project.configureProtoData() {
     configureProtoDataPlugins()
     tasks.withType(LaunchProtoData::class.java) { launchTask ->
-        val taskName = GenerateProtoDataConfig.taskNameFor(launchTask)
-        val configTask = tasks.create(taskName, GenerateProtoDataConfig::class.java) {
-            linkConfigFile(launchTask, it)
-        }
-        launchTask.dependsOn(configTask)
+        configureLaunchTask(launchTask)
     }
 }
 
@@ -103,9 +103,9 @@ private fun Project.configureProtoData() {
  * Configures ProtoData with plugins, for the given Gradle project.
  */
 private fun Project.configureProtoDataPlugins() {
-    val codegen = extensions.getByType(CodegenSettings::class.java)
-    configureValidationRendering(codegen)
+    val codegen = extensions.getByType<CodegenSettings>()
     codegen.plugins(
+        VALIDATION_PLUGIN_CLASS,
         RejectionPlugin::class.java.getName(),
         // It should follow `RejectionPlugin` so that rejection throwable types are annotated too.
         ApiAnnotationsPlugin::class.java.getName()
@@ -115,31 +115,27 @@ private fun Project.configureProtoDataPlugins() {
         generatedGrpcDirName.value(),
         DirectoryName.kotlin.value()
     )
-    project.addDependencies(
+    addDependencies(
         PROTODATA_CONFIGURATION,
+        validationJavaBundle,
         mcJavaBase,
         mcJavaAnnotation,
         mcJavaRejection,
         toolBase
     )
-}
-
-private fun Project.configureValidationRendering(codegen: CodegenSettings) {
-    codegen.plugins(
-        VALIDATION_PLUGIN_CLASS
-    )
-    addDependency(PROTODATA_CONFIGURATION, validationJavaBundle)
     addDependency(IMPL_CONFIGURATION, validationJavaRuntime)
 }
 
-private fun Project.linkConfigFile(
-    launchTask: LaunchProtoData,
-    configTask: GenerateProtoDataConfig
-) {
-    configTask.apply {
-        targetFile.convention(layout.buildDirectory.file(defaultFileName()))
+private fun Project.configureLaunchTask(launchTask: LaunchProtoData) {
+    val taskName = GenerateProtoDataConfig.taskNameFor(launchTask)
+    val configTask = tasks.create(taskName, GenerateProtoDataConfig::class.java) {
+        it.apply {
+            targetFile.convention(layout.buildDirectory.file(defaultFileName()))
+        }
+        launchTask.configurationFile.set(it.targetFile)
     }
-    launchTask.configurationFile.set(configTask.targetFile)
+    // Make the dependency explicit to satisfy Gradle 8.x requirements.
+    launchTask.dependsOn(configTask)
 }
 
 private fun Project.addDependencies(configurationName: String, vararg artifacts: Artifact) {

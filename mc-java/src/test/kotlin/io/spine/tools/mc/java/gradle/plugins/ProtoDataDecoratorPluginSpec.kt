@@ -27,27 +27,30 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import io.kotest.matchers.collections.shouldContainInOrder
+import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.plugin.Extension
+import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.gradle.given.StubProject
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataDecoratorPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.rejection.RejectionPlugin
 import org.gradle.api.Project
-import org.gradle.api.provider.ListProperty
-import org.gradle.kotlin.dsl.findByType
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.withType
 
 @DisplayName("`ProtoDataConfigPlugin` should")
-internal class ProtoDataConfigPluginSpec {
+internal class ProtoDataDecoratorPluginSpec {
 
     companion object {
 
         lateinit var project: Project
+        lateinit var codegenSettings: Extension
 
         @BeforeAll
         @JvmStatic
@@ -59,30 +62,41 @@ internal class ProtoDataConfigPluginSpec {
             val plugins = project.pluginManager
             plugins.apply(GradleProject.javaPlugin)
             plugins.apply("com.google.protobuf")
-            plugins.apply(ProtoDataConfigPlugin::class.java)
+            plugins.apply(ProtoDataDecoratorPlugin::class.java)
 
             // Evaluate the project so that `project.afterEvaluate` is called.
             project.getTasksByName("fooBar", false)
+
+            codegenSettings = project.extensions.findByType<CodegenSettings>() as Extension
         }
     }
 
     @Test
-    fun `add ProtoData plugins`() {
-        val codegenSettings = project.extensions.findByType<CodegenSettings>() as Extension
-
+    fun `add project extension`() {
         codegenSettings shouldNotBe null
+    }
 
-        // Obtain a value of the `plugins` property via reflection.
-        val getter = Extension::class.java.getDeclaredMethod("getPlugins\$gradle_plugin")
-        getter.isAccessible = true
-        @Suppress("UNCHECKED_CAST")
-        val propValue = getter.invoke(codegenSettings) as ListProperty<String>
-        val plugins = propValue.get()
-
+    @Test
+    fun `add ProtoData plugins`() {
+        val plugins = codegenSettings.plugins.get()
         plugins.shouldContainInOrder(
             VALIDATION_PLUGIN_CLASS,
             RejectionPlugin::class.java.name,
             ApiAnnotationsPlugin::class.java.name
         )
+    }
+
+    @Test
+    fun `add a task for passing configuration file`() {
+        val task = project.tasks.withType<GenerateProtoDataConfig>()
+        task shouldNotBe null
+        task.shouldNotBeEmpty()
+    }
+
+    @Test
+    fun `add a task for launching ProtoData CLI`() {
+        val task = project.tasks.withType<LaunchProtoData>()
+        task shouldNotBe null
+        task.shouldNotBeEmpty()
     }
 }
