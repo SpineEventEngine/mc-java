@@ -26,6 +26,7 @@
 package io.spine.tools.mc.java.gradle;
 
 import io.spine.tools.gradle.task.TaskName;
+import io.spine.tools.gradle.testing.GradleProject;
 import io.spine.tools.mc.java.gradle.given.StubProject;
 import org.gradle.api.Task;
 import org.gradle.api.tasks.TaskContainer;
@@ -57,7 +58,7 @@ class McJavaPluginSpec {
                                  .withMavenRepositories()
                                  .get();
         var plugins = project.getPluginManager();
-        plugins.apply("java");
+        plugins.apply(GradleProject.javaPlugin);
         plugins.apply("com.google.protobuf");
         plugins.apply(MC_JAVA_GRADLE_PLUGIN_ID);
 
