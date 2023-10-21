@@ -30,6 +30,7 @@ import io.kotest.matchers.collections.shouldContainInOrder
 import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.plugin.Extension
+import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.gradle.given.StubProject
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
@@ -56,7 +57,7 @@ internal class ProtoDataConfigPluginSpec {
                 .get()
 
             val plugins = project.pluginManager
-            plugins.apply("java")
+            plugins.apply(GradleProject.javaPlugin)
             plugins.apply("com.google.protobuf")
             plugins.apply(ProtoDataConfigPlugin::class.java)
 
