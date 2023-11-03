@@ -138,7 +138,6 @@ fun Module.forceConfigurations() {
                     Spine.pluginBase,
                     Logging.lib,
                     Logging.backend,
-                    Logging.floggerApi,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
