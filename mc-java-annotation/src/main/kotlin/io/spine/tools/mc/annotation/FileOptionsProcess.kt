@@ -38,7 +38,7 @@ import io.spine.protodata.Option
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.event.FileEntered
 import io.spine.protodata.event.FileExited
-import io.spine.protodata.event.enumOptionDiscovered
+import io.spine.protodata.event.FileOptionDiscovered
 import io.spine.protodata.event.serviceOptionDiscovered
 import io.spine.protodata.event.typeOptionDiscovered
 import io.spine.server.entity.alter
@@ -58,11 +58,18 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
     fun on(@External e: FileEntered): NoEvents {
         alter {
             file = e.file.path
-            e.file.optionList
-                .filter { findMatching(it) != null }
-                .filter { it.value.isA<BoolValue>() }
-                .filter { it.value.unpack<BoolValue>().value }
-                .forEach(::addOption)
+        }
+        return nothing()
+    }
+
+    @React
+    fun on(@External e: FileOptionDiscovered): NoEvents {
+        val optionValue = e.option.value
+        val isApiLevelOption = findMatching(e.option) != null
+        if (optionValue.isA<BoolValue>() && isApiLevelOption
+            && optionValue.unpack<BoolValue>().value // is `true`
+        ) alter {
+            addOption(e.option)
         }
         return nothing()
     }
@@ -107,19 +114,6 @@ private fun ProtobufSourceFile.addMessageEvents(
             file = filePath
             type = it.name
             option = typeOption
-        })
-    }
-}
-
-private fun ProtobufSourceFile.addEnumEvents(
-    events: MutableList<EventMessage>,
-    enumOption: Option
-) {
-    enumTypeMap.values.forEach {
-        events.add(enumOptionDiscovered {
-            file = filePath
-            type = it.name
-            option = enumOption
         })
     }
 }
