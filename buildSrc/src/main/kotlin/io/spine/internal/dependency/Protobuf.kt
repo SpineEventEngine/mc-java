@@ -28,12 +28,12 @@ package io.spine.internal.dependency
 
 // https://github.com/protocolbuffers/protobuf
 @Suppress(
-    "MemberVisibilityCanBePrivate" /* used directly from outside */,
+    "MemberVisibilityCanBePrivate" /* used directly from the outside */,
     "ConstPropertyName"
 )
 object Protobuf {
     private const val group = "com.google.protobuf"
-    const val version       = "3.24.1"
+    const val version       = "3.24.4"
     val libs = listOf(
         "${group}:protobuf-java:${version}",
         "${group}:protobuf-java-util:${version}",
