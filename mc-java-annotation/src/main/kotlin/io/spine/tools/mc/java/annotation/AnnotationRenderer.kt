@@ -84,14 +84,8 @@ private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
     return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
 }
 
-internal abstract class ApiTypeAnnotation<T : Annotation>(
-    annotationClass: Class<T>,
-    typeSystem: TypeSystem
-) : TypeAnnotation<T>(annotationClass) {
-
-    init {
-        injectTypeSystem(typeSystem)
-    }
+internal abstract class ApiTypeAnnotation<T : Annotation>(annotationClass: Class<T>) :
+    TypeAnnotation<T>(annotationClass) {
 
     override fun renderAnnotationArguments(file: SourceFile): String = ""
 }

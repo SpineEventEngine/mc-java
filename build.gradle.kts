@@ -53,15 +53,15 @@ buildscript {
             exclude(group = "io.spine", module = "spine-logging-backend")
 
             resolutionStrategy {
+                @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
+                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     spine.base,
                     spine.toolBase,
                     spine.server,
                     io.spine.internal.dependency.ProtoData.pluginLib,
                     logging.lib,
-                    logging.backend,
                     logging.middleware,
-                    logging.floggerApi,
                     validation.runtime,
                     validation.javaBundle
                 )

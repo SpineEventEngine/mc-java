@@ -123,12 +123,12 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
 
         @SuppressWarnings("unchecked") // All the rules are of the same type.
         var builder = ResultUsePolicyEvaluator.builder(METHOD_INFO).addRules(
-                // The order of these rules matters somewhat because when checking a method, we'll
+                // The order of these rules matters somewhat because, when checking a method, we'll
                 // evaluate them in the order they're listed here and stop as soon as one of them
                 // returns a result. The order shouldn't matter because most of these, except
-                // perhaps the external ignore list, are equivalent in importance, and
-                // we should be checking declarations to ensure they aren't producing differing
-                // results (i.e. ensuring an @AutoValue.Builder setter method isn't annotated @CRV).
+                // perhaps the external ignore list, are equivalent in importance, and we should
+                // be checking declarations to ensure they aren't producing differing results
+                // (i.e., ensuring an @AutoValue.Builder setter method isn't annotated @CRV).
                 mapAnnotationSimpleName(CHECK_RETURN_VALUE, EXPECTED),
                 mapAnnotationSimpleName(CAN_IGNORE_RETURN_VALUE, OPTIONAL),
                 protoBuilders(),
@@ -137,14 +137,15 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
                 autoValueBuilders(),
                 autoBuilders(),
 
-                // This is conceptually lower precedence than the above rules.
+                // This is a conceptually lower precedence than the above rules.
                 externalIgnoreList()
         );
 
         var flags = ErrorProneFlags.empty();
-        flags.getList(CRV_PACKAGES)
-             .ifPresent(packagePatterns -> builder.addRule(
-                     PackagesRule.fromPatterns(packagePatterns)));
+        var packagePatterns = flags.getListOrEmpty(CRV_PACKAGES);
+        if (!packagePatterns.isEmpty()) {
+            builder.addRule(PackagesRule.fromPatterns(packagePatterns));
+        }
         this.evaluator = builder.addRule(
             globalDefault(defaultPolicy(flags, CHECK_ALL_METHODS),
                           defaultPolicy(flags, CHECK_ALL_CONSTRUCTORS))
