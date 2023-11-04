@@ -142,7 +142,6 @@ fun Module.forceConfigurations() {
                     Logging.lib,
                     Logging.backend,
                     Logging.middleware,
-                    Logging.floggerApi,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
