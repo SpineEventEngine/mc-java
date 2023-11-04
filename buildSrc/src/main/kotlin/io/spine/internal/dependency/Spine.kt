@@ -198,7 +198,8 @@ object Spine {
     object McJava {
         const val version = ArtifactVersion.mcJava
         const val pluginId = "io.spine.mc-java"
-        const val pluginLib = "$toolsGroup:spine-mc-java-plugins:${version}:all"
+        val pluginLib = pluginLib(version)
+        fun pluginLib(version: String): String = "$toolsGroup:spine-mc-java-plugins:$version:all"
     }
 
     @Deprecated("Please use `javadocFilter` instead.", ReplaceWith("javadocFilter"))
