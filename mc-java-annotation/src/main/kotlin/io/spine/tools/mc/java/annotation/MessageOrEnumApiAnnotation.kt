@@ -33,11 +33,12 @@ import io.spine.protodata.type.TypeSystem
 
 internal class MessageOrEnumApiAnnotation<T : Annotation>(
     private val typeName: TypeName,
-    annotationClass: Class<T>,
-    typeSystem: TypeSystem
-) : ApiTypeAnnotation<T>(annotationClass, typeSystem) {
+    annotationClass: Class<T>
+) : ApiTypeAnnotation<T>(annotationClass) {
 
-    private val convention = MessageOrEnumConvention(typeSystem)
+    private val convention by lazy {
+        MessageOrEnumConvention(typeSystem!!)
+    }
 
     override fun shouldAnnotate(file: SourceFile): Boolean {
         val declaration = convention.declarationFor(typeName)
