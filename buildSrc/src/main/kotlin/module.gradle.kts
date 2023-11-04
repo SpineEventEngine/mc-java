@@ -131,7 +131,9 @@ fun Module.forceConfigurations() {
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
+                @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
+                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     Protobuf.compiler,
                     Spine.base,
                     Spine.time,
@@ -140,7 +142,6 @@ fun Module.forceConfigurations() {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Logging.lib,
-                    Logging.backend,
                     Logging.middleware,
 
                     // Force the version to avoid the version conflict for
