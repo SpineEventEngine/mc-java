@@ -45,20 +45,20 @@ buildscript {
     standardSpineSdkRepositories()
 
     val spine = io.spine.internal.dependency.Spine
+    val validation = io.spine.internal.dependency.Validation
     doForceVersions(configurations)
     configurations {
         all {
             resolutionStrategy {
                 force(
+                    io.spine.internal.dependency.Grpc.api,
                     spine.base,
                     spine.toolBase,
                     spine.server,
                     io.spine.internal.dependency.ProtoData.pluginLib,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.backend,
-                    io.spine.internal.dependency.Spine.Logging.floggerApi,
-                    io.spine.internal.dependency.Validation.runtime,
-                    io.spine.internal.dependency.Validation.javaBundle
+                    validation.runtime,
+                    validation.javaBundle
                 )
             }
         }
