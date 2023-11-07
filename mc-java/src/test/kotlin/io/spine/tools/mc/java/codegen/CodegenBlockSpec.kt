@@ -296,13 +296,11 @@ class CodegenBlockSpec {
             options.codegen { config ->
                 config.validation {
                     it.skipBuilders()
-                    it.skipValidation()
                 }
             }
             val validation = options.codegen.toProto().validation
 
             validation.skipBuilders shouldBe true
-            validation.skipValidation shouldBe true
         }
     }
 
