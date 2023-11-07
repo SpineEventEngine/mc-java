@@ -50,29 +50,6 @@ public final class ValidationConfig extends Config<Validation> {
     }
 
     /**
-     * Makes the code generation skip generating the validation code.
-     */
-    public void skipValidation() {
-        skipValidation.set(true);
-    }
-
-    /**
-     * Checks if the validation code should be generated.
-     */
-    public boolean shouldSkipValidation() {
-        return skipValidation.get();
-    }
-
-    /**
-     * Ensures that validation code will be generated.
-     *
-     * <p>This is the default behaviour.
-     */
-    public void generateValidation() {
-        skipValidation.set(false);
-    }
-
-    /**
      * Makes the code generation skip generating the validating builders.
      */
     public void skipBuilders() {
