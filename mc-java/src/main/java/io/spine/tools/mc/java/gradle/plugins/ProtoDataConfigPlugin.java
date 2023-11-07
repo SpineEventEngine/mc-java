@@ -70,13 +70,10 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
      * Applies the {@code io.spine.protodata} plugin to the project and, if the user needs
      * validation code generation, configures ProtoData to generate Java validation code.
      *
-     * <p>ProtoData configuration is a tricky operation because of Gradle's lifecycle. On one hand,
-     * to check if the user disables validation via
-     * {@link io.spine.tools.mc.java.gradle.codegen.ValidationConfig#skipValidation()},
-     * we need to run configuration after the project is evaluated. At the same time, we need to
-     * squeeze our configuration before the {@code LaunchProtoData} task is configured. This means
-     * adding the {@code afterEvaluate(..)} hook before the ProtoData Gradle plugin is applied to
-     * the project.
+     * <p>ProtoData configuration is a tricky operation because of Gradle's lifecycle.
+     * We need to squeeze our configuration before the {@code LaunchProtoData} task is configured.
+     * This means adding the {@code afterEvaluate(..)} hook before the ProtoData Gradle plugin
+     * is applied to the project.
      */
     @Override
     public void apply(Project target) {
