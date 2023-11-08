@@ -36,6 +36,7 @@ import io.spine.test.tools.validate.entity.Task;
 import io.spine.test.tools.validate.event.ProjectCreated;
 import io.spine.test.tools.validate.rejection.TestRejections.CannotCreateProject;
 import io.spine.validate.ConstraintViolation;
+import io.spine.validate.Diags;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
@@ -272,7 +273,7 @@ class RequiredConstraintTest {
         @DisplayName("cannot be empty")
         void empty() {
             var instance = Collections.newBuilder();
-            checkViolation(instance, FIELD, "Collection must not be empty");
+            checkViolation(instance, FIELD, Diags.Required.collectionErrorMsg);
         }
 
         @Test
