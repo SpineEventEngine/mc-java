@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.validation.gen;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.TypeToken;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import io.spine.code.proto.FieldContext;
 import io.spine.code.proto.FieldDeclaration;
@@ -54,7 +53,6 @@ import io.spine.validate.option.ValidateConstraint;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -89,7 +87,6 @@ final class ValidationCodeGenerator implements ConstraintTranslator<Set<ClassMem
     private static final MessageAccess messageAccess = MessageAccess.of("msg");
 
     private final List<CodeBlock> compiledConstraints;
-    private final Set<ExternalConstraintFlag> externalConstraintFlags;
     private final AccumulateViolations violationAccumulator;
     private final FieldContext fieldContext;
     private final String methodName;
@@ -123,7 +120,6 @@ final class ValidationCodeGenerator implements ConstraintTranslator<Set<ClassMem
         this.compiledConstraints = new ArrayList<>();
         this.violationAccumulator =
                 violation -> formatted("%s.add(%s);", VIOLATIONS, violation);
-        this.externalConstraintFlags = new HashSet<>();
     }
 
     @Override
@@ -251,17 +247,14 @@ final class ValidationCodeGenerator implements ConstraintTranslator<Set<ClassMem
                        .build());
     }
 
-    private Function<FieldAccess, CodeBlock>
+    private static Function<FieldAccess, CodeBlock>
     obtainViolations(FieldDeclaration field,
                      Expression<List<ConstraintViolation>> violationsVar) {
-        var flag = new ExternalConstraintFlag(field);
-        externalConstraintFlags.add(flag);
         var isSet = new IsSet(field);
         return fieldAccess -> {
             var assignViolations = isSet
                     .valueIsNotSet(fieldAccess)
                     .ifTrue(assignToEmpty(violationsVar))
-                    .elseIf(flag.value(), externalViolations(field, violationsVar, fieldAccess))
                     .orElse(intrinsicViolations(field, violationsVar, fieldAccess));
             return CodeBlock.builder()
                     .addStatement("$T $N", listOfViolations, violationsVar.toString())
@@ -282,22 +275,6 @@ final class ValidationCodeGenerator implements ConstraintTranslator<Set<ClassMem
 
     private static CodeBlock assignToEmpty(Expression<List<ConstraintViolation>> violationsVar) {
         return CodeBlock.of("$N = $T.of();", violationsVar.toString(), ImmutableList.class);
-    }
-
-    private CodeBlock externalViolations(FieldDeclaration field,
-                                         Expression<List<ConstraintViolation>> violationsVar,
-                                         FieldAccess fieldAccess) {
-        var typeName = ClassName.bestGuess(type.javaClassName().value());
-        Expression<FieldContext> fieldContextExpression =
-                Expression.fromCode("$T.create($T.getDescriptor().findFieldByNumber($L))",
-                                    FieldContext.class,
-                                    typeName,
-                                    field.number());
-        return CodeBlock.of("$N = $T.validateAtRuntime($L, $L);",
-                            violationsVar.toString(),
-                            Validate.class,
-                            unpackedMessage(field, fieldAccess),
-                            fieldContextExpression);
     }
 
     private static Expression<?> unpackedMessage(FieldDeclaration field, FieldAccess fieldAccess) {
@@ -365,14 +342,9 @@ final class ValidationCodeGenerator implements ConstraintTranslator<Set<ClassMem
                 .collect(toList());
         var validateMethod =
                 new ValidateMethod(type, methodName, messageAccess, compiledConstraints);
-        var externalFlags = externalConstraintFlags
-                .stream()
-                .map(ExternalConstraintFlag::asClassMember)
-                .collect(toList());
         var methods = ImmutableSet.<ClassMember>builder()
                 .add(validateMethod.asClassMember())
                 .addAll(isSetMethods)
-                .addAll(externalFlags)
                 .build();
         return methods;
     }
