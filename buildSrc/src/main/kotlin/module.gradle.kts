@@ -34,6 +34,7 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
+import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
@@ -127,7 +128,9 @@ fun Module.forceConfigurations() {
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
+                @Suppress("DEPRECATION") // To force `Kotlin.stdLibJdk7` version.
                 force(
+                    Kotlin.stdLibJdk7,
                     Protobuf.compiler,
                     Grpc.api,
                     Spine.base,
