@@ -57,6 +57,7 @@ buildscript {
                     spine.server,
                     io.spine.internal.dependency.ProtoData.pluginLib,
                     io.spine.internal.dependency.Spine.Logging.lib,
+                    io.spine.internal.dependency.Spine.Logging.middleware,
                     validation.runtime,
                     validation.javaBundle
                 )

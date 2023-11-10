@@ -76,6 +76,7 @@ buildscript {
                     spine.toolBase,
                     spine.pluginBase,
                     io.spine.internal.dependency.Spine.Logging.lib,
+                    io.spine.internal.dependency.Spine.Logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -114,6 +115,7 @@ allprojects {
         all {
             resolutionStrategy {
                 force(
+                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     Spine.base,
                     Spine.time,
                     Spine.testlib,
