@@ -76,7 +76,6 @@ buildscript {
                     spine.toolBase,
                     spine.pluginBase,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
