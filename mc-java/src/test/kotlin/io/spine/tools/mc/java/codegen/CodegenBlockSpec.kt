@@ -29,6 +29,7 @@ import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
 import io.spine.base.CommandMessage
 import io.spine.base.EntityState
 import io.spine.base.EventMessage
@@ -38,6 +39,7 @@ import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.base.RejectionMessage
 import io.spine.base.UuidValue
+import io.spine.core.version
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory
@@ -128,13 +130,14 @@ class CodegenBlockSpec {
                 }
             }
             val config = options.codegen.toProto()
-            val commands = config.commands
 
-            commands.patternList shouldHaveSize 1
-            commands.patternList[0].suffix shouldBe suffix
-            commands.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(firstInterface, secondInterface)
-            commands.generateFields.superclass.canonical shouldBe fieldSuperclass
+            config.commands.run {
+                patternList shouldHaveSize 1
+                patternList[0].suffix shouldBe suffix
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(firstInterface, secondInterface)
+                generateFields.superclass.canonical shouldBe fieldSuperclass
+            }
         }
 
         @Test
@@ -152,13 +155,13 @@ class CodegenBlockSpec {
                 }
             }
             val config = options.codegen.toProto()
-            val events = config.events
 
-            events.patternList shouldHaveSize 1
-            events.patternList[0].prefix shouldBe prefix
-
-            events.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-            events.generateFields.superclass.canonical shouldBe fieldSuperclass
+            config.events.run {
+                patternList shouldHaveSize 1
+                patternList[0].prefix shouldBe prefix
+                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+                generateFields.superclass.canonical shouldBe fieldSuperclass
+            }
         }
 
         @Test
@@ -174,12 +177,13 @@ class CodegenBlockSpec {
                 }
             }
             val config = options.codegen.toProto()
-            val events = config.events
 
-            events.patternList shouldHaveSize 1
-            events.patternList[0].regex shouldBe regex
-            events.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-            events.generateFields.superclass.canonical shouldBe fieldSuperclass
+            config.events.run {
+                patternList shouldHaveSize 1
+                patternList[0].regex shouldBe regex
+                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+                generateFields.superclass.canonical shouldBe fieldSuperclass
+            }
         }
 
         @Test
@@ -219,14 +223,16 @@ class CodegenBlockSpec {
                     it.markFieldsAs(fieldSupertype)
                 }
             }
-            val config = options.codegen.toProto().entities
+            val entities = options.codegen.toProto().entities
 
-            config.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-            config.generateFields.superclass.canonical shouldBe fieldSupertype
-            config.patternList shouldHaveSize 1
-            config.patternList.first().suffix shouldBe suffix
-            config.optionList shouldHaveSize 1
-            config.optionList.first().name shouldBe option
+            entities.run {
+                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+                generateFields.superclass.canonical shouldBe fieldSupertype
+                patternList shouldHaveSize 1
+                patternList.first().suffix shouldBe suffix
+                optionList shouldHaveSize 1
+                optionList.first().name shouldBe option
+            }
         }
 
         @Test
@@ -239,11 +245,12 @@ class CodegenBlockSpec {
                     it.generateMethodsWith(methodFactory)
                 }
             }
-            val config = options.codegen.toProto().uuids
-
-            config.addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-            config.methodFactoryList shouldHaveSize 1
-            config.methodFactoryList.first().className.canonical shouldBe methodFactory
+            val uuids = options.codegen.toProto().uuids
+            uuids.run {
+                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
+                methodFactoryList shouldHaveSize 1
+                methodFactoryList.first().className.canonical shouldBe methodFactory
+            }
         }
 
         @Test
@@ -279,29 +286,21 @@ class CodegenBlockSpec {
                 first = t
             }
 
-            first.pattern.type.expectedType.value shouldBe firstMessageType
-            first.addInterfaceList.first().name.canonical shouldBe firstInterface
-            first.generateFields.superclass.canonical shouldBe fieldSuperclass
-            first.generateNestedClassesList shouldHaveSize 1
-            first.generateNestedClassesList.first().factory.className.canonical shouldBe
-                    classFactory
-
-            second.pattern.file.hasRegex() shouldBe true
-            second.addInterfaceList.first().name.canonical shouldBe secondInterface
-            second.generateMethodsList.first().factory.className.canonical shouldBe methodFactory
-        }
-
-        @Test
-        fun validation() {
-            options.codegen { config ->
-                config.validation {
-                    it.skipBuilders()
-                }
+            first.run {
+                pattern.type.expectedType.value shouldBe firstMessageType
+                addInterfaceList.first().name.canonical shouldBe firstInterface
+                generateFields.superclass.canonical shouldBe fieldSuperclass
+                generateNestedClassesList shouldHaveSize 1
+                generateNestedClassesList.first().factory.className.canonical shouldBe classFactory
             }
-            val validation = options.codegen.toProto().validation
 
-            validation.skipBuilders shouldBe true
+            second.run {
+                pattern.file.hasRegex() shouldBe true
+                addInterfaceList.first().name.canonical shouldBe secondInterface
+                generateMethodsList.first().factory.className.canonical shouldBe methodFactory
+            }
         }
+
     }
 
     @Nested
@@ -313,11 +312,13 @@ class CodegenBlockSpec {
             val config = options.codegen.toProto()
             val commands = config.commands
 
-            commands.patternList shouldHaveSize 1
-            commands.patternList[0].suffix shouldBe COMMANDS.suffix()
-            commands.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(CommandMessage::class.qualifiedName)
-            commands.generateFields shouldBe GenerateFields.getDefaultInstance()
+            commands.run {
+                patternList shouldHaveSize 1
+                patternList[0].suffix shouldBe COMMANDS.suffix()
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(CommandMessage::class.qualifiedName)
+                generateFields shouldBe GenerateFields.getDefaultInstance()
+            }
         }
 
         @Test
@@ -325,12 +326,14 @@ class CodegenBlockSpec {
             val config = options.codegen.toProto()
             val events = config.events
 
-            events.patternList shouldHaveSize 1
-            events.patternList[0].suffix shouldBe EVENTS.suffix()
-            events.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(EventMessage::class.qualifiedName)
-            events.generateFields.superclass.canonical shouldBe
-                    EventMessageField::class.qualifiedName
+            events.run {
+                patternList shouldHaveSize 1
+                patternList[0].suffix shouldBe EVENTS.suffix()
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(EventMessage::class.qualifiedName)
+                generateFields.superclass.canonical shouldBe
+                        EventMessageField::class.qualifiedName
+            }
         }
 
         @Test
@@ -338,37 +341,42 @@ class CodegenBlockSpec {
             val config = options.codegen.toProto()
             val events = config.rejections
 
-            events.patternList shouldHaveSize 1
-            events.patternList[0].suffix shouldBe MessageFile.REJECTIONS.suffix()
-            events.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(RejectionMessage::class.qualifiedName)
-            events.generateFields.superclass.canonical shouldBe
-                    EventMessageField::class.qualifiedName
+            events.run {
+                patternList shouldHaveSize 1
+                patternList[0].suffix shouldBe MessageFile.REJECTIONS.suffix()
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(RejectionMessage::class.qualifiedName)
+                generateFields.superclass.canonical shouldBe
+                        EventMessageField::class.qualifiedName
+            }
         }
 
         @Test
         fun entities() {
-            val config = options.codegen.toProto().entities
+            val entities = options.codegen.toProto().entities
 
-            config.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(EntityState::class.qualifiedName)
-            config.generateFields.superclass.canonical shouldBe
-                    EntityStateField::class.qualifiedName
-            config.patternList shouldBe emptyList()
-            config.optionList shouldHaveSize 1
-            config.optionList.first().name shouldBe
-                    OptionsProto.entity.descriptor.name
+            entities.run {
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(EntityState::class.qualifiedName)
+                generateFields.superclass.canonical shouldBe
+                        EntityStateField::class.qualifiedName
+                patternList shouldBe emptyList()
+                optionList shouldHaveSize 1
+                optionList.first().name shouldBe OptionsProto.entity.descriptor.name
+            }
         }
 
         @Test
         fun `UUID messages`() {
-            val config = options.codegen.toProto().uuids
+            val uuids = options.codegen.toProto().uuids
 
-            config.addInterfaceList.map { it.name.canonical } shouldContainExactly
-                    listOf(UuidValue::class.qualifiedName)
-            config.methodFactoryList shouldHaveSize 1
-            config.methodFactoryList.first().className.canonical shouldBe
-                    UuidMethodFactory::class.qualifiedName
+            uuids.run {
+                addInterfaceList.map { it.name.canonical } shouldContainExactly
+                        listOf(UuidValue::class.qualifiedName)
+                methodFactoryList shouldHaveSize 1
+                methodFactoryList.first().className.canonical shouldBe
+                        UuidMethodFactory::class.qualifiedName
+            }
         }
 
         @Test
@@ -399,9 +407,9 @@ class CodegenBlockSpec {
         @Test
         fun validation() {
             val validation = options.codegen.toProto().validation
-
-            validation.skipBuilders shouldBe false
-            validation.skipValidation shouldBe false
+            validation.run {
+                version.shouldBeEmpty()
+            }
         }
     }
 

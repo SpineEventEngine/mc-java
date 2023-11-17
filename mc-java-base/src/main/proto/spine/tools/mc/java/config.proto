@@ -79,14 +79,17 @@ message CodegenOptions {
 // Configuration related to validation code.
 message Validation {
 
-    // If `true`, validating builders should not be generated.
-    //
-    // Validating builders may be generated without validation code. See `skip_validation`.
-    //
-    bool skip_builders = 1;
+    // Validating builders are always generated. This property is deprecated and ignored.
+    bool skip_builders = 1 [deprecated = true];
 
-    // If `true`, validation code, based on the Spine validation rules, should not be generated.
-    bool skip_validation = 2;
+    // Validating builders are always generated. This property is deprecated and ignored.
+    bool skip_validation = 2 [deprecated = true];
+
+    // If specified, provides a version of the Java validation code generator to use.
+    //
+    // Otherwise, McJava uses the version of the generator that is bundled with the plugin.
+    //
+    string version = 3;
 }
 
 // Code generation config for a group of signal messages.

@@ -53,10 +53,7 @@ public final class BuilderGen extends CodeGenerator {
      * Creates a new instance of the generator.
      */
     public static CodeGenerator instance(CodegenOptions config) {
-        var validation = config.getValidation();
-        return validation.getSkipBuilders()
-               ? NoOpGenerator.instance()
-               : new BuilderGen();
+        return new BuilderGen();
     }
 
     @Override
