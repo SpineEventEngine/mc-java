@@ -74,23 +74,23 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
      * is applied to the project.
      */
     @Override
-    public void apply(Project target) {
-        target.afterEvaluate(ProtoDataConfigPlugin::configureProtoData);
-        target.getPluginManager()
+    public void apply(Project project) {
+        project.afterEvaluate(ProtoDataConfigPlugin::configureProtoData);
+        project.getPluginManager()
               .apply(PROTO_DATA_ID);
     }
 
-    private static void configureProtoData(Project target) {
-        configurePlugins(target);
+    private static void configureProtoData(Project project) {
+        configurePlugins(project);
 
-        var tasks = target.getTasks();
+        var tasks = project.getTasks();
         tasks.withType(LaunchProtoData.class, task -> {
             var name = task.getName();
             var taskName = format("writeConfigFor_%s", name);
             var configTask = tasks.create(
                     taskName,
                     GenerateProtoDataConfig.class,
-                    t -> linkConfigFile(target, task, t)
+                    t -> linkConfigFile(project, task, t)
             );
             task.dependsOn(configTask);
         });
