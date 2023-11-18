@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
 import io.spine.tools.gradle.Artifact;
+import io.spine.tools.mc.java.gradle.Validation;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -40,8 +41,6 @@ import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaBase;
 import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaRejection;
 import static io.spine.tools.mc.java.gradle.Artifacts.toolBase;
-import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
-import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
@@ -151,9 +150,9 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         codegen.plugins(
                 "io.spine.validation.java.JavaValidationPlugin"
         );
-        var validationVersion = getMcJava(project).codegen.validation().getVersion().get();
-        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle(validationVersion));
-        addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
+        var version = getMcJava(project).codegen.validation().getVersion().get();
+        addDependency(project, PROTODATA_CONFIGURATION, Validation.javaCodegenBundle(version));
+        addDependency(project, IMPL_CONFIGURATION, Validation.javaRuntime(version));
     }
 
     private static
