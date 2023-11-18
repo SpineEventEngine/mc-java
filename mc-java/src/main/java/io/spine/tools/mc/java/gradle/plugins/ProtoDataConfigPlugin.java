@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import io.spine.protodata.gradle.CodegenSettings;
 import io.spine.protodata.gradle.plugin.LaunchProtoData;
 import io.spine.tools.gradle.Artifact;
+import io.spine.tools.mc.java.gradle.McJava;
 import io.spine.tools.mc.java.gradle.Validation;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Plugin;
@@ -37,9 +38,6 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.Dependency;
 
 import static io.spine.tools.fs.DirectoryName.kotlin;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaAnnotation;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaBase;
-import static io.spine.tools.mc.java.gradle.Artifacts.mcJavaRejection;
 import static io.spine.tools.mc.java.gradle.Artifacts.toolBase;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
@@ -139,9 +137,9 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
 
         addDependencies(
                 project, PROTODATA_CONFIGURATION,
-                mcJavaBase(),
-                mcJavaAnnotation(),
-                mcJavaRejection(),
+                McJava.base(),
+                McJava.annotation(),
+                McJava.rejection(),
                 toolBase()
         );
     }

@@ -73,46 +73,6 @@ internal val gRpcProtocPlugin: Artifact by lazy {
     gRpcPlugin.withVersionFrom(versions)
 }
 
-/**
- * The Maven artifact containing the `spine-mc-java-plugins:all` fat JAR artifact.
- */
-@get:JvmName("spineJavaAllPlugins")
-internal val spineJavaAllPlugins: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
-        setVersion(mcJavaVersion)
-        setClassifier(ALL_CLASSIFIER)
-        setExtension(JAR_EXTENSION)
-    }
-}
-
-/**
- * The Maven artifact containing the `spine-mc-java-annotation` module.
- */
-@get:JvmName("mcJavaAnnotation")
-internal val mcJavaAnnotation: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        setName("spine-mc-java-annotation")
-        setVersion(mcJavaVersion)
-        setExtension(JAR_EXTENSION)
-    }
-}
-
-/**
- * The Maven artifact containing the `spine-mc-java-rejection` module.
- */
-@get:JvmName("mcJavaRejection")
-internal val mcJavaRejection: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        setName("spine-mc-java-rejection")
-        setVersion(mcJavaVersion)
-        setExtension(JAR_EXTENSION)
-    }
-}
-
 @get:JvmName("toolBase")
 internal val toolBase: Artifact by lazy {
     artifact {
@@ -123,36 +83,86 @@ internal val toolBase: Artifact by lazy {
     }
 }
 
-/**
- * The Maven artifact containing the `spine-mc-java-base` module.
- */
-@get:JvmName("mcJavaBase")
-internal val mcJavaBase: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        name = "spine-mc-java-base"
-        version = mcJavaVersion
-        extension = JAR_EXTENSION
-    }
-}
-
-/**
- * The version of the Model Compiler Java modules.
- *
- * This is the version of all the modules declared in this project.
- */
-@get:JvmName("mcJavaVersion")
-internal val mcJavaVersion: String by lazy {
-    val self: Dependency = MavenDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
-    versions.versionOf(self)
-        .orElseThrow { error("Unable to load versions of `$self`.") }
-}
 
 @get:JvmName("toolBaseVersion")
 internal val toolBaseVersion: String by lazy {
     val toolBase: Dependency = MavenDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
     versions.versionOf(toolBase)
         .orElseThrow { error("Unable to load versions of `$toolBase`.") }
+}
+
+/**
+ * Artifacts of McJava.
+ */
+internal object McJava {
+
+    /**
+     * The version of the Model Compiler Java modules.
+     *
+     * This is the version of all the modules declared in this project.
+     */
+    internal val version: String by lazy {
+        val self: Dependency = MavenDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
+        versions.versionOf(self)
+            .orElseThrow { error("Unable to load versions of `$self`.") }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-base` module.
+     */
+    @JvmStatic
+    @get:JvmName("base")
+    internal val base: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name = "spine-mc-java-base"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-rejection` module.
+     */
+    @JvmStatic
+    @get:JvmName("rejection")
+    internal val rejection: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            setName("spine-mc-java-rejection")
+            setVersion(this@McJava.version)
+            setExtension(JAR_EXTENSION)
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-annotation` module.
+     */
+    @get:JvmName("annotation")
+    @JvmStatic
+    internal val annotation: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            setName("spine-mc-java-annotation")
+            setVersion(this@McJava.version)
+            setExtension(JAR_EXTENSION)
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-plugins:all` fat JAR artifact.
+     */
+    @JvmStatic
+    @get:JvmName("allPlugins")
+    internal val allPlugins: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
+            setVersion(this@McJava.version)
+            setClassifier(ALL_CLASSIFIER)
+            setExtension(JAR_EXTENSION)
+        }
+    }
 }
 
 /**
