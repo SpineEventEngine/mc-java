@@ -53,12 +53,16 @@ internal class ValidationConfigSpec {
     @Test
     fun `use built-in version of validation config by default`() {
         config.version.get().shouldBeEmpty()
+        config.toProto().version.shouldBeEmpty()
     }
 
     @Test
     fun `allow specifying a version of validation config`() {
-        val version = "1.2.3"
-        config.version.set(version)
-        config.version.get() shouldBe version
+        val expected = "1.2.3"
+        config.version.set(expected)
+        config.run {
+            version.get() shouldBe expected
+            toProto().version shouldBe expected
+        }
     }
 }
