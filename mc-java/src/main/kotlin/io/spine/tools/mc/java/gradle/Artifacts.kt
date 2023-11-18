@@ -162,15 +162,14 @@ private val validationVersion: String by lazy {
 }
 
 /**
- * The Maven artifact containing the `spine-validation-java-extensions` module.
+ * The Maven artifact containing the `spine-validation-java-bundle` module.
  */
-@get:JvmName("validationJavaBundle")
-internal val validationJavaBundle: Artifact by lazy {
+@JvmName("validationJavaBundle")
+internal fun validationJavaBundle(version: String = ""): Artifact =
     artifact {
         dependency = validationJavaBundleDependency
-        version = validationVersion
+        this@artifact.version = version.ifEmpty { validationVersion }
     }
-}
 
 /**
  * The Maven artifact containing the `spine-validation-java-runtime` module.

@@ -35,7 +35,7 @@ import com.google.protobuf.Message;
  * @param <P>
  *         the type that captures a snapshot of the given configuration state
  */
-abstract class Config<P extends Message> {
+public abstract class Config<P extends Message> {
 
     /**
      * Converts this configuration into a Proto message.

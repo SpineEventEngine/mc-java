@@ -27,10 +27,8 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableSet;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
-import io.spine.tools.mc.java.protoc.NoOpGenerator;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 
@@ -42,18 +40,8 @@ import static io.spine.tools.mc.java.protoc.message.BuilderImplements.implementV
  */
 public final class BuilderGen extends CodeGenerator {
 
-    /**
-     * Prevents direct instantiation.
-     */
-    private BuilderGen() {
+    public BuilderGen() {
         super();
-    }
-
-    /**
-     * Creates a new instance of the generator.
-     */
-    public static CodeGenerator instance(CodegenOptions config) {
-        return new BuilderGen();
     }
 
     @Override

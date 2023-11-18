@@ -44,6 +44,7 @@ import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaBundle;
 import static io.spine.tools.mc.java.gradle.Artifacts.validationJavaRuntime;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedGrpcDirName;
 import static io.spine.tools.mc.java.gradle.Projects.getGeneratedJavaDirName;
+import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNullElseGet;
@@ -150,7 +151,8 @@ final class ProtoDataConfigPlugin implements Plugin<Project> {
         codegen.plugins(
                 "io.spine.validation.java.JavaValidationPlugin"
         );
-        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle());
+        var validationVersion = getMcJava(project).codegen.validation().getVersion().get();
+        addDependency(project, PROTODATA_CONFIGURATION, validationJavaBundle(validationVersion));
         addDependency(project, IMPL_CONFIGURATION, validationJavaRuntime());
     }
 

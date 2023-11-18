@@ -38,7 +38,7 @@ internal class BuilderGenSpec {
 
     @Test
     fun `produce builder insertion points`() {
-        val generator = BuilderGen.instance()
+        val generator = BuilderGen()
         val file = BuilderTestProto.getDescriptor()
         val request = codeGeneratorRequest {
             protoFile.add(file.toProto())
