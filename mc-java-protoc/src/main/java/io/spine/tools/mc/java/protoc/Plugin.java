@@ -66,7 +66,7 @@ import static io.spine.util.Exceptions.newIllegalStateException;
  */
 public final class Plugin {
 
-    /** Prevents instantiation from outside. */
+    /** Prevents instantiation from the outside. */
     private Plugin() {
     }
 
