@@ -35,7 +35,7 @@ import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.gradle.given.StubProject
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataDecoratorPlugin.Companion.VALIDATION_PLUGIN_CLASS
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.rejection.RejectionPlugin
 import org.gradle.api.Project
 import org.junit.jupiter.api.BeforeAll
@@ -45,7 +45,7 @@ import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.withType
 
 @DisplayName("`ProtoDataConfigPlugin` should")
-internal class ProtoDataDecoratorPluginSpec {
+internal class ProtoDataConfigPluginSpec {
 
     companion object {
 
@@ -62,7 +62,7 @@ internal class ProtoDataDecoratorPluginSpec {
             val plugins = project.pluginManager
             plugins.apply(GradleProject.javaPlugin)
             plugins.apply("com.google.protobuf")
-            plugins.apply(ProtoDataDecoratorPlugin::class.java)
+            plugins.apply(McJavaPlugin::class.java)
 
             // Evaluate the project so that `project.afterEvaluate` is called.
             project.getTasksByName("fooBar", false)

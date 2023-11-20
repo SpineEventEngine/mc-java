@@ -80,7 +80,7 @@ public class McJavaPlugin extends LanguagePlugin {
                   new DescriptorSetMergerPlugin(),
                   new JavaProtocConfigurationPlugin(),
                   new McJavaChecksPlugin(),
-                  new ProtoDataDecoratorPlugin())
+                  new ProtoDataConfigPlugin())
               .forEach(plugin -> apply(plugin, project));
     }
 
