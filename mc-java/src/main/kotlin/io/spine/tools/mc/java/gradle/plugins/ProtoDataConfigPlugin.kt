@@ -142,16 +142,18 @@ private fun LaunchProtoData.createConfigTask() {
 }
 
 private fun LaunchProtoData.linkConfigFile(config: GenerateProtoDataConfig) {
-    val defaultFile = config.defaultFile()
-    val targetFile = config.targetFile
-    targetFile.convention(defaultFile)
+    val targetFile = config.file()
     configurationFile.set(targetFile)
 }
 
-private fun GenerateProtoDataConfig.defaultFile(): Provider<RegularFile> {
+/**
+ * Configures the `targetFile` property of this task with the conventional path and returns it.
+ */
+private fun GenerateProtoDataConfig.file(): Provider<RegularFile> {
     val fileName = "$name.bin"
     val defaultFile = project.layout.buildDirectory.file(CONFIG_SUBDIR + separatorChar + fileName)
-    return defaultFile
+    targetFile.convention(defaultFile)
+    return targetFile
 }
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
