@@ -26,7 +26,7 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import io.spine.protodata.gradle.CodegenSettings
-import io.spine.protodata.gradle.Names
+import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.protodata.gradle.plugin.USER_CLASSPATH_CONFIGURATION_NAME
 import io.spine.tools.fs.DirectoryName
@@ -74,7 +74,7 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         project.afterEvaluate {
             it.configureProtoData()
         }
-        project.pluginManager.apply(Names.GRADLE_PLUGIN_ID)
+        project.pluginManager.apply(GRADLE_PLUGIN_ID)
     }
 
     companion object {
