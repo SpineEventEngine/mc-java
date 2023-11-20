@@ -26,7 +26,9 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import io.spine.protodata.gradle.CodegenSettings
+import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.plugin.LaunchProtoData
+import io.spine.protodata.gradle.plugin.USER_CLASSPATH_CONFIGURATION_NAME
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.java.gradle.McJava.annotation
@@ -37,17 +39,20 @@ import io.spine.tools.mc.java.gradle.Validation.javaRuntime
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.CONFIG_SUBDIR
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.configTaskName
 import io.spine.tools.mc.java.gradle.toolBase
-import java.io.File
+import java.io.File.separatorChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 
 /**
  * The plugin that configures ProtoData for the associated project.
- *
  *
  * We use ProtoData and the Validation library to generate validation code right inside
  * the Protobuf message classes. This plugin applies the `io.spine.protodata` plugin,
@@ -69,105 +74,100 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         project.afterEvaluate {
             it.configureProtoData()
         }
-        project.pluginManager.apply(PROTO_DATA_ID)
+        project.pluginManager.apply(Names.GRADLE_PLUGIN_ID)
     }
 
     companion object {
 
         /**
-         * The ID of the ProtoData Gradle Plugin.
-         */
-        private const val PROTO_DATA_ID = "io.spine.protodata"
-
-        /**
          * The name of the directory where the ProtoData configuration files are stored.
          */
-        private const val CONFIG_SUBDIR = "protodata-config"
+        const val CONFIG_SUBDIR = "protodata-config"
 
         /**
-         * The name of the `protoData` configuration.
+         * Obtains the task name for writing the ProtoData configuration file for the given
+         * name of the `LaunchProtoData` task.
          */
-        private const val PROTODATA_CONFIGURATION = "protoData"
-
-        /**
-         * The name of the `implementation` configuration.
-         */
-        private const val IMPL_CONFIGURATION = "implementation"
-
         fun configTaskName(launchTask: String): String = "writeConfigFor_${launchTask}"
     }
 
     private fun Project.configureProtoData() {
         configurePlugins()
-        tasks.withType(LaunchProtoData::class.java) { task ->
-            val taskName = configTaskName(task.name)
-            val configTask = tasks.create(taskName, GenerateProtoDataConfig::class.java) {
-                t -> linkConfigFile(task, t)
-            }
-            task.dependsOn(configTask)
+        tasks.withType<LaunchProtoData>().all { task ->
+            task.createConfigTask()
         }
     }
-
-    /**
-     * Configures ProtoData with plugins, for the given Gradle project.
-     */
-    private fun Project.configurePlugins() {
-        val codegen = extensions.getByType<CodegenSettings>()
-        configureValidationRendering(codegen)
-
-        codegen.plugins(
-            "io.spine.tools.mc.java.rejection.RejectionPlugin"
-        )
-
-        codegen.subDirs = listOf(
-            generatedJavaDirName.value(),
-            generatedGrpcDirName.value(),
-            DirectoryName.kotlin.value()
-        )
-
-        addDependencies(
-            PROTODATA_CONFIGURATION,
-            base,
-            annotation,
-            rejection,
-            toolBase
-        )
-    }
-
-    private fun Project.configureValidationRendering(codegen: CodegenSettings) {
-        codegen.plugins(
-            "io.spine.validation.java.JavaValidationPlugin"
-        )
-        val version = mcJava.codegen.validation().version.get()
-        addDependency(PROTODATA_CONFIGURATION, javaCodegenBundle(version))
-        addDependency(IMPL_CONFIGURATION, javaRuntime(version))
-    }
-
-    private fun Project.linkConfigFile(launch: LaunchProtoData, config: GenerateProtoDataConfig) {
-        val targetFile = config.targetFile
-        val fileName = config.name + ".bin"
-        val defaultFile = layout.buildDirectory.file(CONFIG_SUBDIR + File.separatorChar + fileName)
-        targetFile.convention(defaultFile)
-        launch.configurationFile.set(targetFile)
-    }
 }
 
-private fun Project.addDependency(configurationName: String, artifact: Artifact) {
+/**
+ * Configures ProtoData with plugins, for the given Gradle project.
+ */
+private fun Project.configurePlugins() {
+    val codegen = extensions.getByType<CodegenSettings>()
+    configureValidationRendering(codegen)
+
+    codegen.plugins(
+        "io.spine.tools.mc.java.rejection.RejectionPlugin"
+    )
+
+    codegen.subDirs = listOf(
+        generatedJavaDirName.value(),
+        generatedGrpcDirName.value(),
+        DirectoryName.kotlin.value()
+    )
+
+    addUserClasspathDependencies(
+        base,
+        toolBase,
+        annotation,
+        rejection,
+    )
+}
+
+private fun Project.configureValidationRendering(codegen: CodegenSettings) {
+    codegen.plugins(
+        "io.spine.validation.java.JavaValidationPlugin"
+    )
+    val version = mcJava.codegen.validation().version.get()
+    addDependency(USER_CLASSPATH_CONFIGURATION_NAME, javaCodegenBundle(version))
+    addDependency("implementation", javaRuntime(version))
+}
+
+private fun LaunchProtoData.createConfigTask() {
+    val taskName = configTaskName(name)
+    val configTask = project.tasks.create(taskName, GenerateProtoDataConfig::class.java) { t ->
+        linkConfigFile(t)
+    }
+    dependsOn(configTask)
+}
+
+private fun LaunchProtoData.linkConfigFile(config: GenerateProtoDataConfig) {
+    val defaultFile = config.defaultFile()
+    val targetFile = config.targetFile
+    targetFile.convention(defaultFile)
+    configurationFile.set(targetFile)
+}
+
+private fun GenerateProtoDataConfig.defaultFile(): Provider<RegularFile> {
+    val fileName = "$name.bin"
+    val defaultFile = project.layout.buildDirectory.file(CONFIG_SUBDIR + separatorChar + fileName)
+    return defaultFile
+}
+
+private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
+    addDependency(USER_CLASSPATH_CONFIGURATION_NAME, it)
+}
+
+private fun Project.addDependency(configuration: String, artifact: Artifact) {
     val dependency = findDependency(artifact) ?: artifact.notation()
-    dependencies.add(configurationName, dependency)
-}
-
-private fun Project.addDependencies(configurationName: String, vararg artifacts: Artifact) {
-    for (artifact in artifacts) {
-        addDependency(configurationName, artifact)
-    }
+    dependencies.add(configuration, dependency)
 }
 
 private fun Project.findDependency(artifact: Artifact): Dependency? {
     val dependencies = configurations.flatMap { c -> c.dependencies }
     val found = dependencies.firstOrNull { d ->
-        d.group?.let { it == artifact.group() && d.name == artifact.name() }
-            ?: false
+        artifact.group() == d.group // `d.group` could be `null`.
+                && artifact.name() == d.name
     }
     return found
 }
