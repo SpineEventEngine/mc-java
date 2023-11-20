@@ -100,7 +100,6 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
         rejections.convention(REJECTIONS, RejectionMessage.class, EventMessageField.class);
         entities.convention(OptionsProto.entity, EntityState.class, EntityStateField.class);
         uuids.convention(UuidMethodFactory.class, UuidValue.class);
-        validation.enableAllByConvention();
     }
 
     /**

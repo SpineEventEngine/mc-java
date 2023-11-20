@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2022, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.protoc.message
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.173")
-val versionToPublish by extra(mcJavaVersion)
+import com.google.protobuf.compiler.PluginProtos
+import com.google.protobuf.compiler.codeGeneratorRequest
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.string.shouldNotBeEmpty
+import io.spine.test.tools.mc.java.protoc.BuilderTestProto
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+
+@DisplayName("`BuilderGen` should")
+internal class BuilderGenSpec {
+
+    @Test
+    fun `produce builder insertion points`() {
+        val generator = BuilderGen()
+        val file = BuilderTestProto.getDescriptor()
+        val request = codeGeneratorRequest {
+            protoFile.add(file.toProto())
+            fileToGenerate.add(file.fullName)
+            compilerVersion = PluginProtos.Version.newBuilder().setMajor(3).build()
+        }
+        val response = generator.process(request)
+        val files = response.fileList
+
+        files shouldHaveSize 1
+        files[0]!!.insertionPoint.shouldNotBeEmpty()
+    }
+}

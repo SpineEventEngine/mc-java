@@ -137,14 +137,15 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
                 autoValueBuilders(),
                 autoBuilders(),
 
-                // This is a conceptually lower precedence than the above rules.
+                // This has conceptually lower precedence than the above rules.
                 externalIgnoreList()
         );
 
         var flags = ErrorProneFlags.empty();
         var packagePatterns = flags.getListOrEmpty(CRV_PACKAGES);
         if (!packagePatterns.isEmpty()) {
-            builder.addRule(PackagesRule.fromPatterns(packagePatterns));
+            var fromPatterns = PackagesRule.fromPatterns(packagePatterns);
+            builder.addRule(fromPatterns);
         }
         this.evaluator = builder.addRule(
             globalDefault(defaultPolicy(flags, CHECK_ALL_METHODS),

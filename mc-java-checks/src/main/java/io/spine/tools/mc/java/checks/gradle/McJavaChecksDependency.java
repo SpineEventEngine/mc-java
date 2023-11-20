@@ -32,7 +32,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.result.DependencyResult;
 import org.gradle.api.artifacts.result.ResolutionResult;
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult;
 import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency;
@@ -136,7 +135,7 @@ public final class McJavaChecksDependency implements WithLogging {
             var allDeps = resolutionResult.getAllDependencies();
             var group = requireNonNull(dependency.getGroup());
             var name = dependency.getName();
-            for (DependencyResult dep : allDeps) {
+            for (var dep : allDeps) {
                 if (dep instanceof UnresolvedDependencyResult) {
                     var unresolved = (UnresolvedDependencyResult) dep;
                     var attempted = unresolved.getAttempted();

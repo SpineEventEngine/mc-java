@@ -62,7 +62,7 @@ public fun Project.protoDir(ss: SourceSetName): Path {
 }
 
 /**
- * Obtains collection of proto files (if any) in the source set with the given name.
+ * Obtains a collection of proto files (if any) in the source set with the given name.
  */
 public fun Project.protoFiles(ssn: SourceSetName): FileCollection? {
     val sourceSet = sourceSet(ssn)
@@ -86,7 +86,7 @@ public val generatedGrpcDirName: DirectoryName = grpc
 public val generatedRejectionsDirName: DirectoryName = spine
 
 /**
- * Obtains the directory with the rejections source code generated for the specified source set.
+ * Obtains the directory with the rejection source code generated for the specified source set.
  */
 public fun Project.generatedRejectionsDir(ss: SourceSetName): Path =
     generated(ss).resolve(generatedRejectionsDirName)

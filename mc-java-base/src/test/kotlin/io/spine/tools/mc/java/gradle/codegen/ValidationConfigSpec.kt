@@ -24,12 +24,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.173")
-val versionToPublish by extra(mcJavaVersion)
+package io.spine.tools.mc.java.gradle.codegen
+
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
+import java.io.File
+import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+
+@DisplayName("`ValidationConfig` should")
+internal class ValidationConfigSpec {
+
+    companion object {
+
+        lateinit var config: ValidationConfig
+
+        @BeforeAll
+        @JvmStatic
+        fun createProject(@TempDir projectDir: File) {
+            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+            config = ValidationConfig(project)
+        }
+    }
+
+    @Test
+    fun `use built-in version of validation config by default`() {
+        config.version.get().shouldBeEmpty()
+        config.toProto().version.shouldBeEmpty()
+    }
+
+    @Test
+    fun `allow specifying a version of validation config`() {
+        val expected = "1.2.3"
+        config.version.set(expected)
+        config.run {
+            version.get() shouldBe expected
+            toProto().version shouldBe expected
+        }
+    }
+}

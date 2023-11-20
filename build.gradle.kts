@@ -55,6 +55,7 @@ buildscript {
             resolutionStrategy {
                 @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
+                    io.spine.internal.dependency.Grpc.api,
                     io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     spine.base,
                     spine.toolBase,

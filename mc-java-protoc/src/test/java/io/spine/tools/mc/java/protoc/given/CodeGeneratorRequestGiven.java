@@ -81,17 +81,6 @@ public final class CodeGeneratorRequestGiven {
     }
 
     /**
-     * Creates a builder for {@code SpineProtocConfig} with all the validation features turned off.
-     */
-    public static CodegenOptions.Builder optionsWithoutValidation() {
-        var builder = CodegenOptions.newBuilder();
-        builder.getValidationBuilder()
-               .setSkipBuilders(true)
-               .setSkipValidation(true);
-        return builder;
-    }
-
-    /**
      * Creates a {@link GenerateNestedClasses} config with the given factory class.
      */
     public static GenerateNestedClasses generateNested(Class<?> cls) {

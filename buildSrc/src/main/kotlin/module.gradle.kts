@@ -26,15 +26,13 @@
 
 import Module_gradle.Module
 import com.google.common.io.Files
-import io.spine.internal.dependency.Asm
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
-import io.spine.internal.dependency.Jackson
-import io.spine.internal.dependency.OpenTest4J
+import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -133,8 +131,9 @@ fun Module.forceConfigurations() {
             resolutionStrategy {
                 @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
-                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
+                    Kotlin.stdLibJdk7,
                     Protobuf.compiler,
+                    Grpc.api,
                     Spine.base,
                     Spine.time,
                     Spine.server,

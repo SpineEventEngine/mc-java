@@ -75,7 +75,7 @@ object Spine {
          * @see [Spine.CoreJava.server]
          * @see <a href="https://github.com/SpineEventEngine/core-java">core-java</a>
          */
-        const val core = "2.0.0-SNAPSHOT.171"
+        const val core = "2.0.0-SNAPSHOT.174"
 
         /**
          * The version of [Spine.modelCompiler].
@@ -124,7 +124,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.186"
+        const val toolBase = "2.0.0-SNAPSHOT.187"
 
         /**
          * The version of [Spine.javadocTools].
@@ -195,6 +195,7 @@ object Spine {
      *
      * See [mc-java](https://github.com/SpineEventEngine/mc-java).
      */
+    @Suppress("MemberVisibilityCanBePrivate") // `pluginLib()` is used by subprojects.
     object McJava {
         const val version = ArtifactVersion.mcJava
         const val pluginId = "io.spine.mc-java"

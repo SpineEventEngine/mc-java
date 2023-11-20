@@ -66,7 +66,7 @@ import static io.spine.util.Exceptions.newIllegalStateException;
  */
 public final class Plugin {
 
-    /** Prevents instantiation from outside. */
+    /** Prevents instantiation from the outside. */
     private Plugin() {
     }
 
@@ -79,7 +79,7 @@ public final class Plugin {
         var generator = CompositeGenerator.of(
                 InterfaceGen.instance(config),
                 MethodGen.instance(config),
-                BuilderGen.instance(config),
+                new BuilderGen(),
                 NestedClassGen.instance(config),
                 ColumnGen.instance(config),
                 EntityQueryGen.instance(config),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2022, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+syntax = "proto3";
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.173")
-val versionToPublish by extra(mcJavaVersion)
+package spine.test.validate;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.test.validate";
+option java_outer_classname = "PatternsProto";
+option java_multiple_files = true;
+
+message AllThePatterns {
+
+    string letters = 1 [
+        (pattern).regex = "[a-z]+",
+        (pattern).modifier.case_insensitive = true
+    ];
+
+    string many_lines = 2 [
+        (pattern).regex = ".+$\r?\n^.+",
+        (pattern).modifier.multiline = true
+    ];
+
+    string partial = 3 [
+        (pattern).regex = "World",
+        (pattern).modifier.partial_match = true
+    ];
+
+    string utf8 = 4 [
+        (pattern).regex = "[їґє]",
+        (pattern).modifier.unicode = true
+    ];
+
+    string dot_all = 5 [
+        (pattern).regex = ".*",
+        (pattern).modifier.dot_all = true
+    ];
+}
