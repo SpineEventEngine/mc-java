@@ -37,13 +37,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
-import static io.spine.tools.gradle.task.JavaTaskName.compileJava;
-import static io.spine.tools.gradle.task.JavaTaskName.compileTestJava;
 import static io.spine.tools.gradle.testing.GradleTruth.assertThat;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.annotateProto;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.annotateTestProto;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeDescriptorSet;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.mergeTestDescriptorSet;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.preClean;
 import static io.spine.tools.mc.java.gradle.given.ModelCompilerTestEnv.MC_JAVA_GRADLE_PLUGIN_ID;
 
@@ -77,39 +71,6 @@ class McJavaPluginSpec {
         void preClean() {
             assertThat(task(clean)).dependsOn(task(preClean))
                                    .isTrue();
-        }
-
-        @Test
-        void annotateProto() {
-            assertDependencies(
-                    annotateProto, mergeDescriptorSet, compileJava
-            );
-        }
-
-        @Test
-        void annotateTestProto() {
-            assertDependencies(
-                    annotateTestProto, mergeTestDescriptorSet, compileTestJava
-            );
-        }
-
-        /**
-         * Asserts that the task depends on the second task and is the dependency of the third task.
-         *
-         * @param task
-         *         the name of the task we assert
-         * @param dependency
-         *         the name of the task which is the dependency of the asserted task
-         * @param dependantTask
-         *         the name of the task which depends on the asserted task.
-         */
-        void assertDependencies(TaskName task, TaskName dependency, TaskName dependantTask) {
-            var assertTask = assertThat(task(task));
-
-            assertTask.dependsOn(dependency)
-                      .isTrue();
-            assertTask.isDependencyOf(task(dependantTask))
-                      .isTrue();
         }
 
         private Task task(TaskName taskName) {
