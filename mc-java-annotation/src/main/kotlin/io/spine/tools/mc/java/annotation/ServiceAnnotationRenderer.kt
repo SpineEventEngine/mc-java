@@ -36,6 +36,7 @@ internal class ServiceAnnotationRenderer :
 
     override fun annotateType(state: ServiceAnnotations, annotationClass: Class<out Annotation>) {
         val annotation = ServiceAnnotation(state.service, annotationClass)
+        annotation.registerWith(context!!)
         annotation.renderSources(sources)
     }
 }

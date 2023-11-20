@@ -46,6 +46,7 @@ internal class MessageAnnotationRenderer :
 
     override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
         val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass)
+        annotation.registerWith(context!!)
         annotation.renderSources(sources)
     }
 
