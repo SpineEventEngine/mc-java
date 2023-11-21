@@ -24,25 +24,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("MaxLineLength")
+package io.spine.tools.mc.java.gradle.codegen
 
-package io.spine.internal.dependency
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
+import java.io.File
+import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-/**
- * Plexus Utils is a transitive dependency, which we don't use directly.
- *
- * [Plexus Utils](https://github.com/codehaus-plexus/plexus-utils)
- */
-@Suppress("unused", "ConstPropertyName")
-object Plexus {
+@DisplayName("`ValidationConfig` should")
+internal class ValidationConfigSpec {
 
-    /**
-     * This is the last version in the 3.x series.
-     *
-     * There's a major update to 4.x.
-     *
-     * @see <a href="https://github.com/codehaus-plexus/plexus-utils/releases/tag/plexus-utils-4.0.0">plexus-utils-4.0.0</a>
-     */
-    private const val version = "4.0.0"
-    const val utils = "org.codehaus.plexus:plexus-utils:${version}"
+    companion object {
+
+        lateinit var config: ValidationConfig
+
+        @BeforeAll
+        @JvmStatic
+        fun createProject(@TempDir projectDir: File) {
+            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+            config = ValidationConfig(project)
+        }
+    }
+
+    @Test
+    fun `use built-in version of validation config by default`() {
+        config.version.get().shouldBeEmpty()
+        config.toProto().version.shouldBeEmpty()
+    }
+
+    @Test
+    fun `allow specifying a version of validation config`() {
+        val expected = "1.2.3"
+        config.version.set(expected)
+        config.run {
+            version.get() shouldBe expected
+            toProto().version shouldBe expected
+        }
+    }
 }

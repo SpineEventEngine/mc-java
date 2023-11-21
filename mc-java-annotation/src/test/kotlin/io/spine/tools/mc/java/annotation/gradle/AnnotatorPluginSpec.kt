@@ -93,8 +93,8 @@ internal class AnnotatorPluginSpec {
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()
                 /* Uncomment the following line to be able to debug the build.
-                   Do not forget to turn off so that tests run faster AND Windows build does not
-                    fail with the error on Windows Registry unavailability. */
+                   Remember to turn off so that tests run faster, AND Windows build does not
+                   fail with the error on Windows Registry unavailability. */
                 //.enableRunnerDebug()
                 .create()
             (project.runner as DefaultGradleRunner).withJvmArguments(

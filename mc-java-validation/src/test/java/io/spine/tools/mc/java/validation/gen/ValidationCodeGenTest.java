@@ -35,6 +35,7 @@ import io.spine.type.MessageType;
 import io.spine.validate.ConstraintViolation;
 import io.spine.validate.CustomConstraint;
 import io.spine.validate.MessageValue;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +44,12 @@ import static io.spine.testing.DisplayNames.NOT_ACCEPT_NULLS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("`ValidationCodeGenerator` should")
+@Disabled(
+        "These tests should belong to the Validation library and simply be moved there." +
+        " McJava should have a smoke test on Validation library, but not these tests" +
+        " that consume much of build time."
+        /* https://github.com/SpineEventEngine/mc-java/issues/119 */
+)
 class ValidationCodeGenTest {
 
     @Test

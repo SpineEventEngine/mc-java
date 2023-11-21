@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2022, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,26 +23,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.protoc.message
 
-@file:Suppress("MaxLineLength")
+import com.google.protobuf.compiler.PluginProtos
+import com.google.protobuf.compiler.codeGeneratorRequest
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.string.shouldNotBeEmpty
+import io.spine.test.tools.mc.java.protoc.BuilderTestProto
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
-package io.spine.internal.dependency
+@DisplayName("`BuilderGen` should")
+internal class BuilderGenSpec {
 
-/**
- * Plexus Utils is a transitive dependency, which we don't use directly.
- *
- * [Plexus Utils](https://github.com/codehaus-plexus/plexus-utils)
- */
-@Suppress("unused", "ConstPropertyName")
-object Plexus {
+    @Test
+    fun `produce builder insertion points`() {
+        val generator = BuilderGen()
+        val file = BuilderTestProto.getDescriptor()
+        val request = codeGeneratorRequest {
+            protoFile.add(file.toProto())
+            fileToGenerate.add(file.fullName)
+            compilerVersion = PluginProtos.Version.newBuilder().setMajor(3).build()
+        }
+        val response = generator.process(request)
+        val files = response.fileList
 
-    /**
-     * This is the last version in the 3.x series.
-     *
-     * There's a major update to 4.x.
-     *
-     * @see <a href="https://github.com/codehaus-plexus/plexus-utils/releases/tag/plexus-utils-4.0.0">plexus-utils-4.0.0</a>
-     */
-    private const val version = "4.0.0"
-    const val utils = "org.codehaus.plexus:plexus-utils:${version}"
+        files shouldHaveSize 1
+        files[0]!!.insertionPoint.shouldNotBeEmpty()
+    }
 }

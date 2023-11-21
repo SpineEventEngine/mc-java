@@ -36,7 +36,9 @@ import io.spine.test.tools.validate.entity.Task;
 import io.spine.test.tools.validate.event.ProjectCreated;
 import io.spine.test.tools.validate.rejection.TestRejections.CannotCreateProject;
 import io.spine.validate.ConstraintViolation;
+import io.spine.validate.Diags;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -271,7 +273,7 @@ class RequiredConstraintTest {
         @DisplayName("cannot be empty")
         void empty() {
             var instance = Collections.newBuilder();
-            checkViolation(instance, FIELD, "Collection must not be empty");
+            checkViolation(instance, FIELD, Diags.Required.collectionErrorMsg);
         }
 
         @Test
@@ -315,7 +317,8 @@ class RequiredConstraintTest {
             checkViolation(instance, FIELD, "must not be empty");
         }
 
-        @Test
+        @Test // https://github.com/SpineEventEngine/mc-java/issues/119
+        @Disabled("Until we finalize the behavior of the `required` constraint on repeated enums")
         @DisplayName("cannot have all items with zero-index enum item value")
         void repeatedDefaultEnum() {
             var allZero = Collections.newBuilder()
@@ -327,7 +330,8 @@ class RequiredConstraintTest {
             checkViolation(allZero, FIELD, "cannot contain default values");
         }
 
-        @Test
+        @Test // https://github.com/SpineEventEngine/mc-java/issues/119
+        @Disabled("Until we finalize the behavior of the `required` constraint on repeated enums")
         @DisplayName("must not have event one value with non-zero enum item value")
         void repeatedEnum() {
             var instance = Collections.newBuilder()

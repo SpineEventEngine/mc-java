@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import io.spine.code.proto.DescriptorReference;
 import io.spine.tools.code.SourceSetName;
 import io.spine.tools.gradle.ProtocConfigurationPlugin;
 import io.spine.tools.gradle.task.GradleTask;
+import io.spine.tools.mc.java.gradle.McJava;
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -53,7 +54,6 @@ import static io.spine.tools.gradle.task.Tasks.getSourceSetName;
 import static io.spine.tools.mc.java.StandardTypes.toBase64Encoded;
 import static io.spine.tools.mc.java.gradle.Artifacts.SPINE_MC_JAVA_ALL_PLUGINS_NAME;
 import static io.spine.tools.mc.java.gradle.Artifacts.gRpcProtocPlugin;
-import static io.spine.tools.mc.java.gradle.Artifacts.spineJavaAllPlugins;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.writeDescriptorReference;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.writePluginConfiguration;
 import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
@@ -72,7 +72,7 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
         plugins.create(spineProtoc.name(),
-                       locator -> locator.setArtifact(spineJavaAllPlugins().notation())
+                       locator -> locator.setArtifact(McJava.allPlugins().notation())
         );
     }
 

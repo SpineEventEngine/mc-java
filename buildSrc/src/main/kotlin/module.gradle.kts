@@ -34,6 +34,7 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
+import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
@@ -109,7 +110,6 @@ fun Module.addDependencies() {
 
         implementation(Guava.lib)
         implementation(Logging.lib)
-        implementation(Logging.backend)
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -128,8 +128,11 @@ fun Module.forceConfigurations() {
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
+                @Suppress("DEPRECATION") // To force `Kotlin.stdLibJdk7` version.
                 force(
+                    Kotlin.stdLibJdk7,
                     Protobuf.compiler,
+                    Grpc.api,
                     Spine.base,
                     Spine.time,
                     Spine.server,
@@ -137,7 +140,6 @@ fun Module.forceConfigurations() {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Logging.lib,
-                    Logging.backend,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.

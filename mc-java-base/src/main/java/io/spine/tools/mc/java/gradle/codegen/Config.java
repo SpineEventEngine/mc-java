@@ -29,12 +29,13 @@ package io.spine.tools.mc.java.gradle.codegen;
 import com.google.protobuf.Message;
 
 /**
- * A Gradle configuration of a certain aspect of Model Compiler code generation.
+ * Represents a configuration for a specific aspect of the Model Compiler,
+ * established through Gradle.
  *
  * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
+ *         the type that captures a snapshot of the given configuration state
  */
-abstract class Config<P extends Message> {
+public abstract class Config<P extends Message> {
 
     /**
      * Converts this configuration into a Proto message.

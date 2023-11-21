@@ -31,7 +31,7 @@ import io.spine.internal.gradle.publish.SpinePublishing
 plugins {
     application
     `maven-publish`
-    id("com.github.johnrengelman.shadow").version("7.1.2")
+    id("com.github.johnrengelman.shadow")
 }
 
 /** The publishing settings from the root project. */

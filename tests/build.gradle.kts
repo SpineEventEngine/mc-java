@@ -71,13 +71,13 @@ buildscript {
         all {
             resolutionStrategy {
                 force(
+                    io.spine.internal.dependency.Grpc.api,
                     spine.base,
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.backend,
-                    io.spine.internal.dependency.Spine.Logging.floggerApi,
+                    io.spine.internal.dependency.Spine.Logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -116,13 +116,14 @@ allprojects {
         all {
             resolutionStrategy {
                 force(
+                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     Spine.base,
                     Spine.time,
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
-                    Spine.Logging.backend,
+                    Spine.Logging.middleware,
                     Validation.runtime,
                 )
             }

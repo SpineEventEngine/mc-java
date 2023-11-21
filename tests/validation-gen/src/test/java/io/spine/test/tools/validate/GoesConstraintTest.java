@@ -38,7 +38,7 @@ import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static io.spine.base.Time.currentTime;
 
 @DisplayName("`(goes)` option should be compiled so that")
-@Disabled
+@Disabled // https://github.com/SpineEventEngine/mc-java/issues/119
 class GoesConstraintTest {
 
     @Test

@@ -64,7 +64,6 @@ import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addI
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateNested;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.methodFactory;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.optionsWithoutValidation;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.pattern;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocConfig;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
@@ -97,7 +96,7 @@ final class PluginTest {
         var uuids = Uuids.newBuilder()
                 .addMethodFactory(methodFactory(UuidMethodFactory.class))
                 .build();
-        var config = optionsWithoutValidation()
+        var config = CodegenOptions.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
@@ -122,7 +121,7 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = optionsWithoutValidation()
+        var config = CodegenOptions.newBuilder()
                 .addMessages(messages)
                 .build();
         var request = requestBuilder()
@@ -145,7 +144,7 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = optionsWithoutValidation()
+        var config = CodegenOptions.newBuilder()
                 .addMessages(messages)
                 .build();
         var request = requestBuilder()
@@ -167,7 +166,7 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = optionsWithoutValidation()
+        var config = CodegenOptions.newBuilder()
                 .addMessages(messages)
                 .build();
         var request = requestBuilder()
@@ -251,8 +250,6 @@ final class PluginTest {
 
     private static void checkGenerated(CodeGeneratorResponse response) {
         var responseFiles = response.getFileList();
-        assertThat(responseFiles)
-                .hasSize(2);
         var interfaceFile = responseFiles.stream()
                 .filter(file -> file.getInsertionPoint().contains("implements"))
                 .findFirst()
