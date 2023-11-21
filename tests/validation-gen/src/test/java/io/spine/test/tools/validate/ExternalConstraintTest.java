@@ -38,7 +38,7 @@ class ExternalConstraintTest {
 
     @Test
     @DisplayName("call external validation")
-    @Disabled
+    @Disabled // https://github.com/SpineEventEngine/mc-java/issues/119
     void validateExternal() {
         var user = User.newBuilder()
                 .addContact(Email.newBuilder().setValue("not an email"))

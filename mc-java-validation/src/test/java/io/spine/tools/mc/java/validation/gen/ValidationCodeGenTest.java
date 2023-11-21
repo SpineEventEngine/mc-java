@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("`ValidationCodeGenerator` should")
 @Disabled("These tests should belong to the Validation library and simply be moved there." +
         " McJava should have a smoke test on Validation library, but not these tests" +
-        " that consume much of build time.")
+        " that consume much of build time.") // https://github.com/SpineEventEngine/mc-java/issues/119
 class ValidationCodeGenTest {
 
     @Test
