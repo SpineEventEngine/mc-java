@@ -60,7 +60,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE_M
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
-import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginITest.Companion.moduleDir
+import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.moduleDir
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import java.io.File
 import java.nio.file.Path
@@ -119,7 +119,7 @@ import org.junit.jupiter.api.io.TempDir
  *     ProtoData CLI has not been started yet. Repeat the attempt in a few seconds.
  */
 @DisplayName("`ApiAnnotationsPlugin` should")
-internal class ApiAnnotationsPluginITest {
+internal class ApiAnnotationsPluginIgTest {
 
     companion object {
         private const val RESOURCE_DIR = "annotator-plugin-test"
