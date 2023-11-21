@@ -188,7 +188,7 @@ internal object Validation {
      *
      * @param version
      *         the version of Validation library to be used.
-     *         If empty, the version of the dependency used at the build time is used.
+     *         If empty, the version of the build time dependency used is used.
      * @see javaRuntime
      */
     @JvmStatic
@@ -202,7 +202,7 @@ internal object Validation {
      *
      * @param version
      *         the version of Validation library to be used.
-     *         If empty, the version of the dependency used at the build time is used.
+     *         If empty, the version of the build time dependency used is used.
      * @see javaCodegenBundle
      */
     @JvmStatic
