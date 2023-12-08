@@ -36,7 +36,7 @@ buildscript {
         "base", "time", "change", "base-types", "core-java",
         "tool-base", "ProtoData", "validation",
     )
-
+    val protoData = io.spine.internal.dependency.ProtoData
     val mcJavaVersion: String by extra
     dependencies {
         io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
@@ -45,6 +45,7 @@ buildscript {
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
+        classpath(protoData.pluginLib(protoData.version))
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
     }
 }
