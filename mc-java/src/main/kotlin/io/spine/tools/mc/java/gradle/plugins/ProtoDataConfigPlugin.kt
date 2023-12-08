@@ -26,9 +26,9 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import io.spine.protodata.gradle.CodegenSettings
+import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
-import io.spine.protodata.gradle.plugin.USER_CLASSPATH_CONFIGURATION_NAME
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.java.gradle.McJava.annotation
@@ -129,7 +129,7 @@ private fun Project.configureValidationRendering(codegen: CodegenSettings) {
         "io.spine.validation.java.JavaValidationPlugin"
     )
     val version = mcJava.codegen.validation().version.get()
-    addDependency(USER_CLASSPATH_CONFIGURATION_NAME, javaCodegenBundle(version))
+    addDependency(Names.USER_CLASSPATH_CONFIGURATION, javaCodegenBundle(version))
     addDependency("implementation", javaRuntime(version))
 }
 
@@ -157,7 +157,7 @@ private fun GenerateProtoDataConfig.file(): Provider<RegularFile> {
 }
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
-    addDependency(USER_CLASSPATH_CONFIGURATION_NAME, it)
+    addDependency(Names.USER_CLASSPATH_CONFIGURATION, it)
 }
 
 private fun Project.addDependency(configuration: String, artifact: Artifact) {
