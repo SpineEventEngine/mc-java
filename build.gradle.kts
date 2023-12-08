@@ -45,7 +45,6 @@ buildscript {
     standardSpineSdkRepositories()
 
     val spine = io.spine.internal.dependency.Spine
-    val logging = io.spine.internal.dependency.Spine.Logging
     val validation = io.spine.internal.dependency.Validation
     val protoData = io.spine.internal.dependency.ProtoData
     val logging = io.spine.internal.dependency.Spine.Logging
