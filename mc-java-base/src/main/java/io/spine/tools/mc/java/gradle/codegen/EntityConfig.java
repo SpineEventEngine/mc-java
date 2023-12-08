@@ -117,7 +117,7 @@ public final class EntityConfig extends MessageGroupConfig<Entities> {
     }
 
     @Override
-    Entities toProto() {
+    public Entities toProto() {
         return Entities.newBuilder()
                 .addAllAddInterface(interfaces())
                 .addAllOption(options())

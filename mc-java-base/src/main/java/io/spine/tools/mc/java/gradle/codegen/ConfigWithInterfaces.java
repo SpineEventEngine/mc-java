@@ -46,7 +46,7 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
     private final Multiple<String> interfaceNames;
 
     ConfigWithInterfaces(Project p) {
-        super();
+        super(p);
         this.interfaceNames = new Multiple<>(p, String.class);
     }
 

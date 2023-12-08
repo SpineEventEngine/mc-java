@@ -76,7 +76,7 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
 
     @Internal
     public CodegenOptionsConfig(Project project) {
-        super();
+        super(project);
         this.project = checkNotNull(project);
         this.commands = new SignalConfig(project);
         this.events = new SignalConfig(project);

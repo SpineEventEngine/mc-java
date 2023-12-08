@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,84 +23,73 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.codegen
 
-package io.spine.tools.mc.java.gradle.codegen;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.Message;
-import io.spine.tools.gradle.Multiple;
-import io.spine.validation.FilePattern;
-import org.gradle.api.Project;
-
-import java.util.Set;
-
-import static io.spine.protobuf.Messages.isDefault;
+import com.google.common.collect.ImmutableSet
+import com.google.protobuf.Message
+import io.spine.protobuf.isDefault
+import io.spine.tools.gradle.Multiple
+import io.spine.validation.FilePattern
+import org.gradle.api.Project
 
 /**
  * A configuration for code generation for a certain group of messages joined by a file pattern.
  *
- * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
- */
-abstract class MessageGroupConfig<P extends Message> extends ConfigWithFields<P> {
+ * @param P Protobuf type reflecting a snapshot of this configuration.
+*/
+public abstract class MessageGroupConfig<P : Message>
+internal constructor(p: Project) : ConfigWithFields<P>(p) {
 
-    private final Multiple<FilePattern> file;
-
-    MessageGroupConfig(Project p) {
-        super(p);
-        this.file = new Multiple<>(p, FilePattern.class);
-    }
+    private val file = Multiple(p, FilePattern::class.java)
 
     /**
      * Sets up the default value for the file pattern.
      *
      * @param pattern
-     *         the default value for the pattern
+     *         the default value for the pattern.
      */
-    void convention(FilePattern pattern) {
-        ImmutableSet<FilePattern> defaultValue;
-        if (isDefault(pattern)) {
-            defaultValue = ImmutableSet.of();
+    public fun convention(pattern: FilePattern) {
+        val defaultValue = if (pattern.isDefault()) {
+            ImmutableSet.of()
         } else {
-            defaultValue = ImmutableSet.of(pattern);
+            ImmutableSet.of(pattern)
         }
-        file.convention(defaultValue);
+        file.convention(defaultValue)
     }
 
     /**
      * Obtains the Gradle set property with the file pattern which match messages in this group.
      */
-    final Set<FilePattern> patterns() {
-        return file.get();
+    public fun patterns(): Set<FilePattern> {
+        return file.get()
     }
 
     /**
      * Specifies a file pattern for this group of messages.
      *
-     * <p>Calling this method many times will extend the group to include more types. If a type is
-     * declared in a file which matches al least one of the patterns, the type is included in
+     * Calling this method many times will extend the group to include more types. If a type is
+     * declared in a file which matches at least one of the patterns, the type is included in
      * the group.
      *
-     * <p>In the example below, all messages declared in files which either end with "ids.proto" or
-     * contain the word "identifiers" will be included into the group.
+     * In the example below, all messages declared in files which either end with "ids.proto" or
+     * contain the word "identifiers" will be included in the group.
      *
-     * <pre>
-     *     includeFiles(by().suffix("ids.proto"))
-     *     includeFiles(by().regex(".*identifiers.*"))
-     * </pre>
-     *
-     * @see #by() for creating file patterns
+     * ```java
+     * includeFiles(by().suffix("ids.proto"))
+     * includeFiles(by().regex(".*identifiers.*"))
+     * ```
+     * @see by
      */
-    public void includeFiles(FilePattern pattern) {
-        this.file.add(pattern);
+    public open fun includeFiles(pattern: FilePattern) {
+        file.add(pattern)
     }
 
     /**
      * Obtains a factory of file patterns for selecting Protobuf files.
      *
-     * @see #includeFiles
+     * @see includeFiles
      */
-    public PatternFactory by() {
-        return PatternFactory.instance();
+    public fun by(): PatternFactory {
+        return PatternFactory.instance()
     }
 }

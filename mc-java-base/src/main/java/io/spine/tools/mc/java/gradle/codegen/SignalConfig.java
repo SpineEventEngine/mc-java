@@ -89,7 +89,7 @@ public final class SignalConfig extends MessageGroupConfig<Signals> {
     }
 
     @Override
-    Signals toProto() {
+    public Signals toProto() {
         return Signals.newBuilder()
                 .addAllAddInterface(interfaces())
                 .setGenerateFields(generateFields())
