@@ -317,7 +317,7 @@ class RequiredConstraintTest {
             checkViolation(instance, FIELD, "must not be empty");
         }
 
-        @Test
+        @Test // https://github.com/SpineEventEngine/mc-java/issues/119
         @Disabled("Until we finalize the behavior of the `required` constraint on repeated enums")
         @DisplayName("cannot have all items with zero-index enum item value")
         void repeatedDefaultEnum() {
@@ -330,7 +330,7 @@ class RequiredConstraintTest {
             checkViolation(allZero, FIELD, "cannot contain default values");
         }
 
-        @Test
+        @Test // https://github.com/SpineEventEngine/mc-java/issues/119
         @Disabled("Until we finalize the behavior of the `required` constraint on repeated enums")
         @DisplayName("must not have event one value with non-zero enum item value")
         void repeatedEnum() {

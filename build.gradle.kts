@@ -47,6 +47,8 @@ buildscript {
     val spine = io.spine.internal.dependency.Spine
     val logging = io.spine.internal.dependency.Spine.Logging
     val validation = io.spine.internal.dependency.Validation
+    val protoData = io.spine.internal.dependency.ProtoData
+    val logging = io.spine.internal.dependency.Spine.Logging
     doForceVersions(configurations)
     configurations {
         all {
@@ -60,7 +62,10 @@ buildscript {
                     spine.base,
                     spine.toolBase,
                     spine.server,
-                    io.spine.internal.dependency.ProtoData.pluginLib,
+                    protoData.api,
+                    protoData.pluginLib,
+                    protoData.cliApi,
+                    protoData.gradleApi,
                     logging.lib,
                     logging.middleware,
                     validation.runtime,

@@ -68,7 +68,7 @@ message FileOptions {
     option (is).java_type = "WithOptions";
 
     // The name of the file.
-    protodata.FilePath file = 1;
+    protodata.File file = 1;
 
     // The options applied to the file.
     repeated protodata.Option option = 2 [(required) = true];
