@@ -48,11 +48,13 @@ import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
 import org.jboss.forge.roaster.model.source.MethodSource
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @SlowTest
 @DisplayName("Rejection code generator should produce Javadoc for")
+@Disabled("Until Validation migrated to new ProtoData")
 internal class RejectionJavadocIgTest {
 
     companion object {

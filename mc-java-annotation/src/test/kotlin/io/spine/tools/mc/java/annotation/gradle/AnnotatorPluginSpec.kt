@@ -73,12 +73,14 @@ import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AnnotatorPlugin` should")
+@Disabled("Until Validation migrated to new ProtoData")
 internal class AnnotatorPluginSpec {
 
     companion object {
