@@ -43,7 +43,7 @@ import static io.spine.tools.java.code.Names.className;
  * @param <P>
  *         Protobuf type reflecting a snapshot of this configuration
  */
-abstract class ConfigWithFields<P extends Message> extends ConfigWithInterfaces<P> {
+public abstract class ConfigWithFields<P extends Message> extends ConfigWithInterfaces<P> {
 
     private final Property<String> markFieldsAs;
 

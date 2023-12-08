@@ -96,7 +96,7 @@ public final class MessagesConfig extends ConfigWithFields<Messages> {
     }
 
     @Override
-    Messages toProto() {
+    public Messages toProto() {
         var result = Messages.newBuilder()
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
