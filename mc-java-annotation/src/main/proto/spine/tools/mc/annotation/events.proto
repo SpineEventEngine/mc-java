@@ -42,7 +42,7 @@ import "spine/protodata/ast.proto";
 message FileOptionMatched {
 
     // The file where the API option was declared.
-    protodata.FilePath file = 1;
+    protodata.File file = 1;
 
     // The file-wide option declared in the file.
     protodata.Option file_option = 2;
