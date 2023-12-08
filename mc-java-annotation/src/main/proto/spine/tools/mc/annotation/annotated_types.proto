@@ -66,7 +66,7 @@ message FileOptions {
     option (entity).kind = PROCESS_MANAGER;
 
     // The name of the file.
-    protodata.FilePath file = 1;
+    protodata.File file = 1;
 
     // The options applied to the file.
     repeated protodata.Option option = 2 [(required) = true];
