@@ -60,7 +60,7 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
     }
 
     @Override
-    Uuids toProto() {
+    public Uuids toProto() {
         return Uuids.newBuilder()
                 .addAllMethodFactory(factories())
                 .addAllAddInterface(interfaces())

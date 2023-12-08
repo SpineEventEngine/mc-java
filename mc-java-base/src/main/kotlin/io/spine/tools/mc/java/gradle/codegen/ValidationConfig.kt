@@ -34,7 +34,7 @@ import org.gradle.api.provider.Property
 /**
  * Configuration for validation code generation.
  */
-public class ValidationConfig internal constructor(p: Project) : Config<Validation>() {
+public class ValidationConfig internal constructor(p: Project) : Config<Validation>(p) {
 
     /**
      * Allows specifying a version of the validation code generator used by McJava.

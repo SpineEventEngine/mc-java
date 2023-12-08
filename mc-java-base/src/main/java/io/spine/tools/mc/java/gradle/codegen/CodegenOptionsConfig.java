@@ -76,7 +76,7 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
 
     @Internal
     public CodegenOptionsConfig(Project project) {
-        super();
+        super(project);
         this.project = checkNotNull(project);
         this.commands = new SignalConfig(project);
         this.events = new SignalConfig(project);
@@ -221,9 +221,44 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
     }
 
     /**
-     * Returns the configuration settings for the generated validation code.
+     * Obtains the configuration settings for the generated validation code.
      */
     public ValidationConfig validation() {
         return validation;
+    }
+
+    /**
+     * Obtains the configuration settings for the generated command code.
+     */
+    public SignalConfig commands() {
+        return commands;
+    }
+
+    /**
+     * Obtains the configuration settings for the generated event code.
+     */
+    public SignalConfig events() {
+        return events;
+    }
+
+    /**
+     * Obtains the configuration settings for the generated rejection code.
+     */
+    public SignalConfig rejections() {
+        return rejections;
+    }
+
+    /**
+     * Obtains the configuration settings for the generated entity code.
+     */
+    public EntityConfig entities() {
+        return entities;
+    }
+
+    /**
+     * Obtains the configuration settings for the generated identifier types based on UUIDs.
+     */
+    public UuidConfig uuids() {
+        return uuids;
     }
 }

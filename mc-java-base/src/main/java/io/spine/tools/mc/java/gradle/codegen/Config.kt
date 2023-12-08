@@ -23,22 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.codegen
 
-package io.spine.tools.mc.java.gradle.codegen;
-
-import com.google.protobuf.Message;
+import org.gradle.api.provider.Property
+import com.google.protobuf.Message
+import org.gradle.api.Project
 
 /**
  * Represents a configuration for a specific aspect of the Model Compiler,
  * established through Gradle.
  *
- * @param <P>
- *         the type that captures a snapshot of the given configuration state
+ * @param P the type that captures a snapshot of the given configuration state.
  */
-public abstract class Config<P extends Message> {
+public abstract class Config<P : Message>(p: Project) {
+
+    /**
+     * Whether this configuration is enabled.
+     *
+     * If `false`, the configuration is ignored by the Model Compiler.
+     * The default value is `true`.
+     */
+    public val enabled: Property<Boolean> = p.objects.property(Boolean::class.java)
+
+    init {
+        enabled.convention(true)
+    }
 
     /**
      * Converts this configuration into a Proto message.
      */
-    abstract P toProto();
+    public abstract fun toProto(): P
 }

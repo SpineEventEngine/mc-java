@@ -103,34 +103,45 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
  * Configures ProtoData with plugins, for the given Gradle project.
  */
 private fun Project.configurePlugins() {
-    val codegen = extensions.getByType<CodegenSettings>()
-    configureValidationRendering(codegen)
-
-    codegen.plugins(
-        "io.spine.tools.mc.java.rejection.RejectionPlugin"
-    )
-
-    codegen.subDirs = listOf(
-        generatedJavaDirName.value(),
-        generatedGrpcDirName.value(),
-        DirectoryName.kotlin.value()
-    )
-
+    val protodata = extensions.getByType<CodegenSettings>()
+    configureValidationRendering(protodata)
+    configureRejectionRendering(protodata)
+    setSubdirectories(protodata)
     addUserClasspathDependencies(
         base,
         toolBase,
         annotation,
-        rejection,
     )
 }
 
-private fun Project.configureValidationRendering(codegen: CodegenSettings) {
-    codegen.plugins(
-        "io.spine.validation.java.JavaValidationPlugin"
+private fun Project.configureValidationRendering(protodata: CodegenSettings) {
+    val validationConfig = mcJava.codegen.validation()
+    if (validationConfig.enabled.get()) {
+        protodata.plugins(
+            "io.spine.validation.java.JavaValidationPlugin"
+        )
+        val version = validationConfig.version.get()
+        addDependency(USER_CLASSPATH_CONFIGURATION_NAME, javaCodegenBundle(version))
+        addDependency("implementation", javaRuntime(version))
+    }
+}
+
+private fun Project.configureRejectionRendering(protodata: CodegenSettings) {
+    val rejectionCodegen = mcJava.codegen.rejections()
+    if (rejectionCodegen.enabled.get()) {
+        protodata.plugins(
+            "io.spine.tools.mc.java.rejection.RejectionPlugin"
+        )
+        addUserClasspathDependencies(rejection)
+    }
+}
+
+private fun setSubdirectories(protodata: CodegenSettings) {
+    protodata.subDirs = listOf(
+        generatedJavaDirName.value(),
+        generatedGrpcDirName.value(),
+        DirectoryName.kotlin.value()
     )
-    val version = mcJava.codegen.validation().version.get()
-    addDependency(USER_CLASSPATH_CONFIGURATION_NAME, javaCodegenBundle(version))
-    addDependency("implementation", javaRuntime(version))
 }
 
 private fun LaunchProtoData.createConfigTask() {
