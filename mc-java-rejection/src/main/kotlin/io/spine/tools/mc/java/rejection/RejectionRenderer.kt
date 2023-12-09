@@ -151,7 +151,7 @@ private fun MessageType.isTopLevel(): Boolean {
 internal typealias RejectionFile = ProtobufSourceFile
 
 /**
- * Ensures that this rejections file is configured according to the conventions.
+ * Ensures that this rejection file is configured according to the conventions.
  *
  * `java_multiple_files` option must be set to `false` or not specified, and
  * `java_outer_classname` must end with `Rejections` or absent.
