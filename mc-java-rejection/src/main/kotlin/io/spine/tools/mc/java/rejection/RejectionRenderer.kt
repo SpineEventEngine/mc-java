@@ -140,13 +140,11 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
     }
 }
 
-private fun ProtobufSourceFile.isRejections(): Boolean {
-    return file.path.endsWith("rejections.proto")
-}
+private fun ProtobufSourceFile.isRejections(): Boolean =
+    file.path.endsWith("rejections.proto")
 
-private fun MessageType.isTopLevel(): Boolean {
-    return !hasDeclaredIn()
-}
+private fun MessageType.isTopLevel(): Boolean =
+    !hasDeclaredIn()
 
 internal typealias RejectionFile = ProtobufSourceFile
 
