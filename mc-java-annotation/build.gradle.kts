@@ -69,6 +69,12 @@ tasks.withType<ProcessResources>().configureEach {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+/*
+ * Disable the generation of rejections because:
+ *  1. We don't have rejections in this code.
+ *  2. We want to avoid errors that may be caused by the code which has not yet
+ *     fully migrated to the latest ProtoData API.
+ */
 modelCompiler {
     java {
         codegen {
