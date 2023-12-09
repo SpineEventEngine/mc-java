@@ -53,3 +53,11 @@ project.afterEvaluate {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 }
+
+modelCompiler {
+    java {
+        codegen {
+            rejections().enabled.set(false)
+        }
+    }
+}
