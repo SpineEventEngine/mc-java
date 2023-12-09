@@ -33,7 +33,7 @@ import com.google.protobuf.kotlin.isA
 import com.google.protobuf.kotlin.unpack
 import io.spine.base.EventMessage
 import io.spine.core.External
-import io.spine.protodata.FilePath
+import io.spine.protodata.File
 import io.spine.protodata.Option
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.event.FileEntered
@@ -48,7 +48,7 @@ import io.spine.server.procman.ProcessManager
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.server.model.Nothing as NoEvents
 
-internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOptions.Builder>() {
+internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 
     /**
      * Adds the API options from the file to the state of this process IFF their
@@ -57,7 +57,7 @@ internal class FileOptionsProcess : ProcessManager<FilePath, FileOptions, FileOp
     @React
     fun on(@External e: FileEntered): NoEvents {
         alter {
-            file = e.file.path
+            file = e.file
         }
         return nothing()
     }
@@ -111,7 +111,7 @@ private fun ProtobufSourceFile.addMessageEvents(
 ) {
     typeMap.values.forEach {
         events.add(typeOptionDiscovered {
-            file = filePath
+            file = this@addMessageEvents.file
             type = it.name
             option = typeOption
         })
@@ -124,7 +124,7 @@ private fun ProtobufSourceFile.addServiceEvents(
 ) {
     serviceMap.values.forEach {
         events.add(serviceOptionDiscovered {
-            file = filePath
+            file = this@addServiceEvents.file
             service = it.name
             option = serviceOption
         })
