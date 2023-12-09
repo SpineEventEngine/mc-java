@@ -73,7 +73,7 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
         if (result.isNotEmpty()) {
             logger.atDebug().log {
                 val nl = System.lineSeparator()
-                val fileList = result.joinToString(separator = nl) { " * `${it.filePath.value}`" }
+                val fileList = result.joinToString(separator = nl) { " * `${it.file.path}`" }
                 "Found ${result.size} rejection files:$nl$fileList"
             }
         }
@@ -84,13 +84,13 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
     private fun generateRejections(protoFile: ProtobufSourceFile) {
         if (protoFile.typeMap.isEmpty()) {
             logger.atWarning().log {
-                "No rejection types found in the file `${protoFile.filePath.value}`."
+                "No rejection types found in the file `${protoFile.file.path}`."
             }
             return
         }
         logger.atDebug().log {
             """
-            Generating rejection classes for `${protoFile.filePath.value}`.
+            Generating rejection classes for `${protoFile.file.path}`.
                   Java package: `${protoFile.javaPackage()}`.
                   Outer class name: `${protoFile.outerClassName()}`.
                   Output directory: `${sources.outputRoot}`.            
@@ -110,7 +110,7 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
         logger.atDebug().log {
             val nl = System.lineSeparator()
-            val rejectionName = "`${rejection.qualifiedName()}`"
+            val rejectionName = "`${rejection.qualifiedName}`"
             // The padding is to align the file name with the rejection name.
             "$rejectionName ->$nl$      `$file`"
         }
@@ -142,7 +142,7 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
 }
 
 private fun ProtobufSourceFile.isRejections(): Boolean {
-    return filePath.value.endsWith("rejections.proto")
+    return file.path.endsWith("rejections.proto")
 }
 
 private fun MessageType.isTopLevel(): Boolean {
@@ -165,10 +165,10 @@ private fun RejectionFile.checkConventions() {
 private const val JAVA_MULTIPLE_FILES: String = "java_multiple_files"
 
 private fun RejectionFile.checkNotMultipleFiles() {
-    val javaMultipleFiles = file.optionList.find(JAVA_MULTIPLE_FILES, BoolValue::class.java)
+    val javaMultipleFiles = header.optionList.find(JAVA_MULTIPLE_FILES, BoolValue::class.java)
     javaMultipleFiles?.let {
         check(!it.value) {
-            "A rejection file (`${filePath.value}`) should generate" +
+            "A rejection file (`${file.path}`) should generate" +
                     " Java classes into a single source code file." +
                     " Please set `$JAVA_MULTIPLE_FILES` option to `false`."
         }
@@ -178,12 +178,12 @@ private fun RejectionFile.checkNotMultipleFiles() {
 private const val OUTER_CLASS_NAME: String = "java_outer_classname"
 private const val REJECTIONS_CLASS_SUFFIX: String = "Rejections"
 
-internal fun RejectionFile.outerClassName(): String = file.javaOuterClassName()
+internal fun RejectionFile.outerClassName(): String = header.javaOuterClassName()
 
 private fun RejectionFile.checkOuterClassName() {
     val outerClassName = outerClassName()
     check(outerClassName.endsWith(REJECTIONS_CLASS_SUFFIX)) {
-        "A rejection file (`${filePath.value}`) should have" +
+        "A rejection file (`${file.path}`) should have" +
                 " the outer class named ending with `$REJECTIONS_CLASS_SUFFIX` or" +
                 " do not have the option `$OUTER_CLASS_NAME` at all." +
                 " Encountered outer class name: `$outerClassName`." +
@@ -195,4 +195,4 @@ private fun RejectionFile.checkOuterClassName() {
  * Obtains the Java package name for the given rejection file, taking into account
  * the `java_package` option.
  */
-private fun RejectionFile.javaPackage(): String = file.javaPackage()
+private fun RejectionFile.javaPackage(): String = header.javaPackage()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,4 +67,18 @@ tasks.test {
 
 tasks.withType<ProcessResources>().configureEach {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+/*
+ * Disable the generation of rejections because:
+ *  1. We don't have rejections in this code.
+ *  2. We want to avoid errors that may be caused by the code which has not yet
+ *     fully migrated to the latest ProtoData API.
+ */
+modelCompiler {
+    java {
+        codegen {
+            rejections().enabled.set(false)
+        }
+    }
 }

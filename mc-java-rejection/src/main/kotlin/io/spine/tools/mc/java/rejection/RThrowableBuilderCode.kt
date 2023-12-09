@@ -164,8 +164,8 @@ internal class RThrowableBuilderCode internal constructor(
 
     private fun Field.poetTypeName(): PoTypeName {
         return when {
-            isMap() -> mapType(map.keyType, type)
-            isRepeated() -> repeatedNameOf(type)
+            isMap -> mapType(map.keyType, type)
+            isRepeated -> repeatedNameOf(type)
             else -> singularNameOf(type)
         }
     }
@@ -258,8 +258,8 @@ private fun FieldName.javaCase(): String {
 private fun Field.primarySetterName(): String {
     val capName = name.javaCase().titleCase()
     return when {
-        isMap() -> "putAll$capName"
-        isRepeated() -> "addAll$capName"
+        isMap -> "putAll$capName"
+        isRepeated -> "addAll$capName"
         else -> "set$capName"
     }
 }
