@@ -62,7 +62,7 @@ internal class MessageAnnotationsView :
     }
 
     @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
+    fun on(e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
             optionList.add(e.assumed)
         }

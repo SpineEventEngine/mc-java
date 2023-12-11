@@ -29,11 +29,11 @@ package io.spine.tools.mc.annotation
 import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ServiceName
-import io.spine.protodata.TypeName
 import io.spine.protodata.event.ServiceOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
+import io.spine.server.entity.state
 import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
@@ -46,8 +46,8 @@ internal class ServiceAnnotationsView :
     }
 
     @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
-        if (!state().revertsFileWide(e)) {
+    fun on(e: FileOptionMatched) = alter {
+        if (!state.revertsFileWide(e)) {
             addOption(e.assumed)
         }
     }

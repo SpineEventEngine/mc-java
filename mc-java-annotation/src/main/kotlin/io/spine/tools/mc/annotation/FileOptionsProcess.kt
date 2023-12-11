@@ -39,14 +39,14 @@ import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.event.FileEntered
 import io.spine.protodata.event.FileExited
 import io.spine.protodata.event.FileOptionDiscovered
-import io.spine.protodata.event.serviceOptionDiscovered
-import io.spine.protodata.event.typeOptionDiscovered
 import io.spine.server.entity.alter
 import io.spine.server.entity.state
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
+import io.spine.tools.mc.annotation.event.fileOptionMatched
 import io.spine.server.model.Nothing as NoEvents
+import com.google.protobuf.Any as ProtoAny
 
 internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 
@@ -64,12 +64,12 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
 
     @React
     fun on(@External e: FileOptionDiscovered): NoEvents {
-        val optionValue = e.option.value
         val isApiLevelOption = findMatching(e.option) != null
-        if (optionValue.isA<BoolValue>() && isApiLevelOption
-            && optionValue.unpack<BoolValue>().value // is `true`
-        ) alter {
-            addOption(e.option)
+        val optionValue = e.option.value
+        if (isApiLevelOption && optionValue.isTrue()) {
+            alter {
+                addOption(e.option)
+            }
         }
         return nothing()
     }
@@ -110,10 +110,10 @@ private fun ProtobufSourceFile.addMessageEvents(
     typeOption: Option
 ) {
     typeMap.values.forEach {
-        events.add(typeOptionDiscovered {
+        events.add(fileOptionMatched {
             file = this@addMessageEvents.file
             type = it.name
-            option = typeOption
+            assumed = typeOption
         })
     }
 }
@@ -123,11 +123,12 @@ private fun ProtobufSourceFile.addServiceEvents(
     serviceOption: Option
 ) {
     serviceMap.values.forEach {
-        events.add(serviceOptionDiscovered {
+        events.add(fileOptionMatched {
             file = this@addServiceEvents.file
             service = it.name
-            option = serviceOption
+            assumed = serviceOption
         })
     }
 }
 
+private fun ProtoAny.isTrue(): Boolean = isA<BoolValue>() && unpack<BoolValue>().value

@@ -45,7 +45,7 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
     }
 
     @Subscribe
-    fun on(@External e: FileOptionMatched) = alter {
+    fun on(e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
             addOption(e.assumed)
         }

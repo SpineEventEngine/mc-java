@@ -42,6 +42,7 @@ internal class MessageOrEnumApiAnnotation<T : Annotation>(
 
     override fun shouldAnnotate(file: SourceFile): Boolean {
         val declaration = convention.declarationFor(typeName)
-        return declaration.path.endsWith(file.relativePath)
+        val result = declaration.path.endsWith(file.relativePath)
+        return result
     }
 }
