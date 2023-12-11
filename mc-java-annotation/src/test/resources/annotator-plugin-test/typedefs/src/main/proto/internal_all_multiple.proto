@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,16 @@ import "spine/options.proto";
 option java_multiple_files = true;
 option (internal_all) = true;
 
+// This if should produce multiple Java files, with each class
+// annotated with `@io.spine.annotation.Internal`.
+//
+// See also `internal_all.proto` which has `java_multiple_files` set to `false`.
+
 message Odin {
 }
 
 message Dva {
+}
+
+message Tri {
 }

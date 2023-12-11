@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,21 @@ package given.annotation;
 
 import "spine/options.proto";
 
+option java_multiple_files = false; // This is the default, but we put it here for clarity.
 option (internal_all) = true;
+
+// Codegen for this file should produce one Java file with three message
+// types nested under the outer class called `InternalAll`.
+// The outer class should be annotated `@io.spine.annotation.Internal`.
+//
+// See also `internal_all_multiple.proto` for which has `java_multiple_files` set to `true`,
+// which results in multiple top-level Java classes annotated separately.
 
 message Uno {
 }
 
 message Dos {
+}
+
+message Tres {
 }
