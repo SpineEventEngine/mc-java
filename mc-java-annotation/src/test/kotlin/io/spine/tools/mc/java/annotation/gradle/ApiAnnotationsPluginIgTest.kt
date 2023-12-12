@@ -155,7 +155,7 @@ internal class ApiAnnotationsPluginIgTest {
 
         @Test
         fun `if file option is true`() =
-            checkNestedTypesAnnotations(INTERNAL_ALL, true)
+            checkOuterClassAnnotations(INTERNAL_ALL, true)
 
         @Test
         fun `service if file option if true`() =
@@ -182,7 +182,7 @@ internal class ApiAnnotationsPluginIgTest {
             checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
 
         @Test
-        fun `GRPC services if service option is true`() =
+        fun `gRPC services if service option is true`() =
             checkServiceAnnotations(SPI_SERVICE.fileName(), SPI::class.java, true)
     }
 
@@ -296,6 +296,16 @@ private fun checkNestedTypesAnnotations(
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
     NestedTypesAnnotationCheck(shouldBeAnnotated).verify(sourcePath)
+}
+
+private fun checkOuterClassAnnotations(
+    testFile: GivenProtoFile,
+    shouldBeAnnotated: Boolean
+) {
+    val fileDescriptor = descriptorOf(testFile.fileName())
+    val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
+
+    MainDefinitionAnnotationCheck(shouldBeAnnotated).verify(sourcePath)
 }
 
 @Suppress("UNCHECKED_CAST")
