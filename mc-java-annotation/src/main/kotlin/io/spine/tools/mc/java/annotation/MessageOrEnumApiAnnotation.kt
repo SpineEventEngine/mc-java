@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.annotation
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.type.TypeSystem
 
 internal class MessageOrEnumApiAnnotation<T : Annotation>(
     private val typeName: TypeName,
@@ -42,7 +41,7 @@ internal class MessageOrEnumApiAnnotation<T : Annotation>(
 
     override fun shouldAnnotate(file: SourceFile): Boolean {
         val declaration = convention.declarationFor(typeName)
-        val result = declaration.path.endsWith(file.relativePath)
-        return result
+        val fileMatches = declaration.path.endsWith(file.relativePath)
+        return fileMatches && super.shouldAnnotate(file)
     }
 }

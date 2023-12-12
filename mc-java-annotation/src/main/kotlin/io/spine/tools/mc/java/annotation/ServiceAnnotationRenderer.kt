@@ -52,7 +52,7 @@ private class ServiceAnnotation<T : Annotation>(
 
     override fun shouldAnnotate(file: SourceFile): Boolean {
         val declaration = convention.declarationFor(serviceName)
-        val result = declaration.path.endsWith(file.relativePath)
-        return result
+        val fileMatches = declaration.path.endsWith(file.relativePath)
+        return fileMatches && super.shouldAnnotate(file)
     }
 }
