@@ -87,8 +87,7 @@ subprojects {
 
     tasks.findByName("launchProtoData")?.apply {this as JavaExec
         debugOptions {
-            // Set this option to `true` to enable remote debugging.
-            enabled.set(false)
+            enabled.set(false) // Set this option to `true` to enable remote debugging.
             port.set(5566)
             server.set(true)
             suspend.set(true)

@@ -35,6 +35,8 @@ import io.spine.annotation.SPI
 import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
+import io.spine.io.Resource
+import io.spine.string.ti
 import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName.build
 import io.spine.tools.fs.DirectoryName.descriptors
@@ -60,6 +62,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE_M
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
+import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
 import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.moduleDir
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
 import java.io.File
@@ -73,7 +76,6 @@ import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -123,7 +125,7 @@ import org.junit.jupiter.api.io.TempDir
 internal class ApiAnnotationsPluginIgTest {
 
     companion object {
-        private const val RESOURCE_DIR = "annotator-plugin-test"
+        const val RESOURCE_DIR = "annotator-plugin-test"
         private const val RESOURCE_SUB_DIR = "typedefs"
         lateinit var moduleDir: Path
 
@@ -143,6 +145,7 @@ internal class ApiAnnotationsPluginIgTest {
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             project.executeTask(launchProtoData)
+            hintOnRemoteDebug(projectDir)
         }
     }
 
@@ -231,8 +234,8 @@ internal class ApiAnnotationsPluginIgTest {
     }
 }
 
-private val Path.generatedFromProto: Path
-    get() = this / "build/generated/source/proto/main"
+private val Path.generatedMain: Path
+    get() = this / "generated/main"
 
 private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) =
     checkServiceAnnotations(testFile.fileName(), Internal::class.java, shouldBeAnnotated)
@@ -302,13 +305,13 @@ private fun parse(file: Path): AbstractJavaSource<JavaClassSource> {
 }
 
 private fun SourceCheck.verify(sourcePath: Path) {
-    val filePath = moduleDir.generatedFromProto / java / sourcePath
+    val filePath = moduleDir.generatedMain / java / sourcePath
     val javaSource = parse(filePath)
     accept(javaSource)
 }
 
 private fun SourceCheck.verifyService(serviceFile: SourceFile) {
-    val filePath = moduleDir.generatedFromProto / grpc / serviceFile.path()
+    val filePath = moduleDir.generatedMain / grpc / serviceFile.path()
     val javaSource = parse(filePath)
     accept(javaSource)
 }
@@ -328,3 +331,24 @@ private fun descriptorOf(testFile: FileName): FileDescriptor {
 private fun mainDescriptorPath(): Path =
     moduleDir / build / descriptors / MAIN_SOURCE_SET_NAME /
             "io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION"
+
+private fun hintOnRemoteDebug(projectDir: File) {
+    val buildScript = Resource.file(
+        "$RESOURCE_DIR/build.gradle.kts",
+        ApiAnnotationsPluginIgTest::class.java.classLoader
+    ).read()
+
+    // Here we check a line in the build script that enables remote debugging.
+    // Notice the comment at the end, to avoid false positives, when
+    // another `enabled` flag is introduced.
+    val remoteDebug = buildScript.contains("enabled.set(true) // Set this option")
+    if (remoteDebug) {
+        println(
+            """
+            ProtoData CLI launched. 
+            The project directory is: $projectDir.
+            Waiting for the debugger to attach...                
+            """.ti()
+        )
+    }
+}
