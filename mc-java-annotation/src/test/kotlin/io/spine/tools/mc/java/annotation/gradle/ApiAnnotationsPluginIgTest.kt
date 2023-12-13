@@ -28,8 +28,8 @@
 
 package io.spine.tools.mc.java.annotation.gradle
 
-import com.google.common.truth.Truth.assertThat
 import com.google.protobuf.Descriptors.FileDescriptor
+import io.kotest.matchers.shouldBe
 import io.spine.annotation.Internal
 import io.spine.annotation.SPI
 import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
@@ -37,12 +37,13 @@ import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
 import io.spine.io.Resource
 import io.spine.string.ti
+import io.spine.testing.SlowTest
 import io.spine.tools.div
-import io.spine.tools.fs.DirectoryName.build
+import io.spine.tools.fs.DirectoryName
 import io.spine.tools.fs.DirectoryName.descriptors
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
-import io.spine.tools.gradle.task.BaseTaskName
+import io.spine.tools.gradle.task.BaseTaskName.build
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
 import io.spine.tools.java.fs.SourceFile
@@ -58,7 +59,6 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_SERVI
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
@@ -93,11 +93,11 @@ import org.junit.jupiter.api.io.TempDir
  *
  * ### Enabling remote debugging for ProtoData CLI
  * Since ProtoData launches the code generation in a separate JVM, it is not possible to debug
- * it directly in an IDE. To debug the code generation perform the following steps:
+ * it directly in an IDE. To debug the code generation, perform the following steps:
  *  1. Open the resource file `resources/annotator-plugin-test/build.gradle.kts`.
  *  2. Find the `debugOptions` block.
  *  3. Set the value of the `enabled` property to `true`. Pay attention to the fact that when
- *     enabled the ProtoData CLI process will be suspended until a debugger is attached.
+ *     enabled, the ProtoData CLI process will be suspended until a debugger is attached.
  *
  * ### Creating a remote debugging configuration in IDEA
  *  Check or create `LaunchProtoData Remote Debug` Run/Debug configuration is available in IDEA:
@@ -127,12 +127,14 @@ internal class ApiAnnotationsPluginIgTest {
     companion object {
         const val RESOURCE_DIR = "annotator-plugin-test"
         private const val RESOURCE_SUB_DIR = "typedefs"
+
         lateinit var moduleDir: Path
+        lateinit var project: GradleProject
 
         @BeforeAll
         @JvmStatic
         fun compileProject(@TempDir projectDir: File) {
-            val project = GradleProject.setupAt(projectDir)
+            project = GradleProject.setupAt(projectDir)
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()
                 /* Uncomment the following line to be able to debug the build.
@@ -238,18 +240,15 @@ internal class ApiAnnotationsPluginIgTest {
             checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, false)
 
         @Test
-        fun `GRPC services if service option is false`() =
+        fun `gRPC services if service option is false`() =
             checkServiceAnnotations(NO_INTERNAL_OPTIONS, false)
     }
 
     @Test
-    fun `compile generated source with potential annotation duplication`(@TempDir tempDir: File) {
-        val project = GradleProject.setupAt(tempDir)
-            .fromResources(RESOURCE_DIR)
-            .copyBuildSrc()
-            .create()
-        val result = project.executeTask(BaseTaskName.build)
-        assertThat(result[BaseTaskName.build]).isEqualTo(SUCCESS)
+    @SlowTest
+    fun `produce Java source that compiles`() {
+        val result = project.executeTask(build)
+        result[build] shouldBe SUCCESS
     }
 }
 
@@ -358,7 +357,7 @@ private fun descriptorOf(testFile: FileName): FileDescriptor {
  * as defined in the test project under `resources/annotator-plugin-test`.
  */
 private fun mainDescriptorPath(): Path =
-    moduleDir / build / descriptors / MAIN_SOURCE_SET_NAME /
+    moduleDir / DirectoryName.build / descriptors / MAIN_SOURCE_SET_NAME /
             "io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION"
 
 private fun hintOnRemoteDebug(projectDir: File) {
