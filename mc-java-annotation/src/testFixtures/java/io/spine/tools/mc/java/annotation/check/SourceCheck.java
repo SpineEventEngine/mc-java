@@ -29,17 +29,26 @@ package io.spine.tools.mc.java.annotation.check;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Abstract base for checking annotations in the generated source code.
  */
 public abstract class SourceCheck implements Consumer<AbstractJavaSource<JavaClassSource>> {
 
+    private final Class<? extends Annotation> annotationClass;
     private final boolean shouldBeAnnotated;
 
-    SourceCheck(boolean shouldBeAnnotated) {
+    SourceCheck(Class<? extends Annotation> annotationClass, boolean shouldBeAnnotated) {
+        this.annotationClass = checkNotNull(annotationClass);
         this.shouldBeAnnotated = shouldBeAnnotated;
+    }
+
+    protected Class<? extends Annotation> annotationClass() {
+        return annotationClass;
     }
 
     boolean shouldBeAnnotated() {

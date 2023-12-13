@@ -42,17 +42,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tells if a specified Java annotation present in the generated code.
  */
-public final class MainDefinitionAnnotationCheck extends SourceCheck {
+public final class TypeAnnotationCheck extends SourceCheck {
 
     private final Class<? extends Annotation> annotation;
 
-    public MainDefinitionAnnotationCheck(boolean shouldBeAnnotated) {
+    public TypeAnnotationCheck(boolean shouldBeAnnotated) {
         this(Internal.class, shouldBeAnnotated);
     }
 
-    public MainDefinitionAnnotationCheck(Class<? extends Annotation> annotation,
-                                         boolean shouldBeAnnotated) {
-        super(shouldBeAnnotated);
+    public TypeAnnotationCheck(Class<? extends Annotation> annotation,
+                               boolean shouldBeAnnotated) {
+        super(annotation, shouldBeAnnotated);
         this.annotation = checkNotNull(annotation);
     }
 

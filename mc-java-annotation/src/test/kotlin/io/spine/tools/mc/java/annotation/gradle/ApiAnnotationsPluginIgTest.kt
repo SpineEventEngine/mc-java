@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,19 +48,19 @@ import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
 import io.spine.tools.java.fs.SourceFile
 import io.spine.tools.mc.java.annotation.check.FieldAnnotationCheck
-import io.spine.tools.mc.java.annotation.check.MainDefinitionAnnotationCheck
+import io.spine.tools.mc.java.annotation.check.TypeAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.SourceCheck
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_MULTIPLE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_SERVICE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_ALL
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
 import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
 import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.moduleDir
@@ -146,8 +146,8 @@ internal class ApiAnnotationsPluginIgTest {
                 "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
-            project.executeTask(launchProtoData)
             hintOnRemoteDebug(projectDir)
+            project.executeTask(launchProtoData)
         }
     }
 
@@ -160,10 +160,6 @@ internal class ApiAnnotationsPluginIgTest {
             @Test
             fun `an outer class of generated messages`() =
                 checkOuterClassAnnotations(INTERNAL_ALL, true)
-
-            @Test
-            fun `top-level service Grpc classes`() =
-                checkServiceAnnotations(INTERNAL_ALL_SERVICE, true)
         }
 
         @Nested inner class
@@ -171,7 +167,7 @@ internal class ApiAnnotationsPluginIgTest {
 
             @Test
             fun `top level message classes`() =
-                checkMainDefinitionAnnotations(INTERNAL_ALL_MULTIPLE, true)
+                checkTypeAnnotations(INTERNAL_ALL_MULTIPLE, Internal::class.java, true)
         }
     }
 
@@ -183,11 +179,11 @@ internal class ApiAnnotationsPluginIgTest {
 
             @Test
             fun `a nested class of a message type marked '(internal_type) = true`() =
-                checkNestedTypesAnnotations(INTERNAL_MESSAGE, true)
+                checkNestedTypesAnnotations(INTERNAL_MESSAGE, Internal::class.java, true)
 
             @Test
             fun `accessors for fields with '(internal) = true'`() =
-                checkFieldAnnotations(INTERNAL_FIELD, true)
+                checkFieldAnnotations(INTERNAL_FIELD, Internal::class.java, true)
         }
 
         @Nested inner class
@@ -195,7 +191,7 @@ internal class ApiAnnotationsPluginIgTest {
 
             @Test
             fun `accessors for fields with '(internal) = true'`() =
-                checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
+                checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, Internal::class.java, true)
         }
     }
 
@@ -204,7 +200,15 @@ internal class ApiAnnotationsPluginIgTest {
 
         @Test
         fun `gRPC services if service option is true`() =
-            checkServiceAnnotations(SPI_SERVICE.fileName(), SPI::class.java, true)
+            checkServiceAnnotations(SPI_SERVICE, SPI::class.java, true)
+
+        @Test
+        fun `gRPC services if 'SPI_all = true'`() =
+            checkServiceAnnotations(SPI_ALL, SPI::class.java, true)
+
+        @Test
+        fun `message class when 'SPI_all = true'`() =
+            checkTypeAnnotations(SPI_ALL, Internal::class.java, true)
     }
     
     @Nested
@@ -213,35 +217,35 @@ internal class ApiAnnotationsPluginIgTest {
 
         @Test
         fun `if file option if false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `service if file option is false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `multiple files if file option is false`() =
-            checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkTypeAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
 
         @Test
         fun `if message option is false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, false)
+            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `multiple files if message option is false`() =
-            checkMainDefinitionAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkTypeAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
 
         @Test
         fun `accessors if field option is false`() =
-            checkFieldAnnotations(NO_INTERNAL_OPTIONS, false)
+            checkFieldAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `accessors in multiple files if field option is false`() =
-            checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, false)
+            checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
 
         @Test
         fun `gRPC services if service option is false`() =
-            checkServiceAnnotations(NO_INTERNAL_OPTIONS, false)
+            checkServiceAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
     }
 
     @Test
@@ -255,33 +259,39 @@ internal class ApiAnnotationsPluginIgTest {
 private val Path.generatedMain: Path
     get() = this / "generated/main"
 
-private fun checkServiceAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) =
-    checkServiceAnnotations(testFile.fileName(), Internal::class.java, shouldBeAnnotated)
-
 private fun checkServiceAnnotations(
-    testFile: FileName,
+    testFile: GivenProtoFile,
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile)
+    val fileDescriptor = descriptorOf(testFile.fileName())
     val services = fileDescriptor.services
     for (serviceDescriptor in services) {
         val serviceFile = SourceFile.forService(serviceDescriptor)
-        val check = MainDefinitionAnnotationCheck(expectedAnnotation, shouldBeAnnotated)
+        val check = TypeAnnotationCheck(
+            expectedAnnotation,
+            shouldBeAnnotated
+        )
         check.verifyService(serviceFile)
     }
 }
 
-private fun checkFieldAnnotations(testFile: GivenProtoFile, shouldBeAnnotated: Boolean) {
+private fun checkFieldAnnotations(
+    testFile: GivenProtoFile,
+    expectedAnnotation: Class<out Annotation>,
+    shouldBeAnnotated: Boolean
+) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val sourcePath = SourceFile.forMessage(messageDescriptor).path()
 
-    NestedTypeFieldsAnnotationCheck(messageDescriptor, shouldBeAnnotated).verify(sourcePath)
+    NestedTypeFieldsAnnotationCheck(messageDescriptor, expectedAnnotation, shouldBeAnnotated)
+        .verify(sourcePath)
 }
 
 private fun checkFieldAnnotationsMultiple(
     testFile: GivenProtoFile,
+    expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
@@ -289,11 +299,13 @@ private fun checkFieldAnnotationsMultiple(
     val experimentalField = messageDescriptor.fields[0]
     val sourcePath = SourceFile.forMessage(messageDescriptor).path()
 
-    FieldAnnotationCheck(experimentalField, shouldBeAnnotated).verify(sourcePath)
+    FieldAnnotationCheck(experimentalField, expectedAnnotation, shouldBeAnnotated)
+        .verify(sourcePath)
 }
 
-private fun checkMainDefinitionAnnotations(
+private fun checkTypeAnnotations(
     testFile: GivenProtoFile,
+    expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
@@ -302,18 +314,22 @@ private fun checkMainDefinitionAnnotations(
         val fileProto = fileDescriptor.toProto()
         val messagePath = SourceFile.forMessage(messageProto, fileProto).path()
 
-        MainDefinitionAnnotationCheck(shouldBeAnnotated).verify(messagePath)
+        TypeAnnotationCheck(
+            expectedAnnotation,
+            shouldBeAnnotated
+        ).verify(messagePath)
     }
 }
 
 private fun checkNestedTypesAnnotations(
     testFile: GivenProtoFile,
+    expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
-    NestedTypesAnnotationCheck(shouldBeAnnotated).verify(sourcePath)
+    NestedTypesAnnotationCheck(expectedAnnotation, shouldBeAnnotated).verify(sourcePath)
 }
 
 private fun checkOuterClassAnnotations(
@@ -323,7 +339,8 @@ private fun checkOuterClassAnnotations(
     val fileDescriptor = descriptorOf(testFile.fileName())
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
-    MainDefinitionAnnotationCheck(shouldBeAnnotated).verify(sourcePath)
+    TypeAnnotationCheck(shouldBeAnnotated)
+        .verify(sourcePath)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -371,12 +388,15 @@ private fun hintOnRemoteDebug(projectDir: File) {
     // another `enabled` flag is introduced.
     val remoteDebug = buildScript.contains("enabled.set(true) // Set this option")
     if (remoteDebug) {
-        println(
-            """
-            ProtoData CLI launched. 
-            The project directory is: $projectDir.
-            Waiting for the debugger to attach...                
-            """.ti()
-        )
+        val pattern = "port.set\\((\\d+)\\)".toRegex()
+        val port = pattern.find(buildScript)?.groupValues?.get(1)
+        System.err.run {
+            println("""
+                ProtoData CLI is launching in remote debug mode. 
+                The project directory is: $projectDir.
+                Waiting for the remote debugger to attach to the port $port...                
+                """.ti())
+            flush()
+        }
     }
 }

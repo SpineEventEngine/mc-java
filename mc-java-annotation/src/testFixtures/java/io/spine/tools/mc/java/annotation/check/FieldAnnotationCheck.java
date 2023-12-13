@@ -36,11 +36,12 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.code.java.SimpleClassName.ofBuilder;
-import static io.spine.tools.mc.java.annotation.check.Annotations.findInternalAnnotation;
+import static io.spine.tools.mc.java.annotation.check.Annotations.findAnnotation;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,8 +54,10 @@ public final class FieldAnnotationCheck extends SourceCheck {
 
     private final FieldDescriptor field;
 
-    public FieldAnnotationCheck(FieldDescriptor field, boolean shouldBeAnnotated) {
-        super(shouldBeAnnotated);
+    public FieldAnnotationCheck(FieldDescriptor field,
+                                Class<? extends Annotation> annotationClass,
+                                boolean shouldBeAnnotated) {
+        super(annotationClass, shouldBeAnnotated);
         this.field = checkNotNull(field);
     }
 
@@ -83,7 +86,7 @@ public final class FieldAnnotationCheck extends SourceCheck {
     }
 
     private void assertMethodAnnotation(MethodSource<JavaClassSource> method) {
-        Optional<?> annotation = findInternalAnnotation(method);
+        Optional<?> annotation = findAnnotation(method, annotationClass());
         var methodName = method.getName();
         if (shouldBeAnnotated()) {
             assertTrue(annotation.isPresent(), msg(true, methodName));

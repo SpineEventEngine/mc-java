@@ -38,10 +38,19 @@ option (internal_all) = true;
 // See also `internal_all.proto` which has `java_multiple_files` set to `false`.
 
 message Odin {
+    string value = 1;
 }
 
 message Dva {
+    string value = 1;
 }
 
 message Tri {
+    string value = 1;
+}
+
+service LoopCounting {
+    rpc Start(Odin) returns (Dva);
+    rpc Next(Dva) returns (Tri);
+    rpc Loop(Tri) returns (Odin);
 }

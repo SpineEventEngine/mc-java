@@ -38,8 +38,8 @@ import io.spine.annotation.SPI as Spi
 internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,
-    val fieldOption: Option? = null,
-    val serviceOption: Option? = null,
+    val fieldOption: Option?,
+    val serviceOption: Option?,
     val annotationClass: Class<out Annotation>
 ) {
 
@@ -47,6 +47,7 @@ internal enum class ApiOption(
         fileOption = option("beta_all"),
         messageOption = option("beta_type"),
         fieldOption = option("beta"),
+        serviceOption = null,
         annotationClass = Beta::class.java
     ),
 
@@ -54,6 +55,7 @@ internal enum class ApiOption(
         fileOption = option("experimental_all"),
         messageOption = option("experimental_type"),
         fieldOption = option("experimental"),
+        serviceOption = null,
         annotationClass = Experimental::class.java
     ),
 
@@ -61,12 +63,14 @@ internal enum class ApiOption(
         fileOption = option("internal_all"),
         messageOption = option("internal_type"),
         fieldOption = option("internal"),
+        serviceOption = null,
         annotationClass = Internal::class.java,
     ),
 
     SPI(
         fileOption = option("SPI_all"),
         messageOption = option("SPI_type"),
+        fieldOption = null,
         serviceOption = option("SPI_service"),
         annotationClass = Spi::class.java
     );
