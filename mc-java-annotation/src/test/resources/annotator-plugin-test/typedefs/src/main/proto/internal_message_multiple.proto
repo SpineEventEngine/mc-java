@@ -27,10 +27,14 @@ syntax = "proto3";
 
 package given.annotation;
 
-import "spine/options.proto";
-
 option java_multiple_files = true;
 
-message ExperimentalTwo {
+import "spine/options.proto";
+
+message InternalTopLevelOne {
+    option (internal_type) = true;
+}
+
+message InternalTopLevelTwo {
     option (internal_type) = true;
 }

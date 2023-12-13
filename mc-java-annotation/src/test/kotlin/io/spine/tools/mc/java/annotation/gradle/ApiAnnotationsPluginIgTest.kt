@@ -149,43 +149,62 @@ internal class ApiAnnotationsPluginIgTest {
         }
     }
 
-    @Nested
-    @DisplayName("annotate")
-    internal inner class Annotating {
+    @Nested inner class
+    `annotate with 'Internal' when '(internal_all) = true'` {
 
-        @Test
-        fun `if file option is true`() =
-            checkOuterClassAnnotations(INTERNAL_ALL, true)
+        @Nested inner class
+        `and 'java_multiple_files = false'` {
 
-        @Test
-        fun `service if file option if true`() =
-            checkServiceAnnotations(INTERNAL_ALL_SERVICE, true)
+            @Test
+            fun `an outer class of generated messages`() =
+                checkOuterClassAnnotations(INTERNAL_ALL, true)
 
-        @Test
-        fun `multiple files if file option is true`() =
-            checkMainDefinitionAnnotations(INTERNAL_ALL_MULTIPLE, true)
+            @Test
+            fun `top-level service Grpc classes`() =
+                checkServiceAnnotations(INTERNAL_ALL_SERVICE, true)
+        }
 
-        @Test
-        fun `if message option is true`() =
-            checkNestedTypesAnnotations(INTERNAL_MESSAGE, true)
+        @Nested inner class
+        `and 'java_multiple_files = true'` {
 
-        @Test
-        fun `multiple files if message option is true`() =
-            checkMainDefinitionAnnotations(INTERNAL_MESSAGE_MULTIPLE, true)
+            @Test
+            fun `top level message classes`() =
+                checkMainDefinitionAnnotations(INTERNAL_ALL_MULTIPLE, true)
+        }
+    }
 
-        @Test
-        fun `accessors if field option is true`() =
-            checkFieldAnnotations(INTERNAL_FIELD, true)
+    @Nested inner class
+    `annotate with 'Internal'` {
 
-        @Test
-        fun `accessors in multiple files if field option is true`() =
-            checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
+        @Nested inner class
+        `when 'java_multiple_files = false'` {
+
+            @Test
+            fun `a nested class of a message type marked '(internal_type) = true`() =
+                checkNestedTypesAnnotations(INTERNAL_MESSAGE, true)
+
+            @Test
+            fun `accessors for fields with '(internal) = true'`() =
+                checkFieldAnnotations(INTERNAL_FIELD, true)
+        }
+
+        @Nested inner class
+        `when 'java_multiple_files = true'` {
+
+            @Test
+            fun `accessors for fields with '(internal) = true'`() =
+                checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, true)
+        }
+    }
+
+    @Nested inner class
+    `annotate with 'SPI'` {
 
         @Test
         fun `gRPC services if service option is true`() =
             checkServiceAnnotations(SPI_SERVICE.fileName(), SPI::class.java, true)
     }
-
+    
     @Nested
     @DisplayName("not annotate")
     internal inner class NotAnnotate {

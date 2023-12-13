@@ -27,10 +27,11 @@ syntax = "proto3";
 
 package given.annotation;
 
+option java_multiple_files = true;
+
 import "spine/options.proto";
 
 option (internal_all) = true;
-option java_multiple_files = true;
 
 message FirstOutOfMany {
     option (internal_type) = true;
