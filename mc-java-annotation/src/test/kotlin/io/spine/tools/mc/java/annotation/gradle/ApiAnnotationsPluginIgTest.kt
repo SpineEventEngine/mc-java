@@ -159,7 +159,7 @@ internal class ApiAnnotationsPluginIgTest {
 
             @Test
             fun `an outer class of generated messages`() =
-                checkOuterClassAnnotations(INTERNAL_ALL, true)
+                checkOuterClassAnnotations(INTERNAL_ALL, Internal::class.java, true)
         }
 
         @Nested inner class
@@ -177,6 +177,11 @@ internal class ApiAnnotationsPluginIgTest {
         @Nested inner class
         `when 'java_multiple_files = false'` {
 
+            /**
+             * In this test, we check that all the types nested in the outer class are annotated.
+             * This is a shortcut, which is possible because all the message files in this
+             * proto file are annotated with `(internal_type) = true`.
+             */
             @Test
             fun `a nested class of a message type marked '(internal_type) = true`() =
                 checkNestedTypesAnnotations(INTERNAL_MESSAGE, Internal::class.java, true)
@@ -334,13 +339,13 @@ private fun checkNestedTypesAnnotations(
 
 private fun checkOuterClassAnnotations(
     testFile: GivenProtoFile,
+    expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
     val fileDescriptor = descriptorOf(testFile.fileName())
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
-    TypeAnnotationCheck(shouldBeAnnotated)
-        .verify(sourcePath)
+    TypeAnnotationCheck(expectedAnnotation, shouldBeAnnotated).verify(sourcePath)
 }
 
 @Suppress("UNCHECKED_CAST")

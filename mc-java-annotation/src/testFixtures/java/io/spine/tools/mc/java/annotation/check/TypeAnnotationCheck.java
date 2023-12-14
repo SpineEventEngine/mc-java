@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.annotation.check;
 
-import io.spine.annotation.Internal;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
@@ -45,10 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public final class TypeAnnotationCheck extends SourceCheck {
 
     private final Class<? extends Annotation> annotation;
-
-    public TypeAnnotationCheck(boolean shouldBeAnnotated) {
-        this(Internal.class, shouldBeAnnotated);
-    }
 
     public TypeAnnotationCheck(Class<? extends Annotation> annotation,
                                boolean shouldBeAnnotated) {

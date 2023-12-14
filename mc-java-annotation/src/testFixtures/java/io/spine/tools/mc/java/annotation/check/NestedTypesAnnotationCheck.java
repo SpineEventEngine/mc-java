@@ -33,7 +33,6 @@ import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 import static io.spine.tools.mc.java.annotation.check.Annotations.findAnnotation;
-import static io.spine.tools.mc.java.annotation.check.Annotations.findInternalAnnotation;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
