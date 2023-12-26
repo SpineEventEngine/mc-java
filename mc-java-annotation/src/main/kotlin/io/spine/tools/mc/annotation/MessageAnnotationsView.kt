@@ -43,7 +43,7 @@ internal class MessageAnnotationsView :
 
     @Subscribe
     fun on(@External e: TypeOptionDiscovered) = alter {
-        optionList.add(e.option)
+        addOption(e.option)
     }
 
     @Subscribe
