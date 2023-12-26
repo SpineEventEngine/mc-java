@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
@@ -33,6 +32,7 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Kotlin
+import io.spine.internal.dependency.KotlinX
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -132,6 +132,8 @@ fun Module.forceConfigurations() {
                 @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
                     Kotlin.stdLibJdk7,
+                    KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
                     Spine.base,
