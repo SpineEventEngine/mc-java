@@ -29,11 +29,13 @@ package io.spine.tools.mc.java.annotation
 import io.spine.protodata.Field
 import io.spine.protodata.FieldName
 import io.spine.protodata.TypeName
+import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.FieldConventions
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.NonRepeatingInsertionPoint
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.Declaration
 import io.spine.text.Text
 import io.spine.text.TextCoordinates
@@ -45,9 +47,15 @@ internal class MessageAnnotationRenderer :
     AnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
 
     override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val annotation = MessageOrEnumApiAnnotation(state.type, annotationClass)
-        annotation.registerWith(context!!)
-        annotation.renderSources(sources)
+        val typeName = state.type
+        MessageOrEnumApiAnnotation(typeName, annotationClass).let {
+            it.registerWith(context!!)
+            it.renderSources(sources)
+        }
+        MessageOrBuilderAnnotation(typeName, annotationClass).let {
+            it.registerWith(context!!)
+            it.renderSources(sources)
+        }
     }
 
     override fun annotate(state: MessageAnnotations) {
@@ -78,7 +86,7 @@ internal class MessageAnnotationRenderer :
 
     private fun annotateFieldMethods(
         typeName: TypeName,
-        messageDeclaration: Declaration<Java, ClassName>,
+        messageDeclaration: Declaration<Java, ClassOrEnumName>,
         messageOrBuilderDeclaration: Declaration<Java, ClassName>,
         fieldName: FieldName,
         annotationClass: Class<out Annotation>
@@ -112,5 +120,24 @@ private class FieldGetter(private val field: Field) :
             }
         }
         error("No getter found for field `${field.name.value}`.")
+    }
+}
+
+/**
+ * Annotates a `MessageOrBuilder` interface for the given message type.
+ */
+private class MessageOrBuilderAnnotation<T : Annotation>(
+    private val typeName: TypeName,
+    annotationClass: Class<T>
+): ApiTypeAnnotation<T>(annotationClass) {
+
+    private val convention by lazy {
+        MessageOrBuilderConvention(typeSystem!!)
+    }
+
+    override fun shouldAnnotate(file: SourceFile): Boolean {
+        val declaration = convention.declarationFor(typeName)
+        val fileMatches = declaration.path.endsWith(file.relativePath)
+        return fileMatches && super.shouldAnnotate(file)
     }
 }
