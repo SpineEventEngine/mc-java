@@ -152,7 +152,7 @@ internal class ApiAnnotationsPluginIgTest {
     }
 
     @Nested inner class
-    `annotate with 'Internal' when '(internal_all) = true'` {
+    `annotate with '@Internal' when '(internal_all) = true'` {
 
         @Nested inner class
         `and 'java_multiple_files = false'` {
@@ -172,7 +172,7 @@ internal class ApiAnnotationsPluginIgTest {
     }
 
     @Nested inner class
-    `annotate with 'Internal'` {
+    `annotate with '@Internal'` {
 
         @Nested inner class
         `when 'java_multiple_files = false'` {
@@ -201,7 +201,7 @@ internal class ApiAnnotationsPluginIgTest {
     }
 
     @Nested inner class
-    `annotate with 'SPI'` {
+    `annotate with '@SPI'` {
 
         @Test
         fun `gRPC services if service option is true`() =
@@ -216,9 +216,8 @@ internal class ApiAnnotationsPluginIgTest {
             checkTypeAnnotations(SPI_ALL, Internal::class.java, true)
     }
     
-    @Nested
-    @DisplayName("not annotate")
-    internal inner class NotAnnotate {
+    @Nested internal inner class
+    `not annotate` {
 
         @Test
         fun `if file option if false`() =

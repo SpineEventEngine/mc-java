@@ -30,6 +30,9 @@ import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.renderer.SourceFile
 
+/**
+ * Annotates a message or an enum type with the given annotation.
+ */
 internal class MessageOrEnumApiAnnotation<T : Annotation>(
     private val typeName: TypeName,
     annotationClass: Class<T>
