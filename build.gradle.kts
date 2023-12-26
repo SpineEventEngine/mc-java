@@ -66,7 +66,6 @@ buildscript {
                     protoData.cliApi,
                     protoData.gradleApi,
                     logging.lib,
-                    logging.middleware,
                     validation.runtime,
                     validation.javaBundle
                 )
