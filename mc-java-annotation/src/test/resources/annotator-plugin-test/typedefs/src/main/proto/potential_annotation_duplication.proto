@@ -36,3 +36,7 @@ option (internal_all) = true;
 message FirstOutOfMany {
     option (internal_type) = true;
 }
+
+message SecondOutOfMany {
+    option (internal_type) = true;
+}

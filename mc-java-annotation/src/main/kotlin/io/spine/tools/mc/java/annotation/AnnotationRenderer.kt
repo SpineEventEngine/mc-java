@@ -28,11 +28,11 @@ package io.spine.tools.mc.java.annotation
 
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
+import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.codegen.java.annotation.TypeAnnotation
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.WithOptions
 import io.spine.tools.mc.annotation.optionList
@@ -48,9 +48,15 @@ internal sealed class AnnotationRenderer<T>(
 
     protected lateinit var sources: SourceFileSet
 
-    // See https://github.com/SpineEventEngine/ProtoData/issues/150
+    /**
+     * Tells if the given source file set is suitable for this renderer.
+     *
+     * @see <a href="https://github.com/SpineEventEngine/ProtoData/issues/150">ProtoData issue</a>
+     */
+    protected abstract fun suitableFor(sources: SourceFileSet): Boolean
+
     final override fun render(sources: SourceFileSet) {
-        if (handlesJavaOrGprc(sources)) {
+        if (suitableFor(sources)) {
             this.sources = sources
             doRender()
         }
@@ -65,8 +71,10 @@ internal sealed class AnnotationRenderer<T>(
 
     @OverridingMethodsMustInvokeSuper
     protected open fun annotate(state: T) {
-        state.optionList
-            .mapNotNull { findMatching(it) }
+        // Handle the case of having the option defined on a file level,
+        // and at a type level too.
+        val options = state.optionList.toSet()
+        options.mapNotNull { findMatching(it) }
             .forEach { apiOption ->
                 annotateType(state, apiOption.annotationClass)
             }
@@ -75,17 +83,11 @@ internal sealed class AnnotationRenderer<T>(
     abstract fun annotateType(state: T, annotationClass: Class<out Annotation>)
 }
 
-/**
- * Tells if the given set of source files contains Java or gRPC files as output
- * of the source code transformation.
- */
-private fun handlesJavaOrGprc(sources: SourceFileSet): Boolean {
-    val outputRoot = sources.outputRoot
-    return outputRoot.endsWith("java") || outputRoot.endsWith("grpc")
-}
-
-internal abstract class ApiTypeAnnotation<T : Annotation>(annotationClass: Class<T>) :
-    TypeAnnotation<T>(annotationClass) {
+internal open class ApiTypeAnnotation<T : Annotation>(
+    subject: ClassOrEnumName,
+    annotationClass: Class<T>
+) :
+    TypeAnnotation<T>(annotationClass, subject) {
 
     override fun renderAnnotationArguments(file: SourceFile): String = ""
 }
