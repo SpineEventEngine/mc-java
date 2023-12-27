@@ -57,14 +57,14 @@ internal class MessageAnnotationRenderer :
     override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
         val typeName = state.type
 
-        val messageClass = convention.declarationFor(typeName).name
-        ApiTypeAnnotation(messageClass, annotationClass).let {
+        val messageClass = convention.declarationFor(typeName)
+        ApiTypeAnnotation(messageClass.name, annotationClass).let {
             it.registerWith(context!!)
             it.renderSources(sources)
         }
 
-        val builderDecl = messageOrBuilderConvention.declarationFor(typeName)
-        ApiTypeAnnotation(builderDecl.name, annotationClass).let {
+        val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName)
+        ApiTypeAnnotation(messageOrBuilderClass.name, annotationClass).let {
             it.registerWith(context!!)
             it.renderSources(sources)
         }
