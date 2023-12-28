@@ -74,7 +74,7 @@ internal class MessageAnnotationsView :
         override fun setupEventRouting(routing: EventRouting<TypeName>) {
             super.setupEventRouting(routing)
             routing.route<FileOptionMatched> { e, _ ->
-                e.toTypeName()
+                e.toMessageTypeName()
             }.unicast<TypeOptionDiscovered> { e, _ ->
                 e.type
             }.unicast<FieldOptionDiscovered> { e, _ ->

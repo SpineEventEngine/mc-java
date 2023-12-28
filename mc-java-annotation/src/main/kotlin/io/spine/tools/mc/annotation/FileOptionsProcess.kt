@@ -112,7 +112,20 @@ private fun ProtobufSourceFile.addMessageEvents(
     typeMap.values.forEach {
         events.add(fileOptionMatched {
             file = this@addMessageEvents.file
-            type = it.name
+            this@fileOptionMatched.messageType = it.name
+            assumed = typeOption
+        })
+    }
+}
+
+private fun ProtobufSourceFile.addEnumEvents(
+    events: MutableList<EventMessage>,
+    typeOption: Option
+) {
+    enumTypeMap.values.forEach {
+        events.add(fileOptionMatched {
+            file = this@addEnumEvents.file
+            this@fileOptionMatched.enumType = it.name
             assumed = typeOption
         })
     }

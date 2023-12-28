@@ -28,6 +28,7 @@ package io.spine.tools.mc.annotation
 
 import io.spine.core.External
 import io.spine.core.Subscribe
+import io.spine.protodata.Option
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.EnumOptionDiscovered
 import io.spine.protodata.plugin.View
@@ -41,13 +42,13 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
 
     @Subscribe
     fun on(@External e: EnumOptionDiscovered) = alter {
-        addOption(e.option)
+        addIfMissing(e.option)
     }
 
     @Subscribe
     fun on(e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
-            addOption(e.assumed)
+            addIfMissing(e.assumed)
         }
     }
 
@@ -56,10 +57,16 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
         override fun setupEventRouting(routing: EventRouting<TypeName>) {
             super.setupEventRouting(routing)
             routing.route<FileOptionMatched> { e, _ ->
-                e.toTypeName()
+                e.toEnumTypeName()
             }.unicast<EnumOptionDiscovered> { e, _ ->
                 e.type
             }
         }
+    }
+}
+
+private fun EnumAnnotations.Builder.addIfMissing(option: Option) {
+    if (!optionList.contains(option)) {
+        addOption(option)
     }
 }

@@ -29,16 +29,28 @@ package io.spine.tools.mc.annotation
 import io.spine.protodata.ServiceName
 import io.spine.protodata.TypeName
 import io.spine.tools.mc.annotation.event.FileOptionMatched
-import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.TYPE
 import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.SERVICE
+import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.MESSAGE_TYPE
+import io.spine.tools.mc.annotation.event.FileOptionMatched.TargetCase.ENUM_TYPE
 
 /**
  * A routing function which obtains a single-item set for the target entity,
- * IFF the target is a `type`. Otherwise, returns an empty set.
+ * IFF the target is a `messageType`. Otherwise, returns an empty set.
  */
-internal fun FileOptionMatched.toTypeName(): Set<TypeName> =
-    if (targetCase == TYPE) {
-        setOf(type)
+internal fun FileOptionMatched.toMessageTypeName(): Set<TypeName> =
+    if (targetCase == MESSAGE_TYPE) {
+        setOf(messageType)
+    } else {
+        setOf()
+    }
+
+/**
+ * A routing function which obtains a single-item set for the target entity,
+ * IFF the target is a `enumType`. Otherwise, returns an empty set.
+ */
+internal fun FileOptionMatched.toEnumTypeName(): Set<TypeName> =
+    if (targetCase == ENUM_TYPE) {
+        setOf(enumType)
     } else {
         setOf()
     }
