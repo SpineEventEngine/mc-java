@@ -28,6 +28,7 @@ package io.spine.tools.mc.annotation
 
 import io.spine.core.External
 import io.spine.core.Subscribe
+import io.spine.protodata.Option
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
 import io.spine.protodata.event.TypeOptionDiscovered
@@ -43,7 +44,7 @@ internal class MessageAnnotationsView :
 
     @Subscribe
     fun on(@External e: TypeOptionDiscovered) = alter {
-        addOption(e.option)
+        addIfMissing(e.option)
     }
 
     @Subscribe
@@ -64,7 +65,7 @@ internal class MessageAnnotationsView :
     @Subscribe
     fun on(e: FileOptionMatched) = alter {
         if (!state.revertsFileWide(e)) {
-            optionList.add(e.assumed)
+            addIfMissing(e.assumed)
         }
     }
 
@@ -80,5 +81,11 @@ internal class MessageAnnotationsView :
                 e.type
             }
         }
+    }
+}
+
+private fun MessageAnnotations.Builder.addIfMissing(option: Option) {
+    if (!optionList.contains(option)) {
+        addOption(option)
     }
 }
