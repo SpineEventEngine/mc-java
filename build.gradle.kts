@@ -58,6 +58,7 @@ buildscript {
                 force(
                     io.spine.internal.dependency.Grpc.api,
                     io.spine.internal.dependency.Kotlin.stdLibJdk7,
+                    spine.reflect,
                     spine.base,
                     spine.toolBase,
                     spine.server,

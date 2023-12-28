@@ -136,6 +136,7 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Spine.reflect,
                     Spine.base,
                     Spine.time,
                     Spine.server,
