@@ -51,6 +51,7 @@ internal class ServiceAnnotationsView :
 
     @Subscribe
     fun on(@External e: ServiceOptionDiscovered) = alter {
+        file = e.file
         // If the option was defined at the file level, overwrite it.
         optionBuilderList.find { it.name == e.option.name }?.let {
             it.value = e.option.value
@@ -61,6 +62,7 @@ internal class ServiceAnnotationsView :
 
     @Subscribe
     fun on(e: FileOptionMatched) = alter {
+        file = e.file
         // If the option is already present at the service level, do not overwrite it.
         optionList.find { it.name == e.assumed.name }?.let {
             return@alter
