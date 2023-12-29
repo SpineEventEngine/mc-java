@@ -50,12 +50,8 @@ internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
 
     @Subscribe
-    fun on(@External e: TypeEntered) = alter {
-        file = e.file
-    }
-
-    @Subscribe
     fun on(@External e: TypeOptionDiscovered) = alter {
+        file = e.file
         // If the option was defined at the file level, overwrite it.
         optionBuilderList.find { it.name == e.option.name }?.let {
             it.value = e.option.value
@@ -66,6 +62,7 @@ internal class MessageAnnotationsView :
 
     @Subscribe
     fun on(e: FileOptionMatched) = alter {
+        file = e.file
         // If the option is already present at the message level, do not overwrite it.
         optionList.find { it.name == e.assumed.name }?.let {
             return@alter
@@ -97,8 +94,6 @@ internal class MessageAnnotationsView :
             super.setupEventRouting(routing)
             routing.route<FileOptionMatched> { e, _ ->
                 e.toMessageTypeName()
-            }.unicast<TypeEntered> { e, _ ->
-                e.type.name
             }.unicast<TypeOptionDiscovered> { e, _ ->
                 e.type
             }.unicast<FieldOptionDiscovered> { e, _ ->
