@@ -40,8 +40,8 @@ internal class ServiceAnnotationRenderer :
         GrpcServiceConvention(typeSystem!!)
     }
 
-    override fun annotateType(state: ServiceAnnotations, annotationClass: Class<out Annotation>) {
-        val serviceClass = convention.declarationFor(state.service).name
+    override fun annotateType(view: ServiceAnnotations, annotationClass: Class<out Annotation>) {
+        val serviceClass = convention.declarationFor(view.service).name
         val annotation = ApiTypeAnnotation(serviceClass, annotationClass)
         annotation.registerWith(context!!)
         annotation.renderSources(sources)

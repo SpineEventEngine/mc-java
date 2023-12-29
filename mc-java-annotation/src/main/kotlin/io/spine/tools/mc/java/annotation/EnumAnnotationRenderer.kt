@@ -37,8 +37,8 @@ internal class EnumAnnotationRenderer :
         MessageOrEnumConvention(typeSystem!!)
     }
 
-    override fun annotateType(state: EnumAnnotations, annotationClass: Class<out Annotation>) {
-        val enumType = convention.declarationFor(state.type).name
+    override fun annotateType(view: EnumAnnotations, annotationClass: Class<out Annotation>) {
+        val enumType = convention.declarationFor(view.type).name
         ApiTypeAnnotation(enumType, annotationClass).let {
             it.registerWith(context!!)
             it.renderSources(sources)

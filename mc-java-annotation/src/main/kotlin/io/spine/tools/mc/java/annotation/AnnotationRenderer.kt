@@ -70,16 +70,16 @@ internal sealed class AnnotationRenderer<T>(
     }
 
     @OverridingMethodsMustInvokeSuper
-    protected open fun annotate(state: T) {
-        state.optionList
+    protected open fun annotate(view: T) {
+        view.optionList
             .mapNotNull { findMatching(it) }
             .map { it.annotationClass }
             .forEach {
-                annotateType(state, it)
+                annotateType(view, it)
             }
     }
 
-    abstract fun annotateType(state: T, annotationClass: Class<out Annotation>)
+    abstract fun annotateType(view: T, annotationClass: Class<out Annotation>)
 }
 
 internal open class ApiTypeAnnotation<T : Annotation>(

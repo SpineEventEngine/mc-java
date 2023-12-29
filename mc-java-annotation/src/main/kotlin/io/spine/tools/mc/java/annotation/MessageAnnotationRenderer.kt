@@ -54,8 +54,13 @@ internal class MessageAnnotationRenderer :
         MessageOrBuilderConvention(typeSystem!!)
     }
 
-    override fun annotateType(state: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val typeName = state.type
+    override fun annotate(view: MessageAnnotations) {
+        super.annotate(view)
+        annotateFields(view)
+    }
+
+    override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
+        val typeName = view.type
 
         val messageClass = convention.declarationFor(typeName)
         ApiTypeAnnotation(messageClass.name, annotationClass).let {
@@ -68,11 +73,6 @@ internal class MessageAnnotationRenderer :
             it.registerWith(context!!)
             it.renderSources(sources)
         }
-    }
-
-    override fun annotate(state: MessageAnnotations) {
-        super.annotate(state)
-        annotateFields(state)
     }
 
     private fun annotateFields(state: MessageAnnotations) {
