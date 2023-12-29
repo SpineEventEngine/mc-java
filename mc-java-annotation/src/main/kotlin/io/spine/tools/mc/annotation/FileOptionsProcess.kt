@@ -36,6 +36,7 @@ import io.spine.core.External
 import io.spine.protodata.File
 import io.spine.protodata.Option
 import io.spine.protodata.ProtobufSourceFile
+import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.event.FileEntered
 import io.spine.protodata.event.FileExited
 import io.spine.protodata.event.FileOptionDiscovered
@@ -94,13 +95,26 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
         state.optionList.forEach { fileOption ->
             val apiOption = findMatching(fileOption)
             apiOption?.let {
-                protoSrc.addMessageEvents(events, fileOption, it.messageOption)
-                it.serviceOption?.let { serviceOption ->
-                    protoSrc.addServiceEvents(events, fileOption, serviceOption)
-                }
+                protoSrc.addEvents(events, fileOption, it)
             }
         }
         return events
+    }
+
+}
+
+private fun ProtobufSourceFile.addEvents(
+    events: MutableList<EventMessage>,
+    fileOption: Option,
+    apiOption: ApiOption
+) {
+    if (header.javaMultipleFiles()) {
+        addMessageEvents(events, fileOption, apiOption.messageOption)
+    } else {
+        // TODO: Emit an event on annotating the outer class.
+    }
+    apiOption.serviceOption?.let { serviceOption ->
+        addServiceEvents(events, fileOption, serviceOption)
     }
 }
 
