@@ -28,13 +28,19 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.Field
 import io.spine.protodata.FieldName
+import io.spine.protodata.File
+import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.FieldConventions
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
+import io.spine.protodata.codegen.java.javaMultipleFiles
+import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.NonRepeatingInsertionPoint
+import io.spine.protodata.renderer.Renderer
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.type.Declaration
 import io.spine.text.Text
@@ -44,11 +50,7 @@ import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.MessageAnnotations
 
 internal class MessageAnnotationRenderer :
-    AnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
-
-    private val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
-    }
+    MessageOrEnumAnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
 
     private val messageOrBuilderConvention by lazy {
         MessageOrBuilderConvention(typeSystem!!)
@@ -61,15 +63,15 @@ internal class MessageAnnotationRenderer :
 
     override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
         val typeName = view.type
+        val messageClass = convention.declarationFor(typeName).name
+        val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName).name
 
-        val messageClass = convention.declarationFor(typeName)
-        ApiTypeAnnotation(messageClass.name, annotationClass).let {
-            it.registerWith(context!!)
-            it.renderSources(sources)
-        }
+        annotationClass.annotate(messageClass)
+        annotationClass.annotate(messageOrBuilderClass)
+    }
 
-        val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName)
-        ApiTypeAnnotation(messageOrBuilderClass.name, annotationClass).let {
+    private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
+        ApiTypeAnnotation(cls, this).let {
             it.registerWith(context!!)
             it.renderSources(sources)
         }
@@ -115,9 +117,6 @@ internal class MessageAnnotationRenderer :
         messageOrBuilderFile.at(fieldGetter).add(annotationLine)
         // TODO: Annotate builder methods for setters too.
     }
-
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
 }
 
 private class FieldGetter(private val field: Field) :

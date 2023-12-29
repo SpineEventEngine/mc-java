@@ -26,32 +26,33 @@
 
 package io.spine.tools.mc.java.annotation
 
+import io.spine.base.EntityState
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.GrpcServiceConvention
+import io.spine.protodata.codegen.java.MessageOrEnumConvention
+import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.ServiceAnnotations
+import io.spine.tools.mc.annotation.WithOptions
 
-internal class ServiceAnnotationRenderer :
-    AnnotationRenderer<ServiceAnnotations>(ServiceAnnotations::class.java) {
+internal sealed class MessageOrEnumAnnotationRenderer<T>(viewClass: Class<T>) :
+    AnnotationRenderer<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
-    private val convention by lazy {
-        GrpcServiceConvention(typeSystem!!)
+    protected val convention by lazy {
+        MessageOrEnumConvention(typeSystem!!)
     }
 
-    override fun annotateType(view: ServiceAnnotations, annotationClass: Class<out Annotation>) {
-        val serviceClass = convention.declarationFor(view.service).name
-        val annotation = ApiTypeAnnotation(serviceClass, annotationClass)
-        annotation.registerWith(context!!)
-        annotation.renderSources(sources)
+    /**
+     * If the file header tells having an outer class, and the header
+     * has the option which matches the "mapped" annotation of the message type,
+     * do not annotate the message class and its builder.
+     * They will be implicitly annotated by the outer class.
+     */
+    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
+        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
+        val singleFile = !header.javaMultipleFiles()
+        return !(singleFile && alreadyInHeader)
     }
 
     override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("grpc")
-
-    /**
-     * Always returns `true` because gRPC services are top level classes and
-     * as such are always annotated.
-     */
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
+        sources.outputRoot.endsWith("java")
 }

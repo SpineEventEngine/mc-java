@@ -26,16 +26,10 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.EnumAnnotations
 
 internal class EnumAnnotationRenderer :
-    AnnotationRenderer<EnumAnnotations>(EnumAnnotations::class.java) {
-
-    private val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
-    }
+    MessageOrEnumAnnotationRenderer<EnumAnnotations>(EnumAnnotations::class.java) {
 
     override fun annotateType(view: EnumAnnotations, annotationClass: Class<out Annotation>) {
         val enumType = convention.declarationFor(view.type).name
@@ -44,7 +38,4 @@ internal class EnumAnnotationRenderer :
             it.renderSources(sources)
         }
     }
-
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
 }

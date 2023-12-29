@@ -26,10 +26,9 @@
 
 package io.spine.tools.mc.annotation
 
-import com.google.protobuf.BoolValue
 import io.spine.annotation.GeneratedMixin
+import io.spine.protodata.File
 import io.spine.protodata.Option
-import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
  * Common interface for views that deal with API options.
@@ -44,23 +43,9 @@ public interface WithOptions {
     public fun getOptionList(): List<Option>
 
     /**
-     * Checks if an API option is set on the file level and
-     * is reverted on the type or `assumed` level.
+     * Obtains the file to which this element belongs.
      */
-    public fun revertsFileWide(event: FileOptionMatched): Boolean {
-        val alreadySetOption = optionList.find {
-            it.name == event.assumed.name
-        }
-        alreadySetOption?.let {
-            // File-wide options are only handled and matched iff they are set to `true`.
-            //
-            // If the type has an option set to `false`, it means that the file-wide
-            // option is explicitly reverted.
-            val unpacked = it.value.unpack(BoolValue::class.java).value
-            return !unpacked
-        }
-        return false
-    }
+    public fun getFile(): File
 }
 
 /**
@@ -69,3 +54,10 @@ public interface WithOptions {
 @get:JvmName("optionList")
 public val WithOptions.optionList: List<Option>
     get() = getOptionList()
+
+/**
+ * Shortcut for [WithOptions.getFile].
+ */
+@get:JvmName("file")
+public val WithOptions.file: File
+    get() = getFile()

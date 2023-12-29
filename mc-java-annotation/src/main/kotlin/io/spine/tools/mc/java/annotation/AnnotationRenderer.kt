@@ -28,13 +28,15 @@ package io.spine.tools.mc.java.annotation
 
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
-import io.spine.protodata.codegen.java.ClassOrEnumName
+import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
-import io.spine.protodata.codegen.java.annotation.TypeAnnotation
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.renderer.Renderer
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.WithOptions
+import io.spine.tools.mc.annotation.file
 import io.spine.tools.mc.annotation.optionList
 
 /**
@@ -73,20 +75,30 @@ internal sealed class AnnotationRenderer<T>(
     protected open fun annotate(view: T) {
         view.optionList
             .mapNotNull { findMatching(it) }
+            .filter {
+                val header = findHeaderFor(view)
+                needsAnnotation(it, header)
+            }
             .map { it.annotationClass }
             .forEach {
                 annotateType(view, it)
             }
     }
 
+    protected abstract fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean
+
     abstract fun annotateType(view: T, annotationClass: Class<out Annotation>)
 }
 
-internal class ApiTypeAnnotation<T : Annotation>(
-    subject: ClassOrEnumName,
-    annotationClass: Class<T>
-) :
-    TypeAnnotation<T>(annotationClass, subject) {
-
-    override fun renderAnnotationArguments(file: SourceFile): String = ""
+private fun <T> Renderer<*>.findHeaderFor(view: T): ProtoFileHeader
+        where T : EntityState<*>, T : WithOptions {
+    val protoFile = view.file
+    val fileHeader = select<ProtobufSourceFile>().findById(protoFile)?.header
+    check(fileHeader != null) {
+        "Unable to find `${ProtobufSourceFile::class.java.simpleName}`" +
+                " file: `${protoFile.path}`, " +
+                " view: `${view}`."
+    }
+    return fileHeader
 }
+
