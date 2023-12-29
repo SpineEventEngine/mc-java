@@ -30,6 +30,7 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ServiceName
 import io.spine.protodata.event.ServiceOptionDiscovered
+import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
@@ -37,6 +38,14 @@ import io.spine.server.entity.state
 import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
+/**
+ * Gathers the options defined for a service.
+ *
+ * Subscribes to [TypeOptionDiscovered] for obtaining directly set options.
+ *
+ * Subscribes to [FileOptionMatched] events for getting matches between file level options,
+ * and type options that are assumed for all the types in the file.
+ */
 internal class ServiceAnnotationsView :
     View<ServiceName, ServiceAnnotations, ServiceAnnotations.Builder>() {
 
@@ -59,6 +68,9 @@ internal class ServiceAnnotationsView :
         addOption(e.assumed)
     }
 
+    /**
+     * The repository for [ServiceAnnotationsView] which tunes the routing of events.
+     */
     class Repository: ViewRepository<ServiceName, ServiceAnnotationsView, ServiceAnnotations>() {
 
         override fun setupEventRouting(routing: EventRouting<ServiceName>) {

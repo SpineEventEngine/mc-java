@@ -28,17 +28,23 @@ package io.spine.tools.mc.annotation
 
 import io.spine.core.External
 import io.spine.core.Subscribe
-import io.spine.protodata.Option
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
 import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
-import io.spine.tools.mc.annotation.event.FileOptionMatched
-import io.spine.server.entity.state
 import io.spine.server.route.EventRouting
+import io.spine.tools.mc.annotation.event.FileOptionMatched
 
+/**
+ * Gathers the options defined for a message type.
+ *
+ * Subscribes to [TypeOptionDiscovered] for obtaining directly set options.
+ *
+ * Subscribes to [FileOptionMatched] events for getting matches between file level options,
+ * and type options that are assumed for all the types in the file.
+ */
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
 
@@ -77,6 +83,9 @@ internal class MessageAnnotationsView :
         )
     }
 
+    /**
+     * The repository for [MessageAnnotationsView] which tunes the routing of events.
+     */
     class Repository: ViewRepository<TypeName, MessageAnnotationsView, MessageAnnotations>() {
 
         override fun setupEventRouting(routing: EventRouting<TypeName>) {
