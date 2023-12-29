@@ -41,15 +41,13 @@ import io.spine.tools.mc.annotation.event.FileOptionMatched
 internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotations.Builder>() {
 
     @Subscribe
-    fun on(@External e: EnumOptionDiscovered) = alter {
-        addIfMissing(e.option)
+    fun on(e: FileOptionMatched) = alter {
+        addOption(e.assumed)
     }
 
     @Subscribe
-    fun on(e: FileOptionMatched) = alter {
-        if (!state.revertsFileWide(e)) {
-            addIfMissing(e.assumed)
-        }
+    fun on(@External e: EnumOptionDiscovered) = alter {
+        addOption(e.option)
     }
 
     class Repository: ViewRepository<TypeName, EnumAnnotationsView, EnumAnnotations>() {
@@ -62,11 +60,5 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
                 e.type
             }
         }
-    }
-}
-
-private fun EnumAnnotations.Builder.addIfMissing(option: Option) {
-    if (!optionList.contains(option)) {
-        addOption(option)
     }
 }

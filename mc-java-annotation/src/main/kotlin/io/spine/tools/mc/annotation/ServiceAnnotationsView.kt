@@ -42,14 +42,21 @@ internal class ServiceAnnotationsView :
 
     @Subscribe
     fun on(@External e: ServiceOptionDiscovered) = alter {
+        // If the option was defined at the file level, overwrite it.
+        optionBuilderList.find { it.name == e.option.name }?.let {
+            it.value = e.option.value
+            return@alter
+        }
         addOption(e.option)
     }
 
     @Subscribe
     fun on(e: FileOptionMatched) = alter {
-        if (!state.revertsFileWide(e)) {
-            addOption(e.assumed)
+        // If the option is already present at the service level, do not overwrite it.
+        optionList.find { it.name == e.assumed.name }?.let {
+            return@alter
         }
+        addOption(e.assumed)
     }
 
     class Repository: ViewRepository<ServiceName, ServiceAnnotationsView, ServiceAnnotations>() {

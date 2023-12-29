@@ -91,13 +91,12 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
         }
         val events = mutableListOf<EventMessage>()
 
-        state.optionList.forEach { option ->
-            val apiOption = findMatching(option)
+        state.optionList.forEach { fileOption ->
+            val apiOption = findMatching(fileOption)
             apiOption?.let {
-                val messageOption = it.messageOption
-                protoSrc.addMessageEvents(events, messageOption)
-                it.serviceOption?.let {
-                    protoSrc.addServiceEvents(events, it)
+                protoSrc.addMessageEvents(events, fileOption, it.messageOption)
+                it.serviceOption?.let { serviceOption ->
+                    protoSrc.addServiceEvents(events, fileOption, serviceOption)
                 }
             }
         }
@@ -107,25 +106,15 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
 
 private fun ProtobufSourceFile.addMessageEvents(
     events: MutableList<EventMessage>,
+    fileOption: Option,
     typeOption: Option
 ) {
-    typeMap.values.forEach {
+    val thisSource = this
+    typeMap.values.forEach { message ->
         events.add(fileOptionMatched {
-            file = this@addMessageEvents.file
-            this@fileOptionMatched.messageType = it.name
-            assumed = typeOption
-        })
-    }
-}
-
-private fun ProtobufSourceFile.addEnumEvents(
-    events: MutableList<EventMessage>,
-    typeOption: Option
-) {
-    enumTypeMap.values.forEach {
-        events.add(fileOptionMatched {
-            file = this@addEnumEvents.file
-            this@fileOptionMatched.enumType = it.name
+            file = thisSource.file
+            this.fileOption = fileOption
+            this@fileOptionMatched.messageType = message.name
             assumed = typeOption
         })
     }
@@ -133,11 +122,14 @@ private fun ProtobufSourceFile.addEnumEvents(
 
 private fun ProtobufSourceFile.addServiceEvents(
     events: MutableList<EventMessage>,
+    fileOption: Option,
     serviceOption: Option
 ) {
+    val thisSource = this
     serviceMap.values.forEach {
         events.add(fileOptionMatched {
-            file = this@addServiceEvents.file
+            file = thisSource.file
+            this.fileOption = fileOption
             service = it.name
             assumed = serviceOption
         })
