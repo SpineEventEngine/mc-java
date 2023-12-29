@@ -46,7 +46,7 @@ public enum GivenProtoFile {
     INTERNAL_FIELD_MULTIPLE("internal_field_multiple.proto"),
     SPI_SERVICE("spi_service.proto"),
     SPI_ALL("spi_all.proto"),
-    POTENTIAL_ANNOTATION_DUP("potential_annotation_duplication.proto");
+    COMBINATIONS("potential_annotation_duplication.proto");
 
     private final FileName fileName;
 

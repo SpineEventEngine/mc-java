@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,13 @@ import "spine/options.proto";
 
 option (internal_all) = true;
 
-message FirstOutOfMany {
+// This message has the option which semantically repeats
+// the `(internal_all)` option set for the file.
+message DoubleAnnotated {
     option (internal_type) = true;
 }
 
-message SecondOutOfMany {
-    option (internal_type) = true;
+// This message reverts the `(internal_all)` option set for the file.
+message ReveringFileOption {
+    option (internal_type) = false;
 }
