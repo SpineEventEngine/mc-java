@@ -53,7 +53,7 @@ import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.SourceCheck
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.OUTER_INTERNAL
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_MULTIPLE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MULTIPLE
@@ -160,7 +160,7 @@ internal class ApiAnnotationsPluginIgTest {
 
             @Test
             fun `an outer class of generated messages`() =
-                checkOuterClassAnnotations(INTERNAL_ALL, Internal::class.java, true)
+                checkOuterClassAnnotations(OUTER_INTERNAL, Internal::class.java, true)
         }
 
         @Nested inner class

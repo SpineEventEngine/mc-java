@@ -33,7 +33,8 @@ option java_multiple_files = false; // This is the default, but we put it here f
 option (internal_all) = true;
 
 // Codegen for this file should produce one Java file with three message
-// types nested under the outer class called `InternalAll`.
+// types nested under the outer class called `OuterInternal` (after this proto file).
+//
 // The outer class should be annotated `@io.spine.annotation.Internal`.
 //
 // See also `internal_all_multiple.proto` for which has `java_multiple_files` set to `true`,
