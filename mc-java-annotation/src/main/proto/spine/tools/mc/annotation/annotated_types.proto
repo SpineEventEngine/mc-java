@@ -87,14 +87,17 @@ message MessageAnnotations {
     // The name of the message type.
     protodata.TypeName type = 1;
 
+    // The file where the message is defined.
+    protodata.File file = 2;
+
     // The options applied to the type.
-    repeated protodata.Option option = 2 [(required) = true];
+    repeated protodata.Option option = 3 [(required) = true];
 
     // The options applied to the fields of the type.
     //
     // Could be empty if the message has no fields with options applied.
     //
-    repeated FieldOptions field_options = 3;
+    repeated FieldOptions field_options = 4;
 }
 
 // The API level options applied to a field of a message.
@@ -116,8 +119,11 @@ message EnumAnnotations {
     // The name of the enum.
     protodata.TypeName type = 1;
 
+    // The file where the enum is defined.
+    protodata.File file = 2;
+
     // The options applied to the enum.
-    repeated protodata.Option option = 2;
+    repeated protodata.Option option = 3;
 }
 
 // The API level options applied to a service.
@@ -128,6 +134,9 @@ message ServiceAnnotations {
     // The name of the service.
     protodata.ServiceName service = 1;
 
+    // The file where the service is defined.
+    protodata.File file = 2;
+
     // The options applied to the service.
-    repeated protodata.Option option = 2;
+    repeated protodata.Option option = 3;
 }

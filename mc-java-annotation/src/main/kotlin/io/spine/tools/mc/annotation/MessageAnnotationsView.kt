@@ -30,6 +30,7 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
+import io.spine.protodata.event.TypeEntered
 import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
@@ -47,6 +48,11 @@ import io.spine.tools.mc.annotation.event.FileOptionMatched
  */
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
+
+    @Subscribe
+    fun on(@External e: TypeEntered) = alter {
+        file = e.file
+    }
 
     @Subscribe
     fun on(@External e: TypeOptionDiscovered) = alter {
@@ -91,6 +97,8 @@ internal class MessageAnnotationsView :
             super.setupEventRouting(routing)
             routing.route<FileOptionMatched> { e, _ ->
                 e.toMessageTypeName()
+            }.unicast<TypeEntered> { e, _ ->
+                e.type.name
             }.unicast<TypeOptionDiscovered> { e, _ ->
                 e.type
             }.unicast<FieldOptionDiscovered> { e, _ ->
