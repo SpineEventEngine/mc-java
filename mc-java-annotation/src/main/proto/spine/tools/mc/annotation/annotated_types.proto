@@ -88,7 +88,7 @@ message MessageAnnotations {
     protodata.TypeName type = 1;
 
     // The file where the message is defined.
-    protodata.File file = 2;
+    protodata.File file = 2 [(required) = true];
 
     // The options applied to the type.
     repeated protodata.Option option = 3 [(required) = true];
@@ -109,6 +109,9 @@ message FieldOptions {
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
+
+    // The file where the type is defined.
+    protodata.File file = 3;  // optional.
 }
 
 // The API level options applied to an enum.
@@ -120,7 +123,7 @@ message EnumAnnotations {
     protodata.TypeName type = 1;
 
     // The file where the enum is defined.
-    protodata.File file = 2;
+    protodata.File file = 2 [(required) = true];
 
     // The options applied to the enum.
     repeated protodata.Option option = 3;
@@ -135,7 +138,7 @@ message ServiceAnnotations {
     protodata.ServiceName service = 1;
 
     // The file where the service is defined.
-    protodata.File file = 2;
+    protodata.File file = 2 [(required) = true];
 
     // The options applied to the service.
     repeated protodata.Option option = 3;
