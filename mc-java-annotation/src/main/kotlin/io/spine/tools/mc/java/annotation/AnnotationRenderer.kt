@@ -82,7 +82,7 @@ internal sealed class AnnotationRenderer<T>(
     abstract fun annotateType(view: T, annotationClass: Class<out Annotation>)
 }
 
-internal open class ApiTypeAnnotation<T : Annotation>(
+internal class ApiTypeAnnotation<T : Annotation>(
     subject: ClassOrEnumName,
     annotationClass: Class<T>
 ) :
