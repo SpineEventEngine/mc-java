@@ -67,7 +67,6 @@ internal class MessageAnnotationsView :
         addOption(e.assumed)
     }
 
-
     @Subscribe
     fun on(@External e: FieldOptionDiscovered) = alter {
         val fieldOptions = fieldOptionsBuilderList.find { it.field == e.field }

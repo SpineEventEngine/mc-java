@@ -71,12 +71,11 @@ internal sealed class AnnotationRenderer<T>(
 
     @OverridingMethodsMustInvokeSuper
     protected open fun annotate(state: T) {
-        // Handle the case of having the option defined on a file level,
-        // and at a type level too.
-        val options = state.optionList.toSet()
-        options.mapNotNull { findMatching(it) }
-            .forEach { apiOption ->
-                annotateType(state, apiOption.annotationClass)
+        state.optionList
+            .mapNotNull { findMatching(it) }
+            .map { it.annotationClass }
+            .forEach {
+                annotateType(state, it)
             }
     }
 
