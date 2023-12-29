@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.annotation
 
-import io.spine.protodata.codegen.java.file.PrintBeforePrimaryDeclaration
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.protodata.renderer.Renderer
