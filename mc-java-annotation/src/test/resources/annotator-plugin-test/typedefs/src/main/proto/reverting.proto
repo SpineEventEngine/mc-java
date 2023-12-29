@@ -33,12 +33,6 @@ import "spine/options.proto";
 
 option (internal_all) = true;
 
-// This message has the option which semantically repeats
-// the `(internal_all)` option set for the file.
-message DoubleAnnotated {
-    option (internal_type) = true;
-}
-
 // This message reverts the `(internal_all)` option set for the file.
 message ReveringFileOption {
     option (internal_type) = false;

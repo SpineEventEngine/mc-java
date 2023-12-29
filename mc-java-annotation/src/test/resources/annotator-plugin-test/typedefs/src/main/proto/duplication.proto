@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,39 +23,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+syntax = "proto3";
 
-package io.spine.tools.mc.java.annotation.given;
+package given.annotation;
 
-import io.spine.code.proto.FileName;
+option java_multiple_files = true;
 
-/**
- * Test proto file names.
- *
- * <p>See {@code resources/annotator-plugin-test/src/main/proto/} directory for the files.
- */
-public enum GivenProtoFile {
+import "spine/options.proto";
 
-    NO_INTERNAL_OPTIONS("no_internal_options.proto"),
-    NO_INTERNAL_OPTIONS_MULTIPLE("no_internal_options_multiple.proto"),
-    INTERNAL_ALL("internal_all.proto"),
-    INTERNAL_ALL_SERVICE("internal_all_service.proto"),
-    INTERNAL_ALL_MULTIPLE("internal_all_multiple.proto"),
-    INTERNAL_MESSAGE("internal_message.proto"),
-    INTERNAL_MESSAGE_MULTIPLE("internal_message_multiple.proto"),
-    INTERNAL_FIELD("internal_field.proto"),
-    INTERNAL_FIELD_MULTIPLE("internal_field_multiple.proto"),
-    SPI_SERVICE("spi_service.proto"),
-    SPI_ALL("spi_all.proto"),
-    DUPLICATION("combinations.proto"),
-    REVERTING("reverting.proto");
+option (internal_all) = true;
 
-    private final FileName fileName;
-
-    GivenProtoFile(String value) {
-        this.fileName = FileName.of(value);
-    }
-
-    public FileName fileName() {
-        return fileName;
-    }
+// This message has the option which semantically repeats
+// the `(internal_all)` option set for the file.
+message DoubleAnnotated {
+    option (internal_type) = true;
 }

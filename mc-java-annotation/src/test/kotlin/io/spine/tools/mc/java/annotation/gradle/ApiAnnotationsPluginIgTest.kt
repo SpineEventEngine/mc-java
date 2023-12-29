@@ -60,6 +60,7 @@ import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MUL
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
+import io.spine.tools.mc.java.annotation.given.GivenProtoFile.REVERTING
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_ALL
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
 import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
@@ -250,6 +251,10 @@ internal class ApiAnnotationsPluginIgTest {
         @Test
         fun `gRPC services if service option is false`() =
             checkServiceAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+
+        @Test
+        fun `if message option overrides file option`() =
+            checkNestedTypesAnnotations(REVERTING, Internal::class.java, false)
     }
 
     @Test
