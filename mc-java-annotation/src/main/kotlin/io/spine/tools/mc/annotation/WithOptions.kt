@@ -38,8 +38,8 @@ import io.spine.tools.mc.annotation.event.FileOptionMatched
 public interface WithOptions {
 
     /**
-     * Obtains a list of options in a corresponding Protobuf code element like
-     * (e.g. file, message, enum, or service).
+     * Obtains a list of options in a corresponding Protobuf code element
+     * such as a file, a message, an enum, or a service.
      */
     public fun getOptionList(): List<Option>
 
