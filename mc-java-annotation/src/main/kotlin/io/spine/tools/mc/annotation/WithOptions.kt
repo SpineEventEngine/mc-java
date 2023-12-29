@@ -47,9 +47,9 @@ public interface WithOptions {
      * Checks if an API option is set on the file level and
      * is reverted on the type or `assumed` level.
      */
-    public fun revertsFileWide(option: FileOptionMatched): Boolean {
+    public fun revertsFileWide(event: FileOptionMatched): Boolean {
         val alreadySetOption = optionList.find {
-            it.name == option.assumed.name
+            it.name == event.assumed.name
         }
         alreadySetOption?.let {
             // File-wide options are only handled and matched iff they are set to `true`.
