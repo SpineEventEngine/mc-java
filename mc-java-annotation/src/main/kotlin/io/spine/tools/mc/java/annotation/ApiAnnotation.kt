@@ -7,7 +7,7 @@ import io.spine.protodata.renderer.SourceFile
 /**
  * Annotates a type with an annotation of the given class.
  */
-internal class ApiTypeAnnotation<T : Annotation>(
+internal class ApiAnnotation<T : Annotation>(
     subject: ClassOrEnumName,
     annotationClass: Class<T>
 ) :

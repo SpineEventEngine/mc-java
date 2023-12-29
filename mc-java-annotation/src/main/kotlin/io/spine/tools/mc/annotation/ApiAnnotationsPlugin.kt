@@ -32,8 +32,8 @@ import io.spine.protodata.plugin.ViewRepository
 import io.spine.protodata.renderer.Renderer
 import io.spine.server.BoundedContextBuilder
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.annotation.EnumAnnotationRenderer
-import io.spine.tools.mc.java.annotation.MessageAnnotationRenderer
+import io.spine.tools.mc.java.annotation.EnumAnnotator
+import io.spine.tools.mc.java.annotation.MessageAnnotator
 import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
 import kotlin.reflect.KClass
 
@@ -49,9 +49,8 @@ public class ApiAnnotationsPlugin : Plugin {
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        PrintBeforePrimaryDeclaration(),
-        MessageAnnotationRenderer(),
-        EnumAnnotationRenderer(),
+        MessageAnnotator(),
+        EnumAnnotator(),
         ServiceAnnotationRenderer()
     )
 

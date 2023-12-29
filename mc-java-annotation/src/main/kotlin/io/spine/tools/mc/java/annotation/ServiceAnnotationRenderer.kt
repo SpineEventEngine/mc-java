@@ -33,7 +33,7 @@ import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ServiceAnnotations
 
 internal class ServiceAnnotationRenderer :
-    AnnotationRenderer<ServiceAnnotations>(ServiceAnnotations::class.java) {
+    Annotator<ServiceAnnotations>(ServiceAnnotations::class.java) {
 
     private val convention by lazy {
         GrpcServiceConvention(typeSystem!!)
@@ -41,7 +41,7 @@ internal class ServiceAnnotationRenderer :
 
     override fun annotateType(view: ServiceAnnotations, annotationClass: Class<out Annotation>) {
         val serviceClass = convention.declarationFor(view.service).name
-        val annotation = ApiTypeAnnotation(serviceClass, annotationClass)
+        val annotation = ApiAnnotation(serviceClass, annotationClass)
         annotation.registerWith(context!!)
         annotation.renderSources(sources)
     }

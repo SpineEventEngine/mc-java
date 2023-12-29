@@ -26,16 +26,33 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.tools.mc.annotation.EnumAnnotations
+import io.spine.base.EntityState
+import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.codegen.java.MessageOrEnumConvention
+import io.spine.protodata.codegen.java.javaMultipleFiles
+import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiOption
+import io.spine.tools.mc.annotation.WithOptions
 
-internal class EnumAnnotationRenderer :
-    MessageOrEnumAnnotationRenderer<EnumAnnotations>(EnumAnnotations::class.java) {
+internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
+    Annotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
-    override fun annotateType(view: EnumAnnotations, annotationClass: Class<out Annotation>) {
-        val enumType = convention.declarationFor(view.type).name
-        ApiTypeAnnotation(enumType, annotationClass).let {
-            it.registerWith(context!!)
-            it.renderSources(sources)
-        }
+    protected val convention by lazy {
+        MessageOrEnumConvention(typeSystem!!)
     }
+
+    /**
+     * If the file header tells having an outer class, and the header
+     * has the option which matches the "mapped" annotation of the message type,
+     * do not annotate the message class and its builder.
+     * They will be implicitly annotated by the outer class.
+     */
+    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
+        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
+        val singleFile = !header.javaMultipleFiles()
+        return !(singleFile && alreadyInHeader)
+    }
+
+    override fun suitableFor(sources: SourceFileSet): Boolean =
+        sources.outputRoot.endsWith("java")
 }

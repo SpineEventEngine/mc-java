@@ -28,20 +28,13 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.Field
 import io.spine.protodata.FieldName
-import io.spine.protodata.File
-import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.TypeName
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.FieldConventions
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.javaMultipleFiles
-import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.NonRepeatingInsertionPoint
-import io.spine.protodata.renderer.Renderer
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.type.Declaration
 import io.spine.text.Text
 import io.spine.text.TextCoordinates
@@ -49,8 +42,8 @@ import io.spine.tools.code.Java
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.MessageAnnotations
 
-internal class MessageAnnotationRenderer :
-    MessageOrEnumAnnotationRenderer<MessageAnnotations>(MessageAnnotations::class.java) {
+internal class MessageAnnotator :
+    MessageOrEnumAnnotator<MessageAnnotations>(MessageAnnotations::class.java) {
 
     private val messageOrBuilderConvention by lazy {
         MessageOrBuilderConvention(typeSystem!!)
@@ -71,7 +64,7 @@ internal class MessageAnnotationRenderer :
     }
 
     private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
-        ApiTypeAnnotation(cls, this).let {
+        ApiAnnotation(cls, this).let {
             it.registerWith(context!!)
             it.renderSources(sources)
         }
