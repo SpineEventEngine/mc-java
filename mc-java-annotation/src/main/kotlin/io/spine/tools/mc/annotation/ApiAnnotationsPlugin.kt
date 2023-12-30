@@ -33,6 +33,8 @@ import io.spine.server.BoundedContextBuilder
 import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.annotation.EnumAnnotator
 import io.spine.tools.mc.java.annotation.MessageAnnotator
+import io.spine.tools.mc.java.annotation.OuterClassAnnotationDiscovery
+import io.spine.tools.mc.java.annotation.OuterClassAnnotator
 import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
 import kotlin.reflect.KClass
 
@@ -50,11 +52,13 @@ public class ApiAnnotationsPlugin : Plugin {
     override fun renderers(): List<Renderer<*>> = listOf(
         MessageAnnotator(),
         EnumAnnotator(),
-        ServiceAnnotationRenderer()
+        ServiceAnnotationRenderer(),
+        OuterClassAnnotator()
     )
 
     override fun extend(context: BoundedContextBuilder) {
         context.add(FileOptionsProcess::class)
+        context.add(OuterClassAnnotationDiscovery.Repository())
     }
 }
 

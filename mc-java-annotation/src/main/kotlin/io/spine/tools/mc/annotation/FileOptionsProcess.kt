@@ -36,7 +36,6 @@ import io.spine.core.External
 import io.spine.protodata.File
 import io.spine.protodata.Option
 import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.event.FileEntered
 import io.spine.protodata.event.FileExited
 import io.spine.protodata.event.FileOptionDiscovered
@@ -47,8 +46,8 @@ import io.spine.server.procman.ProcessManager
 import io.spine.server.query.select
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.event.fileOptionMatched
-import io.spine.server.model.Nothing as NoEvents
 import com.google.protobuf.Any as ProtoAny
+import io.spine.server.model.Nothing as NoEvents
 
 internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 

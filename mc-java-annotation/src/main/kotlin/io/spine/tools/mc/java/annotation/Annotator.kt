@@ -44,7 +44,7 @@ import io.spine.tools.mc.annotation.optionList
  *
  * @param T the type of the view state which contains information about annotated types.
  */
-internal sealed class Annotator<T>(
+internal abstract class Annotator<T>(
     private val viewClass: Class<T>
 ) : JavaRenderer() where T : EntityState<*>, T : WithOptions {
 
