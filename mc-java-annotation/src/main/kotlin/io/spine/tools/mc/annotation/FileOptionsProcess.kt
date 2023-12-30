@@ -44,6 +44,7 @@ import io.spine.server.entity.alter
 import io.spine.server.entity.state
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
+import io.spine.server.query.select
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.event.fileOptionMatched
 import io.spine.server.model.Nothing as NoEvents
@@ -86,7 +87,7 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
 
     private fun emitEvents(): Iterable<EventMessage> {
         val currentFile = state().file
-        val protoSrc = select(ProtobufSourceFile::class.java).findById(currentFile)
+        val protoSrc = select<ProtobufSourceFile>().findById(currentFile)
         check(protoSrc != null) {
             "Unable to load type data of the Protobuf source file with path `$currentFile`."
         }
@@ -100,7 +101,6 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
         }
         return events
     }
-
 }
 
 private fun ProtobufSourceFile.addEvents(
@@ -108,11 +108,7 @@ private fun ProtobufSourceFile.addEvents(
     fileOption: Option,
     apiOption: ApiOption
 ) {
-    if (header.javaMultipleFiles()) {
-        addMessageEvents(events, fileOption, apiOption.messageOption)
-    } else {
-        // TODO: Emit an event on annotating the outer class.
-    }
+    addMessageEvents(events, fileOption, apiOption.messageOption)
     apiOption.serviceOption?.let { serviceOption ->
         addServiceEvents(events, fileOption, serviceOption)
     }
