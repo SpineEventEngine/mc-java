@@ -61,7 +61,6 @@ import "spine/protodata/ast.proto";
 // API level options are used to produce corresponding annotations in the generated code.
 //
 
-
 // The API level options applied to a proto file.
 message FileOptions {
     option (entity).kind = PROCESS_MANAGER;
@@ -87,7 +86,7 @@ message MessageAnnotations {
     // The name of the message type.
     protodata.TypeName type = 1;
 
-    // The file where the message is defined.
+    // The proto file where the message is defined.
     protodata.File file = 2 [(required) = true];
 
     // The options applied to the type.
@@ -110,7 +109,7 @@ message FieldOptions {
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
 
-    // The file where the type is defined.
+    // The proto file where the type is defined.
     protodata.File file = 3;  // optional.
 }
 
@@ -122,7 +121,7 @@ message EnumAnnotations {
     // The name of the enum.
     protodata.TypeName type = 1;
 
-    // The file where the enum is defined.
+    // The proto file where the enum is defined.
     protodata.File file = 2 [(required) = true];
 
     // The options applied to the enum.
@@ -137,7 +136,7 @@ message ServiceAnnotations {
     // The name of the service.
     protodata.ServiceName service = 1;
 
-    // The file where the service is defined.
+    // The proto file where the service is defined.
     protodata.File file = 2 [(required) = true];
 
     // The options applied to the service.
