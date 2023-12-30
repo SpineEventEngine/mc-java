@@ -63,4 +63,3 @@ message FileOptionMatched {
     // The option assumed to be applied to the target.
     protodata.Option assumed = 6;
 }
-
