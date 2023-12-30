@@ -35,6 +35,7 @@ import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Kotlin
+import io.spine.internal.dependency.KotlinX
 import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
@@ -131,8 +132,11 @@ fun Module.forceConfigurations() {
                 @Suppress("DEPRECATION") // To force `Kotlin.stdLibJdk7` version.
                 force(
                     Kotlin.stdLibJdk7,
+                    KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Spine.reflect,
                     Spine.base,
                     Spine.time,
                     Spine.server,

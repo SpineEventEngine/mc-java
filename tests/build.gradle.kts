@@ -72,6 +72,7 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
+                    spine.reflect,
                     spine.base,
                     spine.time,
                     spine.toolBase,

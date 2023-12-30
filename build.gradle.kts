@@ -26,6 +26,7 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import Build_gradle.Module
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -52,14 +53,14 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
+                    spine.reflect,
                     spine.base,
                     spine.toolBase,
                     spine.server,
                     io.spine.internal.dependency.ProtoData.pluginLib,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.middleware,
                     validation.runtime,
-                    validation.javaBundle
+                    validation.javaBundle,
                 )
             }
         }

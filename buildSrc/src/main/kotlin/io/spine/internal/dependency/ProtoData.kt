@@ -29,7 +29,7 @@ package io.spine.internal.dependency
 /**
  * Dependencies on ProtoData modules.
  *
- * To use a locally published ProtoData version instead of the version from a public plugin
+ * In order to use locally published ProtoData version instead of the version from a public plugin
  * registry, set the `PROTODATA_VERSION` and/or the `PROTODATA_DF_VERSION` environment variables
  * and stop the Gradle daemons so that Gradle observes the env change:
  * ```
@@ -40,7 +40,7 @@ package io.spine.internal.dependency
  * ./gradle build   # Conduct the intended checks.
  * ```
  *
- * Then, to reset the console to run the usual versions again, remove the values of
+ * Then, in order to reset the console to run the usual versions again, remove the values of
  * the environment variables and stop the daemon:
  * ```
  * export PROTODATA_VERSION=""
@@ -65,7 +65,7 @@ object ProtoData {
      * The version of ProtoData dependencies.
      */
     val version: String
-    private const val fallbackVersion = "0.15.0"
+    private const val fallbackVersion = "0.15.4"
 
     /**
      * The distinct version of ProtoData used by other build tools.
@@ -74,7 +74,7 @@ object ProtoData {
      * transitional dependencies, this is the version used to build the project itself.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.14.3"
+    private const val fallbackDfVersion = "0.15.4"
 
     /**
      * The artifact for the ProtoData Gradle plugin.
