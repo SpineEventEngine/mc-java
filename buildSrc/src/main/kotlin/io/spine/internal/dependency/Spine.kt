@@ -45,14 +45,14 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/base">spine-base</a>
          */
-        const val base = "2.0.0-SNAPSHOT.192"
+        const val base = "2.0.0-SNAPSHOT.194"
 
         /**
          * The version of [Spine.reflect].
          *
          * @see <a href="https://github.com/SpineEventEngine/reflect">spine-reflect</a>
          */
-        const val reflect = "2.0.0-SNAPSHOT.182"
+        const val reflect = "2.0.0-SNAPSHOT.183"
 
         /**
          * The version of [Spine.logging].
@@ -75,7 +75,7 @@ object Spine {
          * @see [Spine.CoreJava.server]
          * @see <a href="https://github.com/SpineEventEngine/core-java">core-java</a>
          */
-        const val core = "2.0.0-SNAPSHOT.174"
+        const val core = "2.0.0-SNAPSHOT.175"
 
         /**
          * The version of [Spine.modelCompiler].
@@ -89,14 +89,14 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/mc-java">spine-mc-java</a>
          */
-        const val mcJava = "2.0.0-SNAPSHOT.174"
+        const val mcJava = "2.0.0-SNAPSHOT.175"
 
         /**
          * The version of [Spine.baseTypes].
          *
          * @see <a href="https://github.com/SpineEventEngine/base-types">spine-base-types</a>
          */
-        const val baseTypes = "2.0.0-SNAPSHOT.125"
+        const val baseTypes = "2.0.0-SNAPSHOT.126"
 
         /**
          * The version of [Spine.time].
@@ -117,14 +117,14 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/text">spine-text</a>
          */
-        const val text = "2.0.0-SNAPSHOT.5"
+        const val text = "2.0.0-SNAPSHOT.6"
 
         /**
          * The version of [Spine.toolBase].
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.187"
+        const val toolBase = "2.0.0-SNAPSHOT.191"
 
         /**
          * The version of [Spine.javadocTools].
@@ -173,7 +173,7 @@ object Spine {
         // Transitive dependencies.
         // Make `public` and use them to force a version in a particular repository, if needed.
         internal const val julBackend = "$group:spine-logging-jul-backend:$version"
-        const val middleware = "$group:spine-logging-middleware:$version"
+        internal const val middleware = "$group:spine-logging-middleware:$version"
         internal const val platformGenerator = "$group:spine-logging-platform-generator:$version"
         internal const val jvmDefaultPlatform = "$group:spine-logging-jvm-default-platform:$version"
 

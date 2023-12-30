@@ -72,12 +72,12 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
+                    spine.reflect,
                     spine.base,
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
                     io.spine.internal.dependency.Spine.Logging.lib,
-                    io.spine.internal.dependency.Spine.Logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -123,7 +123,6 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
-                    Spine.Logging.middleware,
                     Validation.runtime,
                 )
             }
