@@ -30,7 +30,6 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
-import io.spine.protodata.event.TypeEntered
 import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
