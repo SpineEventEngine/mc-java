@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.annotation
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.javaOuterClassName
+import io.spine.protodata.codegen.java.javaPackage
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 
@@ -36,8 +37,9 @@ internal class OuterClassAnnotator :
     Annotator<OuterClassAnnotations>(OuterClassAnnotations::class.java) {
 
     override fun annotateType(view: OuterClassAnnotations, annotationClass: Class<out Annotation>) {
-        val javaOuterClassName = view.header.javaOuterClassName()
-        val className = javaOuterClassName.toClassName()
+        val outerClassName = view.header.javaOuterClassName()
+        val packageName = view.header.javaPackage()
+        val className = ClassName(packageName, outerClassName)
         ApiAnnotation(className, annotationClass).let {
             it.registerWith(context!!)
             it.renderSources(sources)
@@ -52,12 +54,4 @@ internal class OuterClassAnnotator :
 
     override fun suitableFor(sources: SourceFileSet): Boolean =
         sources.outputRoot.endsWith("java")
-}
-
-private fun String.toClassName(): ClassName {
-    val packageSeparator = "."
-    val packageName = substringBeforeLast(packageSeparator)
-    val simpleName = substringAfterLast(packageSeparator)
-    return ClassName(packageName, simpleName)
-
 }
