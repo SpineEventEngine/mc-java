@@ -32,6 +32,7 @@ import io.spine.annotation.Experimental
 import io.spine.annotation.Internal
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
+import io.spine.protodata.Types
 import io.spine.protodata.option
 import io.spine.annotation.SPI as Spi
 
@@ -100,5 +101,6 @@ internal enum class ApiOption(
  */
 private fun option(name: String): Option = option {
     this.name = name
+    type = Types.boolean
     value = BoolValue.of(true).pack()
 }
