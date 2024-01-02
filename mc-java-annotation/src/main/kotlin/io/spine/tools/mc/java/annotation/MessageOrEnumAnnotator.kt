@@ -27,15 +27,22 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
+import io.spine.protodata.FieldName
 import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.TypeName
+import io.spine.protodata.codegen.java.ClassName
+import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.type.Declaration
+import io.spine.tools.code.Java
 import io.spine.tools.mc.annotation.ApiOption
+import io.spine.tools.mc.annotation.MessageAnnotations
 import io.spine.tools.mc.annotation.WithOptions
 
 internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
-    Annotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
+    TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
     protected val convention by lazy {
         MessageOrEnumConvention(typeSystem!!)

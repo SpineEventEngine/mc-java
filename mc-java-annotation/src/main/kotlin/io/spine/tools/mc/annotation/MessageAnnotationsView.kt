@@ -44,6 +44,8 @@ import io.spine.tools.mc.annotation.event.FileOptionMatched
  *
  * Subscribes to [FileOptionMatched] events for getting matches between file level options,
  * and type options that are assumed for all the types in the file.
+ *
+ * @see io.spine.tools.mc.annotation.MessageAnnotationsView
  */
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {

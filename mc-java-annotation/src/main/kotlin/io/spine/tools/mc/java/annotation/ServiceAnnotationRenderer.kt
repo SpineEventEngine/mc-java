@@ -32,8 +32,13 @@ import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ServiceAnnotations
 
+/**
+ * Annotates Java implementations of gRPC services.
+ *
+ * @see io.spine.tools.mc.annotation.ServiceAnnotationsView
+ */
 internal class ServiceAnnotationRenderer :
-    Annotator<ServiceAnnotations>(ServiceAnnotations::class.java) {
+    TypeAnnotator<ServiceAnnotations>(ServiceAnnotations::class.java) {
 
     private val convention by lazy {
         GrpcServiceConvention(typeSystem!!)

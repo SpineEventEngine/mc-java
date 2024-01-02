@@ -41,6 +41,8 @@ import io.spine.server.model.Nothing as NoEvents
 /**
  * A process manager which discovers the API annotation options set on the outer
  * class of a Protobuf file which has `java_multiple_files` set to `false`.
+ *
+ * @see OuterClassAnnotator
  */
 internal class OuterClassAnnotationDiscovery:
     ProcessManager<File, OuterClassAnnotations, OuterClassAnnotations.Builder>() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,50 +30,53 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.Renderer
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.WithOptions
 import io.spine.tools.mc.annotation.file
 import io.spine.tools.mc.annotation.optionList
 
 /**
- * An abstract base for annotation renderers.
- *
- * @param T the type of the view state which contains information about annotated types.
+ * Adds annotations to the types in the generated code.
  */
-internal abstract class Annotator<T>(
-    private val viewClass: Class<T>
-) : JavaRenderer() where T : EntityState<*>, T : WithOptions {
+internal abstract class TypeAnnotator<T>(
+    viewClass: Class<T>
+): Annotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
-    protected lateinit var sources: SourceFileSet
-
-    /**
-     * Tells if the given source file set is suitable for this renderer.
-     *
-     * @see <a href="https://github.com/SpineEventEngine/ProtoData/issues/150">ProtoData issue</a>
-     */
-    protected abstract fun suitableFor(sources: SourceFileSet): Boolean
-
-    final override fun render(sources: SourceFileSet) {
-        if (suitableFor(sources)) {
-            this.sources = sources
-            doRender()
-        }
-    }
-
-    private fun doRender() {
-        val annotated: Set<T> = select(viewClass).all()
-        annotated.forEach {
-            annotate(it)
-        }
+    @OverridingMethodsMustInvokeSuper
+    override fun annotate(view: T) {
+        view.optionList
+            .mapNotNull { ApiOption.findMatching(it) }
+            .filter {
+                val header = findHeaderFor(view)
+                needsAnnotation(it, header)
+            }
+            .map { it.annotationClass }
+            .forEach {
+                annotateType(view, it)
+            }
     }
 
     /**
-     * Performs annotations for the given view state.
+     * Tells if the type needs an annotation, assuming the options set directly, and
+     * indirectly via the file header.
      */
-    protected abstract fun annotate(view: T)
+    protected abstract fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean
+
+    /**
+     * Adds the annotation to the type.
+     */
+    abstract fun annotateType(view: T, annotationClass: Class<out Annotation>)
 }
 
+private fun <T> Renderer<*>.findHeaderFor(view: T): ProtoFileHeader
+        where T : EntityState<*>, T : WithOptions {
+    val protoFile = view.file
+    val fileHeader = select<ProtobufSourceFile>().findById(protoFile)?.header
+    check(fileHeader != null) {
+        "Unable to find `${ProtobufSourceFile::class.java.simpleName}`" +
+                " file: `${protoFile.path}`, " +
+                " view: `${view}`."
+    }
+    return fileHeader
+}

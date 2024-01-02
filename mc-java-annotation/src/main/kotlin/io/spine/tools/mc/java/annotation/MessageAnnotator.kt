@@ -26,22 +26,15 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.Field
-import io.spine.protodata.FieldName
-import io.spine.protodata.TypeName
-import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.ClassOrEnumName
-import io.spine.protodata.codegen.java.FieldConventions
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.renderer.NonRepeatingInsertionPoint
-import io.spine.protodata.type.Declaration
-import io.spine.text.Text
-import io.spine.text.TextCoordinates
-import io.spine.tools.code.Java
-import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.MessageAnnotations
 
+/**
+ * Annotates a message class and a `MessageOrBuilder` interface with the given annotation.
+ *
+ * @see io.spine.tools.mc.annotation.MessageAnnotationsView
+ */
 internal class MessageAnnotator :
     MessageOrEnumAnnotator<MessageAnnotations>(MessageAnnotations::class.java) {
 
@@ -49,18 +42,14 @@ internal class MessageAnnotator :
         MessageOrBuilderConvention(typeSystem!!)
     }
 
-    override fun annotate(view: MessageAnnotations) {
-        super.annotate(view)
-        annotateFields(view)
-    }
-
     override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
         val typeName = view.type
         val messageClass = convention.declarationFor(typeName).name
         val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName).name
-
-        annotationClass.annotate(messageClass)
-        annotationClass.annotate(messageOrBuilderClass)
+        annotationClass.run {
+            annotate(messageClass)
+            annotate(messageOrBuilderClass)
+        }
     }
 
     private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
@@ -69,63 +58,5 @@ internal class MessageAnnotator :
             it.renderSources(sources)
         }
     }
-
-    private fun annotateFields(state: MessageAnnotations) {
-        val typeName = state.type
-        val messageDeclaration = MessageOrEnumConvention(typeSystem!!)
-            .declarationFor(typeName)
-        val messageOrBuilderDeclaration = MessageOrBuilderConvention(typeSystem!!)
-            .declarationFor(typeName)
-
-        state.fieldOptionsList.forEach { fieldOption ->
-            fieldOption.optionList.forEach { option ->
-                val annotationClass = findMatching(option)!!.annotationClass
-                annotateFieldMethods(
-                    typeName,
-                    messageDeclaration,
-                    messageOrBuilderDeclaration,
-                    fieldOption.field,
-                    annotationClass
-                )
-            }
-        }
-    }
-
-    private fun annotateFieldMethods(
-        typeName: TypeName,
-        messageDeclaration: Declaration<Java, ClassOrEnumName>,
-        messageOrBuilderDeclaration: Declaration<Java, ClassName>,
-        fieldName: FieldName,
-        annotationClass: Class<out Annotation>
-    ) {
-        val messageFile = sources.file(messageDeclaration.path)
-        val messageType = typeSystem?.findMessage(typeName)!!.first
-        val field = messageType.fieldList.find { it.name == fieldName }!!
-
-        val annotationLine = "@${annotationClass.canonicalName}"
-        val fieldGetter = FieldGetter(field)
-        messageFile.at(fieldGetter).add(annotationLine)
-
-        val messageOrBuilderFile = sources.file(messageOrBuilderDeclaration.path)
-        messageOrBuilderFile.at(fieldGetter).add(annotationLine)
-        // TODO: Annotate builder methods for setters too.
-    }
 }
 
-private class FieldGetter(private val field: Field) :
-    NonRepeatingInsertionPoint,
-    FieldConventions(field.name, field.cardinalityCase) {
-
-    override val label: String
-        get() = ""
-
-    override fun locateOccurrence(text: Text): TextCoordinates {
-        val regex = Regex("public .+ $getterName")
-        text.lines().mapIndexed { index, line ->
-            if (regex.containsMatchIn(line)) {
-                return atLine(index)
-            }
-        }
-        error("No getter found for field `${field.name.value}`.")
-    }
-}

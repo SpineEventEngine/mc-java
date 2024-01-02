@@ -33,8 +33,13 @@ import io.spine.protodata.codegen.java.javaPackage
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 
+/**
+ * Annotates the outer class of a `.proto` file iff `java_multiple_files` option is set to `true`.
+ *
+ * @see OuterClassAnnotationDiscovery
+ */
 internal class OuterClassAnnotator :
-    Annotator<OuterClassAnnotations>(OuterClassAnnotations::class.java) {
+    TypeAnnotator<OuterClassAnnotations>(OuterClassAnnotations::class.java) {
 
     override fun annotateType(view: OuterClassAnnotations, annotationClass: Class<out Annotation>) {
         val outerClassName = view.header.javaOuterClassName()
