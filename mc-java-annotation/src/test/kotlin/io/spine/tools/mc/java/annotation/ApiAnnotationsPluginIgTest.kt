@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("TooManyFunctions")
+package io.spine.tools.mc.java.annotation
 
-package io.spine.tools.mc.java.annotation.gradle
-
-import com.google.protobuf.Descriptors.FileDescriptor
+import com.google.protobuf.Descriptors
 import io.kotest.matchers.shouldBe
 import io.spine.annotation.Internal
 import io.spine.annotation.SPI
-import io.spine.code.proto.FileDescriptors.DESC_EXTENSION
+import io.spine.code.proto.FileDescriptors
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
 import io.spine.io.Resource
@@ -40,38 +38,22 @@ import io.spine.string.ti
 import io.spine.testing.SlowTest
 import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName
-import io.spine.tools.fs.DirectoryName.descriptors
-import io.spine.tools.fs.DirectoryName.grpc
-import io.spine.tools.fs.DirectoryName.java
-import io.spine.tools.gradle.task.BaseTaskName.build
+import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.testing.GradleProject
-import io.spine.tools.gradle.testing.get
 import io.spine.tools.java.fs.SourceFile
 import io.spine.tools.mc.java.annotation.check.FieldAnnotationCheck
-import io.spine.tools.mc.java.annotation.check.TypeAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.SourceCheck
+import io.spine.tools.mc.java.annotation.check.TypeAnnotationCheck
 import io.spine.tools.mc.java.annotation.given.GivenProtoFile
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.OUTER_INTERNAL
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_ALL_MULTIPLE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_FIELD_MULTIPLE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.INTERNAL_MESSAGE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.REVERTING
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_ALL
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile.SPI_SERVICE
-import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
-import io.spine.tools.mc.java.annotation.gradle.ApiAnnotationsPluginIgTest.Companion.moduleDir
-import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
+import io.spine.tools.mc.java.gradle.McJavaTaskName
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.div
 import kotlin.io.path.name
-import org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import org.gradle.api.tasks.SourceSet
+import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource
@@ -148,34 +130,47 @@ internal class ApiAnnotationsPluginIgTest {
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             hintOnRemoteDebug(projectDir)
-            project.executeTask(launchProtoData)
+            project.executeTask(McJavaTaskName.launchProtoData)
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `annotate with '@Internal' when '(internal_all) = true'` {
 
-        @Nested inner class
+        @Nested
+        inner class
         `and 'java_multiple_files = false'` {
 
             @Test
             fun `an outer class of generated messages`() =
-                checkOuterClassAnnotations(OUTER_INTERNAL, Internal::class.java, true)
+                checkOuterClassAnnotations(
+                    GivenProtoFile.OUTER_INTERNAL,
+                    Internal::class.java,
+                    true
+                )
         }
 
-        @Nested inner class
+        @Nested
+        inner class
         `and 'java_multiple_files = true'` {
 
             @Test
             fun `top level message classes`() =
-                checkTypeAnnotations(INTERNAL_ALL_MULTIPLE, Internal::class.java, true)
+                checkTypeAnnotations(
+                    GivenProtoFile.INTERNAL_ALL_MULTIPLE,
+                    Internal::class.java,
+                    true
+                )
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `annotate with '@Internal'` {
 
-        @Nested inner class
+        @Nested
+        inner class
         `when 'java_multiple_files = false'` {
 
             /**
@@ -185,83 +180,118 @@ internal class ApiAnnotationsPluginIgTest {
              */
             @Test
             fun `a nested class of a message type marked '(internal_type) = true`() =
-                checkNestedTypesAnnotations(INTERNAL_MESSAGE, Internal::class.java, true)
+                checkNestedTypesAnnotations(
+                    GivenProtoFile.INTERNAL_MESSAGE,
+                    Internal::class.java,
+                    true
+                )
 
             @Test
             fun `accessors for fields with '(internal) = true'`() =
-                checkFieldAnnotations(INTERNAL_FIELD, Internal::class.java, true)
+                checkFieldAnnotations(GivenProtoFile.INTERNAL_FIELD, Internal::class.java, true)
         }
 
-        @Nested inner class
+        @Nested
+        inner class
         `when 'java_multiple_files = true'` {
 
             @Test
             fun `accessors for fields with '(internal) = true'`() =
-                checkFieldAnnotationsMultiple(INTERNAL_FIELD_MULTIPLE, Internal::class.java, true)
+                checkFieldAnnotationsMultiple(
+                    GivenProtoFile.INTERNAL_FIELD_MULTIPLE,
+                    Internal::class.java,
+                    true
+                )
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `annotate with '@SPI'` {
 
         @Test
         fun `gRPC services if service option is true`() =
-            checkServiceAnnotations(SPI_SERVICE, SPI::class.java, true)
+            checkServiceAnnotations(GivenProtoFile.SPI_SERVICE, SPI::class.java, true)
 
         @Test
         fun `gRPC services if 'SPI_all = true'`() =
-            checkServiceAnnotations(SPI_ALL, SPI::class.java, true)
+            checkServiceAnnotations(GivenProtoFile.SPI_ALL, SPI::class.java, true)
 
         @Test
         fun `message class when 'SPI_all = true'`() =
-            checkTypeAnnotations(SPI_ALL, Internal::class.java, true)
+            checkTypeAnnotations(GivenProtoFile.SPI_ALL, Internal::class.java, true)
     }
-    
-    @Nested internal inner class
+
+    @Nested
+    internal inner class
     `not annotate` {
 
         @Test
         fun `if file option if false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+            checkNestedTypesAnnotations(
+                GivenProtoFile.NO_INTERNAL_OPTIONS,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `service if file option is false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+            checkNestedTypesAnnotations(
+                GivenProtoFile.NO_INTERNAL_OPTIONS,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `multiple files if file option is false`() =
-            checkTypeAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
+            checkTypeAnnotations(
+                GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `if message option is false`() =
-            checkNestedTypesAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+            checkNestedTypesAnnotations(
+                GivenProtoFile.NO_INTERNAL_OPTIONS,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `multiple files if message option is false`() =
-            checkTypeAnnotations(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
+            checkTypeAnnotations(
+                GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `accessors if field option is false`() =
-            checkFieldAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+            checkFieldAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `accessors in multiple files if field option is false`() =
-            checkFieldAnnotationsMultiple(NO_INTERNAL_OPTIONS_MULTIPLE, Internal::class.java, false)
+            checkFieldAnnotationsMultiple(
+                GivenProtoFile.NO_INTERNAL_OPTIONS_MULTIPLE,
+                Internal::class.java,
+                false
+            )
 
         @Test
         fun `gRPC services if service option is false`() =
-            checkServiceAnnotations(NO_INTERNAL_OPTIONS, Internal::class.java, false)
+            checkServiceAnnotations(GivenProtoFile.NO_INTERNAL_OPTIONS, Internal::class.java, false)
 
         @Test
         fun `if message option overrides file option`() =
-            checkNestedTypesAnnotations(REVERTING, Internal::class.java, false)
+            checkNestedTypesAnnotations(GivenProtoFile.REVERTING, Internal::class.java, false)
     }
 
     @Test
     @SlowTest
     fun `produce Java source that compiles`() {
-        val result = project.executeTask(build)
-        result[build] shouldBe SUCCESS
+        val result = project.executeTask(BaseTaskName.build)
+        result[BaseTaskName.build] shouldBe TaskOutcome.SUCCESS
     }
 }
 
@@ -359,18 +389,18 @@ private fun parse(file: Path): AbstractJavaSource<JavaClassSource> {
 }
 
 private fun SourceCheck.verify(sourcePath: Path) {
-    val filePath = moduleDir.generatedMain / java / sourcePath
+    val filePath = moduleDir.generatedMain / DirectoryName.java / sourcePath
     val javaSource = parse(filePath)
     accept(javaSource)
 }
 
 private fun SourceCheck.verifyService(serviceFile: SourceFile) {
-    val filePath = moduleDir.generatedMain / grpc / serviceFile.path()
+    val filePath = moduleDir.generatedMain / DirectoryName.grpc / serviceFile.path()
     val javaSource = parse(filePath)
     accept(javaSource)
 }
 
-private fun descriptorOf(testFile: FileName): FileDescriptor {
+private fun descriptorOf(testFile: FileName): Descriptors.FileDescriptor {
     val mainDescriptor = mainDescriptorPath()
     val fileSet = FileSet.parse(mainDescriptor.toFile())
     val file = fileSet.tryFind(testFile)
@@ -383,8 +413,8 @@ private fun descriptorOf(testFile: FileName): FileDescriptor {
  * as defined in the test project under `resources/annotator-plugin-test`.
  */
 private fun mainDescriptorPath(): Path =
-    moduleDir / DirectoryName.build / descriptors / MAIN_SOURCE_SET_NAME /
-            "io.spine.test_${moduleDir.name}_3.14$DESC_EXTENSION"
+    moduleDir / DirectoryName.build / DirectoryName.descriptors / SourceSet.MAIN_SOURCE_SET_NAME /
+            "io.spine.test_${moduleDir.name}_3.14${FileDescriptors.DESC_EXTENSION}"
 
 private fun hintOnRemoteDebug(projectDir: File) {
     val buildScript = Resource.file(
