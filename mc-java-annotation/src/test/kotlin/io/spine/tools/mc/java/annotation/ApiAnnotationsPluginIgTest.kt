@@ -132,7 +132,6 @@ internal class ApiAnnotationsPluginIgTest {
                 "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
-            hintOnRemoteDebug(projectDir)
             project.executeTask(McJavaTaskName.launchProtoData)
         }
     }
@@ -418,27 +417,3 @@ private fun descriptorOf(testFile: FileName): Descriptors.FileDescriptor {
 private fun mainDescriptorPath(): Path =
     moduleDir / DirectoryName.build / DirectoryName.descriptors / SourceSet.MAIN_SOURCE_SET_NAME /
             "io.spine.test_${moduleDir.name}_3.14${FileDescriptors.DESC_EXTENSION}"
-
-private fun hintOnRemoteDebug(projectDir: File) {
-    val buildScript = Resource.file(
-        "$RESOURCE_DIR/build.gradle.kts",
-        ApiAnnotationsPluginIgTest::class.java.classLoader
-    ).read()
-
-    // Here we check a line in the build script that enables remote debugging.
-    // Notice the comment at the end, to avoid false positives, when
-    // another `enabled` flag is introduced.
-    val remoteDebug = buildScript.contains("enabled.set(true) // Set this option")
-    if (remoteDebug) {
-        val pattern = "port.set\\((\\d+)\\)".toRegex()
-        val port = pattern.find(buildScript)?.groupValues?.get(1)
-        System.err.run {
-            println("""
-                ProtoData CLI is launching in remote debug mode. 
-                The project directory is: $projectDir.
-                Waiting for the remote debugger to attach to the port $port...                
-                """.ti())
-            flush()
-        }
-    }
-}

@@ -63,6 +63,32 @@ dependencies {
  */
 tasks.test {
     dependsOn(rootProject.tasks.named("localPublish"))
+
+    // Notify the developer to run remote debugging in the build script of
+    // integration tests expects it.
+    doFirst {
+        val integrationTestBuild = file(
+            "src/test/resources/annotator-plugin-test/build.gradle.kts"
+        ).readText()
+
+        // Here we check a line in the build script that enables remote debugging.
+        // Notice the comment at the end, to avoid false positives, if/when
+        // another `enabled` flag is introduced.
+        // Make sure that the comment is not removed in the build script.
+        val remoteDebug = integrationTestBuild.contains("enabled.set(true) // Set this option")
+        if (remoteDebug) {
+            val pattern = "port.set\\((\\d+)\\)".toRegex()
+            val port = pattern.find(integrationTestBuild)?.groupValues?.get(1)
+            System.err.run {
+                println("""
+                ProtoData CLI is launching in remote debug mode. 
+                Waiting for the remote debugger to attach to the port $port...                
+                """.trimIndent())
+                flush()
+            }
+        }
+
+    }
 }
 
 tasks.withType<ProcessResources>().configureEach {
