@@ -50,7 +50,7 @@ buildscript {
     val versionGradle = "${baseRoot}/version.gradle.kts"
     apply(from = versionGradle)
 
-    standatardSpineSdkRepositories()
+    standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
 
@@ -79,7 +79,7 @@ buildscript {
                     spine.toolBase,
                     spine.pluginBase,
                     logging.lib,
-                    logging.middleware,
+//                    logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -125,7 +125,7 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
-                    Spine.Logging.middleware,
+//                    Spine.Logging.middleware,
                     Validation.runtime,
                 )
             }
@@ -134,6 +134,7 @@ allprojects {
             exclude("io.spine", "spine-validate")
         }
     }
+    disableDocumentationTasks()
 }
 
 subprojects {
