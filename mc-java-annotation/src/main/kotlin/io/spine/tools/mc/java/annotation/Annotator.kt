@@ -46,7 +46,7 @@ import io.spine.tools.mc.annotation.optionList
  */
 internal abstract class Annotator<T>(
     private val viewClass: Class<T>
-) : JavaRenderer() where T : EntityState<*>, T : WithOptions {
+) : JavaRenderer() where T : EntityState<*> {
 
     protected lateinit var sources: SourceFileSet
 

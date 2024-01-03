@@ -47,7 +47,8 @@ public class ApiAnnotationsPlugin : Plugin {
     override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
         MessageAnnotationsView.Repository(),
         EnumAnnotationsView.Repository(),
-        ServiceAnnotationsView.Repository()
+        ServiceAnnotationsView.Repository(),
+        MessageFieldAnnotationsView.Repository()
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(

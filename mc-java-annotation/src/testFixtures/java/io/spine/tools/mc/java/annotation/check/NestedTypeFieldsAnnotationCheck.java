@@ -52,13 +52,15 @@ public final class NestedTypeFieldsAnnotationCheck extends SourceCheck {
     @SuppressWarnings("unchecked") // Could not determine an exact type for nested declaration.
     public void accept(AbstractJavaSource<JavaClassSource> outerClass) {
         checkNotNull(outerClass);
+        var annotationClass = annotationClass();
+        var shouldBeAnnotated = shouldBeAnnotated();
         for (var fieldDescriptor : descriptor.getFields()) {
             var nestedType = (AbstractJavaSource<JavaClassSource>)
                     outerClass.getNestedType(descriptor.getName());
             var check = new FieldAnnotationCheck(
                     fieldDescriptor,
-                    annotationClass(),
-                    shouldBeAnnotated()
+                    annotationClass,
+                    shouldBeAnnotated
             );
             check.accept(nestedType);
         }

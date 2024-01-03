@@ -28,22 +28,27 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.Field
 import io.spine.protodata.FieldName
-import io.spine.protodata.TypeName
+import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
-import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.FieldConventions
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.renderer.NonRepeatingInsertionPoint
+import io.spine.protodata.codegen.java.file.psiFile
+import io.spine.protodata.qualifiedName
+import io.spine.protodata.renderer.InsertionPoint
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.type.Declaration
+import io.spine.string.Separator
+import io.spine.string.camelCase
 import io.spine.text.Text
 import io.spine.text.TextCoordinates
-import io.spine.tools.code.Java
 import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.MessageAnnotations
+import io.spine.tools.mc.annotation.FieldOptions
+import io.spine.tools.mc.annotation.MessageFieldAnnotations
+import io.spine.tools.psi.document
+import io.spine.tools.psi.java.locate
 
-internal class FieldAnnotator: Annotator<MessageAnnotations>(MessageAnnotations::class.java) {
+internal class FieldAnnotator :
+    Annotator<MessageFieldAnnotations>(MessageFieldAnnotations::class.java) {
 
     private val convention by lazy {
         MessageOrEnumConvention(typeSystem!!)
@@ -56,60 +61,87 @@ internal class FieldAnnotator: Annotator<MessageAnnotations>(MessageAnnotations:
     override fun suitableFor(sources: SourceFileSet): Boolean =
         sources.outputRoot.endsWith("java")
 
-    override fun annotate(view: MessageAnnotations) {
-        val typeName = view.type
-        val messageDeclaration = convention.declarationFor(typeName)
-        val messageOrBuilderDeclaration = messageOrBuilderConvention.declarationFor(typeName)
-
+    override fun annotate(view: MessageFieldAnnotations) {
         view.fieldOptionsList.forEach { fieldOption ->
-            fieldOption.optionList.forEach { option ->
-                val annotationClass = ApiOption.findMatching(option)!!.annotationClass
-                annotateFieldMethods(
-                    typeName,
-                    messageDeclaration,
-                    messageOrBuilderDeclaration,
-                    fieldOption.field,
-                    annotationClass
-                )
-            }
+            annotateField(view, fieldOption)
+        }
+    }
+
+    private fun annotateField(
+        view: MessageFieldAnnotations,
+        fieldOption: FieldOptions
+    ) {
+        val messageType = typeSystem!!.findMessage(view.type)!!.first
+        fieldOption.optionList.forEach { option ->
+            val annotationClass = ApiOption.findMatching(option)!!.annotationClass
+            annotateFieldMethods(
+                messageType,
+                fieldOption.field,
+                annotationClass
+            )
         }
     }
 
     private fun annotateFieldMethods(
-        typeName: TypeName,
-        messageDeclaration: Declaration<Java, ClassOrEnumName>,
-        messageOrBuilderDeclaration: Declaration<Java, ClassName>,
+        messageType: MessageType,
         fieldName: FieldName,
         annotationClass: Class<out Annotation>
     ) {
-        val messageFile = sources.file(messageDeclaration.path)
-        val messageType = typeSystem?.findMessage(typeName)!!.first
+        val messageDeclaration =
+            convention.declarationFor(messageType.name)
+        val messageOrBuilderDeclaration =
+            messageOrBuilderConvention.declarationFor(messageType.name)
+
         val field = messageType.fieldList.find { it.name == fieldName }!!
 
+        val messageFile = sources.file(messageDeclaration.path)
+        val messageClass = messageDeclaration.name as ClassName
+
         val annotationLine = "@${annotationClass.canonicalName}"
-        val fieldGetter = FieldGetter(field)
-        messageFile.at(fieldGetter).add(annotationLine)
+
+        val messageGetters = FieldGetters(messageClass, field)
+        messageFile.at(messageGetters)
+            .add(annotationLine)
 
         val messageOrBuilderFile = sources.file(messageOrBuilderDeclaration.path)
-        messageOrBuilderFile.at(fieldGetter).add(annotationLine)
+        val messageOrBuilderClass = messageOrBuilderDeclaration.name
+        val builderGetters = FieldGetters(messageOrBuilderClass, field)
+        messageOrBuilderFile.at(builderGetters)
+            .add(annotationLine)
+
         // TODO: Annotate builder methods for setters too.
     }
 }
 
-private class FieldGetter(private val field: Field) :
-    NonRepeatingInsertionPoint,
-    FieldConventions(field.name, field.cardinalityCase) {
+private class FieldGetters(
+    private val className: ClassName,
+    private val field: Field
+) : InsertionPoint, FieldConventions(field.name, field.cardinalityCase) {
 
     override val label: String
         get() = ""
 
-    override fun locateOccurrence(text: Text): TextCoordinates {
-        val regex = Regex("public .+ $getterName")
-        text.lines().mapIndexed { index, line ->
-            if (regex.containsMatchIn(line)) {
-                return atLine(index)
+    override fun locate(text: Text): Set<TextCoordinates> = buildSet {
+        val psiFile = text.psiFile()
+        val psiClass = psiFile.locate(className.simpleNames)
+        check(psiClass != null) {
+            "Unable to find class `${className.canonical}` in the code:" +
+                    Separator.nl().repeat(2) +
+                    text.value
+        }
+        val camelCase = field.name.value.camelCase()
+        psiClass.methods.forEach { method ->
+            if (method.name.contains(camelCase)) {
+                val offset = method.returnTypeElement!!.textRange.startOffset
+                val lineNumber = psiClass.document.getLineNumber(offset)
+                add(atLine(lineNumber))
             }
         }
-        error("No getter found for field `${field.name.value}`.")
+        if (this.isEmpty()) {
+            val qualifiedFieldName = field.declaringType.qualifiedName + "." + field.name.value
+            val errorMsg = "Unable to find getter(s) for the field `$qualifiedFieldName`" +
+                    " in the code below:" + Separator.nl().repeat(2) + text.value
+            error(errorMsg)
+        }
     }
 }

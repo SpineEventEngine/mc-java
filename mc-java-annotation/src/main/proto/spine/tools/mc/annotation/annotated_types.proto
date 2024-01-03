@@ -91,26 +91,32 @@ message MessageAnnotations {
 
     // The options applied to the type.
     repeated protodata.Option option = 3 [(required) = true];
+}
+
+// The API level options applied to fields of a message type.
+message MessageFieldAnnotations {
+    option (entity).kind = VIEW;
+
+    // The name of the message type.
+    protodata.TypeName type = 1;
+
+    // The proto file where the message is defined.
+    protodata.File file = 2 [(required) = true];
 
     // The options applied to the fields of the type.
     //
     // Could be empty if the message has no fields with options applied.
     //
-    repeated FieldOptions field_options = 4;
+    repeated FieldOptions field_options = 3 [(required) = true];
 }
 
 // The API level options applied to a field of a message.
 message FieldOptions {
-    option (is).java_type = "WithOptions";
-
     // The field with the options applied.
     protodata.FieldName field = 1 [(required) = true];
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
-
-    // The proto file where the type is defined.
-    protodata.File file = 3;  // optional.
 }
 
 // The API level options applied to an enum.

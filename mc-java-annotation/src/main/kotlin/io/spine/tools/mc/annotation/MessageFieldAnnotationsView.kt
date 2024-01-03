@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,59 +30,44 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.TypeName
 import io.spine.protodata.event.FieldOptionDiscovered
-import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
 import io.spine.server.route.EventRouting
-import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
- * Gathers the options defined for a message type.
+ * Gathers API level options defined for fields of a message.
  *
- * Subscribes to [TypeOptionDiscovered] for obtaining directly set options.
- *
- * Subscribes to [FileOptionMatched] events for getting matches between file level options,
- * and type options that are assumed for all the types in the file.
- *
- * @see io.spine.tools.mc.annotation.MessageAnnotationsView
+ * Subscribes to [FieldOptionDiscovered] for obtaining directly set options.
  */
-internal class MessageAnnotationsView :
-    View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
+internal class MessageFieldAnnotationsView:
+    View<TypeName, MessageFieldAnnotations, MessageFieldAnnotations.Builder>()  {
 
     @Subscribe
-    fun on(@External e: TypeOptionDiscovered) = alter {
+    fun on(@External e: FieldOptionDiscovered) = alter {
         file = e.file
-        // If the option was defined at the file level, overwrite it.
-        optionBuilderList.find { it.name == e.option.name }?.let {
-            it.value = e.option.value
+        val fieldOptions = fieldOptionsBuilderList.find { it.field == e.field }
+        fieldOptions?.let {
+            it.addOption(e.option)
             return@alter
         }
-        addOption(e.option)
-    }
-
-    @Subscribe
-    fun on(e: FileOptionMatched) = alter {
-        file = e.file
-        // If the option is already present at the message level, do not overwrite it.
-        optionList.find { it.name == e.assumed.name }?.let {
-            return@alter
-        }
-        addOption(e.assumed)
+        addFieldOptions(
+            fieldOptions {
+                field = e.field
+                option.add(e.option)
+            }
+        )
     }
 
     /**
      * The repository for [MessageAnnotationsView] which tunes the routing of events.
      */
-    class Repository: ViewRepository<TypeName, MessageAnnotationsView, MessageAnnotations>() {
+    class Repository :
+        ViewRepository<TypeName, MessageFieldAnnotationsView, MessageFieldAnnotations>() {
 
         override fun setupEventRouting(routing: EventRouting<TypeName>) {
             super.setupEventRouting(routing)
-            routing.route<FileOptionMatched> { e, _ ->
-                e.toMessageTypeName()
-            }.unicast<TypeOptionDiscovered> { e, _ ->
-                e.type
-            }.unicast<FieldOptionDiscovered> { e, _ ->
+            routing.unicast<FieldOptionDiscovered> { e, _ ->
                 e.type
             }
         }
