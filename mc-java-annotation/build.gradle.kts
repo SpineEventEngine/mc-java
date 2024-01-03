@@ -87,7 +87,6 @@ tasks.test {
                 flush()
             }
         }
-
     }
 }
 
