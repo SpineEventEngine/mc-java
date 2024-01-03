@@ -40,7 +40,10 @@ import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.testing.GradleProject
+import io.spine.tools.gradle.testing.get
 import io.spine.tools.java.fs.SourceFile
+import io.spine.tools.mc.java.annotation.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
+import io.spine.tools.mc.java.annotation.ApiAnnotationsPluginIgTest.Companion.moduleDir
 import io.spine.tools.mc.java.annotation.check.FieldAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
