@@ -74,12 +74,13 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
+                    "io.spine:protodata:${io.spine.internal.dependency.ProtoData.version}",
+                    spine.reflect,
                     spine.base,
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
                     logging.lib,
-//                    logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -119,13 +120,13 @@ allprojects {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Kotlin.stdLibJdk7,
+                    Spine.reflect,
                     Spine.base,
                     Spine.time,
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
-//                    Spine.Logging.middleware,
                     Validation.runtime,
                 )
             }
