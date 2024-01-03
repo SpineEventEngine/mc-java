@@ -92,7 +92,6 @@ subprojects {
             server.set(true)
             suspend.set(true)
         }
-        System.err.println("Debug session for `LaunchProtoData` configured.")
     }
 
     dependencies {
