@@ -38,7 +38,7 @@ option java_multiple_files = true;
 import "spine/protodata/ast.proto";
 
 // Emitted when a file-wide API option is matched to a message, an enum, or a service
-// declared in a protobuf file.
+// declared in a Protobuf file.
 message FileOptionMatched {
 
     // The file where the API option was declared.

@@ -73,11 +73,9 @@ message FileOptions {
     repeated protodata.Option option = 2 [(required) = true];
 }
 
-// A type which has been annotated with one or several API level options.
+// A message type which has been annotated with one or more API level options.
 //
 // It can be annotated directly inside the type, or indirectly, via a file-wide option.
-//
-// Multiple options may be applied to the same element of proto code.
 //
 message MessageAnnotations {
     option (entity).kind = VIEW;
