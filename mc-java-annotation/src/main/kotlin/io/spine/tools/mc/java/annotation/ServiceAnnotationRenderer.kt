@@ -55,7 +55,7 @@ internal class ServiceAnnotationRenderer :
         sources.outputRoot.endsWith("grpc")
 
     /**
-     * Always returns `true` because gRPC services are top level classes and
+     * Always returns `true` because gRPC services are top-level classes and
      * as such are always annotated.
      */
     override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
