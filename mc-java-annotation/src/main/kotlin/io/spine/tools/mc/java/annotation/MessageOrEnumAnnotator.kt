@@ -41,6 +41,13 @@ import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.MessageAnnotations
 import io.spine.tools.mc.annotation.WithOptions
 
+/**
+ * An abstract base for annotators of message types and enums.
+ *
+ * This class defines the [convention] for the message types and enums.
+ * It also implements filtering logic common for messages and enums in
+ * [needsAnnotation] and [suitableFor] methods.
+ */
 internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
     TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
