@@ -119,7 +119,6 @@ private fun Project.configurePlugins() {
     configureRejectionRendering(protodata)
 
     protodata.plugins(
-        RejectionPlugin::class.java.getName(),
         // It should follow `RejectionPlugin` so that rejection throwable types are annotated too.
         ApiAnnotationsPlugin::class.java.getName()
     )
@@ -136,7 +135,7 @@ private fun Project.configureValidationRendering(protodata: CodegenSettings) {
     val validationConfig = mcJava.codegen.validation()
     if (validationConfig.enabled.get()) {
         protodata.plugins(
-            "io.spine.validation.java.JavaValidationPlugin"
+            VALIDATION_PLUGIN_CLASS
         )
         val version = validationConfig.version.get()
         addDependency(Names.USER_CLASSPATH_CONFIGURATION, javaCodegenBundle(version))
@@ -148,7 +147,7 @@ private fun Project.configureRejectionRendering(protodata: CodegenSettings) {
     val rejectionCodegen = mcJava.codegen.rejections()
     if (rejectionCodegen.enabled.get()) {
         protodata.plugins(
-            "io.spine.tools.mc.java.rejection.RejectionPlugin"
+            RejectionPlugin::class.java.getName()
         )
         addUserClasspathDependencies(rejection)
     }
