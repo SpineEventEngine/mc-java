@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,13 @@ import io.spine.tools.mc.annotation.event.fileOptionMatched
 import com.google.protobuf.Any as ProtoAny
 import io.spine.server.model.Nothing as NoEvents
 
+/**
+ * Transforms options defined in a Protobuf file into events that match
+ * a file-level option with an option for a corresponding Protobuf type such as
+ * a message or a service defined in the file.
+ *
+ * @see io.spine.tools.mc.annotation.event.FileOptionMatched
+ */
 internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 
     /**
