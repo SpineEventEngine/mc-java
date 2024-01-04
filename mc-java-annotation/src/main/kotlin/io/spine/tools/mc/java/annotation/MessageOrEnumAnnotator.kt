@@ -27,18 +27,11 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
-import io.spine.protodata.FieldName
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.TypeName
-import io.spine.protodata.codegen.java.ClassName
-import io.spine.protodata.codegen.java.ClassOrEnumName
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.type.Declaration
-import io.spine.tools.code.Java
 import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.MessageAnnotations
 import io.spine.tools.mc.annotation.WithOptions
 
 /**
@@ -56,14 +49,21 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
     }
 
     /**
-     * If the file header tells having an outer class, and the header
-     * has the option which matches the "mapped" annotation of the message type,
-     * do not annotate the message class and its builder.
-     * They will be implicitly annotated by the outer class.
+     * Tells if the given message type or enum needs to be annotated assuming the file header.
+     *
+     * If the file header tells having an outer Java class, options applied
+     * at the file level and at message or enum level may semantically duplicate
+     * each other.
+     *
+     * For example, if file options are `java_multiple_files = false` and `(internal_all) = true`,
+     * there is no need to have `(internal_type) = true` on a message type.
+     *
+     * This method checks such semantic duplications and returns `false` if found.
+     * Otherwise, returns `true`.
      */
     override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
-        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
         val singleFile = !header.javaMultipleFiles()
+        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
         return !(singleFile && alreadyInHeader)
     }
 
