@@ -70,7 +70,6 @@ import org.junit.jupiter.api.Test
  */
 @SlowTest
 @DisplayName("Code generation of rejections should")
-@Disabled("Until Validation migrated to new ProtoData")
 internal class RejectionCodegenIgTest {
 
     companion object {
@@ -118,9 +117,8 @@ internal class RejectionCodegenIgTest {
 
     private fun targetTestDir(): Path = generatedRoot(test)
 
-    @Nested
-    @DisplayName("place generated code under the `spine` directory for")
-    internal inner class SourceSetDirs {
+    @Nested internal inner class
+    `place generated code under the directory of` {
 
         @Test
         fun `'main' source set`() {
@@ -147,12 +145,11 @@ internal class RejectionCodegenIgTest {
         }
     }
 
-    @Nested
-    @DisplayName("use the package specified in proto file options")
-    internal inner class PackageName {
+    @Nested internal inner class
+    `use the package specified in proto file options for` {
 
         @Test
-        fun `for 'main' source set`() {
+        fun `'main' source set`() {
             // As defined in `resources/.../main_rejections.proto`.
             val packageDir = targetMainDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
@@ -167,7 +164,7 @@ internal class RejectionCodegenIgTest {
         }
 
         @Test
-        fun `for 'test' source set`() {
+        fun `'test' source set`() {
             // As defined in `resources/.../test_rejections.proto`.
             val packageDir = targetTestDir().resolve(java).resolve(PACKAGE_DIR)
             assertExists(packageDir)
