@@ -28,6 +28,9 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.tools.mc.annotation.EnumAnnotations
 
+/**
+ * Annotates enum types with the given API level annotation.
+ */
 internal class EnumAnnotator :
     MessageOrEnumAnnotator<EnumAnnotations>(EnumAnnotations::class.java) {
 
