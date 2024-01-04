@@ -26,18 +26,9 @@
 
 package io.spine.tools.mc.java.annotation
 
-import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
-import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
-import io.spine.protodata.renderer.Renderer
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
-import io.spine.tools.mc.annotation.WithOptions
-import io.spine.tools.mc.annotation.file
-import io.spine.tools.mc.annotation.optionList
 
 /**
  * An abstract base for annotation renderers.
@@ -72,8 +63,7 @@ internal abstract class Annotator<T>(
     }
 
     /**
-     * Performs annotations for the given view state.
+     * Annotates the code according to the given view state.
      */
     protected abstract fun annotate(view: T)
 }
-
