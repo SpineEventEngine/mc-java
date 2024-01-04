@@ -30,6 +30,12 @@ import io.spine.tools.mc.annotation.EnumAnnotations
 
 /**
  * Annotates enum types with the given API level annotation.
+ *
+ * An `EnumAnnotator` takes the options gathered by
+ * [EnumAnnotationsView][io.spine.tools.mc.annotation.EnumAnnotationsView] and applies
+ * them to the corresponding Java enum type as annotations from the `io.spine.annotation` package.
+ *
+ * @see io.spine.tools.mc.annotation.EnumAnnotationsView
  */
 internal class EnumAnnotator :
     MessageOrEnumAnnotator<EnumAnnotations>(EnumAnnotations::class.java) {
