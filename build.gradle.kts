@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,18 +54,13 @@ buildscript {
             exclude(group = "io.spine", module = "spine-logging-backend")
 
             resolutionStrategy {
-                @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
                     io.spine.internal.dependency.Grpc.api,
-                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
                     spine.reflect,
                     spine.base,
                     spine.toolBase,
                     spine.server,
-                    protoData.api,
                     protoData.pluginLib,
-                    protoData.cliApi,
-                    protoData.gradleApi,
                     logging.lib,
                     validation.runtime,
                     validation.javaBundle

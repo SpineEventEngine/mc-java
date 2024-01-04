@@ -107,7 +107,6 @@ fun Module.addDependencies() {
 
         implementation(Guava.lib)
         implementation(Logging.lib)
-        implementation(Logging.middleware)
 
         testImplementation(Guava.testLib)
         JUnit.api.forEach { testImplementation(it) }
@@ -144,7 +143,6 @@ fun Module.forceConfigurations() {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Logging.lib,
-                    Logging.middleware,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
