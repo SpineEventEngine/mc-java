@@ -48,19 +48,6 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
         MessageOrEnumConvention(typeSystem!!)
     }
 
-    /**
-     * Tells if the given message type or enum needs to be annotated assuming the file header.
-     *
-     * If the file header tells having an outer Java class, options applied
-     * at the file level and at message or enum level may semantically duplicate
-     * each other.
-     *
-     * For example, if file options are `java_multiple_files = false` and `(internal_all) = true`,
-     * there is no need to have `(internal_type) = true` on a message type.
-     *
-     * This method checks such semantic duplications and returns `false` if found.
-     * Otherwise, returns `true`.
-     */
     override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
         val singleFile = !header.javaMultipleFiles()
         val alreadyInHeader = header.optionList.contains(apiOption.fileOption)

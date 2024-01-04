@@ -58,8 +58,17 @@ internal abstract class TypeAnnotator<T>(
     }
 
     /**
-     * Tells if the type needs an annotation, assuming the options set directly, and
-     * indirectly via the file header.
+     * Tells if the given message type, enum or a service needs to be annotated
+     * assuming the file header.
+     *
+     * If the file header tells having an outer Java class, options applied
+     * at the file level and at type level may semantically duplicate each other.
+     *
+     * For example, if file options are `java_multiple_files = false` and `(internal_all) = true`,
+     * there is no need to have `(internal_type) = true` on a message type.
+     *
+     * Implementations of this method should check such semantic duplications and
+     * return `false` if found, and `true` otherwise.
      */
     protected abstract fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean
 
