@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,9 @@ import io.spine.server.entity.state
 import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
+/**
+ * Gathers the API level options defined for an enum type.
+ */
 internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotations.Builder>() {
 
     @Subscribe
