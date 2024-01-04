@@ -40,7 +40,7 @@ import io.spine.tools.psi.document
 /**
  * An insertion point for the methods generated for a message field.
  *
- * The insertion point matches all the methods that have a `CamelCase` version
+ * The insertion point matches all the methods that contain a `CamelCase` version
  * of the field name in their name. As such it would match methods in a message class,
  * in a builder class, and in a `MessageOrBuilder` interface.
  */
@@ -72,7 +72,6 @@ internal class FieldAccessors(
             error(errorMsg)
         }
     }
-
 }
 
 /**
