@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,13 @@ import io.spine.protodata.Types
 import io.spine.protodata.option
 import io.spine.annotation.SPI as Spi
 
+/**
+ * An option that can be set on a `.proto` file, message, field, or service to
+ * designate the API stability level of the corresponding element.
+ *
+ * The options are defined in the `options.proto` file.
+ * This enum associates the options with the corresponding Java annotation classes.
+ */
 internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,

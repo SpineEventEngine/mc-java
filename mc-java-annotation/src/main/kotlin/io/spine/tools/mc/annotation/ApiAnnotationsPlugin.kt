@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,17 +30,36 @@ import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.protodata.renderer.Renderer
 import io.spine.server.BoundedContextBuilder
-import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.annotation.EnumAnnotator
 import io.spine.tools.mc.java.annotation.FieldAnnotator
 import io.spine.tools.mc.java.annotation.MessageAnnotator
 import io.spine.tools.mc.java.annotation.OuterClassAnnotationDiscovery
 import io.spine.tools.mc.java.annotation.OuterClassAnnotator
 import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
-import kotlin.reflect.KClass
 
 /**
- * A ProtoData plugin which provides code generation for API level annotations.
+ * A ProtoData plugin which annotates Java code with API level annotations that match
+ * the API level options defined in Protobuf files.
+ *
+ * Spine SDK defines two ways for defining API level stability for the Java code:
+ *
+ * 1. **API level annotations for Java classes** such as
+ * [Beta][io.spine.annotation.Beta] or [Internal][io.spine.annotation.Internal].
+ * These annotations are used for the handcrafted code.
+ * Please see `io.spine.annotation` package for details.
+ *
+ * 2. **API level options for Protobuf types.** These options are used
+ * defined in the `options.proto` file, which is likely to be imported by most of
+ * the Protobuf files of a Spine-based application.
+ * These options result in annotations in the generated code.
+ *
+ * The file `options.proto` defines options for files, message types, fields, and services which
+ * serve the same purpose as the API level annotations for Java classes.
+ *
+ * This plugin annotates the Java code produced by the Protobuf compiler, taking into account
+ * options discovered in corresponding definitions.
+ *
+ * @see ApiOption
  */
 public class ApiAnnotationsPlugin : Plugin {
 
@@ -60,15 +79,7 @@ public class ApiAnnotationsPlugin : Plugin {
     )
 
     override fun extend(context: BoundedContextBuilder) {
-        context.add(FileOptionsProcess::class)
+        context.add(FileOptionsProcess::class.java)
         context.add(OuterClassAnnotationDiscovery.Repository())
     }
-}
-
-/**
- * Adds specified entity class to this `BoundedContextBuilder`.
- */
-public inline fun <reified I, reified E : Entity<I, *>>
-        BoundedContextBuilder.add(entityClass: KClass<out E>) {
-    add(entityClass.java)
 }
