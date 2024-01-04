@@ -54,7 +54,6 @@ import org.junit.jupiter.api.Test
 
 @SlowTest
 @DisplayName("Rejection code generator should produce Javadoc for")
-@Disabled("Until Validation migrated to new ProtoData")
 internal class RejectionJavadocIgTest {
 
     companion object {
