@@ -34,7 +34,7 @@ import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 
 /**
- * Annotates the outer class of a `.proto` file iff `java_multiple_files` option is set to `true`.
+ * Annotates the outer class of a `.proto` file IFF `java_multiple_files` option is set to `true`.
  *
  * @see OuterClassAnnotationDiscovery
  */
