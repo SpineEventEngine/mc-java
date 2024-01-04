@@ -33,7 +33,7 @@ import "spine/options.proto";
 
 option (internal_all) = true;
 
-// This message reverts the `(internal_all)` option set for the file.
+// This message overrides the `(internal_all)` option set for the file.
 message ReveringFileOption {
     option (internal_type) = false;
 }
