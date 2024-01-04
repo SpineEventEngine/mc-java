@@ -66,7 +66,11 @@ internal class FieldAnnotator :
     ) {
         val messageType = typeSystem!!.findMessage(view.type)!!.first
         fieldOption.optionList.forEach { option ->
-            val annotationClass = ApiOption.findMatching(option)!!.annotationClass
+            val apiOption = ApiOption.findMatching(option)
+            check(apiOption != null) {
+                "Unable to find an API option for `${option.name}`."
+            }
+            val annotationClass = apiOption.annotationClass
             annotateAccessors(
                 messageType,
                 fieldOption.field,

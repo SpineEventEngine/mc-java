@@ -67,8 +67,12 @@ internal class MessageFieldAnnotationsView:
 
         override fun setupEventRouting(routing: EventRouting<TypeName>) {
             super.setupEventRouting(routing)
-            routing.unicast<FieldOptionDiscovered> { e, _ ->
-                e.type
+            routing.route<FieldOptionDiscovered> { e, _ ->
+                if (ApiOption.findMatching(e.option) != null) {
+                    setOf(e.type)
+                } else {
+                    emptySet()
+                }
             }
         }
     }
