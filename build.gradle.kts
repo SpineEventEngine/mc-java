@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import Build_gradle.Module
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -47,9 +46,13 @@ buildscript {
 
     val spine = io.spine.internal.dependency.Spine
     val validation = io.spine.internal.dependency.Validation
+    val protoData = io.spine.internal.dependency.ProtoData
+    val logging = io.spine.internal.dependency.Spine.Logging
     doForceVersions(configurations)
     configurations {
         all {
+            exclude(group = "io.spine", module = "spine-logging-backend")
+
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
@@ -57,10 +60,10 @@ buildscript {
                     spine.base,
                     spine.toolBase,
                     spine.server,
-                    io.spine.internal.dependency.ProtoData.pluginLib,
-                    io.spine.internal.dependency.Spine.Logging.lib,
+                    protoData.pluginLib,
+                    logging.lib,
                     validation.runtime,
-                    validation.javaBundle,
+                    validation.javaBundle
                 )
             }
         }

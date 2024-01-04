@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.annotation.check;
 import org.jboss.forge.roaster.model.impl.AbstractJavaSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+import java.lang.annotation.Annotation;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.protobuf.Descriptors.Descriptor;
 
@@ -39,19 +41,28 @@ public final class NestedTypeFieldsAnnotationCheck extends SourceCheck {
 
     private final Descriptor descriptor;
 
-    public NestedTypeFieldsAnnotationCheck(Descriptor descriptor, boolean shouldBeAnnotated) {
-        super(shouldBeAnnotated);
+    public NestedTypeFieldsAnnotationCheck(Descriptor descriptor,
+                                           Class<? extends Annotation> annotationClass,
+                                           boolean shouldBeAnnotated) {
+        super(annotationClass, shouldBeAnnotated);
         this.descriptor = checkNotNull(descriptor);
     }
 
     @Override
-    @SuppressWarnings("unchecked") // Could not determine exact type for nested declaration.
+    @SuppressWarnings("unchecked") // Could not determine an exact type for nested declaration.
     public void accept(AbstractJavaSource<JavaClassSource> outerClass) {
         checkNotNull(outerClass);
+        var annotationClass = annotationClass();
+        var shouldBeAnnotated = shouldBeAnnotated();
         for (var fieldDescriptor : descriptor.getFields()) {
             var nestedType = (AbstractJavaSource<JavaClassSource>)
                     outerClass.getNestedType(descriptor.getName());
-            new FieldAnnotationCheck(fieldDescriptor, shouldBeAnnotated()).accept(nestedType);
+            var check = new FieldAnnotationCheck(
+                    fieldDescriptor,
+                    annotationClass,
+                    shouldBeAnnotated
+            );
+            check.accept(nestedType);
         }
     }
 }

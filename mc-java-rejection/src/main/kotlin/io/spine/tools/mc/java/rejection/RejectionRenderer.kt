@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import io.spine.protodata.codegen.java.javaPackage
 import io.spine.protodata.find
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.type.TypeSystem
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.ti
 import java.nio.file.Path
@@ -141,18 +140,16 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
     }
 }
 
-private fun ProtobufSourceFile.isRejections(): Boolean {
-    return file.path.endsWith("rejections.proto")
-}
+private fun ProtobufSourceFile.isRejections(): Boolean =
+    file.path.endsWith("rejections.proto")
 
-private fun MessageType.isTopLevel(): Boolean {
-    return !hasDeclaredIn()
-}
+private fun MessageType.isTopLevel(): Boolean =
+    !hasDeclaredIn()
 
 internal typealias RejectionFile = ProtobufSourceFile
 
 /**
- * Ensures that this rejections file is configured according to the conventions.
+ * Ensures that this rejection file is configured according to the conventions.
  *
  * `java_multiple_files` option must be set to `false` or not specified, and
  * `java_outer_classname` must end with `Rejections` or absent.

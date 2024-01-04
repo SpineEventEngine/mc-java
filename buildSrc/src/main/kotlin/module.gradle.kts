@@ -24,19 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module_gradle.Module
 import com.google.common.io.Files
-import io.spine.internal.dependency.Asm
 import io.spine.internal.dependency.CheckerFramework
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
-import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.KotlinX
-import io.spine.internal.dependency.OpenTest4J
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -126,10 +122,13 @@ fun Module.forceConfigurations() {
         forceVersions()
         excludeProtobufLite()
         all {
+            // Exclude outdated module.
+            exclude(group = "io.spine", module = "spine-logging-backend")
+
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
-                @Suppress("DEPRECATION") // To force `Kotlin.stdLibJdk7` version.
+                @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
                     Kotlin.stdLibJdk7,
                     KotlinX.Coroutines.core,
@@ -160,8 +159,9 @@ fun Module.forceConfigurations() {
 
 fun Module.configureJava(javaVersion: JavaLanguageVersion) {
     tasks.withType<JavaCompile>().configureEach {
-        sourceCompatibility = javaVersion.toString()
-        targetCompatibility = javaVersion.toString()
+        val javaVer = javaVersion.toString()
+        sourceCompatibility = javaVer
+        targetCompatibility = javaVer
         configureJavac()
         configureErrorProne()
     }

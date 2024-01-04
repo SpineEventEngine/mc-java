@@ -50,7 +50,7 @@ buildscript {
     val versionGradle = "${baseRoot}/version.gradle.kts"
     apply(from = versionGradle)
 
-    io.spine.internal.gradle.doApplyStandard(repositories)
+    standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
 
@@ -62,22 +62,25 @@ buildscript {
         classpath(io.spine.internal.dependency.ErrorProne.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
+        classpath(io.spine.internal.dependency.ProtoData.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
     }
 
     with(configurations) {
         doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
+        val logging = io.spine.internal.dependency.Spine.Logging
         all {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
+                    "io.spine:protodata:${io.spine.internal.dependency.ProtoData.version}",
                     spine.reflect,
                     spine.base,
                     spine.time,
                     spine.toolBase,
                     spine.pluginBase,
-                    io.spine.internal.dependency.Spine.Logging.lib,
+                    logging.lib,
                     io.spine.internal.dependency.Validation.runtime,
                 )
             }
@@ -117,6 +120,7 @@ allprojects {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Kotlin.stdLibJdk7,
+                    Spine.reflect,
                     Spine.base,
                     Spine.time,
                     Spine.testlib,
@@ -131,6 +135,7 @@ allprojects {
             exclude("io.spine", "spine-validate")
         }
     }
+    disableDocumentationTasks()
 }
 
 subprojects {

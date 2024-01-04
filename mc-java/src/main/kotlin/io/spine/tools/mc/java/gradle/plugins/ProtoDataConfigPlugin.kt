@@ -31,6 +31,7 @@ import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.rejection
@@ -40,8 +41,10 @@ import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.CONFIG_SUBDIR
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.configTaskName
 import io.spine.tools.mc.java.gradle.toolBase
+import io.spine.tools.mc.java.rejection.RejectionPlugin
 import java.io.File.separatorChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -54,10 +57,13 @@ import org.gradle.kotlin.dsl.withType
 /**
  * The plugin that configures ProtoData for the associated project.
  *
- * We use ProtoData and the Validation library to generate validation code right inside
- * the Protobuf message classes. This plugin applies the `io.spine.protodata` plugin,
- * configures its extension, writes the ProtoData configuration file, and adds the required
- * dependencies to the target project.
+ * This plugin does the following:
+ *   1. Applies the `io.spine.protodata` plugin.
+ *   2. Configures the ProtoData extension of a Gradle project, passing codegen plugins, such
+ *      as [JavaValidationPlugin][io.spine.validation.java.JavaValidationPlugin].
+ *   3. Creates a [GenerateProtoDataConfig] task for passing configuration to ProtoData, and
+ *      links it to the [LaunchProtoData] task.
+ *   4. Adds required dependencies.
  */
 internal class ProtoDataConfigPlugin : Plugin<Project> {
 
@@ -85,6 +91,11 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         const val CONFIG_SUBDIR = "protodata-config"
 
         /**
+         * The name of the Validation plugin for ProtoData.
+         */
+        const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
+
+        /**
          * Obtains the task name for writing the ProtoData configuration file for the given
          * name of the `LaunchProtoData` task.
          */
@@ -106,6 +117,12 @@ private fun Project.configurePlugins() {
     val protodata = extensions.getByType<CodegenSettings>()
     configureValidationRendering(protodata)
     configureRejectionRendering(protodata)
+
+    protodata.plugins(
+        // It should follow `RejectionPlugin` so that rejection throwable types are annotated too.
+        ApiAnnotationsPlugin::class.java.getName()
+    )
+
     setSubdirectories(protodata)
     addUserClasspathDependencies(
         base,
@@ -118,7 +135,7 @@ private fun Project.configureValidationRendering(protodata: CodegenSettings) {
     val validationConfig = mcJava.codegen.validation()
     if (validationConfig.enabled.get()) {
         protodata.plugins(
-            "io.spine.validation.java.JavaValidationPlugin"
+            VALIDATION_PLUGIN_CLASS
         )
         val version = validationConfig.version.get()
         addDependency(Names.USER_CLASSPATH_CONFIGURATION, javaCodegenBundle(version))
@@ -130,7 +147,7 @@ private fun Project.configureRejectionRendering(protodata: CodegenSettings) {
     val rejectionCodegen = mcJava.codegen.rejections()
     if (rejectionCodegen.enabled.get()) {
         protodata.plugins(
-            "io.spine.tools.mc.java.rejection.RejectionPlugin"
+            RejectionPlugin::class.java.getName()
         )
         addUserClasspathDependencies(rejection)
     }

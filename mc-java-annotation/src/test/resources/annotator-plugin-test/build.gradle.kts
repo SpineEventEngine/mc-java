@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.gradle.standardToSpineSdk
+import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.resolutionStrategy
@@ -47,7 +48,7 @@ buildscript {
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
     }
 }
 
@@ -81,6 +82,15 @@ subprojects {
                     Spine.base,
                 )
             }
+        }
+    }
+
+    tasks.findByName("launchProtoData")?.apply { this as JavaExec
+        debugOptions {
+            enabled.set(false) // Set this option to `true` to enable remote debugging.
+            port.set(5566)
+            server.set(true)
+            suspend.set(true)
         }
     }
 

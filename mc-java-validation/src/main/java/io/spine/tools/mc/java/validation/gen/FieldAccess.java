@@ -40,7 +40,7 @@ final class FieldAccess extends CodeExpression<Object> {
     private static final long serialVersionUID = 0L;
 
     @SuppressWarnings("DuplicateStringLiteralInspection") // In the generated code.
-    public static final FieldAccess element = new FieldAccess("element");
+    static final FieldAccess element = new FieldAccess("element");
 
     private FieldAccess(String value) {
         super(value);
@@ -62,7 +62,7 @@ final class FieldAccess extends CodeExpression<Object> {
      *         the field
      * @return new {@code FieldAccess}
      */
-    public static FieldAccess fieldOfMessage(MessageAccess message, FieldDeclaration field) {
+    static FieldAccess fieldOfMessage(MessageAccess message, FieldDeclaration field) {
         checkNotNull(message);
         checkNotNull(field);
         var fieldName = field.name();

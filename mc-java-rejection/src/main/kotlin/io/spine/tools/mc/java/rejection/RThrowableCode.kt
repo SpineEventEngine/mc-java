@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
-import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec

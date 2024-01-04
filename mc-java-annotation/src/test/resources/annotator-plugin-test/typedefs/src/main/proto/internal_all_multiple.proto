@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,25 @@ import "spine/options.proto";
 option java_multiple_files = true;
 option (internal_all) = true;
 
+// This file should produce multiple Java files.
+// Each top-level class should be annotated with `@io.spine.annotation.Internal`.
+//
+// See also `internal_all.proto` which has `java_multiple_files` set to `false`.
+
 message Odin {
+    string value = 1;
 }
 
 message Dva {
+    string value = 1;
+}
+
+message Tri {
+    string value = 1;
+}
+
+service LoopCounting {
+    rpc Start(Odin) returns (Dva);
+    rpc Next(Dva) returns (Tri);
+    rpc Loop(Tri) returns (Odin);
 }

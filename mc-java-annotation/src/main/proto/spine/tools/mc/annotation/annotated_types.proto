@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,7 @@ import "spine/protodata/ast.proto";
 // The API level options applied to a proto file.
 message FileOptions {
     option (entity).kind = PROCESS_MANAGER;
+    option (is).java_type = "WithOptions";
 
     // The name of the file.
     protodata.File file = 1;
@@ -72,78 +73,76 @@ message FileOptions {
     repeated protodata.Option option = 2 [(required) = true];
 }
 
-// A message type which has been annotated with one or several API level options.
+// A message type which has been annotated with one or more API level options.
 //
 // It can be annotated directly inside the type, or indirectly, via a file-wide option.
 //
-// Multiple options may be applied to the same element of proto code.
-//
-message AnnotatedMessage {
+message MessageAnnotations {
+    option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
+
+    // The name of the message type.
+    protodata.TypeName type = 1;
+
+    // The proto file where the message is defined.
+    protodata.File file = 2 [(required) = true];
+
+    // The options applied to the type.
+    repeated protodata.Option option = 3 [(required) = true];
+}
+
+// The API level options applied to fields of a message type.
+message MessageFieldAnnotations {
     option (entity).kind = VIEW;
 
     // The name of the message type.
     protodata.TypeName type = 1;
 
-    // The options applied to the type.
-    repeated protodata.Option option = 2 [(required) = true];
+    // The proto file where the message is defined.
+    protodata.File file = 2 [(required) = true];
 
     // The options applied to the fields of the type.
     //
-    // Could be empty, if:
-    // 1. The type is not a message (e.g. an enum or a service).
-    // 2. The type is a message, but has no fields with options applied.
+    // Could be empty if the message has no fields with options applied.
     //
-    repeated FieldOption field_option = 3;
+    repeated FieldOptions field_options = 3 [(required) = true];
 }
 
 // The API level options applied to a field of a message.
-message FieldOption {
-
+message FieldOptions {
     // The field with the options applied.
-    protodata.Field field = 1 [(required) = true];
+    protodata.FieldName field = 1 [(required) = true];
 
     // One or more applied options.
     repeated protodata.Option option = 2 [(required) = true];
 }
 
 // The API level options applied to an enum.
-message AnnotatedEnum {
+message EnumAnnotations {
     option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
 
     // The name of the enum.
     protodata.TypeName type = 1;
 
+    // The proto file where the enum is defined.
+    protodata.File file = 2 [(required) = true];
+
     // The options applied to the enum.
-    repeated protodata.Option option = 2 [(required) = true];
-}
-
-// The API level options applied to an enum constant.
-message EnumConstantOption {
-
-    // The enum constant with the options applied.
-    protodata.EnumConstant constant = 1 [(required) = true];
-
-    // One or more applied options.
-    repeated protodata.Option option = 2 [(required) = true];
+    repeated protodata.Option option = 3;
 }
 
 // The API level options applied to a service.
-message AnnotatedService {
+message ServiceAnnotations {
     option (entity).kind = VIEW;
+    option (is).java_type = "WithOptions";
 
     // The name of the service.
     protodata.ServiceName service = 1;
 
+    // The proto file where the service is defined.
+    protodata.File file = 2 [(required) = true];
+
     // The options applied to the service.
-    repeated protodata.Option option = 2 [(required) = true];
-}
-
-// The API level options applied to a method of a service.
-message RpcOption {
-
-    // The RPC with the options applied.
-    protodata.Rpc rpc = 1 [(required) = true];
-
-    // One or more applied options.
-    repeated protodata.Option option = 2 [(required) = true];
+    repeated protodata.Option option = 3;
 }

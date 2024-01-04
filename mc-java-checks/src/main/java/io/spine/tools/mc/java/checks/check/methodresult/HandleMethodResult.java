@@ -126,10 +126,9 @@ public final class HandleMethodResult extends AbstractReturnValueIgnored {
                 // The order of these rules matters somewhat because, when checking a method, we'll
                 // evaluate them in the order they're listed here and stop as soon as one of them
                 // returns a result. The order shouldn't matter because most of these, except
-                // perhaps the external ignore list, are equivalent in importance, and
-                // we should be checking declarations to ensure they aren't producing differing
-                // results (i.e., ensuring an @AutoValue.Builder setter method is not
-                // annotated @CRV).
+                // perhaps the external ignore list, are equivalent in importance, and we should
+                // be checking declarations to ensure they aren't producing differing results
+                // (i.e., ensuring an @AutoValue.Builder setter method isn't annotated @CRV).
                 mapAnnotationSimpleName(CHECK_RETURN_VALUE, EXPECTED),
                 mapAnnotationSimpleName(CAN_IGNORE_RETURN_VALUE, OPTIONAL),
                 protoBuilders(),

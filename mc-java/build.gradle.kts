@@ -45,7 +45,6 @@ dependencies {
     }
 
     implementation(ProtoData.pluginLib)
-    implementation(Validation.config)
 
     // We access the Protobuf Gradle Plugin extension, so we need it as a dependency.
     implementation(Protobuf.GradlePlugin.lib)
