@@ -66,15 +66,18 @@ sourceSets {
 }
 
 dependencies {
+    val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
     listOf(
         Spine.base,
         Validation.runtime,
         Grpc.stub,
-        Grpc.protobuf
+        Grpc.protobuf,
+        mainTestFixtures
     ).forEach {
         testFixturesImplementation(it)
     }
 
+    testImplementation(mainTestFixtures)
     testImplementation(Grpc.stub)
     testImplementation(Grpc.protobuf)
 }

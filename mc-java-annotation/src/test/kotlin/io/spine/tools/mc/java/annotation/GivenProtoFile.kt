@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,18 +23,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.annotation
 
-package io.spine.tools.mc.java.annotation.given;
-
-import io.spine.code.proto.FileName;
+import io.spine.code.proto.FileName
 
 /**
  * Test proto file names.
  *
- * <p>See {@code resources/annotator-plugin-test/src/main/proto/} directory for the files.
+ * See `resources/annotator-plugin-test/src/main/proto/` directory for the files.
  */
-public enum GivenProtoFile {
-
+enum class GivenProtoFile(value: String) {
     NO_INTERNAL_OPTIONS("no_internal_options.proto"),
     NO_INTERNAL_OPTIONS_MULTIPLE("no_internal_options_multiple.proto"),
     OUTER_INTERNAL("outer_internal.proto"),
@@ -46,16 +44,8 @@ public enum GivenProtoFile {
     INTERNAL_FIELD_MULTIPLE("internal_field_multiple.proto"),
     SPI_SERVICE("spi_service.proto"),
     SPI_ALL("spi_all.proto"),
-    DUPLICATION("combinations.proto"),
+    DUPLICATION("duplication.proto"),
     REVERTING("reverting.proto");
 
-    private final FileName fileName;
-
-    GivenProtoFile(String value) {
-        this.fileName = FileName.of(value);
-    }
-
-    public FileName fileName() {
-        return fileName;
-    }
+    val fileName: FileName = FileName.of(value)
 }

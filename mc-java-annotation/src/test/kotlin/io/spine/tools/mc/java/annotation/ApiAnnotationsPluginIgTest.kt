@@ -46,7 +46,6 @@ import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypesAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.SourceCheck
 import io.spine.tools.mc.java.annotation.check.TypeAnnotationCheck
-import io.spine.tools.mc.java.annotation.given.GivenProtoFile
 import io.spine.tools.mc.java.gradle.McJavaTaskName
 import java.io.File
 import java.nio.file.Path
@@ -302,7 +301,7 @@ private fun checkServiceAnnotations(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     val services = fileDescriptor.services
     for (serviceDescriptor in services) {
         val serviceFile = SourceFile.forService(serviceDescriptor)
@@ -319,7 +318,7 @@ private fun checkFieldAnnotations(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val sourcePath = SourceFile.forMessage(messageDescriptor).path()
 
@@ -332,7 +331,7 @@ private fun checkFieldAnnotationsMultiple(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     val messageDescriptor = fileDescriptor.messageTypes[0]
     val experimentalField = messageDescriptor.fields[0]
     val sourcePath = SourceFile.forMessage(messageDescriptor).path()
@@ -346,7 +345,7 @@ private fun checkTypeAnnotations(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     for (messageDescriptor in fileDescriptor.messageTypes) {
         val messageProto = messageDescriptor.toProto()
         val fileProto = fileDescriptor.toProto()
@@ -364,7 +363,7 @@ private fun checkNestedTypesAnnotations(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
     NestedTypesAnnotationCheck(expectedAnnotation, shouldBeAnnotated).verify(sourcePath)
@@ -375,7 +374,7 @@ private fun checkOuterClassAnnotations(
     expectedAnnotation: Class<out Annotation>,
     shouldBeAnnotated: Boolean
 ) {
-    val fileDescriptor = descriptorOf(testFile.fileName())
+    val fileDescriptor = descriptorOf(testFile.fileName)
     val sourcePath = SourceFile.forOuterClassOf(fileDescriptor.toProto()).path()
 
     TypeAnnotationCheck(expectedAnnotation, shouldBeAnnotated).verify(sourcePath)
