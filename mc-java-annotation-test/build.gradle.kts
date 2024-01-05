@@ -67,6 +67,10 @@ sourceSets {
 
 dependencies {
     val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
+
+    // Expose custom annotation classes to the codegen.
+    protoData(mainTestFixtures)
+
     listOf(
         Spine.base,
         Validation.runtime,
