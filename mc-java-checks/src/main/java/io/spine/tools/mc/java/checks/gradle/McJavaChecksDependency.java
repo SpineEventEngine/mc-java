@@ -132,19 +132,24 @@ public final class McJavaChecksDependency implements WithLogging {
          * future logging needs.
          */
         private boolean wasResolved() {
-            var allDeps = resolutionResult.getAllDependencies();
-            var group = requireNonNull(dependency.getGroup());
-            var name = dependency.getName();
-            for (var dep : allDeps) {
-                if (dep instanceof UnresolvedDependencyResult) {
-                    var unresolved = (UnresolvedDependencyResult) dep;
-                    var attempted = unresolved.getAttempted();
-                    var displayName = attempted.getDisplayName();
-                    if (displayName.contains(group) && displayName.contains(name)) {
-                        this.unresolved = unresolved;
-                        return false;
+            try {
+                var allDeps = resolutionResult.getAllDependencies();
+                var group = requireNonNull(dependency.getGroup());
+                var name = dependency.getName();
+                for (var dep : allDeps) {
+                    if (dep instanceof UnresolvedDependencyResult) {
+                        var unresolved = (UnresolvedDependencyResult) dep;
+                        var attempted = unresolved.getAttempted();
+                        var displayName = attempted.getDisplayName();
+                        if (displayName.contains(group) && displayName.contains(name)) {
+                            this.unresolved = unresolved;
+                            return false;
+                        }
                     }
                 }
+            } catch (RuntimeException e) {
+                // Something went wrong during the resolution.
+                return false;
             }
             return true;
         }
