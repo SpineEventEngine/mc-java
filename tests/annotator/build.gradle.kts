@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ modelCompiler {
         generateAnnotations {
             internal = "io.spine.test.annotation.Private"
             experimental = "io.spine.test.annotation.Attempt"
-            beta = "io.spine.test.annotation.Alpha"
+            beta = "io.spine.test.annotation.CustomBeta"
             spi = "io.spine.test.annotation.ServiceProviderInterface"
         }
         internalClassPatterns.addAll(listOf(
