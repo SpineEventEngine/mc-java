@@ -1,6 +1,6 @@
 
 
-# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : aopalliance. **Name** : aopalliance. **Version** : 1.0.
@@ -1045,12 +1045,12 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:28 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:34 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-annotation:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : be.cyberelf.nanoxml. **Name** : nanoxml. **Version** : 2.2.3.
@@ -1960,12 +1960,12 @@ This report was generated on **Thu Jan 04 20:21:28 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:34 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-base:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : be.cyberelf.nanoxml. **Name** : nanoxml. **Version** : 2.2.3.
@@ -2875,12 +2875,12 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:34 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-checks:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : aopalliance. **Name** : aopalliance. **Version** : 1.0.
@@ -2976,7 +2976,6 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 1.  **Group** : io.github.java-diff-utils. **Name** : java-diff-utils. **Version** : 4.12.
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : io.spine.validation. **Name** : spine-validation-java-runtime. **Version** : 2.0.0-SNAPSHOT.124.**No license information found**
 1.  **Group** : javax.annotation. **Name** : javax.annotation-api. **Version** : 1.3.2.
      * **Project URL:** [http://jcp.org/en/jsr/detail?id=250](http://jcp.org/en/jsr/detail?id=250)
      * **License:** [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE)
@@ -3570,12 +3569,12 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-plugin-bundle:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-plugin-bundle:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : aopalliance. **Name** : aopalliance. **Version** : 1.0.
@@ -4583,12 +4582,12 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-protoc:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : be.cyberelf.nanoxml. **Name** : nanoxml. **Version** : 2.2.3.
@@ -5490,12 +5489,12 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-protodata-params:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : com.fasterxml.jackson. **Name** : jackson-bom. **Version** : 2.15.3.**No license information found**
@@ -6208,12 +6207,12 @@ This report was generated on **Thu Jan 04 20:21:29 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:30 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-rejection:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : be.cyberelf.nanoxml. **Name** : nanoxml. **Version** : 2.2.3.
@@ -7115,12 +7114,12 @@ This report was generated on **Thu Jan 04 20:21:30 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:30 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
 
-# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.177`
+# Dependencies of `io.spine.tools:spine-mc-java-validation:2.0.0-SNAPSHOT.178`
 
 ## Runtime
 1.  **Group** : be.cyberelf.nanoxml. **Name** : nanoxml. **Version** : 2.2.3.
@@ -8022,4 +8021,4 @@ This report was generated on **Thu Jan 04 20:21:30 WET 2024** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Thu Jan 04 20:21:30 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Fri Jan 05 16:21:35 WET 2024** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
