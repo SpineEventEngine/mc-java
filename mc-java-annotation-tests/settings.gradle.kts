@@ -25,5 +25,5 @@
  */
 
 pluginManagement {
-    includeBuild("../mc-java-plugin-bundle")
+    includeBuild("../../mc-java-plugin-bundle")
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,26 +24,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-annotation-tests",
-    "mc-java-annotation-tests:custom-annotations",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-protoc",
-    "mc-java-rejection",
-    "mc-java-validation",
-    "mc-java-protodata-params",
-    "mc-java-plugin-bundle"
-)
+plugins {
+    `java-test-fixtures`
+}
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+subprojects {
+    apply(plugin = "java-test-fixtures")
+
+    sourceSets {
+        // Add generated gRPC sources to the test fixtures.
+        // ProtoData should do it itself, but it doesn't.
+        // https://github.com/SpineEventEngine/ProtoData/issues/196
+        testFixtures {
+            java.srcDirs("generated/testFixtures/grpc")
+        }
+    }
+
+    dependencies {
+        val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
+
+        listOf(
+            Spine.base,
+            Validation.runtime,
+            Grpc.stub,
+            Grpc.protobuf,
+            mainTestFixtures
+        ).forEach {
+            testFixturesImplementation(it)
+        }
+
+        testImplementation(mainTestFixtures)
+        testImplementation(Grpc.stub)
+        testImplementation(Grpc.protobuf)
     }
 }

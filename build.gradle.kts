@@ -87,19 +87,28 @@ plugins {
 private object BuildSettings {
     const val TIMEOUT_MINUTES = 42L
 }
+
+/**
+ * The list with the short names of modules that should not be published.
+ */
 val doNotPublish = listOf(
     // Do not publish the validation codegen module as it is deprecated in favor of
     // ProtoData-based code generation of the Validation library.
     // The module is still kept for the sake of historical reference.
     "mc-java-validation",
 
-    // Do not publish this module as it is a test-only.
-    "mc-java-annotation-test"
+    // Do not publish these modules as it is a test-only.
+    "mc-java-annotation-tests",
+    "custom-annotations",
 )
 
 spinePublishing {
     modules = subprojects.map { it.name }
-        .filter { !doNotPublish.any { excluded -> it.contains(excluded) } }
+        .filter {
+            !doNotPublish.any { excluded ->
+                it.contains(excluded)
+            }
+        }
         .toSet()
     destinations = PublishingRepos.run {
         setOf(

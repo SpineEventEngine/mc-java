@@ -24,13 +24,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
-
 plugins {
     `java-test-fixtures`
     id("io.spine.mc-java")
+}
+
+dependencies {
+    val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
+
+    // Expose custom annotation classes to the codegen.
+    protoData(mainTestFixtures)
 }
 
 modelCompiler {
@@ -57,31 +60,4 @@ modelCompiler {
             "internalGetValueMap"
         ))
     }
-}
-
-sourceSets {
-    testFixtures {
-        java.srcDirs("generated/testFixtures/grpc")
-    }
-}
-
-dependencies {
-    val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
-
-    // Expose custom annotation classes to the codegen.
-    protoData(mainTestFixtures)
-
-    listOf(
-        Spine.base,
-        Validation.runtime,
-        Grpc.stub,
-        Grpc.protobuf,
-        mainTestFixtures
-    ).forEach {
-        testFixturesImplementation(it)
-    }
-
-    testImplementation(mainTestFixtures)
-    testImplementation(Grpc.stub)
-    testImplementation(Grpc.protobuf)
 }
