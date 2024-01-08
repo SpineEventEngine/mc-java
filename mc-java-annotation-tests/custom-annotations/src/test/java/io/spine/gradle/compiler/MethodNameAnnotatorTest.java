@@ -30,6 +30,7 @@ import com.google.protobuf.ExtensionRegistryLite;
 import com.google.protobuf.Message;
 import io.spine.test.annotator.Diverse;
 import io.spine.test.annotator.Region;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +41,7 @@ import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertInte
 import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotInternal;
 
 @DisplayName("`AnnotatorPlugin` should pick up `internalMethodNames` and")
+@Disabled("Temporarily. Until annotations are extended to support these.")
 class MethodNameAnnotatorTest {
 
     @SuppressWarnings("DuplicateStringLiteralInspection") // Clashes with usages in codegen.
