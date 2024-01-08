@@ -78,6 +78,9 @@ tasks.findByName("launchProtoData")?.apply { this as JavaExec
         port.set(5566)
         server.set(true)
         suspend.set(true)
+        if (enabled.get()) {
+            System.err.println("ProtoData configured to run in remote debug mode.")
+        }
     }
 
     doFirst {
@@ -92,4 +95,8 @@ tasks.findByName("launchProtoData")?.apply { this as JavaExec
             }
         }
     }
+}
+
+tasks.test {
+    dependsOn(project(":mc-java-plugin-bundle").tasks.build)
 }

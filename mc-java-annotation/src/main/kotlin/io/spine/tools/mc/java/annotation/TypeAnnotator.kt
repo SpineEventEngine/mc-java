@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.annotation
 
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
+import io.spine.protodata.Option
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.renderer.Renderer
@@ -46,14 +47,13 @@ internal abstract class TypeAnnotator<T>(
     @OverridingMethodsMustInvokeSuper
     override fun annotate(view: T) {
         view.optionList
-            .mapNotNull { ApiOption.findMatching(it) }
             .filter {
                 val header = findHeaderFor(view)
                 needsAnnotation(it, header)
             }
-            .map { it.annotationClass }
             .forEach {
-                annotateType(view, it)
+                val annotationClass = ApiOption.findMatching(it)!!.annotationClass
+                annotateType(view, annotationClass)
             }
     }
 
@@ -70,7 +70,7 @@ internal abstract class TypeAnnotator<T>(
      * Implementations of this method should check such semantic duplications and
      * return `false` if found, and `true` otherwise.
      */
-    protected abstract fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean
+    protected abstract fun needsAnnotation(option: Option, header: ProtoFileHeader): Boolean
 
     /**
      * Adds the annotation to the type.

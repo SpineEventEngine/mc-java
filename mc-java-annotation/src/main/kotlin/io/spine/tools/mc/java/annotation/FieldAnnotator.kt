@@ -35,6 +35,7 @@ import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.FieldOptions
 import io.spine.tools.mc.annotation.MessageFieldAnnotations
+import io.spine.tools.mc.annotation.isTrue
 
 /**
  * Annotates methods for accessing fields of a message class, the builder of the message, and
@@ -65,11 +66,13 @@ internal class FieldAnnotator :
         fieldOption: FieldOptions
     ) {
         val messageType = typeSystem!!.findMessage(view.type)!!.first
-        fieldOption.optionList.forEach { option ->
-            val apiOption = ApiOption.findMatching(option)
-            check(apiOption != null) {
-                "Unable to find an API option for `${option.name}`."
-            }
+        fieldOption.optionList
+            .filter { it.value.isTrue() }
+            .forEach { option ->
+                val apiOption = ApiOption.findMatching(option)
+                check(apiOption != null) {
+                    "Unable to find an API option for `${option.name}`."
+                }
             val annotationClass = apiOption.annotationClass
             annotateAccessors(
                 messageType,

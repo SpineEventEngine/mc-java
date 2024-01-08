@@ -26,10 +26,10 @@
 
 package io.spine.tools.mc.java.annotation
 
+import io.spine.protodata.Option
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.codegen.java.GrpcServiceConvention
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ServiceAnnotations
 
 /**
@@ -58,5 +58,5 @@ internal class ServiceAnnotationRenderer :
      * Always returns `true` because gRPC services are top-level classes and
      * as such are always annotated.
      */
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
+    override fun needsAnnotation(option: Option, header: ProtoFileHeader): Boolean = true
 }
