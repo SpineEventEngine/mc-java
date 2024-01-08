@@ -54,7 +54,7 @@ subprojects {
     dependencies {
         val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
 
-        listOf(
+        arrayOf(
             Spine.base,
             Validation.runtime,
             Grpc.stub,
@@ -64,9 +64,13 @@ subprojects {
             testFixturesImplementation(it)
         }
 
-        testImplementation(mainTestFixtures)
-        testImplementation(Grpc.stub)
-        testImplementation(Grpc.protobuf)
-        testImplementation(Spine.testlib)
+        arrayOf(
+            mainTestFixtures,
+            Grpc.stub,
+            Grpc.protobuf,
+            Spine.testlib
+        ).forEach {
+            testImplementation(it)
+        }
     }
 }
