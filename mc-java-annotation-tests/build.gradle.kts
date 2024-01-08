@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,54 +24,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
+import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
 plugins {
     `java-test-fixtures`
-    id("io.spine.mc-java")
 }
 
-dependencies {
-    val guavaGroup = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = guavaGroup)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = guavaGroup)
-    }
+subprojects {
+    apply(plugin = "java-test-fixtures")
 
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = guavaGroup)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = guavaGroup)
-    }
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
-}
-
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-/*
- * Disable the generation of rejections because:
- *  1. We don't have rejections in this code.
- *  2. We want to avoid errors that may be caused by the code which has not yet
- *     fully migrated to the latest ProtoData API.
- */
-modelCompiler {
-    java {
-        codegen {
-            rejections().enabled.set(false)
+    sourceSets {
+        // Add generated gRPC sources to the test fixtures.
+        // ProtoData should do it itself, but it doesn't.
+        // https://github.com/SpineEventEngine/ProtoData/issues/196
+        testFixtures {
+            java.srcDirs("generated/testFixtures/grpc")
         }
+    }
+
+    dependencies {
+        val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
+
+        listOf(
+            Spine.base,
+            Validation.runtime,
+            Grpc.stub,
+            Grpc.protobuf,
+            mainTestFixtures
+        ).forEach {
+            testFixturesImplementation(it)
+        }
+
+        testImplementation(mainTestFixtures)
+        testImplementation(Grpc.stub)
+        testImplementation(Grpc.protobuf)
+        testImplementation(Spine.testlib)
     }
 }

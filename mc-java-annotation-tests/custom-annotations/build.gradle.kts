@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,54 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
-
 plugins {
     `java-test-fixtures`
     id("io.spine.mc-java")
 }
 
 dependencies {
-    val guavaGroup = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = guavaGroup)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = guavaGroup)
-    }
+    val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
 
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-
-    testFixturesImplementation(Spine.toolBase)
-    testFixturesImplementation(Spine.testlib)
-    testFixturesImplementation(Roaster.api) {
-        exclude(group = guavaGroup)
-    }
-    testFixturesImplementation(Roaster.jdt) {
-        exclude(group = guavaGroup)
-    }
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
+    // Expose custom annotation classes to the codegen.
+    protoData(mainTestFixtures)
 }
 
-tasks.withType<ProcessResources>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-/*
- * Disable the generation of rejections because:
- *  1. We don't have rejections in this code.
- *  2. We want to avoid errors that may be caused by the code which has not yet
- *     fully migrated to the latest ProtoData API.
- */
 modelCompiler {
     java {
-        codegen {
-            rejections().enabled.set(false)
+        generateAnnotations {
+            internal = "io.spine.test.annotation.Private"
+            experimental = "io.spine.test.annotation.Attempt"
+            beta = "io.spine.test.annotation.CustomBeta"
+            spi = "io.spine.test.annotation.ServiceProviderInterface"
         }
+        internalClassPatterns.addAll(listOf(
+            ".*OrBuilder", // Classes ending with `OrBuilder`.
+            ".*Proto",     // Classes ending with `Proto`.
+            ".*complex\\.Matter\\$.*[AaLl].*"
+            // Classes which have `complex.Matter$` in their FQN followed by an upper or lower
+            // case letters ` A` or `L`.
+            // For the sake of testing. This is not a recommended usage.
+        ))
+        internalMethodNames.addAll(listOf(
+            "newBuilderForType",
+            "parseFrom",
+            "parseDelimitedFrom",
+            "getSerializedSize",
+            "internalGetValueMap"
+        ))
     }
 }

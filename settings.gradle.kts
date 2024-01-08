@@ -29,6 +29,9 @@ rootProject.name = "mc-java"
 include(
     "mc-java",
     "mc-java-annotation",
+    "mc-java-annotation-tests",
+    "mc-java-annotation-tests:annotations",
+    "mc-java-annotation-tests:custom-annotations",
     "mc-java-base",
     "mc-java-checks",
     "mc-java-protoc",

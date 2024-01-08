@@ -39,7 +39,6 @@ import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.base.RejectionMessage
 import io.spine.base.UuidValue
-import io.spine.core.version
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory

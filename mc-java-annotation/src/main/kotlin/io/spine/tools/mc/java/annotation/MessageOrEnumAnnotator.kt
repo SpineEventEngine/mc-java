@@ -27,12 +27,14 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
+import io.spine.protodata.Option
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.WithOptions
+import io.spine.tools.mc.annotation.isTrue
 
 /**
  * An abstract base for annotators of message types and enums.
@@ -48,10 +50,23 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
         MessageOrEnumConvention(typeSystem!!)
     }
 
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
+    override fun needsAnnotation(option: Option, header: ProtoFileHeader): Boolean {
+        val apiOption = ApiOption.findMatching(option) ?: return false
         val singleFile = !header.javaMultipleFiles()
         val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
-        return !(singleFile && alreadyInHeader)
+
+        val result = !(singleFile && alreadyInHeader) && (!singleFile && option.value.isTrue())
+        System.err.println(
+            """
+            option: $option
+            single file: $singleFile
+            already in header: $alreadyInHeader
+            option.isTrue: ${option.value.isTrue()}
+                
+            result:     
+            """.trimIndent()
+        )
+        return result
     }
 
     override fun suitableFor(sources: SourceFileSet): Boolean =

@@ -132,31 +132,41 @@ public final class McJavaChecksDependency implements WithLogging {
          * future logging needs.
          */
         private boolean wasResolved() {
-            var allDeps = resolutionResult.getAllDependencies();
-            var group = requireNonNull(dependency.getGroup());
-            var name = dependency.getName();
-            for (var dep : allDeps) {
-                if (dep instanceof UnresolvedDependencyResult) {
-                    var unresolved = (UnresolvedDependencyResult) dep;
-                    var attempted = unresolved.getAttempted();
-                    var displayName = attempted.getDisplayName();
-                    if (displayName.contains(group) && displayName.contains(name)) {
-                        this.unresolved = unresolved;
-                        return false;
+            try {
+                var allDeps = resolutionResult.getAllDependencies();
+                var group = requireNonNull(dependency.getGroup());
+                var name = dependency.getName();
+                for (var dep : allDeps) {
+                    if (dep instanceof UnresolvedDependencyResult) {
+                        var unresolved = (UnresolvedDependencyResult) dep;
+                        var attempted = unresolved.getAttempted();
+                        var displayName = attempted.getDisplayName();
+                        if (displayName.contains(group) && displayName.contains(name)) {
+                            this.unresolved = unresolved;
+                            return false;
+                        }
                     }
                 }
+            } catch (Throwable throwable) {
+                // Something went wrong during the resolution.
+                logger().atError().withCause(throwable).log(() -> format(
+                        "Unable to resolve the dependency on `%s`.", mcJavaChecks()
+                ));
+                return false;
             }
             return true;
         }
 
         private void logUnresolved() {
-            var problemReport = toErrorMessage(requireNonNull(unresolved));
-            logger().atWarning().log(() -> format(
-                    "Unable to add a dependency on `%s` to the configuration `%s` because some " +
-                            "dependencies could not be resolved: " +
-                            "%s.",
-                    mcJavaChecks(), configuration.getName(), problemReport
-            ));
+            if (unresolved != null) {
+                var problemReport = toErrorMessage(requireNonNull(unresolved));
+                logger().atWarning().log(() -> format(
+                        "Unable to add a dependency on `%s` to the configuration `%s` because some " +
+                                "dependencies could not be resolved: " +
+                                "%s.",
+                        mcJavaChecks(), configuration.getName(), problemReport
+                ));
+            }
         }
 
         private String toErrorMessage(UnresolvedDependencyResult entry) {

@@ -39,6 +39,7 @@ import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
+import io.spine.string.contains
 import java.time.Duration
 
 buildscript {
@@ -87,12 +88,28 @@ private object BuildSettings {
     const val TIMEOUT_MINUTES = 42L
 }
 
+/**
+ * The list with the short names of modules that should not be published.
+ */
+val doNotPublish = listOf(
+    // Do not publish the validation codegen module as it is deprecated in favor of
+    // ProtoData-based code generation of the Validation library.
+    // The module is still kept for the sake of historical reference.
+    "mc-java-validation",
+
+    // Do not publish these modules as it is a test-only.
+    "mc-java-annotation-tests",
+    "annotations",
+    "custom-annotations",
+)
+
 spinePublishing {
     modules = subprojects.map { it.name }
-        // Do not publish the validation codegen module as it is deprecated in favor of
-        // ProtoData-based code generation of the Validation library.
-        // The module is still kept for the sake of historical reference.
-        .filter { !it.contains("mc-java-validation") }
+        .filter {
+            !doNotPublish.any { excluded ->
+                it.contains(excluded)
+            }
+        }
         .toSet()
     destinations = PublishingRepos.run {
         setOf(

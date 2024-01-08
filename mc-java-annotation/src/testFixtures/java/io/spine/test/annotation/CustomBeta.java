@@ -24,35 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Grpc
+package io.spine.test.annotation;
 
-modelCompiler {
-    java {
-        generateAnnotations {
-            internal = "io.spine.test.annotation.Private"
-            experimental = "io.spine.test.annotation.Attempt"
-            beta = "io.spine.test.annotation.CustomBeta"
-            spi = "io.spine.test.annotation.ServiceProviderInterface"
-        }
-        internalClassPatterns.addAll(listOf(
-            ".*OrBuilder", // Classes ending with `OrBuilder`.
-            ".*Proto",     // Classes ending with `Proto`.
-            ".*complex\\.Matter\\$.*[AaLl].*"
-            // Classes which have `complex.Matter$` in their FQN followed by an upper or lower
-            // case letters ` A` or `L`.
-            // For the sake of testing. This is not a recommended usage.
-        ))
-        internalMethodNames.addAll(listOf(
-            "newBuilderForType",
-            "parseFrom",
-            "parseDelimitedFrom",
-            "getSerializedSize",
-            "internalGetValueMap"
-        ))
-    }
-}
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-dependencies {
-    testImplementation(Grpc.stub)
-    testImplementation(Grpc.protobuf)
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({TYPE, METHOD, FIELD})
+@Retention(RUNTIME)
+@Documented
+public @interface CustomBeta {
 }

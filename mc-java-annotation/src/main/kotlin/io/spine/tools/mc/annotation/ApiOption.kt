@@ -26,7 +26,10 @@
 
 package io.spine.tools.mc.annotation
 
+import com.google.protobuf.Any
 import com.google.protobuf.BoolValue
+import com.google.protobuf.kotlin.isA
+import com.google.protobuf.kotlin.unpack
 import io.spine.annotation.Beta
 import io.spine.annotation.Experimental
 import io.spine.annotation.Internal
@@ -111,3 +114,8 @@ private fun option(name: String): Option = option {
     type = Types.boolean
     value = BoolValue.of(true).pack()
 }
+
+/**
+ * Tells if the given option is set to `true`.
+ */
+internal fun Any.isTrue(): Boolean = isA<BoolValue>() && unpack<BoolValue>().value

@@ -26,12 +26,12 @@
 
 package io.spine.tools.mc.java.annotation
 
+import io.spine.protodata.Option
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.javaOuterClassName
 import io.spine.protodata.codegen.java.javaPackage
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
 
 /**
  * Annotates the outer class of a `.proto` file IFF `java_multiple_files` option is set to `true`.
@@ -55,7 +55,7 @@ internal class OuterClassAnnotator :
      * Always returns `true` assuming that if this renderer is invoked, the outer class
      * to be annotated was discovered by the [OuterClassAnnotationDiscovery] process.
      */
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
+    override fun needsAnnotation(option: Option, header: ProtoFileHeader): Boolean = true
 
     override fun suitableFor(sources: SourceFileSet): Boolean =
         sources.outputRoot.endsWith("java")
