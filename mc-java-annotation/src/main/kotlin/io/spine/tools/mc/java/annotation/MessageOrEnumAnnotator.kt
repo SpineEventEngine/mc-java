@@ -51,22 +51,11 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
     }
 
     override fun needsAnnotation(option: Option, header: ProtoFileHeader): Boolean {
-        val apiOption = ApiOption.findMatching(option) ?: return false
-        val singleFile = !header.javaMultipleFiles()
-        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
-
-        val result = !(singleFile && alreadyInHeader) && (!singleFile && option.value.isTrue())
-        System.err.println(
-            """
-            option: $option
-            single file: $singleFile
-            already in header: $alreadyInHeader
-            option.isTrue: ${option.value.isTrue()}
-                
-            result:     
-            """.trimIndent()
-        )
-        return result
+        if (ApiOption.findMatching(option) == null) {
+            return false
+        }
+        val typeOptionValue = option.value.isTrue()
+        return typeOptionValue
     }
 
     override fun suitableFor(sources: SourceFileSet): Boolean =
