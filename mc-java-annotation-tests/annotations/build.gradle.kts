@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("RemoveRedundantQualifierName")
+
 import io.spine.internal.dependency.Spine
 
 plugins {
@@ -72,7 +74,7 @@ dependencies {
  *     about attaching to a process. If attaching to a process fails, it could mean that
  *     ProtoData CLI has not been started yet. Repeat the attempt in a few seconds.
  */
-tasks.findByName("launchProtoData")?.apply { this as JavaExec
+tasks.findByName("launchTestFixturesProtoData")?.apply { this as JavaExec
     debugOptions {
         enabled.set(false) // Set this option to `true` to enable remote debugging.
         port.set(5566)
@@ -97,6 +99,6 @@ tasks.findByName("launchProtoData")?.apply { this as JavaExec
     }
 }
 
-tasks.test {
-    dependsOn(project(":mc-java-plugin-bundle").tasks.build)
-}
+//tasks.test {
+//    dependsOn(project(":mc-java-plugin-bundle").tasks.build)
+//}

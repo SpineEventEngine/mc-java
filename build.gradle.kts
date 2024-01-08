@@ -39,7 +39,6 @@ import io.spine.internal.gradle.report.coverage.JacocoConfig
 import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.string.contains
 import java.time.Duration
 
 buildscript {
@@ -68,9 +67,6 @@ buildscript {
                 )
             }
         }
-    }
-    dependencies {
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
     }
 }
 

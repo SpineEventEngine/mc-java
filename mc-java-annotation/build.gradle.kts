@@ -24,13 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("RemoveRedundantQualifierName")
+
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
 
+buildscript {
+    standardSpineSdkRepositories()
+    dependencies {
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+    }
+}
+
 plugins {
     `java-test-fixtures`
-    id("io.spine.mc-java")
 }
+
+apply(plugin = "io.spine.mc-java")
 
 dependencies {
     val guavaGroup = "com.google.guava"
@@ -68,10 +78,10 @@ tasks.withType<ProcessResources>().configureEach {
  *  2. We want to avoid errors that may be caused by the code which has not yet
  *     fully migrated to the latest ProtoData API.
  */
-modelCompiler {
-    java {
-        codegen {
-            rejections().enabled.set(false)
-        }
-    }
-}
+//modelCompiler {
+//    java {
+//        codegen {
+//            rejections().enabled.set(false)
+//        }
+//    }
+//}

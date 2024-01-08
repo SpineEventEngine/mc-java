@@ -28,12 +28,21 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
+buildscript {
+    standardSpineSdkRepositories()
+    val mcJavaVersion: String by extra
+    dependencies {
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
+    }
+}
+
 plugins {
     `java-test-fixtures`
 }
 
 subprojects {
     apply(plugin = "java-test-fixtures")
+    apply(plugin = "io.spine.mc-java")
 
     sourceSets {
         // Add generated gRPC sources to the test fixtures.

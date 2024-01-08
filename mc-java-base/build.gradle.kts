@@ -24,13 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("RemoveRedundantQualifierName")
+
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
-plugins {
-    id("io.spine.mc-java")
+buildscript {
+    standardSpineSdkRepositories()
+    dependencies {
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+    }
 }
+
+apply(plugin = "io.spine.mc-java")
 
 dependencies {
     compileOnlyApi(gradleApi())
@@ -60,10 +67,10 @@ project.afterEvaluate {
  *  2. We want to avoid errors that may be caused by the code which has not yet
  *     fully migrated to the latest ProtoData API.
  */
-modelCompiler {
-    java {
-        codegen {
-            rejections().enabled.set(false)
-        }
-    }
-}
+//modelCompiler {
+//    java {
+//        codegen {
+//            rejections().enabled.set(false)
+//        }
+//    }
+//}

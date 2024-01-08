@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include(
-    "annotations",
-    "custom-annotations"
-)
+pluginManagement {
+    includeBuild("../../mc-java-plugin-bundle")
+}
+
