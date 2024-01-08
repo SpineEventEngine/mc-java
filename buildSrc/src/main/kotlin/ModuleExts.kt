@@ -24,49 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("RemoveRedundantQualifierName")
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.ScriptHandlerScope
+import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.provideDelegate
 
-import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+/*
+ * This file defines extensions to simplify the build configuration of the modules that
+ * cannot be covered by applying the `module.gradle.kts` script plugin.
+ */
 
-buildscript {
-    addThisMcJavaToClasspathOf(project)
-}
-
-plugins {
-    `java-test-fixtures`
-}
-
-subprojects {
-    apply(plugin = "java-test-fixtures")
-    apply(plugin = "io.spine.mc-java")
-
-    sourceSets {
-        // Add generated gRPC sources to the test fixtures.
-        // ProtoData should do it itself, but it doesn't.
-        // https://github.com/SpineEventEngine/ProtoData/issues/196
-        testFixtures {
-            java.srcDirs("generated/testFixtures/grpc")
-        }
-    }
-
+fun ScriptHandlerScope.addThisMcJavaToClasspathOf(project: Project) {
+    standardSpineSdkRepositories()
+    val mcJavaVersion: String by project.extra
     dependencies {
-        val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
-
-        listOf(
-            Spine.base,
-            Validation.runtime,
-            Grpc.stub,
-            Grpc.protobuf,
-            mainTestFixtures
-        ).forEach {
-            testFixturesImplementation(it)
-        }
-
-        testImplementation(mainTestFixtures)
-        testImplementation(Grpc.stub)
-        testImplementation(Grpc.protobuf)
-        testImplementation(Spine.testlib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
     }
 }
