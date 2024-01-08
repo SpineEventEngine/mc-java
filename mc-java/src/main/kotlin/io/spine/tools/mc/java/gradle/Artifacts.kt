@@ -101,6 +101,8 @@ internal object McJava {
      *
      * This is the version of all the modules declared in this project.
      */
+    @JvmStatic
+    @get:JvmName("version")
     internal val version: String by lazy {
         val self: Dependency = MavenDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
         versions.versionOf(self)
