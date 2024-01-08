@@ -99,6 +99,7 @@ val doNotPublish = listOf(
 
     // Do not publish these modules as it is a test-only.
     "mc-java-annotation-tests",
+    "annotations",
     "custom-annotations",
 )
 

@@ -27,3 +27,8 @@
 pluginManagement {
     includeBuild("../../mc-java-plugin-bundle")
 }
+
+include(
+    "annotations",
+    "custom-annotations"
+)

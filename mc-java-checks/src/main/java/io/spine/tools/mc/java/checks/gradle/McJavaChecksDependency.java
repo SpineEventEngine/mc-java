@@ -147,21 +147,26 @@ public final class McJavaChecksDependency implements WithLogging {
                         }
                     }
                 }
-            } catch (RuntimeException e) {
+            } catch (Throwable throwable) {
                 // Something went wrong during the resolution.
+                logger().atError().withCause(throwable).log(() -> format(
+                        "Unable to resolve the dependency on `%s`.", mcJavaChecks()
+                ));
                 return false;
             }
             return true;
         }
 
         private void logUnresolved() {
-            var problemReport = toErrorMessage(requireNonNull(unresolved));
-            logger().atWarning().log(() -> format(
-                    "Unable to add a dependency on `%s` to the configuration `%s` because some " +
-                            "dependencies could not be resolved: " +
-                            "%s.",
-                    mcJavaChecks(), configuration.getName(), problemReport
-            ));
+            if (unresolved != null) {
+                var problemReport = toErrorMessage(requireNonNull(unresolved));
+                logger().atWarning().log(() -> format(
+                        "Unable to add a dependency on `%s` to the configuration `%s` because some " +
+                                "dependencies could not be resolved: " +
+                                "%s.",
+                        mcJavaChecks(), configuration.getName(), problemReport
+                ));
+            }
         }
 
         private String toErrorMessage(UnresolvedDependencyResult entry) {

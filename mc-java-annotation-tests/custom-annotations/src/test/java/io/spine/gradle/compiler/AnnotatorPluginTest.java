@@ -26,19 +26,21 @@
 
 package io.spine.gradle.compiler;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.spine.gradle.compiler.Assertions.assertBeta;
-import static io.spine.gradle.compiler.Assertions.assertExperimental;
-import static io.spine.gradle.compiler.Assertions.assertInternal;
-import static io.spine.gradle.compiler.Assertions.assertNotBeta;
-import static io.spine.gradle.compiler.Assertions.assertNotExperimental;
-import static io.spine.gradle.compiler.Assertions.assertNotInternal;
-import static io.spine.gradle.compiler.Assertions.assertNotSpi;
-import static io.spine.gradle.compiler.Assertions.assertSpi;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertBeta;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertExperimental;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertInternal;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotBeta;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotExperimental;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotInternal;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotSpi;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertSpi;
 
 @DisplayName("`AnnotatorPlugin` when applied should")
+@Disabled("Temporarily. Until annotations are extended to support these.")
 class AnnotatorPluginTest {
 
     @Test

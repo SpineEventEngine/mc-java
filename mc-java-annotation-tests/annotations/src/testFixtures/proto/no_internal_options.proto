@@ -27,10 +27,13 @@ syntax = "proto3";
 
 package given.annotation;
 
+import "spine/options.proto";
+
 option java_multiple_files = false;
 
 message FirstToCome {
-    string value = 1;
+    option (internal_type) = false;
+    string value = 1 [(internal) = false];
 }
 
 service ServiceToGo {

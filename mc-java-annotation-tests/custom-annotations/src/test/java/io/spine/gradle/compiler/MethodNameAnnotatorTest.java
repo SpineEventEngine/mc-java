@@ -36,8 +36,8 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-import static io.spine.gradle.compiler.Assertions.assertInternal;
-import static io.spine.gradle.compiler.Assertions.assertNotInternal;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertInternal;
+import static io.spine.tools.mc.java.annotation.assertions.Assertions.assertNotInternal;
 
 @DisplayName("`AnnotatorPlugin` should pick up `internalMethodNames` and")
 class MethodNameAnnotatorTest {

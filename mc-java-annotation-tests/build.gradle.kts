@@ -60,5 +60,6 @@ subprojects {
         testImplementation(mainTestFixtures)
         testImplementation(Grpc.stub)
         testImplementation(Grpc.protobuf)
+        testImplementation(Spine.testlib)
     }
 }
