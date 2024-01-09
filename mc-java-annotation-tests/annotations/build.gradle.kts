@@ -68,8 +68,8 @@ dependencies {
  *  3. Once the breakpoint is reached, hit F8 or F9 to run the `launchProtoData` task.
  *     It would take several seconds, depending on the performance of your workstation.
  *     The task will be suspended until the debugger is attached.
- *  4. Once the task is suspended, put a breakpoint in the place of interest of your
- *     [Plugin] or [Renderer] code, which is called by ProtoData.
+ *  4. Once the task is suspended, put a breakpoint in your [Plugin] or [Renderer] code,
+ *     which is called by ProtoData.
  *  5. Run the "LaunchProtoData Remote Debug" configuration. You should see a console message
  *     about attaching to a process. If attaching to a process fails, it could mean that
  *     ProtoData CLI has not been started yet. Repeat the attempt in a few seconds.
@@ -80,9 +80,6 @@ tasks.findByName("launchTestFixturesProtoData")?.apply { this as JavaExec
         port.set(5566)
         server.set(true)
         suspend.set(true)
-        if (enabled.get()) {
-            System.err.println("ProtoData configured to run in remote debug mode.")
-        }
     }
 
     doFirst {
@@ -98,7 +95,3 @@ tasks.findByName("launchTestFixturesProtoData")?.apply { this as JavaExec
         }
     }
 }
-
-//tasks.test {
-//    dependsOn(project(":mc-java-plugin-bundle").tasks.build)
-//}
