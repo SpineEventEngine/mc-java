@@ -33,7 +33,6 @@ import org.gradle.kotlin.dsl.provideDelegate
  * This file defines extensions to simplify the build configuration of the modules that
  * cannot be covered by applying the `module.gradle.kts` script plugin.
  */
-
 fun ScriptHandlerScope.addThisMcJavaToClasspathOf(project: Project) {
     standardSpineSdkRepositories()
     val mcJavaVersion: String by project.extra

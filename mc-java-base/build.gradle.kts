@@ -29,6 +29,8 @@
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
+import io.spine.tools.mc.gradle.modelCompiler
+import io.spine.tools.mc.java.gradle.McJavaOptions
 
 buildscript {
     standardSpineSdkRepositories()
@@ -61,16 +63,15 @@ project.afterEvaluate {
     }
 }
 
+disableRejections()
+
 /*
  * Disable the generation of rejections because:
  *  1. We don't have rejections in this code.
  *  2. We want to avoid errors that may be caused by the code which has not yet
  *     fully migrated to the latest ProtoData API.
  */
-//modelCompiler {
-//    java {
-//        codegen {
-//            rejections().enabled.set(false)
-//        }
-//    }
-//}
+fun Project.disableRejections() {
+    val mcJavaOptions = (modelCompiler as ExtensionAware).extensions.getByType<McJavaOptions>()
+    mcJavaOptions.codegen.rejections().enabled.set(false)
+}
