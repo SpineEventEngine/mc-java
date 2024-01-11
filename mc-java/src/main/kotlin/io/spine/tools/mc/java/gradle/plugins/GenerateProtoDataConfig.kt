@@ -25,15 +25,11 @@
  */
 package io.spine.tools.mc.java.gradle.plugins
 
-import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.mc.java.codegen.CodegenOptions
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.GenerateProtoDataConfig.Companion.CONFIG_SUBDIR
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
-import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
@@ -76,19 +72,8 @@ public abstract class GenerateProtoDataConfig : DefaultTask() {
         file.parentFile.mkdirs()
         file.writeBytes(config.toByteArray())
     }
-
-    internal companion object {
-
-        internal fun taskNameFor(launchTask: LaunchProtoData): String =
-            "writeConfigFor_${launchTask.name}"
-
-        const val CONFIG_SUBDIR = "protodata-config"
-    }
 }
 
 private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
-internal fun GenerateProtoDataConfig.defaultFileName(): String {
-    return CONFIG_SUBDIR + File.separatorChar + "$name.bin"
-}
