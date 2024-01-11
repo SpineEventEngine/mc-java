@@ -101,12 +101,12 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
          */
         fun configTaskName(launchTask: String): String = "writeConfigFor_${launchTask}"
     }
+}
 
-    private fun Project.configureProtoData() {
-        configurePlugins()
-        tasks.withType<LaunchProtoData>().all { task ->
-            task.createConfigTask()
-        }
+private fun Project.configureProtoData() {
+    configurePlugins()
+    tasks.withType<LaunchProtoData>().all { task ->
+        task.createAndLinkConfigTask()
     }
 }
 
@@ -161,7 +161,7 @@ private fun setSubdirectories(protodata: CodegenSettings) {
     )
 }
 
-private fun LaunchProtoData.createConfigTask() {
+private fun LaunchProtoData.createAndLinkConfigTask() {
     val taskName = configTaskName(name)
     val configTask = project.tasks.create(taskName, GenerateProtoDataConfig::class.java) { t ->
         linkConfigFile(t)
