@@ -42,15 +42,6 @@ subprojects {
     apply(plugin = "java-test-fixtures")
     apply(plugin = "io.spine.mc-java")
 
-    sourceSets {
-        // Add generated gRPC sources to the test fixtures.
-        // ProtoData should do it itself, but it doesn't.
-        // https://github.com/SpineEventEngine/ProtoData/issues/196
-        testFixtures {
-            java.srcDirs("generated/testFixtures/grpc")
-        }
-    }
-
     dependencies {
         val mainTestFixtures = testFixtures(project(":mc-java-annotation"))
 
