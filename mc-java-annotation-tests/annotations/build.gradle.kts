@@ -68,13 +68,16 @@ dependencies {
  *  3. Once the breakpoint is reached, hit F8 or F9 to run the `launchProtoData` task.
  *     It would take several seconds, depending on the performance of your workstation.
  *     The task will be suspended until the debugger is attached.
- *  4. Once the task is suspended, put a breakpoint in your [Plugin] or [Renderer] code,
- *     which is called by ProtoData.
+ *  4. Once the task is suspended, put a breakpoint in your
+ *     [Plugin][io.spine.protodata.plugin.Plugin] or
+ *     [Renderer][io.spine.protodata.renderer.Renderer] code, which is called by ProtoData.
  *  5. Run the "LaunchProtoData Remote Debug" configuration. You should see a console message
  *     about attaching to a process. If attaching to a process fails, it could mean that
  *     ProtoData CLI has not been started yet. Repeat the attempt in a few seconds.
  */
-tasks.findByName("launchTestFixturesProtoData")?.apply { this as JavaExec
+val launchTestFixturesProtoData = tasks.findByName("launchTestFixturesProtoData")
+
+launchTestFixturesProtoData?.apply { this as JavaExec
     debugOptions {
         enabled.set(false) // Set this option to `true` to enable remote debugging.
         port.set(5566)
