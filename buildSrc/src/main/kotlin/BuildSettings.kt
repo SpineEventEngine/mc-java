@@ -27,7 +27,7 @@
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 /**
- * This object provides high-level constants, like version of JVM, to be used
+ * This object provides high-level constants, like the version of JVM, to be used
  * throughout the project.
  */
 object BuildSettings {
