@@ -43,17 +43,13 @@ import io.spine.tools.mc.java.gradle.Validation.javaRuntime
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.CONFIG_SUBDIR
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.configTaskName
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.rejection.RejectionPlugin
-import java.io.File.separatorChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 
@@ -64,7 +60,7 @@ import org.gradle.kotlin.dsl.withType
  *   1. Applies the `io.spine.protodata` plugin.
  *   2. Configures the ProtoData extension of a Gradle project, passing codegen plugins, such
  *      as [JavaValidationPlugin][io.spine.validation.java.JavaValidationPlugin].
- *   3. Creates a [GenerateProtoDataConfig] task for passing configuration to ProtoData, and
+ *   3. Creates a [WriteProtoDataSettings] task for passing configuration to ProtoData, and
  *      links it to the [LaunchProtoData] task.
  *   4. Adds required dependencies.
  */
@@ -89,34 +85,36 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
     companion object {
 
         /**
-         * The name of the directory where the ProtoData configuration files are stored.
-         */
-        const val CONFIG_SUBDIR = "protodata-config"
-
-        /**
          * The name of the Validation plugin for ProtoData.
          */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
 
         /**
-         * Obtains the task name for writing the ProtoData configuration file for the given
-         * name of the `LaunchProtoData` task.
+         * The name of the task for writing ProtoData settings.
          */
-        fun configTaskName(launchTask: String): String = "writeConfigFor_${launchTask}"
+        const val WRITE_PROTODATA_SETTINGS = "writeProtoDataSettings"
     }
 }
 
 private fun Project.configureProtoData() {
-    configurePlugins()
+    configureProtoDataPlugins()
+    val settingsTask =
+        project.tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java)
+
+    val codegenSettings = project.extensions.findByType<CodegenSettings>() as Extension
+    settingsTask.settingsDir.convention(
+        codegenSettings.settingsDir as Directory
+    )
+
     tasks.withType<LaunchProtoData>().all { task ->
-        task.createAndLinkConfigTask()
+        task.linkSettingsTask(settingsTask)
     }
 }
 
 /**
  * Configures ProtoData with plugins, for the given Gradle project.
  */
-private fun Project.configurePlugins() {
+private fun Project.configureProtoDataPlugins() {
     val protodata = extensions.getByType<CodegenSettings>()
     configureValidationRendering(protodata)
     configureRejectionRendering(protodata)
@@ -164,27 +162,8 @@ private fun setSubdirectories(protodata: CodegenSettings) {
     )
 }
 
-private fun LaunchProtoData.createAndLinkConfigTask() {
-    val taskName = configTaskName(name)
-    val configTask = project.tasks.create(taskName, GenerateProtoDataConfig::class.java) { t ->
-        linkConfigFile(t)
-    }
-    dependsOn(configTask)
-}
-
-private fun LaunchProtoData.linkConfigFile(config: GenerateProtoDataConfig) {
-    val targetFile = config.file()
-    configurationFile.set(targetFile)
-}
-
-/**
- * Configures the `targetFile` property of this task with the conventional path and returns it.
- */
-private fun GenerateProtoDataConfig.file(): Provider<RegularFile> {
-    val fileName = "$name.bin"
-    val defaultFile = project.layout.buildDirectory.file(CONFIG_SUBDIR + separatorChar + fileName)
-    targetFile.convention(defaultFile)
-    return targetFile
+private fun LaunchProtoData.linkSettingsTask(settingsTask: WriteProtoDataSettings) {
+    dependsOn(settingsTask)
 }
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
