@@ -35,6 +35,7 @@ option java_package = "io.spine.tools.mc.annotation.event";
 option java_outer_classname = "EventsProto";
 option java_multiple_files = true;
 
+import "spine/protodata/file.proto";
 import "spine/protodata/ast.proto";
 
 // Emitted when a file-wide API option is matched to a message, an enum, or a service
