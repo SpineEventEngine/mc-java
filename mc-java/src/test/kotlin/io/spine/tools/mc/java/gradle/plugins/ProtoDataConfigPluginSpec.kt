@@ -88,7 +88,7 @@ internal class ProtoDataConfigPluginSpec {
 
     @Test
     fun `add a task for passing configuration file`() {
-        val task = project.tasks.withType<GenerateProtoDataConfig>()
+        val task = project.tasks.withType<WriteProtoDataSettings>()
         task shouldNotBe null
         task.shouldNotBeEmpty()
     }

@@ -25,36 +25,44 @@
  */
 package io.spine.tools.mc.java.gradle.plugins
 
+import io.spine.protodata.settings.Format
+import io.spine.protodata.settings.SettingsDirectory
 import io.spine.tools.mc.java.codegen.CodegenOptions
 import io.spine.tools.mc.java.gradle.mcJava
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
 import java.io.IOException
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.OutputFile
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 /**
- * A task that writes the ProtoData configuration into a file.
+ * A task that writes settings for ProtoData.
  *
- * The [targetFile] property defines the destination file.
+ * The [settingsDir] property defines the directory where settings files for
+ * ProtoData plugins are stored.
  *
  * This task configures ProtoData-based validation codegen. It tells which files and types
  * are considered entities and signals, so that the Validation library may add extra constraints
  * for those types.
  */
 @Suppress("unused") // Gradle creates a subtype for this class.
-public abstract class GenerateProtoDataConfig : DefaultTask() {
+public abstract class WriteProtoDataSettings : DefaultTask() {
 
-    @get:OutputFile
-    public abstract val targetFile: RegularFileProperty
+    @get:OutputDirectory
+    public abstract val settingsDir: DirectoryProperty
 
     @TaskAction
     @Throws(IOException::class)
     private fun writeFile() {
         val options = project.mcJava
         val codegen = options.codegen.toProto()
+
+        val dir = project.file(settingsDir)
+        dir.mkdirs()
+        val settings = SettingsDirectory(dir.toPath())
 
         val makers = codegen.let {
             messageMarkers {
@@ -68,9 +76,7 @@ public abstract class GenerateProtoDataConfig : DefaultTask() {
             messageMarkers = makers
         }
 
-        val file = project.file(targetFile)
-        file.parentFile.mkdirs()
-        file.writeBytes(config.toByteArray())
+        settings.write(VALIDATION_PLUGIN_CLASS, Format.PROTO_BINARY, config.toByteArray())
     }
 }
 
