@@ -30,9 +30,31 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 
-buildscript {
-    addThisMcJavaToClasspathOf(project)
-}
+//buildscript {
+//    apply(from = "../version.gradle.kts")
+//    standardSpineSdkRepositories()
+//
+//    configurations.all {
+//        resolutionStrategy {
+//            dependencySubstitution {
+//                // Use the current version of Java validation code generation instead of
+//                // the version used in `mc-java`.
+//                substitute(
+//                    module("io.spine.tools:spine-mc-java-plugins")
+//                ).using(project(":mc-java-plugin-bundle"))
+//            }
+//        }
+//    }
+//
+////    addThisMcJavaToClasspathOf(project)
+//    val mcJavaVersion: String by project.extra
+//    val mcJavaPluginLib = io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion)
+//
+//    standardSpineSdkRepositories()
+//    dependencies {
+//        classpath(mcJavaPluginLib)
+//    }
+//}
 
 plugins {
     `java-test-fixtures`
