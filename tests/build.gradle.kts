@@ -218,6 +218,8 @@ subprojects {
         configureLogging()
     }
 
+    disableDocumentationTasks()
+
     //TODO:2021-07-22:alexander.yevsyukov: Turn to WARN and investigate duplicates.
     // see https://github.com/SpineEventEngine/base/issues/657
     tasks.processTestResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
