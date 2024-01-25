@@ -169,25 +169,9 @@ private fun LaunchProtoData.createConfigTask() {
     val configTask = project.tasks.create(taskName, WriteProtoDataSettings::class.java) { t ->
         t.settingsDir.set(settingsDirTask.settingsDir.get())
         t.dependsOn(settingsDirTask)
-        // linkConfigFile(t)
     }
     dependsOn(configTask)
 }
-
-//private fun LaunchProtoData.linkConfigFile(config: WriteProtoDataSettings) {
-//    val targetFile = config.file()
-//    settingsDir.set(config.settingsDir.get())
-//}
-
-/**
- * Configures the `targetFile` property of this task with the conventional path and returns it.
- */
-//private fun WriteProtoDataSettings.file(): Provider<RegularFile> {
-//    val fileName = "$name.bin"
-//    val defaultFile = project.layout.buildDirectory.file(CONFIG_SUBDIR + separatorChar + fileName)
-//    targetFile.convention(defaultFile)
-//    return targetFile
-//}
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
     addDependency(Names.USER_CLASSPATH_CONFIGURATION, it)
