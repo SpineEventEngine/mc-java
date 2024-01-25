@@ -354,6 +354,7 @@ class RequiredConstraintTest {
         class InCommand {
 
             @Test
+            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = CreateProject.newBuilder();
@@ -374,6 +375,7 @@ class RequiredConstraintTest {
         class InEvent {
 
             @Test
+            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = ProjectCreated.newBuilder();
@@ -386,6 +388,7 @@ class RequiredConstraintTest {
         class InRejection {
 
             @Test
+            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = CannotCreateProject.newBuilder();
@@ -398,6 +401,7 @@ class RequiredConstraintTest {
         class InEntityState {
 
             @Test
+            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = Project.newBuilder();

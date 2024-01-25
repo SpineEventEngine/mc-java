@@ -92,8 +92,7 @@ internal class RejectionCodegenIgTest {
                     Running tests with `enableRunnerDebug()` turned on
                     ---------------------------------------------------
                     Uncomment the following line to be able to debug the Gradle build process.
-                    Do not forget to turn it OFF before committing your code so that
-                    tests run faster.
+                    Remember to turn it OFF before committing your code so that tests run faster.
 
                     IMPORTANT: Running with `enableRunnerDebug()` turned on fails
                     under Windows in CI environment because internally Gradle tries to

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin;
 import io.spine.tools.mc.java.gradle.McJavaOptions;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import io.spine.tools.mc.java.gradle.McJava;
 
 import java.util.stream.Stream;
 
@@ -54,11 +55,22 @@ public class McJavaPlugin extends LanguagePlugin {
 
     @Override
     public void apply(Project project) {
+        logApplyingTo(project);
         super.apply(project);
         setProtocArtifact(project);
         var extension = getMcJava(project);
         extension.injectProject(project);
         createAndApplyPluginsIn(project);
+    }
+
+    private void logApplyingTo(Project project) {
+        var version = McJava.version();
+        project.getLogger().warn(
+                "Applying `{}` (version: `{}`) to `{}`.",
+                getClass().getSimpleName(),
+                version,
+                project.getName()
+        );
     }
 
     private static void setProtocArtifact(Project project) {

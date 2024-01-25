@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.gradle.plugins
 import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
+import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
@@ -45,6 +46,7 @@ import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VAL
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.configTaskName
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.rejection.RejectionPlugin
+import io.spine.util.theOnly
 import java.io.File.separatorChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -61,7 +63,7 @@ import org.gradle.kotlin.dsl.withType
  *   1. Applies the `io.spine.protodata` plugin.
  *   2. Configures the ProtoData extension of a Gradle project, passing codegen plugins, such
  *      as [JavaValidationPlugin][io.spine.validation.java.JavaValidationPlugin].
- *   3. Creates a [GenerateProtoDataConfig] task for passing configuration to ProtoData, and
+ *   3. Creates a [WriteProtoDataSettings] task for passing configuration to ProtoData, and
  *      links it to the [LaunchProtoData] task.
  *   4. Adds required dependencies.
  */
@@ -163,25 +165,12 @@ private fun setSubdirectories(protodata: CodegenSettings) {
 
 private fun LaunchProtoData.createConfigTask() {
     val taskName = configTaskName(name)
-    val configTask = project.tasks.create(taskName, GenerateProtoDataConfig::class.java) { t ->
-        linkConfigFile(t)
+    val settingsDirTask = project.tasks.withType(CreateSettingsDirectory::class.java).theOnly()
+    val configTask = project.tasks.create(taskName, WriteProtoDataSettings::class.java) { t ->
+        t.settingsDir.set(settingsDirTask.settingsDir.get())
+        t.dependsOn(settingsDirTask)
     }
     dependsOn(configTask)
-}
-
-private fun LaunchProtoData.linkConfigFile(config: GenerateProtoDataConfig) {
-    val targetFile = config.file()
-    configurationFile.set(targetFile)
-}
-
-/**
- * Configures the `targetFile` property of this task with the conventional path and returns it.
- */
-private fun GenerateProtoDataConfig.file(): Provider<RegularFile> {
-    val fileName = "$name.bin"
-    val defaultFile = project.layout.buildDirectory.file(CONFIG_SUBDIR + separatorChar + fileName)
-    targetFile.convention(defaultFile)
-    return targetFile
 }
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {

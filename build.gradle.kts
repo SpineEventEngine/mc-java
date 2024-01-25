@@ -60,7 +60,7 @@ buildscript {
                     spine.base,
                     spine.toolBase,
                     spine.server,
-                    protoData.pluginLib,
+                    protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,
                     validation.runtime,
                     validation.javaBundle

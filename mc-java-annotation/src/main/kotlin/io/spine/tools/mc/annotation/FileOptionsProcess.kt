@@ -151,5 +151,3 @@ private fun ProtobufSourceFile.addServiceEvents(
         })
     }
 }
-
-private fun ProtoAny.isTrue(): Boolean = isA<BoolValue>() && unpack<BoolValue>().value

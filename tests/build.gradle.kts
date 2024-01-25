@@ -63,7 +63,7 @@ buildscript {
             exclude(group = "com.google.guava")
         }
         classpath(io.spine.internal.dependency.ProtoData.pluginLib)
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
     }
 
     with(configurations) {
@@ -217,6 +217,8 @@ subprojects {
         include("**/*Test.class")
         configureLogging()
     }
+
+    disableDocumentationTasks()
 
     //TODO:2021-07-22:alexander.yevsyukov: Turn to WARN and investigate duplicates.
     // see https://github.com/SpineEventEngine/base/issues/657
