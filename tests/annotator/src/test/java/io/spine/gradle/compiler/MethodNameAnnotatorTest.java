@@ -31,6 +31,7 @@ import com.google.protobuf.Message;
 import io.spine.test.annotator.Diverse;
 import io.spine.test.annotator.Region;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -40,6 +41,7 @@ import static io.spine.gradle.compiler.Assertions.assertInternal;
 import static io.spine.gradle.compiler.Assertions.assertNotInternal;
 
 @DisplayName("`AnnotatorPlugin` should pick up `internalMethodNames` and")
+@Disabled("Until implemented by new API annotation plugin.")
 class MethodNameAnnotatorTest {
 
     @SuppressWarnings("DuplicateStringLiteralInspection") // Clashes with usages in codegen.

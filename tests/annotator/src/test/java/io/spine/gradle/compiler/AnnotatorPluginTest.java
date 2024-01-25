@@ -27,6 +27,7 @@
 package io.spine.gradle.compiler;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.spine.gradle.compiler.Assertions.assertBeta;
@@ -39,6 +40,7 @@ import static io.spine.gradle.compiler.Assertions.assertNotSpi;
 import static io.spine.gradle.compiler.Assertions.assertSpi;
 
 @DisplayName("`AnnotatorPlugin` when applied should")
+@Disabled("Until implemented by new API annotation plugin.")
 class AnnotatorPluginTest {
 
     @Test

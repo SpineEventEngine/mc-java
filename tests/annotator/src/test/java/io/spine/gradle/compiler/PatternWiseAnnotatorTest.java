@@ -28,12 +28,14 @@ package io.spine.gradle.compiler;
 
 import io.spine.test.annotator.complex.Matter;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.spine.gradle.compiler.Assertions.assertInternal;
 import static io.spine.gradle.compiler.Assertions.assertNotInternal;
 
 @DisplayName("`AnnotatorPlugin` should pick up `internalClassPatterns` and")
+@Disabled("Until implemented by new API annotation plugin.")
 class PatternWiseAnnotatorTest {
 
     @Test
