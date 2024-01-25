@@ -63,7 +63,7 @@ buildscript {
             exclude(group = "com.google.guava")
         }
         classpath(io.spine.internal.dependency.ProtoData.pluginLib)
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
     }
 
     with(configurations) {
