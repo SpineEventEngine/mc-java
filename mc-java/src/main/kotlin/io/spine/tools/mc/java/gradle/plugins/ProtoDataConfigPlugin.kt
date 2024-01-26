@@ -41,18 +41,14 @@ import io.spine.tools.mc.java.gradle.Validation.javaRuntime
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.CONFIG_SUBDIR
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.configTaskName
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.rejection.RejectionPlugin
 import io.spine.util.theOnly
-import java.io.File.separatorChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 
@@ -88,34 +84,43 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
     companion object {
 
         /**
-         * The name of the directory where the ProtoData configuration files are stored.
-         */
-        const val CONFIG_SUBDIR = "protodata-config"
-
-        /**
          * The name of the Validation plugin for ProtoData.
          */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
 
         /**
-         * Obtains the task name for writing the ProtoData configuration file for the given
-         * name of the `LaunchProtoData` task.
+         * The ID used by Validation components to load settings.
          */
-        fun configTaskName(launchTask: String): String = "writeConfigFor_${launchTask}"
-    }
+        const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
 
-    private fun Project.configureProtoData() {
-        configurePlugins()
-        tasks.withType<LaunchProtoData>().all { task ->
-            task.createConfigTask()
-        }
+        /**
+         * The name of the task for writing ProtoData settings.
+         */
+        const val WRITE_PROTODATA_SETTINGS = "writeProtoDataSettings"
     }
+}
+
+private fun Project.configureProtoData() {
+    configureProtoDataPlugins()
+    val writeSettingsTask = createWriteSettingsTask()
+    tasks.withType<LaunchProtoData>().all { task ->
+        task.dependsOn(writeSettingsTask)
+    }
+}
+
+private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
+    val settingsDirTask = tasks.withType(CreateSettingsDirectory::class.java).theOnly()
+    val result = tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java) {
+            it.settingsDir.set(settingsDirTask.settingsDir.get())
+            it.dependsOn(settingsDirTask)
+        }
+    return result
 }
 
 /**
  * Configures ProtoData with plugins, for the given Gradle project.
  */
-private fun Project.configurePlugins() {
+private fun Project.configureProtoDataPlugins() {
     val protodata = extensions.getByType<CodegenSettings>()
     configureValidationRendering(protodata)
     configureRejectionRendering(protodata)
@@ -161,16 +166,6 @@ private fun setSubdirectories(protodata: CodegenSettings) {
         generatedGrpcDirName.value(),
         DirectoryName.kotlin.value()
     )
-}
-
-private fun LaunchProtoData.createConfigTask() {
-    val taskName = configTaskName(name)
-    val settingsDirTask = project.tasks.withType(CreateSettingsDirectory::class.java).theOnly()
-    val configTask = project.tasks.create(taskName, WriteProtoDataSettings::class.java) { t ->
-        t.settingsDir.set(settingsDirTask.settingsDir.get())
-        t.dependsOn(settingsDirTask)
-    }
-    dependsOn(configTask)
 }
 
 private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
