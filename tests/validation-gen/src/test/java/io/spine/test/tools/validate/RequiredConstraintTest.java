@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -354,7 +354,6 @@ class RequiredConstraintTest {
         class InCommand {
 
             @Test
-            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = CreateProject.newBuilder();
@@ -375,7 +374,6 @@ class RequiredConstraintTest {
         class InEvent {
 
             @Test
-            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = ProjectCreated.newBuilder();
@@ -388,7 +386,6 @@ class RequiredConstraintTest {
         class InRejection {
 
             @Test
-            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = CannotCreateProject.newBuilder();
@@ -401,7 +398,6 @@ class RequiredConstraintTest {
         class InEntityState {
 
             @Test
-            @Disabled("Until Validation migrates to new ProtoData API")
             @DisplayName("cannot be empty")
             void notSet() {
                 var msg = Project.newBuilder();
