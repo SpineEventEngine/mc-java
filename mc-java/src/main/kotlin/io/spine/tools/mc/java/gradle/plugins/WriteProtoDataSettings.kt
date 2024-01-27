@@ -29,7 +29,8 @@ import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.tools.mc.java.codegen.CodegenOptions
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
+import io.spine.type.toJson
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
 import java.io.IOException
@@ -44,9 +45,7 @@ import org.gradle.api.tasks.TaskAction
  * The [settingsDir] property defines the directory where settings files for
  * ProtoData plugins are stored.
  *
- * This task configures ProtoData-based validation codegen. It tells which files and types
- * are considered entities and signals, so that the Validation library may add extra constraints
- * for those types.
+ * This task writes settings files for ProtoData components.
  */
 @Suppress("unused") // Gradle creates a subtype for this class.
 public abstract class WriteProtoDataSettings : DefaultTask() {
@@ -57,27 +56,44 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
     @TaskAction
     @Throws(IOException::class)
     private fun writeFile() {
-        val options = project.mcJava
-        val codegen = options.codegen.toProto()
-
-        val dir = project.file(settingsDir)
-        dir.mkdirs()
-        val settings = SettingsDirectory(dir.toPath())
-
-        val markers = codegen.let {
-            messageMarkers {
-                commandPattern.addAll(it.commands.patternList)
-                eventPattern.addAll(it.events.patternList)
-                rejectionPattern.addAll(it.rejections.patternList)
-                entityOptionName.addAll(it.entityOptionsNames())
-            }
-        }
-        val config = validationConfig {
-            messageMarkers = markers
-        }
-
-        settings.write(VALIDATION_PLUGIN_CLASS, Format.PROTO_BINARY, config.toByteArray())
+        val settings = settingsDirectory()
+        forValidation(settings)
     }
+}
+
+/**
+ * Obtains an instance of [SettingsDirectory] to be used for writing files which
+ * points to the directory specified by the [WriteProtoDataSettings.settingsDir] property.
+ */
+private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
+    val dir = project.file(settingsDir)
+    dir.mkdirs()
+    val settings = SettingsDirectory(dir.toPath())
+    return settings
+}
+
+/**
+ * Writes settings for Validation codegen.
+ *
+ * The settings are taken from McJava extension object and converted to
+ * [io.spine.validation.ValidationConfig], which is later written as JSON file.
+ */
+private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
+    val options = project.mcJava
+    val codegen = options.codegen.toProto()
+    val markers = codegen.let {
+        messageMarkers {
+            commandPattern.addAll(it.commands.patternList)
+            eventPattern.addAll(it.events.patternList)
+            rejectionPattern.addAll(it.rejections.patternList)
+            entityOptionName.addAll(it.entityOptionsNames())
+        }
+    }
+    val config = validationConfig {
+        messageMarkers = markers
+    }
+
+    settings.write(VALIDATION_SETTINGS_ID, Format.PROTO_JSON, config.toJson())
 }
 
 private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
