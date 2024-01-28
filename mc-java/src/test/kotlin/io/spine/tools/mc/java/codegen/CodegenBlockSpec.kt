@@ -66,13 +66,21 @@ class CodegenBlockSpec {
     private lateinit var options: McJavaOptions
     private lateinit var projectDir: File
 
+    /**
+     * Creates the project in the given directory.
+     *
+     * The directory is set not to be cleaned up by JUnit because cleanup sometime
+     * fails under Windows.
+     * See [this comment](https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489)
+     * on the corresponding issue for details:
+     *
+     * The [projectDir] is set to be removed in the [removeTempDir] method.
+     *
+     * @see removeTempDir
+     */
     @BeforeEach
     fun prepareExtension(
-        @TempDir(cleanup = CleanupMode.NEVER) /* The cleanup fails under Windows.
-         See this comment on the corresponding issue for details:
-         https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489 */
-        projectDir: File
-    ) {
+        @TempDir(cleanup = CleanupMode.NEVER) projectDir: File) {
         this.projectDir = projectDir
         val project = ProjectBuilder.builder()
             .withProjectDir(projectDir)
