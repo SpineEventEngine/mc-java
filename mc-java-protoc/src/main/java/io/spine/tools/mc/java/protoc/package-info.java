@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
  * This package contains the basic mechanism of building the {@code protoc} plugins.
  *
  * <p>The whole package should be considered {@link io.spine.annotation.Internal @Internal}, since
- * the the Protoc plugin is an executable, not a library. We do not maintain the same standards of
+ * the Protoc plugin is an executable, not a library. We do not maintain the same standards of
  * API stability to these packages as we do to other Spine modules.
  *
  * <p>See <a href="https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.compiler.plugin.pb">
