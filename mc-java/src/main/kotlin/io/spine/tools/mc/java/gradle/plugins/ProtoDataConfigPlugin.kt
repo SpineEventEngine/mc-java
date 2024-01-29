@@ -139,7 +139,7 @@ private fun Project.configureProtoDataPlugins() {
 }
 
 private fun Project.configureValidationRendering(protodata: CodegenSettings) {
-    val validationConfig = mcJava.codegen.validation()
+    val validationConfig = mcJava.codegen!!.validation()
     if (validationConfig.enabled.get()) {
         protodata.plugins(
             VALIDATION_PLUGIN_CLASS
@@ -151,7 +151,7 @@ private fun Project.configureValidationRendering(protodata: CodegenSettings) {
 }
 
 private fun Project.configureRejectionRendering(protodata: CodegenSettings) {
-    val rejectionCodegen = mcJava.codegen.rejections()
+    val rejectionCodegen = mcJava.codegen!!.rejections()
     if (rejectionCodegen.enabled.get()) {
         protodata.plugins(
             RejectionPlugin::class.java.getName()

@@ -80,7 +80,7 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  */
 private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
     val options = project.mcJava
-    val codegen = options.codegen.toProto()
+    val codegen = options.codegen!!.toProto()
     val markers = codegen.let {
         messageMarkers {
             commandPattern.addAll(it.commands.patternList)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,128 +23,109 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.gradle;
+package io.spine.tools.mc.java.gradle
 
-import com.google.common.collect.ImmutableSet;
-import groovy.lang.Closure;
-import io.spine.logging.Logger;
-import io.spine.logging.LoggingFactory;
-import io.spine.tools.code.Indent;
-import io.spine.tools.java.fs.DefaultJavaPaths;
-import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig;
-import org.gradle.api.Action;
-import org.gradle.api.Project;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
-import static java.lang.String.format;
+import com.google.common.base.Preconditions
+import groovy.lang.Closure
+import io.spine.logging.LoggingFactory.forEnclosingClass
+import io.spine.tools.code.Indent
+import io.spine.tools.java.fs.DefaultJavaPaths
+import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig
+import org.gradle.api.Action
+import org.gradle.api.Project
+import org.gradle.api.tasks.Nested
 
 /**
  * A configuration for the Spine Model Compiler for Java.
  */
-@SuppressWarnings({
-        "PublicField", "WeakerAccess" /* Expose fields as a Gradle extension */,
-        "ClassWithTooManyMethods" /* The methods are needed for handing default values. */,
-        "ClassWithTooManyFields", "PMD.TooManyFields" /* Gradle extensions are flat like this. */,
-        "RedundantSuppression" /* "ClassWithTooManyFields" is sometimes not recognized by IDEA. */
-})
-public class McJavaOptions {
+public abstract class McJavaOptions {
 
-    private static final Logger<?> logger = LoggingFactory.forEnclosingClass();
-
-    /**
-     * The name of the extension, as it appears in a Gradle build script.
-     */
-    static final String NAME = "java";
+    @get:Nested
+    public abstract val annotation: AnnotationSettings
 
     /**
      * The indent for the generated code in the validating builders.
      */
-    public Indent indent = Indent.of4();
+    public var indent: Indent = Indent.of4()
 
     /**
-     * The absolute paths to directories to delete on the {@code preClean} task.
+     * The absolute paths to directories to delete on the `preClean` task.
      */
-    public List<String> tempArtifactDirs = new ArrayList<>();
-
-    public final CodeGenAnnotations generateAnnotations = new CodeGenAnnotations();
+    @JvmField
+    public var tempArtifactDirs: List<String> = ArrayList()
 
     /**
      * Code generation configuration.
-     *
-     * @see #codegen(Action)
      */
-    public CodegenOptionsConfig codegen;
+    @JvmField
+    public var codegen: CodegenOptionsConfig? = null
 
-    public List<String> internalClassPatterns = new ArrayList<>();
-
-    public List<String> internalMethodNames = new ArrayList<>();
-
-    private Project project;
+    private var project: Project? = null
 
     /**
      * Injects the dependency to the given project.
      */
-    public void injectProject(Project project) {
-        this.project = checkNotNull(project);
-        this.codegen = new CodegenOptionsConfig(project);
+    public fun injectProject(project: Project) {
+        this.project = Preconditions.checkNotNull(project)
+        this.codegen = CodegenOptionsConfig(project)
     }
 
-    /**
-     * Obtains the extension name of the plugin.
-     */
-    public static String name() {
-        return NAME;
+    public fun annotation(action: Action<AnnotationSettings>) {
+        action.execute(annotation)
     }
 
     /**
      * Configures the Model Compilation code generation by applying the given action.
      */
-    public void codegen(Action<CodegenOptionsConfig> action) {
-        action.execute(codegen);
+    public fun codegen(action: Action<CodegenOptionsConfig>) {
+        action.execute(codegen!!)
     }
 
-    static DefaultJavaPaths def(Project project) {
-        return DefaultJavaPaths.at(project.getProjectDir());
+    @Suppress("unused")
+    public fun setIndent(indent: Int) {
+        this.indent = Indent.of(indent)
+        logger.atDebug().log { "Indent has been set to $indent." }
     }
 
-    public static Indent getIndent(Project project) {
-        var result = getMcJava(project).indent;
-        logger.atDebug().log(() -> format("The current indent is %d.", result.size()));
-        return result;
+    @Suppress("unused")
+    public // Configures `generateAnnotations` closure.
+    fun generateAnnotations(closure: Closure<*>) {
+        project!!.configure(annotation, closure)
     }
 
-    @SuppressWarnings("unused")
-    public void setIndent(int indent) {
-        this.indent = Indent.of(indent);
-        logger.atDebug().log(() -> format("Indent has been set to %d.", indent));
+    @Suppress("unused")
+    public // Configures `generateAnnotations` closure.
+    fun generateAnnotations(action: Action<in AnnotationSettings>) {
+        action.execute(annotation)
     }
 
-    @SuppressWarnings("unused") // Configures `generateAnnotations` closure.
-    public void generateAnnotations(Closure<?> closure) {
-        project.configure(generateAnnotations, closure);
-    }
+    public companion object {
+        private val logger = forEnclosingClass()
 
-    @SuppressWarnings("unused") // Configures `generateAnnotations` closure.
-    public void generateAnnotations(Action<? super CodeGenAnnotations> action) {
-        action.execute(generateAnnotations);
-    }
+        /**
+         * The name of the extension, as it appears in a Gradle build script.
+         */
+        public const val NAME: String = "java"
 
-    public static CodeGenAnnotations getCodeGenAnnotations(Project project) {
-        var annotations = getMcJava(project).generateAnnotations;
-        return annotations;
-    }
+        /**
+         * Obtains the extension name of the plugin.
+         */
+        @JvmStatic
+        public fun name(): String {
+            return NAME
+        }
 
-    public static ImmutableSet<String> getInternalClassPatterns(Project project) {
-        var patterns = getMcJava(project).internalClassPatterns;
-        return ImmutableSet.copyOf(patterns);
-    }
+        @JvmStatic
+        public fun def(project: Project): DefaultJavaPaths {
+            return DefaultJavaPaths.at(project.projectDir)
+        }
 
-    public static ImmutableSet<String> getInternalMethodNames(Project project) {
-        var patterns = getMcJava(project).internalMethodNames;
-        return ImmutableSet.copyOf(patterns);
+        public fun getIndent(project: Project): Indent {
+            val result = project.mcJava.indent
+            logger.atDebug().log {
+                "The current indent is ${result.size()}."
+            }
+            return result
+        }
     }
 }
