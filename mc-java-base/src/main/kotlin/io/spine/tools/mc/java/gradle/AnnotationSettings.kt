@@ -35,28 +35,71 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 
 /**
- * Type names of Java annotations used to mark generated code.
+ * Settings for annotations exposed by McJava in a Gradle project.
+ *
+ * @see McJavaOptions
  */
 public abstract class AnnotationSettings {
 
     @get:Nested
     public abstract val types: AnnotationTypeSettings
 
+    /**
+     * The pattern for the names of the classes that to be annotated
+     * as [internal][AnnotationTypeSettings.internal].
+     */
     public abstract val internalClassPatterns: ListProperty<String>
 
+    /**
+     * The pattern for the method names to be annotated
+     * as [internal][AnnotationTypeSettings.internal].
+     */
     public abstract val internalMethodNames: ListProperty<String>
 
+    /**
+     * The action to customize [types].
+     */
     public fun types(action: Action<AnnotationTypeSettings>) {
         action.execute(types)
     }
 }
 
+/**
+ * Type names of Java annotation types used to mark generated code.
+ */
 @Suppress("LeakingThis") // as advised by Gradle API.
 public abstract class AnnotationTypeSettings {
 
+    /**
+     * A fully qualified name of a Java annotation type to be used for annotating
+     * experimental code elements.
+     *
+     * The default value is the name of [Experimental] annotation type.
+     */
     public abstract val experimental: Property<String>
+
+    /**
+     * A fully qualified name of a Java annotation type to be used for annotating
+     * beta code elements.
+     *
+     * The default value is the name of [Beta] annotation type.
+     */
     public abstract val beta: Property<String>
+
+    /**
+     * A fully qualified name of a Java annotation type to be used for annotating
+     * SPI code elements.
+     *
+     * The default value is the name [SPI] annotation type.
+     */
     public abstract val spi: Property<String>
+
+    /**
+     * A fully qualified name of a Java annotation type to be used for annotating
+     * internal code elements.
+     *
+     * The default value is the name [Internal] annotation type.
+     */
     public abstract val internal: Property<String>
 
     init {
