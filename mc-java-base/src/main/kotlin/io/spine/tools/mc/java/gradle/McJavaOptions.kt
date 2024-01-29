@@ -25,14 +25,13 @@
  */
 package io.spine.tools.mc.java.gradle
 
-import com.google.common.base.Preconditions
 import groovy.lang.Closure
-import io.spine.logging.LoggingFactory.forEnclosingClass
-import io.spine.tools.code.Indent
+import io.spine.string.Indent.Companion.DEFAULT_JAVA_INDENT_SIZE
 import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 
 /**
@@ -44,9 +43,15 @@ public abstract class McJavaOptions {
     public abstract val annotation: AnnotationSettings
 
     /**
+     * Code generation configuration.
+     */
+    @JvmField
+    public var codegen: CodegenOptionsConfig? = null
+    
+    /**
      * The indent for the generated code in the validating builders.
      */
-    public var indent: Indent = Indent.of4()
+    public abstract val indent: Property<Int>
 
     /**
      * The absolute paths to directories to delete on the `preClean` task.
@@ -54,19 +59,17 @@ public abstract class McJavaOptions {
     @JvmField
     public var tempArtifactDirs: List<String> = ArrayList()
 
-    /**
-     * Code generation configuration.
-     */
-    @JvmField
-    public var codegen: CodegenOptionsConfig? = null
+    private lateinit var project: Project
 
-    private var project: Project? = null
+    init {
+        @Suppress("LeakingThis")
+        indent.convention(DEFAULT_JAVA_INDENT_SIZE)
+    }
 
     /**
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.project = Preconditions.checkNotNull(project)
         this.codegen = CodegenOptionsConfig(project)
     }
 
@@ -75,22 +78,16 @@ public abstract class McJavaOptions {
     }
 
     /**
-     * Configures the Model Compilation code generation by applying the given action.
+     * Applies the given action for code generation options.
      */
     public fun codegen(action: Action<CodegenOptionsConfig>) {
         action.execute(codegen!!)
     }
 
     @Suppress("unused")
-    public fun setIndent(indent: Int) {
-        this.indent = Indent.of(indent)
-        logger.atDebug().log { "Indent has been set to $indent." }
-    }
-
-    @Suppress("unused")
     public // Configures `generateAnnotations` closure.
     fun generateAnnotations(closure: Closure<*>) {
-        project!!.configure(annotation, closure)
+        project.configure(annotation, closure)
     }
 
     @Suppress("unused")
@@ -100,7 +97,6 @@ public abstract class McJavaOptions {
     }
 
     public companion object {
-        private val logger = forEnclosingClass()
 
         /**
          * The name of the extension, as it appears in a Gradle build script.
@@ -118,14 +114,6 @@ public abstract class McJavaOptions {
         @JvmStatic
         public fun def(project: Project): DefaultJavaPaths {
             return DefaultJavaPaths.at(project.projectDir)
-        }
-
-        public fun getIndent(project: Project): Indent {
-            val result = project.mcJava.indent
-            logger.atDebug().log {
-                "The current indent is ${result.size()}."
-            }
-            return result
         }
     }
 }
