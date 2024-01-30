@@ -35,17 +35,47 @@ option java_package = "io.spine.tools.mc.java.annotation";
 option java_outer_classname = "SettingsProto";
 option java_multiple_files = true;
 
+// Settings passed to components of `ApiAnnotationsPlugin` ProtoData plugin.
+//
+// This message is composed by `WriteProtoDataSettings` task from properties exposed
+// by McJava project extension.
+//
 message Settings {
-    
+
+    // Java annotation types to be used for setting API levels.
     AnnotationTypes annotation_types = 1 [(required) = true];
 
+    // The pattern for the names of the classes that to be annotated as internal.
     repeated string internalClassPattern = 2;
+
+    // The pattern for the method names to be annotated as internal.
     repeated string internalMethodName = 3;
 
+    // Provides class names of Java annotation types that correspond to certain API level.
     message AnnotationTypes {
+
+        // The name of the type for experimental API level.
+        //
+        // The default value is `io.spine.annotation.Experimental`.
+        //
         string experimental = 1 [(required) = true];
+
+        // The name of the type for Beta API level.
+        //
+        // The default value is `io.spine.annotation.Beta`.
+        //
         string beta = 2 [(required) = true];
+
+        // The name of the type for Service Provider Interface (SPI) API level.
+        //
+        // The default value is `io.spine.annotation.SPI`.
+        //
         string spi = 3 [(required) = true];
+
+        // The name of the type for internal API level.
+        //
+        // The default value is `io.spine.annotation.Internal`.
+        //
         string internal = 4 [(required) = true];
     }
 }
