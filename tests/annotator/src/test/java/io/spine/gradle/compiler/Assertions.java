@@ -26,7 +26,7 @@
 
 package io.spine.gradle.compiler;
 
-import io.spine.test.annotation.Alpha;
+import io.spine.test.annotation.CustomBeta;
 import io.spine.test.annotation.Attempt;
 import io.spine.test.annotation.Private;
 import io.spine.test.annotation.ServiceProviderInterface;
@@ -74,11 +74,11 @@ public final class Assertions {
     }
 
     public static void assertBeta(AnnotatedElement element) {
-        assertAnnotated(element, Alpha.class);
+        assertAnnotated(element, CustomBeta.class);
     }
 
     public static void assertNotBeta(AnnotatedElement element) {
-        assertNotAnnotated(element, Alpha.class);
+        assertNotAnnotated(element, CustomBeta.class);
     }
 
     private static void assertAnnotated(AnnotatedElement element,

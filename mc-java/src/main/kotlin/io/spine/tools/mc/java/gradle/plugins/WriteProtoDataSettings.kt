@@ -27,8 +27,11 @@ package io.spine.tools.mc.java.gradle.plugins
 
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
+import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
+import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.codegen.CodegenOptions
 import io.spine.tools.mc.java.gradle.mcJava
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ANNOTATION_SETTINGS_ID
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
@@ -58,6 +61,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
     private fun writeFile() {
         val settings = settingsDirectory()
         forValidation(settings)
+        forAnnotation(settings)
     }
 }
 
@@ -80,7 +84,7 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  */
 private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
     val options = project.mcJava
-    val codegen = options.codegen.toProto()
+    val codegen = options.codegen!!.toProto()
     val markers = codegen.let {
         messageMarkers {
             commandPattern.addAll(it.commands.patternList)
@@ -98,3 +102,17 @@ private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
 
 private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
+
+private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
+    val options = project.mcJava
+    val javaType = options.annotation.types
+    val proto = settings {
+        annotationTypes = annotationTypes {
+            experimental = javaType.experimental.get()
+            beta = javaType.beta.get()
+            spi = javaType.spi.get()
+            internal = javaType.internal.get()
+        }
+    }
+    settings.write(ANNOTATION_SETTINGS_ID, Format.PROTO_JSON, proto.toJson())
+}

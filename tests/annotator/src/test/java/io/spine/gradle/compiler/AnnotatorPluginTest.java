@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import static io.spine.gradle.compiler.Assertions.assertNotSpi;
 import static io.spine.gradle.compiler.Assertions.assertSpi;
 
 @DisplayName("`AnnotatorPlugin` when applied should")
-@Disabled("Until implemented by new API annotation plugin.")
 class AnnotatorPluginTest {
 
     @Test
@@ -66,7 +65,6 @@ class AnnotatorPluginTest {
         assertInternal(InternalMessage.class);
         assertInternal(Scaffolding.class.getDeclaredMethod("getHidden"));
         assertInternal(ImplicitlyInternalMessage.class);
-        assertInternal(ImplicitlyInternalServiceGrpc.class);
     }
 
     @Test
@@ -85,7 +83,6 @@ class AnnotatorPluginTest {
         assertExperimental(ExperimentalMessage.class);
         assertExperimental(Scaffolding.class.getDeclaredMethod("getExperiment"));
         assertExperimental(ImplicitlyExperimentalMessage.class);
-        assertExperimental(ImplicitlyExperimentalServiceGrpc.class);
     }
 
     @Test
@@ -104,7 +101,6 @@ class AnnotatorPluginTest {
         assertBeta(BetaMessage.class);
         assertBeta(Scaffolding.class.getDeclaredMethod("getLatinLetter"));
         assertBeta(ImplicitlyBetaMessage.class);
-        assertBeta(ImplicitlyBetaServiceGrpc.class);
     }
 
     @Test

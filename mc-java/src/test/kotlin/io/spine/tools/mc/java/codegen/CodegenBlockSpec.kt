@@ -66,13 +66,21 @@ class CodegenBlockSpec {
     private lateinit var options: McJavaOptions
     private lateinit var projectDir: File
 
+    /**
+     * Creates the project in the given directory.
+     *
+     * The directory is set not to be cleaned up by JUnit because cleanup sometime
+     * fails under Windows.
+     * See [this comment](https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489)
+     * on the corresponding issue for details:
+     *
+     * The [projectDir] is set to be removed in the [removeTempDir] method.
+     *
+     * @see removeTempDir
+     */
     @BeforeEach
     fun prepareExtension(
-        @TempDir(cleanup = CleanupMode.NEVER) /* The cleanup fails under Windows.
-         See this comment on the corresponding issue for details:
-         https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489 */
-        projectDir: File
-    ) {
+        @TempDir(cleanup = CleanupMode.NEVER) projectDir: File) {
         this.projectDir = projectDir
         val project = ProjectBuilder.builder()
             .withProjectDir(projectDir)
@@ -101,7 +109,7 @@ class CodegenBlockSpec {
                 it.generateMethodsWith(factoryName)
             }
         }
-        val config = options.codegen.toProto()
+        val config = options.codegen!!.toProto()
         config.uuids.methodFactoryList shouldHaveSize 1
         config.uuids
             .methodFactoryList[0]
@@ -129,7 +137,7 @@ class CodegenBlockSpec {
                     }
                 }
             }
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
 
             config.commands.run {
                 patternList shouldHaveSize 1
@@ -154,7 +162,7 @@ class CodegenBlockSpec {
                     }
                 }
             }
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
 
             config.events.run {
                 patternList shouldHaveSize 1
@@ -176,7 +184,7 @@ class CodegenBlockSpec {
                     events.markFieldsAs(fieldSuperclass)
                 }
             }
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
 
             config.events.run {
                 patternList shouldHaveSize 1
@@ -198,7 +206,7 @@ class CodegenBlockSpec {
                     it.markAs(rejectionInterface)
                 }
             }
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
             val eventInterfaces = config.events.addInterfaceList
             val rejectionInterfaces = config.rejections.addInterfaceList
 
@@ -223,7 +231,7 @@ class CodegenBlockSpec {
                     it.markFieldsAs(fieldSupertype)
                 }
             }
-            val entities = options.codegen.toProto().entities
+            val entities = options.codegen!!.toProto().entities
 
             entities.run {
                 addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
@@ -245,7 +253,7 @@ class CodegenBlockSpec {
                     it.generateMethodsWith(methodFactory)
                 }
             }
-            val uuids = options.codegen.toProto().uuids
+            val uuids = options.codegen!!.toProto().uuids
             uuids.run {
                 addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
                 methodFactoryList shouldHaveSize 1
@@ -272,7 +280,7 @@ class CodegenBlockSpec {
                     it.generateMethodsWith(methodFactory)
                 }
             }
-            val configs = options.codegen.toProto().messagesList
+            val configs = options.codegen!!.toProto().messagesList
 
             configs shouldHaveSize 2
 
@@ -309,7 +317,7 @@ class CodegenBlockSpec {
 
         @Test
         fun commands() {
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
             val commands = config.commands
 
             commands.run {
@@ -323,7 +331,7 @@ class CodegenBlockSpec {
 
         @Test
         fun events() {
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
             val events = config.events
 
             events.run {
@@ -338,7 +346,7 @@ class CodegenBlockSpec {
 
         @Test
         fun rejections() {
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
             val events = config.rejections
 
             events.run {
@@ -353,7 +361,7 @@ class CodegenBlockSpec {
 
         @Test
         fun entities() {
-            val entities = options.codegen.toProto().entities
+            val entities = options.codegen!!.toProto().entities
 
             entities.run {
                 addInterfaceList.map { it.name.canonical } shouldContainExactly
@@ -368,7 +376,7 @@ class CodegenBlockSpec {
 
         @Test
         fun `UUID messages`() {
-            val uuids = options.codegen.toProto().uuids
+            val uuids = options.codegen!!.toProto().uuids
 
             uuids.run {
                 addInterfaceList.map { it.name.canonical } shouldContainExactly
@@ -381,7 +389,7 @@ class CodegenBlockSpec {
 
         @Test
         fun `arbitrary message groups`() {
-            val config = options.codegen.toProto()
+            val config = options.codegen!!.toProto()
 
             config.messagesList shouldBe emptyList()
 
@@ -389,7 +397,7 @@ class CodegenBlockSpec {
             options.codegen {
                 it.forMessage(type) { /* Do nothing. */ }
             }
-            val updatedConfig = options.codegen.toProto()
+            val updatedConfig = options.codegen!!.toProto()
 
             updatedConfig.messagesList shouldHaveSize 1
             val typeName = ProtoTypeName.newBuilder().setValue(type)
@@ -406,7 +414,7 @@ class CodegenBlockSpec {
 
         @Test
         fun validation() {
-            val validation = options.codegen.toProto().validation
+            val validation = options.codegen!!.toProto().validation
             validation.run {
                 version.shouldBeEmpty()
             }
@@ -424,7 +432,7 @@ class CodegenBlockSpec {
 
         @Test
         fun `turning generation of queries off`() {
-            options.codegen.forEntities {
+            options.codegen!!.forEntities {
                 it.skipQueries()
             }
             assertFlag().isFalse()
@@ -433,18 +441,18 @@ class CodegenBlockSpec {
         @Test
         fun `turning generation of queries on`() {
             // Turn `off`, assuming that the default is `on`.
-            options.codegen.forEntities {
+            options.codegen!!.forEntities {
                 it.skipQueries()
             }
 
             // Turn `on`.
-            options.codegen.forEntities {
+            options.codegen!!.forEntities {
                 it.generateQueries()
             }
 
             assertFlag().isTrue()
         }
 
-        private fun assertFlag() = assertThat(options.codegen.toProto().entities.generateQueries)
+        private fun assertFlag() = assertThat(options.codegen!!.toProto().entities.generateQueries)
     }
 }

@@ -169,7 +169,7 @@ message GenerateFields {
     tools.java.JavaClassName superclass = 1;
 }
 
-// Code generation config for an arbitrary group of messages.
+// Code generation settings for an arbitrary group of messages.
 //
 // The group is defined by a file or a type pattern. For example, messages may be declared in files
 // with the same suffix, have a common part in the type name, etc.

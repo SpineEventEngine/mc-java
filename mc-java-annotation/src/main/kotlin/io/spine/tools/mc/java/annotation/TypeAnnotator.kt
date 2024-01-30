@@ -51,7 +51,7 @@ internal abstract class TypeAnnotator<T>(
                 val header = findHeaderFor(view)
                 needsAnnotation(it, header)
             }
-            .map { it.annotationClass }
+            .map { annotationClass(it) }
             .forEach {
                 annotateType(view, it)
             }

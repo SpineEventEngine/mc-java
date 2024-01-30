@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,35 +24,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.ErrorProne
+import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.JavaX
 
 modelCompiler {
     java {
-        generateAnnotations {
-            internal = "io.spine.test.annotation.Private"
-            experimental = "io.spine.test.annotation.Attempt"
-            beta = "io.spine.test.annotation.Alpha"
-            spi = "io.spine.test.annotation.ServiceProviderInterface"
+        annotation {
+            types {
+                internal.set("io.spine.test.annotation.Private")
+                experimental.set("io.spine.test.annotation.Attempt")
+                beta.set("io.spine.test.annotation.CustomBeta")
+                spi.set("io.spine.test.annotation.ServiceProviderInterface")
+            }
+            internalClassPatterns.addAll(listOf(
+                ".*OrBuilder", // Classes ending with `OrBuilder`.
+                ".*Proto",     // Classes ending with `Proto`.
+                ".*complex\\.Matter\\$.*[AaLl].*"
+                // Classes which have `complex.Matter$` in their FQN followed by an upper or lower
+                // case letters ` A` or `L`.
+                // For the sake of testing. This is not a recommended usage.
+            ))
+            internalMethodNames.addAll(listOf(
+                "newBuilderForType",
+                "parseFrom",
+                "parseDelimitedFrom",
+                "getSerializedSize",
+                "internalGetValueMap"
+            ))
         }
-        internalClassPatterns.addAll(listOf(
-            ".*OrBuilder", // Classes ending with `OrBuilder`.
-            ".*Proto",     // Classes ending with `Proto`.
-            ".*complex\\.Matter\\$.*[AaLl].*"
-            // Classes which have `complex.Matter$` in their FQN followed by an upper or lower
-            // case letters ` A` or `L`.
-            // For the sake of testing. This is not a recommended usage.
-        ))
-        internalMethodNames.addAll(listOf(
-            "newBuilderForType",
-            "parseFrom",
-            "parseDelimitedFrom",
-            "getSerializedSize",
-            "internalGetValueMap"
-        ))
     }
 }
 
 dependencies {
+    val customAnnotations = project(":custom-annotations")
+
     testImplementation(Grpc.stub)
     testImplementation(Grpc.protobuf)
+    testImplementation(customAnnotations)
+
+    protoData(customAnnotations)
 }

@@ -29,6 +29,13 @@ package io.spine.tools.mc.java.annotation
 import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
+import io.spine.protodata.settings.loadSettings
+import io.spine.tools.mc.annotation.ApiOption
+import io.spine.tools.mc.annotation.ApiOption.BETA
+import io.spine.tools.mc.annotation.ApiOption.EXPERIMENTAL
+import io.spine.tools.mc.annotation.ApiOption.INTERNAL
+import io.spine.tools.mc.annotation.ApiOption.SPI
 
 /**
  * An abstract base for annotation renderers.
@@ -40,6 +47,37 @@ internal abstract class Annotator<T>(
 ) : JavaRenderer() where T : EntityState<*> {
 
     protected lateinit var sources: SourceFileSet
+
+    /**
+     * Returns cannonical name of [ApiAnnotationsPlugin].
+     */
+    override val consumerId: String
+        get() = ApiAnnotationsPlugin::class.java.canonicalName
+
+    /**
+     * Lazily loaded code generation settings.
+     */
+    protected val settings: Settings by lazy {
+        loadSettings<Settings>()
+    }
+
+    /**
+     * Obtains the annotation type by taking its name from [settings].
+     */
+    protected fun annotationClass(apiOption: ApiOption): Class<Annotation> {
+        val annotationType = settings.annotationTypes
+        val className = when (apiOption) {
+            BETA -> annotationType.beta
+            EXPERIMENTAL -> annotationType.experimental
+            INTERNAL -> annotationType.internal
+            SPI -> annotationType.spi
+        }
+        @Suppress("UNCHECKED_CAST") /* Here we rely on the user's input.
+         If the class is not an annotation type, `ClassCastException`
+         would inform the developer on the fact. */
+        val result = Class.forName(className) as Class<Annotation>
+        return result
+    }
 
     /**
      * Tells if the given source file set is suitable for this renderer.
