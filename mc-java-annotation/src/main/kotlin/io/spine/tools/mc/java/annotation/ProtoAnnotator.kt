@@ -37,7 +37,7 @@ import io.spine.protodata.renderer.SourceFileSet
  */
 internal abstract class ProtoAnnotator<T>(
     private val viewClass: Class<T>
-) : AbstractAnnotator() where T : EntityState<*> {
+) : Annotator() where T : EntityState<*> {
 
     /**
      * The sources passed for processing to this renderer.

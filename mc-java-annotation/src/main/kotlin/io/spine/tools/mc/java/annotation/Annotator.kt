@@ -40,7 +40,7 @@ import io.spine.tools.mc.annotation.ApiOption.SPI
  * The abstract base for renderers that annotate Java source code using
  * the [annotation types][annotationClass] passed via an instance of [Settings].
  */
-internal abstract class AbstractAnnotator: JavaRenderer() {
+internal abstract class Annotator: JavaRenderer() {
 
     /**
      * Returns the canonical name of the [ApiAnnotationsPlugin] class.
