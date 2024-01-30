@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.annotation
 import io.spine.base.EntityState
 import io.spine.protodata.codegen.java.JavaRenderer
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 
 /**
  * An abstract base for annotation renderers.
@@ -40,6 +41,9 @@ internal abstract class Annotator<T>(
 ) : JavaRenderer() where T : EntityState<*> {
 
     protected lateinit var sources: SourceFileSet
+
+    override val consumerId: String
+        get() = ApiAnnotationsPlugin::class.java.canonicalName
 
     /**
      * Tells if the given source file set is suitable for this renderer.
