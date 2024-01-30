@@ -29,61 +29,51 @@ package io.spine.tools.mc.annotation
 import com.google.protobuf.BoolValue
 import com.google.protobuf.kotlin.isA
 import com.google.protobuf.kotlin.unpack
-import io.spine.annotation.Beta
-import io.spine.annotation.Experimental
-import io.spine.annotation.Internal
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
 import io.spine.protodata.Types
 import io.spine.protodata.option
 import com.google.protobuf.Any as ProtoAny
-import io.spine.annotation.SPI as Spi
 
 /**
- * An option that can be set on a `.proto` file, message, field, or service to
- * designate the API stability level of the corresponding element.
+ * This enumeration sets semantic correspondence between Protobuf options
+ * that declare certain API stability level at various levels of Protobuf code.
  *
+ * An option that can be set on a `.proto` file, message, field, or a service.
  * The options are defined in the `options.proto` file.
- * This enum associates the options with the corresponding Java annotation classes.
+ * Each item of this enumeration declares their correspondence.
+ * If there is no an option for an element of Protobuf code, the value of
+ * the property for this level is `null`.
  */
 internal enum class ApiOption(
     val fileOption: Option,
     val messageOption: Option,
-    val fieldOption: Option?,
-    val serviceOption: Option?,
-    val annotationClass: Class<out Annotation>
+    val fieldOption: Option? = null,
+    val serviceOption: Option? = null,
 ) {
 
     BETA(
         fileOption = option("beta_all"),
         messageOption = option("beta_type"),
         fieldOption = option("beta"),
-        serviceOption = null,
-        annotationClass = Beta::class.java
     ),
 
     EXPERIMENTAL(
         fileOption = option("experimental_all"),
         messageOption = option("experimental_type"),
         fieldOption = option("experimental"),
-        serviceOption = null,
-        annotationClass = Experimental::class.java
     ),
 
     INTERNAL(
         fileOption = option("internal_all"),
         messageOption = option("internal_type"),
         fieldOption = option("internal"),
-        serviceOption = null,
-        annotationClass = Internal::class.java,
     ),
 
     SPI(
         fileOption = option("SPI_all"),
         messageOption = option("SPI_type"),
-        fieldOption = null,
         serviceOption = option("SPI_service"),
-        annotationClass = Spi::class.java
     );
 
     companion object {

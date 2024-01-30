@@ -70,7 +70,7 @@ internal class FieldAnnotator :
             check(apiOption != null) {
                 "Unable to find an API option for `${option.name}`."
             }
-            val annotationClass = apiOption.annotationClass
+            val annotationClass = annotationClass(apiOption)
             annotateAccessors(
                 messageType,
                 fieldOption.field,

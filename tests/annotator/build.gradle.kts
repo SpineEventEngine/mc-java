@@ -24,7 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.ErrorProne
+import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.JavaX
 
 modelCompiler {
     java {
@@ -32,7 +35,7 @@ modelCompiler {
             types {
                 internal.set("io.spine.test.annotation.Private")
                 experimental.set("io.spine.test.annotation.Attempt")
-                beta.set("io.spine.test.annotation.Alpha")
+                beta.set("io.spine.test.annotation.CustomBeta")
                 spi.set("io.spine.test.annotation.ServiceProviderInterface")
             }
             internalClassPatterns.addAll(listOf(
@@ -55,6 +58,11 @@ modelCompiler {
 }
 
 dependencies {
+    val customAnnotations = project(":custom-annotations")
+
     testImplementation(Grpc.stub)
     testImplementation(Grpc.protobuf)
+    testImplementation(customAnnotations)
+
+    protoData(customAnnotations)
 }
