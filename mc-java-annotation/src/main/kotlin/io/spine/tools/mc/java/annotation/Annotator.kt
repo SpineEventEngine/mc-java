@@ -48,13 +48,22 @@ internal abstract class Annotator<T>(
 
     protected lateinit var sources: SourceFileSet
 
+    /**
+     * Returns cannonical name of [ApiAnnotationsPlugin].
+     */
     override val consumerId: String
         get() = ApiAnnotationsPlugin::class.java.canonicalName
 
+    /**
+     * Lazily loaded code generation settings.
+     */
     protected val settings: Settings by lazy {
         loadSettings<Settings>()
     }
 
+    /**
+     * Obtains the annotation type by taking its name from [settings].
+     */
     protected fun annotationClass(apiOption: ApiOption): Class<Annotation> {
         val annotationType = settings.annotationTypes
         val className = when (apiOption) {
