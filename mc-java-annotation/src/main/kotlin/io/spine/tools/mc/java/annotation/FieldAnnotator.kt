@@ -51,9 +51,6 @@ internal class FieldAnnotator :
         MessageOrBuilderConvention(typeSystem!!)
     }
 
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
-
     override fun annotate(view: MessageFieldAnnotations) {
         view.fieldOptionsList.forEach { fieldOption ->
             annotateField(view, fieldOption)

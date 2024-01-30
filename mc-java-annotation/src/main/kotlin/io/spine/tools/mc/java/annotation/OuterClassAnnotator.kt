@@ -56,7 +56,4 @@ internal class OuterClassAnnotator :
      * to be annotated was discovered by the [OuterClassAnnotationDiscovery] process.
      */
     override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
-
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
 }

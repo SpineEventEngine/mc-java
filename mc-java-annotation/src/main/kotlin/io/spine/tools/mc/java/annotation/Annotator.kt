@@ -84,7 +84,8 @@ internal abstract class Annotator<T>(
      *
      * @see <a href="https://github.com/SpineEventEngine/ProtoData/issues/150">ProtoData issue</a>
      */
-    protected abstract fun suitableFor(sources: SourceFileSet): Boolean
+    protected open fun suitableFor(sources: SourceFileSet): Boolean =
+        sources.outputRoot.endsWith("java")
 
     final override fun render(sources: SourceFileSet) {
         if (suitableFor(sources)) {

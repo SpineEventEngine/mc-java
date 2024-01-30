@@ -53,7 +53,4 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
         val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
         return !(singleFile && alreadyInHeader)
     }
-
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
 }
