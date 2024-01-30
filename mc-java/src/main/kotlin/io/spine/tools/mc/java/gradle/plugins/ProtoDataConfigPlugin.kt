@@ -89,9 +89,14 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
 
         /**
-         * The ID used by Validation components to load settings.
+         * The ID used by Validation components to load the settings.
          */
         const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
+
+        /**
+         * The ID used by Annotation plugin components to load the settings.
+         */
+        const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
 
         /**
          * The name of the task for writing ProtoData settings.
