@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.codegen.java.file.hasJavaOutput
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.loadSettings
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
@@ -65,7 +66,7 @@ internal abstract class Annotator : JavaRenderer() {
      * @see <a href="https://github.com/SpineEventEngine/ProtoData/issues/150">ProtoData issue</a>
      */
     protected open fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
+        sources.hasJavaOutput
 
     /**
      * Obtains the annotation type by taking its name from [settings].

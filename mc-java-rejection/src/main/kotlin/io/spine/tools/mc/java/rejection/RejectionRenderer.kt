@@ -32,6 +32,7 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.codegen.java.JavaRenderer
+import io.spine.protodata.codegen.java.file.hasJavaOutput
 import io.spine.protodata.codegen.java.javaOuterClassName
 import io.spine.protodata.codegen.java.javaPackage
 import io.spine.protodata.find
@@ -53,7 +54,7 @@ internal class RejectionRenderer: JavaRenderer(), WithLogging {
 
     override fun render(sources: SourceFileSet) {
         // We could receive `grpc` or `kotlin` output roots here. Now we do only `java`.
-        if (!sources.outputRoot.endsWith("java")) {
+        if (!sources.hasJavaOutput) {
             return
         }
         this.sources = sources
