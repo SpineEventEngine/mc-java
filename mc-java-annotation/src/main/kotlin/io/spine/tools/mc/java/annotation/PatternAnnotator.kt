@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,40 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-syntax = "proto3";
 
-package given.annotation;
+package io.spine.tools.mc.java.annotation
 
-import "spine/options.proto";
+import io.spine.protodata.renderer.SourceFile
 
-option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.test.annotator.complex";
-option java_outer_classname = "ComplexProto";
-option java_multiple_files = true;
+/**
+ * Abstract base for annotators that process the Java code basing on
+ * the patterns passing via [Settings].
+ */
+internal abstract class PatternAnnotator : Annotator() {
 
-message Matter {
-
-    message Body {
-
-        message Molecule {
-
-            enum Atom {
-                A_UNDEFINED = 0;
-                OXYGEN = 1;
-                HYDROGEN = 2;
-            }
+    private val patterns: List<Regex> by lazy {
+        loadPatterns().map {
+            it.toRegex()
         }
     }
 
-    message Field {
-    }
+    /**
+     * Loads the list of patterns to be used by this renderer.
+     */
+    abstract fun loadPatterns(): List<String>
+
+    /**
+     * Tells if the given code element matches one of the patterns given in settings.
+     */
+    protected fun matches(codeElement: String): Boolean =
+        patterns.any { it.matches(codeElement) }
 }
 
-message Energy {
-
-    message BrightSide {
-    }
-
-    message DarkSide {
-    }
-}
+internal fun SourceFile.qualifiedTopClassName(): String
+    = relativePath.toString().replace("/", ".").replace(".java", "")

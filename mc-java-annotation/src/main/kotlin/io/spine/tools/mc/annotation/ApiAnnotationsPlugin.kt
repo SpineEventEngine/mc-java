@@ -30,6 +30,7 @@ import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.protodata.renderer.Renderer
 import io.spine.server.BoundedContextBuilder
+import io.spine.tools.mc.java.annotation.ClassPatternAnnotator
 import io.spine.tools.mc.java.annotation.EnumAnnotator
 import io.spine.tools.mc.java.annotation.FieldAnnotator
 import io.spine.tools.mc.java.annotation.MessageAnnotator
@@ -75,7 +76,8 @@ public class ApiAnnotationsPlugin : Plugin {
         EnumAnnotator(),
         ServiceAnnotationRenderer(),
         OuterClassAnnotator(),
-        FieldAnnotator()
+        FieldAnnotator(),
+        ClassPatternAnnotator()
     )
 
     override fun extend(context: BoundedContextBuilder) {
