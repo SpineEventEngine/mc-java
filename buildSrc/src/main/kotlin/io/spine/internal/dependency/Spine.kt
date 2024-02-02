@@ -124,7 +124,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.193"
+        const val toolBase = "2.0.0-SNAPSHOT.195"
 
         /**
          * The version of [Spine.javadocTools].
@@ -138,10 +138,6 @@ object Spine {
 
     @Deprecated("Use `Logging.lib` instead.", ReplaceWith("Logging.lib"))
     const val logging = "$group:spine-logging:${ArtifactVersion.logging}"
-    @Deprecated("Use `Logging.context` instead.", ReplaceWith("Logging.context"))
-    const val loggingContext = "$group:spine-logging-context:${ArtifactVersion.logging}"
-    @Deprecated("Use `Logging.backend` instead.", ReplaceWith("Logging.backend"))
-    const val loggingBackend = "$group:spine-logging-backend:${ArtifactVersion.logging}"
 
     const val reflect = "$group:spine-reflect:${ArtifactVersion.reflect}"
     const val baseTypes = "$group:spine-base-types:${ArtifactVersion.baseTypes}"
@@ -151,6 +147,7 @@ object Spine {
 
     const val testlib = "$toolsGroup:spine-testlib:${ArtifactVersion.testlib}"
     const val testUtilTime = "$toolsGroup:spine-testutil-time:${ArtifactVersion.time}"
+    const val psiJava = "$toolsGroup:spine-psi-java:${ArtifactVersion.toolBase}"
     const val toolBase = "$toolsGroup:spine-tool-base:${ArtifactVersion.toolBase}"
     const val pluginBase = "$toolsGroup:spine-plugin-base:${ArtifactVersion.toolBase}"
     const val pluginTestlib = "$toolsGroup:spine-plugin-testlib:${ArtifactVersion.toolBase}"
