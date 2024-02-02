@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.mc.annotation.ApiOption
 
 /**
  * Abstract base for annotators that process the Java code basing on
@@ -38,6 +39,13 @@ internal abstract class PatternAnnotator : Annotator() {
         loadPatterns().map {
             it.toRegex()
         }
+    }
+
+    /**
+     * The type of the annotation to be used in the generated code.
+     */
+    protected val annotationClass: Class<Annotation> by lazy {
+        annotationClass(ApiOption.INTERNAL)
     }
 
     /**
