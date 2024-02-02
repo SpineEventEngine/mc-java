@@ -26,31 +26,31 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.base.EntityState
-import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.javaMultipleFiles
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.WithOptions
+import io.spine.protodata.renderer.SourceFile
 
 /**
- * An abstract base for annotators of message types and enums.
- *
- * This class defines the [convention] for the message types and enums.
- * It also implements filtering logic common for messages and enums in
- * [needsAnnotation] and [suitableFor] methods.
+ * Abstract base for annotators that process the Java code basing on
+ * the patterns passing via [Settings].
  */
-internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
-    TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
+internal abstract class PatternAnnotator : Annotator() {
 
-    protected val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+    private val patterns: List<Regex> by lazy {
+        loadPatterns().map {
+            it.toRegex()
+        }
     }
 
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
-        val singleFile = !header.javaMultipleFiles()
-        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
-        return !(singleFile && alreadyInHeader)
-    }
+    /**
+     * Loads the list of patterns to be used by this renderer.
+     */
+    abstract fun loadPatterns(): List<String>
+
+    /**
+     * Tells if the given code element matches one of the patterns given in settings.
+     */
+    protected fun matches(codeElement: String): Boolean =
+        patterns.any { it.matches(codeElement) }
 }
+
+internal fun SourceFile.qualifiedTopClassName(): String
+    = relativePath.toString().replace("/", ".").replace(".java", "")

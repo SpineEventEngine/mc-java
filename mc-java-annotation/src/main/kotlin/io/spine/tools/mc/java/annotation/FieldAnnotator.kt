@@ -31,7 +31,6 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.FieldOptions
 import io.spine.tools.mc.annotation.MessageFieldAnnotations
@@ -41,7 +40,7 @@ import io.spine.tools.mc.annotation.MessageFieldAnnotations
  * `MessageOrBuilder` interface.
  */
 internal class FieldAnnotator :
-    Annotator<MessageFieldAnnotations>(MessageFieldAnnotations::class.java) {
+    ProtoAnnotator<MessageFieldAnnotations>(MessageFieldAnnotations::class.java) {
 
     private val convention by lazy {
         MessageOrEnumConvention(typeSystem!!)
@@ -50,9 +49,6 @@ internal class FieldAnnotator :
     private val messageOrBuilderConvention by lazy {
         MessageOrBuilderConvention(typeSystem!!)
     }
-
-    override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.outputRoot.endsWith("java")
 
     override fun annotate(view: MessageFieldAnnotations) {
         view.fieldOptionsList.forEach { fieldOption ->

@@ -41,7 +41,7 @@ import io.spine.tools.mc.annotation.optionList
  */
 internal abstract class TypeAnnotator<T>(
     viewClass: Class<T>
-): Annotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
+): ProtoAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
     @OverridingMethodsMustInvokeSuper
     override fun annotate(view: T) {

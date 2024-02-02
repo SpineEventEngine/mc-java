@@ -105,14 +105,17 @@ private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
 
 private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
     val options = project.mcJava
-    val javaType = options.annotation.types
+    val annotation = options.annotation
     val proto = settings {
+        val javaType = annotation.types
         annotationTypes = annotationTypes {
             experimental = javaType.experimental.get()
             beta = javaType.beta.get()
             spi = javaType.spi.get()
             internal = javaType.internal.get()
         }
+        internalClassPattern.addAll(annotation.internalClassPatterns.get())
+        internalMethodName.addAll(annotation.internalMethodNames.get())
     }
     settings.write(ANNOTATION_SETTINGS_ID, Format.PROTO_JSON, proto.toJson())
 }

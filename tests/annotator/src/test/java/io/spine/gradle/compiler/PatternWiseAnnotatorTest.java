@@ -27,6 +27,7 @@
 package io.spine.gradle.compiler;
 
 import io.spine.test.annotator.complex.Matter;
+import io.spine.test.annotator.complex.Energy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -35,24 +36,41 @@ import static io.spine.gradle.compiler.Assertions.assertInternal;
 import static io.spine.gradle.compiler.Assertions.assertNotInternal;
 
 @DisplayName("`AnnotatorPlugin` should pick up `internalClassPatterns` and")
-@Disabled("Until implemented by new API annotation plugin.")
 class PatternWiseAnnotatorTest {
 
+    /**
+     * Tests that top level classes are annotated by regex on the class or interface names.
+     *
+     * <p>These are the settings from the build file which tune it:
+     * <pre>
+     * internalClassPatterns.addAll(listOf(
+     *     ".*OrBuilder", // Classes ending with `OrBuilder`.
+     *     ".*Proto",     // Classes ending with `Proto`.
+     *     // ...
+     * ))
+     * </pre>
+     */
     @Test
-    @DisplayName("mark specified top-level classes")
+    @DisplayName("mark top-level classes")
     void markSpecifiedClasses() {
         assertInternal(ScaffoldingOrBuilder.class);
         assertInternal(BetaAllProto.class);
     }
 
     @Test
-    @DisplayName("mark nested messages and enums")
-    void markNestedTypes() {
-        assertInternal(Matter.Body.Molecule.class);
-        assertInternal(Matter.Body.Molecule.Atom.class);
-        assertInternal(Matter.Field.class);
+    @DisplayName("take package name into account")
+    void takePackageIntoAccount() {
+        assertInternal(Matter.class);
+        assertInternal(Energy.class);
+    }
 
-        assertNotInternal(Matter.class);
-        assertNotInternal(Matter.Body.class);
+    @Test
+    @DisplayName("do not annotate nested classes")
+    void notAnnotateNested() {
+        assertNotInternal(Matter.Body.Molecule.class);
+        assertNotInternal(Matter.Body.Molecule.Atom.class);
+        assertNotInternal(Matter.Field.class);
+        assertNotInternal(Energy.BrightSide.class);
+        assertNotInternal(Energy.DarkSide.class);
     }
 }

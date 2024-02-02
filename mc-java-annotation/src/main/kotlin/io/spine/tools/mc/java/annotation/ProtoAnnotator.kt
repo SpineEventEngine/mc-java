@@ -27,30 +27,39 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
-import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.javaMultipleFiles
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.WithOptions
 
 /**
- * An abstract base for annotators of message types and enums.
+ * An abstract base for annotation renderers that annotate Protobuf generated code
+ * in accordance to API level options found in the source proto files.
  *
- * This class defines the [convention] for the message types and enums.
- * It also implements filtering logic common for messages and enums in
- * [needsAnnotation] and [suitableFor] methods.
+ * @param T the type of the view state which contains information about annotated types.
  */
-internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
-    TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
+internal abstract class ProtoAnnotator<T>(
+    private val viewClass: Class<T>
+) : Annotator() where T : EntityState<*> {
 
-    protected val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+    /**
+     * The sources passed for processing to this renderer.
+     */
+    protected lateinit var sources: SourceFileSet
+
+    final override fun render(sources: SourceFileSet) {
+        if (suitableFor(sources)) {
+            this.sources = sources
+            doRender()
+        }
     }
 
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
-        val singleFile = !header.javaMultipleFiles()
-        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
-        return !(singleFile && alreadyInHeader)
+    private fun doRender() {
+        val annotated: Set<T> = select(viewClass).all()
+        annotated.forEach {
+            annotate(it)
+        }
     }
+
+    /**
+     * Annotates the code according to the given view state.
+     */
+    protected abstract fun annotate(view: T)
 }

@@ -26,31 +26,44 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.base.EntityState
-import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.javaMultipleFiles
+import io.spine.protodata.codegen.java.annotation.TypeAnnotation
+import io.spine.protodata.codegen.java.file.isJava
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
-import io.spine.tools.mc.annotation.WithOptions
 
 /**
- * An abstract base for annotators of message types and enums.
- *
- * This class defines the [convention] for the message types and enums.
- * It also implements filtering logic common for messages and enums in
- * [needsAnnotation] and [suitableFor] methods.
+ * Annotates classes matching one of
+ * the [name patterns specified][Settings.getInternalClassPatternList] in [Settings]
+ * as internal.
  */
-internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
-    TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
+internal class ClassPatternAnnotator : PatternAnnotator() {
 
-    protected val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+    private val annotationClass: Class<Annotation> by lazy {
+        annotationClass(ApiOption.INTERNAL)
     }
 
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {
-        val singleFile = !header.javaMultipleFiles()
-        val alreadyInHeader = header.optionList.contains(apiOption.fileOption)
-        return !(singleFile && alreadyInHeader)
+    override fun loadPatterns(): List<String> =
+        settings.internalClassPatternList
+
+    override fun render(sources: SourceFileSet) {
+        sources.filter { it.isJava }.forEach { file ->
+            val className = file.qualifiedTopClassName()
+            if (matches(className)) {
+                annotate(sources, file)
+            }
+        }
     }
+
+    private fun annotate(sources: SourceFileSet, file: SourceFile) {
+        TopClassAnnotation(annotationClass, file = file).let {
+            it.registerWith(context!!)
+            it.renderSources(sources)
+        }
+    }
+}
+
+private class TopClassAnnotation(annotation: Class<Annotation>, file: SourceFile) :
+    TypeAnnotation<Annotation>(annotation, file = file) {
+    override fun renderAnnotationArguments(file: SourceFile): String = ""
 }

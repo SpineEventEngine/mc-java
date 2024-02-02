@@ -41,10 +41,7 @@ modelCompiler {
             internalClassPatterns.addAll(listOf(
                 ".*OrBuilder", // Classes ending with `OrBuilder`.
                 ".*Proto",     // Classes ending with `Proto`.
-                ".*complex\\.Matter\\$.*[AaLl].*"
-                // Classes which have `complex.Matter$` in their FQN followed by an upper or lower
-                // case letters ` A` or `L`.
-                // For the sake of testing. This is not a recommended usage.
+                ".*\\.complex\\..*" // Classes which have `.complex.` in their qualified name.
             ))
             internalMethodNames.addAll(listOf(
                 "newBuilderForType",
@@ -65,4 +62,13 @@ dependencies {
     testImplementation(customAnnotations)
 
     protoData(customAnnotations)
+}
+
+tasks.findByName("launchTestProtoData")?.apply { this as JavaExec
+    debugOptions {
+        enabled.set(false) // Set this option to `true` to enable remote debugging.
+        port.set(5566)
+        server.set(true)
+        suspend.set(true)
+    }
 }

@@ -41,13 +41,22 @@ message Matter {
         message Molecule {
 
             enum Atom {
-
-                OXYGEN = 0;
-                HYDROGEN = 1;
+                A_UNDEFINED = 0;
+                OXYGEN = 1;
+                HYDROGEN = 2;
             }
         }
     }
 
     message Field {
+    }
+}
+
+message Energy {
+
+    message BrightSide {
+    }
+
+    message DarkSide {
     }
 }
