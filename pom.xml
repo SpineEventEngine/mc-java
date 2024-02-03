@@ -44,7 +44,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine</groupId>
     <artifactId>protodata</artifactId>
-    <version>0.17.6</version>
+    <version>0.17.7</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -74,13 +74,13 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-codegen-java</artifactId>
-    <version>0.17.6</version>
+    <version>0.17.7</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-compiler</artifactId>
-    <version>0.17.6</version>
+    <version>0.17.7</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -92,7 +92,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-plugin-base</artifactId>
-    <version>2.0.0-SNAPSHOT.193</version>
+    <version>2.0.0-SNAPSHOT.195</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -164,7 +164,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-plugin-testlib</artifactId>
-    <version>2.0.0-SNAPSHOT.193</version>
+    <version>2.0.0-SNAPSHOT.195</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -297,7 +297,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-tool-base</artifactId>
-    <version>2.0.0-SNAPSHOT.193</version>
+    <version>2.0.0-SNAPSHOT.195</version>
   </dependency>
   <dependency>
     <groupId>io.spine.validation</groupId>
