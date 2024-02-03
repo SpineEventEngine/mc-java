@@ -40,8 +40,7 @@ import java.nio.ByteBuffer;
 import static io.spine.gradle.compiler.Assertions.assertInternal;
 import static io.spine.gradle.compiler.Assertions.assertNotInternal;
 
-@DisplayName("`AnnotatorPlugin` should pick up `internalMethodNames` and")
-@Disabled("Until implemented by new API annotation plugin.")
+@DisplayName("`ApiAnnotationsPlugin` should pick up `internalMethodNames` and")
 class MethodNameAnnotatorTest {
 
     @SuppressWarnings("DuplicateStringLiteralInspection") // Clashes with usages in codegen.
