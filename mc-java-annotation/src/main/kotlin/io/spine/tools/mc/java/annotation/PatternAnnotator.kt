@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.annotation.ApiOption
+import java.io.File
 
 /**
  * Abstract base for annotators that process the Java code basing on
@@ -61,4 +62,4 @@ internal abstract class PatternAnnotator : Annotator() {
 }
 
 internal fun SourceFile.qualifiedTopClassName(): String
-    = relativePath.toString().replace("/", ".").replace(".java", "")
+    = relativePath.toString().replace(File.separator, ".").replace(".java", "")
