@@ -26,17 +26,15 @@
 
 package io.spine.tools.mc.java.annotation
 
-import com.intellij.psi.JavaPsiFacade
-import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.codegen.java.codeReference
 import io.spine.protodata.codegen.java.file.isJava
-import io.spine.protodata.codegen.java.file.psiFile
+import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.codegen.java.isRepeatable
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.java.PsiWriteSupport
+import io.spine.tools.psi.java.annotate
 
 internal class MethodPatternAnnotator : PatternAnnotator() {
 
@@ -48,15 +46,13 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
     }
 
     override fun render(sources: SourceFileSet) {
-        PsiWriteSupport.execute {
-            sources.filter { it.isJava }.forEach {
-                annotate(it)
-            }
+        sources.filter { it.isJava }.forEach {
+            annotate(it)
         }
     }
 
     private fun annotate(file: SourceFile) {
-        val javaFile = file.text().psiFile()
+        val javaFile = file.toPsi()
         var updated = false
         javaFile.classes.forEach {
             if (annotateInClass(it)) {
@@ -70,29 +66,23 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
     }
 
     private fun annotateInClass(cls: PsiClass): Boolean {
-        val annotation by lazy {
-            val factory = JavaPsiFacade.getElementFactory(cls.project)
-            factory.createAnnotationFromText(annotationCode, cls);
-        }
         var updated = false
         cls.methods.filter {
             matches(it.name)
         }.forEach {
-            if (annotateMethod(it, annotation)) {
+            if (annotateMethod(it)) {
                 updated = true
             }
         }
         return updated
     }
 
-    private fun annotateMethod(method: PsiMethod, annotation: PsiAnnotation): Boolean {
+    private fun annotateMethod(method: PsiMethod): Boolean {
         val alreadyAnnotated = method.hasAnnotation(annotationClass.codeReference)
         if (alreadyAnnotated && !annotationClass.isRepeatable) {
             return false
         }
-        with(method.modifierList) {
-            addBefore(annotation, firstChild)
-        }
+        method.annotate(annotationCode)
         return true
     }
 }
