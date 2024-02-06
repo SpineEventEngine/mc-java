@@ -142,6 +142,7 @@ fun Module.forceConfigurations() {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
+                    Spine.psiJava,
                     Logging.lib,
 
                     // Force the version to avoid the version conflict for

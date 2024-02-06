@@ -26,42 +26,71 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.codegen.java.annotation.TypeAnnotation
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiMethod
+import io.spine.protodata.codegen.java.codeReference
 import io.spine.protodata.codegen.java.file.isJava
+import io.spine.protodata.codegen.java.file.toPsi
+import io.spine.protodata.codegen.java.isRepeatable
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.psi.java.annotate
 
 /**
- * Annotates classes matching [name patterns specified][Settings.getInternalClassPatternList]
+ * Annotates methods matching [name patterns specified][Settings.getInternalMethodNameList]
  * in [Settings] as [`internal`][Settings.AnnotationTypes.getInternal].
  *
  * The annotation type to be used is obtained from
  * the [`internal`][Settings.AnnotationTypes.getInternal] field of
  * the [Settings.AnnotationTypes] message.
  */
-internal class ClassPatternAnnotator : PatternAnnotator() {
+internal class MethodPatternAnnotator : PatternAnnotator() {
 
     override fun loadPatterns(): List<String> =
-        settings.internalClassPatternList
+        settings.internalMethodNameList
+
+    private val annotationCode: String by lazy {
+        "@${annotationClass.codeReference}"
+    }
 
     override fun render(sources: SourceFileSet) {
-        sources.filter { it.isJava }.forEach { file ->
-            val className = file.qualifiedTopClassName()
-            if (matches(className)) {
-                annotate(sources, file)
+        sources.filter { it.isJava }.forEach {
+            annotateIn(it)
+        }
+    }
+
+    private fun annotateIn(file: SourceFile) {
+        var updated = false
+        val javaFile = file.toPsi()
+        javaFile.classes.forEach {
+            if (annotateInClass(it)) {
+                updated = true
             }
         }
-    }
-
-    private fun annotate(sources: SourceFileSet, file: SourceFile) {
-        TopClassAnnotation(annotationClass, file = file).let {
-            it.registerWith(context!!)
-            it.renderSources(sources)
+        if (updated) {
+            val updatedCode = javaFile.text
+            file.overwrite(updatedCode)
         }
     }
-}
 
-private class TopClassAnnotation(annotation: Class<Annotation>, file: SourceFile) :
-    TypeAnnotation<Annotation>(annotation, file = file) {
-    override fun renderAnnotationArguments(file: SourceFile): String = ""
+    private fun annotateInClass(cls: PsiClass): Boolean {
+        var updated = false
+        cls.methods.filter {
+            matches(it.name)
+        }.forEach {
+            if (annotate(it)) {
+                updated = true
+            }
+        }
+        return updated
+    }
+
+    private fun annotate(method: PsiMethod): Boolean {
+        val alreadyAnnotated = method.hasAnnotation(annotationClass.codeReference)
+        if (alreadyAnnotated && !annotationClass.isRepeatable) {
+            return false
+        }
+        method.annotate(annotationCode)
+        return true
+    }
 }
