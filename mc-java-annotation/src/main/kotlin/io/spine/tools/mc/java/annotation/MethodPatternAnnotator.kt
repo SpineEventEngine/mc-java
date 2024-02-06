@@ -36,6 +36,14 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.psi.java.annotate
 
+/**
+ * Annotates methods matching [name patterns specified][Settings.getInternalMethodNameList]
+ * in [Settings] as [`internal`][Settings.AnnotationTypes.getInternal].
+ *
+ * The annotation type to be used is obtained from
+ * the [`internal`][Settings.AnnotationTypes.getInternal] field of
+ * the [Settings.AnnotationTypes] message.
+ */
 internal class MethodPatternAnnotator : PatternAnnotator() {
 
     override fun loadPatterns(): List<String> =
@@ -47,13 +55,13 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
 
     override fun render(sources: SourceFileSet) {
         sources.filter { it.isJava }.forEach {
-            annotate(it)
+            annotateIn(it)
         }
     }
 
-    private fun annotate(file: SourceFile) {
-        val javaFile = file.toPsi()
+    private fun annotateIn(file: SourceFile) {
         var updated = false
+        val javaFile = file.toPsi()
         javaFile.classes.forEach {
             if (annotateInClass(it)) {
                 updated = true
@@ -70,14 +78,14 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
         cls.methods.filter {
             matches(it.name)
         }.forEach {
-            if (annotateMethod(it)) {
+            if (annotate(it)) {
                 updated = true
             }
         }
         return updated
     }
 
-    private fun annotateMethod(method: PsiMethod): Boolean {
+    private fun annotate(method: PsiMethod): Boolean {
         val alreadyAnnotated = method.hasAnnotation(annotationClass.codeReference)
         if (alreadyAnnotated && !annotationClass.isRepeatable) {
             return false

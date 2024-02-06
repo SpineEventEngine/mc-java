@@ -32,9 +32,12 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 
 /**
- * Annotates classes matching one of
- * the [name patterns specified][Settings.getInternalClassPatternList] in [Settings]
- * as internal.
+ * Annotates classes matching [name patterns specified][Settings.getInternalClassPatternList]
+ * in [Settings] as [`internal`][Settings.AnnotationTypes.getInternal].
+ *
+ * The annotation type to be used is obtained from
+ * the [`internal`][Settings.AnnotationTypes.getInternal] field of
+ * the [Settings.AnnotationTypes] message.
  */
 internal class ClassPatternAnnotator : PatternAnnotator() {
 
