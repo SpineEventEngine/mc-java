@@ -28,28 +28,30 @@ package io.spine.tools.mc.java.gradle
 import groovy.lang.Closure
 import io.spine.string.Indent.Companion.DEFAULT_JAVA_INDENT_SIZE
 import io.spine.tools.java.fs.DefaultJavaPaths
-import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig
+import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 
 /**
- * A configuration for the Spine Model Compiler for Java.
+ * Code generation options exposed in a project with McJava Gradle plugin applied.
  */
 public abstract class McJavaOptions {
+
+    private lateinit var project: Project
 
     @get:Nested
     public abstract val annotation: AnnotationSettings
 
     /**
-     * Code generation configuration.
+     * Code generation settings related to specific kinds of messages and their validation.
      */
     @JvmField
-    public var codegen: CodegenOptionsConfig? = null
+    public var codegen: MessageCodegenOptions? = null
     
     /**
-     * The indent for the generated code in the validating builders.
+     * The indent for the generated code.
      */
     public abstract val indent: Property<Int>
 
@@ -58,8 +60,6 @@ public abstract class McJavaOptions {
      */
     @JvmField
     public var tempArtifactDirs: List<String> = ArrayList()
-
-    private lateinit var project: Project
 
     init {
         @Suppress("LeakingThis")
@@ -70,7 +70,8 @@ public abstract class McJavaOptions {
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.codegen = CodegenOptionsConfig(project)
+        this.codegen =
+            MessageCodegenOptions(project)
     }
 
     public fun annotation(action: Action<AnnotationSettings>) {
@@ -80,7 +81,7 @@ public abstract class McJavaOptions {
     /**
      * Applies the given action for code generation options.
      */
-    public fun codegen(action: Action<CodegenOptionsConfig>) {
+    public fun codegen(action: Action<MessageCodegenOptions>) {
         action.execute(codegen!!)
     }
 

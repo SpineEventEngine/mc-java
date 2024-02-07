@@ -39,13 +39,12 @@ import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.base.RejectionMessage
 import io.spine.base.UuidValue
-import io.spine.core.version
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
-import io.spine.tools.mc.java.gradle.codegen.CodegenOptionsConfig
+import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.codegen.SignalConfig
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
@@ -127,7 +126,7 @@ class CodegenBlockSpec {
             val secondInterface = "test.iface.TestCommand"
             val fieldSuperclass = "test.cmd.Field"
             val suffix = "_my_commands.proto"
-            options.codegen { config: CodegenOptionsConfig ->
+            options.codegen { config: MessageCodegenOptions ->
                 config.forCommands { commands: SignalConfig ->
                     with(commands) {
                         includeFiles(by().suffix(suffix))
@@ -153,7 +152,7 @@ class CodegenBlockSpec {
             val iface = "test.iface.Event"
             val fieldSuperclass = "test.event.Field"
             val prefix = "my_"
-            options.codegen { config: CodegenOptionsConfig ->
+            options.codegen { config: MessageCodegenOptions ->
                 config.forEvents { events: SignalConfig ->
                     with(events) {
                         includeFiles(by().prefix(prefix))
@@ -177,7 +176,7 @@ class CodegenBlockSpec {
             val iface = "test.iface.RejectionMessage"
             val fieldSuperclass = "test.rejection.Field"
             val regex = ".*rejection.*"
-            options.codegen { config: CodegenOptionsConfig ->
+            options.codegen { config: MessageCodegenOptions ->
                 config.forEvents { events: SignalConfig ->
                     events.includeFiles(events.by().regex(regex))
                     events.markAs(iface)

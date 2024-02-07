@@ -43,7 +43,8 @@ import java.util.Optional
  * Gathers entity states declared in proto files.
  */
 internal class EntityDiscoveryProcess :
-    ProcessManager<File, DiscoveredEntities, DiscoveredEntities.Builder>(), EntityPluginComponent {
+    ProcessManager<File, DiscoveredEntities, DiscoveredEntities.Builder>(),
+    EntityPluginComponent {
 
     /**
      * The settings passed by McJava to [EntityPlugin].

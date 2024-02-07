@@ -51,7 +51,7 @@ import static java.util.stream.Collectors.toList;
  * may lead to runtime errors or unexpected behaviour in the Spine Event Engine framework.
  * Proceed with caution.
  *
- * @see CodegenOptionsConfig#forEntities(Action)
+ * @see MessageCodegenOptions#forEntities(Action)
  */
 public final class EntityConfig extends MessageGroupConfig<Entities> {
 
@@ -90,8 +90,8 @@ public final class EntityConfig extends MessageGroupConfig<Entities> {
     /**
      * Specifies a file pattern which matches entity state types.
      *
-     * <p>Submitting many patterns will cause all of the messages which match at least one of them
-     * to be considered entity states for code generation purposes.
+     * <p>Submitting many patterns will cause all messages matching at least one of
+     * the pattern to be considered entity states for code generation purposes.
      *
      * <p>Note. This is a part of the advanced level API.
      * See the <a href="#disclaimer">disclaimer</a> above.
