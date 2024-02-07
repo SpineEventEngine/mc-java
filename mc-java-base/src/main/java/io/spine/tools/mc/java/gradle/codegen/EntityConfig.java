@@ -32,7 +32,6 @@ import com.google.protobuf.Message;
 import io.spine.annotation.Internal;
 import io.spine.tools.mc.java.codegen.Entities;
 import io.spine.tools.proto.code.ProtoOption;
-import io.spine.validation.FilePattern;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
@@ -45,15 +44,9 @@ import static java.util.stream.Collectors.toList;
 /**
  * Configuration for entity state types' code generation.
  *
- * <p id="disclaimer">Note. This configuration allows to change the Protobuf types which are
- * recognized as entities by changing the {@code options} and/or submitting a custom
- * {@linkplain #includeFiles file pattern}. These are superuser options. Changing the default values
- * may lead to runtime errors or unexpected behaviour in the Spine Event Engine framework.
- * Proceed with caution.
- *
  * @see MessageCodegenOptions#forEntities(Action)
  */
-public final class EntityConfig extends MessageGroupConfig<Entities> {
+public final class EntityConfig extends ConfigWithFields<Entities> {
 
     private final SetProperty<String> options;
     private final Property<Boolean> generateQueries;
@@ -67,7 +60,6 @@ public final class EntityConfig extends MessageGroupConfig<Entities> {
     void convention(GeneratedMessage.GeneratedExtension<?, ?> option,
                     Class<? extends Message> markerInterface,
                     Class<?> fieldSuperclass) {
-        convention(FilePattern.getDefaultInstance());
         convention(fieldSuperclass);
         options.convention(ImmutableSet.of(option.getDescriptor().getName()));
         interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));
@@ -85,21 +77,6 @@ public final class EntityConfig extends MessageGroupConfig<Entities> {
     @Internal
     public SetProperty<String> getOptions() {
         return options;
-    }
-
-    /**
-     * Specifies a file pattern which matches entity state types.
-     *
-     * <p>Submitting many patterns will cause all messages matching at least one of
-     * the pattern to be considered entity states for code generation purposes.
-     *
-     * <p>Note. This is a part of the advanced level API.
-     * See the <a href="#disclaimer">disclaimer</a> above.
-     */
-    @Internal
-    @Override
-    public void includeFiles(FilePattern pattern) {
-        super.includeFiles(pattern);
     }
 
     /**
@@ -121,7 +98,6 @@ public final class EntityConfig extends MessageGroupConfig<Entities> {
         return Entities.newBuilder()
                 .addAllAddInterface(interfaces())
                 .addAllOption(options())
-                .addAllPattern(patterns())
                 .setGenerateQueries(generateQueries.get())
                 .setGenerateFields(generateFields())
                 .build();

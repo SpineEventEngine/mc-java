@@ -121,16 +121,8 @@ message Signals {
 // Code generation settings for entity state messages.
 message Entities {
 
-    // The patterns which names of messages which are qualified as entity states.
-    //
-    // The users may choose to define file patterns which would make all messages
-    // in a file to be entity states.
-    //
-    // These patterns are complementary to `option`, i.e. if both are set, both apply, so that
-    // messages which match the given patterns and messages which are marked with given options
-    // are considered to be entity states.
-    //
-    repeated spine.validation.FilePattern pattern = 1 [deprecated = true];
+    // For previously deprecated `pattern` field.
+    reserved 1;
 
     // Protobuf options which may mark an entity state definition.
     //

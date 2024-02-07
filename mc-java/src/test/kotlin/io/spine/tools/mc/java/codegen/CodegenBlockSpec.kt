@@ -219,12 +219,10 @@ class CodegenBlockSpec {
         fun entities() {
             val iface = "custom.EntityMessage"
             val fieldSupertype = "custom.FieldSupertype"
-            val suffix = "view.proto"
             val option = "view"
             options.codegen { config ->
                 config.forEntities {
                     it.options.add(option)
-                    it.includeFiles(it.by().suffix(suffix))
                     it.skipQueries()
                     it.markAs(iface)
                     it.markFieldsAs(fieldSupertype)
@@ -235,8 +233,6 @@ class CodegenBlockSpec {
             entities.run {
                 addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
                 generateFields.superclass.canonical shouldBe fieldSupertype
-                patternList shouldHaveSize 1
-                patternList.first().suffix shouldBe suffix
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe option
             }
@@ -367,7 +363,6 @@ class CodegenBlockSpec {
                         listOf(EntityState::class.qualifiedName)
                 generateFields.superclass.canonical shouldBe
                         EntityStateField::class.qualifiedName
-                patternList shouldBe emptyList()
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
             }
