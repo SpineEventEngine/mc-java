@@ -41,9 +41,12 @@ import "spine/protodata/ast.proto";
 // An entity state was discovered in a proto file.
 message EntityStateDiscovered {
 
-    // The type in which the option is discovered.
-    protodata.TypeName type = 1 [(required) = true];
+    // The name of the discovered entity state type.
+    protodata.TypeName name = 1 [(required) = true];
 
     // The file in which the type is defined.
     protodata.File file = 2 [(required) = true];
+
+    // The declaration of the entity state.
+    protodata.MessageType type = 3 [(required) = true];
 }

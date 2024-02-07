@@ -46,13 +46,5 @@ message DiscoveredEntities {
     protodata.File file = 1;
 
     // Message types that qualify as entity states.
-    repeated protodata.TypeName type = 2;
-}
-
-message EntityColumns {
-    option (.entity).kind = VIEW;
-
-    // The name of the entity state type.
-    protodata.TypeName type = 1;
-
+    repeated protodata.MessageType type = 2;
 }
