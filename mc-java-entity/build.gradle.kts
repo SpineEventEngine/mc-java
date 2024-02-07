@@ -24,25 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+import io.spine.internal.dependency.Spine
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-protoc",
-    "mc-java-rejection",
-    "mc-java-validation",
-    "mc-java-protodata-params",
-    "mc-java-plugin-bundle"
-)
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
-    }
+dependencies {
+    implementation(project(":mc-java-base"))
+    implementation(Spine.server)
+    implementation(Spine.Logging.lib)
 }
