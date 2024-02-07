@@ -24,14 +24,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
+syntax = "proto3";
 
-plugins {
-    id("io.spine.mc-java")
-}
+package spine.tools.mc.entity;
 
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.entity.event";
+option java_outer_classname = "EventsProto";
+option java_multiple_files = true;
+
+import "spine/protodata/file.proto";
+import "spine/protodata/ast.proto";
+
+// An entity state was discovered in a proto file.
+message EntityStateDiscovered {
+
+    // The type in which the option is discovered.
+    protodata.TypeName type = 1 [(required) = true];
+
+    // The file in which the type is defined.
+    protodata.File file = 2 [(required) = true];
 }

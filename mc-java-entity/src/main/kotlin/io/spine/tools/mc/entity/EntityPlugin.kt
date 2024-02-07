@@ -24,14 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.entity
 
-plugins {
-    id("io.spine.mc-java")
-}
+import io.spine.protodata.plugin.Plugin
+import io.spine.server.BoundedContextBuilder
 
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
+/**
+ * A ProtoData plugin responsible for handling code generation aspects related to
+ * entity state declarations.
+ *
+ * @see EntityPluginComponent
+ */
+public class EntityPlugin : Plugin {
+
+    override fun extend(context: BoundedContextBuilder) {
+        context.add(EntityDiscoveryProcess::class.java)
+    }
 }

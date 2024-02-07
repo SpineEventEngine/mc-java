@@ -24,14 +24,35 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
+syntax = "proto3";
 
-plugins {
-    id("io.spine.mc-java")
+package spine.tools.mc.entity;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.column";
+option java_outer_classname = "ViewsProto";
+option java_multiple_files = true;
+
+import "spine/protodata/ast.proto";
+import "spine/protodata/file.proto";
+
+// Provides names of entity state types declared in a proto file.
+message DiscoveredEntities {
+    option (.entity).kind = PROCESS_MANAGER;
+
+    // The file which declares entity state types.
+    protodata.File file = 1;
+
+    // Message types that qualify as entity states.
+    repeated protodata.TypeName type = 2;
 }
 
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
+message EntityColumns {
+    option (.entity).kind = VIEW;
+
+    // The name of the entity state type.
+    protodata.TypeName type = 1;
+
 }

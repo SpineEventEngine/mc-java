@@ -24,14 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
+package io.spine.tools.mc.entity
 
-plugins {
-    id("io.spine.mc-java")
-}
+import io.spine.protodata.settings.LoadsSettings
 
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
+/**
+ * A common interface for [EntityPlugin] parts that load
+ * shared codegen [settings][io.spine.tools.mc.java.codegen.Entities] stored
+ * using the canonical name of the plugin class.
+ */
+internal interface EntityPluginComponent : LoadsSettings {
+
+    override val consumerId: String
+        get() = EntityPlugin::class.java.canonicalName
 }
