@@ -32,6 +32,7 @@ import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.codegen.CodegenOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ANNOTATION_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ENTITY_SETTINGS_ID
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
@@ -60,8 +61,9 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
     @Throws(IOException::class)
     private fun writeFile() {
         val settings = settingsDirectory()
-        forValidation(settings)
-        forAnnotation(settings)
+        forValidationPlugin(settings)
+        forAnnotationPlugin(settings)
+        forEntityPlugin(settings)
     }
 }
 
@@ -82,7 +84,7 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  * The settings are taken from McJava extension object and converted to
  * [io.spine.validation.ValidationConfig], which is later written as JSON file.
  */
-private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
+private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirectory) {
     val options = project.mcJava
     val codegen = options.codegen!!.toProto()
     val markers = codegen.let {
@@ -103,7 +105,7 @@ private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
 private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
-private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
+private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirectory) {
     val options = project.mcJava
     val annotation = options.annotation
     val proto = settings {
@@ -118,4 +120,10 @@ private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
         internalMethodName.addAll(annotation.internalMethodNames.get())
     }
     settings.write(ANNOTATION_SETTINGS_ID, Format.PROTO_JSON, proto.toJson())
+}
+
+private fun WriteProtoDataSettings.forEntityPlugin(settings: SettingsDirectory) {
+    val options = project.mcJava
+    val entitySettings = options.codegen!!.entities().toProto()
+    settings.write(ENTITY_SETTINGS_ID, Format.PROTO_JSON, entitySettings.toJson())
 }

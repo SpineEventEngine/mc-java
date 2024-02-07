@@ -84,12 +84,17 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
     companion object {
 
         /**
+         * The name of the task for writing ProtoData settings.
+         */
+        const val WRITE_PROTODATA_SETTINGS = "writeProtoDataSettings"
+
+        /**
          * The name of the Validation plugin for ProtoData.
          */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
 
         /**
-         * The ID used by Validation components to load the settings.
+         * The ID used by Validation plugin components to load the settings.
          */
         const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
 
@@ -99,9 +104,9 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
 
         /**
-         * The name of the task for writing ProtoData settings.
+         * The ID used by Entity plugin components to load settings.
          */
-        const val WRITE_PROTODATA_SETTINGS = "writeProtoDataSettings"
+        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.entity.EntityPlugin"
     }
 }
 
