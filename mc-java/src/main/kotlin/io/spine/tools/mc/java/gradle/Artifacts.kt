@@ -152,6 +152,18 @@ internal object McJava {
     }
 
     /**
+     * The Maven artifact containing the `spine-mc-java-entity` module.
+     */
+    internal val entity: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            setName("spine-mc-java-entity")
+            setVersion(this@McJava.version)
+            setExtension(JAR_EXTENSION)
+        }
+    }
+
+    /**
      * The Maven artifact containing the `spine-mc-java-plugins:all` fat JAR artifact.
      */
     @JvmStatic

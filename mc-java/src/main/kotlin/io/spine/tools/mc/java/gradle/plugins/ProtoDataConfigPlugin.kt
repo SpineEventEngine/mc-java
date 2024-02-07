@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+@file:Suppress("TooManyFunctions") // Prefer smaller configuration steps as `fun` over the limit.
+
 package io.spine.tools.mc.java.gradle.plugins
 
-import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
@@ -33,11 +35,14 @@ import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
+import io.spine.tools.mc.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
+import io.spine.tools.mc.java.gradle.McJava.entity
 import io.spine.tools.mc.java.gradle.McJava.rejection
 import io.spine.tools.mc.java.gradle.Validation.javaCodegenBundle
 import io.spine.tools.mc.java.gradle.Validation.javaRuntime
+import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
@@ -51,6 +56,8 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
+import io.spine.protodata.plugin.Plugin as ProtoDataPlugin
+import io.spine.protodata.gradle.CodegenSettings as ProtoDataSettings
 
 /**
  * The plugin that configures ProtoData for the associated project.
@@ -131,46 +138,57 @@ private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
  * Configures ProtoData with plugins, for the given Gradle project.
  */
 private fun Project.configureProtoDataPlugins() {
-    val protodata = extensions.getByType<CodegenSettings>()
-    configureValidationRendering(protodata)
-    configureRejectionRendering(protodata)
-
-    protodata.plugins(
-        // It should follow `RejectionPlugin` so that rejection throwable types are annotated too.
-        ApiAnnotationsPlugin::class.java.getName()
-    )
-
-    setSubdirectories(protodata)
-    addUserClasspathDependencies(
+    // Dependencies common to all the plugins.
+    addUserClasspathDependency(
         base,
         toolBase,
-        annotation,
     )
+    val protodata = extensions.getByType<ProtoDataSettings>()
+    configureValidationRendering(protodata)
+    configureRejectionRendering(protodata)
+    configureEntityRendering(protodata)
+
+    // Annotations should follow `RejectionPlugin` and `EntityPlugin`
+    // so that their output is annotated too.
+    configureAnnotationRendering(protodata)
+
+    setSubdirectories(protodata)
 }
 
-private fun Project.configureValidationRendering(protodata: CodegenSettings) {
-    val validationConfig = mcJava.codegen!!.validation()
+private val Project.messageOptions: MessageCodegenOptions
+    get() = mcJava.codegen!!
+
+private fun Project.configureValidationRendering(protodata: ProtoDataSettings) {
+    val validationConfig = messageOptions.validation()
     if (validationConfig.enabled.get()) {
+        val version = validationConfig.version.get()
+        addUserClasspathDependency(javaCodegenBundle(version))
         protodata.plugins(
             VALIDATION_PLUGIN_CLASS
         )
-        val version = validationConfig.version.get()
-        addDependency(Names.USER_CLASSPATH_CONFIGURATION, javaCodegenBundle(version))
         addDependency("implementation", javaRuntime(version))
     }
 }
 
-private fun Project.configureRejectionRendering(protodata: CodegenSettings) {
-    val rejectionCodegen = mcJava.codegen!!.rejections()
+private fun Project.configureRejectionRendering(protodata: ProtoDataSettings) {
+    val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
-        protodata.plugins(
-            RejectionPlugin::class.java.getName()
-        )
-        addUserClasspathDependencies(rejection)
+        addUserClasspathDependency(rejection)
+        protodata.addPlugin<RejectionPlugin>()
     }
 }
 
-private fun setSubdirectories(protodata: CodegenSettings) {
+private fun Project.configureEntityRendering(protodata: ProtoDataSettings) {
+    addUserClasspathDependency(entity)
+    protodata.addPlugin<EntityPlugin>()
+}
+
+private fun Project.configureAnnotationRendering(protodata: ProtoDataSettings) {
+    addUserClasspathDependency(annotation)
+    protodata.addPlugin<ApiAnnotationsPlugin>()
+}
+
+private fun setSubdirectories(protodata: ProtoDataSettings) {
     protodata.subDirs = listOf(
         generatedJavaDirName.value(),
         generatedGrpcDirName.value(),
@@ -178,7 +196,7 @@ private fun setSubdirectories(protodata: CodegenSettings) {
     )
 }
 
-private fun Project.addUserClasspathDependencies(vararg artifacts: Artifact) = artifacts.forEach {
+private fun Project.addUserClasspathDependency(vararg artifacts: Artifact) = artifacts.forEach {
     addDependency(Names.USER_CLASSPATH_CONFIGURATION, it)
 }
 
@@ -194,4 +212,8 @@ private fun Project.findDependency(artifact: Artifact): Dependency? {
                 && artifact.name() == d.name
     }
     return found
+}
+
+private inline fun <reified T: ProtoDataPlugin> ProtoDataSettings.addPlugin() {
+    plugins(T::class.java.name)
 }
