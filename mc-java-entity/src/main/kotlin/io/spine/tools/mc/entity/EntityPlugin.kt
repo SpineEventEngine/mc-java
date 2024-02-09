@@ -27,7 +27,9 @@
 package io.spine.tools.mc.entity
 
 import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.renderer.Renderer
 import io.spine.server.BoundedContextBuilder
+import io.spine.tools.mc.java.entity.column.ColumnRenderer
 
 /**
  * A ProtoData plugin responsible for handling code generation aspects related to
@@ -36,6 +38,10 @@ import io.spine.server.BoundedContextBuilder
  * @see EntityPluginComponent
  */
 public class EntityPlugin : Plugin {
+
+    override fun renderers(): List<Renderer<*>> = listOf(
+        ColumnRenderer()
+    )
 
     override fun extend(context: BoundedContextBuilder) {
         context.add(EntityDiscoveryProcess::class.java)

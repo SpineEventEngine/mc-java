@@ -29,12 +29,10 @@ package io.spine.tools.mc.entity
 import io.spine.core.External
 import io.spine.protodata.File
 import io.spine.protodata.event.TypeEntered
-import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.entity.alter
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
-import io.spine.tools.mc.column.DiscoveredEntities
 import io.spine.tools.mc.entity.event.EntityStateDiscovered
 import io.spine.tools.mc.entity.event.entityStateDiscovered
 import io.spine.tools.mc.java.codegen.Entities
