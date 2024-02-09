@@ -31,7 +31,7 @@ package spine.tools.mc.entity;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.column";
+option java_package = "io.spine.tools.mc.entity";
 option java_outer_classname = "ViewsProto";
 option java_multiple_files = true;
 
@@ -40,7 +40,7 @@ import "spine/protodata/file.proto";
 
 // Provides names of entity state types declared in a proto file.
 message DiscoveredEntities {
-    option (.entity).kind = PROCESS_MANAGER;
+    option (.entity) = { kind: PROCESS_MANAGER visibility: QUERY };
 
     // The file which declares entity state types.
     protodata.File file = 1;
