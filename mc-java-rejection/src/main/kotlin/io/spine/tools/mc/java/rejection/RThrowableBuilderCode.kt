@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,18 +38,18 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.code.java.PackageName
 import io.spine.code.java.SimpleClassName
 import io.spine.protodata.Field
-import io.spine.protodata.FieldName
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.codegen.java.RejectionThrowableConvention
-import io.spine.protodata.codegen.java.primitiveClass
+import io.spine.protodata.codegen.java.javaCase
+import io.spine.protodata.codegen.java.javaType
+import io.spine.protodata.codegen.java.primarySetterName
+import io.spine.protodata.codegen.java.toPrimitiveName
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem
-import io.spine.string.camelCase
-import io.spine.string.titleCase
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
@@ -88,7 +88,7 @@ internal class RThrowableBuilderCode internal constructor(
     typeSystem: TypeSystem
 ) : BuilderSpec {
 
-    private val messageOrEnumConvention = MessageOrEnumConvention(typeSystem)
+    private val typeSystem: TypeSystem = typeSystem
     private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
@@ -144,12 +144,12 @@ internal class RThrowableBuilderCode internal constructor(
         }
     }
 
-    private fun Field.setterMethod(): MethodSpec = methodSpec(primarySetterName()) {
+    private fun Field.setterMethod(): MethodSpec = methodSpec(primarySetterName) {
         val parameterName = name.javaCase()
         addModifiers(PUBLIC)
         returns(builderClass())
         addParameter(poetTypeName(), parameterName)
-        addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName(), parameterName)
+        addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName, parameterName)
         addStatement(RETURN_STATEMENT)
 
         // Add line separator to simulate behavior of native Protobuf API.
@@ -169,22 +169,12 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun singularNameOf(type: Type): PoTypeName {
-        val javaType = when {
-            type.hasMessage() ->
-                messageOrEnumConvention.declarationFor(type.message).name.canonical
-            type.hasEnumeration() ->
-                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
-            type.hasPrimitive() ->
-                type.primitive.toPrimitiveName()
-            else -> {
-                unknownType(type)
-            }
-        }
+        val javaType = type.javaType(typeSystem)
         return typeNameOf(javaType)
     }
 
     private fun repeatedNameOf(type: Type): PoTypeName {
-        val elementType = javaTypeName(type)
+        val elementType = type.javaType(typeSystem)
         return RepeatedFieldType.typeNameFor(elementType)
     }
 
@@ -192,7 +182,7 @@ internal class RThrowableBuilderCode internal constructor(
         val keyTypeName = singularNameOf(keyType)
         val valueTypeName = singularNameOf(valueType)
         val result = ParameterizedTypeName.get(
-            ClassName.get(MutableMap::class.java), keyTypeName, valueTypeName
+            ClassName.get(java.util.Map::class.java), keyTypeName, valueTypeName
         )
         return result
     }
@@ -202,21 +192,6 @@ internal class RThrowableBuilderCode internal constructor(
      */
     private fun builderClass(): ClassName =
         throwableClass.nestedClass(simpleClassName)
-
-    /**
-     * Obtains the name of the Java class generated from a Protobuf type with the given name.
-     */
-    private fun javaTypeName(type: Type): String {
-        return when {
-            type.hasPrimitive() ->
-                type.primitive.toPrimitiveName()
-            type.hasMessage() ->
-                messageOrEnumConvention.declarationFor(type.message).name.canonical
-            type.hasEnumeration() ->
-                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
-            else -> unknownType(type)
-        }
-    }
 }
 
 private val newBuilder = NoArgMethod(NEW_BUILDER)
@@ -231,20 +206,6 @@ private fun wrapInPre(text: String): String =
     JavadocText.fromUnescaped(text)
         .inPreTags()
         .value()
-
-private fun FieldName.javaCase(): String {
-    val camelCase = value.camelCase()
-    return camelCase.replaceFirstChar { it.lowercaseChar() }
-}
-
-private fun Field.primarySetterName(): String {
-    val capName = name.javaCase().titleCase()
-    return when {
-        isMap -> "putAll$capName"
-        isRepeated -> "addAll$capName"
-        else -> "set$capName"
-    }
-}
 
 private fun singularNameOf(primitiveType: PrimitiveType): PoTypeName =
     typeNameOf(primitiveType.toPrimitiveName())
@@ -286,15 +247,6 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
     addJavadoc(ofRejectionMessageMethod)
     returns(annotatedType)
     addStatement("return \$L.build()", BUILDER_FIELD)
-}
-
-/**
- * Obtains a name of the class which corresponds to this primitive type.
- */
-private fun PrimitiveType.toPrimitiveName(): String {
-    val klass = primitiveClass()
-    val primitiveClass = klass.javaPrimitiveType ?: klass.java
-    return primitiveClass.name
 }
 
 private fun unknownType(type: Type): Nothing =

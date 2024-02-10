@@ -31,6 +31,7 @@ import com.intellij.psi.PsiMethod
 import io.spine.protodata.Field
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.javaCase
+import io.spine.query.EntityColumn
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import org.intellij.lang.annotations.Language
 
@@ -59,7 +60,9 @@ internal class ColumnAccessor(
         get() = this.field.type.javaClass.canonicalName
 
     private val columnType: String
-        get() = """
-            io.spine.query.EntityColumn<${entityStateClass.canonical}, $fieldType>                         
-        """.trimIndent()
+        get() {
+            val state = entityStateClass.canonical
+            val container = EntityColumn::class.java.canonicalName
+            return "$container<$state, $fieldType>"
+        }
 }
