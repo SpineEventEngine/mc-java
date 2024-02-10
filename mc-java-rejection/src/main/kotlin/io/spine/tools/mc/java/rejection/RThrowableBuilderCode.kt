@@ -41,7 +41,6 @@ import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
 import io.spine.protodata.codegen.java.RejectionThrowableConvention
 import io.spine.protodata.codegen.java.javaCase
 import io.spine.protodata.codegen.java.javaType
@@ -85,10 +84,9 @@ internal class RThrowableBuilderCode internal constructor(
     private val rejection: MessageType,
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,
-    typeSystem: TypeSystem
+    private val typeSystem: TypeSystem
 ) : BuilderSpec {
 
-    private val typeSystem: TypeSystem = typeSystem
     private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
@@ -152,24 +150,25 @@ internal class RThrowableBuilderCode internal constructor(
         addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName, parameterName)
         addStatement(RETURN_STATEMENT)
 
-        // Add line separator to simulate behavior of native Protobuf API.
-        val leadingComment = doc.leadingComment + System.lineSeparator()
-
-        if (leadingComment.isNotEmpty()) {
+        if (doc.leadingComment.isNotEmpty()) {
+            // Add line separator to simulate the behavior of native Protobuf API.
+            val leadingComment = doc.leadingComment + System.lineSeparator()
             addJavadoc(wrapInPre(leadingComment))
         }
     }
 
     private fun Field.poetTypeName(): PoTypeName {
+//        val javaType = type.javaType(typeSystem)
+//        return typeNameOf(javaType)
         return when {
             isMap -> mapType(map.keyType, type)
             isRepeated -> repeatedNameOf(type)
-            else -> singularNameOf(type)
+            else -> type.toPoet()
         }
     }
 
-    private fun singularNameOf(type: Type): PoTypeName {
-        val javaType = type.javaType(typeSystem)
+    private fun Type.toPoet(): PoTypeName {
+        val javaType = javaType(typeSystem)
         return typeNameOf(javaType)
     }
 
@@ -179,8 +178,8 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun mapType(keyType: PrimitiveType, valueType: Type): PoTypeName {
-        val keyTypeName = singularNameOf(keyType)
-        val valueTypeName = singularNameOf(valueType)
+        val keyTypeName = keyType.toPoet()
+        val valueTypeName = valueType.toPoet()
         val result = ParameterizedTypeName.get(
             ClassName.get(java.util.Map::class.java), keyTypeName, valueTypeName
         )
@@ -207,8 +206,8 @@ private fun wrapInPre(text: String): String =
         .inPreTags()
         .value()
 
-private fun singularNameOf(primitiveType: PrimitiveType): PoTypeName =
-    typeNameOf(primitiveType.toPrimitiveName())
+private fun PrimitiveType.toPoet(): PoTypeName =
+    typeNameOf(toPrimitiveName())
 
 private fun typeNameOf(javaType: String): PoTypeName =
     constructTypeNameFor(javaType).boxIfPrimitive()
@@ -248,6 +247,3 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
     returns(annotatedType)
     addStatement("return \$L.build()", BUILDER_FIELD)
 }
-
-private fun unknownType(type: Type): Nothing =
-    error("Unknown type: `${type}`.")
