@@ -39,6 +39,8 @@ import io.spine.protodata.type.TypeSystem
 private val Type.isEnum: Boolean
     get() = hasEnumeration()
 
+//TODO:2024-02-10:alexander.yevsyukov: Migrate to `AstJavaExts.kt` in ProtoData.
+
 /**
  * Obtains a fully qualified name of this type in the context of the given [TypeSystem].
  *
@@ -69,9 +71,11 @@ public fun Type.javaType(typeSystem: TypeSystem): String {
 /**
  * Obtains the Java type of the field in the context of the given [TypeSystem].
  *
+ * The returned type may have generic parameters, if the field is `repeated` or a `map`.
+ *
  * @param typeSystem
- *         type system to use for resolving the Java type.
- * @return the fully qualified name of the Java type for the field.
+ *         the type system to use for resolving the Java type.
+ * @return the fully qualified reference to the Java type of the field.
  * @throws IllegalStateException
  *         if the field type cannot be converted to a Java counterpart.
  */
@@ -82,7 +86,7 @@ public fun Field.javaType(typeSystem: TypeSystem): String = when {
 }
 
 private fun TypeSystem.mapType(key: PrimitiveType, value: Type): String {
-    val keyType = key.toPrimitiveName()
+    val keyType = key.primitiveClass()
     val valueType = value.javaType(this)
     return "${java.util.Map::class.java.canonicalName}<$keyType, $valueType>"
 }
