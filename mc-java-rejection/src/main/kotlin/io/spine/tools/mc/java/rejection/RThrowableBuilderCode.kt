@@ -158,11 +158,11 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun Field.poetTypeName(): PoTypeName {
-//        val javaType = type.javaType(typeSystem)
+//        val javaType = javaType(typeSystem)
 //        return typeNameOf(javaType)
         return when {
-            isMap -> mapType(map.keyType, type)
-            isRepeated -> repeatedNameOf(type)
+            isMap -> mapTypeOf(map.keyType, type)
+            isRepeated -> repeatedTypeOf(type)
             else -> type.toPoet()
         }
     }
@@ -172,12 +172,12 @@ internal class RThrowableBuilderCode internal constructor(
         return typeNameOf(javaType)
     }
 
-    private fun repeatedNameOf(type: Type): PoTypeName {
+    private fun repeatedTypeOf(type: Type): PoTypeName {
         val elementType = type.javaType(typeSystem)
         return RepeatedFieldType.typeNameFor(elementType)
     }
 
-    private fun mapType(keyType: PrimitiveType, valueType: Type): PoTypeName {
+    private fun mapTypeOf(keyType: PrimitiveType, valueType: Type): PoTypeName {
         val keyTypeName = keyType.toPoet()
         val valueTypeName = valueType.toPoet()
         val result = ParameterizedTypeName.get(
