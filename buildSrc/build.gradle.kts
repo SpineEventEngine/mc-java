@@ -168,6 +168,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
+dependOnBuildSrcJar()
+
 dependencies {
     api("com.github.jk1:gradle-license-report:$licenseReportVersion")
     dependOnAuthCommon()
@@ -192,6 +194,17 @@ dependencies {
         "org.jetbrains.kotlinx:kover-gradle-plugin:$koverVersion"
     ).forEach {
         implementation(it)
+    }
+}
+
+fun Project.dependOnBuildSrcJar() {
+    val srcFolder = rootDir.resolve("src")
+    val buildSrcJar = rootDir.resolve("buildSrc.jar")
+    if (!srcFolder.exists() && buildSrcJar.exists()) {
+        logger.info("Adding the pre-compiled 'buildSrc.jar' to 'implementation' dependencies.")
+        dependencies {
+            implementation(files("buildSrc.jar"))
+        }
     }
 }
 
