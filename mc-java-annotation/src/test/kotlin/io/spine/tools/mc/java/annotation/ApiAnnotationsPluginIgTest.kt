@@ -123,13 +123,17 @@ internal class ApiAnnotationsPluginIgTest {
             project = GradleProject.setupAt(projectDir)
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()
+                .withSharedTestKitDirectory()
                 /* Uncomment the following line to be able to debug the build.
                    Remember to turn off so that tests run faster, AND Windows build does not
                    fail with the error on Windows Registry unavailability. */
                 //.enableRunnerDebug()
                 .create()
             (project.runner as DefaultGradleRunner).withJvmArguments(
-                "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
+                "-Xmx8g",
+                "-XX:MaxMetaspaceSize=1512m",
+                "-XX:+UseParallelGC",
+                "-XX:+HeapDumpOnOutOfMemoryError"
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             project.executeTask(McJavaTaskName.launchProtoData)

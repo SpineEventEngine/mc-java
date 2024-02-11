@@ -41,9 +41,9 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.isDirectory
+import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -88,6 +88,7 @@ internal class RejectionCodegenIgTest {
             val project: GradleProject = GradleProject.setupAt(projectDir)
                 .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
+                .withSharedTestKitDirectory()
                  /*
                     Running tests with `enableRunnerDebug()` turned on
                     ---------------------------------------------------
@@ -100,6 +101,12 @@ internal class RejectionCodegenIgTest {
                  */
                  //.enableRunnerDebug()
                 .create()
+            (project.runner as DefaultGradleRunner).withJvmArguments(
+                "-Xmx8g",
+                "-XX:MaxMetaspaceSize=1512m",
+                "-XX:+UseParallelGC",
+                "-XX:+HeapDumpOnOutOfMemoryError"
+            )
             moduleDir = projectDir.toPath()
                 .resolve("sub-module")
                 .toFile()
