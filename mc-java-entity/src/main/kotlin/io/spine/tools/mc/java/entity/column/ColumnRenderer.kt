@@ -36,7 +36,7 @@ import io.spine.tools.mc.entity.DiscoveredEntities
 import io.spine.tools.mc.entity.EntityPluginComponent
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.codegen.Entities
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.renderColumns
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.PsiWrite
 
 /**
@@ -71,7 +71,7 @@ internal class ColumnRenderer : JavaRenderer(), EntityPluginComponent {
         val sourceFile = messageType.sourceFileIn(sources)
         val className = classNameOf(messageType.name, messageType.file)
         PsiWrite.execute {
-            renderColumns(typeSystem!!, sourceFile, className, messageType)
+            render(typeSystem!!, sourceFile, className, messageType)
         }
     }
 

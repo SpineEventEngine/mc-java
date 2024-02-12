@@ -34,6 +34,7 @@ import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
+import io.spine.string.joinByLines
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.psi.java.PsiWrite.elementFactory
@@ -48,15 +49,21 @@ import org.intellij.lang.annotations.Language
 /**
  * Creates a class called `Column` and nest it under the top level entity state class.
  *
- * @see renderColumns
+ * @see render
  */
 internal class ColumnClassFactory(
     private val typeSystem: TypeSystem,
-    private val type: MessageType,
-    private val entityStateClassName: ClassName
+    type: MessageType,
+    private val entityState: ClassName
 ) {
     private val columnClass = elementFactory.createClass(CLASS_NAME)
     private val columns: List<Field> = type.columns
+
+    /**
+     * Reference to [entityState] made in Javadoc.
+     */
+    @Suppress("EmptyClass")
+    private val stateJavadocRef: String = "{@code ${entityState.simpleName}}"
 
     companion object {
 
@@ -64,8 +71,7 @@ internal class ColumnClassFactory(
          * The name of the created class.
          */
         private const val CLASS_NAME = "Column"
-
-        fun renderColumns(
+        fun render(
             typeSystem: TypeSystem,
             file: SourceFile,
             cls: ClassName,
@@ -91,6 +97,7 @@ internal class ColumnClassFactory(
 
     private fun addAnnotation() {
         val version = Version.fromManifestOf(this::class.java)
+        @Suppress("EmptyClass")
         @Language("JAVA")
         val annotation = elementFactory.createAnnotationFromText("""
             @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value}")
@@ -99,10 +106,11 @@ internal class ColumnClassFactory(
     }
 
     private fun addClassJavadoc() {
+        @Suppress("EmptyClass")
         @Language("JAVA")
         val classJavadoc = elementFactory.createCommentFromText("""
             /**
-             * A listing of all entity columns of {@code ${type.name.simpleName}}.
+             * A listing of entity columns defined in $stateJavadocRef.
              *
              * <p>Use static methods of this class to access the columns of the entity
              * which can then be used for creating filters in a query.
@@ -113,12 +121,29 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(typeSystem, entityStateClassName, column, columnClass)
+            val accessor = ColumnAccessor(typeSystem, entityState, column, columnClass)
             columnClass.add(accessor.method())
         }
     }
 
     private fun addDefinitionsMethod() {
-        // TODO("Not yet implemented")
+        val columnWildcard = columnType(entityState)
+        @Suppress("EmptyClass")
+        val accumulator = "result"
+        val addingColumns = columns.map { "$accumulator.add(${columnMethodName(it)};" }
+            .joinByLines()
+        @Language("JAVA")
+        val method = elementFactory.createMethodFromText("""
+            /**
+             * Returns all the column definitions of $stateJavadocRef.
+             */
+            public static $columnWildcard definitions() {
+              var $accumulator = new java.util.HashSet<$columnWildcard>();
+              $addingColumns
+              return com.google.common.collect.ImmutableSet.copyOf($accumulator);
+            }                                
+            """.trimIndent(), columnClass
+        )
+        columnClass.add(method)
     }
 }

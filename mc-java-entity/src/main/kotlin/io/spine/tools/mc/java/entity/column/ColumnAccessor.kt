@@ -47,12 +47,13 @@ import org.intellij.lang.annotations.Language
  */
 internal class ColumnAccessor(
     private val typeSystem: TypeSystem,
-    private val entityStateClass: ClassName,
+    private val entityState: ClassName,
     private val field: Field,
     private val wrappingClass: PsiClass
 ) {
 
     fun method(): PsiMethod {
+        val columnType = columnType(entityState, typeSystem, field)
         @Language("JAVA")
         val result = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
@@ -63,18 +64,42 @@ internal class ColumnAccessor(
         return result
     }
 
-    private val container = EntityColumn::class.reference
-    private val stateRef = entityStateClass.canonical
+    private val stateRef = entityState.canonical
 
     private val methodName: String
-        get() = this.field.name.javaCase()
-
-    private val fieldType: String
-        get() = this.field.type.javaType(typeSystem)
-
-    private val columnType: String
-        get() {
-            val state = entityStateClass.canonical
-            return "$container<$state, $fieldType>"
-        }
+        get() = columnMethodName(this.field)
 }
+
+/**
+ * Obtains a name for accessing the column for the given field.
+ */
+internal fun columnMethodName(field: Field): String =
+    field.name.javaCase()
+
+/**
+ * Obtains a string with the of an entity column parameterized by
+ * the type of the field, if specified.
+ *
+ * @param entityState
+ *         the name of the entity state class.
+ * @param typeSystem
+ *         the instance of the [TypeSystem] to resolve the type of the given [field].
+ *         Can be `null`, if [field] is `null`.
+ * @param field
+ *         the field of the column for composing the type.
+ *         It is `null`, if the method is called for obtaining wildcard generic type name.
+ */
+internal fun columnType(
+    entityState: ClassName,
+    typeSystem: TypeSystem? = null,
+    field: Field? = null
+): String {
+    require(!(typeSystem == null && field != null)) {
+        "Unable to obtain a field type without type system."
+    }
+    val fieldType = field?.javaType(typeSystem!!) ?: "?"
+    val state = entityState.canonical
+    return "$container<$state, $fieldType>"
+}
+
+private val container = EntityColumn::class.reference
