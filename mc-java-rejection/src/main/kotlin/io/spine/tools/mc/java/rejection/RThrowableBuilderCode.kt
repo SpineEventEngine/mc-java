@@ -158,8 +158,6 @@ internal class RThrowableBuilderCode internal constructor(
     }
 
     private fun Field.poetTypeName(): PoTypeName {
-//        val javaType = javaType(typeSystem)
-//        return typeNameOf(javaType)
         return when {
             isMap -> mapTypeOf(map.keyType, type)
             isRepeated -> repeatedTypeOf(type)

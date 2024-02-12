@@ -28,18 +28,21 @@ package io.spine.protodata.codegen.java
 
 import io.spine.protodata.Field
 import io.spine.protodata.PrimitiveType
+import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.Type
+import io.spine.protodata.TypeName
 import io.spine.protodata.isMap
 import io.spine.protodata.isMessage
 import io.spine.protodata.isPrimitive
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem
+import io.spine.type.shortDebugString
 
 // TODO: Migrate this to ProtoData `AstExtensions.kt`.
 private val Type.isEnum: Boolean
     get() = hasEnumeration()
 
-//TODO:2024-02-10:alexander.yevsyukov: Migrate to `AstJavaExts.kt` in ProtoData.
+//TODO:2024-02-10:alexander.yevsyukov: Move to `AstJavaExts.kt` in ProtoData.
 
 /**
  * Obtains a fully qualified name of this type in the context of the given [TypeSystem].
@@ -49,23 +52,62 @@ private val Type.isEnum: Boolean
  * is returned.
  *
  * @param typeSystem
- *         type system to use for resolving the Java type.
+ *         the type system to use for resolving the Java type.
  * @throws IllegalStateException
  *         if the field type cannot be converted to a Java counterpart.
  */
 @Suppress("ReturnCount") // Sooner exit is important!
 public fun Type.javaType(typeSystem: TypeSystem): String {
     if (isPrimitive) {
-        return primitive.toPrimitiveName()
+        return primitiveClassName()
     }
-    val convention = MessageOrEnumConvention(typeSystem)
-    if (isMessage) {
-        return convention.declarationFor(message).name.canonical
+    val declaredIn = typeSystem.findHeader(this)
+    check(declaredIn != null) {
+        "Unable to locate a header of the file declaring the type `${shortDebugString()}`."
     }
-    if (isEnum) {
-        return convention.declarationFor(enumeration).name.canonical
+    return javaClassName(declaredIn)
+}
+
+private fun Type.primitiveClassName(): String {
+    check(isPrimitive) {
+        error("The type is not primitive: `${shortDebugString()}`.")
     }
-    error("Unable to convert the type `$this` to Java counterpart.")
+    return primitive.primitiveClass().java.canonicalName
+}
+
+/**
+ * Finds a header of the file which declares the given type.
+ */
+public fun TypeSystem.findHeader(type: Type): ProtoFileHeader? {
+    require(type.isMessage || type.isEnum) {
+        "The type must be either a message or an enum. Passed: `${type.shortDebugString()}`."
+    }
+    val typeName = type.typeName()
+    val found = when {
+        type.isMessage -> findMessage(typeName)
+        type.isEnum -> findEnum(typeName)
+        else -> null // Cannot happen.
+    }
+    return found?.second
+}
+
+private fun Type.typeName(): TypeName {
+    val typeName = when {
+        isMessage -> message
+        isEnum -> enumeration
+        else -> error("Unable to convert a primitive type `${primitive.name}` to `TypeName`.")
+    }
+    return typeName
+}
+
+/**
+ * Obtains a name of a Java class which corresponds to values with this type.
+ */
+public fun Type.javaClassName(accordingTo: ProtoFileHeader): String = when {
+    isPrimitive -> primitiveClassName()
+    isMessage -> message.javaClassName(accordingTo).canonical
+    isEnum -> enumeration.javaClassName(accordingTo).canonical
+    else -> error("Unable to convert the type `$this` to Java counterpart.")
 }
 
 /**
