@@ -34,6 +34,7 @@ import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import io.spine.tools.psi.java.addFirst
@@ -100,9 +101,10 @@ internal class ColumnClassFactory(
     }
 
     private fun addAnnotation() {
+        val version = Version.fromManifestOf(this::class.java)
         @Language("JAVA")
         val annotation = elementFactory.createAnnotationFromText("""
-            @javax.annotation.Generated("by Spine Model Compiler")
+            @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value}")
         """.trimIndent(), null)
         columnClass.addFirst(annotation)
     }

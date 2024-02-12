@@ -57,6 +57,7 @@ plugins {
     java
     `java-library`
     kotlin("jvm")
+    id("write-manifest")
     id("com.google.protobuf")
     id("net.ltgt.errorprone")
     id("pmd-settings")
