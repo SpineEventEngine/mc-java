@@ -38,6 +38,12 @@ import io.spine.query.EntityColumn
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import org.intellij.lang.annotations.Language
 
+/**
+ * Generates a method which returns a [strongly typed][EntityColumn] entity column.
+ *
+ * The name of the method matches the name of the [entity state][io.spine.base.EntityState]
+ * converted to [javaCase].
+ */
 internal class ColumnAccessor(
     private val typeSystem: TypeSystem,
     private val entityStateClass: ClassName,
