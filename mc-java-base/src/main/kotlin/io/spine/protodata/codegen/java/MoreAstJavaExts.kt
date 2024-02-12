@@ -33,14 +33,11 @@ import io.spine.protodata.Type
 import io.spine.protodata.TypeName
 import io.spine.protodata.isMap
 import io.spine.protodata.isMessage
+import io.spine.protodata.isEnum
 import io.spine.protodata.isPrimitive
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem
 import io.spine.type.shortDebugString
-
-// TODO: Migrate this to ProtoData `AstExtensions.kt`.
-private val Type.isEnum: Boolean
-    get() = hasEnumeration()
 
 //TODO:2024-02-10:alexander.yevsyukov: Move to `AstJavaExts.kt` in ProtoData.
 
