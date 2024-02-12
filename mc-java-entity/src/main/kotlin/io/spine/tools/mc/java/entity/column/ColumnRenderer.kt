@@ -60,12 +60,19 @@ internal class ColumnRenderer : JavaRenderer(), EntityPluginComponent {
         entityStates
             .filter { it.columns.isNotEmpty() }
             .forEach {
-                val sourceFile = it.sourceFileIn(sources)
-                val className = classNameOf(it.name, it.file)
-                PsiWrite.execute {
-                    renderColumns(it, sourceFile, className)
-                }
+                renderColumnsForMessageType(it, sources)
             }
+    }
+
+    private fun renderColumnsForMessageType(
+        messageType: MessageType,
+        sources: SourceFileSet
+    ) {
+        val sourceFile = messageType.sourceFileIn(sources)
+        val className = classNameOf(messageType.name, messageType.file)
+        PsiWrite.execute {
+            renderColumns(typeSystem!!, sourceFile, className, messageType)
+        }
     }
 
     /**

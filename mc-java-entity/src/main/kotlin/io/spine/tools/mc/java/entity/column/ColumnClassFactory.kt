@@ -33,6 +33,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import io.spine.tools.psi.java.addFirst
@@ -49,6 +50,7 @@ import org.intellij.lang.annotations.Language
  * @see renderColumns
  */
 internal class ColumnClassFactory(
+    private val typeSystem: TypeSystem,
     private val type: MessageType,
     private val entityStateClassName: ClassName
 ) {
@@ -62,10 +64,15 @@ internal class ColumnClassFactory(
          */
         private const val CLASS_NAME = "Column"
 
-        fun renderColumns(type: MessageType, file: SourceFile, cls: ClassName) {
+        fun renderColumns(
+            typeSystem: TypeSystem,
+            file: SourceFile,
+            cls: ClassName,
+            type: MessageType
+        ) {
             val psiJavaFile = file.toPsi()
             val topLevelClass = psiJavaFile.topLevelClass
-            val factory = ColumnClassFactory(type, cls)
+            val factory = ColumnClassFactory(typeSystem, type, cls)
             val columnHolder = factory.create()
             topLevelClass.add(columnHolder)
         }
@@ -83,7 +90,7 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(entityStateClassName, column, columnClass)
+            val accessor = ColumnAccessor(typeSystem, entityStateClassName, column, columnClass)
             columnClass.add(accessor.method())
         }
     }
