@@ -27,16 +27,17 @@
 package io.spine.tools.mc.java.entity.column
 
 import com.intellij.psi.PsiClass
-
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.file.toPsi
+import io.spine.protodata.codegen.java.javaClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.string.joinByLines
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.createPrivateConstructor
@@ -70,16 +71,22 @@ internal class ColumnClassFactory(
         /**
          * The name of the created class.
          */
-        private const val CLASS_NAME = "Column"
+        const val CLASS_NAME = "Column"
+
+        /**
+         * Adds a `public static class` [Column][CLASS_NAME] which provides column API
+         * for the given [type].
+         */
         fun render(
             typeSystem: TypeSystem,
             file: SourceFile,
-            cls: ClassName,
             type: MessageType
         ) {
+            val header = typeSystem.findMessage(type.name)!!.second
+            val entityStateClass = type.javaClassName(header)
             val psiJavaFile = file.toPsi()
             val topLevelClass = psiJavaFile.topLevelClass
-            val factory = ColumnClassFactory(typeSystem, type, cls)
+            val factory = ColumnClassFactory(typeSystem, type, entityStateClass)
             val columnHolder = factory.create()
             topLevelClass.add(columnHolder)
         }
