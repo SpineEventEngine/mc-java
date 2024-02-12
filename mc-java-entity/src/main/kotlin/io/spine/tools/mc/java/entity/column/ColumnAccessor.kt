@@ -33,6 +33,7 @@ import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.getterName
 import io.spine.protodata.codegen.java.javaCase
 import io.spine.protodata.codegen.java.javaType
+import io.spine.protodata.codegen.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
 import io.spine.tools.psi.java.PsiWrite.elementFactory
@@ -62,7 +63,7 @@ internal class ColumnAccessor(
         return result
     }
 
-    private val container = EntityColumn::class.java.canonicalName
+    private val container = EntityColumn::class.reference
     private val stateRef = entityStateClass.canonical
 
     private val methodName: String

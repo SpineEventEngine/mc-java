@@ -46,7 +46,7 @@ import io.spine.tools.psi.java.topLevelClass
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a class called `Column` and nest it under the top level  entity state class.
+ * Creates a class called `Column` and nest it under the top level entity state class.
  *
  * @see renderColumns
  */
@@ -81,23 +81,12 @@ internal class ColumnClassFactory(
 
     private fun create(): PsiClass {
         addAnnotation()
-        addJavadoc()
+        addClassJavadoc()
         columnClass.makePublic().makeStatic().makeFinal()
         columnClass.add(elementFactory.createPrivateConstructor(columnClass))
         addColumnMethods()
         addDefinitionsMethod()
         return columnClass
-    }
-
-    private fun addColumnMethods() {
-        columns.forEach { column ->
-            val accessor = ColumnAccessor(typeSystem, entityStateClassName, column, columnClass)
-            columnClass.add(accessor.method())
-        }
-    }
-
-    private fun addDefinitionsMethod() {
-        // TODO("Not yet implemented")
     }
 
     private fun addAnnotation() {
@@ -109,7 +98,7 @@ internal class ColumnClassFactory(
         columnClass.addFirst(annotation)
     }
 
-    private fun addJavadoc() {
+    private fun addClassJavadoc() {
         @Language("JAVA")
         val classJavadoc = elementFactory.createCommentFromText("""
             /**
@@ -120,5 +109,16 @@ internal class ColumnClassFactory(
              */
         """.trimIndent(), null)
         columnClass.addFirst(classJavadoc)
+    }
+
+    private fun addColumnMethods() {
+        columns.forEach { column ->
+            val accessor = ColumnAccessor(typeSystem, entityStateClassName, column, columnClass)
+            columnClass.add(accessor.method())
+        }
+    }
+
+    private fun addDefinitionsMethod() {
+        // TODO("Not yet implemented")
     }
 }
