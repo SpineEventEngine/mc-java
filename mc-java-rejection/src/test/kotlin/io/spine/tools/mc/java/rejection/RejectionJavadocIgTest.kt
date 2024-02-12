@@ -43,6 +43,7 @@ import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionFileContent
 import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionJavaFile
 import io.spine.tools.mc.java.rejection.Method.BUILD
 import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
+import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
@@ -66,9 +67,16 @@ internal class RejectionJavadocIgTest {
             val projectDir = TempDir.forClass(RejectionJavadocIgTest::class.java)
             val project = setupAt(projectDir)
                 .copyBuildSrc()
+                .withSharedTestKitDirectory()
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
                 .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
                 .create()
+            (project.runner as DefaultGradleRunner).withJvmArguments(
+                "-Xmx8g",
+                "-XX:MaxMetaspaceSize=1512m",
+                "-XX:+UseParallelGC",
+                "-XX:+HeapDumpOnOutOfMemoryError"
+            )
             project.executeTask(launchProtoData)
             val generatedFile = rejectionJavaFile(projectDir)
             generatedSource = Roaster.parse(
