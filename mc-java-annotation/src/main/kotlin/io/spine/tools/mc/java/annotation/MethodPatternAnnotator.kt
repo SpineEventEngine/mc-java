@@ -28,10 +28,10 @@ package io.spine.tools.mc.java.annotation
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.codegen.java.codeReference
 import io.spine.protodata.codegen.java.file.isJava
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.codegen.java.isRepeatable
+import io.spine.protodata.codegen.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.psi.java.annotate
@@ -50,7 +50,7 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
         settings.internalMethodNameList
 
     private val annotationCode: String by lazy {
-        "@${annotationClass.codeReference}"
+        "@${annotationClass.reference}"
     }
 
     override fun render(sources: SourceFileSet) {
@@ -86,7 +86,7 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
     }
 
     private fun annotate(method: PsiMethod): Boolean {
-        val alreadyAnnotated = method.hasAnnotation(annotationClass.codeReference)
+        val alreadyAnnotated = method.hasAnnotation(annotationClass.reference)
         if (alreadyAnnotated && !annotationClass.isRepeatable) {
             return false
         }

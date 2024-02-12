@@ -31,10 +31,10 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.MessageOrBuilderConvention
 import io.spine.protodata.codegen.java.MessageOrEnumConvention
+import io.spine.protodata.codegen.java.reference
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.FieldOptions
 import io.spine.tools.mc.annotation.MessageFieldAnnotations
-import io.spine.protodata.codegen.java.codeReference
 
 /**
  * Annotates methods for accessing fields of a message class, the builder of the message, and
@@ -89,7 +89,7 @@ internal class FieldAnnotator :
         val messageFile = sources.file(messageDeclaration.path)
         val messageClass = messageDeclaration.name as ClassName
 
-        val annotationLine = "@${annotationClass.codeReference}"
+        val annotationLine = "@${annotationClass.reference}"
 
         val gettersInMessage = FieldAccessors(messageClass, fieldName)
         messageFile.at(gettersInMessage)
