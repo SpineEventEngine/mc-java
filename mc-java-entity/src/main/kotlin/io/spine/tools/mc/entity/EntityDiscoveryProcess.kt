@@ -28,7 +28,7 @@ package io.spine.tools.mc.entity
 
 import io.spine.core.External
 import io.spine.protodata.File
-import io.spine.protodata.event.TypeEntered
+import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.entity.alter
 import io.spine.server.event.React
@@ -60,7 +60,7 @@ internal class EntityDiscoveryProcess :
     }
 
     @React
-    fun on(@External e: TypeEntered): Optional<EntityStateDiscovered> {
+    fun on(@External e: TypeDiscovered): Optional<EntityStateDiscovered> {
         val typeOptions = e.type.optionList.map { it.name }
         if (typeOptions.any { it in options }) {
             alter {
