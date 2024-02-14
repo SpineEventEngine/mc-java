@@ -62,16 +62,18 @@ object ProtoData {
     const val pluginId = "io.spine.protodata"
 
     /**
-     * The version of ProtoData dependencies.
+     * The version of ProtoData artifacts.
      */
     val version: String
-    private const val fallbackVersion = "0.18.1"
+    private const val fallbackVersion = "0.19.0"
 
     /**
-     * The distinct version of ProtoData used by other build tools.
+     * The distinct version of ProtoData used by other build tools during
+     * the transition from a previous version when breaking API changes are introduced.
      *
-     * When ProtoData is used both for building the project and as a part of the Project's
-     * transitional dependencies, this is the version used to build the project itself.
+     * When ProtoData is used both for building the project and as a part of the project's
+     * transitional dependencies, this is the version used to build the project itself to
+     * avoid errors caused by incompatible API changes.
      */
     val dogfoodingVersion: String
     private const val fallbackDfVersion = "0.18.1"
