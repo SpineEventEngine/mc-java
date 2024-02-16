@@ -26,14 +26,20 @@
 
 package io.spine.tools.mc.java.annotation
 
+import com.intellij.core.CoreApplicationEnvironment
+import com.intellij.lang.MetaLanguage
+import com.intellij.openapi.extensions.Extensions
+import com.intellij.openapi.extensions.ExtensionsArea
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.augment.PsiAugmentProvider
 import io.spine.protodata.codegen.java.file.isJava
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.codegen.java.isRepeatable
 import io.spine.protodata.codegen.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.psi.java.PsiWrite
 import io.spine.tools.psi.java.annotate
 
 /**
@@ -60,6 +66,7 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
     }
 
     private fun annotateIn(file: SourceFile) {
+        LocalMetaLanguageSupport.setUp()
         var updated = false
         val javaFile = file.toPsi()
         javaFile.classes.forEach {
@@ -90,7 +97,36 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
         if (alreadyAnnotated && !annotationClass.isRepeatable) {
             return false
         }
-        method.annotate(annotationCode)
+        PsiWrite.execute {
+            method.annotate(annotationCode)
+        }
         return true
     }
 }
+
+public object LocalMetaLanguageSupport {
+
+    private var configured: Boolean = false
+
+    @Suppress("DEPRECATION")
+    public fun setUp() {
+        if (configured) {
+            return
+        }
+        registerInArea(Extensions.getRootArea())
+        configured = true
+    }
+
+    private fun registerInArea(extensionArea: ExtensionsArea?) {
+        if(extensionArea == null) {
+            return
+        }
+        CoreApplicationEnvironment.registerExtensionPoint(
+            extensionArea, MetaLanguage.EP_NAME, MetaLanguage::class.java
+        )
+        CoreApplicationEnvironment.registerExtensionPoint(
+            extensionArea, PsiAugmentProvider.EP_NAME, PsiAugmentProvider::class.java
+        )
+    }
+}
+

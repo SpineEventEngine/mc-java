@@ -69,7 +69,6 @@ internal class ColumnRenderer : JavaRenderer(), EntityPluginComponent {
         sources: SourceFileSet
     ) {
         val sourceFile = messageType.sourceFileIn(sources)
-
         PsiWrite.execute {
             render(typeSystem!!, sourceFile, messageType)
         }

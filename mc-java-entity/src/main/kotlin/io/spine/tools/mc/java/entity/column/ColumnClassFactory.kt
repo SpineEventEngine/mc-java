@@ -26,25 +26,35 @@
 
 package io.spine.tools.mc.java.entity.column
 
+import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiNameHelper
+import com.intellij.psi.impl.PsiManagerImpl
+import com.intellij.psi.impl.PsiNameHelperImpl
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.file.toPsi
 import io.spine.protodata.codegen.java.javaClassName
+import io.spine.protodata.codegen.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
-import io.spine.string.joinByLines
+import io.spine.string.naturalizeEndings
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
+import io.spine.tools.psi.java.Environment
+import io.spine.tools.psi.java.MetaLanguageSupport
 import io.spine.tools.psi.java.PsiWrite.elementFactory
 import io.spine.tools.psi.java.addFirst
-import io.spine.tools.psi.java.createPrivateConstructor
+import io.spine.tools.psi.java.createUtilityConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
 import io.spine.tools.psi.java.topLevelClass
+import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
 /**
@@ -57,7 +67,9 @@ internal class ColumnClassFactory(
     type: MessageType,
     private val entityState: ClassName
 ) {
-    private val columnClass = elementFactory.createClass(CLASS_NAME)
+    private val columnClass by lazy {
+        elementFactory.createClass(CLASS_NAME)
+    }
     private val columns: List<Field> = type.columns
 
     /**
@@ -77,18 +89,35 @@ internal class ColumnClassFactory(
          * Adds a `public static class` [Column][CLASS_NAME] which provides column API
          * for the given [type].
          */
+        @Suppress("TooGenericExceptionCaught")
         fun render(
             typeSystem: TypeSystem,
             file: SourceFile,
             type: MessageType
         ) {
-            val header = typeSystem.findMessage(type.name)!!.second
-            val entityStateClass = type.javaClassName(header)
-            val psiJavaFile = file.toPsi()
-            val topLevelClass = psiJavaFile.topLevelClass
-            val factory = ColumnClassFactory(typeSystem, type, entityStateClass)
-            val columnHolder = factory.create()
-            topLevelClass.add(columnHolder)
+            Environment.project
+                .registerService(PsiManager::class.java, PsiManagerImpl::class.java)
+            Environment.project
+                .registerService(PsiNameHelper::class.java, PsiNameHelperImpl::class.java)
+
+            MetaLanguageSupport.setUp()
+
+            try {
+                val header = typeSystem.findMessage(type.name)!!.second
+                val entityStateClass = type.javaClassName(header)
+                val psiJavaFile = file.toPsi()
+                val topLevelClass = psiJavaFile.topLevelClass
+                val factory = ColumnClassFactory(typeSystem, type, entityStateClass)
+                val columnHolder = factory.create()
+                topLevelClass.addLast(columnHolder)
+
+                val updatedText = psiJavaFile.text
+                val naturalized = updatedText.naturalizeEndings()
+                file.overwrite(naturalized)
+            } catch (e: Exception) {
+                System.err.println(" ***** [ColumnFactory] Caught exception: `${e.message}`.")
+                throw e
+            }
         }
     }
 
@@ -96,7 +125,8 @@ internal class ColumnClassFactory(
         addAnnotation()
         addClassJavadoc()
         columnClass.makePublic().makeStatic().makeFinal()
-        columnClass.add(elementFactory.createPrivateConstructor(columnClass))
+        val createPrivateConstructor = elementFactory.createUtilityConstructor(columnClass)
+        columnClass.addLast(createPrivateConstructor)
         addColumnMethods()
         addDefinitionsMethod()
         return columnClass
@@ -104,32 +134,36 @@ internal class ColumnClassFactory(
 
     private fun addAnnotation() {
         val version = Version.fromManifestOf(this::class.java)
+
         @Suppress("EmptyClass")
         @Language("JAVA")
-        val annotation = elementFactory.createAnnotationFromText("""
+        val annotation = elementFactory.createAnnotationFromText(
+            """
             @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value}")
-        """.trimIndent(), null)
+        """.trimIndent(), null
+        )
         columnClass.addFirst(annotation)
     }
 
     private fun addClassJavadoc() {
         @Suppress("EmptyClass")
         @Language("JAVA")
-        val classJavadoc = elementFactory.createCommentFromText("""
+        val classJavadoc = elementFactory.createDocCommentFromText("""
             /**
              * A listing of entity columns defined in $stateJavadocRef.
              *
              * <p>Use static methods of this class to access the columns of the entity
              * which can then be used for creating filters in a query.
              */
-        """.trimIndent(), null)
+            """.trimIndent(), null
+        )
         columnClass.addFirst(classJavadoc)
     }
 
     private fun addColumnMethods() {
         columns.forEach { column ->
             val accessor = ColumnAccessor(typeSystem, entityState, column, columnClass)
-            columnClass.add(accessor.method())
+            columnClass.addLast(accessor.method())
         }
     }
 
@@ -137,20 +171,29 @@ internal class ColumnClassFactory(
         val columnWildcard = columnType(entityState)
         @Suppress("EmptyClass")
         val accumulator = "result"
-        val addingColumns = columns.map { "$accumulator.add(${columnMethodName(it)};" }
-            .joinByLines()
+        val setRef = ImmutableSet::class.reference
         @Language("JAVA")
-        val method = elementFactory.createMethodFromText("""
+        val methodTemplate = """
             /**
              * Returns all the column definitions of $stateJavadocRef.
              */
-            public static $columnWildcard definitions() {
+            public static $setRef<$columnWildcard> definitions() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();
-              $addingColumns
-              return com.google.common.collect.ImmutableSet.copyOf($accumulator);
+              %s
+              return $setRef.copyOf($accumulator);
             }                                
-            """.trimIndent(), columnClass
-        )
-        columnClass.add(method)
+            """.trimIndent()
+        val addingColumns = columns
+            .map { "$accumulator.add(${columnMethodName(it)}());" }
+            .joinToString(separator = "\n  ")
+        val methodText = format(methodTemplate, addingColumns)
+        val method = elementFactory.createMethodFromText(methodText, columnClass)
+        columnClass.addLast(method)
     }
+}
+
+private fun PsiClass.addLast(element: PsiElement): PsiClass {
+    val closingBrace = children.last()
+    addBefore(element, closingBrace)
+    return this
 }

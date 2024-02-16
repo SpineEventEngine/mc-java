@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.entity.column
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.Field
 import io.spine.protodata.codegen.java.ClassName
 import io.spine.protodata.codegen.java.getterName
@@ -52,22 +53,42 @@ internal class ColumnAccessor(
     private val wrappingClass: PsiClass
 ) {
 
+    private val fieldName = field.name.value
+    private val fieldType by lazy {
+        field.javaType(typeSystem)
+    }
+
     fun method(): PsiMethod {
         val columnType = columnType(entityState, typeSystem, field)
+        @Suppress("EmptyClass")
+        val getterRef = "$stateRef::${field.getterName}"
         @Language("JAVA")
-        val result = elementFactory.createMethodFromText("""
+        val method = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
-                return new $container<>(${field.name}, $stateRef, $stateRef::${field.getterName})    
+              return new $container<>("$fieldName", $fieldType.class, $getterRef);    
             }                                
             """.trimIndent(), wrappingClass
         )
-        return result
+        method.addBefore(javaDoc(), method.firstChild)
+        return method
     }
 
     private val stateRef = entityState.canonical
 
     private val methodName: String
         get() = columnMethodName(this.field)
+
+    private fun javaDoc(): PsiDocComment {
+        val methodDoc = elementFactory.createDocCommentFromText("""
+        /**
+         * Returns the {@code "$fieldName"} column.
+         *
+         * <p>The Java type of the column is {@code $fieldType}.
+         */           
+        """.trimIndent()
+        )
+        return methodDoc
+    }
 }
 
 /**

@@ -26,10 +26,16 @@
 
 package io.spine.tools.psi.java
 
+import com.intellij.core.CoreApplicationEnvironment
+import com.intellij.lang.MetaLanguage
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.extensions.Extensions
+import com.intellij.openapi.extensions.ExtensionsArea
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiModifier
 import com.intellij.psi.PsiModifierList
+import com.intellij.psi.augment.PsiAugmentProvider
 
 public fun PsiClass.addFirst(element: PsiElement): PsiElement {
     return addBefore(element, firstChild)
@@ -61,5 +67,32 @@ public fun PsiClass.makeFinal(): PsiClass {
 private fun PsiModifierList.setIfAbsent(modifier: String) {
     if (!hasModifierProperty(modifier)) {
         setModifierProperty(modifier, true)
+    }
+}
+
+public object MetaLanguageSupport {
+
+    private var configured: Boolean = false
+
+    public fun setUp() {
+        if (configured) {
+            return
+        }
+        registerInArea(Extensions.getRootArea())
+        registerInArea(ApplicationManager.getApplication().extensionArea)
+        
+        configured = true
+    }
+
+    private fun registerInArea(extensionArea: ExtensionsArea?) {
+        if(extensionArea == null) {
+            return
+        }
+        CoreApplicationEnvironment.registerExtensionPoint(
+            extensionArea, MetaLanguage.EP_NAME, MetaLanguage::class.java
+        )
+        CoreApplicationEnvironment.registerExtensionPoint(
+            extensionArea, PsiAugmentProvider.EP_NAME, PsiAugmentProvider::class.java
+        )
     }
 }
