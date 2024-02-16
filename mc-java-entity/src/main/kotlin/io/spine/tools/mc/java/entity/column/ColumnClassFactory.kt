@@ -88,8 +88,13 @@ internal class ColumnClassFactory(
 
         /**
          * The name of the method for obtaining all the columns.
+         *
+         * We use `buildString` instead of a plain literal to avoid the `Missing identifier`
+         * warning in IDEA.
          */
-        const val DEFINITIONS_METHOD = "definitions"
+        val DEFINITIONS_METHOD = buildString {
+            append("definitions")
+        }
 
         /**
          * Adds a nested class called [Column][CLASS_NAME] into the top class of the given [file].
