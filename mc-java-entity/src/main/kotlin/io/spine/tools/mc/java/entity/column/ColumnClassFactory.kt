@@ -33,6 +33,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
 import com.intellij.psi.impl.PsiManagerImpl
 import com.intellij.psi.impl.PsiNameHelperImpl
+import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.codegen.java.ClassName
@@ -41,7 +42,6 @@ import io.spine.protodata.codegen.java.javaClassName
 import io.spine.protodata.codegen.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
-import io.spine.string.naturalizeEndings
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
@@ -62,6 +62,7 @@ import org.intellij.lang.annotations.Language
  *
  * @see render
  */
+@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class ColumnClassFactory(
     private val typeSystem: TypeSystem,
     type: MessageType,
@@ -75,10 +76,9 @@ internal class ColumnClassFactory(
     /**
      * Reference to [entityState] made in Javadoc.
      */
-    @Suppress("EmptyClass")
     private val stateJavadocRef: String = "{@code ${entityState.simpleName}}"
 
-    companion object {
+    companion object: WithLogging {
 
         /**
          * The name of the created class.
@@ -86,10 +86,32 @@ internal class ColumnClassFactory(
         const val CLASS_NAME = "Column"
 
         /**
-         * Adds a `public static class` [Column][CLASS_NAME] which provides column API
-         * for the given [type].
+         * The name of the method for obtaining all the columns.
          */
-        @Suppress("TooGenericExceptionCaught")
+        const val DEFINITIONS_METHOD = "definitions"
+
+        /**
+         * Adds a nested class called [Column][CLASS_NAME] into the top class of the given [file].
+         *
+         * The class provides API for obtaining columns for the given `EntityState` [type].
+         * The `Column` class is `public static` and stateless.
+         * It serves as a DSL for calling `public static` methods for obtaining
+         * entity state [columns][io.spine.query.EntityColumn].
+         *
+         * Since the `Column` class is not meant to be instantiated, a private parameterless
+         * constructor is generated.
+         *
+         * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
+         * for obtaining all the columns is also generated.
+         *
+         * @param typeSystem
+         *         the type system used for resolving field types.
+         * @param file
+         *         the Java file to add the `Column` class.
+         * @param type
+         *         the type of the `EntityState` message.
+         */
+        @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
         fun render(
             typeSystem: TypeSystem,
             file: SourceFile,
@@ -112,10 +134,11 @@ internal class ColumnClassFactory(
                 topLevelClass.addLast(columnHolder)
 
                 val updatedText = psiJavaFile.text
-                val naturalized = updatedText.naturalizeEndings()
-                file.overwrite(naturalized)
+                file.overwrite(updatedText)
             } catch (e: Exception) {
-                System.err.println(" ***** [ColumnFactory] Caught exception: `${e.message}`.")
+                logger.atError().log {
+                    "Caught exception while generating `Column` class: `${e.message}`."
+                }
                 throw e
             }
         }
@@ -133,20 +156,17 @@ internal class ColumnClassFactory(
     }
 
     private fun addAnnotation() {
-        val version = Version.fromManifestOf(this::class.java)
-
-        @Suppress("EmptyClass")
+        val version = Version.fromManifestOf(this::class.java).value
         @Language("JAVA")
         val annotation = elementFactory.createAnnotationFromText(
             """
-            @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value}")
-        """.trimIndent(), null
+            @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
+            """.trimIndent(), null
         )
         columnClass.addFirst(annotation)
     }
 
     private fun addClassJavadoc() {
-        @Suppress("EmptyClass")
         @Language("JAVA")
         val classJavadoc = elementFactory.createDocCommentFromText("""
             /**
@@ -167,25 +187,30 @@ internal class ColumnClassFactory(
         }
     }
 
+    @Suppress("DanglingJavadoc") // to avoid false positive warning.
     private fun addDefinitionsMethod() {
         val columnWildcard = columnType(entityState)
-        @Suppress("EmptyClass")
-        val accumulator = "result"
-        val setRef = ImmutableSet::class.reference
+        val accumulator = buildString {
+            // Use `buildString` instead of plain literal to avoid `Missing identifier` in IDEA.
+            append("columns")
+        }
+        val resultSet = ImmutableSet::class.reference
         @Language("JAVA")
         val methodTemplate = """
             /**
              * Returns all the column definitions of $stateJavadocRef.
              */
-            public static $setRef<$columnWildcard> definitions() {
+            public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();
               %s
-              return $setRef.copyOf($accumulator);
+              return $resultSet.copyOf($accumulator);
             }                                
             """.trimIndent()
         val addingColumns = columns
-            .map { "$accumulator.add(${columnMethodName(it)}());" }
-            .joinToString(separator = "\n  ")
+            .map { column -> columnMethodName(column) }
+            .joinToString(separator = "\n  ") { method ->
+                "$accumulator.add($method());"
+            }
         val methodText = format(methodTemplate, addingColumns)
         val method = elementFactory.createMethodFromText(methodText, columnClass)
         columnClass.addLast(method)
