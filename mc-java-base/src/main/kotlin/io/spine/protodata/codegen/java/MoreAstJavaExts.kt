@@ -69,7 +69,7 @@ private fun Type.primitiveClassName(): String {
     check(isPrimitive) {
         error("The type is not primitive: `${shortDebugString()}`.")
     }
-    return primitive.primitiveClass().java.canonicalName
+    return primitive.primitiveClass().javaObjectType.simpleName
 }
 
 /**
