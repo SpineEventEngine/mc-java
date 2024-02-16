@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiNameHelper
 import com.intellij.psi.impl.PsiManagerImpl
 import com.intellij.psi.impl.PsiNameHelperImpl
@@ -187,16 +188,46 @@ internal class ColumnClassFactory(
         }
     }
 
-    @Suppress("DanglingJavadoc") // to avoid false positive warning.
     private fun addDefinitionsMethod() {
-        val columnWildcard = columnType(entityState)
-        val accumulator = buildString {
-            // Use `buildString` instead of plain literal to avoid `Missing identifier` in IDEA.
+        val method = DefinitionsMethod().create()
+        columnClass.addLast(method)
+    }
+
+    /**
+     * Method object for creating [definitions][DEFINITIONS_METHOD] method.
+     */
+    private inner class DefinitionsMethod {
+
+        /** The generic type which matches all the columns of this entity state. */
+        private val columnWildcard = columnType(entityState)
+
+        /**
+         * The name of the variable to collect all column definitions
+         *
+         * We use `buildString` instead of a plain literal to avoid the `Missing identifier`
+         * warning in IDEA.
+         */
+        private val accumulator: String = buildString {
             append("columns")
         }
-        val resultSet = ImmutableSet::class.reference
-        @Language("JAVA")
-        val methodTemplate = """
+
+        /** The type which is returned by the method. */
+        private val resultSet: String = ImmutableSet::class.reference
+
+        /** The piece of method body which adds columns to [accumulator]. */
+        private val addingColumns: String by lazy {
+            columns
+                .map { column -> columnMethodName(column) }
+                .joinToString(separator = "\n  ") { method ->
+                    "$accumulator.add($method());"
+                }
+        }
+
+        /** Builds the full text of the method. */
+        private val methodText: String by lazy {
+            @Language("JAVA")
+            @Suppress("DanglingJavadoc") // to avoid false positive warning.
+            val methodTemplate = """
             /**
              * Returns all the column definitions of $stateJavadocRef.
              */
@@ -206,14 +237,13 @@ internal class ColumnClassFactory(
               return $resultSet.copyOf($accumulator);
             }                                
             """.trimIndent()
-        val addingColumns = columns
-            .map { column -> columnMethodName(column) }
-            .joinToString(separator = "\n  ") { method ->
-                "$accumulator.add($method());"
-            }
-        val methodText = format(methodTemplate, addingColumns)
-        val method = elementFactory.createMethodFromText(methodText, columnClass)
-        columnClass.addLast(method)
+            format(methodTemplate, addingColumns)
+        }
+
+        fun create(): PsiMethod {
+            val method = elementFactory.createMethodFromText(methodText, columnClass)
+            return method
+        }
     }
 }
 
