@@ -29,10 +29,20 @@ package io.spine.tools.psi.java
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiMethod
+import io.spine.tools.psi.java.PsiWrite.elementFactory
 
-public fun PsiElementFactory.createPrivateConstructor(cls: PsiClass): PsiMethod =
-    createMethodFromText("""
-        private $cls.name() {
+public fun PsiElementFactory.createUtilityConstructor(cls: PsiClass): PsiMethod {
+    val ctor = createMethodFromText("""
+        private ${cls.name}() {
             // No-op.
         }            
-    """.trimIndent(), cls)
+        """.trimIndent(), cls
+    )
+    val javadoc = elementFactory.createDocCommentFromText(
+        """
+        /** Prevents instantiation of this class. */    
+        """.trimIndent()
+    )
+    ctor.addBefore(javadoc, ctor.firstChild)
+    return ctor
+}
