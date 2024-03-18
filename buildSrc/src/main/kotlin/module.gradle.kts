@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@
 
 import com.google.common.io.Files
 import io.spine.internal.dependency.CheckerFramework
+import io.spine.internal.dependency.Caffeine
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
@@ -137,8 +138,7 @@ fun Module.forceConfigurations() {
                     Protobuf.compiler,
                     Grpc.api,
                     Jackson.Junior.objects,
-
-                    "com.github.ben-manes.caffeine:caffeine:3.0.5",
+                    Caffeine.lib,
 
                     Spine.reflect,
                     Spine.base,
@@ -155,8 +155,6 @@ fun Module.forceConfigurations() {
                     Validation.runtime,
                     Validation.javaBundle,
                     ProtoData.api,
-                    ProtoData.compiler,
-                    ProtoData.codegenJava,
                 )
             }
         }
