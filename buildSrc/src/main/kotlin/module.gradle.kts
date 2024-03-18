@@ -31,6 +31,7 @@ import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
+import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.KotlinX
 import io.spine.internal.dependency.ProtoData
@@ -135,6 +136,10 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Jackson.Junior.objects,
+
+                    "com.github.ben-manes.caffeine:caffeine:3.0.5",
+
                     Spine.reflect,
                     Spine.base,
                     Spine.time,
