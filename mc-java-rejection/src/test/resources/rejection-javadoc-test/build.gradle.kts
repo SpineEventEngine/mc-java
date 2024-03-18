@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
 import org.gradle.api.file.SourceDirectorySet
 import java.net.URI
 
-import io.spine.internal.gradle.applyStandardWithGitHub
+import io.spine.internal.gradle.standardToSpineSdk
 
 // Common build file for the tests with same configuration
 
@@ -37,10 +37,7 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    io.spine.internal.gradle.applyWithStandard(this, rootProject,
-        "base", "time", "change", "base-types", "core-java",
-        "tool-base", "ProtoData", "validation",
-    )
+    standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
     dependencies {
@@ -58,20 +55,26 @@ plugins {
     java
 }
 
-apply {
-    plugin("com.google.protobuf")
-    plugin("io.spine.mc-java")
-    from("$rootDir/test-env.gradle")
+allprojects {
+    group = "io.spine.test"
+    version = "3.14"
 }
 
-group = "io.spine.test"
-version = "3.14"
+subprojects {
 
-repositories.applyStandardWithGitHub(project,
-    "base", "time", "change", "base-types", "core-java",
-    "tool-base", "ProtoData", "validation",
-)
+    apply(plugin = "java")
 
-dependencies {
-    implementation(io.spine.internal.dependency.Spine.base)
+    apply(from = "$rootDir/test-env.gradle")
+    val enclosingRootDir: String by extra
+    apply {
+        plugin("com.google.protobuf")
+        plugin("io.spine.mc-java")
+        from("${enclosingRootDir}/version.gradle.kts")
+    }
+
+    repositories.standardToSpineSdk()
+
+    dependencies {
+        implementation(io.spine.internal.dependency.Spine.base)
+    }
 }
