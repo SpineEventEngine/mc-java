@@ -50,11 +50,18 @@ object IntelliJ {
         private const val group = "com.jetbrains.intellij.platform"
         const val core = "$group:core:$version"
         const val util = "$group:util:$version"
+        const val coreImpl = "$group:core-impl:$version"
     }
 
     object JavaPsi {
         private const val group = "com.jetbrains.intellij.java"
         const val api = "$group:java-psi:$version"
         const val impl = "$group:java-psi-impl:$version"
+    }
+
+    object Java {
+        private const val group = "com.jetbrains.intellij.java"
+        const val java = "$group:java:$version"
+        const val impl = "$group:java-impl:$version"
     }
 }
