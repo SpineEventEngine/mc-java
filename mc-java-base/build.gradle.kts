@@ -38,7 +38,7 @@ dependencies {
 
     api(Spine.Logging.lib)
     api(Spine.modelCompiler)
-    api(ProtoData.codegenJava)
+    api(ProtoData.java)
     api(Validation.config)
     api(Validation.runtime)
     api(Spine.pluginBase)

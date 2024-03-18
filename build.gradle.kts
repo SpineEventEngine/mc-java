@@ -58,7 +58,6 @@ buildscript {
                     io.spine.internal.dependency.Grpc.api,
                     spine.reflect,
                     spine.base,
-                    spine.toolBase,
                     spine.server,
                     protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,
