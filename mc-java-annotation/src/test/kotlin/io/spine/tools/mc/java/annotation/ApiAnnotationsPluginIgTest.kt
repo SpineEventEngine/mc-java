@@ -123,6 +123,7 @@ internal class ApiAnnotationsPluginIgTest {
             project = GradleProject.setupAt(projectDir)
                 .fromResources(RESOURCE_DIR)
                 .copyBuildSrc()
+                .withSharedTestKitDirectory()
                 /* Uncomment the following line to be able to debug the build.
                    Remember to turn off so that tests run faster, AND Windows build does not
                    fail with the error on Windows Registry unavailability. */

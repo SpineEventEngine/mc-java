@@ -48,7 +48,6 @@ import org.jboss.forge.roaster.model.source.JavaClassSource
 import org.jboss.forge.roaster.model.source.JavaDocCapableSource
 import org.jboss.forge.roaster.model.source.MethodSource
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -67,11 +66,15 @@ internal class RejectionJavadocIgTest {
             val projectDir = TempDir.forClass(RejectionJavadocIgTest::class.java)
             val project = setupAt(projectDir)
                 .copyBuildSrc()
+                .withSharedTestKitDirectory()
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
-                .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
+                .addFile(
+                    "sub-module/src/main/proto/javadoc_rejections.proto",
+                    rejectionFileContent()
+                )
                 .create()
             project.executeTask(launchProtoData)
-            val generatedFile = rejectionJavaFile(projectDir)
+            val generatedFile = rejectionJavaFile(projectDir.resolve("sub-module"))
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
             )
