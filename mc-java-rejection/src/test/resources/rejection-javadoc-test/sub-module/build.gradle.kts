@@ -24,44 +24,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include(
-    "annotator",
-    "custom-annotations",
-    "factories",
-    "entity-queries",
-    "known-types",
-    "model-compiler",
-    "rejection",
-// TODO: Move to the Validation project, after it migrates to new ProtoData API.
-//    "validating-options",
-//    "validation",
-//    "validation-gen",
-)
+import io.spine.internal.gradle.standardToSpineSdk
 
-/*
- * Dependency links established with the Gradle included build.
- *
- * See the `includeBuild(...)` block below for more info.
- */
-val links = mapOf(
-    "io.spine.tools:spine-mc-java" to ":mc-java",
-    "io.spine.tools:spine-mc-java-checks" to ":mc-java-checks",
-    "io.spine.tools:spine-mc-java-protodata-params"  to ":mc-java-protodata-params"
-)
+plugins {
+    // To allow `modelCompiler` syntax below.
+    id("io.spine.mc-java")
+}
 
-/*
- * Include the `mc-java` build into the `tests` project build.
- *
- * Integration tests are built separately in order to be able to test the current
- * version of the Gradle plugins.
- *
- * See the Gradle manual for more info:
- * https://docs.gradle.org/current/userguide/composite_builds.html
- */
-includeBuild("$rootDir/../") {
-    dependencySubstitution {
-        links.forEach { (id, projectPath) ->
-            substitute(module(id)).using(project(projectPath))
+// Turn off validation codegen during the transition to new ProtoData API.
+modelCompiler {
+    java {
+        codegen {
+            validation().enabled.set(false)
         }
     }
 }
+
+repositories.standardToSpineSdk()
+
+dependencies {
+    // Add Validation Java Runtime because the generated code reference
+    // the `ValidatingBuilder` interface even if validation codegen is turned off.
+    implementation(io.spine.internal.dependency.Validation.runtime)
+}
+
+tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE

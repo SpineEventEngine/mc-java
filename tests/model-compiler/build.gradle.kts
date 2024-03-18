@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,9 @@ dependencies {
 modelCompiler {
     java {
         codegen {
+            // Turn off validation codegen during the transition to new ProtoData API.
+            validation().enabled.set(false)
+
             val methodFactory = "io.spine.tools.mc.java.protoc.TestMethodFactory"
             val nestedClassFactory = "io.spine.tools.mc.java.protoc.TestNestedClassFactory"
 

@@ -31,6 +31,11 @@ import io.spine.internal.dependency.JavaX
 
 modelCompiler {
     java {
+        // Turn off validation codegen during the transition to new ProtoData API.
+        codegen {
+            validation().enabled.set(false)
+        }
+
         annotation {
             types {
                 internal.set("io.spine.test.annotation.Private")

@@ -24,11 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
+plugins {
+    id("io.spine.mc-java")
+}
 
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+// Turn off validation codegen during the transition to new ProtoData API.
+modelCompiler {
+    java {
+        codegen {
+            validation().enabled.set(false)
+        }
+    }
+}
+
+// Add Validation Java Runtime because the generated code reference
+// the `ValidatingBuilder` interface even if validation codegen is turned off.
+dependencies {
+    implementation(io.spine.internal.dependency.Validation.runtime)
+}
