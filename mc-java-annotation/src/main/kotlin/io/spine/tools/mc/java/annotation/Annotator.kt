@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.codegen.java.JavaRenderer
-import io.spine.protodata.codegen.java.file.hasJavaOutput
+import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaOutput
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.loadSettings
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
