@@ -199,5 +199,7 @@ tasks.register<RunGradle>("checkPerformance") {
     shouldRunAfter(check)
 
     // Do not run `BuildSpeed` until Validation is migrated to new ProtoData.
+    // Uncomment the below line, and remove `task()`
     // task("clean", "build")
+    task("tasks")
 }
