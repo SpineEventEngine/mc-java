@@ -58,7 +58,6 @@ buildscript {
                     io.spine.internal.dependency.Grpc.api,
                     spine.reflect,
                     spine.base,
-                    spine.toolBase,
                     spine.server,
                     protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,
@@ -199,5 +198,8 @@ tasks.register<RunGradle>("checkPerformance") {
     dependsOn(prepareBuildPerformanceSettings, localPublish)
     shouldRunAfter(check)
 
-    task("clean", "build")
+    // Do not run `BuildSpeed` until Validation is migrated to new ProtoData.
+    // Uncomment the below line, and remove `task()`
+    // task("clean", "build")
+    task("tasks")
 }

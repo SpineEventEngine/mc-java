@@ -31,10 +31,10 @@ import com.squareup.javapoet.JavaFile
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.codegen.java.JavaRenderer
-import io.spine.protodata.codegen.java.file.hasJavaOutput
-import io.spine.protodata.codegen.java.javaOuterClassName
-import io.spine.protodata.codegen.java.javaPackage
+import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaOutput
+import io.spine.protodata.java.javaOuterClassName
+import io.spine.protodata.java.javaPackage
 import io.spine.protodata.find
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet

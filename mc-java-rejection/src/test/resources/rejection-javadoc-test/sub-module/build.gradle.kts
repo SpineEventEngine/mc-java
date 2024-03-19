@@ -24,38 +24,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.annotation
+import io.spine.internal.gradle.standardToSpineSdk
 
-import io.spine.protodata.java.ClassOrEnumName
-import io.spine.protodata.java.MessageOrBuilderConvention
-import io.spine.tools.mc.annotation.MessageAnnotations
+plugins {
+    // To allow `modelCompiler` syntax below.
+    id("io.spine.mc-java")
+}
 
-/**
- * Annotates a message class and a `MessageOrBuilder` interface with the given annotation.
- *
- * @see io.spine.tools.mc.annotation.MessageAnnotationsView
- */
-internal class MessageAnnotator :
-    MessageOrEnumAnnotator<MessageAnnotations>(MessageAnnotations::class.java) {
-
-    private val messageOrBuilderConvention by lazy {
-        MessageOrBuilderConvention(typeSystem!!)
-    }
-
-    override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val typeName = view.type
-        val messageClass = convention.declarationFor(typeName).name
-        val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName).name
-        annotationClass.run {
-            annotate(messageClass)
-            annotate(messageOrBuilderClass)
-        }
-    }
-
-    private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
-        ApiAnnotation(cls, this).let {
-            it.registerWith(context!!)
-            it.renderSources(sources)
+// Turn off validation codegen during the transition to new ProtoData API.
+modelCompiler {
+    java {
+        codegen {
+            validation().enabled.set(false)
         }
     }
 }
+
+repositories.standardToSpineSdk()
+
+dependencies {
+    // Add Validation Java Runtime because the generated code reference
+    // the `ValidatingBuilder` interface even if validation codegen is turned off.
+    implementation(io.spine.internal.dependency.Validation.runtime)
+}
+
+tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE

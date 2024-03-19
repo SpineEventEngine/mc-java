@@ -31,7 +31,7 @@ import com.squareup.javapoet.TypeSpec
 import io.spine.base.RejectionThrowable
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
+import io.spine.protodata.java.MessageOrEnumConvention
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.GeneratedBy

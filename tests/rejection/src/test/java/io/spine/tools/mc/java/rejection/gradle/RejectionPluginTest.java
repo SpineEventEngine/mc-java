@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.rejection.gradle;
 import io.spine.base.Identifier;
 import io.spine.tools.rejections.CannotUpdateUsername;
 import io.spine.validate.ValidationException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +52,7 @@ class RejectionPluginTest {
     }
 
     @Test
+    @Disabled("Until Validation migrates to new ProtoData API")
     @DisplayName("generate the code throwing `ValidationException`" +
             " if a rejection message is not valid")
     @SuppressWarnings("ThrowableNotThrown") // Calling `build()` throws itself.
