@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -168,8 +168,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-dependOnBuildSrcJar()
-
 dependencies {
     api("com.github.jk1:gradle-license-report:$licenseReportVersion")
     dependOnAuthCommon()
@@ -197,8 +195,17 @@ dependencies {
     }
 }
 
+dependOnBuildSrcJar()
+
+/**
+ * Adds a dependency on a `buildSrc.jar`, iff:
+ *  1) the `src` folder is missing, and
+ *  2) `buildSrc.jar` is present in `buildSrc/` folder instead.
+ *
+ * This approach is used in the scope of integration testing.
+ */
 fun Project.dependOnBuildSrcJar() {
-    val srcFolder = rootDir.resolve("src")
+    val srcFolder = this.rootDir.resolve("src")
     val buildSrcJar = rootDir.resolve("buildSrc.jar")
     if (!srcFolder.exists() && buildSrcJar.exists()) {
         logger.info("Adding the pre-compiled 'buildSrc.jar' to 'implementation' dependencies.")

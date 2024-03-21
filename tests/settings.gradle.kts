@@ -32,9 +32,10 @@ include(
     "known-types",
     "model-compiler",
     "rejection",
-    "validating-options",
-    "validation",
-    "validation-gen",
+// TODO: Move to the Validation project, after it migrates to new ProtoData API.
+//    "validating-options",
+//    "validation",
+//    "validation-gen",
 )
 
 /*

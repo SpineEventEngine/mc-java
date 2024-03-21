@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.GrpcServiceConvention
-import io.spine.protodata.codegen.java.file.hasGrpcOutput
+import io.spine.protodata.java.GrpcServiceConvention
+import io.spine.protodata.java.file.hasGrpcOutput
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ServiceAnnotations

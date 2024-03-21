@@ -37,7 +37,7 @@ dependencies {
     }
 
     implementation(project(":mc-java-base"))
-    implementation(ProtoData.codegenJava)
+    implementation(ProtoData.java)
 
     testImplementation(Spine.pluginTestlib)
     testImplementation(gradleTestKit())

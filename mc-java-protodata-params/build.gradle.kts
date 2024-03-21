@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor(AutoService.processor)
     compileOnlyApi(AutoService.annotations)
 
-    implementation(ProtoData.compiler)
+    implementation(ProtoData.backend)
     implementation(Spine.base)
     implementation(Spine.time)
 }

@@ -1,5 +1,5 @@
 #
-# Copyright 2020, TeamDev. All rights reserved.
+# Copyright 2024, TeamDev. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -101,4 +101,4 @@ hs_err_pid*
 .packages
 pubspec.lock
 
-/.gradle-test-kit/
+.gradle-test-kit/

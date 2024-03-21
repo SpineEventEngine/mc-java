@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.gradle.applyStandardWithGitHub
+import io.spine.internal.gradle.standardToSpineSdk
 
 buildscript {
 
@@ -32,10 +32,8 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    io.spine.internal.gradle.applyWithStandard(this, rootProject,
-        "base", "time", "change", "base-types", "core-java",
-        "tool-base", "ProtoData", "validation",
-    )
+    standardSpineSdkRepositories()
+
     val protoData = io.spine.internal.dependency.ProtoData
     val mcJavaVersion: String by extra
     dependencies {
@@ -71,10 +69,7 @@ subprojects {
         from("${enclosingRootDir}/version.gradle.kts")
     }
 
-    repositories.applyStandardWithGitHub(project,
-        "base", "time", "change", "base-types", "core-java",
-        "tool-base", "ProtoData", "validation",
-    )
+    repositories.standardToSpineSdk()
 
     dependencies {
         implementation(io.spine.internal.dependency.Spine.base)

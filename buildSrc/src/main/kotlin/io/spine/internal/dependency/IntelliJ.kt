@@ -51,6 +51,27 @@ object IntelliJ {
         const val core = "$group:core:$version"
         const val util = "$group:util:$version"
         const val coreImpl = "$group:core-impl:$version"
+        const val codeStyle = "$group:code-style:$version"
+        const val codeStyleImpl = "$group:code-style-impl:$version"
+        const val projectModel = "$group:project-model:$version"
+        const val projectModelImpl = "$group:project-model-impl:$version"
+        const val lang = "$group:lang:$version"
+        const val langImpl = "$group:lang-impl:$version"
+        const val ideImpl = "$group:ide-impl:$version"
+        const val ideCoreImpl = "$group:ide-core-impl:$version"
+        const val analysisImpl = "$group:analysis-impl:$version"
+        const val indexingImpl = "$group:indexing-impl:$version"
+    }
+
+    object Jsp {
+        private const val group = "com.jetbrains.intellij.jsp"
+        @Suppress("MemberNameEqualsClassName")
+        const val jsp = "$group:jsp:$version"
+    }
+
+    object Xml {
+        private const val group = "com.jetbrains.intellij.xml"
+        const val xmlPsiImpl = "$group:xml-psi-impl:$version"
     }
 
     object JavaPsi {
@@ -61,6 +82,7 @@ object IntelliJ {
 
     object Java {
         private const val group = "com.jetbrains.intellij.java"
+        @Suppress("MemberNameEqualsClassName")
         const val java = "$group:java:$version"
         const val impl = "$group:java-impl:$version"
     }

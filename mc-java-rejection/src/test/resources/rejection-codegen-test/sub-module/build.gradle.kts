@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,25 @@ import io.spine.internal.dependency.Protobuf
 
 plugins {
     `java-test-fixtures`
+
+    // To allow `modelCompiler` syntax below.
+    id("io.spine.mc-java")
+}
+
+// Turn off validation codegen during the transition to new ProtoData API.
+modelCompiler {
+    java {
+        codegen {
+            validation().enabled.set(false)
+        }
+    }
 }
 
 dependencies {
+    // Add Validation Java Runtime because the generated code reference
+    // the `ValidatingBuilder` interface even if validation codegen is turned off.
+    implementation(io.spine.internal.dependency.Validation.runtime)
+
     Protobuf.libs.forEach {
         testFixturesImplementation(it)
     }

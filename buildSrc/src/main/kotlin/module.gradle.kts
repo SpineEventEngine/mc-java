@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,13 @@
 
 import com.google.common.io.Files
 import io.spine.internal.dependency.CheckerFramework
+import io.spine.internal.dependency.Caffeine
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.FindBugs
 import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.Guava
 import io.spine.internal.dependency.JUnit
+import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.KotlinX
 import io.spine.internal.dependency.ProtoData
@@ -136,6 +138,9 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Jackson.Junior.objects,
+                    Caffeine.lib,
+
                     Spine.reflect,
                     Spine.base,
                     Spine.time,
@@ -151,8 +156,6 @@ fun Module.forceConfigurations() {
                     Validation.runtime,
                     validationJavaBundle(),
                     ProtoData.api,
-                    ProtoData.compiler,
-                    ProtoData.codegenJava,
                 )
             }
         }

@@ -28,9 +28,8 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.javaMultipleFiles
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.java.MessageOrEnumConvention
+import io.spine.protodata.java.javaMultipleFiles
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.WithOptions
 

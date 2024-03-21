@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.codegen.java.ClassOrEnumName
-import io.spine.protodata.codegen.java.annotation.TypeAnnotation
+import io.spine.protodata.java.ClassOrEnumName
+import io.spine.protodata.java.annotation.TypeAnnotation
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 

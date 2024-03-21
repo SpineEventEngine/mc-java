@@ -27,10 +27,9 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.codegen.java.ClassName
-import io.spine.protodata.codegen.java.javaOuterClassName
-import io.spine.protodata.codegen.java.javaPackage
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.javaOuterClassName
+import io.spine.protodata.java.javaPackage
 import io.spine.tools.mc.annotation.ApiOption
 
 /**

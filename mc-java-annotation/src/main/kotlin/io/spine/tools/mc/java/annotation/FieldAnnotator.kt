@@ -28,13 +28,13 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.FieldName
 import io.spine.protodata.MessageType
-import io.spine.protodata.codegen.java.ClassName
-import io.spine.protodata.codegen.java.MessageOrBuilderConvention
-import io.spine.protodata.codegen.java.MessageOrEnumConvention
-import io.spine.protodata.codegen.java.reference
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.MessageOrBuilderConvention
+import io.spine.protodata.java.MessageOrEnumConvention
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.FieldOptions
 import io.spine.tools.mc.annotation.MessageFieldAnnotations
+import io.spine.protodata.java.reference
 
 /**
  * Annotates methods for accessing fields of a message class, the builder of the message, and

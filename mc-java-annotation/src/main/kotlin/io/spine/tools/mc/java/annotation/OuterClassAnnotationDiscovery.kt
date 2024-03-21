@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.core.External
 import io.spine.protodata.File
-import io.spine.protodata.codegen.java.javaMultipleFiles
+import io.spine.protodata.java.javaMultipleFiles
 import io.spine.protodata.event.FileEntered
 import io.spine.server.entity.alter
 import io.spine.server.event.React

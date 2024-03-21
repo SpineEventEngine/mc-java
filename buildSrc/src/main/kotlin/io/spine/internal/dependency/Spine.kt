@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/base">spine-base</a>
          */
-        const val base = "2.0.0-SNAPSHOT.197"
+        const val base = "2.0.0-SNAPSHOT.198"
 
         /**
          * The version of [Spine.reflect].
@@ -89,7 +89,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/mc-java">spine-mc-java</a>
          */
-        const val mcJava = "2.0.0-SNAPSHOT.185"
+        const val mcJava = "2.0.0-SNAPSHOT.202"
 
         /**
          * The version of [Spine.baseTypes].
@@ -124,7 +124,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.197"
+        const val toolBase = "2.0.0-SNAPSHOT.206"
 
         /**
          * The version of [Spine.javadocTools].
@@ -148,6 +148,7 @@ object Spine {
     const val testlib = "$toolsGroup:spine-testlib:${ArtifactVersion.testlib}"
     const val testUtilTime = "$toolsGroup:spine-testutil-time:${ArtifactVersion.time}"
     const val psiJava = "$toolsGroup:spine-psi-java:${ArtifactVersion.toolBase}"
+    const val psiJavaBundle = "$toolsGroup:spine-psi-java-bundle:${ArtifactVersion.toolBase}"
     const val toolBase = "$toolsGroup:spine-tool-base:${ArtifactVersion.toolBase}"
     const val pluginBase = "$toolsGroup:spine-plugin-base:${ArtifactVersion.toolBase}"
     const val pluginTestlib = "$toolsGroup:spine-plugin-testlib:${ArtifactVersion.toolBase}"

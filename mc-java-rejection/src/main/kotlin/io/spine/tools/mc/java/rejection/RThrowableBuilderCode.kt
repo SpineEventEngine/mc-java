@@ -41,11 +41,11 @@ import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
-import io.spine.protodata.codegen.java.RejectionThrowableConvention
-import io.spine.protodata.codegen.java.javaCase
-import io.spine.protodata.codegen.java.javaType
-import io.spine.protodata.codegen.java.primarySetterName
-import io.spine.protodata.codegen.java.toPrimitiveName
+import io.spine.protodata.java.javaCase
+import io.spine.protodata.java.javaType
+import io.spine.protodata.java.RejectionThrowableConvention
+import io.spine.protodata.java.primarySetterName
+import io.spine.protodata.java.toPrimitiveName
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem

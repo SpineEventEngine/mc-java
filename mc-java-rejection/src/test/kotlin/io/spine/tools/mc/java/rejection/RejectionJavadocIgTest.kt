@@ -69,7 +69,10 @@ internal class RejectionJavadocIgTest {
                 .copyBuildSrc()
                 .withSharedTestKitDirectory()
                 .fromResources("rejection-javadoc-test") // Provides `build.gradle.kts`
-                .addFile("src/main/proto/javadoc_rejections.proto", rejectionFileContent())
+                .addFile(
+                    "sub-module/src/main/proto/javadoc_rejections.proto",
+                    rejectionFileContent()
+                )
                 .create()
             (project.runner as DefaultGradleRunner).withJvmArguments(
                 "-Xmx8g",
@@ -78,7 +81,7 @@ internal class RejectionJavadocIgTest {
                 "-XX:+HeapDumpOnOutOfMemoryError"
             )
             project.executeTask(launchProtoData)
-            val generatedFile = rejectionJavaFile(projectDir)
+            val generatedFile = rejectionJavaFile(projectDir.resolve("sub-module"))
             generatedSource = Roaster.parse(
                 JavaClassSource::class.java, generatedFile
             )

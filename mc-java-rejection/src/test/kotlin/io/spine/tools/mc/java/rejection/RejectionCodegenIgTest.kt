@@ -89,16 +89,16 @@ internal class RejectionCodegenIgTest {
                 .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
                 .withSharedTestKitDirectory()
-                 /*
-                    Running tests with `enableRunnerDebug()` turned on
-                    ---------------------------------------------------
-                    Uncomment the following line to be able to debug the Gradle build process.
-                    Remember to turn it OFF before committing your code so that tests run faster.
+                /*
+                   Running tests with `enableRunnerDebug()` turned on
+                   ---------------------------------------------------
+                   Uncomment the following line to be able to debug the Gradle build process.
+                   Remember to turn it OFF before committing your code so that tests run faster.
 
-                    IMPORTANT: Running with `enableRunnerDebug()` turned on fails
-                    under Windows in CI environment because internally Gradle tries to
-                    access Windows Registry which requires special permissions for a process.
-                 */
+                   IMPORTANT: Running with `enableRunnerDebug()` turned on fails
+                   under Windows in CI environment because internally Gradle tries to
+                   access Windows Registry which requires special permissions for a process.
+                */
                  //.enableRunnerDebug()
                 .create()
             (project.runner as DefaultGradleRunner).withJvmArguments(

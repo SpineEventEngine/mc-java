@@ -24,38 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.annotation
-
-import io.spine.protodata.java.ClassOrEnumName
-import io.spine.protodata.java.MessageOrBuilderConvention
-import io.spine.tools.mc.annotation.MessageAnnotations
+package io.spine.internal.dependency
 
 /**
- * Annotates a message class and a `MessageOrBuilder` interface with the given annotation.
+ * gRPC-Kotlin/JVM.
  *
- * @see io.spine.tools.mc.annotation.MessageAnnotationsView
+ * @see <a href="https://github.com/grpc/grpc-kotlin">GitHub project</a>
  */
-internal class MessageAnnotator :
-    MessageOrEnumAnnotator<MessageAnnotations>(MessageAnnotations::class.java) {
+@Suppress("unused")
+object GrpcKotlin {
+    const val version = "1.3.0"
+    const val stub = "io.grpc:grpc-kotlin-stub:$version"
 
-    private val messageOrBuilderConvention by lazy {
-        MessageOrBuilderConvention(typeSystem!!)
-    }
-
-    override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
-        val typeName = view.type
-        val messageClass = convention.declarationFor(typeName).name
-        val messageOrBuilderClass = messageOrBuilderConvention.declarationFor(typeName).name
-        annotationClass.run {
-            annotate(messageClass)
-            annotate(messageOrBuilderClass)
-        }
-    }
-
-    private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
-        ApiAnnotation(cls, this).let {
-            it.registerWith(context!!)
-            it.doRender(sources)
-        }
+    object ProtocPlugin {
+        const val id = "grpckt"
+        const val artifact = "io.grpc:protoc-gen-grpc-kotlin:$version:jdk8@jar"
     }
 }

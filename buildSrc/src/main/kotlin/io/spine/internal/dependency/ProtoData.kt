@@ -65,7 +65,7 @@ object ProtoData {
      * The version of ProtoData artifacts.
      */
     val version: String
-    private const val fallbackVersion = "0.19.0"
+    private const val fallbackVersion = "0.20.2"
 
     /**
      * The distinct version of ProtoData used by other build tools during
@@ -76,7 +76,7 @@ object ProtoData {
      * avoid errors caused by incompatible API changes.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.18.1"
+    private const val fallbackDfVersion = "0.20.2"
 
     /**
      * The artifact for the ProtoData Gradle plugin.
@@ -92,8 +92,15 @@ object ProtoData {
     val api
         get() = api(version)
 
+    @Deprecated("Use `backend` instead", ReplaceWith("backend"))
     val compiler
         get() = "$group:protodata-compiler:$version"
+
+    val backend
+        get() = "$group:protodata-backend:$version"
+
+    val protocPlugin
+        get() = "$group:protodata-protoc:$version"
 
     val gradleApi
         get() = "$group:protodata-gradle-api:$version"
@@ -101,11 +108,19 @@ object ProtoData {
     val cliApi
         get() = "$group:protodata-cli-api:$version"
 
+    @Deprecated("Use `java()` instead", ReplaceWith("java(version)"))
     fun codegenJava(version: String): String =
-        "$group:protodata-codegen-java:$version"
+        java(version)
 
+    fun java(version: String): String =
+        "$group:protodata-java:$version"
+
+    @Deprecated("Use `java` instead.", ReplaceWith("java"))
     val codegenJava
-        get() = codegenJava(version)
+        get() = "$group:protodata-codegen-java:$version"
+
+    val java
+        get() = java(version)
 
     val fatCli
         get() = "$group:protodata-fat-cli:$version"
