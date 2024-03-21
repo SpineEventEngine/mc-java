@@ -138,6 +138,10 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Grpc.core,
+                    Grpc.protobuf,
+                    Grpc.stub,
+                    "org.yaml:snakeyaml:2.1",
                     Jackson.Junior.objects,
                     Caffeine.lib,
 
