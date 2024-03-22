@@ -46,7 +46,7 @@ object Validation {
      * transitional dependencies, this is the version used to build the project itself to
      * avoid errors caused by incompatible API changes.
      */
-    const val dogfoodingVersion = "2.0.0-SNAPSHOT.126"
+    const val dogfoodingVersion = "2.0.0-SNAPSHOT.131"
 
     const val group = "io.spine.validation"
     private const val prefix = "spine-validation"
