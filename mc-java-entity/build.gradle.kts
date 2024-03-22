@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.IntelliJ
 import io.spine.internal.dependency.Spine
 
 plugins {
@@ -35,29 +34,5 @@ dependencies {
     implementation(project(":mc-java-base"))
     implementation(Spine.server)
     implementation(Spine.Logging.lib)
-    implementation(IntelliJ.Java.impl) {
-        exclude(group = "ai.grazie.nlp")
-        exclude(group = "ai.grazie.spell")
-        exclude(group = "ai.grazie.utils")
-        exclude(group = "org.jetbrains.teamcity")
-        exclude(group = "com.jetbrains.infra")
-
-//        exclude(group = "com.jetbrains.intellij.platform")
-//
-//        exclude(group = "com.jetbrains.intellij.jsp")
-//        exclude(group = "com.jetbrains.intellij.regexp")
-//        exclude(group = "com.jetbrains.intellij.spellchecker")
-//        exclude(group = "com.jetbrains.intellij.xml")
-//        exclude(group = "com.jetbrains.intellij.copyright")
-//
-//        exclude(group = "com.sun.activation")
-//        exclude(group = "javax.xml.bind")
-//        exclude(group = "commons-collections")
-//        exclude(group = "net.jcip")
-//        exclude(group = "net.sourceforge.nekohtml")
-//        exclude(group = "one.util")
-//        exclude(group = "org.apache.velocity")
-//        exclude(group = "org.glassfish.jaxb")
-//        exclude(group = "oro")
-    }
+    implementation(Spine.psiJavaBundle)
 }
