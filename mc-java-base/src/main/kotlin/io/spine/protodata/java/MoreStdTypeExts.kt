@@ -24,8 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.protodata.codegen.java
+package io.spine.protodata.java
 
+import io.spine.protodata.java.isJavaLang
 import kotlin.reflect.KClass
 
 /**

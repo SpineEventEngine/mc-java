@@ -28,10 +28,10 @@ package io.spine.tools.mc.java.annotation
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.java.codeReference
 import io.spine.protodata.java.file.isJava
 import io.spine.protodata.java.file.toPsi
 import io.spine.protodata.java.isRepeatable
+import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.psi.java.annotate

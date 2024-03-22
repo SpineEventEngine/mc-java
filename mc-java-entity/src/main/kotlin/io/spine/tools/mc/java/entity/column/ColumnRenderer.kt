@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.entity.column
 
 import io.spine.protodata.MessageType
-import io.spine.protodata.codegen.java.JavaRenderer
-import io.spine.protodata.codegen.java.file.hasJavaOutput
+import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaOutput
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.loadSettings
@@ -37,7 +37,7 @@ import io.spine.tools.mc.entity.EntityPluginComponent
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.codegen.Entities
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
-import io.spine.tools.psi.java.PsiWrite
+import io.spine.tools.psi.java.execute
 
 /**
  * Renders classes named `Columns` which are nested into messages classes that
@@ -69,7 +69,7 @@ internal class ColumnRenderer : JavaRenderer(), EntityPluginComponent {
         sources: SourceFileSet
     ) {
         val sourceFile = messageType.sourceFileIn(sources)
-        PsiWrite.execute {
+        execute {
             render(typeSystem!!, sourceFile, messageType)
         }
     }

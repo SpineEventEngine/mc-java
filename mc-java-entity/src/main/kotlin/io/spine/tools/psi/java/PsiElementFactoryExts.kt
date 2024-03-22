@@ -29,7 +29,7 @@ package io.spine.tools.psi.java
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiMethod
-import io.spine.tools.psi.java.PsiWrite.elementFactory
+import io.spine.tools.psi.java.Environment.elementFactory
 
 public fun PsiElementFactory.createUtilityConstructor(cls: PsiClass): PsiMethod {
     val ctor = createMethodFromText("""

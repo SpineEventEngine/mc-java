@@ -30,14 +30,14 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.Field
-import io.spine.protodata.codegen.java.ClassName
-import io.spine.protodata.codegen.java.getterName
-import io.spine.protodata.codegen.java.javaCase
-import io.spine.protodata.codegen.java.javaType
-import io.spine.protodata.codegen.java.reference
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.getterName
+import io.spine.protodata.java.javaCase
+import io.spine.protodata.java.javaType
+import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
-import io.spine.tools.psi.java.PsiWrite.elementFactory
+import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
 
 /**

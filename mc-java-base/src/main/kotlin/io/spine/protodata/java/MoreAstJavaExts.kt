@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.protodata.codegen.java
+package io.spine.protodata.java
 
 import io.spine.protodata.Field
 import io.spine.protodata.PrimitiveType
@@ -36,6 +36,8 @@ import io.spine.protodata.isMessage
 import io.spine.protodata.isEnum
 import io.spine.protodata.isPrimitive
 import io.spine.protodata.isRepeated
+import io.spine.protodata.java.javaClassName
+import io.spine.protodata.java.primitiveClass
 import io.spine.protodata.type.TypeSystem
 import io.spine.type.shortDebugString
 
