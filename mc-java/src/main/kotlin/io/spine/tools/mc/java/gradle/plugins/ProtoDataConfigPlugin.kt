@@ -40,8 +40,7 @@ import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
 import io.spine.tools.mc.java.gradle.McJava.rejection
-import io.spine.tools.mc.java.gradle.Validation.javaCodegenBundle
-import io.spine.tools.mc.java.gradle.Validation.javaRuntime
+import io.spine.tools.mc.java.gradle.ValidationSdk
 import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
@@ -160,14 +159,25 @@ private val Project.messageOptions: MessageCodegenOptions
 
 private fun Project.configureValidationRendering(protodata: ProtoDataSettings) {
     val validationConfig = messageOptions.validation()
+    val version = validationConfig.version.get()
     if (validationConfig.enabled.get()) {
-        val version = validationConfig.version.get()
-        addUserClasspathDependency(javaCodegenBundle(version))
+        addUserClasspathDependency(ValidationSdk.javaCodegenBundle(version))
         protodata.plugins(
             VALIDATION_PLUGIN_CLASS
         )
-        addDependency("implementation", javaRuntime(version))
+    } else {
+        addUserClasspathDependency(ValidationSdk.configuration(version))
     }
+
+    // We add the dependency on runtime anyway for the following reasons:
+    //  1. We do not want users to change their Gradle build files when they turn on or off
+    //     code generation for the validation code.
+    //
+    //  2. We have run-time validation rules that are going to be used in parallel with
+    //     the generated code. This includes current and new implementation for validation
+    //     rules for the already existing generated Protobuf code.
+    //
+    addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
 
 private fun Project.configureRejectionRendering(protodata: ProtoDataSettings) {

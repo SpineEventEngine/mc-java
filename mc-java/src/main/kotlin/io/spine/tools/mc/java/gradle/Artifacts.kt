@@ -180,15 +180,16 @@ internal object McJava {
 }
 
 /**
- * Artifacts of the Spine Validation library.
+ * Artifacts of the Spine Validation SDK.
  */
-internal object Validation {
+internal object ValidationSdk {
 
     @Suppress("ConstPropertyName")
     private const val group = "io.spine.validation"
     private val javaCodegen = MavenDependency(group, "spine-validation-java")
     private val javaCodegenBundle = MavenDependency(group, "spine-validation-java-bundle")
     private val javaRuntime = MavenDependency(group, "spine-validation-java-runtime")
+    private val configuration = MavenDependency(group, "spine-validation-configuration")
 
     private fun validationVersion(version: String = ""): String =
         version.ifEmpty {
@@ -222,6 +223,20 @@ internal object Validation {
     @JvmStatic
     fun javaRuntime(version: String = ""): Artifact = artifact {
         dependency = javaRuntime
+        this@artifact.version = validationVersion(version)
+    }
+
+    /**
+     * The Maven artifact containing the `spine-validation-configuration` module.
+     *
+     * @param version
+     *         the version of Validation library to be used.
+     *         If empty, the version of the build time dependency used is used.
+     * @see javaCodegenBundle
+     */
+    @JvmStatic
+    fun configuration(version: String = ""): Artifact = artifact {
+        dependency = configuration
         this@artifact.version = validationVersion(version)
     }
 }
