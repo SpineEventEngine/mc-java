@@ -143,13 +143,13 @@ private fun Project.configureProtoDataPlugins() {
         toolBase,
     )
     val protodata = extensions.getByType<ProtoDataSettings>()
-    configureValidationRendering(protodata)
-    configureRejectionRendering(protodata)
-    configureEntityRendering(protodata)
+    configureValidation(protodata)
+    configureRejections(protodata)
+    configureEntities(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
     // so that their output is annotated too.
-    configureAnnotationRendering(protodata)
+    configureAnnotations(protodata)
 
     setSubdirectories(protodata)
 }
@@ -157,7 +157,7 @@ private fun Project.configureProtoDataPlugins() {
 private val Project.messageOptions: MessageCodegenOptions
     get() = mcJava.codegen!!
 
-private fun Project.configureValidationRendering(protodata: ProtoDataSettings) {
+private fun Project.configureValidation(protodata: ProtoDataSettings) {
     val validationConfig = messageOptions.validation()
     val version = validationConfig.version.get()
     if (validationConfig.enabled.get()) {
@@ -180,7 +180,7 @@ private fun Project.configureValidationRendering(protodata: ProtoDataSettings) {
     addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
 
-private fun Project.configureRejectionRendering(protodata: ProtoDataSettings) {
+private fun Project.configureRejections(protodata: ProtoDataSettings) {
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
         addUserClasspathDependency(rejection)
@@ -188,12 +188,12 @@ private fun Project.configureRejectionRendering(protodata: ProtoDataSettings) {
     }
 }
 
-private fun Project.configureEntityRendering(protodata: ProtoDataSettings) {
+private fun Project.configureEntities(protodata: ProtoDataSettings) {
     addUserClasspathDependency(entity)
     protodata.addPlugin<EntityPlugin>()
 }
 
-private fun Project.configureAnnotationRendering(protodata: ProtoDataSettings) {
+private fun Project.configureAnnotations(protodata: ProtoDataSettings) {
     addUserClasspathDependency(annotation)
     protodata.addPlugin<ApiAnnotationsPlugin>()
 }
