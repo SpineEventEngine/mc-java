@@ -29,11 +29,7 @@ package io.spine.tools.mc.java.entity.column
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiNameHelper
-import com.intellij.psi.impl.PsiManagerImpl
-import com.intellij.psi.impl.PsiNameHelperImpl
 import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
@@ -46,9 +42,7 @@ import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
-import io.spine.tools.psi.java.Environment
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.MetaLanguageSupport
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.createUtilityConstructor
 import io.spine.tools.psi.java.makeFinal
@@ -123,13 +117,6 @@ internal class ColumnClassFactory(
             file: SourceFile,
             type: MessageType
         ) {
-            Environment.project
-                .registerService(PsiManager::class.java, PsiManagerImpl::class.java)
-            Environment.project
-                .registerService(PsiNameHelper::class.java, PsiNameHelperImpl::class.java)
-
-            MetaLanguageSupport.setUp()
-
             try {
                 val header = typeSystem.findMessage(type.name)!!.second
                 val entityStateClass = type.javaClassName(header)
