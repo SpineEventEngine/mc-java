@@ -66,7 +66,7 @@ public class McJavaPlugin extends LanguagePlugin {
     private void logApplyingTo(Project project) {
         var version = McJava.version();
         project.getLogger().warn(
-                "Applying `{}` (version: `{}`) to `{}`.",
+                "Applying `{}` (version: {}) to `{}`.",
                 getClass().getSimpleName(),
                 version,
                 project.getName()

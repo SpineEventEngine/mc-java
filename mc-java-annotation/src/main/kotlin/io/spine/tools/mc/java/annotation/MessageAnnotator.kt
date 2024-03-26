@@ -55,7 +55,7 @@ internal class MessageAnnotator :
     private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
         ApiAnnotation(cls, this).let {
             it.registerWith(context!!)
-            it.renderSources(sources)
+            it.doRender(sources)
         }
     }
 }

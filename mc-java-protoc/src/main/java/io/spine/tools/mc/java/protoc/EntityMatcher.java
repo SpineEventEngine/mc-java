@@ -46,8 +46,7 @@ public final class EntityMatcher implements Predicate<MessageType> {
 
     public EntityMatcher(Entities entities) {
         checkNotNull(entities);
-        matcher = matchAgainst(entities.getOptionList(), OptionMatcher::new)
-                .or(matchAgainst(entities.getPatternList(), FilePatternMatcher::new));
+        matcher = matchAgainst(entities.getOptionList(), OptionMatcher::new);
     }
 
     private static <T> Predicate<MessageType>

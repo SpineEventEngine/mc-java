@@ -47,7 +47,7 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 import static io.spine.code.proto.ColumnOption.hasColumns;
 
 /**
- * A code generator which adds the strongly-typed columns to a message type.
+ * A code generator which adds the strongly typed columns to a message type.
  *
  * <p>The generator produces {@link CompilerOutput compiler output} that fits into the message's
  * {@link InsertionPoint#class_scope class_scope} insertion point.

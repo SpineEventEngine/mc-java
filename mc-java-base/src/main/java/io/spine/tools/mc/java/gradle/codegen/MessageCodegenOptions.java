@@ -63,7 +63,9 @@ import static io.spine.base.MessageFile.REJECTIONS;
  * A part of {@link io.spine.tools.mc.java.gradle.McJavaOptions McJavaOptions} responsible
  * for code generation settings.
  */
-public final class CodegenOptionsConfig extends Config<CodegenOptions> {
+public final class MessageCodegenOptions extends Config<CodegenOptions> {
+
+    private final Project project;
 
     private final SignalConfig commands;
     private final SignalConfig events;
@@ -72,10 +74,9 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
     private final UuidConfig uuids;
     private final ValidationConfig validation;
     private final Set<Messages> messagesConfigs = new HashSet<>();
-    private final Project project;
 
     @Internal
-    public CodegenOptionsConfig(Project project) {
+    public MessageCodegenOptions(Project project) {
         super(project);
         this.project = checkNotNull(project);
         this.commands = new SignalConfig(project);
@@ -84,17 +85,18 @@ public final class CodegenOptionsConfig extends Config<CodegenOptions> {
         this.entities = new EntityConfig(project);
         this.uuids = new UuidConfig(project);
         this.validation = new ValidationConfig(project);
-        prepareConvention();
+        applyConvention();
     }
 
     /**
-     * Sets up default values for the configuration.
+     * Sets up default values for the options.
      *
-     * <p>Default values are based on the Gradle conventions principle. If the user changes
-     * the value, the default is completely overridden, even if the used invokes a method which has
-     * a name related to appending, e.g. {@code add()}.
+     * <p>Default values are based on the Gradle conventions principle.
+     * If the user changes the value, the default is completely overridden,
+     * even if the used invokes a method which has a name related to appending,
+     * e.g. {@code add()}.
      */
-    private void prepareConvention() {
+    private void applyConvention() {
         commands.convention(COMMANDS, CommandMessage.class);
         events.convention(EVENTS, EventMessage.class, EventMessageField.class);
         rejections.convention(REJECTIONS, RejectionMessage.class, EventMessageField.class);

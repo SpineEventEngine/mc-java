@@ -141,7 +141,17 @@ tasks.shadowJar {
          * The ProtoData plugin will be added to the user's build via a dependency.
          * See the `pom.xml` manipulations above.
          */
-        "io/spine/protodata/**",  // Java classes
+        "io/spine/protodata/*",
+        "io/spine/protodata/plugin/**",
+        "io/spine/protodata/renderer/**",
+        "io/spine/protodata/type/**",
+        "io/spine/protodata/cli/app/**",
+        "io/spine/protodata/gradle/plugin/**",
+        "io/spine/protodata/java/*",
+        "io/spine/protodata/java/annotation/**",
+        "io/spine/protodata/java/file/**",
+        "io/spine/protodata/protoc/**",
+
         "spine/protodata/**", // Protobuf definitions
         "META-INF/gradle-plugins/io.spine.protodata.properties",  // Plugin declaration
 
@@ -159,7 +169,34 @@ tasks.shadowJar {
          */
         "META-INF/gradle-plugins/com**",
         "META-INF/gradle-plugins/net**",
-        "META-INF/gradle-plugins/org**")
+        "META-INF/gradle-plugins/org**",
+
+
+        // Exclude license files that cause or may cause issues with LicenseReport.
+        // We analyze these files when building artifacts we depend on.
+        "about_files/**",
+        "license/**",
+
+        "ant_tasks/**", // `resource-ant.jar` is of no use here.
+
+        /* Exclude `https://github.com/JetBrains/pty4j`.
+          We don't need the terminal. */
+        "resources/com/pty4j/**",
+
+        // Protobuf files.
+        "google/**",
+        "spine/**",
+        "src/**",
+
+        // Java source code files of the package `org.osgi`.
+        "OSGI-OPT/**",
+
+        /*
+          Exclude `https://github.com/JetBrains/pty4j`.
+          We don't need the terminal.
+         */
+        "resources/com/pty4j/**",
+    )
 
     setZip64(true)  /* The archive has way too many items. So using the Zip64 mode. */
     archiveClassifier.set("all")    /** To prevent Gradle setting something like `osx-x86_64`. */

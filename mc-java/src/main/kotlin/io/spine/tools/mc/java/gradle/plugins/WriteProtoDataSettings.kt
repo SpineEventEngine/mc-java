@@ -25,13 +25,17 @@
  */
 package io.spine.tools.mc.java.gradle.plugins
 
+import com.google.protobuf.Message
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.codegen.CodegenOptions
+import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ANNOTATION_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ENTITY_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.JAVA_CODE_STYLE_ID
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
@@ -39,6 +43,7 @@ import io.spine.validation.validationConfig
 import java.io.IOException
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
@@ -56,12 +61,19 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
     @get:OutputDirectory
     public abstract val settingsDir: DirectoryProperty
 
+    @get:Internal
+    internal val options: McJavaOptions by lazy {
+        project.mcJava
+    }
+
     @TaskAction
     @Throws(IOException::class)
     private fun writeFile() {
         val settings = settingsDirectory()
-        forValidation(settings)
-        forAnnotation(settings)
+        forValidationPlugin(settings)
+        forAnnotationPlugin(settings)
+        forEntityPlugin(settings)
+        forStyleFormattingPlugin(settings)
     }
 }
 
@@ -82,8 +94,7 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  * The settings are taken from McJava extension object and converted to
  * [io.spine.validation.ValidationConfig], which is later written as JSON file.
  */
-private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
-    val options = project.mcJava
+private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirectory) {
     val codegen = options.codegen!!.toProto()
     val markers = codegen.let {
         messageMarkers {
@@ -97,14 +108,13 @@ private fun WriteProtoDataSettings.forValidation(settings: SettingsDirectory) {
         messageMarkers = markers
     }
 
-    settings.write(VALIDATION_SETTINGS_ID, Format.PROTO_JSON, config.toJson())
+    settings.write(VALIDATION_SETTINGS_ID, config)
 }
 
 private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
-private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
-    val options = project.mcJava
+private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirectory) {
     val annotation = options.annotation
     val proto = settings {
         val javaType = annotation.types
@@ -117,5 +127,22 @@ private fun WriteProtoDataSettings.forAnnotation(settings: SettingsDirectory) {
         internalClassPattern.addAll(annotation.internalClassPatterns.get())
         internalMethodName.addAll(annotation.internalMethodNames.get())
     }
-    settings.write(ANNOTATION_SETTINGS_ID, Format.PROTO_JSON, proto.toJson())
+    settings.write(ANNOTATION_SETTINGS_ID, proto)
+}
+
+private fun WriteProtoDataSettings.forEntityPlugin(settings: SettingsDirectory) {
+    val entitySettings = options.codegen!!.entities().toProto()
+    settings.write(ENTITY_SETTINGS_ID, entitySettings)
+}
+
+private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDirectory) {
+    val styleSettings = options.style.get()
+    settings.write(JAVA_CODE_STYLE_ID, styleSettings)
+}
+
+/**
+ * Writes the given instance of settings in [Format.PROTO_JSON] format using the [id].
+ */
+private fun SettingsDirectory.write(id: String, settings: Message) {
+    write(id, Format.PROTO_JSON, settings.toJson())
 }

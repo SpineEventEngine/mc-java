@@ -54,6 +54,7 @@ dependencies {
         ":mc-java-base",
         ":mc-java-annotation",
         ":mc-java-checks",
+        ":mc-java-entity",
         ":mc-java-rejection",
         ":mc-java-protodata-params"
     ).forEach {

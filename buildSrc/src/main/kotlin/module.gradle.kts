@@ -59,6 +59,7 @@ plugins {
     java
     `java-library`
     kotlin("jvm")
+    id("write-manifest")
     id("com.google.protobuf")
     id("net.ltgt.errorprone")
     id("pmd-settings")
@@ -137,6 +138,10 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     Protobuf.compiler,
                     Grpc.api,
+                    Grpc.core,
+                    Grpc.protobuf,
+                    Grpc.stub,
+                    "org.yaml:snakeyaml:2.1",
                     Jackson.Junior.objects,
                     Caffeine.lib,
 
@@ -153,11 +158,19 @@ fun Module.forceConfigurations() {
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
-                    Validation.javaBundle,
+                    validationJavaBundle(),
                     ProtoData.api,
                 )
             }
         }
+    }
+}
+
+fun Configuration.validationJavaBundle(): String {
+    return if (name == "protoData") {
+        Validation.javaBundle(Validation.dogfoodingVersion)
+    } else {
+        Validation.javaBundle
     }
 }
 

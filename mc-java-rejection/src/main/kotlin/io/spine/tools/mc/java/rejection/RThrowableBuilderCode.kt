@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@
 
 package io.spine.tools.mc.java.rejection
 
-import com.google.protobuf.ByteString
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
@@ -38,18 +37,18 @@ import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeSpec
 import io.spine.code.java.PackageName
 import io.spine.code.java.SimpleClassName
-import io.spine.code.proto.UnderscoredName
 import io.spine.protodata.Field
-import io.spine.protodata.FieldName
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
-import io.spine.protodata.java.MessageOrEnumConvention
+import io.spine.protodata.java.javaCase
+import io.spine.protodata.java.javaType
 import io.spine.protodata.java.RejectionThrowableConvention
+import io.spine.protodata.java.primarySetterName
+import io.spine.protodata.java.toPrimitiveName
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
 import io.spine.protodata.type.TypeSystem
-import io.spine.string.titleCase
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.BuilderSpec
 import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
@@ -69,12 +68,10 @@ import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
 import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
 import io.spine.validate.Validate
 import io.spine.validate.Validated
-import java.util.regex.Pattern
 import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC
 import javax.lang.model.element.Modifier.STATIC
-import kotlin.reflect.KClass
 import com.squareup.javapoet.ClassName as PoClassName
 import com.squareup.javapoet.TypeName as PoTypeName
 
@@ -87,10 +84,9 @@ internal class RThrowableBuilderCode internal constructor(
     private val rejection: MessageType,
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,
-    typeSystem: TypeSystem
+    private val typeSystem: TypeSystem
 ) : BuilderSpec {
 
-    private val messageOrEnumConvention = MessageOrEnumConvention(typeSystem)
     private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
@@ -146,55 +142,44 @@ internal class RThrowableBuilderCode internal constructor(
         }
     }
 
-    private fun Field.setterMethod(): MethodSpec = methodSpec(primarySetterName()) {
+    private fun Field.setterMethod(): MethodSpec = methodSpec(primarySetterName) {
         val parameterName = name.javaCase()
         addModifiers(PUBLIC)
         returns(builderClass())
         addParameter(poetTypeName(), parameterName)
-        addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName(), parameterName)
+        addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName, parameterName)
         addStatement(RETURN_STATEMENT)
 
-        // Add line separator to simulate behavior of native Protobuf API.
-        val leadingComment = doc.leadingComment + System.lineSeparator()
-
-        if (leadingComment.isNotEmpty()) {
+        if (doc.leadingComment.isNotEmpty()) {
+            // Add line separator to simulate the behavior of native Protobuf API.
+            val leadingComment = doc.leadingComment + System.lineSeparator()
             addJavadoc(wrapInPre(leadingComment))
         }
     }
 
     private fun Field.poetTypeName(): PoTypeName {
         return when {
-            isMap -> mapType(map.keyType, type)
-            isRepeated -> repeatedNameOf(type)
-            else -> singularNameOf(type)
+            isMap -> mapTypeOf(map.keyType, type)
+            isRepeated -> repeatedTypeOf(type)
+            else -> type.toPoet()
         }
     }
 
-    private fun singularNameOf(type: Type): PoTypeName {
-        val javaType = when {
-            type.hasMessage() ->
-                messageOrEnumConvention.declarationFor(type.message).name.canonical
-            type.hasEnumeration() ->
-                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
-            type.hasPrimitive() ->
-                type.primitive.toPrimitiveName()
-            else -> {
-                unknownType(type)
-            }
-        }
+    private fun Type.toPoet(): PoTypeName {
+        val javaType = javaType(typeSystem)
         return typeNameOf(javaType)
     }
 
-    private fun repeatedNameOf(type: Type): PoTypeName {
-        val elementType = javaTypeName(type)
+    private fun repeatedTypeOf(type: Type): PoTypeName {
+        val elementType = type.javaType(typeSystem)
         return RepeatedFieldType.typeNameFor(elementType)
     }
 
-    private fun mapType(keyType: PrimitiveType, valueType: Type): PoTypeName {
-        val keyTypeName = singularNameOf(keyType)
-        val valueTypeName = singularNameOf(valueType)
+    private fun mapTypeOf(keyType: PrimitiveType, valueType: Type): PoTypeName {
+        val keyTypeName = keyType.toPoet()
+        val valueTypeName = valueType.toPoet()
         val result = ParameterizedTypeName.get(
-            ClassName.get(MutableMap::class.java), keyTypeName, valueTypeName
+            ClassName.get(java.util.Map::class.java), keyTypeName, valueTypeName
         )
         return result
     }
@@ -204,21 +189,6 @@ internal class RThrowableBuilderCode internal constructor(
      */
     private fun builderClass(): ClassName =
         throwableClass.nestedClass(simpleClassName)
-
-    /**
-     * Obtains the name of the Java class generated from a Protobuf type with the given name.
-     */
-    private fun javaTypeName(type: Type): String {
-        return when {
-            type.hasPrimitive() ->
-                type.primitive.toPrimitiveName()
-            type.hasMessage() ->
-                messageOrEnumConvention.declarationFor(type.message).name.canonical
-            type.hasEnumeration() ->
-                messageOrEnumConvention.declarationFor(type.enumeration).name.canonical
-            else -> unknownType(type)
-        }
-    }
 }
 
 private val newBuilder = NoArgMethod(NEW_BUILDER)
@@ -234,38 +204,8 @@ private fun wrapInPre(text: String): String =
         .inPreTags()
         .value()
 
-/**
- * The separator is an underscore or a digit.
- *
- * A digit instead of an underscore should be kept in a word.
- * So, the second group is not just `(\\d)`.
- */
-private const val WORD_SEPARATOR = "(_)|((?<=\\d)|(?=\\d))"
-private val WORD_SEPARATOR_PATTERN = Pattern.compile(WORD_SEPARATOR)
-
-private fun FieldName.asUnderscored() : UnderscoredName {
-    return object : UnderscoredName {
-        override fun words(): List<String> = WORD_SEPARATOR_PATTERN.split(value).toList()
-        override fun value(): String = value
-    }
-}
-
-private fun FieldName.javaCase(): String {
-    val camelCase = asUnderscored().toCamelCase()
-    return camelCase.replaceFirstChar { it.lowercaseChar() }
-}
-
-private fun Field.primarySetterName(): String {
-    val capName = name.javaCase().titleCase()
-    return when {
-        isMap -> "putAll$capName"
-        isRepeated -> "addAll$capName"
-        else -> "set$capName"
-    }
-}
-
-private fun singularNameOf(primitiveType: PrimitiveType): PoTypeName =
-    typeNameOf(primitiveType.toPrimitiveName())
+private fun PrimitiveType.toPoet(): PoTypeName =
+    typeNameOf(toPrimitiveName())
 
 private fun typeNameOf(javaType: String): PoTypeName =
     constructTypeNameFor(javaType).boxIfPrimitive()
@@ -305,36 +245,3 @@ private fun PoClassName.rejectionMessageMethod(): MethodSpec = methodSpec(REJECT
     returns(annotatedType)
     addStatement("return \$L.build()", BUILDER_FIELD)
 }
-
-/**
- * Obtains a name of the class which corresponds to this primitive type.
- */
-private fun PrimitiveType.toPrimitiveName(): String {
-    val klass = primitiveClass()
-    val primitiveClass = klass.javaPrimitiveType ?: klass.java
-    return primitiveClass.name
-}
-
-private fun PrimitiveType.primitiveClass(): KClass<*> =
-    when (this) {
-        PrimitiveType.TYPE_DOUBLE -> Double::class
-        PrimitiveType.TYPE_FLOAT -> Float::class
-
-        PrimitiveType.TYPE_INT64, PrimitiveType.TYPE_UINT64, PrimitiveType.TYPE_SINT64,
-        PrimitiveType.TYPE_FIXED64, PrimitiveType.TYPE_SFIXED64 -> Long::class
-
-        PrimitiveType.TYPE_INT32, PrimitiveType.TYPE_UINT32, PrimitiveType.TYPE_SINT32,
-        PrimitiveType.TYPE_FIXED32, PrimitiveType.TYPE_SFIXED32 -> Int::class
-
-        PrimitiveType.TYPE_BOOL -> Boolean::class
-        PrimitiveType.TYPE_STRING -> String::class
-        PrimitiveType.TYPE_BYTES -> ByteString::class
-        PrimitiveType.UNRECOGNIZED, PrimitiveType.PT_UNKNOWN -> unknownType(this)
-    }
-
-private fun unknownType(type: PrimitiveType): Nothing {
-    error("Unknown primitive type: `$type`.")
-}
-
-private fun unknownType(type: Type): Nothing =
-    error("Unknown type: `${type}`.")

@@ -28,9 +28,6 @@
 
 package io.spine.tools.mc.annotation
 
-import com.google.protobuf.BoolValue
-import com.google.protobuf.kotlin.isA
-import com.google.protobuf.kotlin.unpack
 import io.spine.base.EventMessage
 import io.spine.core.External
 import io.spine.protodata.File
@@ -46,7 +43,6 @@ import io.spine.server.procman.ProcessManager
 import io.spine.server.query.select
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.event.fileOptionMatched
-import com.google.protobuf.Any as ProtoAny
 import io.spine.server.model.Nothing as NoEvents
 
 /**

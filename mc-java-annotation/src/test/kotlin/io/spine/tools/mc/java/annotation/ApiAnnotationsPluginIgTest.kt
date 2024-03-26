@@ -33,8 +33,6 @@ import io.spine.annotation.SPI
 import io.spine.code.proto.FileDescriptors
 import io.spine.code.proto.FileName
 import io.spine.code.proto.FileSet
-import io.spine.io.Resource
-import io.spine.string.ti
 import io.spine.testing.SlowTest
 import io.spine.tools.div
 import io.spine.tools.fs.DirectoryName
@@ -42,7 +40,6 @@ import io.spine.tools.gradle.task.BaseTaskName
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.gradle.testing.get
 import io.spine.tools.java.fs.SourceFile
-import io.spine.tools.mc.java.annotation.ApiAnnotationsPluginIgTest.Companion.RESOURCE_DIR
 import io.spine.tools.mc.java.annotation.ApiAnnotationsPluginIgTest.Companion.moduleDir
 import io.spine.tools.mc.java.annotation.check.FieldAnnotationCheck
 import io.spine.tools.mc.java.annotation.check.NestedTypeFieldsAnnotationCheck
@@ -111,7 +108,7 @@ import org.junit.jupiter.api.io.TempDir
 internal class ApiAnnotationsPluginIgTest {
 
     companion object {
-        const val RESOURCE_DIR = "annotator-plugin-test"
+        private const val RESOURCE_DIR = "annotator-plugin-test"
         private const val RESOURCE_SUB_DIR = "typedefs"
 
         lateinit var moduleDir: Path
@@ -130,7 +127,10 @@ internal class ApiAnnotationsPluginIgTest {
                 //.enableRunnerDebug()
                 .create()
             (project.runner as DefaultGradleRunner).withJvmArguments(
-                "-Xmx8g", "-XX:MaxMetaspaceSize=1024m", "-XX:+HeapDumpOnOutOfMemoryError"
+                "-Xmx8g",
+                "-XX:MaxMetaspaceSize=1512m",
+                "-XX:+UseParallelGC",
+                "-XX:+HeapDumpOnOutOfMemoryError"
             )
             moduleDir = projectDir.toPath() / RESOURCE_SUB_DIR
             project.executeTask(McJavaTaskName.launchProtoData)

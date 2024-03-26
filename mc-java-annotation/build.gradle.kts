@@ -33,12 +33,12 @@ plugins {
 }
 
 dependencies {
-    val group = "com.google.guava"
+    val guavaGroup = "com.google.guava"
     implementation(Roaster.api) {
-        exclude(group = group)
+        exclude(group = guavaGroup)
     }
     implementation(Roaster.jdt) {
-        exclude(group = group)
+        exclude(group = guavaGroup)
     }
 
     implementation(project(":mc-java-base"))
@@ -48,10 +48,10 @@ dependencies {
     testFixturesImplementation(Spine.toolBase)
     testFixturesImplementation(Spine.testlib)
     testFixturesImplementation(Roaster.api) {
-        exclude(group = group)
+        exclude(group = guavaGroup)
     }
     testFixturesImplementation(Roaster.jdt) {
-        exclude(group = group)
+        exclude(group = guavaGroup)
     }
 
     testImplementation(Spine.pluginTestlib)
