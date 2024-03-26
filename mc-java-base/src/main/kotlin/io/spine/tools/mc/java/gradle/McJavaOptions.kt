@@ -26,7 +26,8 @@
 package io.spine.tools.mc.java.gradle
 
 import groovy.lang.Closure
-import io.spine.string.Indent.Companion.DEFAULT_JAVA_INDENT_SIZE
+import io.spine.protodata.java.style.JavaCodeStyle
+import io.spine.protodata.java.style.javaCodeStyleDefaults
 import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import org.gradle.api.Action
@@ -53,7 +54,13 @@ public abstract class McJavaOptions {
     /**
      * The indent for the generated code.
      */
+    @Deprecated(message = "Please use `style` instead.")
     public abstract val indent: Property<Int>
+
+    /**
+     * Code style settings for the generated Java code.
+     */
+    public abstract val style: Property<JavaCodeStyle>
 
     /**
      * The absolute paths to directories to delete on the `preClean` task.
@@ -62,8 +69,11 @@ public abstract class McJavaOptions {
     public var tempArtifactDirs: List<String> = ArrayList()
 
     init {
-        @Suppress("LeakingThis")
-        indent.convention(DEFAULT_JAVA_INDENT_SIZE)
+        initConventions()
+    }
+
+    private fun initConventions() {
+        style.convention(javaCodeStyleDefaults())
     }
 
     /**
