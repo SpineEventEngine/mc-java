@@ -28,10 +28,14 @@
 
 package io.spine.tools.mc.java.gradle.plugins
 
+import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
 import io.spine.protodata.gradle.plugin.LaunchProtoData
+import io.spine.protodata.java.style.JavaCodeStyle
+import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
+import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
@@ -55,15 +59,16 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
-import io.spine.protodata.plugin.Plugin as ProtoDataPlugin
 import io.spine.protodata.gradle.CodegenSettings as ProtoDataSettings
+import io.spine.protodata.plugin.Plugin as ProtoDataPlugin
 
 /**
  * The plugin that configures ProtoData for the associated project.
  *
  * This plugin does the following:
- *   1. Applies the `io.spine.protodata` plugin.
- *   2. Configures the ProtoData extension of a Gradle project, passing codegen plugins, such
+ *   1. Applies the `io.spine.protodata` Gradle plugin to the project.
+ *   2. Configures the ProtoData extension of a Gradle project, passing codegen
+ *      plugins of ProtoData, such
  *      as [JavaValidationPlugin][io.spine.validation.java.JavaValidationPlugin].
  *   3. Creates a [WriteProtoDataSettings] task for passing configuration to ProtoData, and
  *      links it to the [LaunchProtoData] task.
@@ -113,6 +118,11 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
          * The ID used by Entity plugin components to load settings.
          */
         const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.entity.EntityPlugin"
+
+        /**
+         * The ID for the Java code style settings.
+         */
+        val JAVA_CODE_STYLE_ID = JavaCodeStyle::class.java.defaultConsumerId
     }
 }
 
@@ -143,6 +153,8 @@ private fun Project.configureProtoDataPlugins() {
         toolBase,
     )
     val protodata = extensions.getByType<ProtoDataSettings>()
+    setSubdirectories(protodata)
+
     configureValidation(protodata)
     configureRejections(protodata)
     configureEntities(protodata)
@@ -151,11 +163,20 @@ private fun Project.configureProtoDataPlugins() {
     // so that their output is annotated too.
     configureAnnotations(protodata)
 
-    setSubdirectories(protodata)
+    // The Java style formatting comes last to conclude all the rendering.
+    configureStyleFormatting(protodata)
 }
 
 private val Project.messageOptions: MessageCodegenOptions
     get() = mcJava.codegen!!
+
+private fun setSubdirectories(protodata: ProtoDataSettings) {
+    protodata.subDirs = listOf(
+        generatedJavaDirName.value(),
+        generatedGrpcDirName.value(),
+        DirectoryName.kotlin.value()
+    )
+}
 
 private fun Project.configureValidation(protodata: ProtoDataSettings) {
     val validationConfig = messageOptions.validation()
@@ -198,11 +219,9 @@ private fun Project.configureAnnotations(protodata: ProtoDataSettings) {
     protodata.addPlugin<ApiAnnotationsPlugin>()
 }
 
-private fun setSubdirectories(protodata: ProtoDataSettings) {
-    protodata.subDirs = listOf(
-        generatedJavaDirName.value(),
-        generatedGrpcDirName.value(),
-        DirectoryName.kotlin.value()
+private fun configureStyleFormatting(protodata: CodegenSettings) {
+    protodata.plugins(
+        JavaCodeStyleFormatterPlugin::class.java.canonicalName
     )
 }
 
