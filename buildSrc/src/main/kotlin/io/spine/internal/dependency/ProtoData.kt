@@ -65,7 +65,7 @@ object ProtoData {
      * The version of ProtoData artifacts.
      */
     val version: String
-    private const val fallbackVersion = "0.20.3"
+    private const val fallbackVersion = "0.20.4"
 
     /**
      * The distinct version of ProtoData used by other build tools during
@@ -76,7 +76,7 @@ object ProtoData {
      * avoid errors caused by incompatible API changes.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.20.3"
+    private const val fallbackDfVersion = "0.20.4"
 
     /**
      * The artifact for the ProtoData Gradle plugin.
