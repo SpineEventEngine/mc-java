@@ -27,15 +27,9 @@
 package io.spine.tools.mc.java.entity.column
 
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaOutput
-import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.settings.loadSettings
-import io.spine.tools.mc.entity.DiscoveredEntities
-import io.spine.tools.mc.entity.EntityPluginComponent
 import io.spine.tools.mc.entity.columns
-import io.spine.tools.mc.java.codegen.Entities
+import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.execute
 
@@ -45,51 +39,19 @@ import io.spine.tools.psi.java.execute
  *
  * @see io.spine.tools.mc.entity.EntityDiscoveryProcess
  */
-internal class ColumnRenderer : JavaRenderer(), EntityPluginComponent {
+internal class ColumnRenderer : EntityStateRenderer() {
 
-    private val settings: Entities by lazy {
-        loadSettings()
-    }
-
-    override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaOutput && settings.generateQueries
-        if (!relevant) {
-            return
+    override fun doRender(type: MessageType, sources: SourceFileSet) {
+        if (type.columns.isNotEmpty()) {
+            renderColumnsForMessageType(type, sources)
         }
-        val entityStates = foundEntityStates()
-        entityStates
-            .filter { it.columns.isNotEmpty() }
-            .forEach {
-                renderColumnsForMessageType(it, sources)
-            }
     }
 
-    private fun renderColumnsForMessageType(
-        messageType: MessageType,
-        sources: SourceFileSet
-    ) {
-        val sourceFile = messageType.sourceFileIn(sources)
+    private fun renderColumnsForMessageType(type: MessageType, sources: SourceFileSet) {
+        val sourceFile = sources.fileOf(type)
         execute {
-            render(typeSystem!!, sourceFile, messageType)
+            render(typeSystem!!, sourceFile, type)
         }
-    }
-
-    /**
-     * Obtains entity state types declared in all proto files.
-     */
-    private fun foundEntityStates(): List<MessageType> {
-        val discoveredEntities = select<DiscoveredEntities>().all()
-        val result = discoveredEntities.flatMap { it.typeList }
-        return result
-    }
-
-    private fun MessageType.sourceFileIn(sources: SourceFileSet): SourceFile {
-        val javaFile = javaFileOf(type = name, declaredIn = file)
-        val sourceFile = sources.find(javaFile)
-        check(sourceFile != null) {
-            "Unable to locate the file `$sourceFile` in the source set `$sources`."
-        }
-        return sourceFile
     }
 }
 
