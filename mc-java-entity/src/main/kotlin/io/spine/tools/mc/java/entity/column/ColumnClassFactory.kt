@@ -128,7 +128,7 @@ internal class ColumnClassFactory(
 
                 val updatedText = psiJavaFile.text
                 file.overwrite(updatedText)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 logger.atError().log {
                     "Caught exception while generating `Column` class: `${e.message}`."
                 }
