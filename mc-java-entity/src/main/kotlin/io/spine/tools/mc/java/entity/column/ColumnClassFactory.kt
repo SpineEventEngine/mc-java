@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
 import io.spine.protodata.Field
@@ -44,6 +43,7 @@ import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
+import io.spine.tools.psi.java.addLast
 import io.spine.tools.psi.java.createUtilityConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
@@ -237,10 +237,4 @@ internal class ColumnClassFactory(
             return method
         }
     }
-}
-
-private fun PsiClass.addLast(element: PsiElement): PsiClass {
-    val closingBrace = children.last()
-    addBefore(element, closingBrace)
-    return this
 }
