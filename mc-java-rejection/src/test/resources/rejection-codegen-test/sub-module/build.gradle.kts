@@ -33,6 +33,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 import io.spine.internal.dependency.Protobuf
+import org.gradle.api.tasks.JavaExec
 
 plugins {
     `java-test-fixtures`
@@ -63,3 +64,12 @@ dependencies {
 }
 
 tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+tasks.findByName("launchProtoData")?.apply { this as JavaExec
+    debugOptions {
+        enabled.set(false) // Set this option to `true` to enable remote debugging.
+        port.set(5566)
+        server.set(true)
+        suspend.set(true)
+    }
+}
