@@ -74,7 +74,12 @@ private fun Type.primitiveClassName(): String {
 }
 
 /**
- * Finds a header of the file which declares the given type.
+ * Finds a header of the file which declares the given [type].
+ *
+ * @return the header for the Protobuf file in which the given type is declared, or
+ *         `null` if the header was not found.
+ * @throws IllegalArgumentException
+ *          if the given type is not a message or an enum.
  */
 public fun TypeSystem.findHeader(type: Type): ProtoFileHeader? {
     require(type.isMessage || type.isEnum) {
@@ -93,7 +98,15 @@ private fun Type.typeName(): TypeName {
     val typeName = when {
         isMessage -> message
         isEnum -> enumeration
-        else -> error("Unable to convert a primitive type `${primitive.name}` to `TypeName`.")
+        else -> {
+            val target = "`${TypeName::class.simpleName}`"
+            if (isPrimitive) {
+                error("Unable to convert the primitive type `${primitive.name}` to $target.")
+            } else {
+                // This handles the case if `Type` is extended with more `oneof` cases.
+                error("Unable to convert the type `${shortDebugString()}` to $target.")
+            }
+        }
     }
     return typeName
 }
