@@ -119,7 +119,10 @@ internal fun columnType(
         "Unable to obtain a field type without type system."
     }
     val fieldType = field?.javaType(typeSystem!!) ?: "?"
-    val state = entityState.canonical
+
+    // We can use simple class name because the generated code is
+    // nested inside the entity state class.
+    val state = entityState.simpleName
     return "$container<$state, $fieldType>"
 }
 
