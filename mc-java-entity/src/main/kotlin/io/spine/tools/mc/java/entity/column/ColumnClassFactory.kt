@@ -141,8 +141,8 @@ internal class ColumnClassFactory(
         addAnnotation()
         addClassJavadoc()
         columnClass.makePublic().makeStatic().makeFinal()
-        val createPrivateConstructor = elementFactory.createUtilityConstructor(columnClass)
-        columnClass.addLast(createPrivateConstructor)
+        val privateConstructor = elementFactory.createUtilityConstructor(columnClass)
+        columnClass.addLast(privateConstructor)
         addColumnMethods()
         addDefinitionsMethod()
         return columnClass
