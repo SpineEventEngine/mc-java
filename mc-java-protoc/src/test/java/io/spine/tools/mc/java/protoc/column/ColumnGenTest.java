@@ -34,6 +34,7 @@ import io.spine.tools.protoc.plugin.nested.Task;
 import io.spine.tools.protoc.plugin.nested.TaskView;
 import io.spine.type.EnumType;
 import io.spine.type.MessageType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,7 @@ import static io.spine.testing.DisplayNames.NOT_ACCEPT_NULLS;
 import static io.spine.tools.mc.java.protoc.Generators.generate;
 
 @DisplayName("`ColumnGenerator` should")
+@Disabled("Expecting `ColumnGen` removal.")
 class ColumnGenTest {
 
     @Test

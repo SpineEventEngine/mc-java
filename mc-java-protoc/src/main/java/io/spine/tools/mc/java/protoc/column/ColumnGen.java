@@ -54,7 +54,10 @@ import static io.spine.code.proto.ColumnOption.hasColumns;
  *
  * <p>Generates output only for those message types that represent an entity state with
  * {@linkplain io.spine.code.proto.ColumnOption columns}.
+ *
+ * @deprecated Please use {@code io.spine.tools.mc.java.entity.column} instead.
  */
+@Deprecated(forRemoval = true)
 public final class ColumnGen extends CodeGenerator {
 
     /**
