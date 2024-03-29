@@ -93,7 +93,7 @@ internal class ColumnClassFactory(
         /**
          * Adds a nested class called [Column][CLASS_NAME] into the top class of the given [file].
          *
-         * The class provides API for obtaining columns for the given `EntityState` [type].
+         * The class provides API for obtaining columns for given `EntityState` [type].
          * The `Column` class is `public static` and stateless.
          * It serves as a DSL for calling `public static` methods for obtaining
          * entity state [columns][io.spine.query.EntityColumn].
