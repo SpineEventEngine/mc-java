@@ -54,5 +54,3 @@ internal class ColumnRenderer : EntityStateRenderer() {
         }
     }
 }
-
-
