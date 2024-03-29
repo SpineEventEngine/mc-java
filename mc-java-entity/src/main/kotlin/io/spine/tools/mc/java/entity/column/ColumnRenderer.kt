@@ -30,7 +30,6 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.entity.columns
 import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.execute
 
 /**
@@ -43,14 +42,10 @@ internal class ColumnRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sources: SourceFileSet) {
         if (type.columns.isNotEmpty()) {
-            renderColumnsForMessageType(type, sources)
-        }
-    }
-
-    private fun renderColumnsForMessageType(type: MessageType, sources: SourceFileSet) {
-        val sourceFile = sources.fileOf(type)
-        execute {
-            render(typeSystem!!, sourceFile, type)
+            val sourceFile = sources.fileOf(type)
+            execute {
+                ColumnClassFactory.render(type, sourceFile, typeSystem!!)
+            }
         }
     }
 }

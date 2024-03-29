@@ -104,18 +104,18 @@ internal class ColumnClassFactory(
          * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
          * for obtaining all the columns is also generated.
          *
-         * @param typeSystem
-         *         the type system used for resolving field types.
-         * @param file
-         *         the Java file to add the `Column` class.
          * @param type
          *         the type of the `EntityState` message.
+         * @param file
+         *         the Java file to add the `Column` class.
+         * @param typeSystem
+         *         the type system used for resolving field types.
          */
         @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
         fun render(
-            typeSystem: TypeSystem,
+            type: MessageType,
             file: SourceFile,
-            type: MessageType
+            typeSystem: TypeSystem
         ) {
             try {
                 val header = typeSystem.findMessage(type.name)!!.second
