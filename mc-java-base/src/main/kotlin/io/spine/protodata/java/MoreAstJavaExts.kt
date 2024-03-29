@@ -36,8 +36,7 @@ import io.spine.protodata.isMessage
 import io.spine.protodata.isEnum
 import io.spine.protodata.isPrimitive
 import io.spine.protodata.isRepeated
-import io.spine.protodata.java.javaClassName
-import io.spine.protodata.java.primitiveClass
+import io.spine.protodata.simpleName
 import io.spine.protodata.type.TypeSystem
 import io.spine.type.shortDebugString
 
@@ -135,4 +134,35 @@ private fun TypeSystem.mapType(key: PrimitiveType, value: Type): String {
 private fun TypeSystem.repeatedType(element: Type): String {
     val javaType = element.javaType(this)
     return "${java.util.List::class.java.canonicalName}<$javaType>"
+}
+
+/**
+ * Obtains a reference the type of this field in the context of the given [entityState] class.
+ *
+ * @param entityState
+ *         the name of the entity state class in which the field is going to be accessed.
+ * @param typeSystem
+ *         the type system to resolve the Java type of the field.
+ * @return a simple class name if 1) the field type is either message or an enum, and
+ *         2) the type belongs to the same package as the entity state class.
+ *         Otherwise, a fully qualified name is returned.
+ */
+@Suppress("ReturnCount")
+public fun Field.typeReference(entityState: ClassName, typeSystem: TypeSystem): String {
+    val qualifiedName = javaType(typeSystem)
+    if (isMap || isRepeated || type.isPrimitive) {
+        return qualifiedName
+    }
+    // Let's see if we can refer to the field type using its simple name.
+    val simpleName = type.simpleName
+    val statePackage = entityState.packageName
+    val samePackage = qualifiedName == "$statePackage.$simpleName"
+    if (samePackage) {
+        return simpleName
+    }
+    val nested = qualifiedName == "${entityState.canonical}.$simpleName"
+    if (nested) {
+        return simpleName
+    }
+    return qualifiedName
 }

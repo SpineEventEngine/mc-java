@@ -39,7 +39,7 @@ import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.manifest.Version
-import io.spine.tools.mc.entity.columns
+import io.spine.protodata.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst

@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.entity.column
 
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.tools.mc.entity.columns
+import io.spine.protodata.columns
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 

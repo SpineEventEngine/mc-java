@@ -24,13 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.entity
+package io.spine.protodata
 
 import io.spine.option.OptionsProto
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
-import io.spine.protodata.Option
+import io.spine.type.shortDebugString
 
+/**
+ * Obtains a simple name of the type, if represents a message or an enum.
+ *
+ * @throws IllegalStateException
+ *          if this is a primitive type.
+ */
+public val Type.simpleName: String
+    get() {
+        return when {
+            isMessage -> message.simpleName
+            isEnum -> enumeration.simpleName
+            else -> error("Unable to obtain a simple name from the type `${shortDebugString()}`.")
+        }
+    }
+
+/**
+ * Tells if this is a column option.
+ */
 private val Option.isColumn: Boolean
     get() = name == OptionsProto.column.descriptor.name
 
@@ -40,5 +56,5 @@ private val Option.isColumn: Boolean
  * @return the list if the column fields or
  *         empty list if none of the fields has the `(column)` option.
  */
-internal val MessageType.columns: List<Field>
+public val MessageType.columns: List<Field>
     get() = fieldList.filter { it.optionList.any { option -> option.isColumn } }

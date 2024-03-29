@@ -33,8 +33,8 @@ import io.spine.protodata.Field
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.getterName
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.javaType
 import io.spine.protodata.java.reference
+import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -55,7 +55,7 @@ internal class ColumnAccessor(
 
     private val fieldName = field.name.value
     private val fieldType by lazy {
-        field.javaType(typeSystem)
+        field.typeReference(entityState, typeSystem)
     }
 
     /**
@@ -128,7 +128,7 @@ internal fun columnType(
     // nested inside the entity state class.
     val state = entityState.simpleName
 
-    val fieldType = field?.javaType(typeSystem!!) ?: "?"
+    val fieldType = field?.typeReference(entityState, typeSystem!!) ?: "?"
 
     return "$container<$state, $fieldType>"
 }
