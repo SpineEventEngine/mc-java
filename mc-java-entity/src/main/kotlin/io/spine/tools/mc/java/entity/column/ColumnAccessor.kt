@@ -58,6 +58,14 @@ internal class ColumnAccessor(
         field.javaType(typeSystem)
     }
 
+    /**
+     * The reference to the entity state class.
+     *
+     * Since the column class is nested in the entity state class,
+     * it is safe to use a simple class name.
+     */
+    private val stateRef = entityState.simpleName
+
     fun method(): PsiMethod {
         val columnType = columnType(entityState, typeSystem, field)
         @Suppress("EmptyClass")
@@ -72,8 +80,6 @@ internal class ColumnAccessor(
         method.addBefore(javaDoc(), method.firstChild)
         return method
     }
-
-    private val stateRef = entityState.canonical
 
     private val methodName: String
         get() = columnMethodName(this.field)
@@ -118,11 +124,12 @@ internal fun columnType(
     require(!(typeSystem == null && field != null)) {
         "Unable to obtain a field type without type system."
     }
-    val fieldType = field?.javaType(typeSystem!!) ?: "?"
-
     // We can use simple class name because the generated code is
     // nested inside the entity state class.
     val state = entityState.simpleName
+
+    val fieldType = field?.javaType(typeSystem!!) ?: "?"
+
     return "$container<$state, $fieldType>"
 }
 
