@@ -45,13 +45,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.io.Ensure.ensureFile;
+import static io.spine.io.Paths.toBase64Encoded;
 import static io.spine.tools.gradle.ProtocPluginName.grpc;
 import static io.spine.tools.gradle.ProtocPluginName.spineProtoc;
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.gradle.task.JavaTaskName.processResources;
 import static io.spine.tools.gradle.task.Tasks.getSourceSetName;
-import static io.spine.tools.mc.java.StandardTypes.toBase64Encoded;
 import static io.spine.tools.mc.java.gradle.Artifacts.SPINE_MC_JAVA_ALL_PLUGINS_NAME;
 import static io.spine.tools.mc.java.gradle.Artifacts.gRpcProtocPlugin;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.writeDescriptorReference;
@@ -207,6 +208,10 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
             return task -> {
                 var configFile = spineProtocConfigFile();
                 var options = getMcJava(project);
+                checkNotNull(
+                        options.codegen,
+                        "Code generation options for message types are not set."
+                );
                 var codegenOptions = options.codegen.toProto();
 
                 ensureFile(configFile);
