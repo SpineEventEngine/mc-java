@@ -35,6 +35,7 @@ import kotlin.text.Charsets.UTF_8
 /**
  * Converts this string to base64 encoded version using UTF-8 charset.
  */
+@Deprecated("Please use the extension from the package `io.spine.string`.")
 public fun String.toBase64Encoded(): String {
     val encoder = Base64.getEncoder()
     val valueBytes: ByteArray = toByteArray(UTF_8)
@@ -44,6 +45,7 @@ public fun String.toBase64Encoded(): String {
 /**
  * Decodes base64-encoded value into a string with UTF-8 charset.
  */
+@Deprecated("Please use the extension from the package `io.spine.string`.")
 public fun String.decodeBase64(): String {
     val decoder = Base64.getDecoder()
     val decodedBytes = decoder.decode(this)
@@ -55,4 +57,5 @@ public fun String.decodeBase64(): String {
  *
  * @see [String.toBase64Encoded]
  */
+@Deprecated("Please use the extension from the package `io.spine.io`.")
 public fun Path.toBase64Encoded(): String = toString().toBase64Encoded()
