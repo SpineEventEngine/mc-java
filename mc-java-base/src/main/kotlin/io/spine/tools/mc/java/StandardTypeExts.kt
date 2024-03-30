@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@
 
 package io.spine.tools.mc.java
 
+import io.spine.string.toBase64Encoded
 import java.nio.file.Path
 import java.util.*
 import kotlin.text.Charsets.UTF_8
@@ -54,8 +55,6 @@ public fun String.decodeBase64(): String {
 
 /**
  * Converts this path to a base64-encoded string.
- *
- * @see [String.toBase64Encoded]
  */
 @Deprecated("Please use the extension from the package `io.spine.io`.")
 public fun Path.toBase64Encoded(): String = toString().toBase64Encoded()

@@ -44,7 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.mc.java.StandardTypes.decodeBase64;
+import static io.spine.string.Strings.decodeBase64;
 import static io.spine.util.Exceptions.newIllegalStateException;
 
 /**
