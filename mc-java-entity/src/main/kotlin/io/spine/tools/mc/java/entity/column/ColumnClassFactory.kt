@@ -32,6 +32,7 @@ import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
+import io.spine.protodata.columns
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.file.toPsi
 import io.spine.protodata.java.javaClassName
@@ -39,12 +40,11 @@ import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.manifest.Version
-import io.spine.protodata.columns
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
-import io.spine.tools.psi.java.createUtilityConstructor
+import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
@@ -117,9 +117,9 @@ internal class ColumnClassFactory(
             file: SourceFile,
             typeSystem: TypeSystem
         ) {
+            val header = typeSystem.findMessage(type.name)!!.second
+            val entityStateClass = type.javaClassName(header)
             try {
-                val header = typeSystem.findMessage(type.name)!!.second
-                val entityStateClass = type.javaClassName(header)
                 val psiJavaFile = file.toPsi()
                 val topLevelClass = psiJavaFile.topLevelClass
                 val factory = ColumnClassFactory(typeSystem, type, entityStateClass)
@@ -129,8 +129,12 @@ internal class ColumnClassFactory(
                 val updatedText = psiJavaFile.text
                 file.overwrite(updatedText)
             } catch (e: Throwable) {
-                logger.atError().log {
-                    "Caught exception while generating `Column` class: `${e.message}`."
+                val entityState = entityStateClass.canonical
+                logger.atError().log { """
+                    Caught exception while generating the `Column` class in `$entityState`.
+                    Throwable: `${e.javaClass.canonicalName}`.
+                    Message: `${e.message}`.                                
+                    """.trimIndent()
                 }
                 throw e
             }
@@ -141,7 +145,10 @@ internal class ColumnClassFactory(
         addAnnotation()
         addClassJavadoc()
         columnClass.makePublic().makeStatic().makeFinal()
-        val privateConstructor = elementFactory.createUtilityConstructor(columnClass)
+        val privateConstructor = elementFactory.createPrivateConstructor(
+            columnClass,
+            javadocLine = "Prevents instantiation of this class."
+        )
         columnClass.addLast(privateConstructor)
         addColumnMethods()
         addDefinitionsMethod()
