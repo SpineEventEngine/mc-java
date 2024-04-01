@@ -31,7 +31,7 @@ import com.google.protobuf.kotlin.isA
 import com.google.protobuf.kotlin.unpack
 import io.spine.protobuf.pack
 import io.spine.protodata.Option
-import io.spine.protodata.Types
+import io.spine.protodata.TypeInstances
 import io.spine.protodata.option
 import com.google.protobuf.Any as ProtoAny
 
@@ -101,7 +101,7 @@ internal enum class ApiOption(
  */
 private fun option(name: String): Option = option {
     this.name = name
-    type = Types.boolean
+    type = TypeInstances.boolean
     value = BoolValue.of(true).pack()
 }
 
