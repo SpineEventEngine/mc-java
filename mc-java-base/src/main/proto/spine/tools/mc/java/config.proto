@@ -129,10 +129,6 @@ message Entities {
     // By default, we recommend marking entity states with the `(entity)` option.
     // Users may override this behaviour by submitting their custom options.
     //
-    // These options are complementary to `pattern`, i.e. if both are set, both apply, so that
-    // messages which match the given patterns and messages which are marked with given options
-    // are considered to be entity states.
-    //
     repeated proto.ProtoOption option = 2;
 
     // Java interfaces to be added to all entity states.
