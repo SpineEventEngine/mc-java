@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ include(
     "mc-java-annotation",
     "mc-java-base",
     "mc-java-checks",
+    "mc-java-entity",
     "mc-java-protoc",
     "mc-java-rejection",
     "mc-java-validation",

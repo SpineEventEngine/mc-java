@@ -98,12 +98,16 @@ message Signals {
 
     // The patterns which define the group.
     //
-    // It is recommended that Spine users define events in files ending with "events.proto",
-    // rejections — with "rejections.proto", and commands — with "commands.proto". However, users
-    // can override this convention by changing these patterns.
+    // It is recommended that users define signal message types according
+    // to the following conventions:
+    //  1. commands — in files ending with "commands.proto",
+    //  2. events — in files ending with "events.proto", and
+    //  3. rejections — in files ending with "rejections.proto".
     //
-    // Note. Code generators do not presume any conventions. File patterns described above must
-    // be added to `pattern` explicitly.
+    // However, users can override this convention by specifying custom patterns.
+    //
+    // NOTE: Code generators do not presume any conventions.
+    // Conventional file patterns described above must be added to the `pattern` field explicitly.
     //
     repeated spine.validation.FilePattern pattern = 1;
 
@@ -111,37 +115,26 @@ message Signals {
     repeated AddInterface add_interface = 2;
 
     // Configuration for type-safe field API generation for all the messages in this group.
-    GenerateFields generate_fields = 4;
+    GenerateFields generate_fields = 3;
 }
 
-// Code generation config for entity state messages.
+// Code generation settings for entity state messages.
 message Entities {
 
-    // The patterns which define which messages are entity state messages.
-    //
-    // The users may choose to define file patterns which always contain entity state definitions.
-    //
-    // These patterns are complementary to `option`, i.e. if both are set, both apply, so that
-    // messages which match the given patterns and messages which are marked with given options
-    // are considered to be entity states.
-    //
-    repeated spine.validation.FilePattern pattern = 1;
+    // For previously deprecated `pattern` field.
+    reserved 1;
 
     // Protobuf options which may mark an entity state definition.
     //
-    // By default, we recommend marking entity states with the `(entity)` option. Users may override
-    // this behaviour by submitting their custom options.
-    //
-    // These options are complementary to `pattern`, i.e. if both are set, both apply, so that
-    // messages which match the given patterns and messages which are marked with given options
-    // are considered to be entity states.
+    // By default, we recommend marking entity states with the `(entity)` option.
+    // Users may override this behaviour by submitting their custom options.
     //
     repeated proto.ProtoOption option = 2;
 
     // Java interfaces to be added to all entity states.
     //
-    // Unlike any other interfaces, entity state interfaces receive the entity ID as
-    // a type argument. If an interface does not declare a single non-bounded type parameter,
+    // Entity state interfaces receive the entity ID as a type argument.
+    // If an interface does not declare a single non-bounded type parameter,
     // a Java compilation error may occur.
     //
     repeated AddInterface add_interface = 3;

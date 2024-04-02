@@ -46,7 +46,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * A codegen configuration for messages which match a certain pattern.
  *
- * @see CodegenOptionsConfig#forMessages
+ * @see MessageCodegenOptions#forMessages
  */
 public final class MessagesConfig extends ConfigWithFields<Messages> {
 

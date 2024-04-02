@@ -32,7 +32,6 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.protoc.column.ColumnGen;
 import io.spine.tools.mc.java.protoc.field.FieldGen;
 import io.spine.tools.mc.java.protoc.message.BuilderGen;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
@@ -45,7 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.mc.java.StandardTypes.decodeBase64;
+import static io.spine.string.Strings.decodeBase64;
 import static io.spine.util.Exceptions.newIllegalStateException;
 
 /**
@@ -81,7 +80,6 @@ public final class Plugin {
                 MethodGen.instance(config),
                 new BuilderGen(),
                 NestedClassGen.instance(config),
-                ColumnGen.instance(config),
                 EntityQueryGen.instance(config),
                 FieldGen.instance(config)
         );

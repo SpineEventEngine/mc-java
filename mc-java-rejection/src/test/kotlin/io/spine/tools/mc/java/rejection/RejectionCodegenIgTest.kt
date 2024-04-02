@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.isDirectory
+import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -101,6 +101,12 @@ internal class RejectionCodegenIgTest {
                 */
                  //.enableRunnerDebug()
                 .create()
+            (project.runner as DefaultGradleRunner).withJvmArguments(
+                "-Xmx8g",
+                "-XX:MaxMetaspaceSize=1512m",
+                "-XX:+UseParallelGC",
+                "-XX:+HeapDumpOnOutOfMemoryError"
+            )
             moduleDir = projectDir.toPath()
                 .resolve("sub-module")
                 .toFile()

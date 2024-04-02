@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,35 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:JvmName("StandardTypes")
+package io.spine.tools.mc.java.entity.column
 
-package io.spine.tools.mc.java
-
-import java.nio.file.Path
-import java.util.*
-import kotlin.text.Charsets.UTF_8
-
-/**
- * Converts this string to base64 encoded version using UTF-8 charset.
- */
-public fun String.toBase64Encoded(): String {
-    val encoder = Base64.getEncoder()
-    val valueBytes: ByteArray = toByteArray(UTF_8)
-    return encoder.encodeToString(valueBytes)
-}
+import io.spine.protodata.MessageType
+import io.spine.protodata.columns
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.mc.java.entity.EntityStateRenderer
+import io.spine.tools.psi.java.execute
 
 /**
- * Decodes base64-encoded value into a string with UTF-8 charset.
- */
-public fun String.decodeBase64(): String {
-    val decoder = Base64.getDecoder()
-    val decodedBytes = decoder.decode(this)
-    return String(decodedBytes, UTF_8)
-}
-
-/**
- * Converts this path to a base64-encoded string.
+ * Renders classes named `Columns` which are nested into messages classes that
+ * are marked as entity states.
  *
- * @see [String.toBase64Encoded]
+ * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
  */
-public fun Path.toBase64Encoded(): String = toString().toBase64Encoded()
+internal class ColumnRenderer : EntityStateRenderer() {
+
+    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+        if (type.columns.isNotEmpty()) {
+            execute {
+                ColumnClassFactory.render(type, sourceFile, typeSystem!!)
+            }
+        }
+    }
+}
