@@ -130,7 +130,11 @@ private fun Project.configureProtoData() {
     configureProtoDataPlugins()
     val writeSettingsTask = createWriteSettingsTask()
     tasks.withType<LaunchProtoData>().all { task ->
-        task.dependsOn(writeSettingsTask)
+        task.apply {
+            dependsOn(writeSettingsTask)
+            setStandardOutput(System.out)
+            setErrorOutput(System.err)
+        }
     }
 }
 

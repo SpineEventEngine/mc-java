@@ -76,7 +76,7 @@ object ProtoData {
      * avoid errors caused by incompatible API changes.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.20.6"
+    private const val fallbackDfVersion = "0.20.7"
 
     /**
      * The artifact for the ProtoData Gradle plugin.
