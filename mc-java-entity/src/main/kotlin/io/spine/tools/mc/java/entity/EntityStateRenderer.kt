@@ -56,6 +56,9 @@ internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginCompon
         val entityStates = foundEntityStates()
         entityStates.forEach {
             val sourceFile = sources.fileOf(it)
+            check(sourceFile != null) {
+                "Unable to locate the file `$sourceFile` in the source set `$this`."
+            }
             doRender(it, sourceFile)
         }
     }
@@ -75,12 +78,14 @@ internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginCompon
         return result
     }
 
-    protected fun SourceFileSet.fileOf(msg: MessageType): SourceFile {
+    /**
+     * Locates a source file for the given message in this [SourceFileSet].
+     *
+     * @return the found file or `null` if not found.
+     */
+    protected fun SourceFileSet.fileOf(msg: MessageType): SourceFile? {
         val javaFile = javaFileOf(type = msg.name, declaredIn = msg.file)
         val sourceFile = find(javaFile)
-        check(sourceFile != null) {
-            "Unable to locate the file `$sourceFile` in the source set `$this`."
-        }
         return sourceFile
     }
 }
