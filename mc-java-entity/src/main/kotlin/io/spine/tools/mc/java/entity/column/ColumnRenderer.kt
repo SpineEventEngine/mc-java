@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.entity.column
 
 import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.columns
+import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
@@ -36,13 +36,12 @@ import io.spine.tools.psi.java.execute
  * Renders classes named `Columns` which are nested into messages classes that
  * are marked as entity states.
  *
- * @see io.spine.tools.mc.entity.EntityDiscoveryProcess
+ * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
  */
 internal class ColumnRenderer : EntityStateRenderer() {
 
-    override fun doRender(type: MessageType, sources: SourceFileSet) {
+    override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {
-            val sourceFile = sources.fileOf(type)
             execute {
                 ColumnClassFactory.render(type, sourceFile, typeSystem!!)
             }

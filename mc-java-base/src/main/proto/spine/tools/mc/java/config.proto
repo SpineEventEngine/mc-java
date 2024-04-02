@@ -101,8 +101,8 @@ message Signals {
     // It is recommended that users define signal message types according
     // to the following conventions:
     //  1. commands — in files ending with "commands.proto",
-    //  3. events — in files ending with "events.proto", and
-    //  5. rejections — in files ending with "rejections.proto".
+    //  2. events — in files ending with "events.proto", and
+    //  3. rejections — in files ending with "rejections.proto".
     //
     // However, users can override this convention by specifying custom patterns.
     //
@@ -115,7 +115,7 @@ message Signals {
     repeated AddInterface add_interface = 2;
 
     // Configuration for type-safe field API generation for all the messages in this group.
-    GenerateFields generate_fields = 4;
+    GenerateFields generate_fields = 3;
 }
 
 // Code generation settings for entity state messages.

@@ -53,7 +53,7 @@ import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a class called `Column` and nest it under the top level entity state class.
+ * Creates a class called `Column` and nests it under the top level entity state class.
  *
  * @see render
  */

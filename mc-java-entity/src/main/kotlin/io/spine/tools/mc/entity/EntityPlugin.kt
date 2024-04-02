@@ -27,8 +27,9 @@
 package io.spine.tools.mc.entity
 
 import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.plugin.Policy
+import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
-import io.spine.server.BoundedContextBuilder
 import io.spine.tools.mc.java.entity.column.ColumnRenderer
 
 /**
@@ -39,11 +40,13 @@ import io.spine.tools.mc.java.entity.column.ColumnRenderer
  */
 public class EntityPlugin : Plugin {
 
+    override fun policies(): Set<Policy<*>> =
+        setOf(EntityDiscovery())
+
+    override fun views(): Set<Class<out View<*, *, *>>> =
+        setOf(DiscoveredEntitiesView::class.java)
+
     override fun renderers(): List<Renderer<*>> = listOf(
         ColumnRenderer()
     )
-
-    override fun extend(context: BoundedContextBuilder) {
-        context.add(EntityDiscoveryProcess::class.java)
-    }
 }

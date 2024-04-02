@@ -40,7 +40,7 @@ import io.spine.tools.mc.java.codegen.Entities
  * An abstract state for renderers that generate the code for message types
  * declared as [Entity][io.spine.base.EntityState]
  *
- * @see io.spine.tools.mc.entity.EntityDiscoveryProcess
+ * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
  */
 internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginComponent {
 
@@ -55,11 +55,16 @@ internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginCompon
         }
         val entityStates = foundEntityStates()
         entityStates.forEach {
-            doRender(it, sources)
+            val sourceFile = sources.fileOf(it)
+            doRender(it, sourceFile)
         }
     }
 
-    abstract fun doRender(type: MessageType, sources: SourceFileSet)
+    /**
+     * Implement this method to render the code for the given entity state [type]
+     * the source code of which present in the given [sourceFile].
+     */
+    abstract fun doRender(type: MessageType, sourceFile: SourceFile)
 
     /**
      * Obtains entity state types declared in all proto files.

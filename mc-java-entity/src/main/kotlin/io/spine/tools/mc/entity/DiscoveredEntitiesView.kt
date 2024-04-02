@@ -26,52 +26,21 @@
 
 package io.spine.tools.mc.entity
 
-import io.spine.core.External
+import io.spine.core.Subscribe
 import io.spine.protodata.File
-import io.spine.protodata.event.TypeDiscovered
-import io.spine.protodata.settings.loadSettings
+import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
-import io.spine.server.event.React
-import io.spine.server.procman.ProcessManager
 import io.spine.tools.mc.entity.event.EntityStateDiscovered
-import io.spine.tools.mc.entity.event.entityStateDiscovered
-import io.spine.tools.mc.java.codegen.Entities
-import java.util.Optional
 
 /**
- * Gathers entity states declared in proto files.
+ * This view accumulates entity state types discovered in a file in
+ * response to the [EntityStateDiscovered] event.
  */
-internal class EntityDiscoveryProcess :
-    ProcessManager<File, DiscoveredEntities, DiscoveredEntities.Builder>(),
-    EntityPluginComponent {
+internal class DiscoveredEntitiesView :
+    View<File, DiscoveredEntities, DiscoveredEntities.Builder>() {
 
-    /**
-     * The settings passed by McJava to [EntityPlugin].
-     */
-    private val settings: Entities by lazy {
-        loadSettings<Entities>()
-    }
-
-    /**
-     * The names of the message options that make those messages entity types.
-     */
-    private val options: List<String> by lazy {
-        settings.optionList.map { it.name }
-    }
-
-    @React
-    fun on(@External e: TypeDiscovered): Optional<EntityStateDiscovered> {
-        val typeOptions = e.type.optionList.map { it.name }
-        if (typeOptions.any { it in options }) {
-            alter {
-                addType(e.type)
-            }
-            return Optional.of(entityStateDiscovered {
-                name = e.type.name
-                file = e.file
-                type = e.type
-            })
-        }
-        return Optional.empty()
+    @Subscribe
+    fun on(e: EntityStateDiscovered) = alter {
+        addType(e.type)
     }
 }
