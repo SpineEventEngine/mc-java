@@ -141,7 +141,6 @@ fun Module.forceConfigurations() {
                     Grpc.core,
                     Grpc.protobuf,
                     Grpc.stub,
-                    "org.yaml:snakeyaml:2.1",
                     Jackson.Junior.objects,
                     Caffeine.lib,
 
