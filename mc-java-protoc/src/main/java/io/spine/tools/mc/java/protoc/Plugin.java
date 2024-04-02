@@ -80,10 +80,6 @@ public final class Plugin {
                 MethodGen.instance(config),
                 new BuilderGen(),
                 NestedClassGen.instance(config),
-
-                // Use new rendering of columns.
-                //ColumnGen.instance(config),
-
                 EntityQueryGen.instance(config),
                 FieldGen.instance(config)
         );
