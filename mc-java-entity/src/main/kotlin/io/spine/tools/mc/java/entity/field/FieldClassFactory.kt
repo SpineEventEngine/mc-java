@@ -37,7 +37,6 @@ internal class FieldClassFactory(
     typeSystem: TypeSystem
 ) : NestedClassFactory(type, "Field", typeSystem) {
 
-    // No-op for now.
     override fun tuneClass() {
         TODO("Not yet implemented")
     }
@@ -45,11 +44,10 @@ internal class FieldClassFactory(
     @Language("JAVA")
     override fun classJavadoc(): String = """
         /**
-         * The listing of all fields of the {@link $stateJavadocRef} type.
+         * The listing of $stateJavadocRef fields to be used for creating a subscription filter.
          *
-         * <p>The fields exposed by this class can be provided to a subscription filter on creation.
-         *
-         * <p>Use static methods of this class to access top-level fields of the message.
+         * <p>Please use static methods of this class to access top-level fields of
+         * the entity state type.
          * 
          * <p>Nested fields can be accessed using the values returned by the top-level
          * field accessors, through method chaining.

@@ -83,7 +83,7 @@ internal abstract class NestedClassFactory(
     /**
      * Reference to [entityState] made in Javadoc.
      */
-    protected val stateJavadocRef: String = "{@code ${entityState.simpleName}}"
+    protected val stateJavadocRef: String = "{@link ${entityState.simpleName}}"
 
     /**
      * A callback to tune the [nestedClass] in addition to the actions performed during
@@ -92,7 +92,10 @@ internal abstract class NestedClassFactory(
     abstract fun tuneClass()
 
     /**
-     * Implementations should return a Javadoc comment of the class to be generated.
+     * A callback for creating a Javadoc comment of the class produced by this factory.
+     *
+     * Implementing methods may use [stateJavadocRef] to reference the class for which
+     * this factory produces a [nestedClass].
      */
     abstract fun classJavadoc(): String
 

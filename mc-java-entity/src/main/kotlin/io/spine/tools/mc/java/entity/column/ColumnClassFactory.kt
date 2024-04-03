@@ -113,7 +113,7 @@ internal class ColumnClassFactory(
     @Language("JAVA")
     override fun classJavadoc(): String = """
         /**
-         * A listing of entity columns defined in {@link $stateJavadocRef}.
+         * A listing of entity columns defined in $stateJavadocRef.
          *
          * <p>Use static methods of this class to access the columns of the entity
          * which can then be used for creating filters in a query.
