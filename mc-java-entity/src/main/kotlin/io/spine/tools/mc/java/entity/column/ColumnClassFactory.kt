@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
 import io.spine.protodata.Field
@@ -36,15 +35,12 @@ import io.spine.protodata.columns
 import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.java.entity.NestedClassFactory
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
-import io.spine.tools.psi.java.createPrivateConstructor
-import io.spine.tools.psi.java.makeFinal
-import io.spine.tools.psi.java.makePublic
-import io.spine.tools.psi.java.makeStatic
 import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
@@ -72,7 +68,7 @@ import org.intellij.lang.annotations.Language
 internal class ColumnClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedClassFactory(CLASS_NAME, type, typeSystem) {
+) : NestedClassFactory(type, CLASS_NAME, typeSystem) {
 
     private val columnClass = nestedClass
     private val columns: List<Field> = type.columns
@@ -114,31 +110,19 @@ internal class ColumnClassFactory(
         }
     }
 
+    @Language("JAVA")
+    override fun classJavadoc(): String = """
+        /**
+         * A listing of entity columns defined in {@link $stateJavadocRef}.
+         *
+         * <p>Use static methods of this class to access the columns of the entity
+         * which can then be used for creating filters in a query.
+         */
+        """.trimIndent()
+
     override fun tuneClass() {
-        addAnnotation()
-        addClassJavadoc()
-        columnClass.makePublic().makeStatic().makeFinal()
-        val privateConstructor = elementFactory.createPrivateConstructor(
-            columnClass,
-            javadocLine = "Prevents instantiation of this class."
-        )
-        columnClass.addLast(privateConstructor)
         addColumnMethods()
         addDefinitionsMethod()
-    }
-
-    private fun addClassJavadoc() {
-        @Language("JAVA")
-        val classJavadoc = elementFactory.createDocCommentFromText("""
-            /**
-             * A listing of entity columns defined in $stateJavadocRef.
-             *
-             * <p>Use static methods of this class to access the columns of the entity
-             * which can then be used for creating filters in a query.
-             */
-            """.trimIndent(), null
-        )
-        columnClass.addFirst(classJavadoc)
     }
 
     private fun addColumnMethods() {

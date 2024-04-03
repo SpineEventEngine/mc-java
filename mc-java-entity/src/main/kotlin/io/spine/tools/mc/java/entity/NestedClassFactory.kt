@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.entity
 
+import com.intellij.psi.PsiClass
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.file.toPsi
@@ -37,6 +38,10 @@ import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.logger
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
+import io.spine.tools.psi.java.createPrivateConstructor
+import io.spine.tools.psi.java.makeFinal
+import io.spine.tools.psi.java.makePublic
+import io.spine.tools.psi.java.makeStatic
 import io.spine.tools.psi.java.topLevelClass
 import org.intellij.lang.annotations.Language
 
@@ -46,22 +51,33 @@ import org.intellij.lang.annotations.Language
  *
  * @param type
  *         the type of the `EntityState` message.
+ * @param simpleClassName
+ *         a simple name of the nested class to be generated.
  * @param typeSystem
  *         the type system used for resolving field types.
  */
 @Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal abstract class NestedClassFactory(
-    className: String,
     protected val type: MessageType,
+    protected val simpleClassName: String,
     protected val typeSystem: TypeSystem
 
 ) {
-    protected val entityState: ClassName by lazy {
-        type.javaClassName(typeSystem)
+    /**
+     * The product of the factory.
+     */
+    protected val nestedClass by lazy {
+        val cls = elementFactory.createClass(simpleClassName)
+        commonSetup(cls)
+        cls
     }
 
-    protected val nestedClass by lazy {
-        elementFactory.createClass(className)
+    /**
+     * The name of the entity state class under which the [nestedClass] is
+     * going to places.
+     */
+    protected val entityState: ClassName by lazy {
+        type.javaClassName(typeSystem)
     }
 
     /**
@@ -69,7 +85,16 @@ internal abstract class NestedClassFactory(
      */
     protected val stateJavadocRef: String = "{@code ${entityState.simpleName}}"
 
+    /**
+     * A callback to tune the [nestedClass] in addition to the actions performed during
+     * the lazy initialization of the property.
+     */
     abstract fun tuneClass()
+
+    /**
+     * Implementations should return a Javadoc comment of the class to be generated.
+     */
+    abstract fun classJavadoc(): String
 
     /**
      * Adds a nested class the top class of the given [file].
@@ -88,18 +113,28 @@ internal abstract class NestedClassFactory(
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
-            val className = nestedClass.name
             logger.atError().log { """
-                    Caught exception while generating the `$className` class in `$entityState`.
-                    Throwable: `${e.javaClass.canonicalName}`.
-                    Message: `${e.message}`.                                
-                    """.trimIndent()
+                Caught exception while generating the `$simpleClassName` class in `$entityState`.
+                Throwable: `${e.javaClass.canonicalName}`.
+                Message: `${e.message}`.                                
+                """.trimIndent()
             }
             throw e
         }
     }
 
-    protected fun addAnnotation() {
+    private fun commonSetup(cls: PsiClass) {
+        cls.makePublic().makeStatic().makeFinal()
+        val privateConstructor = elementFactory.createPrivateConstructor(
+            cls,
+            javadocLine = "Prevents instantiation of this class."
+        )
+        cls.addLast(privateConstructor)
+        addAnnotation(cls)
+        addClassJavadoc(cls)
+    }
+
+    private fun addAnnotation(cls: PsiClass) {
         val version = Version.fromManifestOf(this::class.java).value
         @Language("JAVA")
         val annotation = elementFactory.createAnnotationFromText(
@@ -107,6 +142,11 @@ internal abstract class NestedClassFactory(
             @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
             """.trimIndent(), null
         )
-        nestedClass.addFirst(annotation)
+        cls.addFirst(annotation)
+    }
+
+    private fun addClassJavadoc(cls: PsiClass) {
+        val classJavadoc = elementFactory.createDocCommentFromText(classJavadoc(), null)
+        cls.addFirst(classJavadoc)
     }
 }

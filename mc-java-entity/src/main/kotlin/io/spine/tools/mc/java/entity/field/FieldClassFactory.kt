@@ -29,14 +29,30 @@ package io.spine.tools.mc.java.entity.field
 import io.spine.protodata.MessageType
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.entity.NestedClassFactory
+import org.intellij.lang.annotations.Language
 
+@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class FieldClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedClassFactory("Field", type, typeSystem) {
+) : NestedClassFactory(type, "Field", typeSystem) {
 
     // No-op for now.
     override fun tuneClass() {
         TODO("Not yet implemented")
     }
+
+    @Language("JAVA")
+    override fun classJavadoc(): String = """
+        /**
+         * The listing of all fields of the {@link $stateJavadocRef} type.
+         *
+         * <p>The fields exposed by this class can be provided to a subscription filter on creation.
+         *
+         * <p>Use static methods of this class to access top-level fields of the message.
+         * 
+         * <p>Nested fields can be accessed using the values returned by the top-level
+         * field accessors, through method chaining.
+         */ 
+        """.trimIndent()
 }
