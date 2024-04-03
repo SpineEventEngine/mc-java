@@ -33,13 +33,11 @@ import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.reference
-import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.entity.NestedClassFactory
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
 import java.lang.String.format
 import org.intellij.lang.annotations.Language
@@ -89,25 +87,6 @@ internal class ColumnClassFactory(
         val DEFINITIONS_METHOD = buildString {
             append("definitions")
         }
-
-        /**
-         * Adds a nested class the top class of the given [file].
-         *
-         * @param type
-         *         the type of the `EntityState` message.
-         * @param file
-         *         the Java file to add the `Column` class.
-         * @param typeSystem
-         *         the type system used for resolving field types.
-         */
-        fun render(
-            type: MessageType,
-            file: SourceFile,
-            typeSystem: TypeSystem
-        ) {
-            val factory = ColumnClassFactory(type, typeSystem)
-            factory.render(file)
-        }
     }
 
     @Language("JAVA")
@@ -127,7 +106,7 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(typeSystem, entityState, column, columnClass)
+            val accessor = ColumnAccessor(entityState, column, columnClass, typeSystem)
             columnClass.addLast(accessor.method())
         }
     }

@@ -61,15 +61,18 @@ internal abstract class NestedClassFactory(
     protected val type: MessageType,
     protected val simpleClassName: String,
     protected val typeSystem: TypeSystem
-
 ) {
     /**
      * The product of the factory.
      */
     protected val nestedClass by lazy {
+        createClass()
+    }
+
+    private fun createClass(): PsiClass {
         val cls = elementFactory.createClass(simpleClassName)
         commonSetup(cls)
-        cls
+        return cls
     }
 
     /**

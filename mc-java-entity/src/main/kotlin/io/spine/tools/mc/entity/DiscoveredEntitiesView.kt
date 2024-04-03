@@ -33,8 +33,8 @@ import io.spine.server.entity.alter
 import io.spine.tools.mc.entity.event.EntityStateDiscovered
 
 /**
- * This view accumulates entity state types discovered in a file in
- * response to the [EntityStateDiscovered] event.
+ * This view accumulates [EntityState][io.spine.base.EntityState] types discovered
+ * in a file in response to the [EntityStateDiscovered] event.
  */
 internal class DiscoveredEntitiesView :
     View<File, DiscoveredEntities, DiscoveredEntities.Builder>() {

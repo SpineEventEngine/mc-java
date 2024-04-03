@@ -46,11 +46,12 @@ import org.intellij.lang.annotations.Language
  * The name of the method matches the name of the [entity state][io.spine.base.EntityState]
  * converted to [javaCase].
  */
+@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class ColumnAccessor(
-    private val typeSystem: TypeSystem,
     private val entityState: ClassName,
     private val field: Field,
-    private val wrappingClass: PsiClass
+    private val columnClass: PsiClass,
+    private val typeSystem: TypeSystem
 ) {
 
     private val fieldName = field.name.value
@@ -68,14 +69,13 @@ internal class ColumnAccessor(
 
     fun method(): PsiMethod {
         val columnType = columnType(entityState, typeSystem, field)
-        @Suppress("EmptyClass")
         val getterRef = "$stateRef::${field.getterName}"
         @Language("JAVA")
         val method = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
               return new $container<>("$fieldName", $fieldType.class, $getterRef);    
             }                                
-            """.trimIndent(), wrappingClass
+            """.trimIndent(), columnClass
         )
         method.addBefore(javaDoc(), method.firstChild)
         return method
@@ -85,6 +85,7 @@ internal class ColumnAccessor(
         get() = columnMethodName(this.field)
 
     private fun javaDoc(): PsiDocComment {
+        @Language("JAVA")
         val methodDoc = elementFactory.createDocCommentFromText("""
         /**
          * Returns the {@code "$fieldName"} column.
@@ -116,6 +117,7 @@ internal fun columnMethodName(field: Field): String =
  *         the field of the column for composing the type.
  *         It is `null`, if the method is called for obtaining wildcard generic type name.
  */
+@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal fun columnType(
     entityState: ClassName,
     typeSystem: TypeSystem? = null,
@@ -129,8 +131,9 @@ internal fun columnType(
     val state = entityState.simpleName
 
     val fieldType = field?.typeReference(entityState, typeSystem!!) ?: "?"
-
-    return "$container<$state, $fieldType>"
+    @Language("JAVA")
+    val result = "$container<$state, $fieldType>"
+    return result
 }
 
 private val container = EntityColumn::class.reference

@@ -37,10 +37,6 @@ internal class FieldClassFactory(
     typeSystem: TypeSystem
 ) : NestedClassFactory(type, "Field", typeSystem) {
 
-    override fun tuneClass() {
-        TODO("Not yet implemented")
-    }
-
     @Language("JAVA")
     override fun classJavadoc(): String = """
         /**
@@ -53,4 +49,8 @@ internal class FieldClassFactory(
          * field accessors, through method chaining.
          */ 
         """.trimIndent()
+
+    override fun tuneClass() {
+        TODO("Not yet implemented")
+    }
 }

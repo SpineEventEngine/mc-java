@@ -33,8 +33,8 @@ import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named `Columns` which are nested into messages classes that
- * are marked as entity states.
+ * Renders classes named `Columns` which are nested into
+ * [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
  */
@@ -43,7 +43,8 @@ internal class ColumnRenderer : EntityStateRenderer() {
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {
             execute {
-                ColumnClassFactory.render(type, sourceFile, typeSystem!!)
+                val factory = ColumnClassFactory(type, typeSystem!!)
+                factory.render(sourceFile)
             }
         }
     }

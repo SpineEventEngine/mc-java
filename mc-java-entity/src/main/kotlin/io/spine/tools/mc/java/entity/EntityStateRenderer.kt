@@ -37,8 +37,11 @@ import io.spine.tools.mc.entity.EntityPluginComponent
 import io.spine.tools.mc.java.codegen.Entities
 
 /**
- * An abstract state for renderers that generate the code for message types
- * declared as [Entity][io.spine.base.EntityState]
+ * An abstract state for renderers of classes nested under
+ * [EntityState][io.spine.base.EntityState] classes.
+ *
+ * These nested classes provide additional APIs for working with entity
+ * state messages such as querying or subscribing.
  *
  * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
  */
