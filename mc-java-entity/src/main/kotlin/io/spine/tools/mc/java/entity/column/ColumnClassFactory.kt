@@ -33,13 +33,11 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.java.file.toPsi
 import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.manifest.Version
 import io.spine.tools.mc.java.entity.NestedClassFactory
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
@@ -47,7 +45,6 @@ import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
-import io.spine.tools.psi.java.topLevelClass
 import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
@@ -98,7 +95,7 @@ internal class ColumnClassFactory(
         }
 
         /**
-         * Adds a nested class called [Column][CLASS_NAME] into the top class of the given [file].
+         * Adds a nested class the top class of the given [file].
          *
          * @param type
          *         the type of the `EntityState` message.
@@ -107,36 +104,17 @@ internal class ColumnClassFactory(
          * @param typeSystem
          *         the type system used for resolving field types.
          */
-        @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
         fun render(
             type: MessageType,
             file: SourceFile,
             typeSystem: TypeSystem
         ) {
             val factory = ColumnClassFactory(type, typeSystem)
-            try {
-                val psiJavaFile = file.toPsi()
-                val topLevelClass = psiJavaFile.topLevelClass
-                val columnClass = factory.create()
-                topLevelClass.addLast(columnClass)
-
-                val updatedText = psiJavaFile.text
-                file.overwrite(updatedText)
-            } catch (e: Throwable) {
-                val entityState = factory.entityState
-                val className = factory.nestedClass.name
-                logger.atError().log { """
-                    Caught exception while generating the `$className` class in `$entityState`.
-                    Throwable: `${e.javaClass.canonicalName}`.
-                    Message: `${e.message}`.                                
-                    """.trimIndent()
-                }
-                throw e
-            }
+            factory.render(file)
         }
     }
 
-    private fun create(): PsiClass {
+    override fun tuneClass() {
         addAnnotation()
         addClassJavadoc()
         columnClass.makePublic().makeStatic().makeFinal()
@@ -147,18 +125,6 @@ internal class ColumnClassFactory(
         columnClass.addLast(privateConstructor)
         addColumnMethods()
         addDefinitionsMethod()
-        return columnClass
-    }
-
-    private fun addAnnotation() {
-        val version = Version.fromManifestOf(this::class.java).value
-        @Language("JAVA")
-        val annotation = elementFactory.createAnnotationFromText(
-            """
-            @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
-            """.trimIndent(), null
-        )
-        columnClass.addFirst(annotation)
     }
 
     private fun addClassJavadoc() {

@@ -36,4 +36,7 @@ internal class FieldClassFactory(
 ) : NestedClassFactory("Field", type, typeSystem) {
 
     // No-op for now.
+    override fun tuneClass() {
+        TODO("Not yet implemented")
+    }
 }
