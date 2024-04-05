@@ -59,8 +59,8 @@ import io.spine.tools.psi.java.makeStatic
  *  3. Exposes nested message fields through the instance methods which append the name of the
  *     requested field to the enclosed field path.
  *
- * The created class then places under the `Field` class nested under corresponding
- * [EntityState][io.spine.base.EntityState] class.
+ * The created class is then places under the `Field` class, which, in turn, is nested under
+ * corresponding [EntityState][io.spine.base.EntityState] class.
  */
 internal class MessageTypedField(
     private val fieldType: MessageType,
@@ -122,4 +122,3 @@ private inline fun <reified T: Any> PsiElementFactory.createType(): PsiClassType
     val clsType = createTypeByFQClassName(T::class.java.canonicalName)
     return clsType
 }
-
