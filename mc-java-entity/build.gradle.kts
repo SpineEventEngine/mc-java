@@ -25,9 +25,11 @@
  */
 
 import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
 plugins {
     id("io.spine.mc-java")
+    `java-test-fixtures`
 }
 
 dependencies {
@@ -35,4 +37,11 @@ dependencies {
     implementation(Spine.server)
     implementation(Spine.Logging.lib)
     implementation(Spine.psiJavaBundle)
+
+    arrayOf(Spine.base, Validation.runtime)
+        .forEach {
+            testFixturesImplementation(it)
+        }
+
+    testImplementation(Spine.testlib)
 }

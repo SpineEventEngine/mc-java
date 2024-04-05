@@ -26,16 +26,34 @@
 
 package io.spine.tools.mc.java.entity.field
 
+import io.spine.base.SubscribableField
+import io.spine.protodata.Field
+import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
+import io.spine.protodata.MessageTypeDependencies
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.entity.NestedClassFactory
+import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
+@Suppress("EmptyClass", // ... to avoid false positives for `@Language` strings.
+    "UnusedPrivateProperty" // Temporarily until the class is fully implemented.
+)
 internal class FieldClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
 ) : NestedClassFactory(type, "Field", typeSystem) {
+
+    private val fieldClass = nestedClass
+
+    // TODO: this should come from settings.
+    //  See `GenerateFields.superclass` and usages of `GenerateFields`.
+    private val fieldSupertype: ClassName = ClassName(SubscribableField::class.java)
+
+    private val fields: List<Field> by lazy {
+        type.fieldList
+    }
 
     @Language("JAVA")
     override fun classJavadoc(): String = """
@@ -51,6 +69,23 @@ internal class FieldClassFactory(
         """.trimIndent()
 
     override fun tuneClass() {
-        TODO("Not yet implemented")
+        addTopLevelFieldMethods()
+        addFieldClasses()
+    }
+
+    private fun addTopLevelFieldMethods() {
+        fields.forEach {
+            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem)
+            fieldClass.add(accessor.method())
+        }
+    }
+
+    private fun addFieldClasses() {
+        val nestedFieldTypes =
+            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).set
+        nestedFieldTypes.forEach {
+            val messageTypeField = MessageTypedField(fieldType = it, fieldSupertype).createClass()
+            nestedClass.addLast(messageTypeField)
+        }
     }
 }
