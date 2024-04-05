@@ -37,8 +37,14 @@ import io.spine.protodata.java.reference
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
+import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
+
+/**
+ * The reference to the class which provides column information.
+ */
+internal val container = EntityColumn::class.reference
 
 /**
  * Generates a method which returns a [strongly typed][EntityColumn] entity column.
@@ -46,7 +52,6 @@ import org.intellij.lang.annotations.Language
  * The name of the method matches the name of the [entity state][io.spine.base.EntityState]
  * converted to [javaCase].
  */
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class ColumnAccessor(
     private val entityState: ClassName,
     private val field: Field,
@@ -67,25 +72,38 @@ internal class ColumnAccessor(
      */
     private val stateRef = entityState.simpleName
 
+    /**
+     * The return type of the generated method.
+     */
+    private val columnType: String by lazy {
+        columnType(entityState, typeSystem, field)
+    }
+
+    /**
+     * The method reference used in the generated code as an argument passed to
+     * the constructor of [container].
+     */
+    private val getterRef: String by lazy {
+        "$stateRef::${field.getterName}"
+    }
+
     fun method(): PsiMethod {
-        val columnType = columnType(entityState, typeSystem, field)
-        val getterRef = "$stateRef::${field.getterName}"
-        @Language("JAVA")
+        @Language("JAVA") @Suppress("EmptyClass")
         val method = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
               return new $container<>("$fieldName", $fieldType.class, $getterRef);    
             }                                
             """.trimIndent(), columnClass
         )
-        method.addBefore(javaDoc(), method.firstChild)
+        method.addFirst(javaDoc)
         return method
     }
 
     private val methodName: String
         get() = columnMethodName(this.field)
 
-    private fun javaDoc(): PsiDocComment {
-        @Language("JAVA")
+    private val javaDoc: PsiDocComment by lazy {
+        @Language("JAVA") @Suppress("EmptyClass")
         val methodDoc = elementFactory.createDocCommentFromText("""
         /**
          * Returns the {@code "$fieldName"} column.
@@ -94,7 +112,7 @@ internal class ColumnAccessor(
          */           
         """.trimIndent()
         )
-        return methodDoc
+        methodDoc
     }
 }
 
@@ -117,7 +135,6 @@ internal fun columnMethodName(field: Field): String =
  *         the field of the column for composing the type.
  *         It is `null`, if the method is called for obtaining wildcard generic type name.
  */
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal fun columnType(
     entityState: ClassName,
     typeSystem: TypeSystem? = null,
@@ -131,9 +148,7 @@ internal fun columnType(
     val state = entityState.simpleName
 
     val fieldType = field?.typeReference(entityState, typeSystem!!) ?: "?"
-    @Language("JAVA")
+    @Language("JAVA") @Suppress("EmptyClass")
     val result = "$container<$state, $fieldType>"
     return result
 }
-
-private val container = EntityColumn::class.reference

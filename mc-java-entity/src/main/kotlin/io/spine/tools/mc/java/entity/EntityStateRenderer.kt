@@ -80,15 +80,4 @@ internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginCompon
         val result = discoveredEntities.flatMap { it.typeList }
         return result
     }
-
-    /**
-     * Locates a source file for the given message in this [SourceFileSet].
-     *
-     * @return the found file or `null` if not found.
-     */
-    protected fun SourceFileSet.fileOf(msg: MessageType): SourceFile? {
-        val javaFile = javaFileOf(type = msg.name, declaredIn = msg.file)
-        val sourceFile = find(javaFile)
-        return sourceFile
-    }
 }
