@@ -34,7 +34,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.entity.NestedClassFactory
+import io.spine.tools.mc.java.entity.NestedUnderEntityState
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -66,9 +66,9 @@ import org.intellij.lang.annotations.Language
 internal class ColumnClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedClassFactory(type, CLASS_NAME, typeSystem) {
+) : NestedUnderEntityState(type, CLASS_NAME, typeSystem) {
 
-    private val columnClass = nestedClass
+    private val columnClass = cls
     private val columns: List<Field> = type.columns
 
     companion object: WithLogging {

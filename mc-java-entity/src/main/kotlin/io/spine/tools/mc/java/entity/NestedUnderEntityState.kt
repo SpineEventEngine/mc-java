@@ -51,33 +51,32 @@ import org.intellij.lang.annotations.Language
  *
  * @param type
  *         the type of the `EntityState` message.
- * @param simpleClassName
+ * @param className
  *         a simple name of the nested class to be generated.
  * @param typeSystem
  *         the type system used for resolving field types.
  */
 @Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
-internal abstract class NestedClassFactory(
+internal abstract class NestedUnderEntityState(
     protected val type: MessageType,
-    protected val simpleClassName: String,
+    protected val className: String,
     protected val typeSystem: TypeSystem
 ) {
     /**
      * The product of the factory.
      */
-    protected val nestedClass by lazy {
+    protected val cls by lazy {
         createClass()
     }
 
     private fun createClass(): PsiClass {
-        val cls = elementFactory.createClass(simpleClassName)
+        val cls = elementFactory.createClass(className)
         commonSetup(cls)
         return cls
     }
 
     /**
-     * The name of the entity state class under which the [nestedClass] is
-     * going to places.
+     * The name of the entity state class under which the [cls] is going to places.
      */
     protected val entityState: ClassName by lazy {
         type.javaClassName(typeSystem)
@@ -89,7 +88,7 @@ internal abstract class NestedClassFactory(
     protected val stateJavadocRef: String = "{@link ${entityState.simpleName}}"
 
     /**
-     * A callback to tune the [nestedClass] in addition to the actions performed during
+     * A callback to tune the [cls] in addition to the actions performed during
      * the lazy initialization of the property.
      */
     abstract fun tuneClass()
@@ -98,7 +97,7 @@ internal abstract class NestedClassFactory(
      * A callback for creating a Javadoc comment of the class produced by this factory.
      *
      * Implementing methods may use [stateJavadocRef] to reference the class for which
-     * this factory produces a [nestedClass].
+     * this factory produces a [cls].
      */
     abstract fun classJavadoc(): String
 
@@ -114,13 +113,13 @@ internal abstract class NestedClassFactory(
             tuneClass()
             val psiJavaFile = file.toPsi()
             val topLevelClass = psiJavaFile.topLevelClass
-            topLevelClass.addLast(nestedClass)
+            topLevelClass.addLast(cls)
 
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
             logger.atError().log { """
-                Caught exception while generating the `$simpleClassName` class in `$entityState`.
+                Caught exception while generating the `$className` class in `$entityState`.
                 Throwable: `${e.javaClass.canonicalName}`.
                 Message: `${e.message}`.                                
                 """.trimIndent()

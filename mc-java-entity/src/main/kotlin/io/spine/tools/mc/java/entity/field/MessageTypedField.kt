@@ -27,10 +27,17 @@
 package io.spine.tools.mc.java.entity.field
 
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiClassType
+import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiJavaCodeReferenceElement
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.createPrivateConstructor
+import io.spine.tools.psi.java.makeFinal
+import io.spine.tools.psi.java.makePublic
+import io.spine.tools.psi.java.makeStatic
 
 /**
  * Generates a class which represents a field which has
@@ -45,6 +52,10 @@ import io.spine.tools.psi.java.Environment.elementFactory
  *     For example, `UserIdField`.
  *  2. Inherits from [SubscribableField][io.spine.base.SubscribableField] or one of
  *     its descendants such as [EntityStateField][io.spine.query.EntityStateField].
+ *  4. Has a `private` constructor which accepts a single parameter of
+ *     the [Field][io.spine.base.Field] class. The constructor is `private` because
+ *     the generated class is intended to be used only from within the scope of
+ *     the outer `Field` class.
  *  3. Exposes nested message fields through the instance methods which append the name of the
  *     requested field to the enclosed field path.
  *
@@ -53,11 +64,13 @@ import io.spine.tools.psi.java.Environment.elementFactory
  */
 internal class MessageTypedField(
     private val fieldType: MessageType,
-    private val fieldSupertype: ClassName
+    private val fieldSupertype: ClassName,
+    private val typeSystem: TypeSystem
 ) {
-
     private val className: String by lazy {
-        fieldType.name.simpleName + "Field"
+        val typeName = fieldType.name
+        val nestingPath = typeName.nestingTypeNameList.joinToString()
+        nestingPath + typeName.simpleName + "Field"
     }
 
     private val superClassReference: PsiJavaCodeReferenceElement by lazy {
@@ -67,7 +80,10 @@ internal class MessageTypedField(
 
     internal fun createClass(): PsiClass {
         val cls = elementFactory.createClass(className)
+        cls.makePublic().makeStatic().makeFinal()
         cls.addSuperclass()
+        cls.addConstructor()
+        cls.addFieldMethods()
         return cls
     }
 
@@ -82,5 +98,28 @@ internal class MessageTypedField(
             superTypes.add(superClassReference)
         }
     }
+
+    private fun PsiClass.addConstructor() = elementFactory.run {
+        val thisClass = this@addConstructor
+        val ctor = createPrivateConstructor(thisClass)
+        val fieldClass = createType<io.spine.base.Field>()
+        val parameter = createParameter("field", fieldClass)
+        ctor.parameterList.add(parameter)
+        val body = ctor.body!!
+        val superCall = createStatementFromText("super(field);", thisClass)
+        body.add(superCall)
+    }
+
+    private fun PsiClass.addFieldMethods() {
+        fieldType.fieldList.forEach {
+            val accessor = NestedFieldAccessor(it, fieldSupertype, typeSystem)
+            add(accessor.method())
+        }
+    }
+}
+
+private inline fun <reified T: Any> PsiElementFactory.createType(): PsiClassType {
+    val clsType = createTypeByFQClassName(T::class.java.canonicalName)
+    return clsType
 }
 
