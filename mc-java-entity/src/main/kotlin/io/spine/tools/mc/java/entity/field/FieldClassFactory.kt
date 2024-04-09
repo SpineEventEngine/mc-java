@@ -33,6 +33,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.mc.entity.EntityPluginComponent
 import io.spine.tools.mc.java.entity.NestedUnderEntityState
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
@@ -42,12 +43,13 @@ import org.intellij.lang.annotations.Language
 )
 internal class FieldClassFactory(
     type: MessageType,
+    private val fieldSupertype: ClassName,
     typeSystem: TypeSystem
-) : NestedUnderEntityState(type, "Field", typeSystem) {
+) : NestedUnderEntityState(type, CLASS_NAME, typeSystem) {
 
-    // TODO: this should come from settings.
-    //  See `GenerateFields.superclass` and usages of `GenerateFields`.
-    private val fieldSupertype: ClassName = ClassName(SubscribableField::class.java)
+    companion object {
+        const val CLASS_NAME = "Field"
+    }
 
     @Language("JAVA")
     override fun classJavadoc(): String = """

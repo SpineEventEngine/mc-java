@@ -33,12 +33,13 @@ import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named `Columns` which are nested into
+ * Renders classes named [Columns][ColumnClassFactory.CLASS_NAME] which are nested into
  * [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
+ * @see ColumnClassFactory
  */
-internal class ColumnRenderer : EntityStateRenderer() {
+internal class ColumnClassRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {

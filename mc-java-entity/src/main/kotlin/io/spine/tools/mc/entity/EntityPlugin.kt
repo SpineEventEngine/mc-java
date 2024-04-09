@@ -30,7 +30,7 @@ import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
-import io.spine.tools.mc.java.entity.column.ColumnRenderer
+import io.spine.tools.mc.java.entity.column.ColumnClassRenderer
 
 /**
  * A ProtoData plugin responsible for handling code generation aspects related to
@@ -47,6 +47,6 @@ public class EntityPlugin : Plugin {
         setOf(DiscoveredEntitiesView::class.java)
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        ColumnRenderer()
+        ColumnClassRenderer()
     )
 }
