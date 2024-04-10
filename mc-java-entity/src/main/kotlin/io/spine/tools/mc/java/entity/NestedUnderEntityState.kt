@@ -118,9 +118,8 @@ internal abstract class NestedUnderEntityState(
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
-            logger.atError().log { """
+            logger.atError().withCause(e).log { """
                 Caught exception while generating the `$className` class in `$entityState`.
-                Throwable: `${e.javaClass.canonicalName}`.
                 Message: `${e.message}`.                                
                 """.trimIndent()
             }

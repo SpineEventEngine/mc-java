@@ -80,8 +80,8 @@ public final class Plugin {
                 MethodGen.instance(config),
                 new BuilderGen(),
                 NestedClassGen.instance(config),
-                EntityQueryGen.instance(config),
-                FieldGen.instance(config)
+                EntityQueryGen.instance(config)
+                //FieldGen.instance(config)
         );
         var response = generator.process(request);
         writeResponse(response);

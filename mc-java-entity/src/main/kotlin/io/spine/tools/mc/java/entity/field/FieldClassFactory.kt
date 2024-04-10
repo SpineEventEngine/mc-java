@@ -72,7 +72,7 @@ internal class FieldClassFactory(
     private fun PsiClass.addTopLevelFieldMethods() {
         type.fieldList.forEach {
             val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem)
-            add(accessor.method())
+            addLast(accessor.method())
         }
     }
 

@@ -32,12 +32,16 @@ import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiJavaCodeReferenceElement
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.javaClassName
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.addFirst
+import io.spine.tools.psi.java.addLast
 import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
+import org.intellij.lang.annotations.Language
 
 /**
  * Generates a class which represents a field which has
@@ -80,11 +84,25 @@ internal class MessageTypedField(
 
     internal fun createClass(): PsiClass {
         val cls = elementFactory.createClass(className)
-        cls.makePublic().makeStatic().makeFinal()
-        cls.addSuperclass()
-        cls.addConstructor()
-        cls.addFieldMethods()
+        cls.run {
+            makePublic().makeStatic().makeFinal()
+            addSuperclass()
+            addJavadoc()
+            addConstructor()
+            addFieldMethods()
+        }
         return cls
+    }
+
+    private fun PsiClass.addJavadoc() {
+        val msgClassRef = fieldType.javaClassName(typeSystem).canonical
+        @Language("JAVA") @Suppress("EmptyClass")
+        val javadoc = elementFactory.createDocCommentFromText("""
+            /**
+             * Provides fields of the {@link $msgClassRef} message type.
+             */                
+            """.trimIndent())
+        addFirst(javadoc)
     }
 
     private fun PsiClass.addSuperclass() {
@@ -99,15 +117,19 @@ internal class MessageTypedField(
         }
     }
 
-    private fun PsiClass.addConstructor() = elementFactory.run {
-        val thisClass = this@addConstructor
-        val ctor = createPrivateConstructor(thisClass)
-        val fieldClass = createType<io.spine.base.Field>()
-        val parameter = createParameter("field", fieldClass)
-        ctor.parameterList.add(parameter)
-        val body = ctor.body!!
-        val superCall = createStatementFromText("super(field);", thisClass)
-        body.add(superCall)
+    private fun PsiClass.addConstructor() {
+        val thisClass = this // for references under the `run` block.
+        val constructor = elementFactory.run {
+            val ctor = createPrivateConstructor(thisClass)
+            val fieldClass = createType<io.spine.base.Field>()
+            val parameter = createParameter("field", fieldClass)
+            ctor.parameterList.add(parameter)
+            val body = ctor.body!!
+            val superCall = createStatementFromText("super(field);", thisClass)
+            body.add(superCall)
+            ctor
+        }
+        thisClass.addLast(constructor)
     }
 
     private fun PsiClass.addFieldMethods() {

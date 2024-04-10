@@ -106,7 +106,9 @@ internal class TopLevelFieldAccessor(
     override val methodBody: String by lazy {
         val fieldClass = io.spine.base.Field::class.java.reference
         @Language("JAVA") @Suppress("EmptyClass")
-        val result = "return new $returnType($fieldClass.named($fieldName));"
+        val result = """
+            return new $returnType($fieldClass.named("$fieldName"));            
+            """.trimIndent()
         result
     }
 }
@@ -121,7 +123,9 @@ internal class NestedFieldAccessor(
 
     override val methodBody: String by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
-        val result = "return new $returnType(getField().nested($fieldName));"
+        val result = """
+            return new $returnType(getField().nested("$fieldName"));                
+            """.trimIndent()
         result
     }
 }
