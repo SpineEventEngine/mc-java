@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java.message
 
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
@@ -46,11 +46,11 @@ internal abstract class FieldAccessor(
     private val typeSystem: TypeSystem
 ) {
 
-    abstract val modifiers: String
+    protected abstract val modifiers: String
 
-    abstract val methodBody: String
+    protected abstract val methodBody: String
 
-    fun method(): PsiMethod {
+    internal fun method(): PsiMethod {
         @Language("JAVA") @Suppress("EmptyClass")
         val method = elementFactory.createMethodFromText("""
             $modifiers $returnType $methodName() {

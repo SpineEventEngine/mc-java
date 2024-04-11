@@ -24,9 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.message
 
 import com.intellij.psi.PsiClass
+import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.file.toPsi
@@ -34,7 +35,6 @@ import io.spine.protodata.java.javaClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.manifest.Version
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.logger
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
@@ -55,16 +55,15 @@ import org.intellij.lang.annotations.Language
  * @param typeSystem
  *         the type system used for resolving field types.
  */
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
-internal abstract class NestedUnderMessage(
+public abstract class NestedUnderMessage(
     protected val type: MessageType,
     protected val className: String,
     protected val typeSystem: TypeSystem
-) {
+) : WithLogging {
     /**
      * The product of the factory.
      */
-    protected val cls by lazy {
+    protected val cls: PsiClass by lazy {
         createClass()
     }
 
@@ -90,7 +89,7 @@ internal abstract class NestedUnderMessage(
      * A callback to tune the [cls] in addition to the actions performed during
      * the lazy initialization of the property.
      */
-    abstract fun tuneClass()
+    protected abstract fun tuneClass()
 
     /**
      * A callback for creating a Javadoc comment of the class produced by this factory.
@@ -98,7 +97,7 @@ internal abstract class NestedUnderMessage(
      * Implementing methods may use [messageJavadocRef] to reference the class for which
      * this factory produces a [cls].
      */
-    abstract fun classJavadoc(): String
+    protected abstract fun classJavadoc(): String
 
     /**
      * Adds a nested class the top class of the given [file].
@@ -107,7 +106,7 @@ internal abstract class NestedUnderMessage(
      *         the Java file to add the class produced by this factory.
      */
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    fun render(file: SourceFile) {
+    public fun render(file: SourceFile) {
         try {
             tuneClass()
             val psiJavaFile = file.toPsi()
@@ -139,7 +138,7 @@ internal abstract class NestedUnderMessage(
 
     private fun PsiClass.addAnnotation() {
         val version = Version.fromManifestOf(this::class.java).value
-        @Language("JAVA")
+        @Language("JAVA") @Suppress("EmptyClass")
         val annotation = elementFactory.createAnnotationFromText(
             """
             @javax.annotation.Generated("by Spine Model Compiler (version: $version)")

@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.message
 
 import com.intellij.psi.PsiClass
 import io.spine.protodata.Field.CardinalityCase.SINGLE
@@ -32,18 +32,20 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.entity.field.TopLevelFieldAccessor
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
-internal class FieldClassFactory(
+public class FieldClassFactory(
     type: MessageType,
     private val fieldSupertype: ClassName,
     typeSystem: TypeSystem
 ) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
 
-    companion object {
-        const val CLASS_NAME = "Field"
+    public companion object {
+        /**
+         * The name of the class generated Java class.
+         */
+        public const val CLASS_NAME: String = "Field"
     }
 
     @Language("JAVA") @Suppress("EmptyClass")
@@ -75,7 +77,8 @@ internal class FieldClassFactory(
         val nestedFieldTypes =
             MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).scan()
         nestedFieldTypes.forEach {
-            val messageTypeField = MessageTypedField(it, fieldSupertype, typeSystem).createClass()
+            val fld = MessageTypedField(it, fieldSupertype, typeSystem)
+            val messageTypeField = fld.createClass()
             addLast(messageTypeField)
         }
     }
