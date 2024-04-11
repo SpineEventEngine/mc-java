@@ -29,8 +29,15 @@ package io.spine.protodata.java
 import io.spine.protodata.MessageType
 import io.spine.protodata.type.TypeSystem
 
-public fun MessageType.javaClassName(ts: TypeSystem): ClassName {
-    val header = ts.findMessage(name)!!.second
+/**
+ * Obtains a clas name for the Java code generated for this message type.
+ *
+ * @param typeSystem
+ *         the type system to be used for obtaining the header for the proto
+ *         file in which this message type is declared.
+ */
+public fun MessageType.javaClassName(typeSystem: TypeSystem): ClassName {
+    val header = typeSystem.findMessage(name)!!.second
     val className = javaClassName(header)
     return className
 }
