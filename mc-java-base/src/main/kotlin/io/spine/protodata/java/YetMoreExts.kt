@@ -26,6 +26,8 @@
 
 package io.spine.protodata.java
 
+import com.intellij.psi.PsiClassType
+import com.intellij.psi.PsiElementFactory
 import io.spine.protodata.MessageType
 import io.spine.protodata.type.TypeSystem
 
@@ -40,4 +42,12 @@ public fun MessageType.javaClassName(typeSystem: TypeSystem): ClassName {
     val header = typeSystem.findMessage(name)!!.second
     val className = javaClassName(header)
     return className
+}
+
+/**
+ * Creates a class type which represents the Java class specified by the generic parameter [T].
+ */
+public inline fun <reified T: Any> PsiElementFactory.createClassType(): PsiClassType {
+    val clsType = createTypeByFQClassName(T::class.java.canonicalName)
+    return clsType
 }

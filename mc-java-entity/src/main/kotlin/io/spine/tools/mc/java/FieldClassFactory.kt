@@ -24,37 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiClass
-import io.spine.base.SubscribableField
 import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.entity.EntityPluginComponent
-import io.spine.tools.mc.java.entity.NestedUnderEntityState
+import io.spine.tools.mc.java.entity.field.TopLevelFieldAccessor
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
-@Suppress("EmptyClass", // ... to avoid false positives for `@Language` strings.
-    "UnusedPrivateProperty" // Temporarily until the class is fully implemented.
-)
 internal class FieldClassFactory(
     type: MessageType,
     private val fieldSupertype: ClassName,
     typeSystem: TypeSystem
-) : NestedUnderEntityState(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
 
     companion object {
         const val CLASS_NAME = "Field"
     }
 
-    @Language("JAVA")
+    @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """
         /**
-         * The listing of $stateJavadocRef fields to be used for creating a subscription filter.
+         * The listing of $messageJavadocRef fields to be used for creating a subscription filter.
          *
          * <p>Please use static methods of this class to access top-level fields of
          * the entity state type.

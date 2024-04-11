@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity
+package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiClass
 import io.spine.protodata.MessageType
@@ -46,18 +46,17 @@ import io.spine.tools.psi.java.topLevelClass
 import org.intellij.lang.annotations.Language
 
 /**
- * Abstract base for classes rendering code for
- * [EntityState][io.spine.base.EntityState] message types.
+ * Abstract base for classes rendering classes nested into message types.
  *
  * @param type
- *         the type of the `EntityState` message.
+ *         the type of the message.
  * @param className
  *         a simple name of the nested class to be generated.
  * @param typeSystem
  *         the type system used for resolving field types.
  */
 @Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
-internal abstract class NestedUnderEntityState(
+internal abstract class NestedUnderMessage(
     protected val type: MessageType,
     protected val className: String,
     protected val typeSystem: TypeSystem
@@ -71,21 +70,21 @@ internal abstract class NestedUnderEntityState(
 
     private fun createClass(): PsiClass {
         val cls = elementFactory.createClass(className)
-        commonSetup(cls)
+        cls.commonSetup()
         return cls
     }
 
     /**
      * The name of the entity state class under which the [cls] is going to places.
      */
-    protected val entityState: ClassName by lazy {
+    protected val messageClass: ClassName by lazy {
         type.javaClassName(typeSystem)
     }
 
     /**
-     * Reference to [entityState] made in Javadoc.
+     * Reference to [messageClass] made in Javadoc.
      */
-    protected val stateJavadocRef: String = "{@link ${entityState.simpleName}}"
+    protected val messageJavadocRef: String = "{@link ${messageClass.simpleName}}"
 
     /**
      * A callback to tune the [cls] in addition to the actions performed during
@@ -96,7 +95,7 @@ internal abstract class NestedUnderEntityState(
     /**
      * A callback for creating a Javadoc comment of the class produced by this factory.
      *
-     * Implementing methods may use [stateJavadocRef] to reference the class for which
+     * Implementing methods may use [messageJavadocRef] to reference the class for which
      * this factory produces a [cls].
      */
     abstract fun classJavadoc(): String
@@ -119,7 +118,7 @@ internal abstract class NestedUnderEntityState(
             file.overwrite(updatedText)
         } catch (e: Throwable) {
             logger.atError().withCause(e).log { """
-                Caught exception while generating the `$className` class in `$entityState`.
+                Caught exception while generating the `$className` class in `$messageClass`.
                 Message: `${e.message}`.                                
                 """.trimIndent()
             }
@@ -127,18 +126,18 @@ internal abstract class NestedUnderEntityState(
         }
     }
 
-    private fun commonSetup(cls: PsiClass) {
-        cls.makePublic().makeStatic().makeFinal()
-        val privateConstructor = elementFactory.createPrivateConstructor(
-            cls,
+    private fun PsiClass.commonSetup() {
+        makePublic().makeStatic().makeFinal()
+        val ctor = elementFactory.createPrivateConstructor(
+            this,
             javadocLine = "Prevents instantiation of this class."
         )
-        cls.addLast(privateConstructor)
-        addAnnotation(cls)
-        addClassJavadoc(cls)
+        addLast(ctor)
+        addAnnotation()
+        addClassJavadoc()
     }
 
-    private fun addAnnotation(cls: PsiClass) {
+    private fun PsiClass.addAnnotation() {
         val version = Version.fromManifestOf(this::class.java).value
         @Language("JAVA")
         val annotation = elementFactory.createAnnotationFromText(
@@ -146,11 +145,11 @@ internal abstract class NestedUnderEntityState(
             @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
             """.trimIndent(), null
         )
-        cls.addFirst(annotation)
+        addFirst(annotation)
     }
 
-    private fun addClassJavadoc(cls: PsiClass) {
+    private fun PsiClass.addClassJavadoc() {
         val classJavadoc = elementFactory.createDocCommentFromText(classJavadoc(), null)
-        cls.addFirst(classJavadoc)
+        addFirst(classJavadoc)
     }
 }

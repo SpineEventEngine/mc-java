@@ -34,7 +34,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.entity.NestedUnderEntityState
+import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -62,11 +62,10 @@ import org.intellij.lang.annotations.Language
  *         the type system used for resolving field types.
  * @see render
  */
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class ColumnClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedUnderEntityState(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
 
     private val columnClass = cls
     private val columns: List<Field> = type.columns
@@ -89,10 +88,10 @@ internal class ColumnClassFactory(
         }
     }
 
-    @Language("JAVA")
+    @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """
         /**
-         * A listing of entity columns defined in $stateJavadocRef.
+         * A listing of entity columns defined in $messageJavadocRef.
          *
          * <p>Use static methods of this class to access the columns of the entity
          * which can then be used for creating filters in a query.
@@ -106,7 +105,7 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(entityState, column, columnClass, typeSystem)
+            val accessor = ColumnAccessor(messageClass, column, columnClass, typeSystem)
             columnClass.addLast(accessor.method())
         }
     }
@@ -122,7 +121,7 @@ internal class ColumnClassFactory(
     private inner class DefinitionsMethod {
 
         /** The generic type which matches all the columns of this entity state. */
-        private val columnWildcard = columnType(entityState)
+        private val columnWildcard = columnType(messageClass)
 
         /**
          * The name of the variable to collect all column definitions
@@ -148,11 +147,10 @@ internal class ColumnClassFactory(
 
         /** Builds the full text of the method. */
         private val methodText: String by lazy {
-            @Language("JAVA")
-            @Suppress("DanglingJavadoc") // to avoid false positive warning.
+            @Language("JAVA") @Suppress("EmptyClass", "DanglingJavadoc")
             val methodTemplate = """
             /**
-             * Returns all the column definitions of $stateJavadocRef.
+             * Returns all the column definitions of $messageJavadocRef.
              */
             public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();
