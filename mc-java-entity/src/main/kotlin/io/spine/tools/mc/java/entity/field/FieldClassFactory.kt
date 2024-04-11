@@ -78,7 +78,7 @@ internal class FieldClassFactory(
 
     private fun PsiClass.addFieldClasses() {
         val nestedFieldTypes =
-            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).set
+            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).scan()
         nestedFieldTypes.forEach {
             val messageTypeField = MessageTypedField(it, fieldSupertype, typeSystem).createClass()
             addLast(messageTypeField)
