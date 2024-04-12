@@ -24,26 +24,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-signals",
-    "mc-java-protoc",
-    "mc-java-rejection",
-    "mc-java-validation",
-    "mc-java-protodata-params",
-    "mc-java-plugin-bundle"
-)
+plugins {
+    id("io.spine.mc-java")
+    `java-test-fixtures`
+}
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
-    }
+dependencies {
+    implementation(project(":mc-java-base"))
+    implementation(Spine.server)
+    implementation(Spine.Logging.lib)
+    implementation(Spine.psiJavaBundle)
+
+    arrayOf(Spine.base, Validation.runtime)
+        .forEach {
+            testFixturesImplementation(it)
+        }
+
+    testImplementation(Spine.testlib)
 }
