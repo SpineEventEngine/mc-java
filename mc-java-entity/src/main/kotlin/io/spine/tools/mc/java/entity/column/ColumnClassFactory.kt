@@ -34,7 +34,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.message.NestedUnderMessage
+import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory

@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.message
+package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiClass
 import io.spine.protodata.Field.CardinalityCase.SINGLE
@@ -32,6 +32,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 

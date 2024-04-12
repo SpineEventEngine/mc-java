@@ -25,7 +25,7 @@
  */
 
 
-package io.spine.tools.mc.java.message
+package io.spine.tools.mc.java.field
 
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.Field

@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.message
+package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiClass
 import io.spine.logging.WithLogging
@@ -60,6 +60,7 @@ public abstract class NestedUnderMessage(
     protected val className: String,
     protected val typeSystem: TypeSystem
 ) : WithLogging {
+
     /**
      * The product of the factory.
      */
@@ -81,7 +82,9 @@ public abstract class NestedUnderMessage(
     }
 
     /**
-     * Reference to [messageClass] made in Javadoc.
+     * Reference to [messageClass] which can be made in Javadoc.
+     *
+     * The reference is a link to the simple class name of the enclosing class.
      */
     protected val messageJavadocRef: String = "{@link ${messageClass.simpleName}}"
 
@@ -95,7 +98,7 @@ public abstract class NestedUnderMessage(
      * A callback for creating a Javadoc comment of the class produced by this factory.
      *
      * Implementing methods may use [messageJavadocRef] to reference the class for which
-     * this factory produces a [cls].
+     * this factory produces a nested class [cls].
      */
     protected abstract fun classJavadoc(): String
 
@@ -148,7 +151,8 @@ public abstract class NestedUnderMessage(
     }
 
     private fun PsiClass.addClassJavadoc() {
-        val classJavadoc = elementFactory.createDocCommentFromText(classJavadoc(), null)
+        val text = classJavadoc()
+        val classJavadoc = elementFactory.createDocCommentFromText(text, null)
         addFirst(classJavadoc)
     }
 }

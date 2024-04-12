@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.entity.field
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.mc.java.message.FieldClassFactory
+import io.spine.tools.mc.java.field.FieldClassFactory
 import io.spine.tools.mc.java.codegen.GenerateFields
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
