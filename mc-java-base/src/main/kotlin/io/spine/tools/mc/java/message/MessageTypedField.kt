@@ -30,12 +30,12 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaCodeReferenceElement
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.createClassType
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
+import io.spine.tools.psi.java.createClassType
 import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
