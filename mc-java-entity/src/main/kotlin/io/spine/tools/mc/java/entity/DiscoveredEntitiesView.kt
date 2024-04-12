@@ -24,31 +24,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.entity
+package io.spine.tools.mc.java.entity
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
+import io.spine.core.Subscribe
+import io.spine.protodata.File
 import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
-import io.spine.tools.mc.java.entity.column.ColumnClassRenderer
-import io.spine.tools.mc.java.entity.field.FieldClassRenderer
+import io.spine.server.entity.alter
+import io.spine.tools.mc.entity.DiscoveredEntities
+import io.spine.tools.mc.entity.event.EntityStateDiscovered
 
 /**
- * A ProtoData plugin responsible for handling code generation aspects related to
- * entity state declarations.
- *
- * @see EntityPluginComponent
+ * This view accumulates [EntityState][io.spine.base.EntityState] types discovered
+ * in a file in response to the [EntityStateDiscovered] event.
  */
-public class EntityPlugin : Plugin {
+internal class DiscoveredEntitiesView :
+    View<File, DiscoveredEntities, DiscoveredEntities.Builder>() {
 
-    override fun policies(): Set<Policy<*>> =
-        setOf(EntityDiscovery())
-
-    override fun views(): Set<Class<out View<*, *, *>>> =
-        setOf(DiscoveredEntitiesView::class.java)
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        ColumnClassRenderer(),
-        FieldClassRenderer()
-    )
+    @Subscribe
+    fun on(e: EntityStateDiscovered) = alter {
+        addType(e.type)
+    }
 }

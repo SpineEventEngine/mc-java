@@ -24,17 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.entity
+package io.spine.tools.mc.java.entity
 
-import io.spine.protodata.settings.LoadsSettings
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.plugin.Policy
+import io.spine.protodata.plugin.View
+import io.spine.protodata.renderer.Renderer
+import io.spine.tools.mc.java.entity.column.ColumnClassRenderer
+import io.spine.tools.mc.java.entity.field.FieldClassRenderer
 
 /**
- * A common interface for [EntityPlugin] parts that load
- * shared codegen [settings][io.spine.tools.mc.java.codegen.Entities] stored
- * using the canonical name of the plugin class.
+ * A ProtoData plugin responsible for handling code generation aspects related to
+ * entity state declarations.
+ *
+ * @see EntityPluginComponent
  */
-internal interface EntityPluginComponent : LoadsSettings {
+public class EntityPlugin : Plugin {
 
-    override val consumerId: String
-        get() = EntityPlugin::class.java.canonicalName
+    override fun policies(): Set<Policy<*>> =
+        setOf(EntityDiscovery())
+
+    override fun views(): Set<Class<out View<*, *, *>>> =
+        setOf(DiscoveredEntitiesView::class.java)
+
+    override fun renderers(): List<Renderer<*>> = listOf(
+        ColumnClassRenderer(),
+        FieldClassRenderer()
+    )
 }

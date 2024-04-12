@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.entity
+package io.spine.tools.mc.java.entity
 
 import io.spine.core.External
 import io.spine.protodata.event.TypeDiscovered

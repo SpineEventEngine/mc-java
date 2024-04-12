@@ -24,23 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.entity
+package io.spine.tools.mc.java.entity
 
-import io.spine.core.Subscribe
-import io.spine.protodata.File
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.entity.event.EntityStateDiscovered
+import io.spine.protodata.settings.LoadsSettings
 
 /**
- * This view accumulates [EntityState][io.spine.base.EntityState] types discovered
- * in a file in response to the [EntityStateDiscovered] event.
+ * A common interface for [EntityPlugin] parts that load
+ * shared codegen [settings][io.spine.tools.mc.java.codegen.Entities] stored
+ * using the canonical name of the plugin class.
  */
-internal class DiscoveredEntitiesView :
-    View<File, DiscoveredEntities, DiscoveredEntities.Builder>() {
+internal interface EntityPluginComponent : LoadsSettings {
 
-    @Subscribe
-    fun on(e: EntityStateDiscovered) = alter {
-        addType(e.type)
-    }
+    override val consumerId: String
+        get() = EntityPlugin::class.java.canonicalName
 }

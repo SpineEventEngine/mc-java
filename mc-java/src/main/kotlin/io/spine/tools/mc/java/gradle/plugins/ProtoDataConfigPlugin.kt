@@ -39,7 +39,7 @@ import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
-import io.spine.tools.mc.entity.EntityPlugin
+import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
@@ -117,7 +117,7 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
         /**
          * The ID used by Entity plugin components to load settings.
          */
-        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.entity.EntityPlugin"
+        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.java.entity.EntityPlugin"
 
         /**
          * The ID for the Java code style settings.
