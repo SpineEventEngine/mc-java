@@ -131,9 +131,9 @@ internal object McJava {
     internal val rejection: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            setName("spine-mc-java-rejection")
-            setVersion(this@McJava.version)
-            setExtension(JAR_EXTENSION)
+            name = "spine-mc-java-rejection"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
         }
     }
 
@@ -145,9 +145,9 @@ internal object McJava {
     internal val annotation: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            setName("spine-mc-java-annotation")
-            setVersion(this@McJava.version)
-            setExtension(JAR_EXTENSION)
+            name = "spine-mc-java-annotation"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
         }
     }
 
@@ -157,9 +157,21 @@ internal object McJava {
     internal val entity: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            setName("spine-mc-java-entity")
-            setVersion(this@McJava.version)
-            setExtension(JAR_EXTENSION)
+            name = "spine-mc-java-entity"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-signals` module.
+     */
+    internal val signals: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name = "spine-mc-java-signals"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
         }
     }
 
@@ -171,10 +183,10 @@ internal object McJava {
     internal val allPlugins: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
-            setVersion(this@McJava.version)
-            setClassifier(ALL_CLASSIFIER)
-            setExtension(JAR_EXTENSION)
+            name = SPINE_MC_JAVA_ALL_PLUGINS_NAME
+            version = this@McJava.version
+            classifier = ALL_CLASSIFIER
+            extension = JAR_EXTENSION
         }
     }
 }

@@ -33,9 +33,7 @@ import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
 import io.spine.protodata.gradle.plugin.LaunchProtoData
-import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
@@ -44,6 +42,7 @@ import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
 import io.spine.tools.mc.java.gradle.McJava.rejection
+import io.spine.tools.mc.java.gradle.McJava.signals
 import io.spine.tools.mc.java.gradle.ValidationSdk
 import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
@@ -53,6 +52,7 @@ import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VAL
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.rejection.RejectionPlugin
+import io.spine.tools.mc.java.signals.SignalsPlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -103,26 +103,6 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
          * The name of the Validation plugin for ProtoData.
          */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
-
-        /**
-         * The ID used by Validation plugin components to load the settings.
-         */
-        const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
-
-        /**
-         * The ID used by Annotation plugin components to load the settings.
-         */
-        const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
-
-        /**
-         * The ID used by Entity plugin components to load settings.
-         */
-        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.java.entity.EntityPlugin"
-
-        /**
-         * The ID for the Java code style settings.
-         */
-        val JAVA_CODE_STYLE_ID = JavaCodeStyle::class.java.defaultConsumerId
     }
 }
 
@@ -162,6 +142,7 @@ private fun Project.configureProtoDataPlugins() {
     configureValidation(protodata)
     configureRejections(protodata)
     configureEntities(protodata)
+    configureSignals(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
     // so that their output is annotated too.
@@ -204,7 +185,6 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
     //
     addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
-
 private fun Project.configureRejections(protodata: ProtoDataSettings) {
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
@@ -216,6 +196,11 @@ private fun Project.configureRejections(protodata: ProtoDataSettings) {
 private fun Project.configureEntities(protodata: ProtoDataSettings) {
     addUserClasspathDependency(entity)
     protodata.addPlugin<EntityPlugin>()
+}
+
+private fun Project.configureSignals(protodata: CodegenSettings) {
+    addUserClasspathDependency(signals)
+    protodata.addPlugin<SignalsPlugin>()
 }
 
 private fun Project.configureAnnotations(protodata: ProtoDataSettings) {

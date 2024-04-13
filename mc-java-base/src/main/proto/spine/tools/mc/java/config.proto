@@ -118,6 +118,22 @@ message Signals {
     GenerateFields generate_fields = 3;
 }
 
+// Code generation settings for `Signal` messages.
+//
+// This type is meant to replace corresponding fields in [CodegenOptions] type.
+//
+message SignalSettings {
+
+    // The configuration related to command messages.
+    Signals commands = 1;
+
+    // The configuration related to event messages.
+    Signals events = 2;
+
+    // The configuration related to rejection messages.
+    Signals rejections = 3;
+}
+
 // Code generation settings for entity state messages.
 message Entities {
 

@@ -26,17 +26,21 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.protobuf.Message
+import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
+import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.codegen.CodegenOptions
+import io.spine.tools.mc.java.codegen.signalSettings
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ANNOTATION_SETTINGS_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ENTITY_SETTINGS_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.JAVA_CODE_STYLE_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.ANNOTATION_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.ENTITY_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.JAVA_CODE_STYLE_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.SIGNALS_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.VALIDATION_SETTINGS_ID
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
@@ -73,7 +77,36 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         forValidationPlugin(settings)
         forAnnotationPlugin(settings)
         forEntityPlugin(settings)
+        forSignalPlugin(settings)
         forStyleFormattingPlugin(settings)
+    }
+
+    internal companion object {
+
+        /**
+         * The ID used by Validation plugin components to load the settings.
+         */
+        const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
+
+        /**
+         * The ID used by Annotation plugin components to load the settings.
+         */
+        const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
+
+        /**
+         * The ID used by Entity plugin components to load settings.
+         */
+        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.java.entity.EntityPlugin"
+
+        /**
+         * The ID used by the Signals Plugin components to load settings.
+         */
+        const val SIGNALS_SETTINGS_ID = "io.spine.tools.mc.java.signals.SignalsPlugin"
+
+        /**
+         * The ID for the Java code style settings.
+         */
+        val JAVA_CODE_STYLE_ID = JavaCodeStyle::class.java.defaultConsumerId
     }
 }
 
@@ -135,10 +168,21 @@ private fun WriteProtoDataSettings.forEntityPlugin(settings: SettingsDirectory) 
     settings.write(ENTITY_SETTINGS_ID, entitySettings)
 }
 
+private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) {
+    val codegen = options.codegen!!
+    val signalSettings = signalSettings {
+        commands = codegen.commands().toProto()
+        events = codegen.events().toProto()
+        rejections = codegen.rejections().toProto()
+    }
+    settings.write(SIGNALS_SETTINGS_ID, signalSettings)
+}
+
 private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDirectory) {
     val styleSettings = options.style.get()
     settings.write(JAVA_CODE_STYLE_ID, styleSettings)
 }
+
 
 /**
  * Writes the given instance of settings in [Format.PROTO_JSON] format using the [id].
