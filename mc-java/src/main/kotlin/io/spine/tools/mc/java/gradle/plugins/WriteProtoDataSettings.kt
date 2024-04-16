@@ -32,8 +32,8 @@ import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
-import io.spine.tools.mc.java.codegen.CodegenOptions
-import io.spine.tools.mc.java.codegen.signalSettings
+import io.spine.tools.mc.java.settings.CodegenOptions
+import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.ANNOTATION_SETTINGS_ID
@@ -101,7 +101,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         /**
          * The ID used by the Signals Plugin components to load settings.
          */
-        const val SIGNALS_SETTINGS_ID = "io.spine.tools.mc.java.signals.SignalsPlugin"
+        const val SIGNALS_SETTINGS_ID = "io.spine.tools.mc.java.signals.SignalPlugin"
 
         /**
          * The ID for the Java code style settings.
@@ -182,7 +182,6 @@ private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDi
     val styleSettings = options.style.get()
     settings.write(JAVA_CODE_STYLE_ID, styleSettings)
 }
-
 
 /**
  * Writes the given instance of settings in [Format.PROTO_JSON] format using the [id].

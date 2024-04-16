@@ -33,7 +33,7 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.loadSettings
 import io.spine.tools.mc.entity.DiscoveredEntities
-import io.spine.tools.mc.java.codegen.Entities
+import io.spine.tools.mc.java.settings.Entities
 
 /**
  * An abstract state for renderers of classes nested under

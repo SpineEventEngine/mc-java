@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.NestedClassFactory;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;

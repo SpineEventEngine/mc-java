@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
 import io.spine.annotation.Internal;
-import io.spine.tools.mc.java.codegen.Entities;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.proto.code.ProtoOption;
 import org.gradle.api.Action;
 import org.gradle.api.Project;

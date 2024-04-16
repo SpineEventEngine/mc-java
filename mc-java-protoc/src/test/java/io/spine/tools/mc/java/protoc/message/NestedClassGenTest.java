@@ -27,11 +27,11 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.testing.NullPointerTester;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.GenerateNestedClasses;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.NestedClassFactoryName;
-import io.spine.tools.mc.java.codegen.Pattern;
+import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.GenerateNestedClasses;
+import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.NestedClassFactoryName;
+import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.gradle.codegen.FilePatterns;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.protoc.plugin.nested.Task;

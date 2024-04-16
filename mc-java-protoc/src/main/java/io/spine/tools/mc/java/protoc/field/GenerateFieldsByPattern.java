@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.protoc.field;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.field.FieldFactory;
-import io.spine.tools.mc.java.codegen.GenerateFields;
-import io.spine.tools.mc.java.codegen.Pattern;
+import io.spine.tools.mc.java.settings.GenerateFields;
+import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.FilePatternMatcher;
 import io.spine.tools.mc.java.protoc.PatternMatcher;

@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.gradle.codegen
 
-import io.spine.tools.mc.java.codegen.Validation
-import io.spine.tools.mc.java.codegen.validation
+import io.spine.tools.mc.java.settings.Validation
+import io.spine.tools.mc.java.settings.validation
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 

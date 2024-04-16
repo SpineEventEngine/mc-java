@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.protoc.query;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.query.EntityQueryFactory;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Entities;
+import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.ClassMember;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;

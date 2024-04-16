@@ -52,7 +52,7 @@ import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VAL
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.rejection.RejectionPlugin
-import io.spine.tools.mc.java.signals.SignalsPlugin
+import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -200,7 +200,7 @@ private fun Project.configureEntities(protodata: ProtoDataSettings) {
 
 private fun Project.configureSignals(protodata: CodegenSettings) {
     addUserClasspathDependency(signals)
-    protodata.addPlugin<SignalsPlugin>()
+    protodata.addPlugin<SignalPlugin>()
 }
 
 private fun Project.configureAnnotations(protodata: ProtoDataSettings) {

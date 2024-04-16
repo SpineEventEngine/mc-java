@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.protoc.query;
 
 import com.google.common.testing.NullPointerTester;
 import io.spine.option.OptionsProto;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Entities;
+import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.NoOpGenerator;
 import io.spine.tools.proto.code.ProtoOption;
 import io.spine.tools.protoc.plugin.nested.Task;

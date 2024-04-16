@@ -26,25 +26,53 @@
 
 syntax = "proto3";
 
-package spine.tools.mc.entity;
+package spine.tools.mc.signal;
 
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.entity";
-option java_outer_classname = "ViewsProto";
+option java_package = "io.spine.tools.mc.signal.event";
+option java_outer_classname = "EventsProto";
 option java_multiple_files = true;
 
-import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
+import "spine/protodata/ast.proto";
 
-// Provides entity state types declared in a proto file.
-message DiscoveredEntities {
-    option (.entity).kind = PROJECTION;
+// A command was discovered in a proto file.
+message CommandDiscovered {
 
-    // The file which declares entity state types.
-    protodata.File file = 1;
+    // The file in which the command is defined.
+    protodata.File file = 1 [(required) = true];
 
-    // Message types that qualify as entity states.
-    repeated protodata.MessageType type = 2;
+    // The name of the discovered command type.
+    protodata.TypeName name = 2 [(required) = true];
+
+    // The declaration of the command.
+    protodata.MessageType type = 3 [(required) = true];
+}
+
+// An event was discovered in a proto file.
+message EventDiscovered {
+
+    // The file in which the event is defined.
+    protodata.File file = 1 [(required) = true];
+
+    // The name of the discovered event type.
+    protodata.TypeName name = 2 [(required) = true];
+
+    // The declaration of the event.
+    protodata.MessageType type = 3 [(required) = true];
+}
+
+// A rejection was discovered in a proto file.
+message RejectionDiscovered {
+
+    // The file in which the rejection is defined.
+    protodata.File file = 1 [(required) = true];
+
+    // The name of the discovered rejection type.
+    protodata.TypeName name = 2 [(required) = true];
+
+    // The declaration of the rejection.
+    protodata.MessageType type = 3 [(required) = true];
 }

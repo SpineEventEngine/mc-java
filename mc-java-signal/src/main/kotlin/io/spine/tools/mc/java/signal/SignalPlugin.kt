@@ -24,11 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signals
+package io.spine.tools.mc.java.signal
 
 import io.spine.protodata.plugin.Plugin
 
-public class SignalsPlugin : Plugin {
+public class SignalPlugin : Plugin {
 
     //TODO:2024-04-13:alexander.yevsyukov: Implement
 }

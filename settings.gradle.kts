@@ -32,7 +32,7 @@ include(
     "mc-java-base",
     "mc-java-checks",
     "mc-java-entity",
-    "mc-java-signals",
+    "mc-java-signal",
     "mc-java-protoc",
     "mc-java-rejection",
     "mc-java-validation",

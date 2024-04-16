@@ -29,12 +29,12 @@ package io.spine.tools.mc.java.gradle.codegen;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.tools.gradle.Multiple;
-import io.spine.tools.mc.java.codegen.GenerateMethods;
-import io.spine.tools.mc.java.codegen.GenerateNestedClasses;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.MethodFactoryName;
-import io.spine.tools.mc.java.codegen.NestedClassFactoryName;
-import io.spine.tools.mc.java.codegen.Pattern;
+import io.spine.tools.mc.java.settings.GenerateMethods;
+import io.spine.tools.mc.java.settings.GenerateNestedClasses;
+import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.MethodFactoryName;
+import io.spine.tools.mc.java.settings.NestedClassFactoryName;
+import io.spine.tools.mc.java.settings.Pattern;
 import org.gradle.api.Project;
 
 import java.util.Set;

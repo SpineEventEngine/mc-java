@@ -33,7 +33,7 @@ import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
 import io.spine.tools.mc.entity.event.EntityStateDiscovered
 import io.spine.tools.mc.entity.event.entityStateDiscovered
-import io.spine.tools.mc.java.codegen.Entities
+import io.spine.tools.mc.java.settings.Entities
 
 /**
  * Reacts to the [TypeDiscovered] and emits [EntityStateDiscovered], if the discovered
