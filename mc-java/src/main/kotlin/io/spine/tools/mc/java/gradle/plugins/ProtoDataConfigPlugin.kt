@@ -44,7 +44,7 @@ import io.spine.tools.mc.java.gradle.McJava.entity
 import io.spine.tools.mc.java.gradle.McJava.rejection
 import io.spine.tools.mc.java.gradle.McJava.signals
 import io.spine.tools.mc.java.gradle.ValidationSdk
-import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava

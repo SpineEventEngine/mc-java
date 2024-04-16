@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.gradle.codegen
+package io.spine.tools.mc.java.gradle.settings
 
 import org.gradle.api.provider.Property
 import com.google.protobuf.Message

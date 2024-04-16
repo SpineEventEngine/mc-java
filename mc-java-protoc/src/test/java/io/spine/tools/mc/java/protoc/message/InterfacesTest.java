@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.tools.java.code.Names.className;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.fileSuffix;
+import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileSuffix;
 
 @DisplayName("`GenerateInterfaces` should")
 final class InterfacesTest {

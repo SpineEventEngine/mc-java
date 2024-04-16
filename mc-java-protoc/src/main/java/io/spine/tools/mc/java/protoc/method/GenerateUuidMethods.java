@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.protoc.method;
 
 import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.gradle.codegen.UuidConfig;
+import io.spine.tools.mc.java.gradle.settings.UuidConfig;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.ExternalClassLoader;
 import io.spine.tools.java.code.MethodFactory;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 
 @CheckReturnValue
 @ParametersAreNonnullByDefault
-package io.spine.tools.mc.java.gradle.codegen;
+package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.errorprone.annotations.CheckReturnValue;
 

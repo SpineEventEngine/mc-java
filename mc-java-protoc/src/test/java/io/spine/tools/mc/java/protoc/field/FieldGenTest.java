@@ -32,7 +32,7 @@ import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.GenerateFields;
 import io.spine.tools.mc.java.settings.Messages;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.tools.mc.java.gradle.codegen.FilePatterns;
+import io.spine.tools.mc.java.gradle.settings.FilePatterns;
 import io.spine.tools.protoc.plugin.nested.Task;
 import io.spine.tools.protoc.plugin.nested.TaskView;
 import io.spine.type.EnumType;

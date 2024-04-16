@@ -29,7 +29,7 @@ import groovy.lang.Closure
 import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.javaCodeStyleDefaults
 import io.spine.tools.java.fs.DefaultJavaPaths
-import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property

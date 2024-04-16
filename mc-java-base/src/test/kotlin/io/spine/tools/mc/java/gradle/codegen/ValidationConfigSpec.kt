@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.gradle.codegen
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
+import io.spine.tools.mc.java.gradle.settings.ValidationConfig
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeAll

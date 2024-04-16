@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
-import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
-import io.spine.tools.mc.java.gradle.codegen.SignalConfig
+import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.SignalConfig
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.proto.code.ProtoTypeName

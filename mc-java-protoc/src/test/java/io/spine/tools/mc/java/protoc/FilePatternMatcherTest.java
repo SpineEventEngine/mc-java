@@ -34,9 +34,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static io.spine.testing.Assertions.assertNpe;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.filePrefix;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.fileRegex;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.fileSuffix;
+import static io.spine.tools.mc.java.gradle.settings.FilePatterns.filePrefix;
+import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileRegex;
+import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileSuffix;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
