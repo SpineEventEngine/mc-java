@@ -52,7 +52,7 @@ internal class EntityDiscovery : Policy<TypeDiscovered>(), EntityPluginComponent
      * The settings passed by McJava to [EntityPlugin].
      */
     private val settings: Entities by lazy {
-        loadSettings<Entities>()
+        loadSettings()
     }
 
     /**
