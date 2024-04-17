@@ -117,7 +117,7 @@ object ProtoData {
 
     @Deprecated("Use `java` instead.", ReplaceWith("java"))
     val codegenJava
-        get() = "$group:protodata-codegen-java:$version"
+        get() = java(version)
 
     val java
         get() = java(version)
