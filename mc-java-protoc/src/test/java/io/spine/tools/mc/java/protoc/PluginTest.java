@@ -30,14 +30,15 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 import io.spine.option.OptionsProvider;
+import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.fs.SourceFile;
-import io.spine.tools.mc.java.settings.CodegenOptions;
-import io.spine.tools.mc.java.settings.Messages;
-import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
+import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
 import io.spine.tools.protoc.plugin.method.TestMethodProtos;
@@ -57,9 +58,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.filePrefix;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileRegex;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileSuffix;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateNested;
@@ -116,7 +114,7 @@ final class PluginTest {
     @DisplayName("process suffix patterns")
     void processSuffixPatterns() {
         var messages = Messages.newBuilder()
-                .setPattern(pattern(fileSuffix(TEST_PROTO_SUFFIX)))
+                .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
@@ -139,7 +137,7 @@ final class PluginTest {
     @DisplayName("process prefix patterns")
     void processPrefixPatterns() {
         var messages = Messages.newBuilder()
-                .setPattern(pattern(filePrefix(TEST_PROTO_PREFIX)))
+                .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
@@ -161,7 +159,7 @@ final class PluginTest {
     @DisplayName("process regex patterns")
     void processRegexPatterns() {
         var messages = Messages.newBuilder()
-                .setPattern(pattern(fileRegex(TEST_PROTO_REGEX)))
+                .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))

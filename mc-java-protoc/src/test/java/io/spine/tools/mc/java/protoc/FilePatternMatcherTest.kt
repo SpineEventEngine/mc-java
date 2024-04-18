@@ -23,101 +23,90 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.protoc
 
-package io.spine.tools.mc.java.protoc;
-
-import io.spine.tools.protoc.plugin.FPMMessage;
-import io.spine.type.MessageType;
-import io.spine.protodata.FilePattern;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
-import static io.spine.testing.Assertions.assertNpe;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.filePrefix;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileRegex;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileSuffix;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.kotest.matchers.shouldBe
+import io.spine.protodata.FilePattern
+import io.spine.protodata.FilePatternFactory.prefix
+import io.spine.protodata.FilePatternFactory.regex
+import io.spine.protodata.FilePatternFactory.suffix
+import io.spine.testing.Assertions.assertNpe
+import io.spine.tools.protoc.plugin.FPMMessage
+import io.spine.type.MessageType
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 
 @DisplayName("`FilePatternMatcher` should")
-class FilePatternMatcherTest {
+internal class FilePatternMatcherTest {
 
-    @DisplayName("throw `NullPointerException` if")
-    @Nested
-    class ThrowNpe {
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS") // Force passing `null`s.
+    @Nested inner class
+    `throw 'NullPointerException' if` {
 
         @Test
-        @DisplayName("is create with `null` `FilePattern`")
-        void isCreatedWithNullPattern() {
-            assertNpe(() -> new FilePatternMatcher(null));
+        fun `null pattern passed`() {
+            assertNpe {
+                FilePatternMatcher(null)
+            }
         }
 
         @Test
-        @DisplayName("`null` `MessageType` is supplied")
-        void nullMessageTypeIsSupplied() {
-            assertNpe(() -> {
-                var pattern = FilePattern.getDefaultInstance();
-                new FilePatternMatcher(pattern).test(null);
-            });
+        fun `null 'MessageType' supplied`() {
+            assertNpe {
+                val pattern = FilePattern.getDefaultInstance()
+                FilePatternMatcher(pattern).test(null)
+            }
         }
     }
 
-    @Nested
-    @DisplayName("match")
-    class Match {
+    @Nested inner class
+    Match {
 
         @Test
-        @DisplayName("suffix pattern")
-        void suffix() {
-            assertMatches(fileSuffix("file_patterns.proto"));
+        fun `suffix pattern`() {
+            assertMatches(suffix("file_patterns.proto"))
         }
 
         @Test
-        @DisplayName("prefix pattern")
-        void prefix() {
-            assertMatches(filePrefix("spine/tools/protoc/test_file"));
+        fun `prefix pattern`() {
+            assertMatches(prefix("spine/tools/protoc/test_file"))
         }
 
         @Test
-        @DisplayName("regex pattern")
-        void regex() {
-            assertMatches(fileRegex(".*tools\\/protoc\\/.*file_patterns.*"));
+        fun `regex pattern`() {
+            assertMatches(regex(".*tools\\/protoc\\/.*file_patterns.*"))
         }
 
-        private void assertMatches(FilePattern pattern) {
-            var matcher = new FilePatternMatcher(pattern);
-            var type = new MessageType(FPMMessage.getDescriptor());
-            assertTrue(matcher.test(type));
+        private fun assertMatches(pattern: FilePattern) {
+            val matcher = FilePatternMatcher(pattern)
+            val type = MessageType(FPMMessage.getDescriptor())
+            matcher.test(type) shouldBe true
         }
     }
 
-    @Nested
-    @DisplayName("not match")
-    class NotMatch {
+    @Nested inner class
+    `Not match` {
 
         @Test
-        @DisplayName("suffix pattern")
-        void suffix() {
-            assertNotMatches(fileSuffix("test_file.proto"));
+        fun `suffix pattern`() {
+            assertNotMatches(suffix("test_file.proto"))
         }
 
         @Test
-        @DisplayName("prefix pattern")
-        void prefix() {
-            assertNotMatches(filePrefix("spine/tools/protoc/test_patterns"));
+        fun `prefix pattern`() {
+            assertNotMatches(prefix("spine/tools/protoc/test_patterns"))
         }
 
         @Test
-        @DisplayName("regex pattern")
-        void regex() {
-            assertNotMatches(fileRegex(".*tools\\/protoc\\/.*test_patterns.*"));
+        fun `regex pattern`() {
+            assertNotMatches(regex(".*tools\\/protoc\\/.*test_patterns.*"))
         }
 
-        private void assertNotMatches(FilePattern pattern) {
-            var matcher = new FilePatternMatcher(pattern);
-            var type = new MessageType(FPMMessage.getDescriptor());
-            assertFalse(matcher.test(type));
+        private fun assertNotMatches(pattern: FilePattern) {
+            val matcher = FilePatternMatcher(pattern)
+            val type = MessageType(FPMMessage.getDescriptor())
+            matcher.test(type) shouldBe false
         }
     }
 }

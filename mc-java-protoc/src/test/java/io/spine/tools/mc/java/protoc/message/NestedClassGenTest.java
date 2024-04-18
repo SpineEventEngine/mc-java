@@ -27,13 +27,13 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.testing.NullPointerTester;
+import io.spine.protodata.FilePatternFactory;
+import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.GenerateNestedClasses;
 import io.spine.tools.mc.java.settings.Messages;
 import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.tools.mc.java.gradle.settings.FilePatterns;
-import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.protoc.plugin.nested.Task;
 import io.spine.tools.protoc.plugin.nested.TaskView;
 import io.spine.type.EnumType;
@@ -88,7 +88,7 @@ class NestedClassGenTest {
                 .setFactory(factoryName)
                 .build();
         var pattern = Pattern.newBuilder()
-                .setFile(FilePatterns.fileSuffix("test_fields.proto"))
+                .setFile(FilePatternFactory.INSTANCE.suffix("test_fields.proto"))
                 .build();
         var messages = Messages.newBuilder()
                 .setPattern(pattern)

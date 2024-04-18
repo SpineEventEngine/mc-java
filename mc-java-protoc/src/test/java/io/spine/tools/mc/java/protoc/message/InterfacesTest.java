@@ -26,17 +26,17 @@
 
 package io.spine.tools.mc.java.protoc.message;
 
+import io.spine.protodata.FilePattern;
+import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.code.JavaClassName;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.protoc.plugin.message.tests.ProjectCreated;
 import io.spine.type.MessageType;
-import io.spine.protodata.FilePattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.tools.java.code.Names.className;
-import static io.spine.tools.mc.java.gradle.settings.FilePatterns.fileSuffix;
 
 @DisplayName("`GenerateInterfaces` should")
 final class InterfacesTest {
@@ -44,7 +44,7 @@ final class InterfacesTest {
     @DisplayName("implement interface")
     @Test
     void implementInterface() {
-        var pattern = fileSuffix("test_events.proto");
+        var pattern = FilePatternFactory.INSTANCE.suffix("test_events.proto");
         var className = className(TestInterface.class);
         var implementByPattern = newTask(className, pattern);
         var targetType = new MessageType(ProjectCreated.getDescriptor());

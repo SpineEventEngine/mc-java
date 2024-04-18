@@ -26,12 +26,14 @@
 
 package io.spine.tools.mc.java.protoc;
 
+import io.spine.protodata.File;
 import io.spine.type.MessageType;
 import io.spine.protodata.FilePattern;
 
 import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.spine.protodata.FilePatterns.matches;
 
 /**
  * {@link FilePattern} predicate that returns {@code true} if supplied Protobuf
@@ -50,16 +52,8 @@ public final class FilePatternMatcher implements Predicate<MessageType> {
     public boolean test(MessageType type) {
         checkNotNull(type);
         var protoFileName = type.declaringFileName().value();
-        switch (pattern.getKindCase()) {
-            case SUFFIX:
-                return protoFileName.endsWith(pattern.getSuffix());
-            case PREFIX:
-                return protoFileName.startsWith(pattern.getPrefix());
-            case REGEX:
-                return protoFileName.matches(pattern.getRegex());
-            case KIND_NOT_SET:
-            default:
-                return false;
-        }
+        var file = File.newBuilder().setPath(protoFileName).build();
+        var result = matches(pattern, file);
+        return result;
     }
 }
