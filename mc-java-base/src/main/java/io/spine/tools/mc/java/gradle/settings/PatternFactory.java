@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 import org.checkerframework.checker.regex.qual.Regex;
 
 import static io.spine.util.Preconditions2.checkNotEmptyOrBlank;

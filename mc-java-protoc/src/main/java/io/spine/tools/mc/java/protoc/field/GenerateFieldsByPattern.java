@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ import io.spine.tools.mc.java.protoc.FilePatternMatcher;
 import io.spine.tools.mc.java.protoc.PatternMatcher;
 import io.spine.type.MessageType;
 import io.spine.type.TypeName;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 
 import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Generates the strongly-typed fields for the type with the specified {@linkplain TypeName name}.
+ * Generates the strongly typed fields for the type with the specified {@linkplain TypeName name}.
  */
 final class GenerateFieldsByPattern extends FieldGenerationTask {
 

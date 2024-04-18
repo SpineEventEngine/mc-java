@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.settings.GenerateNestedClasses;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

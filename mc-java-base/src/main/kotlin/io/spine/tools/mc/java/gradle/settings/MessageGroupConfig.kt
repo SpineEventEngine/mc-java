@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableSet
 import com.google.protobuf.Message
 import io.spine.protobuf.isDefault
 import io.spine.tools.gradle.Multiple
-import io.spine.validation.FilePattern
+import io.spine.protodata.FilePattern
 import org.gradle.api.Project
 
 /**

@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.protoc;
 
 import io.spine.type.MessageType;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 
 import java.util.function.Predicate;
 

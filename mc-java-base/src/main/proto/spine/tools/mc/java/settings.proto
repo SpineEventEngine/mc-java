@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import "google/protobuf/empty.proto";
 
 import "spine/tools/java/java.proto";
 import "spine/tools/proto/proto.proto";
-import "spine/validation/config.proto";
+import "spine/protodata/file.proto";
 
 // Code generation options passed to Spine Protoc Plugin.
 //
@@ -109,7 +109,7 @@ message Signals {
     // NOTE: Code generators do not presume any conventions.
     // Conventional file patterns described above must be added to the `pattern` field explicitly.
     //
-    repeated spine.validation.FilePattern pattern = 1;
+    repeated protodata.FilePattern pattern = 1;
 
     // Java interfaces to be added to all the messages defined by this group.
     repeated AddInterface add_interface = 2;
@@ -222,7 +222,7 @@ message Pattern {
     oneof kind {
 
         // File name pattern.
-        spine.validation.FilePattern file = 1;
+        protodata.FilePattern file = 1;
 
         // Type name pattern.
         TypePattern type = 2;

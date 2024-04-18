@@ -43,7 +43,7 @@ import io.spine.tools.mc.java.settings.Messages;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.settings.TypePattern;
 import io.spine.tools.proto.code.ProtoTypeName;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;

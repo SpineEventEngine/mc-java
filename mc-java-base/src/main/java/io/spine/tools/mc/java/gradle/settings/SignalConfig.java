@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import io.spine.base.MessageFile;
 import io.spine.base.SignalMessage;
 import io.spine.tools.mc.java.settings.Signals;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
 
