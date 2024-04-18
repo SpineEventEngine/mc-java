@@ -35,6 +35,7 @@ import io.spine.base.EventMessageField;
 import io.spine.base.RejectionMessage;
 import io.spine.base.UuidValue;
 import io.spine.option.OptionsProto;
+import io.spine.protodata.FilePatternFactory;
 import io.spine.query.EntityStateField;
 import io.spine.tools.java.code.Classpath;
 import io.spine.tools.java.code.UuidMethodFactory;
@@ -167,12 +168,12 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
     }
 
     /**
-     * Obtains an instance of {@link PatternFactory} which creates file patterns.
+     * Obtains an instance of {@link FilePatternFactory} which creates file patterns.
      *
      * @see #forMessages
      */
-    public PatternFactory by() {
-        return PatternFactory.instance();
+    public FilePatternFactory by() {
+        return FilePatternFactory.INSTANCE;
     }
 
     /**

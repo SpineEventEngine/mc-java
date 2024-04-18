@@ -30,6 +30,7 @@ import com.google.protobuf.Message
 import io.spine.protobuf.isDefault
 import io.spine.tools.gradle.Multiple
 import io.spine.protodata.FilePattern
+import io.spine.protodata.FilePatternFactory
 import org.gradle.api.Project
 
 /**
@@ -89,7 +90,5 @@ internal constructor(p: Project) : ConfigWithFields<P>(p) {
      *
      * @see includeFiles
      */
-    public fun by(): PatternFactory {
-        return PatternFactory.instance()
-    }
+    public fun by(): FilePatternFactory = FilePatternFactory
 }
