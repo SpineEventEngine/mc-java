@@ -83,7 +83,6 @@ internal val toolBase: Artifact by lazy {
     }
 }
 
-
 @get:JvmName("toolBaseVersion")
 internal val toolBaseVersion: String by lazy {
     val toolBase: Dependency = MavenDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
@@ -164,13 +163,28 @@ internal object McJava {
     }
 
     /**
-     * The Maven artifact containing the `spine-mc-java-signals` module.
+     * The Maven artifact containing the `spine-mc-java-signal` module.
      */
     internal val signals: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            name = "spine-mc-java-signals"
+            name = "spine-mc-java-signal"
             version = this@McJava.version
+            extension = JAR_EXTENSION
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-protoc` uber JAR.
+     */
+    @get:JvmName("protocExe")
+    @JvmStatic
+    internal val protocExe: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name="spine-mc-java-protoc"
+            version = this@McJava.version
+            classifier = "exe"
             extension = JAR_EXTENSION
         }
     }
