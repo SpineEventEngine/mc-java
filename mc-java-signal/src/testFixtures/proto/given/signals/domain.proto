@@ -1,0 +1,63 @@
+/*
+* Copyright 2024, TeamDev. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Redistribution and use in source and/or binary forms, with or without
+* modification, must retain the above copyright notice and the following
+* disclaimer.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+syntax = "proto3";
+
+package given.signals;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.signal.given.command";
+option java_outer_classname = "DomainProto";
+option java_multiple_files = true;
+
+// A star as a cosmic point object with coordinates.
+message Star {
+    string name = 1 [(required) = true];
+    Coordinates coordinates = 2 [(required) = true, (validate) = true];
+}
+
+message Coordinates {
+    RightAscension ra = 1 [(required) = true, (validate) = true];
+    Declination decl = 2 [(required) = true, (validate) = true];
+}
+
+message RightAscension {
+    int32 hours = 1;
+    int32 minutes = 2;
+    int32 seconds = 3;
+}
+
+message Declination {
+    int32 degrees = 1;
+    int32 arcminutes = 2;
+    int32 archseconds = 3;
+}
+
+message TelescopeId {
+    string uuid = 1 [(required) = true];
+}
