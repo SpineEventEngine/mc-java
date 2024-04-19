@@ -27,8 +27,22 @@
 package io.spine.tools.mc.java.signal
 
 import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.plugin.Policy
+import io.spine.protodata.plugin.View
 
 public class SignalPlugin : Plugin {
 
-    //TODO:2024-04-13:alexander.yevsyukov: Implement
+    public companion object {
+        public val CONSUMER_ID: String = SignalPlugin::class.java.canonicalName
+    }
+
+    override fun policies(): Set<Policy<*>> = setOf(
+        SignalDiscovery()
+    )
+
+    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
+        DiscoveredCommandsView::class.java,
+        DiscoveredEventsView::class.java,
+        DiscoveredRejectionsView::class.java
+    )
 }

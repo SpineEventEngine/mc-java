@@ -27,27 +27,72 @@
 package io.spine.tools.mc.java.signal
 
 import io.spine.core.External
+import io.spine.protodata.MessageType
 import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.matches
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
 import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf4
 import io.spine.tools.mc.java.settings.SignalSettings
+import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.mc.signal.event.CommandDiscovered
 import io.spine.tools.mc.signal.event.EventDiscovered
 import io.spine.tools.mc.signal.event.RejectionDiscovered
+import io.spine.tools.mc.signal.event.commandDiscovered
+import io.spine.tools.mc.signal.event.eventDiscovered
+import io.spine.tools.mc.signal.event.rejectionDiscovered
 
+/**
+ * Reacts to the [TypeDiscovered] event finding out if the discovered type is one
+ * of the signals.
+ *
+ * Uses file patterns defined in [SignalSettings] to distinguish commands, events, or rejections.
+ * [CommandDiscovered], [EventDiscovered], or [RejectionDiscovered] events are emitted accordingly.
+ * If the discovered type is not a signal, the policy emits [NoReaction].
+ */
 internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent {
 
-    @Suppress("UnusedPrivateProperty")
     private val settings: SignalSettings by lazy {
         loadSettings()
     }
+    private val commands: Signals by lazy { settings.commands }
+    private val events: Signals by lazy { settings.events }
+    private val rejections: Signals by lazy { settings.rejections }
 
     @React
     override fun whenever(@External event: TypeDiscovered):
             EitherOf4<CommandDiscovered, EventDiscovered, RejectionDiscovered, NoReaction> {
-        TODO("Not yet implemented")
+        val msg = event.type
+        return if (commands.match(msg)) {
+            EitherOf4.withA(commandDiscovered {
+                file = event.file
+                name = msg.name
+                type = msg
+            })
+        } else if (events.match(msg)) {
+            EitherOf4.withB(eventDiscovered {
+                file = event.file
+                name = msg.name
+                type = msg
+            })
+        } else if (rejections.match(msg)) {
+            EitherOf4.withC(rejectionDiscovered {
+                file = event.file
+                name = msg.name
+                type = msg
+            })
+        } else {
+            EitherOf4.withD(nothing())
+        }
     }
 }
+
+/**
+ * Tells if the given message type matches one of the file patterns.
+ */
+private fun Signals.match(type: MessageType): Boolean =
+    patternList.any {
+        it.matches(type)
+    }

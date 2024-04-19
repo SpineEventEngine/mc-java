@@ -26,15 +26,39 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.spine.protodata.settings.LoadsSettings
+import io.spine.core.Subscribe
+import io.spine.protodata.File
+import io.spine.protodata.plugin.View
+import io.spine.server.entity.alter
+import io.spine.tools.mc.signal.event.CommandDiscovered
+import io.spine.tools.mc.signal.event.RejectionDiscovered
+import io.spine.tools.mc.signals.DiscoveredCommands
+import io.spine.tools.mc.signals.DiscoveredEvents
+import io.spine.tools.mc.signals.DiscoveredRejections
 
-/**
- * A common interface for [SignalPlugin] parts that load
- * shared codegen [settings][io.spine.tools.mc.java.codegen.SignalSettings] stored
- * using the canonical name of the plugin class.
- */
-internal interface SignalPluginComponent : LoadsSettings {
+internal class DiscoveredCommandsView :
+    View<File, DiscoveredCommands, DiscoveredCommands.Builder>() {
 
-    override val consumerId: String
-        get() = SignalPlugin.CONSUMER_ID
+    @Subscribe
+    fun on(e: CommandDiscovered) = alter {
+        addType(e.type)
+    }
+}
+
+internal class DiscoveredEventsView :
+    View<File, DiscoveredEvents, DiscoveredEvents.Builder>() {
+
+    @Subscribe
+    fun on(e: CommandDiscovered) = alter {
+        addType(e.type)
+    }
+}
+
+internal class DiscoveredRejectionsView :
+    View<File, DiscoveredRejections, DiscoveredRejections.Builder>() {
+
+    @Subscribe
+    fun on(e: RejectionDiscovered) = alter {
+        addType(e.type)
+    }
 }
