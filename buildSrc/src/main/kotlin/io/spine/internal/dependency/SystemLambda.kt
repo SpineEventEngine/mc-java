@@ -24,27 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.internal.dependency
 
-plugins {
-    id("io.spine.mc-java")
-    `java-test-fixtures`
-    prototap
-}
-
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
-
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
-
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+// https://github.com/stefanbirkner/system-lambda
+@Suppress("unused", "ConstPropertyName")
+object SystemLambda {
+    const val version = "1.2.1"
+    const val group = "com.github.stefanbirkner"
+    const val lib = "$group:system-lambda:$version"
 }

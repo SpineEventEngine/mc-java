@@ -166,7 +166,7 @@ subprojects {
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation(Spine.base)
-        implementation(Spine.logging)
+        implementation(Spine.Logging.lib)
         testImplementation(Spine.testlib)
         implementation(Validation.runtime)
         Truth.libs.forEach { testImplementation(it) }

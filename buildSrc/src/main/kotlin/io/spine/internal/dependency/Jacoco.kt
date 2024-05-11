@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,27 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.internal.dependency
 
-plugins {
-    id("io.spine.mc-java")
-    `java-test-fixtures`
-    prototap
-}
-
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
-
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
-
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+/**
+ * Code coverage library for Java.
+ *
+ * @see <a href="https://www.eclemma.org/jacoco/">Releases</a>
+ */
+@Suppress("ConstPropertyName")
+object Jacoco {
+    const val version = "0.8.12"
 }

@@ -24,27 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.internal.dependency
 
-plugins {
-    id("io.spine.mc-java")
-    `java-test-fixtures`
-    prototap
-}
-
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
-
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
-
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+/**
+ * An open-source logging framework.
+ *
+ * Spine uses its own [logging library][Spine.Logging], but also
+ * provides a backend implementation for [Log4j2]. This is why
+ * this dependency is needed.
+ *
+ * @see <a href="https://github.com/apache/logging-log4j2">Log4j2 releases at GitHub</a>
+ */
+@Suppress("unused", "ConstPropertyName")
+object Log4j2 {
+    private const val version = "2.20.0"
+    const val core = "org.apache.logging.log4j:log4j-core:$version"
 }

@@ -24,27 +24,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.internal.gradle.java
 
-plugins {
-    id("io.spine.mc-java")
-    `java-test-fixtures`
-    prototap
-}
+import net.ltgt.gradle.errorprone.errorprone
+import org.gradle.api.Project
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.named
 
-dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
-
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
+/**
+ * Disables Java linters in this [Project].
+ *
+ * In particular, the following linters will be disabled:
+ *
+ * 1. CheckStyle.
+ * 2. PMD.
+ * 3. ErrorProne.
+ *
+ * Apply this configuration for modules that have original Flogger sources,
+ * which have not been migrated to Kotlin yet. They produce a lot of
+ * errors/warnings failing the build.
+ *
+ * Our own sources are mostly in Kotlin (as for `spine-logging` repo),
+ * so this action seems quite safe.
+ */
+// TODO:2023-09-22:yevhenii.nadtochii: Remove this piece of configuration.
+// See issue: https://github.com/SpineEventEngine/logging/issues/56
+fun Project.disableLinters() {
+    tasks {
+        named("checkstyleMain") { enabled = false }
+        named("pmdMain") { enabled = false }
+        named<JavaCompile>("compileJava") {
+            options.errorprone.isEnabled.set(false)
         }
-
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+    }
 }
