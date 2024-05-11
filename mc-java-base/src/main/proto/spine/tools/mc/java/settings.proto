@@ -58,13 +58,25 @@ message CodegenOptions {
     Entities entities = 2;
 
     // The configuration related to command messages.
-    Signals commands = 3;
+    //
+    // Deprecated: Please use `signal_settings.commands` instead.
+    //
+    Signals commands = 3 [deprecated = true];
 
     // The configuration related to event messages.
-    Signals events = 4;
+    //
+    // Deprecated: Please use `signal_settings.events` instead.
+    //
+    Signals events = 4 [deprecated = true];
 
     // The configuration related to rejection messages.
-    Signals rejections = 5;
+    //
+    // Deprecated: Please use `signal_settings.rejections` instead.
+    //
+    Signals rejections = 5 [deprecated = true];
+
+    // Settings code code generation of signal messages.
+    SignalSettings signal_settings = 9;
 
     // The code generation config for a group of messages selected by a file pattern.
     repeated Messages messages = 6;

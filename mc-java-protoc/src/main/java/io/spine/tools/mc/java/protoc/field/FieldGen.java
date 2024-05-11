@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.field.FieldFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.Signals;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
@@ -91,6 +92,7 @@ public final class FieldGen extends CodeGenerator {
     private static final class Builder {
 
         private final CodegenOptions config;
+        private final SignalSettings signalSettings;
         private final ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
 
         /**
@@ -98,6 +100,7 @@ public final class FieldGen extends CodeGenerator {
          */
         private Builder(CodegenOptions config) {
             this.config = config;
+            this.signalSettings = config.getSignalSettings();
         }
 
         private ImmutableList<CodeGenerationTask> tasks() {
@@ -128,22 +131,22 @@ public final class FieldGen extends CodeGenerator {
         }
 
         private void addFromRejections() {
-            if (config.hasRejections()) {
-                var signals = config.getRejections();
+            if (signalSettings.hasRejections()) {
+                var signals = signalSettings.getRejections();
                 tasks.addAll(tasksFor(signals));
             }
         }
 
         private void addFromEvents() {
-            if (config.hasEvents()) {
-                var signals = config.getEvents();
+            if (signalSettings.hasEvents()) {
+                var signals = signalSettings.getEvents();
                 tasks.addAll(tasksFor(signals));
             }
         }
 
         private void addFromCommands() {
-            if (config.hasCommands()) {
-                var signals = config.getCommands();
+            if (signalSettings.hasCommands()) {
+                var signals = signalSettings.getCommands();
                 tasks.addAll(tasksFor(signals));
             }
         }

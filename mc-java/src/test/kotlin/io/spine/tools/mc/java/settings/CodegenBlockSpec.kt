@@ -66,6 +66,12 @@ class CodegenBlockSpec {
     private lateinit var projectDir: File
 
     /**
+     * Calculates the [SignalSettings] after [options] are modified by a test body.
+     */
+    private val signalSettings: SignalSettings
+        get() = options.codegen!!.toProto().signalSettings
+
+    /**
      * Creates the project in the given directory.
      *
      * The directory is set not to be cleaned up by JUnit because cleanup sometime
@@ -136,9 +142,8 @@ class CodegenBlockSpec {
                     }
                 }
             }
-            val config = options.codegen!!.toProto()
 
-            config.commands.run {
+            signalSettings.commands.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe suffix
                 addInterfaceList.map { it.name.canonical } shouldContainExactly
@@ -161,9 +166,8 @@ class CodegenBlockSpec {
                     }
                 }
             }
-            val config = options.codegen!!.toProto()
 
-            config.events.run {
+            signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].prefix shouldBe prefix
                 addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
@@ -183,9 +187,8 @@ class CodegenBlockSpec {
                     events.markFieldsAs(fieldSuperclass)
                 }
             }
-            val config = options.codegen!!.toProto()
 
-            config.events.run {
+            signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].regex shouldBe regex
                 addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
@@ -205,9 +208,9 @@ class CodegenBlockSpec {
                     it.markAs(rejectionInterface)
                 }
             }
-            val config = options.codegen!!.toProto()
-            val eventInterfaces = config.events.addInterfaceList
-            val rejectionInterfaces = config.rejections.addInterfaceList
+
+            val eventInterfaces = signalSettings.events.addInterfaceList
+            val rejectionInterfaces = signalSettings.rejections.addInterfaceList
 
             eventInterfaces shouldHaveSize 1
             rejectionInterfaces shouldHaveSize 1
@@ -312,10 +315,7 @@ class CodegenBlockSpec {
 
         @Test
         fun commands() {
-            val config = options.codegen!!.toProto()
-            val commands = config.commands
-
-            commands.run {
+            signalSettings.commands.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe COMMANDS.suffix()
                 addInterfaceList.map { it.name.canonical } shouldContainExactly
@@ -326,10 +326,7 @@ class CodegenBlockSpec {
 
         @Test
         fun events() {
-            val config = options.codegen!!.toProto()
-            val events = config.events
-
-            events.run {
+            signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe EVENTS.suffix()
                 addInterfaceList.map { it.name.canonical } shouldContainExactly
@@ -341,10 +338,7 @@ class CodegenBlockSpec {
 
         @Test
         fun rejections() {
-            val config = options.codegen!!.toProto()
-            val events = config.rejections
-
-            events.run {
+            signalSettings.rejections.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe MessageFile.REJECTIONS.suffix()
                 addInterfaceList.map { it.name.canonical } shouldContainExactly

@@ -42,6 +42,7 @@ import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.Messages;
 import io.spine.tools.mc.java.settings.Pattern;
+import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.TypePattern;
 import io.spine.tools.proto.code.ProtoTypeName;
 import io.spine.protodata.FilePattern;
@@ -196,10 +197,19 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
     @SuppressWarnings("ResultOfMethodCallIgnored") // calling builder
     public CodegenOptions toProto() {
         var classpath = buildClasspath();
-        var builder = CodegenOptions.newBuilder()
+        var signalSettings = SignalSettings.newBuilder()
                 .setCommands(commands.toProto())
                 .setEvents(events.toProto())
                 .setRejections(rejections.toProto())
+                .build();
+
+        var builder = CodegenOptions.newBuilder()
+                .setSignalSettings(signalSettings)
+
+                .setCommands(commands.toProto())
+                .setEvents(events.toProto())
+                .setRejections(rejections.toProto())
+
                 .setEntities(entities.toProto())
                 .setValidation(validation.toProto())
                 .setUuids(uuids.toProto())

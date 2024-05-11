@@ -129,13 +129,14 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  */
 private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirectory) {
     val codegen = options.codegen!!.toProto()
-    val markers = codegen.let {
-        messageMarkers {
+    val signalSettings = codegen.signalSettings
+    val markers = messageMarkers {
+        signalSettings.let {
             commandPattern.addAll(it.commands.patternList)
             eventPattern.addAll(it.events.patternList)
             rejectionPattern.addAll(it.rejections.patternList)
-            entityOptionName.addAll(it.entityOptionsNames())
         }
+        entityOptionName.addAll(codegen.entityOptionsNames())
     }
     val config = validationConfig {
         messageMarkers = markers
