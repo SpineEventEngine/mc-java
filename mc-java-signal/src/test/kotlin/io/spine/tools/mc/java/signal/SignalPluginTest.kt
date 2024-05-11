@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.signal
 
-import com.google.api.ResourceProto
 import io.spine.base.CommandMessage
 import io.spine.base.EventMessage
 import io.spine.base.MessageFile
@@ -44,9 +43,6 @@ import io.spine.tools.java.code.javaClassName
 import io.spine.tools.mc.java.settings.addInterface
 import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.settings.signals
-import io.spine.tools.mc.signal.event.EventsProto
-import io.spine.tools.mc.signal.given.command.CommandsProto
-import io.spine.tools.mc.signal.given.command.DomainProto
 import java.nio.file.Path
 
 @Suppress("UtilityClassWithPublicConstructor")
@@ -54,20 +50,13 @@ internal abstract class SignalPluginTest {
 
     companion object {
 
-        fun createPipeline(settingsDir: Path, inputDir: Path, outputDir: Path): Pipeline {
-            val setup = PipelineSetup(
-                SignalPlugin(),
-                listOf(
-                    DomainProto.getDescriptor(),
-                    CommandsProto.getDescriptor(),
-                    EventsProto.getDescriptor(),
-                    ResourceProto.getDescriptor()
-                ),
-                settingsDir,
-                inputDir,
-                outputDir
-            )
-            writeSettings(setup.settings)
+        fun createPipeline(settingsDir: Path, outputDir: Path): Pipeline {
+            val setup = PipelineSetup.byResources(
+                listOf(SignalPlugin()),
+                outputDir,
+                settingsDir
+            ) { settings -> writeSettings(settings) }
+
             return setup.createPipeline()
         }
 
