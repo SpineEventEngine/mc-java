@@ -196,20 +196,14 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored") // calling builder
     public CodegenOptions toProto() {
-        var classpath = buildClasspath();
         var signalSettings = SignalSettings.newBuilder()
                 .setCommands(commands.toProto())
                 .setEvents(events.toProto())
                 .setRejections(rejections.toProto())
                 .build();
-
+        var classpath = buildClasspath();
         var builder = CodegenOptions.newBuilder()
                 .setSignalSettings(signalSettings)
-
-                .setCommands(commands.toProto())
-                .setEvents(events.toProto())
-                .setRejections(rejections.toProto())
-
                 .setEntities(entities.toProto())
                 .setValidation(validation.toProto())
                 .setUuids(uuids.toProto())
@@ -224,12 +218,12 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
                 project.getTasks()
                         .withType(JavaCompile.class);
         ImmutableList.copyOf(javaCompileViews)
-                     .stream()
-                     .map(JavaCompile::getClasspath)
-                     .map(FileCollection::getFiles)
-                     .flatMap(Set::stream)
-                     .map(File::getAbsolutePath)
-                     .forEach(classpath::addItem);
+                .stream()
+                .map(JavaCompile::getClasspath)
+                .map(FileCollection::getFiles)
+                .flatMap(Set::stream)
+                .map(File::getAbsolutePath)
+                .forEach(classpath::addItem);
         return classpath.build();
     }
 
