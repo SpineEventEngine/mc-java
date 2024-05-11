@@ -59,7 +59,7 @@ internal constructor(p: Project) : ConfigWithFields<P>(p) {
     }
 
     /**
-     * Obtains the Gradle set property with the file pattern which match messages in this group.
+     * Obtains the Gradle set property with the file pattern which matches messages in this group.
      */
     public fun patterns(): Set<FilePattern> {
         return file.get()
