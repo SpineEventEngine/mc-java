@@ -45,6 +45,7 @@ dependencies {
             testFixturesImplementation(it)
         }
 
+    testImplementation(gradleTestKit())
     testImplementation(Spine.testlib)
     testImplementation(ProtoData.testlib)
 }
