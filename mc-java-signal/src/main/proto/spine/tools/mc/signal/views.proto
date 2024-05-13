@@ -31,7 +31,7 @@ package spine.tools.mc.signal;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.signals";
+option java_package = "io.spine.tools.mc.java.signal";
 option java_outer_classname = "ViewsProto";
 option java_multiple_files = true;
 
@@ -40,6 +40,7 @@ import "spine/protodata/file.proto";
 
 // Provides commands declared in a proto file.
 message DiscoveredCommands {
+    option (is).java_type = "WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares commands.
@@ -51,6 +52,7 @@ message DiscoveredCommands {
 
 // Provides events declared in a proto file.
 message DiscoveredEvents {
+    option (is).java_type = "WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares events.
@@ -62,6 +64,7 @@ message DiscoveredEvents {
 
 // Provides rejections declared in a proto file.
 message DiscoveredRejections {
+    option (is).java_type = "WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares rejections.

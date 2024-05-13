@@ -26,36 +26,16 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.spine.core.Subscribe
-import io.spine.protodata.File
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.java.signal.event.CommandDiscovered
-import io.spine.tools.mc.java.signal.event.RejectionDiscovered
+import com.google.protobuf.Message
+import io.spine.annotation.GeneratedMixin
+import io.spine.protodata.MessageType
 
-internal class DiscoveredCommandsView :
-    View<File, DiscoveredCommands, DiscoveredCommands.Builder>() {
-
-    @Subscribe
-    fun on(e: CommandDiscovered) = alter {
-        addType(e.type)
-    }
-}
-
-internal class DiscoveredEventsView :
-    View<File, DiscoveredEvents, DiscoveredEvents.Builder>() {
-
-    @Subscribe
-    fun on(e: CommandDiscovered) = alter {
-        addType(e.type)
-    }
-}
-
-internal class DiscoveredRejectionsView :
-    View<File, DiscoveredRejections, DiscoveredRejections.Builder>() {
-
-    @Subscribe
-    fun on(e: RejectionDiscovered) = alter {
-        addType(e.type)
-    }
+/**
+ * An interface common to [DiscoveredCommands][io.spine.tools.mc.java.signal.DiscoveredCommands],
+ * [DiscoveredEvents][io.spine.tools.mc.java.signal.DiscoveredEvents], and
+ * [DiscoveredRejections][io.spine.tools.mc.java.signal.DiscoveredRejections].
+ */
+@GeneratedMixin
+public interface WithTypeList: Message {
+    public fun getTypeList(): List<MessageType>
 }

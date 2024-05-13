@@ -26,70 +26,66 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.spine.base.CommandMessage
-import io.spine.base.EventMessage
 import io.spine.base.MessageFile
-import io.spine.base.MessageFile.COMMANDS
-import io.spine.base.MessageFile.EVENTS
-import io.spine.base.MessageFile.REJECTIONS
-import io.spine.base.RejectionMessage
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory.suffix
-import io.spine.protodata.backend.Pipeline
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
-import io.spine.tools.java.code.javaClassName
-import io.spine.tools.mc.java.settings.addInterface
-import io.spine.tools.mc.java.settings.signalSettings
-import io.spine.tools.mc.java.settings.signals
+import io.spine.protodata.testing.PipelineSetup.Companion.byResources
+import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
+import io.spine.tools.mc.java.settings.SignalSettings
+import io.spine.type.toJson
 import java.nio.file.Path
+import org.gradle.testfixtures.ProjectBuilder
 
+/**
+ * The abstract base for test suites of the Signal Plugin.
+ */
 @Suppress("UtilityClassWithPublicConstructor")
 internal abstract class SignalPluginTest {
 
     companion object {
 
-        fun createPipeline(settingsDir: Path, outputDir: Path): Pipeline {
-            val setup = PipelineSetup.byResources(
+        /**
+         * Creates an instance of [SignalSettings] as if it was created by McJava added to
+         * a Gradle project.
+         */
+        fun createSignalSettings(projectDir: Path): SignalSettings {
+            val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
+            // This mimics the call `McJavaOptions` perform on `injectProject`.
+            val codegenOptions = MessageCodegenOptions(project)
+            return codegenOptions.toProto().signalSettings
+        }
+
+        /**
+         * Creates an instance of [PipelineSetup] with the given parameters.
+         *
+         * [settings] will be written to the [settingsDir] before creation of
+         * a [Pipeline][io.spine.protodata.backend.Pipeline].
+         */
+        fun setup(outputDir: Path, settingsDir: Path, settings: SignalSettings): PipelineSetup {
+            val setup = byResources(
                 listOf(SignalPlugin()),
                 outputDir,
                 settingsDir
-            ) { settings -> writeSettings(settings) }
-
-            return setup.createPipeline()
+            ) {
+                writeSettings(it, settings)
+            }
+            return setup
         }
 
-        private fun writeSettings(settings: SettingsDirectory) {
-            val signalSettings = signalSettings {
-                commands = signals {
-                    pattern.add(COMMANDS.pattern())
-                    addInterface.add(CommandMessage::class.java.asInterface())
-                }
-                events = signals {
-                    pattern.add(EVENTS.pattern())
-                    addInterface.add(EventMessage::class.java.asInterface())
-                    //TODO:2024-04-19:alexander.yevsyukov: Add generate fields.
-                }
-                rejections = signals {
-                    pattern.add(REJECTIONS.pattern())
-                    addInterface.add(RejectionMessage::class.java.asInterface())
-                    //TODO:2024-04-19:alexander.yevsyukov: Add generate fields.
-                }
-            }
+        private fun writeSettings(settings: SettingsDirectory, signalSettings: SignalSettings) {
             settings.write(
                 SignalPlugin.CONSUMER_ID,
                 Format.PROTO_JSON,
-                signalSettings.toByteArray()
+                signalSettings.toJson()
             )
         }
     }
 }
 
-private fun <T> Class<T>.asInterface() = addInterface {
-    name = javaClassName {
-        canonical = canonicalName
-    }
-}
-
-private fun MessageFile.pattern(): FilePattern = suffix(suffix())
+/**
+ * Creates [FilePattern] corresponding to this [MessageFile] type.
+ */
+internal fun MessageFile.pattern(): FilePattern = suffix(suffix())

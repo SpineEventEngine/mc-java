@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.signal
 
+import com.google.common.annotations.VisibleForTesting
 import io.spine.core.External
 import io.spine.protodata.MessageType
 import io.spine.protodata.event.TypeDiscovered
@@ -37,12 +38,12 @@ import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf4
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
-import io.spine.tools.mc.signal.event.CommandDiscovered
-import io.spine.tools.mc.signal.event.EventDiscovered
-import io.spine.tools.mc.signal.event.RejectionDiscovered
-import io.spine.tools.mc.signal.event.commandDiscovered
-import io.spine.tools.mc.signal.event.eventDiscovered
-import io.spine.tools.mc.signal.event.rejectionDiscovered
+import io.spine.tools.mc.java.signal.event.CommandDiscovered
+import io.spine.tools.mc.java.signal.event.EventDiscovered
+import io.spine.tools.mc.java.signal.event.RejectionDiscovered
+import io.spine.tools.mc.java.signal.event.commandDiscovered
+import io.spine.tools.mc.java.signal.event.eventDiscovered
+import io.spine.tools.mc.java.signal.event.rejectionDiscovered
 
 /**
  * Reacts to the [TypeDiscovered] event finding out if the discovered type is one
@@ -92,7 +93,8 @@ internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent
 /**
  * Tells if the given message type matches one of the file patterns.
  */
-private fun Signals.match(type: MessageType): Boolean =
+@VisibleForTesting
+internal fun Signals.match(type: MessageType): Boolean =
     patternList.any {
         it.matches(type)
     }
