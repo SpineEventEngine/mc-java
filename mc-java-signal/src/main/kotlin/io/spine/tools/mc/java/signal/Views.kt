@@ -33,6 +33,11 @@ import io.spine.server.entity.alter
 import io.spine.tools.mc.java.signal.event.CommandDiscovered
 import io.spine.tools.mc.java.signal.event.RejectionDiscovered
 
+/**
+ * Collects command types discovered in the Protobuf files passed to the Signal Plugin.
+ *
+ * @see [io.spine.base.CommandMessage]
+ */
 internal class DiscoveredCommandsView :
     View<File, DiscoveredCommands, DiscoveredCommands.Builder>() {
 
@@ -42,6 +47,11 @@ internal class DiscoveredCommandsView :
     }
 }
 
+/**
+ * Collects event types discovered in the Protobuf files passed to the Signal Plugin.
+ *
+ * @see [io.spine.base.EventMessage]
+ */
 internal class DiscoveredEventsView :
     View<File, DiscoveredEvents, DiscoveredEvents.Builder>() {
 
@@ -51,6 +61,11 @@ internal class DiscoveredEventsView :
     }
 }
 
+/**
+ * Collects rejection types discovered in the Protobuf files passed to the Signal Plugin.
+ *
+ * @see [io.spine.base.RejectionMessage]
+ */
 internal class DiscoveredRejectionsView :
     View<File, DiscoveredRejections, DiscoveredRejections.Builder>() {
 
