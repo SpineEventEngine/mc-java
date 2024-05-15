@@ -42,7 +42,7 @@ import io.spine.tools.mc.java.settings.Entities
  * These nested classes provide additional APIs for working with entity
  * state messages such as querying or subscribing.
  *
- * @see io.spine.tools.mc.entity.DiscoveredEntitiesView
+ * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
  */
 internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginComponent {
 

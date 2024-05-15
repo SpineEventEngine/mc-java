@@ -24,16 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java
 
 import com.google.protobuf.Message
 import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.MessageType
 
 /**
- * An interface common to [DiscoveredCommands][io.spine.tools.mc.java.signal.DiscoveredCommands],
- * [DiscoveredEvents][io.spine.tools.mc.java.signal.DiscoveredEvents], and
- * [DiscoveredRejections][io.spine.tools.mc.java.signal.DiscoveredRejections].
+ * An interface common to view states that gather message types.
  */
 @GeneratedMixin
 public interface WithTypeList: Message {

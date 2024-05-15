@@ -40,7 +40,7 @@ import "spine/protodata/file.proto";
 
 // Provides commands declared in a proto file.
 message DiscoveredCommands {
-    option (is).java_type = "WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares commands.
@@ -52,7 +52,7 @@ message DiscoveredCommands {
 
 // Provides events declared in a proto file.
 message DiscoveredEvents {
-    option (is).java_type = "WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares events.
@@ -64,7 +64,7 @@ message DiscoveredEvents {
 
 // Provides rejections declared in a proto file.
 message DiscoveredRejections {
-    option (is).java_type = "WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
     option (entity).kind = PROJECTION;
 
     // The file which declares rejections.

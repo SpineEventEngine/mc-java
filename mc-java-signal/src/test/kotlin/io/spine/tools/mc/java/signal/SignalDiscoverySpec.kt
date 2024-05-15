@@ -38,6 +38,7 @@ import io.spine.protodata.File
 import io.spine.protodata.file
 import io.spine.protodata.matches
 import io.spine.protodata.toMessageType
+import io.spine.tools.mc.java.WithTypeList
 import java.nio.file.Path
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
