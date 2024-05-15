@@ -24,28 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity
+package io.spine.tools.mc.java.signal
 
-import io.spine.tools.mc.entity.DiscoveredEntities
+import io.spine.base.EntityState
+import io.spine.protodata.File
 import io.spine.tools.mc.java.MessageTypeRenderer
-import io.spine.tools.mc.java.settings.Entities
+import io.spine.tools.mc.java.WithTypeList
+import io.spine.tools.mc.java.settings.SignalSettings
 
 /**
- * An abstract state for renderers of classes nested under
- * [EntityState][io.spine.base.EntityState] classes.
+ * An abstract base for renders of signal messages.
  *
- * These nested classes provide additional APIs for working with entity
- * state messages such as querying or subscribing.
- *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
+ * @param V
+ *        the type of the view state which gathers signals of the type served by
+ *        this renderer.
+ * @param viewClass
+ *        the view state class matching the generic parameter [V].
  */
-internal abstract class EntityStateRenderer :
-    MessageTypeRenderer<DiscoveredEntities, Entities>(
-        DiscoveredEntities::class.java,
-        Entities::class.java
-    ),
-    EntityPluginComponent {
-
-    override val enabledBySettings
-        get() = settings.generateQueries
-}
+internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
+    MessageTypeRenderer<V, SignalSettings>(viewClass, SignalSettings::class.java)
+        where V : EntityState<File>, V : WithTypeList

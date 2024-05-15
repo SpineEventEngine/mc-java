@@ -29,24 +29,67 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.base.EntityState
 import io.spine.protodata.File
+import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaOutput
+import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.renderer.SourceFileSet
 
 /**
  * An abstract base for Java renders handling message types.
  *
  * @param V
- *        the type of the view state which gathers signals of the type served by
- *        this renderer.
+ *        the type of the view state which gathers messages types served by this renderer.
+ *        The type is an [EntityState] that has [File] as its identifier and
+ *        implements the [WithTypeList] interface.
  * @param S
  *        the type of the settings used by the renderer.
+ * @param viewClass
+ *        the class matching by the generic parameter [V].
  * @param settingsClass
- *        the class of the settings specified by the parameter [S].
+ *        the class matching the generic parameter [S].
  */
 public abstract class MessageTypeRenderer<V, S : Message>(
+    private val viewClass: Class<V>,
     private val settingsClass: Class<S>
 ) : JavaRenderer() where V : EntityState<File>, V : WithTypeList {
 
     protected val settings: S by lazy {
         loadSettings(settingsClass)
+    }
+
+    /**
+     * Tells if the [settings] allow this renderer to work.
+     */
+    protected abstract val enabledBySettings: Boolean
+
+    /**
+     * Implement this method to render the code for the given entity state [type]
+     * the source code of which present in the given [sourceFile].
+     */
+    protected abstract fun doRender(type: MessageType, sourceFile: SourceFile)
+
+    final override fun render(sources: SourceFileSet) {
+        val relevant = sources.hasJavaOutput && enabledBySettings
+        if (!relevant) {
+            return
+        }
+        val types = findTypes()
+        types.forEach {
+            val sourceFile = sources.fileOf(it)
+            check(sourceFile != null) {
+                "Unable to locate the file `$sourceFile` in the source set `$this`."
+            }
+            doRender(it, sourceFile)
+        }
+    }
+
+    /**
+     * Finds message types declared in all proto files captured by the views.
+     */
+    private fun findTypes(): List<MessageType> {
+        val discoveredEntities = select(viewClass).all()
+        val result = discoveredEntities.flatMap { it.getTypeList() }
+        return result
     }
 }

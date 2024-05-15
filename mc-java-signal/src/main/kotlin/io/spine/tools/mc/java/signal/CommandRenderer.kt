@@ -26,11 +26,17 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.mc.java.settings.Signals
 
-internal class CommandRenderer : SignalRenderer<DiscoveredCommands>() {
+internal class CommandRenderer :
+    SignalRenderer<DiscoveredCommands>(DiscoveredCommands::class.java) {
 
-    override fun render(sources: SourceFileSet) {
+    override val enabledBySettings: Boolean
+        get() = settings.commands != Signals.getDefaultInstance()
+
+    override fun doRender(type: MessageType, sourceFile: SourceFile) {
         TODO("Not yet implemented")
     }
 }
