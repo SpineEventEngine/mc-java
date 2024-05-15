@@ -26,15 +26,11 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.spine.protodata.settings.LoadsSettings
+import io.spine.protodata.renderer.SourceFileSet
 
-/**
- * A common interface for [SignalPlugin] parts that load
- * shared codegen [settings][io.spine.tools.mc.java.settings.SignalSettings] stored
- * using the canonical name of the plugin class.
- */
-internal interface SignalPluginComponent : LoadsSettings {
+internal class CommandRenderer : SignalRenderer<DiscoveredCommands>() {
 
-    override val consumerId: String
-        get() = SignalPlugin.CONSUMER_ID
+    override fun render(sources: SourceFileSet) {
+        TODO("Not yet implemented")
+    }
 }

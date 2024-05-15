@@ -24,17 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java
 
-import io.spine.protodata.settings.LoadsSettings
+import com.google.protobuf.Message
+import io.spine.base.EntityState
+import io.spine.protodata.File
+import io.spine.protodata.java.JavaRenderer
 
 /**
- * A common interface for [SignalPlugin] parts that load
- * shared codegen [settings][io.spine.tools.mc.java.settings.SignalSettings] stored
- * using the canonical name of the plugin class.
+ * An abstract base for Java renders handling message types.
+ *
+ * @param V
+ *        the type of the view state which gathers signals of the type served by
+ *        this renderer.
+ * @param S
+ *        the type of the settings used by the renderer.
+ * @param settingsClass
+ *        the class of the settings specified by the parameter [S].
  */
-internal interface SignalPluginComponent : LoadsSettings {
+public abstract class MessageTypeRenderer<V, S : Message>(
+    private val settingsClass: Class<S>
+) : JavaRenderer() where V : EntityState<File>, V : WithTypeList {
 
-    override val consumerId: String
-        get() = SignalPlugin.CONSUMER_ID
+    protected val settings: S by lazy {
+        loadSettings(settingsClass)
+    }
 }

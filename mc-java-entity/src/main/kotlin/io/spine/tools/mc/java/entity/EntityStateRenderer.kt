@@ -33,6 +33,7 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.loadSettings
 import io.spine.tools.mc.entity.DiscoveredEntities
+import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.settings.Entities
 
 /**
@@ -44,11 +45,9 @@ import io.spine.tools.mc.java.settings.Entities
  *
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
  */
-internal abstract class EntityStateRenderer : JavaRenderer(), EntityPluginComponent {
-
-    protected val settings: Entities by lazy {
-        loadSettings()
-    }
+internal abstract class EntityStateRenderer :
+    MessageTypeRenderer<DiscoveredEntities, Entities>(Entities::class.java),
+    EntityPluginComponent {
 
     override fun render(sources: SourceFileSet) {
         val relevant = sources.hasJavaOutput && settings.generateQueries
