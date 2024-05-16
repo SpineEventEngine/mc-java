@@ -30,8 +30,10 @@ import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.settings.defaultConsumerId
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
+import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.settings.CodegenOptions
 import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.gradle.McJavaOptions
@@ -41,6 +43,7 @@ import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.EN
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.JAVA_CODE_STYLE_ID
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.SIGNALS_SETTINGS_ID
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.VALIDATION_SETTINGS_ID
+import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
@@ -91,17 +94,17 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         /**
          * The ID used by Annotation plugin components to load the settings.
          */
-        const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
+        val ANNOTATION_SETTINGS_ID: String = ApiAnnotationsPlugin::class.java.canonicalName
 
         /**
          * The ID used by Entity plugin components to load settings.
          */
-        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.java.entity.EntityPlugin"
+        val ENTITY_SETTINGS_ID: String = EntityPlugin::class.java.canonicalName
 
         /**
          * The ID used by the Signals Plugin components to load settings.
          */
-        const val SIGNALS_SETTINGS_ID = "io.spine.tools.mc.java.signals.SignalPlugin"
+        val SIGNALS_SETTINGS_ID: String = SignalPlugin::class.java.canonicalName
 
         /**
          * The ID for the Java code style settings.
