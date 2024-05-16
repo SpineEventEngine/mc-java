@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.signal
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
+import io.spine.protodata.renderer.Renderer
 
 public class SignalPlugin : Plugin {
 
@@ -44,5 +45,11 @@ public class SignalPlugin : Plugin {
         DiscoveredCommandsView::class.java,
         DiscoveredEventsView::class.java,
         DiscoveredRejectionsView::class.java
+    )
+
+    override fun renderers(): List<Renderer<*>> = listOf(
+        CommandRenderer(),
+        EventRenderer(),
+        RejectionRenderer(),
     )
 }

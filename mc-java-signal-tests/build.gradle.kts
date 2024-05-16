@@ -24,13 +24,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
-import io.spine.tools.mc.java.settings.Signals
+plugins {
+    id("com.google.protobuf")
+    `java-test-fixtures`
+    prototap
+}
 
-internal class CommandRenderer :
-    SignalRenderer<DiscoveredCommands>(DiscoveredCommands::class.java) {
+dependencies {
+    arrayOf(Spine.base, Validation.runtime)
+        .forEach {
+            testFixturesImplementation(it)
+        }
 
-    override val typeSettings: Signals
-        get() = settings.commands
+    testImplementation(gradleTestKit())
+    testImplementation(project(":mc-java-base"))
+    testImplementation(project(":mc-java-signal"))
+    testImplementation(Spine.testlib)
+    testImplementation(ProtoData.testlib)
 }

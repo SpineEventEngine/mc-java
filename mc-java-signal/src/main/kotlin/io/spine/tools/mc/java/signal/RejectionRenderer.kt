@@ -28,9 +28,9 @@ package io.spine.tools.mc.java.signal
 
 import io.spine.tools.mc.java.settings.Signals
 
-internal class CommandRenderer :
-    SignalRenderer<DiscoveredCommands>(DiscoveredCommands::class.java) {
+internal class RejectionRenderer :
+    SignalRenderer<DiscoveredRejections>(DiscoveredRejections::class.java) {
 
     override val typeSettings: Signals
-        get() = settings.commands
+        get() = settings.rejections
 }

@@ -33,6 +33,7 @@ include(
     "mc-java-checks",
     "mc-java-entity",
     "mc-java-signal",
+    "mc-java-signal-tests",
     "mc-java-protoc",
     "mc-java-rejection",
     "mc-java-validation",

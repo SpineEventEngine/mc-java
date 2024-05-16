@@ -26,11 +26,19 @@
 
 package io.spine.tools.mc.java.signal
 
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.File
+import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.WithTypeList
+import io.spine.tools.mc.java.field.FieldClassFactory
+import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.SignalSettings
+import io.spine.tools.mc.java.settings.Signals
+import io.spine.tools.psi.java.execute
 
 /**
  * An abstract base for renders of signal messages.
@@ -42,5 +50,29 @@ import io.spine.tools.mc.java.settings.SignalSettings
  *        the view state class matching the generic parameter [V].
  */
 internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
-    MessageTypeRenderer<V, SignalSettings>(viewClass, SignalSettings::class.java)
-        where V : EntityState<File>, V : WithTypeList
+    MessageTypeRenderer<V, SignalSettings>(viewClass, SignalSettings::class.java),
+    SignalPluginComponent where V : EntityState<File>, V : WithTypeList {
+
+    /**
+     * The settings for the kind of signals served by this renderer,
+     * obtained from [settings].
+     */
+    protected abstract val typeSettings: Signals
+
+    override val enabledBySettings: Boolean
+        get() = typeSettings != Signals.getDefaultInstance()
+
+    private val fieldSupertype: ClassName by lazy {
+        typeSettings.generateFields.superClassName
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+        if (typeSettings.generateFields.hasSuperclass()) {
+            execute {
+                val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
+                factory.render(sourceFile)
+            }
+        }
+    }
+}

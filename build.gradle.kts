@@ -91,7 +91,8 @@ spinePublishing {
         // Do not publish the validation codegen module as it is deprecated in favor of
         // ProtoData-based code generation of the Validation library.
         // The module is still kept for the sake of historical reference.
-        .filter { !it.contains("mc-java-validation") }
+        // Also, do not publish test-only modules.
+        .filter { !(it.contains("mc-java-validation") || it.endsWith("-tests")) }
         .toSet()
     destinations = PublishingRepos.run {
         setOf(
