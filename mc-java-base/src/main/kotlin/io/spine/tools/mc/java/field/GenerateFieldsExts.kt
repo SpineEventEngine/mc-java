@@ -24,33 +24,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java.field
 
-import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.mc.java.field.FieldClassFactory
-import io.spine.tools.mc.java.field.superClassName
-import io.spine.tools.psi.java.execute
+import io.spine.tools.mc.java.settings.GenerateFields
+import io.spine.type.shortDebugString
 
 /**
- * Renders classes named [Field][FieldClassFactory.CLASS_NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
+ * Returns the value of the [superclass][GenerateFields.getSuperclass] property as [ClassName].
  *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see FieldClassFactory
+ * @throws IllegalStateException
+ *          if the [superclass][GenerateFields.getSuperclass] is not populated.
  */
-internal class FieldClassRenderer : EntityStateRenderer() {
-
-    private val fieldSupertype: ClassName by lazy {
-        settings.generateFields.superClassName
-    }
-
-    override fun doRender(type: MessageType, sourceFile: SourceFile) {
-        execute {
-            val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
-            factory.render(sourceFile)
+public val GenerateFields.superClassName: ClassName
+    get() {
+        check(hasSuperclass()) {
+            val clsName = GenerateFields::class.java.canonicalName
+            val debugStr = shortDebugString()
+            "Unable a field class supertype from this `$clsName` instance: `$debugStr`."
         }
+        val cls = Class.forName(superclass.canonical)
+        return ClassName(cls)
     }
-}
