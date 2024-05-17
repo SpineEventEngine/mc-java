@@ -43,12 +43,12 @@ import io.spine.string.ti
 import java.nio.file.Path
 
 /**
- * A renderer of rejection classes.
+ * A renderer of classes implementing [RejectionThrowable][io.spine.base.RejectionThrowable].
  *
  * The output is placed in the `java` subdirectory under the [outputRoot][SourceFileSet.outputRoot]
  * directory of the given [sources]. Other subdirectories, such as `grpc` or `kotlin`, are ignored.
  */
-internal class RejectionRenderer: JavaRenderer(), WithLogging {
+internal class RejectionThrowableRenderer: JavaRenderer(), WithLogging {
 
     private lateinit var sources: SourceFileSet
 

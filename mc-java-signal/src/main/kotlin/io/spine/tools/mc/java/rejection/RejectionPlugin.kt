@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,36 +23,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.rejection
 
-import com.google.errorprone.annotations.Immutable
-import io.spine.tools.java.code.Method
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.renderer.Renderer
 
 /**
- * Method names used in the generated code.
+ * A ProtoData plugin for generating rejection Java classes.
  */
-internal object Method {
-    const val NEW_BUILDER = "newBuilder"
-    const val REJECTION_MESSAGE = "rejectionMessage"
-    const val BUILD = "build"
-}
+public class RejectionPlugin: Plugin {
 
-/**
- * A reference to a method with no arguments.
- */
-@Immutable
-internal class NoArgMethod(methodName: String) : Method(methodName) {
-
-    fun name(): String {
-        return value()
-    }
-
-    fun signature(): String {
-        return value() + "()"
-    }
-
-    @Suppress("ConstPropertyName") // As required by Java conventions for serialization.
-    companion object {
-        private const val serialVersionUID = 0L
+    override fun renderers(): List<Renderer<*>> {
+        return listOf(RejectionThrowableRenderer())
     }
 }

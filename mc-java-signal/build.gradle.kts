@@ -35,17 +35,35 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
+    arrayOf(
+        Spine.Logging.lib,
+        Spine.server,
+        Spine.psiJavaBundle,
+        project(":mc-java-base")
+    ).forEach {
+        implementation(it)
+    }
 
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
+    arrayOf(
+        Spine.base,
+        Validation.runtime
+    ).forEach {
+        testFixturesImplementation(it)
+    }
 
-    testImplementation(gradleTestKit())
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+    arrayOf(
+        gradleTestKit(),
+        Spine.testlib,
+        Spine.pluginTestlib,
+        ProtoData.testlib
+    ).forEach {
+        testImplementation(it)
+    }
+}
+
+/**
+ * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ */
+tasks.test {
+    dependsOn(rootProject.tasks.named("localPublish"))
 }

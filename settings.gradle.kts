@@ -35,7 +35,6 @@ include(
     "mc-java-signal",
     "mc-java-signal-tests",
     "mc-java-protoc",
-    "mc-java-rejection",
     "mc-java-validation",
     "mc-java-protodata-params",
     "mc-java-plugin-bundle"

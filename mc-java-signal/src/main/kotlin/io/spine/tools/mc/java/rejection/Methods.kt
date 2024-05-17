@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,29 +23,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.rejection
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+import com.google.errorprone.annotations.Immutable
+import io.spine.tools.java.code.Method
 
-dependencies {
-    implementation(Roaster.api) {
-        exclude(group = "com.google.guava")
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = "com.google.guava")
-    }
-
-    implementation(project(":mc-java-base"))
-    implementation(ProtoData.java)
-
-    testImplementation(Spine.pluginTestlib)
-    testImplementation(gradleTestKit())
+/**
+ * Method names used in the generated code.
+ */
+internal object Method {
+    const val NEW_BUILDER = "newBuilder"
+    const val REJECTION_MESSAGE = "rejectionMessage"
+    const val BUILD = "build"
 }
 
 /**
- * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
+ * A reference to a method with no arguments.
  */
-tasks.test {
-    dependsOn(rootProject.tasks.named("localPublish"))
+@Immutable
+internal class NoArgMethod(methodName: String) : Method(methodName) {
+
+    fun name(): String {
+        return value()
+    }
+
+    fun signature(): String {
+        return value() + "()"
+    }
+
+    @Suppress("ConstPropertyName") // As required by Java conventions for serialization.
+    companion object {
+        private const val serialVersionUID = 0L
+    }
 }
