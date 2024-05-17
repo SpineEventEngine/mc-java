@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiJavaFile
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
@@ -75,7 +76,7 @@ public abstract class NestedUnderMessage(
     }
 
     /**
-     * The name of the entity state class under which the [cls] is going to places.
+     * The name of the message class under which the [cls] is going to places.
      */
     protected val messageClass: ClassName by lazy {
         type.javaClassName(typeSystem)
@@ -113,8 +114,8 @@ public abstract class NestedUnderMessage(
         try {
             tuneClass()
             val psiJavaFile = file.toPsi()
-            val topLevelClass = psiJavaFile.topLevelClass
-            topLevelClass.addLast(cls)
+            val targetClass = psiJavaFile.findClass(messageClass)
+            targetClass.addLast(cls)
 
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
@@ -155,4 +156,29 @@ public abstract class NestedUnderMessage(
         val classJavadoc = elementFactory.createDocCommentFromText(text, null)
         addFirst(classJavadoc)
     }
+}
+
+/**
+ * Locates the class with the given name in this [PsiJavaFile].
+ *
+ * If the given class is a nested one, the function finds the class nested into the top level class
+ * of this Java file. Otherwise, top level class is returned.
+ *
+ * This is a naïve implementation of locating a class in a Java file that serves our needs for
+ * handling top level message classes of entity states, command messages, and events.
+ * For rejection messages, we use the logic of one level nesting.
+ *
+ * If more levels are needed or there is a change of mismatching a class name with a file, this
+ * extension function should be rewritten with due test coverage.
+ */
+private fun PsiJavaFile.findClass(cls: ClassName): PsiClass {
+    val targetClass =
+        if (cls.isNested)
+            topLevelClass.findInnerClassByName(cls.simpleName, false)
+        else
+            topLevelClass
+    check(targetClass != null) {
+        "Unable to locate the `${cls.canonical}` class."
+    }
+    return targetClass
 }
