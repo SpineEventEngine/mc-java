@@ -43,3 +43,8 @@ message CannotStartScanning {
     Star star = 2 [(required) = true, (validate) = true];
     string reason = 3 [(required) = true];
 }
+
+// A specific rejection for the case when a telescope is not turned on.
+message TelescopeIsOffline {
+    TelescopeId telescope = 1 [(required) = true];
+}
