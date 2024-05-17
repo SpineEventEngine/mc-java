@@ -31,6 +31,7 @@ import io.spine.protodata.File
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.java.signal.event.CommandDiscovered
+import io.spine.tools.mc.java.signal.event.EventDiscovered
 import io.spine.tools.mc.java.signal.event.RejectionDiscovered
 
 /**
@@ -56,7 +57,7 @@ internal class DiscoveredEventsView :
     View<File, DiscoveredEvents, DiscoveredEvents.Builder>() {
 
     @Subscribe
-    fun on(e: CommandDiscovered) = alter {
+    fun on(e: EventDiscovered) = alter {
         addType(e.type)
     }
 }
