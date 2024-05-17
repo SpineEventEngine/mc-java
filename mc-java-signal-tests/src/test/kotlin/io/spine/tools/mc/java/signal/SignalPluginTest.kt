@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.signal
 import io.spine.base.MessageFile
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory.suffix
+import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
+import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
@@ -46,6 +48,8 @@ import org.gradle.testfixtures.ProjectBuilder
 internal abstract class SignalPluginTest {
 
     companion object {
+
+        const val FIELD_CLASS_SIGNATURE = "public static final class Field"
 
         /**
          * Creates an instance of [SignalSettings] as if it was created by McJava added to
@@ -66,7 +70,11 @@ internal abstract class SignalPluginTest {
          */
         fun setup(outputDir: Path, settingsDir: Path, settings: SignalSettings): PipelineSetup {
             val setup = byResources(
-                listOf(SignalPlugin()),
+                listOf(
+                    SignalPlugin(),
+                    // We want to be able to see the code in debug with human eyes. Mercy!..
+                    JavaCodeStyleFormatterPlugin()
+                ),
                 outputDir,
                 settingsDir
             ) {
@@ -81,6 +89,18 @@ internal abstract class SignalPluginTest {
                 Format.PROTO_JSON,
                 signalSettings.toJson()
             )
+        }
+
+        fun runPipelineWithDefaultSettings(
+            projectDir: Path,
+            outputDir: Path,
+            settingsDir: Path
+        ): SourceFileSet {
+            val signalSettings = createSignalSettings(projectDir)
+            val setup = setup(outputDir, settingsDir, signalSettings)
+            val pipeline = setup.createPipeline()
+            pipeline()
+            return setup.sourceFileSet
         }
     }
 }
