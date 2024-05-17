@@ -28,21 +28,17 @@ package io.spine.tools.mc.java.signal
 
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldNotContain
 import java.nio.file.Path
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`CommandRenderer` should")
-internal class CommandRendererSpec : SignalPluginTest() {
+internal class EventRendererSpec : SignalPluginTest() {
 
     companion object {
 
-        lateinit var commandCode: String
+        lateinit var eventCode: String
 
         @BeforeAll
         @JvmStatic
@@ -53,21 +49,15 @@ internal class CommandRendererSpec : SignalPluginTest() {
         ) {
             val sourceFileSet = runPipelineWithDefaultSettings(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/signal/given/command/StartScanning.java")
+                Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java")
             )
             sourceFile shouldNotBe null
-            commandCode = sourceFile!!.text().value
+            eventCode = sourceFile!!.text().value
         }
     }
 
     @Test
-    fun `not generate nested 'Field' class`() {
-        commandCode shouldNotContain FIELD_CLASS_SIGNATURE
-    }
-
-    @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
-    fun `implement 'CommandMessage' interface`() {
-        commandCode shouldContain "io.spine.base.CommandMessage,"
+    fun `should render 'Field' class`() {
+        eventCode shouldContain FIELD_CLASS_SIGNATURE
     }
 }
