@@ -50,6 +50,6 @@ public class SignalPlugin : Plugin {
     override fun renderers(): List<Renderer<*>> = listOf(
         CommandRenderer(),
         EventRenderer(),
-        RejectionRenderer(),
+//        RejectionRenderer(),
     )
 }
