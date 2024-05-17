@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.signal
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
+import io.spine.base.CommandMessage
+import io.spine.protodata.java.reference
 import java.nio.file.Path
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -61,13 +63,13 @@ internal class CommandRendererSpec : SignalPluginTest() {
     }
 
     @Test
-    fun `not generate nested 'Field' class`() {
-        commandCode shouldNotContain FIELD_CLASS_SIGNATURE
+    @Disabled("Until migration to interface generation based on ProtoData")
+    fun `add 'CommandMessage' interface`() {
+        commandCode shouldContain "${CommandMessage::class.java.reference},"
     }
 
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
-    fun `implement 'CommandMessage' interface`() {
-        commandCode shouldContain "io.spine.base.CommandMessage,"
+    fun `not generate nested 'Field' class`() {
+        commandCode shouldNotContain FIELD_CLASS_SIGNATURE
     }
 }

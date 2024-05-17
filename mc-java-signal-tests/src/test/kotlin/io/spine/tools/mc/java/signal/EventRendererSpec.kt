@@ -28,12 +28,18 @@ package io.spine.tools.mc.java.signal
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldContain
+import io.spine.base.EventMessage
+import io.spine.protodata.java.reference
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
+@DisplayName("`EventRenderer` should")
 internal class EventRendererSpec : SignalPluginTest() {
 
     companion object {
@@ -57,7 +63,13 @@ internal class EventRendererSpec : SignalPluginTest() {
     }
 
     @Test
-    fun `should render 'Field' class`() {
+    @Disabled("Until migration to interface generation based on ProtoData")
+    fun `add 'EventMessage' interface`() {
+        eventCode shouldContain "${EventMessage::class.java.reference},"
+    }
+
+    @Test
+    fun `render the 'Field' class`() {
         // See that we add the `Field` class only once.
         eventCode.count(FIELD_CLASS_SIGNATURE) shouldBe 1
     }
