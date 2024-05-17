@@ -109,3 +109,10 @@ internal abstract class SignalPluginTest {
  * Creates [FilePattern] corresponding to this [MessageFile] type.
  */
 internal fun MessageFile.pattern(): FilePattern = suffix(suffix())
+
+/**
+ * Counts a number of times a string appear in this one.
+ */
+internal fun String.count(substring: String): Int {
+    return split(substring).size - 1
+}
