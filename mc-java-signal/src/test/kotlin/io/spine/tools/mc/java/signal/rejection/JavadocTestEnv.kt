@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import io.spine.code.java.PackageName
 import io.spine.string.ti
@@ -33,8 +33,8 @@ import io.spine.tools.fs.DirectoryName.generated
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.main
 import io.spine.tools.java.fs.toDirectory
-import io.spine.tools.mc.java.rejection.Javadoc.BUILDER_ABSTRACT_TEMPLATE
-import io.spine.tools.mc.java.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
+import io.spine.tools.mc.java.signal.rejection.Javadoc.BUILDER_ABSTRACT_TEMPLATE
+import io.spine.tools.mc.java.signal.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
 import java.io.File
 import kotlin.io.path.div
 

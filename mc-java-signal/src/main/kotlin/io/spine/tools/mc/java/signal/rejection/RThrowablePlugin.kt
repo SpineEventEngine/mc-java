@@ -23,36 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection
 
-import com.google.errorprone.annotations.Immutable
-import io.spine.tools.java.code.Method
+package io.spine.tools.mc.java.signal.rejection
 
-/**
- * Method names used in the generated code.
- */
-internal object Method {
-    const val NEW_BUILDER = "newBuilder"
-    const val REJECTION_MESSAGE = "rejectionMessage"
-    const val BUILD = "build"
-}
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.renderer.Renderer
 
 /**
- * A reference to a method with no arguments.
+ * A ProtoData plugin for generating [RejectionThrowable][io.spine.base.RejectionThrowable]
+ * Java classes.
  */
-@Immutable
-internal class NoArgMethod(methodName: String) : Method(methodName) {
+public class RThrowablePlugin: Plugin {
 
-    fun name(): String {
-        return value()
-    }
-
-    fun signature(): String {
-        return value() + "()"
-    }
-
-    @Suppress("ConstPropertyName") // As required by Java conventions for serialization.
-    companion object {
-        private const val serialVersionUID = 0L
+    override fun renderers(): List<Renderer<*>> {
+        return listOf(RThrowableRenderer())
     }
 }

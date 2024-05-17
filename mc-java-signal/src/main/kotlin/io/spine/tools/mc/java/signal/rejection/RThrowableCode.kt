@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
@@ -38,8 +38,8 @@ import io.spine.tools.java.code.GeneratedBy
 import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.methodSpec
-import io.spine.tools.mc.java.rejection.Javadoc.forConstructorOfThrowable
-import io.spine.tools.mc.java.rejection.Javadoc.forThrowableOf
+import io.spine.tools.mc.java.signal.rejection.Javadoc.forConstructorOfThrowable
+import io.spine.tools.mc.java.signal.rejection.Javadoc.forThrowableOf
 import javax.lang.model.element.Modifier.FINAL
 import javax.lang.model.element.Modifier.PRIVATE
 import javax.lang.model.element.Modifier.PUBLIC

@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import com.google.protobuf.BoolValue
 import com.squareup.javapoet.JavaFile
@@ -48,7 +48,7 @@ import java.nio.file.Path
  * The output is placed in the `java` subdirectory under the [outputRoot][SourceFileSet.outputRoot]
  * directory of the given [sources]. Other subdirectories, such as `grpc` or `kotlin`, are ignored.
  */
-internal class RejectionThrowableRenderer: JavaRenderer(), WithLogging {
+internal class RThrowableRenderer: JavaRenderer(), WithLogging {
 
     private lateinit var sources: SourceFileSet
 

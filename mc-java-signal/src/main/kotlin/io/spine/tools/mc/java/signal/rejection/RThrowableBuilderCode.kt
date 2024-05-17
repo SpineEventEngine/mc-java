@@ -26,7 +26,7 @@
 
 @file:Suppress("TooManyFunctions")
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
@@ -59,14 +59,14 @@ import io.spine.tools.java.javadoc.JavadocText
 import io.spine.tools.java.methodSpec
 import io.spine.tools.mc.java.field.RepeatedFieldType
 import io.spine.tools.mc.java.field.SingularFieldType.constructTypeNameFor
-import io.spine.tools.mc.java.rejection.Javadoc.forBuilderOf
-import io.spine.tools.mc.java.rejection.Javadoc.ofBuildMethod
-import io.spine.tools.mc.java.rejection.Javadoc.ofBuilderConstructor
-import io.spine.tools.mc.java.rejection.Javadoc.ofNewBuilderMethod
-import io.spine.tools.mc.java.rejection.Javadoc.ofRejectionMessageMethod
-import io.spine.tools.mc.java.rejection.Method.BUILD
-import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
-import io.spine.tools.mc.java.rejection.Method.REJECTION_MESSAGE
+import io.spine.tools.mc.java.signal.rejection.Javadoc.forBuilderOf
+import io.spine.tools.mc.java.signal.rejection.Javadoc.ofBuildMethod
+import io.spine.tools.mc.java.signal.rejection.Javadoc.ofBuilderConstructor
+import io.spine.tools.mc.java.signal.rejection.Javadoc.ofNewBuilderMethod
+import io.spine.tools.mc.java.signal.rejection.Javadoc.ofRejectionMessageMethod
+import io.spine.tools.mc.java.signal.rejection.Method.BUILD
+import io.spine.tools.mc.java.signal.rejection.Method.NEW_BUILDER
+import io.spine.tools.mc.java.signal.rejection.Method.REJECTION_MESSAGE
 import io.spine.validate.Validate
 import io.spine.validate.Validated
 import javax.lang.model.element.Modifier.FINAL

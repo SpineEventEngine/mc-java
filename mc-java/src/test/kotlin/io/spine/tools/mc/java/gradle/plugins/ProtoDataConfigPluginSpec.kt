@@ -36,7 +36,7 @@ import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.gradle.given.StubProject
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
-import io.spine.tools.mc.java.rejection.RejectionPlugin
+import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import org.gradle.api.Project
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
@@ -81,7 +81,7 @@ internal class ProtoDataConfigPluginSpec {
         val plugins = codegenSettings.plugins.get()
         plugins.shouldContainInOrder(
             VALIDATION_PLUGIN_CLASS,
-            RejectionPlugin::class.java.name,
+            RThrowablePlugin::class.java.name,
             ApiAnnotationsPlugin::class.java.name
         )
     }

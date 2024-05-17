@@ -51,7 +51,7 @@ import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.toolBase
-import io.spine.tools.mc.java.rejection.RejectionPlugin
+import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
@@ -189,7 +189,7 @@ private fun Project.configureRejections(protodata: ProtoDataSettings) {
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
         addUserClasspathDependency(rejection)
-        protodata.addPlugin<RejectionPlugin>()
+        protodata.addPlugin<RThrowablePlugin>()
     }
 }
 

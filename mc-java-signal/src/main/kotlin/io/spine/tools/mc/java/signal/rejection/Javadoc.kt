@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import com.google.common.annotations.VisibleForTesting
 import com.squareup.javapoet.CodeBlock
@@ -33,7 +33,7 @@ import io.spine.protodata.MessageType
 import io.spine.tools.java.codeBlock
 import io.spine.tools.java.javadoc.JavadocText.fromEscaped
 import io.spine.tools.java.javadoc.JavadocText.fromUnescaped
-import io.spine.tools.mc.java.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
+import io.spine.tools.mc.java.signal.rejection.Javadoc.PROTO_MESSAGE_NOTE_TEMPLATE
 
 /**
  * Pieces of Javadoc code used in the generated code of rejections.

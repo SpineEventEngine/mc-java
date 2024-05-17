@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.rejection
+package io.spine.tools.mc.java.signal.rejection
 
 import io.kotest.matchers.shouldBe
 import io.spine.code.java.SimpleClassName
@@ -33,16 +33,16 @@ import io.spine.testing.TempDir
 import io.spine.tools.gradle.testing.GradleProject.Companion.setupAt
 import io.spine.tools.java.fullTextNormalized
 import io.spine.tools.mc.java.gradle.McJavaTaskName.Companion.launchProtoData
-import io.spine.tools.mc.java.rejection.Javadoc.BUILD_METHOD_ABSTRACT
-import io.spine.tools.mc.java.rejection.Javadoc.NEW_BUILDER_METHOD_ABSTRACT
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedBuilderClassComment
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedClassComment
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedFirstFieldComment
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.expectedSecondFieldComment
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionFileContent
-import io.spine.tools.mc.java.rejection.JavadocTestEnv.rejectionJavaFile
-import io.spine.tools.mc.java.rejection.Method.BUILD
-import io.spine.tools.mc.java.rejection.Method.NEW_BUILDER
+import io.spine.tools.mc.java.signal.rejection.Javadoc.BUILD_METHOD_ABSTRACT
+import io.spine.tools.mc.java.signal.rejection.Javadoc.NEW_BUILDER_METHOD_ABSTRACT
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.expectedBuilderClassComment
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.expectedClassComment
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.expectedFirstFieldComment
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.expectedSecondFieldComment
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.rejectionFileContent
+import io.spine.tools.mc.java.signal.rejection.JavadocTestEnv.rejectionJavaFile
+import io.spine.tools.mc.java.signal.rejection.Method.BUILD
+import io.spine.tools.mc.java.signal.rejection.Method.NEW_BUILDER
 import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.jboss.forge.roaster.Roaster
 import org.jboss.forge.roaster.model.source.JavaClassSource
