@@ -36,6 +36,16 @@ import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
+/**
+ * Creates a nested class called [`Field`][CLASS_NAME] under a Java class generated for
+ * the given message [type].
+ *
+ * @param type
+ *         the message type for the Java code of which to generate the nested class.
+ * @param fieldSupertype
+ *         the class name for the supertype of generated nested field classes, e.g.,
+ *         [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
+ */
 public class FieldClassFactory(
     type: MessageType,
     private val fieldSupertype: ClassName,
