@@ -66,6 +66,10 @@ internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent
     override fun whenever(@External event: TypeDiscovered):
             EitherOf4<CommandDiscovered, EventDiscovered, RejectionDiscovered, NoReaction> {
         val msg = event.type
+        if (msg.isNested) {
+            // Signals are only top level messages. Ignore nested types.
+            return EitherOf4.withD(nothing())
+        }
         return if (commands.match(msg)) {
             EitherOf4.withA(commandDiscovered {
                 file = event.file
@@ -98,3 +102,6 @@ internal fun Signals.match(type: MessageType): Boolean =
     patternList.any {
         it.matches(type)
     }
+
+private val MessageType.isNested: Boolean
+    get () = name.nestingTypeNameCount > 0

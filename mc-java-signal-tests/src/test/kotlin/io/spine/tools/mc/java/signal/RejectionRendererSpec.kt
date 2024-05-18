@@ -49,7 +49,7 @@ internal class RejectionRendererSpec : SignalPluginTest() {
         /**
          * The number of rejections declared in `given/signals/rejections.proto`.
          */
-        const val DECLARED_REJECTIONS = 2
+        const val DECLARED_REJECTIONS = 6
 
         lateinit var rejectionCode: String
 

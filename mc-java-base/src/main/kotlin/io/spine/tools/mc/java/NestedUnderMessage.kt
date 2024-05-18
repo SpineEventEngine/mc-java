@@ -122,7 +122,7 @@ public abstract class NestedUnderMessage(
         } catch (e: Throwable) {
             logger.atError().withCause(e).log { """
                 Caught exception while generating the `$className` class in `$messageClass`.
-                Message: `${e.message}`.                                
+                Message: ${e.message}.                                
                 """.trimIndent()
             }
             throw e

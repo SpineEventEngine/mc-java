@@ -35,6 +35,8 @@ option java_package = "io.spine.tools.mc.signal.given.rejection";
 option java_outer_classname = "Rejections";
 option java_multiple_files = false;
 
+import "google/protobuf/any.proto";
+
 import "given/signals/domain.proto";
 
 // A telescope is unable to start scanning the surrounding of the given star.
@@ -48,3 +50,36 @@ message CannotStartScanning {
 message TelescopeIsOffline {
     TelescopeId telescope = 1 [(required) = true];
 }
+
+message Rejection3 {
+    Rejection3Inner innerMessage = 2;
+
+    message Rejection3Inner {
+        string id = 1;
+    }
+}
+
+message Rejection4 {
+    string id = 1;
+    google.protobuf.Any any_id = 2;
+    bool boolean_id = 3;
+    Rejection4Inner inner_id = 4;
+    Rejection4InnerEnum inner_enum_id = 5;
+
+    message Rejection4Inner {
+        string id = 1;
+    }
+
+    enum Rejection4InnerEnum {
+        OK = 0;
+    }
+}
+
+message RejectionWithRepeatedField {
+    repeated int32 values = 1;
+}
+
+message RejectionWithMapField {
+    map<int32, int32> map = 1;
+}
+
