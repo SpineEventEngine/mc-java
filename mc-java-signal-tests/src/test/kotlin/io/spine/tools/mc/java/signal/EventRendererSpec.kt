@@ -31,6 +31,7 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.base.EventMessage
 import io.spine.protodata.java.reference
+import io.spine.protodata.renderer.SourceFileSet
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
@@ -58,7 +59,7 @@ internal class EventRendererSpec : SignalPluginTest() {
                 Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java")
             )
             sourceFile shouldNotBe null
-            eventCode = sourceFile!!.text().value
+            eventCode = sourceFile!!.code()
         }
     }
 

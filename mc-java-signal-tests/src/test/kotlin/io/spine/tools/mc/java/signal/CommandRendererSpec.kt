@@ -31,6 +31,7 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import io.spine.base.CommandMessage
 import io.spine.protodata.java.reference
+import io.spine.protodata.renderer.SourceFileSet
 import java.nio.file.Path
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -58,7 +59,7 @@ internal class CommandRendererSpec : SignalPluginTest() {
                 Path("io/spine/tools/mc/signal/given/command/StartScanning.java")
             )
             sourceFile shouldNotBe null
-            commandCode = sourceFile!!.text().value
+            commandCode = sourceFile!!.code()
         }
     }
 

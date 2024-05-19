@@ -30,7 +30,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.base.RejectionMessage
 import io.spine.protodata.java.reference
-import io.spine.string.Indent
+import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.repeat
 import java.nio.file.Path
@@ -65,7 +65,7 @@ internal class RejectionRendererSpec : SignalPluginTest() {
                 Path("io/spine/tools/mc/signal/given/rejection/Rejections.java")
             )
             sourceFile shouldNotBe null
-            rejectionCode = sourceFile!!.text().value
+            rejectionCode = sourceFile!!.code()
         }
     }
 
