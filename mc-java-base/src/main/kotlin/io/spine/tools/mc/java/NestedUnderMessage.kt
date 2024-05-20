@@ -31,7 +31,6 @@ import com.intellij.psi.PsiJavaFile
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.file.toPsi
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
@@ -113,7 +112,7 @@ public abstract class NestedUnderMessage(
     public fun render(file: SourceFile) {
         try {
             tuneClass()
-            val psiJavaFile = file.toPsi()
+            val psiJavaFile = file.psi() as PsiJavaFile
             val targetClass = psiJavaFile.findClass(messageClass)
             targetClass.addLast(cls)
 
