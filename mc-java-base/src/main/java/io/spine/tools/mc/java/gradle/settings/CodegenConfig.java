@@ -203,7 +203,6 @@ public final class CodegenConfig extends Config<CodegenOptions> {
                 .setRejections(rejections.toProto())
                 .build();
 
-
         var groupSettings = GroupSettings.newBuilder();
         messagesConfigs.forEach(groupSettings::addGroup);
 

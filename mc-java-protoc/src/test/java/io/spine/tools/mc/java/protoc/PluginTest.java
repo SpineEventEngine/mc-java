@@ -37,6 +37,7 @@ import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
@@ -119,8 +120,11 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
         var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
@@ -142,8 +146,11 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
         var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
@@ -164,8 +171,12 @@ final class PluginTest {
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .addGroup(messages)
+                .build();
         var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())

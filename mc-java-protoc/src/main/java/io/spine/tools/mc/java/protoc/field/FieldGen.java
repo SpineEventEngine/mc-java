@@ -125,7 +125,7 @@ public final class FieldGen extends CodeGenerator {
         }
 
         private void addFromMessages() {
-            for (var group : config.getMessagesList()) {
+            for (var group : config.getGroupSettings().getGroupList()) {
                 taskFor(group).ifPresent(tasks::add);
             }
         }

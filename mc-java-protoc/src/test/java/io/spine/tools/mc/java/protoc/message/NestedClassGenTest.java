@@ -31,6 +31,7 @@ import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.GenerateNestedClasses;
+import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
@@ -94,8 +95,11 @@ class NestedClassGenTest {
                 .setPattern(pattern)
                 .addGenerateNestedClasses(generate)
                 .build();
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
         var result = CodegenOptions.newBuilder()
-                .addMessages(messages)
+                .setGroupSettings(groupSettings)
                 .build();
         return result;
     }

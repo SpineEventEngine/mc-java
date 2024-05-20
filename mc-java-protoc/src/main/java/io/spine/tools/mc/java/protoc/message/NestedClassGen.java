@@ -66,7 +66,7 @@ public final class NestedClassGen extends CodeGenerator {
         var classpath = config.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, NestedClassFactory.class);
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
-        for (var messages : config.getMessagesList()) {
+        for (var messages : config.getGroupSettings().getGroupList()) {
             messages.getGenerateNestedClassesList()
                     .stream()
                     .map(generate -> new GenerateNestedClasses(

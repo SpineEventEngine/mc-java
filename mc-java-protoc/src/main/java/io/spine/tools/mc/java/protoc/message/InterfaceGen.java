@@ -94,7 +94,7 @@ public final class InterfaceGen extends CodeGenerator {
         if (config.hasEntities()) {
             tasks.addAll(tasksFor(config.getEntities()));
         }
-        for (var messages : config.getMessagesList()) {
+        for (var messages : config.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getAddInterfaceList()
                     .stream()

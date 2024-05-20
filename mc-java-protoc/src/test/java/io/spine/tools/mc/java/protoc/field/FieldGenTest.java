@@ -31,6 +31,7 @@ import io.spine.base.SubscribableField;
 import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
 import io.spine.tools.mc.java.settings.GenerateFields;
+import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.protoc.plugin.nested.Task;
@@ -88,8 +89,11 @@ class FieldGenTest {
                 .setSuperclass(className(SubscribableField.class))
                 .build();
         messages.setGenerateFields(generateFields);
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages.build())
+                .build();
         return CodegenOptions.newBuilder()
-                .addMessages(messages)
+                .setGroupSettings(groupSettings)
                 .build();
     }
 }

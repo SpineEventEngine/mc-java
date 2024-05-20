@@ -73,7 +73,7 @@ public final class MethodGen extends CodeGenerator {
                     .map(name -> new GenerateUuidMethods(classLoader, name))
                     .forEach(tasks::add);
         }
-        for (var messages : config.getMessagesList()) {
+        for (var messages : config.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getGenerateMethodsList()
                     .stream()

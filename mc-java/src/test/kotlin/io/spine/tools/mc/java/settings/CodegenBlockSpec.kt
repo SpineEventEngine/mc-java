@@ -278,7 +278,7 @@ class CodegenBlockSpec {
                     it.generateMethodsWith(methodFactory)
                 }
             }
-            val configs = options.codegen!!.toProto().messagesList
+            val configs = options.codegen!!.toProto().groupSettings.groupList
 
             configs shouldHaveSize 2
 
@@ -379,7 +379,7 @@ class CodegenBlockSpec {
         fun `arbitrary message groups`() {
             val config = options.codegen!!.toProto()
 
-            config.messagesList shouldBe emptyList()
+            config.groupSettings.groupList shouldBe emptyList()
 
             val type = "test.Message"
             options.codegen {
@@ -387,14 +387,14 @@ class CodegenBlockSpec {
             }
             val updatedConfig = options.codegen!!.toProto()
 
-            updatedConfig.messagesList shouldHaveSize 1
+            updatedConfig.groupSettings.groupList shouldHaveSize 1
             val typeName = ProtoTypeName.newBuilder().setValue(type)
             val typePattern = TypePattern.newBuilder()
                 .setExpectedType(typeName)
             val pattern = Pattern.newBuilder()
                 .setType(typePattern)
 
-            updatedConfig.messagesList.first() shouldBe
+            updatedConfig.groupSettings.groupList.first() shouldBe
                     MessageGroup.newBuilder()
                         .setPattern(pattern)
                         .buildPartial()
