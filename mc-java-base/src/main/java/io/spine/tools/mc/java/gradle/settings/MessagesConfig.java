@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableSet;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.mc.java.settings.GenerateMethods;
 import io.spine.tools.mc.java.settings.GenerateNestedClasses;
-import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
@@ -48,7 +48,7 @@ import static java.util.stream.Collectors.toSet;
  *
  * @see CodegenConfig#forMessages
  */
-public final class MessagesConfig extends ConfigWithFields<Messages> {
+public final class MessagesConfig extends ConfigWithFields<MessageGroup> {
 
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
@@ -96,8 +96,8 @@ public final class MessagesConfig extends ConfigWithFields<Messages> {
     }
 
     @Override
-    public Messages toProto() {
-        var result = Messages.newBuilder()
+    public MessageGroup toProto() {
+        var result = MessageGroup.newBuilder()
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())

@@ -57,11 +57,17 @@ message CodegenOptions {
     // The configuration related to entity states.
     Entities entities = 2;
 
+    // For previously deprecated fields.
+    reserved 3 to 5;
+
     // Settings for code generation of signal messages.
     SignalSettings signal_settings = 9;
 
     // The code generation config for a group of messages selected by a file pattern.
-    repeated Messages messages = 6;
+    repeated MessageGroup messages = 6 [deprecated = true];
+
+    // The code generation settings for groups of messages selected by patterns.
+    GroupSettings group_settings = 10;
 
     // The configuration related to UUID messages.
     Uuids uuids = 7;
@@ -175,7 +181,7 @@ message GenerateFields {
 //
 // A group may consist of just one message defined by its full name.
 //
-message Messages {
+message MessageGroup {
 
     // The pattern defining the group.
     Pattern pattern = 1;
@@ -193,19 +199,6 @@ message Messages {
     GenerateFields generate_fields = 5;
 }
 
-// Code generation config for the messages holding a UUID value.
-//
-// Messages which only have one `string` field called `uuid` are known as UUID messages.
-//
-message Uuids {
-
-    // Java interfaces to be added to all the UUID messages.
-    repeated AddInterface add_interface = 1;
-
-    // Java method generation config for UUID messages.
-    repeated MethodFactoryName method_factory = 2;
-}
-
 // A pattern which matches one or multiple messages.
 message Pattern {
 
@@ -217,6 +210,39 @@ message Pattern {
         // Type name pattern.
         TypePattern type = 2;
     }
+}
+
+// A type name pattern.
+message TypePattern {
+
+    oneof value {
+
+        // The exact value of the expected type name.
+        proto.ProtoTypeName expected_type = 1;
+
+        // A regular expression to match a type name.
+        string regex = 2;
+    }
+}
+
+// The code generation settings for groups of messages selected by file patterns.
+message GroupSettings {
+
+    // Code generation settings for one group of messages specified by a pattern.
+    repeated MessageGroup group = 1;
+}
+
+// Code generation config for the messages holding a UUID value.
+//
+// Messages which only have one `string` field called `uuid` are known as UUID messages.
+//
+message Uuids {
+
+    // Java interfaces to be added to all the UUID messages.
+    repeated AddInterface add_interface = 1;
+
+    // Java method generation config for UUID messages.
+    repeated MethodFactoryName method_factory = 2;
 }
 
 // Configuration for adding a Java interface to a generated class.
@@ -255,15 +281,3 @@ message MethodFactoryName {
     tools.java.JavaClassName class_name = 1;
 }
 
-// A type name pattern.
-message TypePattern {
-
-    oneof value {
-
-        // The exact value of the expected type name.
-        proto.ProtoTypeName expected_type = 1;
-
-        // A regular expression to match a type name.
-        string regex = 2;
-    }
-}

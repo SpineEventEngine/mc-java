@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.protoc.field;
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.field.FieldFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
-import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.Signals;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
@@ -173,7 +173,7 @@ public final class FieldGen extends CodeGenerator {
                           )).collect(toImmutableList());
         }
 
-        private static Optional<GenerateFieldsByPattern> taskFor(Messages messages) {
+        private static Optional<GenerateFieldsByPattern> taskFor(MessageGroup messages) {
             var generateFields = messages.getGenerateFields();
             if (!generateFields.hasSuperclass()) {
                 return Optional.empty();

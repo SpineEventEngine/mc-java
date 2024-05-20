@@ -37,7 +37,7 @@ import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
-import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
@@ -113,7 +113,7 @@ final class PluginTest {
     @Test
     @DisplayName("process suffix patterns")
     void processSuffixPatterns() {
-        var messages = Messages.newBuilder()
+        var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
@@ -136,7 +136,7 @@ final class PluginTest {
     @Test
     @DisplayName("process prefix patterns")
     void processPrefixPatterns() {
-        var messages = Messages.newBuilder()
+        var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
@@ -158,7 +158,7 @@ final class PluginTest {
     @Test
     @DisplayName("process regex patterns")
     void processRegexPatterns() {
-        var messages = Messages.newBuilder()
+        var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))

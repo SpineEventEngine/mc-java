@@ -395,7 +395,7 @@ class CodegenBlockSpec {
                 .setType(typePattern)
 
             updatedConfig.messagesList.first() shouldBe
-                    Messages.newBuilder()
+                    MessageGroup.newBuilder()
                         .setPattern(pattern)
                         .buildPartial()
         }

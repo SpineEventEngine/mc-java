@@ -40,8 +40,8 @@ import io.spine.query.EntityStateField;
 import io.spine.tools.java.code.Classpath;
 import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
-import io.spine.tools.mc.java.settings.MessageSettings;
-import io.spine.tools.mc.java.settings.Messages;
+import io.spine.tools.mc.java.settings.GroupSettings;
+import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.TypePattern;
@@ -76,7 +76,7 @@ public final class CodegenConfig extends Config<CodegenOptions> {
     private final EntityConfig entities;
     private final UuidConfig uuids;
     private final ValidationConfig validation;
-    private final Set<Messages> messagesConfigs = new HashSet<>();
+    private final Set<MessageGroup> messagesConfigs = new HashSet<>();
 
     @Internal
     public CodegenConfig(Project project) {
@@ -203,18 +203,22 @@ public final class CodegenConfig extends Config<CodegenOptions> {
                 .setRejections(rejections.toProto())
                 .build();
 
-        var messageSettings = MessageSettings.newBuilder();
-        messagesConfigs.forEach(messageSettings::addMessages);
+
+        var groupSettings = GroupSettings.newBuilder();
+        messagesConfigs.forEach(groupSettings::addGroup);
 
         var classpath = buildClasspath();
 
         var builder = CodegenOptions.newBuilder()
                 .setSignalSettings(signalSettings)
-                .setMessageSettings(messageSettings)
+                .setGroupSettings(groupSettings)
                 .setEntities(entities.toProto())
                 .setValidation(validation.toProto())
                 .setUuids(uuids.toProto())
                 .setClasspath(classpath);
+        // For backward compatibility, for now.
+        messagesConfigs.forEach(builder::addMessages);
+
         return builder.build();
     }
 
