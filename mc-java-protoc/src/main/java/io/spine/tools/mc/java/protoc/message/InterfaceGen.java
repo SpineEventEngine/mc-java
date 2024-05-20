@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.protoc.message;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.settings.Signals;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
@@ -71,7 +71,7 @@ public final class InterfaceGen extends CodeGenerator {
     /**
      * Retrieves the single instance of the {@code InterfaceGenerator}.
      */
-    public static CodeGenerator instance(CodegenOptions config) {
+    public static CodeGenerator instance(CodegenSettings config) {
         checkNotNull(config);
         var signalSettings = config.getSignalSettings();
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();

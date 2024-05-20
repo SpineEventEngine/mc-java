@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.protoc.message;
 import com.google.common.testing.NullPointerTester;
 import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GenerateNestedClasses;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
@@ -80,7 +80,7 @@ class NestedClassGenTest {
         assertThat(output).isEmpty();
     }
 
-    private static CodegenOptions newOptions() {
+    private static CodegenSettings newOptions() {
         var name = className(TestNestedClassFactory.class);
         var factoryName = NestedClassFactoryName.newBuilder()
                 .setClassName(name)
@@ -98,7 +98,7 @@ class NestedClassGenTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var result = CodegenOptions.newBuilder()
+        var result = CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         return result;

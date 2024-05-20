@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Uuids;
@@ -95,7 +95,7 @@ final class PluginTest {
         var uuids = Uuids.newBuilder()
                 .addMethodFactory(methodFactory(UuidMethodFactory.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
@@ -123,7 +123,7 @@ final class PluginTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
@@ -149,7 +149,7 @@ final class PluginTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
@@ -175,7 +175,7 @@ final class PluginTest {
                 .addGroup(messages)
                 .addGroup(messages)
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
@@ -192,7 +192,7 @@ final class PluginTest {
     @DisplayName("mark generated message builders with the `ValidatingBuilder` interface")
     void markBuildersWithInterface() {
         var testGeneratorsDescriptor = TestGeneratorsProto.getDescriptor();
-        var config = CodegenOptions.getDefaultInstance();
+        var config = CodegenSettings.getDefaultInstance();
         var protocConfigPath = protocConfig(config, testPluginConfig);
         var request = requestBuilder()
                 .addProtoFile(testGeneratorsDescriptor.toProto())

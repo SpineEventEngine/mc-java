@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.protoc.field;
 import com.google.common.testing.NullPointerTester;
 import io.spine.base.SubscribableField;
 import io.spine.protodata.FilePatternFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GenerateFields;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
@@ -81,7 +81,7 @@ class FieldGenTest {
                 .isEmpty();
     }
 
-    private static CodegenOptions newConfig() {
+    private static CodegenSettings newConfig() {
         var messages = MessageGroup.newBuilder();
         messages.setPattern(
                 Pattern.newBuilder().setFile(FilePatternFactory.INSTANCE.suffix("test_fields.proto")));
@@ -92,7 +92,7 @@ class FieldGenTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages.build())
                 .build();
-        return CodegenOptions.newBuilder()
+        return CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
     }

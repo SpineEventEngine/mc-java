@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.NestedClassFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
@@ -61,7 +61,7 @@ public final class NestedClassGen extends CodeGenerator {
     /**
      * Creates a new instance based on the passed Protoc config.
      */
-    public static NestedClassGen instance(CodegenOptions config) {
+    public static NestedClassGen instance(CodegenSettings config) {
         checkNotNull(config);
         var classpath = config.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, NestedClassFactory.class);

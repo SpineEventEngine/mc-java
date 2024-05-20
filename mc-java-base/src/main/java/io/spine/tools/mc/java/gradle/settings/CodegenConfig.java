@@ -39,7 +39,7 @@ import io.spine.protodata.FilePatternFactory;
 import io.spine.query.EntityStateField;
 import io.spine.tools.java.code.Classpath;
 import io.spine.tools.java.code.UuidMethodFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Pattern;
@@ -66,7 +66,7 @@ import static io.spine.base.MessageFile.REJECTIONS;
  * A part of {@link io.spine.tools.mc.java.gradle.McJavaOptions McJavaOptions} responsible
  * for code generation settings.
  */
-public final class CodegenConfig extends Config<CodegenOptions> {
+public final class CodegenConfig extends Config<CodegenSettings> {
 
     private final Project project;
 
@@ -196,7 +196,7 @@ public final class CodegenConfig extends Config<CodegenOptions> {
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored") // calling builder
-    public CodegenOptions toProto() {
+    public CodegenSettings toProto() {
         var signalSettings = SignalSettings.newBuilder()
                 .setCommands(commands.toProto())
                 .setEvents(events.toProto())
@@ -208,7 +208,7 @@ public final class CodegenConfig extends Config<CodegenOptions> {
 
         var classpath = buildClasspath();
 
-        var builder = CodegenOptions.newBuilder()
+        var builder = CodegenSettings.newBuilder()
                 .setSignalSettings(signalSettings)
                 .setGroupSettings(groupSettings)
                 .setEntities(entities.toProto())

@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.protoc.query;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.query.EntityQueryFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.ClassMember;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
@@ -98,7 +98,7 @@ public class EntityQueryGen extends CodeGenerator {
     /**
      * Creates a new instance based on the passed Protoc config.
      */
-    public static CodeGenerator instance(CodegenOptions config) {
+    public static CodeGenerator instance(CodegenSettings config) {
         checkNotNull(config);
         var entities = config.getEntities();
         var enabled = entities.getGenerateQueries();

@@ -42,14 +42,14 @@ import "spine/tools/java/java.proto";
 import "spine/tools/proto/proto.proto";
 import "spine/protodata/file.proto";
 
-// Code generation options passed to Spine Protoc Plugin.
+// Code generation settings passed to Spine Protoc Plugin.
 //
 // The configuration is passed to the plugin as the single option containing
 // base64-encoded file name (in UTF-8 charset).
 //
 // The referenced file contains the serialized version of this type.
 //
-message CodegenOptions {
+message CodegenSettings {
 
     // The configuration related to validation code.
     Validation validation = 1;

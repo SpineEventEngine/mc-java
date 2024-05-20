@@ -34,7 +34,7 @@ import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.entity.EntityPlugin
-import io.spine.tools.mc.java.settings.CodegenOptions
+import io.spine.tools.mc.java.settings.CodegenSettings
 import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
@@ -148,7 +148,7 @@ private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirecto
     settings.write(VALIDATION_SETTINGS_ID, config)
 }
 
-private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
+private fun CodegenSettings.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
 private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirectory) {

@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.protoc.field;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.field.FieldFactory;
-import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.Signals;
@@ -69,7 +69,7 @@ public final class FieldGen extends CodeGenerator {
     /**
      * Creates a new instance based on the passed Protoc config.
      */
-    public static FieldGen instance(CodegenOptions config) {
+    public static FieldGen instance(CodegenSettings config) {
         checkNotNull(config);
         var builder = new Builder(config);
         builder.addFromAll();
@@ -91,14 +91,14 @@ public final class FieldGen extends CodeGenerator {
      */
     private static final class Builder {
 
-        private final CodegenOptions config;
+        private final CodegenSettings config;
         private final SignalSettings signalSettings;
         private final ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
 
         /**
          * Prevents direct instantiation.
          */
-        private Builder(CodegenOptions config) {
+        private Builder(CodegenSettings config) {
             this.config = config;
             this.signalSettings = config.getSignalSettings();
         }
