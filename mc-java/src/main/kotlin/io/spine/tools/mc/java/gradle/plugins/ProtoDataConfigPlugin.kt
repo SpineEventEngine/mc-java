@@ -140,9 +140,8 @@ private fun Project.configureProtoDataPlugins() {
     setSubdirectories(protodata)
 
     configureValidation(protodata)
-    configureRejections(protodata)
-    configureEntities(protodata)
     configureSignals(protodata)
+    configureEntities(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
     // so that their output is annotated too.
@@ -185,10 +184,13 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
     //
     addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
-private fun Project.configureRejections(protodata: ProtoDataSettings) {
+
+private fun Project.configureSignals(protodata: CodegenSettings) {
+    addUserClasspathDependency(signals)
+    protodata.addPlugin<SignalPlugin>()
+
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
-        addUserClasspathDependency(rejection)
         protodata.addPlugin<RThrowablePlugin>()
     }
 }
@@ -196,11 +198,6 @@ private fun Project.configureRejections(protodata: ProtoDataSettings) {
 private fun Project.configureEntities(protodata: ProtoDataSettings) {
     addUserClasspathDependency(entity)
     protodata.addPlugin<EntityPlugin>()
-}
-
-private fun Project.configureSignals(protodata: CodegenSettings) {
-    addUserClasspathDependency(signals)
-    protodata.addPlugin<SignalPlugin>()
 }
 
 private fun Project.configureAnnotations(protodata: ProtoDataSettings) {
