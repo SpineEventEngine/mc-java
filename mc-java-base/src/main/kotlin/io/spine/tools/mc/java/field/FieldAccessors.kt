@@ -89,9 +89,8 @@ internal abstract class FieldAccessor(
 
     private fun nestedFieldsContainerType(): String {
         check(field.isMessage)
-        val fieldTypeName = field.type.toMessageType(typeSystem).name.simpleName
-        val containerClassName = fieldTypeName + "Field"
-        return containerClassName
+        val type = field.type.toMessageType(typeSystem)
+        return MessageTypedField.classNameOf(type)
     }
 }
 

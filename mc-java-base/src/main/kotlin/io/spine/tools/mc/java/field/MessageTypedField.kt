@@ -82,9 +82,7 @@ internal class MessageTypedField(
     private val typeSystem: TypeSystem
 ) {
     private val className: String by lazy {
-        val typeName = fieldType.name
-        val nestingPath = typeName.nestingTypeNameList.joinToString()
-        nestingPath + typeName.simpleName + CLASS_NAME_SUFFIX
+        classNameOf(fieldType)
     }
 
     private val superClassReference: PsiJavaCodeReferenceElement by lazy {
@@ -151,5 +149,11 @@ internal class MessageTypedField(
 
     companion object {
         const val CLASS_NAME_SUFFIX = "Field"
+
+        fun classNameOf(type: MessageType): String {
+            val typeName = type.name
+            val nestingPath = typeName.nestingTypeNameList.joinToString()
+            return nestingPath + typeName.simpleName + CLASS_NAME_SUFFIX
+        }
     }
 }
