@@ -38,7 +38,7 @@ import org.gradle.api.Project
  *
  * @param P the Protobuf type reflecting a snapshot of this configuration.
 */
-public abstract class MessageGroupConfig<P : Message>
+public abstract class GroupedByFilePatterns<P : Message>
 internal constructor(p: Project) : ConfigWithFields<P>(p) {
 
     private val file = Multiple(p, FilePattern::class.java)

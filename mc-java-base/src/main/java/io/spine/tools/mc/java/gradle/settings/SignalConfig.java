@@ -41,7 +41,7 @@ import org.gradle.api.Project;
  *
  * <p>The configuration applied to events does not automatically apply to rejections.
  */
-public final class SignalConfig extends MessageGroupConfig<Signals> {
+public final class SignalConfig extends GroupedByFilePatterns<Signals> {
 
     SignalConfig(Project p) {
         super(p);
