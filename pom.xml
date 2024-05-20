@@ -44,7 +44,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine</groupId>
     <artifactId>protodata</artifactId>
-    <version>0.23.0</version>
+    <version>0.24.2</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -74,13 +74,13 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-backend</artifactId>
-    <version>0.23.0</version>
+    <version>0.24.2</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-java</artifactId>
-    <version>0.23.0</version>
+    <version>0.24.2</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -170,7 +170,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-testlib</artifactId>
-    <version>0.23.0</version>
+    <version>0.24.2</version>
     <scope>test</scope>
   </dependency>
   <dependency>
