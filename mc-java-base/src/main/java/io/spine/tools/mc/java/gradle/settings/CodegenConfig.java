@@ -215,9 +215,6 @@ public final class CodegenConfig extends Config<CodegenOptions> {
                 .setValidation(validation.toProto())
                 .setUuids(uuids.toProto())
                 .setClasspath(classpath);
-        // For backward compatibility, for now.
-        messagesConfigs.forEach(builder::addMessages);
-
         return builder.build();
     }
 

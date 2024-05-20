@@ -58,13 +58,10 @@ message CodegenOptions {
     Entities entities = 2;
 
     // For previously deprecated fields.
-    reserved 3 to 5;
+    reserved 3 to 6;
 
     // Settings for code generation of signal messages.
     SignalSettings signal_settings = 9;
-
-    // The code generation config for a group of messages selected by a file pattern.
-    repeated MessageGroup messages = 6 [deprecated = true];
 
     // The code generation settings for groups of messages selected by patterns.
     GroupSettings group_settings = 10;
