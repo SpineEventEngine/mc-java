@@ -36,7 +36,7 @@ import org.gradle.api.Project
 /**
  * A configuration for code generation for a certain group of messages joined by a file pattern.
  *
- * @param P Protobuf type reflecting a snapshot of this configuration.
+ * @param P the Protobuf type reflecting a snapshot of this configuration.
 */
 public abstract class MessageGroupConfig<P : Message>
 internal constructor(p: Project) : ConfigWithFields<P>(p) {

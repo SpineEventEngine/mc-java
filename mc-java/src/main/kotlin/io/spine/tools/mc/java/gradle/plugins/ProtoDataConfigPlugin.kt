@@ -41,18 +41,17 @@ import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
-import io.spine.tools.mc.java.gradle.McJava.rejection
 import io.spine.tools.mc.java.gradle.McJava.signals
 import io.spine.tools.mc.java.gradle.ValidationSdk
-import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.gradle.toolBase
-import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
+import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -151,7 +150,7 @@ private fun Project.configureProtoDataPlugins() {
     configureStyleFormatting(protodata)
 }
 
-private val Project.messageOptions: MessageCodegenOptions
+private val Project.messageOptions: CodegenConfig
     get() = mcJava.codegen!!
 
 private fun setSubdirectories(protodata: ProtoDataSettings) {

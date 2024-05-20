@@ -44,7 +44,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Configuration for entity state types' code generation.
  *
- * @see MessageCodegenOptions#forEntities(Action)
+ * @see CodegenConfig#forEntities(Action)
  */
 public final class EntityConfig extends ConfigWithFields<Entities> {
 

@@ -40,6 +40,7 @@ import io.spine.query.EntityStateField;
 import io.spine.tools.java.code.Classpath;
 import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenOptions;
+import io.spine.tools.mc.java.settings.MessageSettings;
 import io.spine.tools.mc.java.settings.Messages;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.settings.SignalSettings;
@@ -65,7 +66,7 @@ import static io.spine.base.MessageFile.REJECTIONS;
  * A part of {@link io.spine.tools.mc.java.gradle.McJavaOptions McJavaOptions} responsible
  * for code generation settings.
  */
-public final class MessageCodegenOptions extends Config<CodegenOptions> {
+public final class CodegenConfig extends Config<CodegenOptions> {
 
     private final Project project;
 
@@ -78,7 +79,7 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
     private final Set<Messages> messagesConfigs = new HashSet<>();
 
     @Internal
-    public MessageCodegenOptions(Project project) {
+    public CodegenConfig(Project project) {
         super(project);
         this.project = checkNotNull(project);
         this.commands = new SignalConfig(project);
@@ -201,14 +202,19 @@ public final class MessageCodegenOptions extends Config<CodegenOptions> {
                 .setEvents(events.toProto())
                 .setRejections(rejections.toProto())
                 .build();
+
+        var messageSettings = MessageSettings.newBuilder();
+        messagesConfigs.forEach(messageSettings::addMessages);
+
         var classpath = buildClasspath();
+
         var builder = CodegenOptions.newBuilder()
                 .setSignalSettings(signalSettings)
+                .setMessageSettings(messageSettings)
                 .setEntities(entities.toProto())
                 .setValidation(validation.toProto())
                 .setUuids(uuids.toProto())
                 .setClasspath(classpath);
-        messagesConfigs.forEach(builder::addMessages);
         return builder.build();
     }
 

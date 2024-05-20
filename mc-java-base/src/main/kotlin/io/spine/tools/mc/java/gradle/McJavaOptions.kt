@@ -29,7 +29,7 @@ import groovy.lang.Closure
 import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.javaCodeStyleDefaults
 import io.spine.tools.java.fs.DefaultJavaPaths
-import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
@@ -49,7 +49,7 @@ public abstract class McJavaOptions {
      * Code generation settings related to specific kinds of messages and their validation.
      */
     @JvmField
-    public var codegen: MessageCodegenOptions? = null
+    public var codegen: CodegenConfig? = null
     
     /**
      * The indent for the generated code.
@@ -80,7 +80,8 @@ public abstract class McJavaOptions {
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.codegen = MessageCodegenOptions(project)
+        this.codegen =
+            CodegenConfig(project)
     }
 
     public fun annotation(action: Action<AnnotationSettings>) {
@@ -90,7 +91,7 @@ public abstract class McJavaOptions {
     /**
      * Applies the given action for code generation options.
      */
-    public fun codegen(action: Action<MessageCodegenOptions>) {
+    public fun codegen(action: Action<CodegenConfig>) {
         action.execute(codegen!!)
     }
 

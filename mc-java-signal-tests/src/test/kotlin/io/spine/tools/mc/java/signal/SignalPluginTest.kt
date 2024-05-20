@@ -35,7 +35,7 @@ import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
-import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.type.toJson
 import java.nio.file.Path
@@ -58,7 +58,8 @@ internal abstract class SignalPluginTest {
         fun createSignalSettings(projectDir: Path): SignalSettings {
             val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
             // This mimics the call `McJavaOptions` perform on `injectProject`.
-            val codegenOptions = MessageCodegenOptions(project)
+            val codegenOptions =
+                CodegenConfig(project)
             return codegenOptions.toProto().signalSettings
         }
 

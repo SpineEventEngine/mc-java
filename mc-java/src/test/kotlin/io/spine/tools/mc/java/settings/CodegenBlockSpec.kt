@@ -44,7 +44,7 @@ import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
-import io.spine.tools.mc.java.gradle.settings.MessageCodegenOptions
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.gradle.settings.SignalConfig
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
@@ -132,7 +132,7 @@ class CodegenBlockSpec {
             val secondInterface = "test.iface.TestCommand"
             val fieldSuperclass = "test.cmd.Field"
             val suffix = "_my_commands.proto"
-            options.codegen { config: MessageCodegenOptions ->
+            options.codegen { config: CodegenConfig ->
                 config.forCommands { commands: SignalConfig ->
                     with(commands) {
                         includeFiles(by().suffix(suffix))
@@ -157,7 +157,7 @@ class CodegenBlockSpec {
             val iface = "test.iface.Event"
             val fieldSuperclass = "test.event.Field"
             val prefix = "my_"
-            options.codegen { config: MessageCodegenOptions ->
+            options.codegen { config: CodegenConfig ->
                 config.forEvents { events: SignalConfig ->
                     with(events) {
                         includeFiles(by().prefix(prefix))
@@ -180,7 +180,7 @@ class CodegenBlockSpec {
             val iface = "test.iface.RejectionMessage"
             val fieldSuperclass = "test.rejection.Field"
             val regex = ".*rejection.*"
-            options.codegen { config: MessageCodegenOptions ->
+            options.codegen { config: CodegenConfig ->
                 config.forEvents { events: SignalConfig ->
                     events.includeFiles(events.by().regex(regex))
                     events.markAs(iface)
