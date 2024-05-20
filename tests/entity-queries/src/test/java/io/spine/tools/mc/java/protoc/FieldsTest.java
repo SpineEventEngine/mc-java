@@ -78,17 +78,17 @@ class FieldsTest {
 
     @Test
     @DisplayName("mark event message fields as `EventMessageField`")
-    @Disabled("Until new `EventMessageField` support is implemented")
+//    @Disabled("Until new `EventMessageField` support is implemented")
     void markEventMessageFields() {
-//        var field = ProjectCreated.Field.id();
-//        assertThat(field.getClass()).isAssignableTo(EventMessageField.class);
+        var field = ProjectCreated.Field.id();
+        assertThat(field.getClass()).isAssignableTo(EventMessageField.class);
     }
 
     @Test
-    @DisplayName("mark entity state fields as `EntityStateField`")
+//    @DisplayName("mark entity state fields as `EntityStateField`")
     void markEntityStateFields() {
-//        var field = ProjectView.Field.id();
-//        assertThat(field.getClass()).isAssignableTo(EntityStateField.class);
+        var field = ProjectView.Field.id();
+        assertThat(field.getClass()).isAssignableTo(EntityStateField.class);
     }
 
     @Test
