@@ -160,11 +160,11 @@ public final class CodegenConfig extends Config<CodegenSettings> {
      *
      * @see #by() for creating a file pattern for selecting messages
      */
-    public void forMessages(FilePattern filePattern, Action<MessagesConfig> action) {
+    public void forMessages(FilePattern filePattern, Action<MessagesGroupConfig> action) {
         var pattern = Pattern.newBuilder()
                 .setFile(filePattern)
                 .build();
-        var config = new MessagesConfig(project, pattern);
+        var config = new MessagesGroupConfig(project, pattern);
         action.execute(config);
         messagesConfigs.add(config.toProto());
     }
@@ -181,15 +181,14 @@ public final class CodegenConfig extends Config<CodegenSettings> {
     /**
      * Configures code generation for particular message.
      */
-    public void forMessage(String protoTypeName, Action<MessagesConfig> action) {
+    public void forMessage(String protoTypeName, Action<MessagesGroupConfig> action) {
         var name = ProtoTypeName.newBuilder()
                 .setValue(protoTypeName)
                 .build();
         var pattern = Pattern.newBuilder()
                 .setType(TypePattern.newBuilder().setExpectedType(name))
                 .build();
-        var config = new MessagesConfig(project, pattern);
-        config.emptyByConvention();
+        var config = new MessagesGroupConfig(project, pattern);
         action.execute(config);
         messagesConfigs.add(config.toProto());
     }

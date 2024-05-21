@@ -48,22 +48,23 @@ import static java.util.stream.Collectors.toSet;
  *
  * @see CodegenConfig#forMessages
  */
-public final class MessagesConfig extends ConfigWithFields<MessageGroup> {
+public final class MessagesGroupConfig extends ConfigWithFields<MessageGroup> {
 
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
 
-    MessagesConfig(Project p, Pattern pattern) {
+    MessagesGroupConfig(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
         methodFactories.convention(ImmutableList.of());
         nestedClassFactories = new Multiple<>(p, String.class);
         nestedClassFactories.convention(ImmutableList.of());
+        emptyByConvention();
     }
 
-    void emptyByConvention() {
+    private void emptyByConvention() {
         interfaceNames().convention(ImmutableSet.of());
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());
@@ -112,7 +113,7 @@ public final class MessagesConfig extends ConfigWithFields<MessageGroup> {
     private Set<GenerateMethods> generateMethods() {
         return methodFactories.get()
                               .stream()
-                              .map(MessagesConfig::methodFactoryConfig)
+                              .map(MessagesGroupConfig::methodFactoryConfig)
                               .collect(toSet());
     }
 
@@ -129,7 +130,7 @@ public final class MessagesConfig extends ConfigWithFields<MessageGroup> {
     private Set<GenerateNestedClasses> generateNestedClasses() {
         return nestedClassFactories.get()
                                    .stream()
-                                   .map(MessagesConfig::nestedClassFactoryConfig)
+                                   .map(MessagesGroupConfig::nestedClassFactoryConfig)
                                    .collect(toSet());
     }
 
