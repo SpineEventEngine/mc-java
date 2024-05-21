@@ -28,6 +28,13 @@ package io.spine.tools.mc.java.signal
 
 import io.spine.tools.mc.java.settings.Signals
 
+/**
+ * Extends the code of [rejection messages][io.spine.base.RejectionMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getRejections].
+ *
+ * @see [io.spine.base.RejectionMessage]
+ */
 internal class RejectionRenderer :
     SignalRenderer<DiscoveredRejections>(DiscoveredRejections::class.java) {
 

@@ -28,6 +28,13 @@ package io.spine.tools.mc.java.signal
 
 import io.spine.tools.mc.java.settings.Signals
 
+/**
+ * Extends the code of [event messages][io.spine.base.EventMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getEvents].
+ *
+ * @see [io.spine.base.CommandMessage]
+ */
 internal class EventRenderer :
     SignalRenderer<DiscoveredEvents>(DiscoveredEvents::class.java) {
 

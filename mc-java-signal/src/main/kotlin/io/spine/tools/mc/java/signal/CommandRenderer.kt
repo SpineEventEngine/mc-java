@@ -28,6 +28,13 @@ package io.spine.tools.mc.java.signal
 
 import io.spine.tools.mc.java.settings.Signals
 
+/**
+ * Extends the code of [command messages][io.spine.base.CommandMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getCommands].
+ *
+ * @see [io.spine.base.CommandMessage]
+ */
 internal class CommandRenderer :
     SignalRenderer<DiscoveredCommands>(DiscoveredCommands::class.java) {
 
