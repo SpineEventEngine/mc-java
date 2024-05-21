@@ -31,7 +31,7 @@ package spine.tools.mc.java.mgroup;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.entity.event";
+option java_package = "io.spine.tools.mc.java.mgroup.event";
 option java_outer_classname = "EventsProto";
 option java_multiple_files = true;
 
@@ -40,14 +40,16 @@ import "spine/protodata/ast.proto";
 
 import "spine/tools/mc/java/settings.proto";
 
+// A message type was matched to one or more message groups specified in
+// code generation settings.
 message GroupedMessageDiscovered {
 
     // The file in which the type is defined.
     protodata.File file = 1 [(required) = true];
 
-    // The declaration of the entity state.
+    // The discovered type.
     protodata.MessageType type = 2 [(required) = true];
 
-    // One or more groups matching the message type.
+    // One or more groups matching the type.
     repeated spine.tools.mc.java.MessageGroup group = 3 [(required) = true];
 }

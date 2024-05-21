@@ -32,8 +32,8 @@ import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
 import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
-import io.spine.tools.mc.entity.event.GroupedMessageDiscovered
-import io.spine.tools.mc.entity.event.groupedMessageDiscovered
+import io.spine.tools.mc.java.mgroup.event.GroupedMessageDiscovered
+import io.spine.tools.mc.java.mgroup.event.groupedMessageDiscovered
 import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.mc.java.settings.matches
 
