@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.signal
 import io.spine.protodata.settings.LoadsSettings
 
 /**
- * A common interface for [SignalPlugin] parts that load
- * shared codegen [settings][io.spine.tools.mc.java.settings.SignalSettings] stored
+ * A part of [SignalPlugin] parts that loads shared
+ * [settings][io.spine.tools.mc.java.settings.SignalSettings] stored
  * using the canonical name of the plugin class.
  */
 internal interface SignalPluginComponent : LoadsSettings {
