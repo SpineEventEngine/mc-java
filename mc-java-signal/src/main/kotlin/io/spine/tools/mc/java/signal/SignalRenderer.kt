@@ -68,6 +68,7 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
 
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
+        //TODO:2024-05-21:alexander.yevsyukov: Can we move it to `enabledBySettings` instead?
         if (typeSettings.generateFields.hasSuperclass()) {
             execute {
                 val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)

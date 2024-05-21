@@ -31,8 +31,8 @@ import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
-import io.spine.tools.mc.entity.event.EntityStateDiscovered
-import io.spine.tools.mc.entity.event.entityStateDiscovered
+import io.spine.tools.mc.java.entity.event.EntityStateDiscovered
+import io.spine.tools.mc.java.entity.event.entityStateDiscovered
 import io.spine.tools.mc.java.settings.Entities
 
 /**

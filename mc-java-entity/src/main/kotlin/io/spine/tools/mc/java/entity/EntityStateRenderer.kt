@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.entity
 
-import io.spine.tools.mc.entity.DiscoveredEntities
+import io.spine.tools.mc.java.entity.DiscoveredEntities
 import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.settings.Entities
 
