@@ -35,14 +35,20 @@ plugins {
 }
 
 dependencies {
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
+    arrayOf(
+        Spine.base,
+        Validation.runtime
+    ).forEach {
+        testFixturesImplementation(it)
+    }
 
-    testImplementation(gradleTestKit())
-    testImplementation(project(":mc-java-base"))
-    testImplementation(project(":mc-java-signal"))
-    testImplementation(Spine.testlib)
-    testImplementation(ProtoData.testlib)
+    arrayOf(
+        project(":mc-java-base"),
+        project(":mc-java-signal"),
+        gradleTestKit(),
+        Spine.testlib,
+        ProtoData.testlib
+    ).forEach {
+        testImplementation(it)
+    }
 }

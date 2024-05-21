@@ -30,8 +30,6 @@ import io.spine.internal.dependency.Validation
 
 plugins {
     id("io.spine.mc-java")
-    `java-test-fixtures`
-    prototap
 }
 
 dependencies {
@@ -42,13 +40,6 @@ dependencies {
         project(":mc-java-base")
     ).forEach {
         implementation(it)
-    }
-
-    arrayOf(
-        Spine.base,
-        Validation.runtime
-    ).forEach {
-        testFixturesImplementation(it)
     }
 
     arrayOf(
