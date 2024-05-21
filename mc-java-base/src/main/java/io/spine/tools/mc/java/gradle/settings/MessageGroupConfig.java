@@ -48,13 +48,13 @@ import static java.util.stream.Collectors.toSet;
  *
  * @see CodegenConfig#forMessages
  */
-public final class MessagesGroupConfig extends ConfigWithFields<MessageGroup> {
+public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
 
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
 
-    MessagesGroupConfig(Project p, Pattern pattern) {
+    MessageGroupConfig(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
@@ -113,7 +113,7 @@ public final class MessagesGroupConfig extends ConfigWithFields<MessageGroup> {
     private Set<GenerateMethods> generateMethods() {
         return methodFactories.get()
                               .stream()
-                              .map(MessagesGroupConfig::methodFactoryConfig)
+                              .map(MessageGroupConfig::methodFactoryConfig)
                               .collect(toSet());
     }
 
@@ -130,7 +130,7 @@ public final class MessagesGroupConfig extends ConfigWithFields<MessageGroup> {
     private Set<GenerateNestedClasses> generateNestedClasses() {
         return nestedClassFactories.get()
                                    .stream()
-                                   .map(MessagesGroupConfig::nestedClassFactoryConfig)
+                                   .map(MessageGroupConfig::nestedClassFactoryConfig)
                                    .collect(toSet());
     }
 
