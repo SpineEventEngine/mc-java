@@ -24,28 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-validation",
-    "mc-java-protodata-params",
-    "mc-java-plugin-bundle"
-)
+plugins {
+    id("io.spine.mc-java")
+}
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+dependencies {
+    arrayOf(
+        Spine.Logging.lib,
+        Spine.server,
+        Spine.psiJavaBundle,
+        project(":mc-java-base")
+    ).forEach {
+        implementation(it)
+    }
+
+    arrayOf(
+        gradleTestKit(),
+        Spine.testlib,
+        ProtoData.testlib
+    ).forEach {
+        testImplementation(it)
     }
 }

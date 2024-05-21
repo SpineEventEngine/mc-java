@@ -24,28 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+package io.spine.tools.mc.java.mgroup
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-validation",
-    "mc-java-protodata-params",
-    "mc-java-plugin-bundle"
-)
+import io.spine.protodata.plugin.Plugin
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+/**
+ * A ProtoData plugin responsible for code generation of groups of messages specified by
+ * a file or type name patterns.
+ *
+ * @see io.spine.tools.mc.java.settings.GroupSettings
+ */
+public class MessageGroupPlugin : Plugin {
+
+    public companion object {
+        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
     }
 }
