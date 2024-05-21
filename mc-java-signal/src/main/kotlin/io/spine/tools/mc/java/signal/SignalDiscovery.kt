@@ -77,19 +77,16 @@ internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent
         return if (commands.match(msg)) {
             EitherOf4.withA(commandDiscovered {
                 file = event.file
-                name = msg.name
                 type = msg
             })
         } else if (events.match(msg)) {
             EitherOf4.withB(eventDiscovered {
                 file = event.file
-                name = msg.name
                 type = msg
             })
         } else if (rejections.match(msg)) {
             EitherOf4.withC(rejectionDiscovered {
                 file = event.file
-                name = msg.name
                 type = msg
             })
         } else {
