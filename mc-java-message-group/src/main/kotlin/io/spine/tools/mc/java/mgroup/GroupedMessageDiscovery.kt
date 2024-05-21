@@ -26,22 +26,39 @@
 
 package io.spine.tools.mc.java.mgroup
 
-import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
+import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.React
+import io.spine.server.model.NoReaction
+import io.spine.server.tuple.EitherOf2
+import io.spine.tools.mc.entity.event.GroupedMessageDiscovered
+import io.spine.tools.mc.entity.event.groupedMessageDiscovered
+import io.spine.tools.mc.java.settings.GroupSettings
+import io.spine.tools.mc.java.settings.matches
 
-/**
- * A ProtoData plugin responsible for code generation of groups of messages specified by
- * a file or type name patterns.
- *
- * @see io.spine.tools.mc.java.settings.GroupSettings
- */
-public class MessageGroupPlugin : Plugin {
+internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupPluginComponent {
 
-    public companion object {
-        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
+    private val settings: GroupSettings by lazy {
+        loadSettings()
     }
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
-    )
+    @React
+    override fun whenever(event: TypeDiscovered): EitherOf2<GroupedMessageDiscovered, NoReaction> {
+        val type = event.type
+        val matchingGroups = settings.groupList.filter {
+            it.pattern.matches(type)
+        }
+        return if (matchingGroups.isNotEmpty()) {
+            EitherOf2.withA(
+                groupedMessageDiscovered {
+                    file = event.file
+                    this@groupedMessageDiscovered.type = type
+                    group.addAll(matchingGroups)
+                }
+            )
+        } else {
+            EitherOf2.withB(nothing())
+        }
+    }
 }

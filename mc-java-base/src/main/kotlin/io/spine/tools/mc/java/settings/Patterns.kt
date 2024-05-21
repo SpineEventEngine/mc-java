@@ -24,24 +24,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.mgroup
+@file:JvmName("Patterns")
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
+package io.spine.tools.mc.java.settings
+
+import io.spine.protodata.MessageType
+import io.spine.protodata.matches
+import io.spine.protodata.qualifiedName
+import io.spine.tools.mc.java.settings.Pattern.KindCase.FILE
+import io.spine.tools.mc.java.settings.Pattern.KindCase.TYPE
+import io.spine.tools.mc.java.settings.TypePattern.ValueCase.EXPECTED_TYPE
+import io.spine.tools.mc.java.settings.TypePattern.ValueCase.REGEX
 
 /**
- * A ProtoData plugin responsible for code generation of groups of messages specified by
- * a file or type name patterns.
+ * Tells if this pattern matches the given [type].
  *
- * @see io.spine.tools.mc.java.settings.GroupSettings
+ * @see io.spine.protodata.FilePattern.matches
+ * @see TypePattern.matches
  */
-public class MessageGroupPlugin : Plugin {
-
-    public companion object {
-        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
+public fun Pattern.matches(type: MessageType): Boolean {
+    return when (kindCase) {
+        FILE -> file.matches(type.file)
+        TYPE -> this@matches.type.matches(type)
+        else -> false
     }
+}
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
-    )
+/**
+ * Tells if this type pattern matches the given type.
+ *
+ * @see Pattern.matches
+ * @see io.spine.protodata.FilePattern.matches
+ */
+public fun TypePattern.matches(type: MessageType): Boolean {
+    val qualifiedName = type.qualifiedName
+    return when (valueCase) {
+        EXPECTED_TYPE -> expectedType.value == qualifiedName
+        REGEX -> Regex(regex).matches(qualifiedName)
+        else -> false
+    }
 }
