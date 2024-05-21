@@ -32,6 +32,8 @@ import io.spine.protodata.renderer.Renderer
 /**
  * A ProtoData plugin for generating [RejectionThrowable][io.spine.base.RejectionThrowable]
  * Java classes.
+ *
+ * @see [io.spine.tools.mc.java.signal.SignalPlugin]
  */
 public class RThrowablePlugin: Plugin {
 

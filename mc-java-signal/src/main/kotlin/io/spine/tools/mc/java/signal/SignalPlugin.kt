@@ -31,6 +31,15 @@ import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
 
+/**
+ * A ProtoData plugin responsible for code generation of signal messages.
+ *
+ * @see SignalDiscovery
+ * @see CommandRenderer
+ * @see EventRenderer
+ * @see RejectionRenderer
+ * @see [io.spine.tools.mc.java.signal.rejection.RThrowablePlugin]
+ */
 public class SignalPlugin : Plugin {
 
     public companion object {
