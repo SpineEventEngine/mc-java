@@ -38,8 +38,7 @@ import io.spine.tools.mc.java.settings.groupSettings
  * Gathers grouped messages discovered in a file along with the corresponding
  * code generation settings.
  */
-internal class GroupedMessagesView :
-    View<File, GroupedMessages, GroupedMessages.Builder>() {
+internal class GroupedMessagesView : View<File, GroupedMessages, GroupedMessages.Builder>() {
 
     @Subscribe
     fun on(e: GroupedMessageDiscovered) = alter {
