@@ -54,13 +54,12 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     SignalPluginComponent where V : EntityState<File>, V : WithTypeList {
 
     /**
-     * The settings for the kind of signals served by this renderer,
-     * obtained from [settings].
+     * The settings for the kind of signals served by this renderer, obtained from [settings].
      */
     protected abstract val typeSettings: Signals
 
     override val enabledBySettings: Boolean
-        get() = typeSettings != Signals.getDefaultInstance()
+        get() = typeSettings.generateFields.hasSuperclass()
 
     private val fieldSupertype: ClassName by lazy {
         typeSettings.generateFields.superClassName
@@ -68,12 +67,48 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
 
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
-        //TODO:2024-05-21:alexander.yevsyukov: Can we move it to `enabledBySettings` instead?
-        if (typeSettings.generateFields.hasSuperclass()) {
-            execute {
-                val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
-                factory.render(sourceFile)
-            }
+        execute {
+            val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
+            factory.render(sourceFile)
         }
     }
+}
+
+/**
+ * Extends the code of [command messages][io.spine.base.CommandMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getCommands].
+ *
+ * @see [io.spine.base.CommandMessage]
+ */
+internal class CommandRenderer : SignalRenderer<Commands>(Commands::class.java) {
+
+    override val typeSettings: Signals
+        get() = settings.commands
+}
+
+/**
+ * Extends the code of [event messages][io.spine.base.EventMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getEvents].
+ *
+ * @see [io.spine.base.CommandMessage]
+ */
+internal class EventRenderer : SignalRenderer<Events>(Events::class.java) {
+
+    override val typeSettings: Signals
+        get() = settings.events
+}
+
+/**
+ * Extends the code of [rejection messages][io.spine.base.RejectionMessage] according to
+ * code generation settings specified in
+ * [SignalSettings][io.spine.tools.mc.java.settings.SignalSettings.getRejections].
+ *
+ * @see [io.spine.base.RejectionMessage]
+ */
+internal class RejectionRenderer : SignalRenderer<Rejections>(Rejections::class.java) {
+
+    override val typeSettings: Signals
+        get() = settings.rejections
 }
