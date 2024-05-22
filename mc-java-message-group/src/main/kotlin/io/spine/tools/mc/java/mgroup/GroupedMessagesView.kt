@@ -26,27 +26,30 @@
 
 package io.spine.tools.mc.java.mgroup
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
+import io.spine.core.Subscribe
+import io.spine.protodata.File
 import io.spine.protodata.plugin.View
+import io.spine.protodata.qualifiedName
+import io.spine.server.entity.alter
+import io.spine.tools.mc.java.mgroup.event.GroupedMessageDiscovered
+import io.spine.tools.mc.java.settings.groupSettings
 
 /**
- * A ProtoData plugin responsible for code generation of groups of messages specified by
- * a file or type name patterns.
- *
- * @see io.spine.tools.mc.java.settings.GroupSettings
+ * Gathers grouped messages discovered in a file along with the corresponding
+ * code generation settings.
  */
-public class MessageGroupPlugin : Plugin {
+internal class GroupedMessagesView :
+    View<File, GroupedMessages, GroupedMessages.Builder>() {
 
-    public companion object {
-        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
+    @Subscribe
+    fun on(e: GroupedMessageDiscovered) = alter {
+        val type = e.type
+        addType(type)
+        putSettings(
+            type.qualifiedName,
+            groupSettings {
+                group.addAll(e.groupList)
+            }
+        )
     }
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        GroupedMessagesView::class.java
-    )
 }

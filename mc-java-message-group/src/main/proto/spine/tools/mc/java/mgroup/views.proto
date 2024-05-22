@@ -24,29 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.mgroup
+syntax = "proto3";
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
+package spine.tools.mc.java.mgroup;
 
-/**
- * A ProtoData plugin responsible for code generation of groups of messages specified by
- * a file or type name patterns.
- *
- * @see io.spine.tools.mc.java.settings.GroupSettings
- */
-public class MessageGroupPlugin : Plugin {
+import "spine/options.proto";
 
-    public companion object {
-        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
-    }
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.java.mgroup";
+option java_outer_classname = "ViewsProto";
+option java_multiple_files = true;
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
-    )
+import "spine/protodata/ast.proto";
+import "spine/protodata/file.proto";
+import "spine/tools/mc/java/settings.proto";
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        GroupedMessagesView::class.java
-    )
+// Message types belonging to a group that were discovered in a proto file.
+message GroupedMessages {
+    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+    option (entity).kind = PROJECTION;
+
+    // The file in which the type is defined.
+    protodata.File file = 1 [(required) = true];
+
+    // Matching message types.
+    repeated protodata.MessageType type = 2 [(required) = true];
+
+    // A map from qualified type name to matched code generation settings.
+    map<string, GroupSettings> settings = 3 [(required) = true];
 }
