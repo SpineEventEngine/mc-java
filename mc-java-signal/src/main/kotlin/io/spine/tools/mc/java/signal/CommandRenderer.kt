@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.settings.Signals
  * @see [io.spine.base.CommandMessage]
  */
 internal class CommandRenderer :
-    SignalRenderer<DiscoveredCommands>(DiscoveredCommands::class.java) {
+    SignalRenderer<Commands>(Commands::class.java) {
 
     override val typeSettings: Signals
         get() = settings.commands

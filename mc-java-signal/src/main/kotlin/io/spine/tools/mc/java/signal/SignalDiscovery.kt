@@ -53,9 +53,9 @@ import io.spine.tools.mc.java.signal.event.rejectionDiscovered
  * [CommandDiscovered], [EventDiscovered], or [RejectionDiscovered] events are emitted accordingly.
  * If the discovered type is not a signal, the policy emits [NoReaction].
  *
- * @see DiscoveredCommandsView
- * @see DiscoveredEventsView
- * @see DiscoveredRejectionsView
+ * @see CommandsPerFile
+ * @see EventsPerFile
+ * @see RejectionsPerFile
  */
 internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent {
 

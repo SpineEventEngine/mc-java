@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.settings.Signals
  * @see [io.spine.base.RejectionMessage]
  */
 internal class RejectionRenderer :
-    SignalRenderer<DiscoveredRejections>(DiscoveredRejections::class.java) {
+    SignalRenderer<Rejections>(Rejections::class.java) {
 
     override val typeSettings: Signals
         get() = settings.rejections

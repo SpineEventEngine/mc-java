@@ -52,9 +52,9 @@ public class SignalPlugin : Plugin {
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        DiscoveredCommandsView::class.java,
-        DiscoveredEventsView::class.java,
-        DiscoveredRejectionsView::class.java
+        CommandsPerFile::class.java,
+        EventsPerFile::class.java,
+        RejectionsPerFile::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(

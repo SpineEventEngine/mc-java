@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.settings.Signals
  * @see [io.spine.base.CommandMessage]
  */
 internal class EventRenderer :
-    SignalRenderer<DiscoveredEvents>(DiscoveredEvents::class.java) {
+    SignalRenderer<Events>(Events::class.java) {
 
     override val typeSettings: Signals
         get() = settings.events

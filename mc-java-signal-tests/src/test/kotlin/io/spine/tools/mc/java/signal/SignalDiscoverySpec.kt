@@ -89,9 +89,9 @@ internal class SignalDiscoverySpec: SignalPluginTest() {
         val fileSet = FileSet.of(setup.request.sourceFileDescriptorsList)
 
         fileSet.files().forEach {
-            it.assertIfMatches(COMMANDS, DiscoveredCommands::class.java)
-            it.assertIfMatches(EVENTS, DiscoveredEvents::class.java)
-            it.assertIfMatches(REJECTIONS, DiscoveredRejections::class.java)
+            it.assertIfMatches(COMMANDS, Commands::class.java)
+            it.assertIfMatches(EVENTS, Events::class.java)
+            it.assertIfMatches(REJECTIONS, Rejections::class.java)
         }
     }
 }
