@@ -88,8 +88,8 @@ public abstract class MessageTypeRenderer<V, S : Message>(
      * Finds message types declared in all proto files captured by the views.
      */
     private fun findTypes(): List<MessageType> {
-        val discoveredEntities = select(viewClass).all()
-        val result = discoveredEntities.flatMap { it.getTypeList() }
+        val found = select(viewClass).all()
+        val result = found.flatMap { it.getTypeList() }
         return result
     }
 }
