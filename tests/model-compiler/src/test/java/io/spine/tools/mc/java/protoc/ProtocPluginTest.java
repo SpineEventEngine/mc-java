@@ -391,7 +391,6 @@ final class ProtocPluginTest {
 
     @Test
     @DisplayName("generate fields for a subscribable message type")
-//    @Disabled("Until new `EventMessageField` support is implemented")
     void generateFields() {
         SubscribableField field = MovieTitleChanged.Field.oldTitle().value();
         var expectedFieldPath = "old_title.value";

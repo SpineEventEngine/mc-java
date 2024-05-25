@@ -52,7 +52,6 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
         return if (matchingGroups.isNotEmpty()) {
             EitherOf2.withA(
                 groupedMessageDiscovered {
-                    file = event.file
                     this@groupedMessageDiscovered.type = type
                     group.addAll(matchingGroups)
                 }

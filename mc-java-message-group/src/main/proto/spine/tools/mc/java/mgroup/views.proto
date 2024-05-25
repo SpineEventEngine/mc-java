@@ -39,17 +39,13 @@ import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
 import "spine/tools/mc/java/settings.proto";
 
-// Message types belonging to a group that were discovered in a proto file.
-message GroupedMessages {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+// Matches a message type to groups
+message GroupedMessage {
     option (entity).kind = PROJECTION;
 
-    // The file in which the type is defined.
-    protodata.File file = 1 [(required) = true];
+    // The type of the message
+    protodata.MessageType type = 1 [(required) = true];
 
-    // Matching message types.
-    repeated protodata.MessageType type = 2 [(required) = true];
-
-    // A map from qualified type name to matched code generation settings.
-    map<string, GroupSettings> settings = 3 [(required) = true];
+    // Code generation settings for the matching group.
+    repeated MessageGroup group = 2;
 }

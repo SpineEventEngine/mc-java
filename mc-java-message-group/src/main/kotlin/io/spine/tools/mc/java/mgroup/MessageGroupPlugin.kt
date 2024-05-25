@@ -29,9 +29,10 @@ package io.spine.tools.mc.java.mgroup
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
+import io.spine.protodata.renderer.Renderer
 
 /**
- * A ProtoData plugin responsible for code generation of groups of messages specified by
+ * A ProtoData plugin responsible for code generation for groups of messages specified by
  * a file or type name patterns.
  *
  * @see io.spine.tools.mc.java.settings.GroupSettings
@@ -47,6 +48,10 @@ public class MessageGroupPlugin : Plugin {
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        GroupedMessagesView::class.java
+        GroupedMessageView::class.java
+    )
+
+    override fun renderers(): List<Renderer<*>> = listOf(
+        GroupedMessageRenderer()
     )
 }

@@ -44,9 +44,6 @@ import "spine/tools/mc/java/settings.proto";
 // code generation settings.
 message GroupedMessageDiscovered {
 
-    // The file in which the type is defined.
-    protodata.File file = 1 [(required) = true];
-
     // The discovered type.
     protodata.MessageType type = 2 [(required) = true];
 
