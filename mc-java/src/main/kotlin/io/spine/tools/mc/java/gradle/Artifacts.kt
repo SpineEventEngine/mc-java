@@ -123,20 +123,6 @@ internal object McJava {
     }
 
     /**
-     * The Maven artifact containing the `spine-mc-java-rejection` module.
-     */
-    @JvmStatic
-    @get:JvmName("rejection")
-    internal val rejection: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-rejection"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
      * The Maven artifact containing the `spine-mc-java-annotation` module.
      */
     @get:JvmName("annotation")
@@ -157,6 +143,18 @@ internal object McJava {
         artifact {
             useSpineToolsGroup()
             name = "spine-mc-java-entity"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
+        }
+    }
+
+    /**
+     * The Maven artifact containing the `spine-mc-java-message-group` module.
+     */
+    internal val messageGroup: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name = "spine-mc-java-message-group"
             version = this@McJava.version
             extension = JAR_EXTENSION
         }
