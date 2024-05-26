@@ -12,9 +12,11 @@ There are several levels of testing in this project.
 
 ## About `*-tests` modules
 
-This is a test-only module with the tests for the production code of `mc-java-signal`.
+A modules with the `-tests` suffix in their names is a test-only module for the module which
+has the name before the suffix. For example, `mc-java-signal-tests` is the test module for
+`mc-java-signal`
 
-We need to have a separate test-only module because of the following reasons.
+We need to have separate test-only modules because of the following reasons.
 
  * We want to run code generation tests using the vanilla Protobuf code placed into
 resources by [ProtoTap][prototap] using [`PipelineSetup`][pipeline-setup] API.
