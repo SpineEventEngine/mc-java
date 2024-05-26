@@ -1,4 +1,16 @@
-# About `mc-java-signal-tests` module
+# About tests in McJava
+
+There are several levels of testing in this project.
+
+1. Regular unit tests.
+2. Integration tests based on `io.spine.tools.gradle.testing.GradleProject` API residing under
+   the corresponding module.
+3. Functional tests based on [`PipelineSetup`][pipeline-setup] API placed in separate
+   test-only modules. Please read the section below for details about these tests.
+4. Integration tests under the `tests` subproject.
+   These tests are [documented](tests/README.md) in the project.
+
+## About `*-tests` modules
 
 This is a test-only module with the tests for the production code of `mc-java-signal`.
 
