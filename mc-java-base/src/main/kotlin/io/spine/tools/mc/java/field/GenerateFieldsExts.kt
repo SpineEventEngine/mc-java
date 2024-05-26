@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.field
 
 import io.spine.protodata.java.ClassName
+import io.spine.tools.java.code.JavaClassName
 import io.spine.tools.mc.java.settings.GenerateFields
 import io.spine.type.shortDebugString
 
@@ -36,6 +37,7 @@ import io.spine.type.shortDebugString
  * @throws IllegalStateException
  *          if the [superclass][GenerateFields.getSuperclass] is not populated.
  */
+@Suppress("SwallowedException") // Intended.
 public val GenerateFields.superClassName: ClassName
     get() {
         check(hasSuperclass()) {
@@ -43,6 +45,29 @@ public val GenerateFields.superClassName: ClassName
             val debugStr = shortDebugString()
             "Unable a field class supertype from this `$clsName` instance: `$debugStr`."
         }
-        val cls = Class.forName(superclass.canonical)
-        return ClassName(cls)
+        try {
+            // Try finding a class by its name.
+            // This is the preferred because it covers tricky cases with nested classes.
+            // This may not work if the class is not yet available because it's in the same
+            // module with the generated code. When so, we'd get `ClassNotFoundException`.
+            val cls = Class.forName(superclass.canonical)
+            return ClassName(cls)
+        } catch (e: ClassNotFoundException) {
+            // Guess the package and class names by parsing.
+            return superclass.toClassName()
+        }
     }
+
+/**
+ * Converts this [JavaClassName] to [ClassName] by parsing its value.
+ *
+ * The function assumes that package names start with a lowercase letter, and
+ * class names start with an uppercase letter.
+ */
+private fun JavaClassName.toClassName(): ClassName {
+    val packageSeparator = "."
+    val items = canonical.split(packageSeparator)
+    val packageName = items.filter { it[0].isLowerCase() }.joinToString(packageSeparator)
+    val simpleNames = items.filter { it[0].isUpperCase() }
+    return ClassName(packageName, simpleNames)
+}
