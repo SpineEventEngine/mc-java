@@ -41,6 +41,7 @@ import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
+import io.spine.tools.mc.java.gradle.McJava.messageGroup
 import io.spine.tools.mc.java.gradle.McJava.signals
 import io.spine.tools.mc.java.gradle.ValidationSdk
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
@@ -50,6 +51,7 @@ import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VAL
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.gradle.toolBase
+import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.util.theOnly
@@ -140,6 +142,7 @@ private fun Project.configureProtoDataPlugins() {
 
     configureValidation(protodata)
     configureSignals(protodata)
+    configureMessageGroup(protodata)
     configureEntities(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
@@ -184,7 +187,7 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
     addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
 
-private fun Project.configureSignals(protodata: CodegenSettings) {
+private fun Project.configureSignals(protodata: ProtoDataSettings) {
     addUserClasspathDependency(signals)
     protodata.addPlugin<SignalPlugin>()
 
@@ -192,6 +195,11 @@ private fun Project.configureSignals(protodata: CodegenSettings) {
     if (rejectionCodegen.enabled.get()) {
         protodata.addPlugin<RThrowablePlugin>()
     }
+}
+
+private fun Project.configureMessageGroup(protodata: ProtoDataSettings) {
+    addUserClasspathDependency(messageGroup)
+    protodata.addPlugin<MessageGroupPlugin>()
 }
 
 private fun Project.configureEntities(protodata: ProtoDataSettings) {
