@@ -91,10 +91,9 @@ class FieldsTest {
 
     @Test
     @DisplayName("generate fields for a custom type according to the Model Compiler configuration")
-    @Disabled("Until new support for custom fields is implemented")
     void markCustomTypes() {
-//        var field = ProjectName.Field.value();
-//        assertThat(field.getClass()).isAssignableTo(ProjectNameField.class);
+        var field = ProjectName.Field.value();
+        assertThat(field.getClass()).isAssignableTo(ProjectNameField.class);
     }
 
     private static void checkFieldPath(SubscribableField field, String expectedFieldPath) {
