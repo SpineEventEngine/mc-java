@@ -99,7 +99,7 @@ internal class GroupedMessageRendererSpec {
 
         private fun writeSettings(settings:SettingsDirectory, groupSettings: GroupSettings) {
             settings.write(
-                MessageGroupPlugin.CONSUMER_ID,
+                MessageGroupPlugin.SETTINGS_ID,
                 Format.PROTO_JSON,
                 groupSettings.toJson()
             )

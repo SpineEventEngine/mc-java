@@ -36,5 +36,5 @@ import io.spine.protodata.settings.LoadsSettings
 internal interface MessageGroupPluginComponent : LoadsSettings {
 
     override val consumerId: String
-        get() = MessageGroupPlugin.CONSUMER_ID
+        get() = MessageGroupPlugin.SETTINGS_ID
 }

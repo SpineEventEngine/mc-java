@@ -29,20 +29,17 @@ import com.google.protobuf.Message
 import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
-import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
 import io.spine.tools.mc.java.entity.EntityPlugin
-import io.spine.tools.mc.java.settings.CodegenSettings
-import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.ANNOTATION_SETTINGS_ID
-import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.ENTITY_SETTINGS_ID
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.JAVA_CODE_STYLE_ID
-import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.SIGNALS_SETTINGS_ID
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.VALIDATION_SETTINGS_ID
+import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
+import io.spine.tools.mc.java.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
@@ -81,6 +78,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         forAnnotationPlugin(settings)
         forEntityPlugin(settings)
         forSignalPlugin(settings)
+        forMessageGroupPlugin(settings)
         forStyleFormattingPlugin(settings)
     }
 
@@ -92,24 +90,9 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
 
         /**
-         * The ID used by Annotation plugin components to load the settings.
-         */
-        val ANNOTATION_SETTINGS_ID: String = ApiAnnotationsPlugin::class.java.canonicalName
-
-        /**
-         * The ID used by Entity plugin components to load settings.
-         */
-        val ENTITY_SETTINGS_ID: String = EntityPlugin::class.java.canonicalName
-
-        /**
-         * The ID used by the Signals Plugin components to load settings.
-         */
-        val SIGNALS_SETTINGS_ID: String = SignalPlugin::class.java.canonicalName
-
-        /**
          * The ID for the Java code style settings.
          */
-        val JAVA_CODE_STYLE_ID = JavaCodeStyle::class.java.defaultConsumerId
+        val JAVA_CODE_STYLE_ID: String = JavaCodeStyle::class.java.canonicalName
     }
 }
 
@@ -164,12 +147,12 @@ private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirecto
         internalClassPattern.addAll(annotation.internalClassPatterns.get())
         internalMethodName.addAll(annotation.internalMethodNames.get())
     }
-    settings.write(ANNOTATION_SETTINGS_ID, proto)
+    settings.write(ApiAnnotationsPlugin.SETTINGS_ID, proto)
 }
 
 private fun WriteProtoDataSettings.forEntityPlugin(settings: SettingsDirectory) {
     val entitySettings = options.codegen!!.entities().toProto()
-    settings.write(ENTITY_SETTINGS_ID, entitySettings)
+    settings.write(EntityPlugin.SETTINGS_ID, entitySettings)
 }
 
 private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) {
@@ -179,7 +162,12 @@ private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) 
         events = codegen.events().toProto()
         rejections = codegen.rejections().toProto()
     }
-    settings.write(SIGNALS_SETTINGS_ID, signalSettings)
+    settings.write(SignalPlugin.SETTINGS_ID, signalSettings)
+}
+
+private fun WriteProtoDataSettings.forMessageGroupPlugin(settings: SettingsDirectory) {
+    val groupSettings = options.codegen!!.toProto().groupSettings
+    settings.write(MessageGroupPlugin.SETTINGS_ID, groupSettings)
 }
 
 private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDirectory) {

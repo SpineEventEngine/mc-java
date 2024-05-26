@@ -36,5 +36,5 @@ import io.spine.protodata.settings.LoadsSettings
 internal interface SignalPluginComponent : LoadsSettings {
 
     override val consumerId: String
-        get() = SignalPlugin.CONSUMER_ID
+        get() = SignalPlugin.SETTINGS_ID
 }

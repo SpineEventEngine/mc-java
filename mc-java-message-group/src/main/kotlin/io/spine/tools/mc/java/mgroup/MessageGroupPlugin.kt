@@ -39,10 +39,6 @@ import io.spine.protodata.renderer.Renderer
  */
 public class MessageGroupPlugin : Plugin {
 
-    public companion object {
-        public val CONSUMER_ID: String = MessageGroupPlugin::class.java.canonicalName
-    }
-
     override fun policies(): Set<Policy<*>> = setOf(
         GroupedMessageDiscovery()
     )
@@ -54,4 +50,12 @@ public class MessageGroupPlugin : Plugin {
     override fun renderers(): List<Renderer<*>> = listOf(
         GroupedMessageRenderer()
     )
+
+    public companion object {
+
+        /**
+         * The ID for obtaining settings of the plugin.
+         */
+        public val SETTINGS_ID: String = MessageGroupPlugin::class.java.canonicalName
+    }
 }

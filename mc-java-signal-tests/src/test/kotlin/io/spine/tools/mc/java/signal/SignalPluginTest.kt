@@ -85,7 +85,7 @@ internal abstract class SignalPluginTest {
 
         private fun writeSettings(settings: SettingsDirectory, signalSettings: SignalSettings) {
             settings.write(
-                SignalPlugin.CONSUMER_ID,
+                SignalPlugin.SETTINGS_ID,
                 Format.PROTO_JSON,
                 signalSettings.toJson()
             )

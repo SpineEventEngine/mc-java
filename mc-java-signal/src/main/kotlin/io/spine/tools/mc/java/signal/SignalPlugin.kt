@@ -43,10 +43,6 @@ import io.spine.protodata.renderer.Renderer
  */
 public class SignalPlugin : Plugin {
 
-    public companion object {
-        public val CONSUMER_ID: String = SignalPlugin::class.java.canonicalName
-    }
-
     override fun policies(): Set<Policy<*>> = setOf(
         SignalDiscovery()
     )
@@ -62,4 +58,12 @@ public class SignalPlugin : Plugin {
         EventRenderer(),
         RejectionRenderer(),
     )
+
+    public companion object {
+
+        /**
+         * The ID for obtaining settings of the plugin.
+         */
+        public val SETTINGS_ID: String = SignalPlugin::class.java.canonicalName
+    }
 }

@@ -51,4 +51,12 @@ public class EntityPlugin : Plugin {
         ColumnClassRenderer(),
         FieldClassRenderer()
     )
+
+    public companion object {
+
+        /**
+         * The ID for obtaining settings of the plugin.
+         */
+        public val SETTINGS_ID: String = EntityPlugin::class.java.canonicalName
+    }
 }

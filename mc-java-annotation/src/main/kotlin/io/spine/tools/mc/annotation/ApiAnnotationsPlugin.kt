@@ -86,4 +86,12 @@ public class ApiAnnotationsPlugin : Plugin {
         context.add(FileOptionsProcess::class.java)
         context.add(OuterClassAnnotationDiscovery.Repository())
     }
+
+    public companion object {
+
+        /**
+         * The ID for obtaining settings of the plugin.
+         */
+        public val SETTINGS_ID: String = ApiAnnotationsPlugin::class.java.canonicalName
+    }
 }
