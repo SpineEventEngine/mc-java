@@ -58,8 +58,7 @@ internal abstract class SignalPluginTest {
         fun createSignalSettings(projectDir: Path): SignalSettings {
             val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
             // This mimics the call `McJavaOptions` perform on `injectProject`.
-            val codegenOptions =
-                CodegenConfig(project)
+            val codegenOptions = CodegenConfig(project)
             return codegenOptions.toProto().signalSettings
         }
 

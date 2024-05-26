@@ -31,14 +31,13 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import io.spine.base.CommandMessage
 import io.spine.protodata.java.reference
-import io.spine.protodata.renderer.SourceFileSet
 import java.nio.file.Path
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`CommandRenderer` should")
 internal class CommandRendererSpec : SignalPluginTest() {

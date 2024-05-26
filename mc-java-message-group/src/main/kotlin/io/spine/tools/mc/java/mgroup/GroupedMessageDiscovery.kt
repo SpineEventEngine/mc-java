@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.mgroup
 
+import io.spine.core.External
 import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
@@ -44,7 +45,7 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
     }
 
     @React
-    override fun whenever(event: TypeDiscovered): EitherOf2<GroupedMessageDiscovered, NoReaction> {
+    override fun whenever(@External event: TypeDiscovered): EitherOf2<GroupedMessageDiscovered, NoReaction> {
         val type = event.type
         val matchingGroups = settings.groupList.filter {
             it.pattern.matches(type)
