@@ -78,7 +78,7 @@ public abstract class MessageTypeRenderer<V, S : Message>(
         types.forEach {
             val sourceFile = sources.fileOf(it)
             check(sourceFile != null) {
-                "Unable to locate the file `$sourceFile` in the source set `$this`."
+                "Unable to locate the file for the message type `$it` in the source set `$sources`."
             }
             doRender(it, sourceFile)
         }

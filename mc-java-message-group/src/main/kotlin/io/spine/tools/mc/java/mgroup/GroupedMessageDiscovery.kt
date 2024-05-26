@@ -38,6 +38,11 @@ import io.spine.tools.mc.java.mgroup.event.groupedMessageDiscovered
 import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.mc.java.settings.matches
 
+/**
+ * Detects message types matching [GroupSettings] in response to [TypeDiscovered] event.
+ *
+ * If the type matches one or more groups emits [GroupedMessageDiscovered] event.
+ */
 internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupPluginComponent {
 
     private val settings: GroupSettings by lazy {
@@ -45,7 +50,9 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
     }
 
     @React
-    override fun whenever(@External event: TypeDiscovered): EitherOf2<GroupedMessageDiscovered, NoReaction> {
+    override fun whenever(
+        @External event: TypeDiscovered
+    ): EitherOf2<GroupedMessageDiscovered, NoReaction> {
         val type = event.type
         val matchingGroups = settings.groupList.filter {
             it.pattern.matches(type)

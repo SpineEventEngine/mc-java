@@ -58,7 +58,8 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         types.forEach {
             val sourceFile = sources.fileOf(it.type)
             check(sourceFile != null) {
-                "Unable to locate the file `$sourceFile` in the source set `$this`."
+                "Unable to locate the file for the message type `${it.type}`" +
+                        " in the source set `$sources`."
             }
             it.doRender(sourceFile)
         }
@@ -72,9 +73,11 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         }
     }
 
-    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile) = execute {
-        val factory = FieldClassFactory(type, superClassName, typeSystem!!)
-        factory.render(sourceFile)
+    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile) {
+        execute {
+            val factory = FieldClassFactory(type, superClassName, typeSystem!!)
+            factory.render(sourceFile)
+        }
     }
 
     private fun findTypes(): Set<GroupedMessage> {
