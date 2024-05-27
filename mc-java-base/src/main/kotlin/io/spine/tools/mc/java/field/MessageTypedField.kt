@@ -48,7 +48,7 @@ import org.intellij.lang.annotations.Language
  *
  * The generated class extends [SubscribableField][io.spine.base.SubscribableField] or
  * one of its subclasses. As such, it can be passed to message filters and be used to obtain
- * its fields when composing a filter.
+ * its fields when composing a query filter.
  *
  * More formally, for a given [fieldType], this class will generate a Java class which:
  *   1. Is named by combining simple Java class name of the field type and
@@ -82,7 +82,7 @@ internal class MessageTypedField(
     private val typeSystem: TypeSystem
 ) {
     private val className: String by lazy {
-        classNameOf(fieldType)
+        classNameFor(fieldType)
     }
 
     private val superClassReference: PsiJavaCodeReferenceElement by lazy {
@@ -150,7 +150,7 @@ internal class MessageTypedField(
     companion object {
         const val CLASS_NAME_SUFFIX = "Field"
 
-        fun classNameOf(type: MessageType): String {
+        fun classNameFor(type: MessageType): String {
             val typeName = type.name
             val nestingPath = typeName.nestingTypeNameList.joinToString()
             return nestingPath + typeName.simpleName + CLASS_NAME_SUFFIX

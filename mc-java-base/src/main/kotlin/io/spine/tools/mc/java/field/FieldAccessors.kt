@@ -40,16 +40,45 @@ import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
 
+/**
+ * Abstract base for generating a method accessing a message field via a generated `Field` class.
+ *
+ * @see FieldClassFactory
+ */
 internal abstract class FieldAccessor(
+    /**
+     * The field of the message type for which we generate the method.
+     */
     private val field: Field,
+
+    /**
+     * The type of the returned field object for a simple field types, and a superclass
+     * for accessing nested fields for a message field type.
+     *
+     * @see io.spine.base.EventMessageField
+     * @see io.spine.query.EntityStateField
+     */
     private val fieldSupertype: ClassName,
+
+    /**
+     * The type system to obtain Java class names by message types.
+     */
     private val typeSystem: TypeSystem
 ) {
 
+    /**
+     * Access modifiers for a method.
+     */
     protected abstract val modifiers: String
 
+    /**
+     * The code of the method body.
+     */
     protected abstract val methodBody: String
 
+    /**
+     * Creates a [PsiMethod] with the code for accessing the field.
+     */
     internal fun method(): PsiMethod {
         @Language("JAVA") @Suppress("EmptyClass")
         val method = elementFactory.createMethodFromText("""
@@ -62,8 +91,14 @@ internal abstract class FieldAccessor(
         return method
     }
 
+    /**
+     * The name of the field.
+     */
     protected val fieldName: String = field.name.value
 
+    /**
+     * The type returned by the method.
+     */
     protected val returnType: String by lazy {
         if (shouldExposeNestedFields) {
             nestedFieldsContainerType()
@@ -90,10 +125,13 @@ internal abstract class FieldAccessor(
     private fun nestedFieldsContainerType(): String {
         check(field.isMessage)
         val type = field.type.toMessageType(typeSystem)
-        return MessageTypedField.classNameOf(type)
+        return MessageTypedField.classNameFor(type)
     }
 }
 
+/**
+ * Generates methods for fields belonging directly to the message type.
+ */
 internal class TopLevelFieldAccessor(
     field: Field,
     fieldSupertype: ClassName,
@@ -112,6 +150,10 @@ internal class TopLevelFieldAccessor(
     }
 }
 
+/**
+ * Generates methods for fields belonging to a message type that is the type of
+ * the field directly belonging to the message type.
+ */
 internal class NestedFieldAccessor(
     field: Field,
     fieldSupertype: ClassName,
