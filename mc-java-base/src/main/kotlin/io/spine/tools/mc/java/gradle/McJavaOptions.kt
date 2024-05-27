@@ -80,8 +80,7 @@ public abstract class McJavaOptions {
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.codegen =
-            CodegenConfig(project)
+        this.codegen = CodegenConfig(project)
     }
 
     public fun annotation(action: Action<AnnotationSettings>) {
