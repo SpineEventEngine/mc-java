@@ -35,7 +35,6 @@ import io.spine.tools.column.ProjectName;
 import io.spine.tools.column.ProjectView;
 import io.spine.tools.mc.java.protoc.given.ProjectNameField;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
