@@ -38,12 +38,14 @@ option java_multiple_files = true;
 import "google/protobuf/duration.proto";
 import "given/signals/domain.proto";
 
+// The command to the telescope to start scanning signals coming for the given star.
 message StartScanning {
     TelescopeId telescope = 1;
     Star star = 2 [(required) = true, (validate) = true];
     google.protobuf.Duration duration = 3 [(required) = true];
 }
 
+// The command to stop scanning.
 message StopScanning {
     TelescopeId telescope = 1;
 }

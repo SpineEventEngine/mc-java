@@ -38,11 +38,13 @@ option java_multiple_files = true;
 import "google/protobuf/duration.proto";
 import "given/signals/domain.proto";
 
+// The telescope started scanning.
 message ScanningStarted {
     TelescopeId telescope = 1 [(required) = true];
     google.protobuf.Duration duration = 2 [(required) = true];
 }
 
+// The telescope stopped scanning.
 message ScanningStopped {
     TelescopeId telescope = 1 [(required) = true];
     google.protobuf.Duration elapsed_time = 2 [(required) = true];

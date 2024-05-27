@@ -41,6 +41,7 @@ message Star {
     Coordinates coordinates = 2 [(required) = true, (validate) = true];
 }
 
+// Celestial coordinates.
 message Coordinates {
     RightAscension ra = 1 [(required) = true, (validate) = true];
     Declination decl = 2 [(required) = true, (validate) = true];

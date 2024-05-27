@@ -51,6 +51,9 @@ message TelescopeIsOffline {
     TelescopeId telescope = 1 [(required) = true];
 }
 
+// Rejections with nested message types.
+//------------
+
 message Rejection3 {
     Rejection3Inner innerMessage = 2;
 
