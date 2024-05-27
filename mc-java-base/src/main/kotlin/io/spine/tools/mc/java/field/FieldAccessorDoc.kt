@@ -48,6 +48,11 @@ internal class FieldAccessorDoc(
 
     private val fieldName: String = field.name.value
 
+    /**
+     * An optional prefix before the name of a field in Javadoc.
+     *
+     * Is empty if the field is neither a map, nor repeated.
+     */
     private val kind: String = when {
         field.isRepeated -> "{@code repeated} "
         field.isMap -> "{@code map} "
