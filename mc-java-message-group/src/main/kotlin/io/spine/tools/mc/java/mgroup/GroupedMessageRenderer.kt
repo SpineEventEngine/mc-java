@@ -38,7 +38,7 @@ import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders code for message types gathered in [GroupedMessages]
+ * Renders code for message types gathered in [GroupedMessage].
  */
 internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginComponent {
 
@@ -56,11 +56,7 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         }
         val types = findTypes()
         types.forEach {
-            val sourceFile = sources.fileOf(it.type)
-            check(sourceFile != null) {
-                "Unable to locate the file for the message type `${it.type}`" +
-                        " in the source set `$sources`."
-            }
+            val sourceFile = sources.javaFileOf(it.type)
             it.doRender(sourceFile)
         }
     }

@@ -76,10 +76,7 @@ public abstract class MessageTypeRenderer<V, S : Message>(
         }
         val types = findTypes()
         types.forEach {
-            val sourceFile = sources.fileOf(it)
-            check(sourceFile != null) {
-                "Unable to locate the file for the message type `$it` in the source set `$sources`."
-            }
+            val sourceFile = sources.javaFileOf(it)
             doRender(it, sourceFile)
         }
     }
