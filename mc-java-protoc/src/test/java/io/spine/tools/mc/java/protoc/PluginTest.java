@@ -173,7 +173,6 @@ final class PluginTest {
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
-                .addGroup(messages)
                 .build();
         var config = CodegenSettings.newBuilder()
                 .setGroupSettings(groupSettings)
