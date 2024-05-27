@@ -46,7 +46,7 @@ import io.spine.tools.psi.java.topLevelClass
 import org.intellij.lang.annotations.Language
 
 /**
- * Abstract base for classes rendering classes nested into message types.
+ * Abstract base for code generators creating classes nested into Java code of message types.
  *
  * @param type
  *         the type of the message.
