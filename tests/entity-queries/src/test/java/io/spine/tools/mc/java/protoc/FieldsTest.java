@@ -83,6 +83,7 @@ class FieldsTest {
     }
 
     @Test
+    @DisplayName("mark entity state fields as `EntityStateField`")
     void markEntityStateFields() {
         var field = ProjectView.Field.id();
         assertThat(field.getClass()).isAssignableTo(EntityStateField.class);
