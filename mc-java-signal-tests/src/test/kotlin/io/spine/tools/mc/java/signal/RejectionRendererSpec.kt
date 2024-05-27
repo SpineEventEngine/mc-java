@@ -30,7 +30,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.base.RejectionMessage
 import io.spine.protodata.java.reference
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.repeat
 import java.nio.file.Path
