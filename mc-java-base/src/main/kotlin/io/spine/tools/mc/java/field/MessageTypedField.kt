@@ -75,6 +75,8 @@ import org.intellij.lang.annotations.Language
  *         the supertype for the generated class.
  * @param typeSystem
  *         the type system to resolve message types into Java classes.
+ *
+ * @see createClass
  */
 internal class MessageTypedField(
     private val fieldType: MessageType,
@@ -90,6 +92,9 @@ internal class MessageTypedField(
         elementFactory.createReferenceFromText(qualifiedName, null)
     }
 
+    /**
+     * Creates a new instance of [PsiClass].
+     */
     internal fun createClass(): PsiClass {
         val cls = elementFactory.createClass(className)
         cls.run {
