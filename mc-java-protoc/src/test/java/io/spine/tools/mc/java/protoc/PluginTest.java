@@ -30,14 +30,16 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 import io.spine.option.OptionsProvider;
+import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.fs.SourceFile;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.Uuids;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.GroupSettings;
+import io.spine.tools.mc.java.settings.MessageGroup;
+import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
 import io.spine.tools.protoc.plugin.method.TestMethodProtos;
@@ -57,9 +59,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.filePrefix;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.fileRegex;
-import static io.spine.tools.mc.java.gradle.codegen.FilePatterns.fileSuffix;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateNested;
@@ -96,7 +95,7 @@ final class PluginTest {
         var uuids = Uuids.newBuilder()
                 .addMethodFactory(methodFactory(UuidMethodFactory.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
@@ -115,14 +114,17 @@ final class PluginTest {
     @Test
     @DisplayName("process suffix patterns")
     void processSuffixPatterns() {
-        var messages = Messages.newBuilder()
-                .setPattern(pattern(fileSuffix(TEST_PROTO_SUFFIX)))
+        var messages = MessageGroup.newBuilder()
+                .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
+        var config = CodegenSettings.newBuilder()
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
@@ -138,14 +140,17 @@ final class PluginTest {
     @Test
     @DisplayName("process prefix patterns")
     void processPrefixPatterns() {
-        var messages = Messages.newBuilder()
-                .setPattern(pattern(filePrefix(TEST_PROTO_PREFIX)))
+        var messages = MessageGroup.newBuilder()
+                .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
+        var config = CodegenSettings.newBuilder()
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
@@ -160,14 +165,17 @@ final class PluginTest {
     @Test
     @DisplayName("process regex patterns")
     void processRegexPatterns() {
-        var messages = Messages.newBuilder()
-                .setPattern(pattern(fileRegex(TEST_PROTO_REGEX)))
+        var messages = MessageGroup.newBuilder()
+                .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
-                .addMessages(messages)
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
+        var config = CodegenSettings.newBuilder()
+                .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
@@ -183,7 +191,7 @@ final class PluginTest {
     @DisplayName("mark generated message builders with the `ValidatingBuilder` interface")
     void markBuildersWithInterface() {
         var testGeneratorsDescriptor = TestGeneratorsProto.getDescriptor();
-        var config = CodegenOptions.getDefaultInstance();
+        var config = CodegenSettings.getDefaultInstance();
         var protocConfigPath = protocConfig(config, testPluginConfig);
         var request = requestBuilder()
                 .addProtoFile(testGeneratorsDescriptor.toProto())

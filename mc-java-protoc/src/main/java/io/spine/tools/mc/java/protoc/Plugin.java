@@ -31,8 +31,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.protoc.field.FieldGen;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.message.BuilderGen;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
 import io.spine.tools.mc.java.protoc.message.NestedClassGen;
@@ -80,8 +79,8 @@ public final class Plugin {
                 MethodGen.instance(config),
                 new BuilderGen(),
                 NestedClassGen.instance(config),
-                EntityQueryGen.instance(config),
-                FieldGen.instance(config)
+                EntityQueryGen.instance(config)
+                //FieldGen.instance(config)
         );
         var response = generator.process(request);
         writeResponse(response);
@@ -100,10 +99,10 @@ public final class Plugin {
         }
     }
 
-    private static CodegenOptions readConfig(CodeGeneratorRequest request) {
+    private static CodegenSettings readConfig(CodeGeneratorRequest request) {
         var configFilePath = decodeBase64(request.getParameter());
         try (var fis = new FileInputStream(configFilePath)) {
-            var config = CodegenOptions.parseFrom(fis, registry());
+            var config = CodegenSettings.parseFrom(fis, registry());
             return config;
         } catch (InvalidProtocolBufferException e) {
             throw newIllegalStateException(e, "Unable to decode Spine Protoc Plugin config.");

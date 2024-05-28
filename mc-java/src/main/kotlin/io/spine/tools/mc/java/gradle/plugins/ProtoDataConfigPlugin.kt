@@ -33,26 +33,27 @@ import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
 import io.spine.protodata.gradle.plugin.LaunchProtoData
-import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.settings.defaultConsumerId
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
-import io.spine.tools.mc.entity.EntityPlugin
+import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.annotation
 import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
-import io.spine.tools.mc.java.gradle.McJava.rejection
+import io.spine.tools.mc.java.gradle.McJava.messageGroup
+import io.spine.tools.mc.java.gradle.McJava.signals
 import io.spine.tools.mc.java.gradle.ValidationSdk
-import io.spine.tools.mc.java.gradle.codegen.MessageCodegenOptions
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.gradle.toolBase
-import io.spine.tools.mc.java.rejection.RejectionPlugin
+import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
+import io.spine.tools.mc.java.signal.SignalPlugin
+import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -103,26 +104,6 @@ internal class ProtoDataConfigPlugin : Plugin<Project> {
          * The name of the Validation plugin for ProtoData.
          */
         const val VALIDATION_PLUGIN_CLASS = "io.spine.validation.java.JavaValidationPlugin"
-
-        /**
-         * The ID used by Validation plugin components to load the settings.
-         */
-        const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
-
-        /**
-         * The ID used by Annotation plugin components to load the settings.
-         */
-        const val ANNOTATION_SETTINGS_ID = "io.spine.tools.mc.annotation.ApiAnnotationsPlugin"
-
-        /**
-         * The ID used by Entity plugin components to load settings.
-         */
-        const val ENTITY_SETTINGS_ID = "io.spine.tools.mc.entity.EntityPlugin"
-
-        /**
-         * The ID for the Java code style settings.
-         */
-        val JAVA_CODE_STYLE_ID = JavaCodeStyle::class.java.defaultConsumerId
     }
 }
 
@@ -160,7 +141,8 @@ private fun Project.configureProtoDataPlugins() {
     setSubdirectories(protodata)
 
     configureValidation(protodata)
-    configureRejections(protodata)
+    configureSignals(protodata)
+    configureMessageGroup(protodata)
     configureEntities(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
@@ -171,7 +153,7 @@ private fun Project.configureProtoDataPlugins() {
     configureStyleFormatting(protodata)
 }
 
-private val Project.messageOptions: MessageCodegenOptions
+private val Project.messageOptions: CodegenConfig
     get() = mcJava.codegen!!
 
 private fun setSubdirectories(protodata: ProtoDataSettings) {
@@ -205,12 +187,19 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
     addDependency("implementation", ValidationSdk.javaRuntime(version))
 }
 
-private fun Project.configureRejections(protodata: ProtoDataSettings) {
+private fun Project.configureSignals(protodata: ProtoDataSettings) {
+    addUserClasspathDependency(signals)
+    protodata.addPlugin<SignalPlugin>()
+
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
-        addUserClasspathDependency(rejection)
-        protodata.addPlugin<RejectionPlugin>()
+        protodata.addPlugin<RThrowablePlugin>()
     }
+}
+
+private fun Project.configureMessageGroup(protodata: ProtoDataSettings) {
+    addUserClasspathDependency(messageGroup)
+    protodata.addPlugin<MessageGroupPlugin>()
 }
 
 private fun Project.configureEntities(protodata: ProtoDataSettings) {

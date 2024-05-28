@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.protoc.method;
 
-import io.spine.tools.mc.java.codegen.CodegenOptions;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.protoc.plugin.method.EnhancedMessage;
 import io.spine.tools.protoc.plugin.method.TestServiceProto;
 import io.spine.type.MessageType;
@@ -42,7 +42,7 @@ final class MethodGenTest {
     @DisplayName("ignore non-`Message` types")
     @Test
     void ignoreNonMessageTypes() {
-        var generator = MethodGen.instance(CodegenOptions.getDefaultInstance());
+        var generator = MethodGen.instance(CodegenSettings.getDefaultInstance());
         var service = TestServiceProto.getDescriptor().findServiceByName("MGTService");
         var type = ServiceType.of(service);
         var result = generator.generate(type);
@@ -53,7 +53,7 @@ final class MethodGenTest {
     @Test
     void generateMethodsForMessageTypes() {
         var type = new MessageType(EnhancedMessage.getDescriptor());
-        var generator = MethodGen.instance(CodegenOptions.getDefaultInstance());
+        var generator = MethodGen.instance(CodegenSettings.getDefaultInstance());
         var result = generator.generate(type);
         assertTrue(result.isEmpty());
     }

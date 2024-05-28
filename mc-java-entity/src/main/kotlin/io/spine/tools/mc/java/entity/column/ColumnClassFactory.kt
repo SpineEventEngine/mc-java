@@ -27,51 +27,48 @@
 package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.file.toPsi
-import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.reference
-import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.code.manifest.Version
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.render
+import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
+import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
-import io.spine.tools.psi.java.createPrivateConstructor
-import io.spine.tools.psi.java.makeFinal
-import io.spine.tools.psi.java.makePublic
-import io.spine.tools.psi.java.makeStatic
-import io.spine.tools.psi.java.topLevelClass
 import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a class called `Column` and nests it under the top level entity state class.
+ * Creates a class called [Column][CLASS_NAME] and nests it under an entity state class.
  *
+ * The class provides API for obtaining columns for given `EntityState` [type].
+ * The `Column` class is `public static` and stateless.
+ * It serves as a DSL for calling `public static` methods for obtaining
+ * entity state [columns][io.spine.query.EntityColumn].
+ *
+ * Since the `Column` class is not meant to be instantiated, a private parameterless
+ * constructor is generated.
+ *
+ * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
+ * for obtaining all the columns is also generated.
+ *
+ * @param type
+ *         the type of the `EntityState` message.
+ * @param typeSystem
+ *         the type system used for resolving field types.
  * @see render
  */
-@Suppress("EmptyClass") // ... to avoid false positives for `@Language` strings.
 internal class ColumnClassFactory(
-    private val typeSystem: TypeSystem,
     type: MessageType,
-    private val entityState: ClassName
-) {
-    private val columnClass by lazy {
-        elementFactory.createClass(CLASS_NAME)
-    }
-    private val columns: List<Field> = type.columns
+    typeSystem: TypeSystem
+) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
 
-    /**
-     * Reference to [entityState] made in Javadoc.
-     */
-    private val stateJavadocRef: String = "{@code ${entityState.simpleName}}"
+    private val columnClass = cls
+    private val columns: List<Field> = type.columns
 
     companion object: WithLogging {
 
@@ -89,100 +86,26 @@ internal class ColumnClassFactory(
         val DEFINITIONS_METHOD = buildString {
             append("definitions")
         }
-
-        /**
-         * Adds a nested class called [Column][CLASS_NAME] into the top class of the given [file].
-         *
-         * The class provides API for obtaining columns for given `EntityState` [type].
-         * The `Column` class is `public static` and stateless.
-         * It serves as a DSL for calling `public static` methods for obtaining
-         * entity state [columns][io.spine.query.EntityColumn].
-         *
-         * Since the `Column` class is not meant to be instantiated, a private parameterless
-         * constructor is generated.
-         *
-         * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
-         * for obtaining all the columns is also generated.
-         *
-         * @param type
-         *         the type of the `EntityState` message.
-         * @param file
-         *         the Java file to add the `Column` class.
-         * @param typeSystem
-         *         the type system used for resolving field types.
-         */
-        @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-        fun render(
-            type: MessageType,
-            file: SourceFile,
-            typeSystem: TypeSystem
-        ) {
-            val header = typeSystem.findMessage(type.name)!!.second
-            val entityStateClass = type.javaClassName(header)
-            try {
-                val psiJavaFile = file.toPsi()
-                val topLevelClass = psiJavaFile.topLevelClass
-                val factory = ColumnClassFactory(typeSystem, type, entityStateClass)
-                val columnHolder = factory.create()
-                topLevelClass.addLast(columnHolder)
-
-                val updatedText = psiJavaFile.text
-                file.overwrite(updatedText)
-            } catch (e: Throwable) {
-                val entityState = entityStateClass.canonical
-                logger.atError().log { """
-                    Caught exception while generating the `Column` class in `$entityState`.
-                    Throwable: `${e.javaClass.canonicalName}`.
-                    Message: `${e.message}`.                                
-                    """.trimIndent()
-                }
-                throw e
-            }
-        }
     }
 
-    private fun create(): PsiClass {
-        addAnnotation()
-        addClassJavadoc()
-        columnClass.makePublic().makeStatic().makeFinal()
-        val privateConstructor = elementFactory.createPrivateConstructor(
-            columnClass,
-            javadocLine = "Prevents instantiation of this class."
-        )
-        columnClass.addLast(privateConstructor)
+    @Language("JAVA") @Suppress("EmptyClass")
+    override fun classJavadoc(): String = """
+        /**
+         * A listing of entity columns defined in $messageJavadocRef.
+         *
+         * <p>Use static methods of this class to access the columns of the entity
+         * which can then be used for creating filters in a query.
+         */
+        """.trimIndent()
+
+    override fun tuneClass() {
         addColumnMethods()
         addDefinitionsMethod()
-        return columnClass
-    }
-
-    private fun addAnnotation() {
-        val version = Version.fromManifestOf(this::class.java).value
-        @Language("JAVA")
-        val annotation = elementFactory.createAnnotationFromText(
-            """
-            @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
-            """.trimIndent(), null
-        )
-        columnClass.addFirst(annotation)
-    }
-
-    private fun addClassJavadoc() {
-        @Language("JAVA")
-        val classJavadoc = elementFactory.createDocCommentFromText("""
-            /**
-             * A listing of entity columns defined in $stateJavadocRef.
-             *
-             * <p>Use static methods of this class to access the columns of the entity
-             * which can then be used for creating filters in a query.
-             */
-            """.trimIndent(), null
-        )
-        columnClass.addFirst(classJavadoc)
     }
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(typeSystem, entityState, column, columnClass)
+            val accessor = ColumnAccessor(messageClass, column, columnClass, typeSystem)
             columnClass.addLast(accessor.method())
         }
     }
@@ -198,7 +121,7 @@ internal class ColumnClassFactory(
     private inner class DefinitionsMethod {
 
         /** The generic type which matches all the columns of this entity state. */
-        private val columnWildcard = columnType(entityState)
+        private val columnWildcard = columnType(messageClass)
 
         /**
          * The name of the variable to collect all column definitions
@@ -224,11 +147,10 @@ internal class ColumnClassFactory(
 
         /** Builds the full text of the method. */
         private val methodText: String by lazy {
-            @Language("JAVA")
-            @Suppress("DanglingJavadoc") // to avoid false positive warning.
+            @Language("JAVA") @Suppress("EmptyClass", "DanglingJavadoc")
             val methodTemplate = """
             /**
-             * Returns all the column definitions of $stateJavadocRef.
+             * Returns all the column definitions of $messageJavadocRef.
              */
             public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();

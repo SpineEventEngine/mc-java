@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.protoc.query;
 
 import com.google.common.testing.NullPointerTester;
 import io.spine.option.OptionsProto;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Entities;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.NoOpGenerator;
 import io.spine.tools.proto.code.ProtoOption;
 import io.spine.tools.protoc.plugin.nested.Task;
@@ -93,17 +93,17 @@ class EntityQueryGenTest {
                 .isInstanceOf(NoOpGenerator.class);
     }
 
-    private static CodegenOptions newOptions() {
+    private static CodegenSettings newOptions() {
         return newOptions(true);
     }
 
-    private static CodegenOptions newOptions(boolean generate) {
+    private static CodegenSettings newOptions(boolean generate) {
         var entities = Entities.newBuilder();
         entities.addOption(ProtoOption.newBuilder()
                 .setName(OptionsProto.entity.getDescriptor().getName())
         );
         entities.setGenerateQueries(generate);
-        return CodegenOptions.newBuilder()
+        return CodegenSettings.newBuilder()
                 .setEntities(entities)
                 .build();
     }

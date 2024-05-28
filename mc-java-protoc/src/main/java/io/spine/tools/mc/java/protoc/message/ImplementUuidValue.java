@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.codegen.AddInterface;
+import io.spine.tools.mc.java.settings.AddInterface;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.type.MessageType;
 

@@ -28,12 +28,12 @@ package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.JavaClassName;
-import io.spine.tools.mc.java.codegen.Pattern;
+import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.FilePatternMatcher;
 import io.spine.tools.mc.java.protoc.PatternMatcher;
 import io.spine.type.MessageType;
-import io.spine.validation.FilePattern;
+import io.spine.protodata.FilePattern;
 
 import java.util.function.Predicate;
 

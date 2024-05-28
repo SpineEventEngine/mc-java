@@ -1,0 +1,87 @@
+/*
+* Copyright 2024, TeamDev. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Redistribution and use in source and/or binary forms, with or without
+* modification, must retain the above copyright notice and the following
+* disclaimer.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+syntax = "proto3";
+
+package given.signals;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.signal.given.rejection";
+option java_outer_classname = "Rejections";
+option java_multiple_files = false;
+
+import "google/protobuf/any.proto";
+
+import "given/signals/domain.proto";
+
+// A telescope is unable to start scanning the surrounding of the given star.
+message CannotStartScanning {
+    TelescopeId telescope = 1 [(required) = true];
+    Star star = 2 [(required) = true, (validate) = true];
+    string reason = 3 [(required) = true];
+}
+
+// A specific rejection for the case when a telescope is not turned on.
+message TelescopeIsOffline {
+    TelescopeId telescope = 1 [(required) = true];
+}
+
+// Rejections with nested message types.
+//------------
+
+message Rejection3 {
+    Rejection3Inner innerMessage = 2;
+
+    message Rejection3Inner {
+        string id = 1;
+    }
+}
+
+message Rejection4 {
+    string id = 1;
+    google.protobuf.Any any_id = 2;
+    bool boolean_id = 3;
+    Rejection4Inner inner_id = 4;
+    Rejection4InnerEnum inner_enum_id = 5;
+
+    message Rejection4Inner {
+        string id = 1;
+    }
+
+    enum Rejection4InnerEnum {
+        OK = 0;
+    }
+}
+
+message RejectionWithRepeatedField {
+    repeated int32 values = 1;
+}
+
+message RejectionWithMapField {
+    map<int32, int32> map = 1;
+}

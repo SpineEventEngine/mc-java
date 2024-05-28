@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.protoc;
 
-import io.spine.tools.mc.java.codegen.Entities;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.type.MessageType;
 
 import java.util.List;

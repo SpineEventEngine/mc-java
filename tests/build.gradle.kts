@@ -28,6 +28,8 @@
 
 import io.spine.internal.dependency.ErrorProne
 import io.spine.internal.dependency.JUnit
+import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Truth
@@ -70,10 +72,11 @@ buildscript {
         doForceVersions(this)
         val spine = io.spine.internal.dependency.Spine
         val logging = io.spine.internal.dependency.Spine.Logging
+        val grpc = io.spine.internal.dependency.Grpc
         all {
             resolutionStrategy {
                 force(
-                    io.spine.internal.dependency.Grpc.api,
+                    grpc.api,
                     "io.spine:protodata:${io.spine.internal.dependency.ProtoData.version}",
                     spine.reflect,
                     spine.base,
@@ -119,7 +122,8 @@ allprojects {
         all {
             resolutionStrategy {
                 force(
-                    io.spine.internal.dependency.Kotlin.stdLibJdk7,
+                    Kotlin.stdLibJdk7,
+                    Grpc.api,
                     Spine.reflect,
                     Spine.base,
                     Spine.time,
@@ -162,7 +166,7 @@ subprojects {
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation(Spine.base)
-        implementation(Spine.logging)
+        implementation(Spine.Logging.lib)
         testImplementation(Spine.testlib)
         implementation(Validation.runtime)
         Truth.libs.forEach { testImplementation(it) }

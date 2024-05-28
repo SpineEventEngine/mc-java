@@ -28,9 +28,10 @@ package io.spine.tools.mc.java.protoc.field;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.field.FieldFactory;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.Signals;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.MessageGroup;
+import io.spine.tools.mc.java.settings.SignalSettings;
+import io.spine.tools.mc.java.settings.Signals;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
@@ -68,7 +69,7 @@ public final class FieldGen extends CodeGenerator {
     /**
      * Creates a new instance based on the passed Protoc config.
      */
-    public static FieldGen instance(CodegenOptions config) {
+    public static FieldGen instance(CodegenSettings config) {
         checkNotNull(config);
         var builder = new Builder(config);
         builder.addFromAll();
@@ -90,14 +91,16 @@ public final class FieldGen extends CodeGenerator {
      */
     private static final class Builder {
 
-        private final CodegenOptions config;
+        private final CodegenSettings config;
+        private final SignalSettings signalSettings;
         private final ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
 
         /**
          * Prevents direct instantiation.
          */
-        private Builder(CodegenOptions config) {
+        private Builder(CodegenSettings config) {
             this.config = config;
+            this.signalSettings = config.getSignalSettings();
         }
 
         private ImmutableList<CodeGenerationTask> tasks() {
@@ -122,28 +125,28 @@ public final class FieldGen extends CodeGenerator {
         }
 
         private void addFromMessages() {
-            for (var group : config.getMessagesList()) {
+            for (var group : config.getGroupSettings().getGroupList()) {
                 taskFor(group).ifPresent(tasks::add);
             }
         }
 
         private void addFromRejections() {
-            if (config.hasRejections()) {
-                var signals = config.getRejections();
+            if (signalSettings.hasRejections()) {
+                var signals = signalSettings.getRejections();
                 tasks.addAll(tasksFor(signals));
             }
         }
 
         private void addFromEvents() {
-            if (config.hasEvents()) {
-                var signals = config.getEvents();
+            if (signalSettings.hasEvents()) {
+                var signals = signalSettings.getEvents();
                 tasks.addAll(tasksFor(signals));
             }
         }
 
         private void addFromCommands() {
-            if (config.hasCommands()) {
-                var signals = config.getCommands();
+            if (signalSettings.hasCommands()) {
+                var signals = signalSettings.getCommands();
                 tasks.addAll(tasksFor(signals));
             }
         }
@@ -170,7 +173,7 @@ public final class FieldGen extends CodeGenerator {
                           )).collect(toImmutableList());
         }
 
-        private static Optional<GenerateFieldsByPattern> taskFor(Messages messages) {
+        private static Optional<GenerateFieldsByPattern> taskFor(MessageGroup messages) {
             var generateFields = messages.getGenerateFields();
             if (!generateFields.hasSuperclass()) {
                 return Optional.empty();

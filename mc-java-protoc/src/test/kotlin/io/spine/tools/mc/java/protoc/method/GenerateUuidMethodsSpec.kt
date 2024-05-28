@@ -31,8 +31,8 @@ import io.spine.testing.Assertions.assertNpe
 import io.spine.tools.java.code.Classpath
 import io.spine.tools.java.code.JavaClassName
 import io.spine.tools.java.code.MethodFactory
-import io.spine.tools.mc.java.codegen.MethodFactoryName
-import io.spine.tools.mc.java.codegen.Uuids
+import io.spine.tools.mc.java.settings.MethodFactoryName
+import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.protoc.ExternalClassLoader
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory
 import io.spine.tools.protoc.plugin.method.NonEnhancedMessage

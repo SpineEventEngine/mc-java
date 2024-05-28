@@ -55,7 +55,8 @@ dependencies {
         ":mc-java-annotation",
         ":mc-java-checks",
         ":mc-java-entity",
-        ":mc-java-rejection",
+        ":mc-java-signal",
+        ":mc-java-message-group",
         ":mc-java-protodata-params"
     ).forEach {
         implementation(project(it))

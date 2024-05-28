@@ -32,8 +32,11 @@ include(
     "mc-java-base",
     "mc-java-checks",
     "mc-java-entity",
+    "mc-java-signal",
+    "mc-java-signal-tests",
     "mc-java-protoc",
-    "mc-java-rejection",
+    "mc-java-message-group",
+    "mc-java-message-group-tests",
     "mc-java-validation",
     "mc-java-protodata-params",
     "mc-java-plugin-bundle"

@@ -29,14 +29,14 @@ package io.spine.tools.mc.java.protoc.given;
 import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.compiler.PluginProtos;
 import io.spine.option.OptionsProto;
-import io.spine.tools.mc.java.codegen.AddInterface;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.GenerateMethods;
-import io.spine.tools.mc.java.codegen.GenerateNestedClasses;
-import io.spine.tools.mc.java.codegen.MethodFactoryName;
-import io.spine.tools.mc.java.codegen.NestedClassFactoryName;
-import io.spine.tools.mc.java.codegen.Pattern;
-import io.spine.validation.FilePattern;
+import io.spine.tools.mc.java.settings.AddInterface;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.GenerateMethods;
+import io.spine.tools.mc.java.settings.GenerateNestedClasses;
+import io.spine.tools.mc.java.settings.MethodFactoryName;
+import io.spine.tools.mc.java.settings.NestedClassFactoryName;
+import io.spine.tools.mc.java.settings.Pattern;
+import io.spine.protodata.FilePattern;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -140,7 +140,7 @@ public final class CodeGeneratorRequestGiven {
      *
      * @return the path to the serialized config, encoded in Base64
      */
-    public static String protocConfig(CodegenOptions config, Path configFile) {
+    public static String protocConfig(CodegenSettings config, Path configFile) {
         try (var fos = new FileOutputStream(configFile.toFile())) {
             config.writeTo(fos);
         } catch (IOException e) {

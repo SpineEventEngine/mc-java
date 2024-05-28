@@ -73,7 +73,7 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
         plugins.create(spineProtoc.name(),
-                       locator -> locator.setArtifact(McJava.allPlugins().notation())
+                       locator -> locator.setArtifact(McJava.protocExe().notation())
         );
     }
 

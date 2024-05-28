@@ -28,11 +28,12 @@ package io.spine.tools.mc.java.protoc.field;
 
 import com.google.common.testing.NullPointerTester;
 import io.spine.base.SubscribableField;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.GenerateFields;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.Pattern;
-import io.spine.tools.mc.java.gradle.codegen.FilePatterns;
+import io.spine.protodata.FilePatternFactory;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.GenerateFields;
+import io.spine.tools.mc.java.settings.GroupSettings;
+import io.spine.tools.mc.java.settings.MessageGroup;
+import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.protoc.plugin.nested.Task;
 import io.spine.tools.protoc.plugin.nested.TaskView;
 import io.spine.type.EnumType;
@@ -80,16 +81,19 @@ class FieldGenTest {
                 .isEmpty();
     }
 
-    private static CodegenOptions newConfig() {
-        var messages = Messages.newBuilder();
+    private static CodegenSettings newConfig() {
+        var messages = MessageGroup.newBuilder();
         messages.setPattern(
-                Pattern.newBuilder().setFile(FilePatterns.fileSuffix("test_fields.proto")));
+                Pattern.newBuilder().setFile(FilePatternFactory.INSTANCE.suffix("test_fields.proto")));
         var generateFields = GenerateFields.newBuilder()
                 .setSuperclass(className(SubscribableField.class))
                 .build();
         messages.setGenerateFields(generateFields);
-        return CodegenOptions.newBuilder()
-                .addMessages(messages)
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages.build())
+                .build();
+        return CodegenSettings.newBuilder()
+                .setGroupSettings(groupSettings)
                 .build();
     }
 }

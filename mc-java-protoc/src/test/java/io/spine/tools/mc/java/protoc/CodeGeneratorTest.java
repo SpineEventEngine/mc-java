@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.protoc;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.Uuids;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
@@ -70,7 +70,7 @@ final class CodeGeneratorTest {
         var uuids = Uuids.newBuilder()
                 .addAddInterface(addInterface(TestInterface.class))
                 .build();
-        var config = CodegenOptions.newBuilder()
+        var config = CodegenSettings.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
@@ -104,7 +104,7 @@ final class CodeGeneratorTest {
     @DisplayName("concatenate code generated for the same insertion point")
     @Test
     void concatenateGeneratedCode() {
-        var config = CodegenOptions.getDefaultInstance();
+        var config = CodegenSettings.getDefaultInstance();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
@@ -141,7 +141,7 @@ final class CodeGeneratorTest {
     @DisplayName("drop duplicates in generated code for the same insertion point")
     @Test
     void dropCodeDuplicates() {
-        var config = CodegenOptions.getDefaultInstance();
+        var config = CodegenSettings.getDefaultInstance();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())

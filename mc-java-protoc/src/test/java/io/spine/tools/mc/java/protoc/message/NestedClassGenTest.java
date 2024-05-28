@@ -27,13 +27,14 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.testing.NullPointerTester;
-import io.spine.tools.mc.java.codegen.CodegenOptions;
-import io.spine.tools.mc.java.codegen.GenerateNestedClasses;
-import io.spine.tools.mc.java.codegen.Messages;
-import io.spine.tools.mc.java.codegen.NestedClassFactoryName;
-import io.spine.tools.mc.java.codegen.Pattern;
-import io.spine.tools.mc.java.gradle.codegen.FilePatterns;
+import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
+import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.GenerateNestedClasses;
+import io.spine.tools.mc.java.settings.GroupSettings;
+import io.spine.tools.mc.java.settings.MessageGroup;
+import io.spine.tools.mc.java.settings.NestedClassFactoryName;
+import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.protoc.plugin.nested.Task;
 import io.spine.tools.protoc.plugin.nested.TaskView;
 import io.spine.type.EnumType;
@@ -79,7 +80,7 @@ class NestedClassGenTest {
         assertThat(output).isEmpty();
     }
 
-    private static CodegenOptions newOptions() {
+    private static CodegenSettings newOptions() {
         var name = className(TestNestedClassFactory.class);
         var factoryName = NestedClassFactoryName.newBuilder()
                 .setClassName(name)
@@ -88,14 +89,17 @@ class NestedClassGenTest {
                 .setFactory(factoryName)
                 .build();
         var pattern = Pattern.newBuilder()
-                .setFile(FilePatterns.fileSuffix("test_fields.proto"))
+                .setFile(FilePatternFactory.INSTANCE.suffix("test_fields.proto"))
                 .build();
-        var messages = Messages.newBuilder()
+        var messages = MessageGroup.newBuilder()
                 .setPattern(pattern)
                 .addGenerateNestedClasses(generate)
                 .build();
-        var result = CodegenOptions.newBuilder()
-                .addMessages(messages)
+        var groupSettings = GroupSettings.newBuilder()
+                .addGroup(messages)
+                .build();
+        var result = CodegenSettings.newBuilder()
+                .setGroupSettings(groupSettings)
                 .build();
         return result;
     }

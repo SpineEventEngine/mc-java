@@ -33,8 +33,8 @@ import io.spine.protodata.java.file.locate
 import io.spine.protodata.renderer.InsertionPoint
 import io.spine.string.Separator
 import io.spine.string.camelCase
-import io.spine.text.Text
 import io.spine.text.TextCoordinates
+import io.spine.text.TextFactory.text
 import io.spine.tools.psi.document
 
 /**
@@ -52,11 +52,12 @@ internal class FieldAccessors(
     override val label: String
         get() = ""
 
-    override fun locate(text: Text): Set<TextCoordinates> = buildSet {
-        val psiClass = text.locate(className)
+    override fun locate(text: String): Set<TextCoordinates> = buildSet {
+        val txt = text(text)
+        val psiClass = txt.locate(className)
         check(psiClass != null) {
             "Unable to find the class `${className.canonical}` in the code below:" +
-                    Separator.nl().repeat(2) + text.value
+                    Separator.nl().repeat(2) + text
         }
         val camelCase = field.value.camelCase()
         psiClass.methods.forEach { method ->
@@ -68,7 +69,7 @@ internal class FieldAccessors(
         if (this.isEmpty()) {
             val qualifiedFieldName = className.canonical + "." + field.value
             val errorMsg = "Unable to find getter(s) for the field `$qualifiedFieldName`" +
-                    " in the code below:" + Separator.nl().repeat(2) + text.value
+                    " in the code below:" + Separator.nl().repeat(2) + text
             error(errorMsg)
         }
     }

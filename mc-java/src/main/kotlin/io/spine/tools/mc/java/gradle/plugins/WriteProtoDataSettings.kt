@@ -26,17 +26,21 @@
 package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.protobuf.Message
+import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
+import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
-import io.spine.tools.mc.java.codegen.CodegenOptions
+import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ANNOTATION_SETTINGS_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.ENTITY_SETTINGS_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.JAVA_CODE_STYLE_ID
-import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_SETTINGS_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.JAVA_CODE_STYLE_ID
+import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.VALIDATION_SETTINGS_ID
+import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
+import io.spine.tools.mc.java.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.signalSettings
+import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
@@ -73,7 +77,22 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         forValidationPlugin(settings)
         forAnnotationPlugin(settings)
         forEntityPlugin(settings)
+        forSignalPlugin(settings)
+        forMessageGroupPlugin(settings)
         forStyleFormattingPlugin(settings)
+    }
+
+    internal companion object {
+
+        /**
+         * The ID used by Validation plugin components to load the settings.
+         */
+        const val VALIDATION_SETTINGS_ID = "io.spine.validation.ValidationPlugin"
+
+        /**
+         * The ID for the Java code style settings.
+         */
+        val JAVA_CODE_STYLE_ID: String = JavaCodeStyle::class.java.canonicalName
     }
 }
 
@@ -96,13 +115,14 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  */
 private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirectory) {
     val codegen = options.codegen!!.toProto()
-    val markers = codegen.let {
-        messageMarkers {
+    val signalSettings = codegen.signalSettings
+    val markers = messageMarkers {
+        signalSettings.let {
             commandPattern.addAll(it.commands.patternList)
             eventPattern.addAll(it.events.patternList)
             rejectionPattern.addAll(it.rejections.patternList)
-            entityOptionName.addAll(it.entityOptionsNames())
         }
+        entityOptionName.addAll(codegen.entityOptionsNames())
     }
     val config = validationConfig {
         messageMarkers = markers
@@ -111,7 +131,7 @@ private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirecto
     settings.write(VALIDATION_SETTINGS_ID, config)
 }
 
-private fun CodegenOptions.entityOptionsNames(): Iterable<String> =
+private fun CodegenSettings.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
 private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirectory) {
@@ -127,12 +147,27 @@ private fun WriteProtoDataSettings.forAnnotationPlugin(settings: SettingsDirecto
         internalClassPattern.addAll(annotation.internalClassPatterns.get())
         internalMethodName.addAll(annotation.internalMethodNames.get())
     }
-    settings.write(ANNOTATION_SETTINGS_ID, proto)
+    settings.write(ApiAnnotationsPlugin.SETTINGS_ID, proto)
 }
 
 private fun WriteProtoDataSettings.forEntityPlugin(settings: SettingsDirectory) {
     val entitySettings = options.codegen!!.entities().toProto()
-    settings.write(ENTITY_SETTINGS_ID, entitySettings)
+    settings.write(EntityPlugin.SETTINGS_ID, entitySettings)
+}
+
+private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) {
+    val codegen = options.codegen!!
+    val signalSettings = signalSettings {
+        commands = codegen.commands().toProto()
+        events = codegen.events().toProto()
+        rejections = codegen.rejections().toProto()
+    }
+    settings.write(SignalPlugin.SETTINGS_ID, signalSettings)
+}
+
+private fun WriteProtoDataSettings.forMessageGroupPlugin(settings: SettingsDirectory) {
+    val groupSettings = options.codegen!!.toProto().groupSettings
+    settings.write(MessageGroupPlugin.SETTINGS_ID, groupSettings)
 }
 
 private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDirectory) {

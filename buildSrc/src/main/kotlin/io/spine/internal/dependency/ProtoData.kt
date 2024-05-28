@@ -62,21 +62,19 @@ object ProtoData {
     const val pluginId = "io.spine.protodata"
 
     /**
-     * The version of ProtoData artifacts.
+     * The version of ProtoData dependencies.
      */
     val version: String
-    private const val fallbackVersion = "0.21.3"
+    private const val fallbackVersion = "0.25.0"
 
     /**
-     * The distinct version of ProtoData used by other build tools during
-     * the transition from a previous version when breaking API changes are introduced.
+     * The distinct version of ProtoData used by other build tools.
      *
-     * When ProtoData is used both for building the project and as a part of the project's
-     * transitional dependencies, this is the version used to build the project itself to
-     * avoid errors caused by incompatible API changes.
+     * When ProtoData is used both for building the project and as a part of the Project's
+     * transitional dependencies, this is the version used to build the project itself.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.21.3"
+    private const val fallbackDfVersion = "0.25.0"
 
     /**
      * The artifact for the ProtoData Gradle plugin.
@@ -94,7 +92,7 @@ object ProtoData {
 
     @Deprecated("Use `backend` instead", ReplaceWith("backend"))
     val compiler
-        get() = "$group:protodata-compiler:$version"
+        get() = backend
 
     val backend
         get() = "$group:protodata-backend:$version"
@@ -124,6 +122,9 @@ object ProtoData {
 
     val fatCli
         get() = "$group:protodata-fat-cli:$version"
+
+    val testlib
+        get() = "$group:protodata-testlib:$version"
 
     /**
      * An env variable storing a custom [version].
