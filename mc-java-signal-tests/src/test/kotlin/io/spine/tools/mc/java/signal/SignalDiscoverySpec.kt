@@ -40,10 +40,12 @@ import io.spine.protodata.matches
 import io.spine.protodata.toMessageType
 import io.spine.tools.mc.java.WithTypeList
 import java.nio.file.Path
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-internal class SignalDiscoverySpec: SignalPluginTest() {
+@DisplayName("`SignalDiscovery` should")
+internal class SignalDiscoverySpec : SignalPluginTest() {
 
     @Test
     fun `discover all signals`(
