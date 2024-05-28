@@ -35,5 +35,9 @@ import io.spine.protodata.MessageType
  */
 @GeneratedMixin
 public interface WithTypeList: Message {
+
+    /**
+     * Returns the list of gathered message types.
+     */
     public fun getTypeList(): List<MessageType>
 }

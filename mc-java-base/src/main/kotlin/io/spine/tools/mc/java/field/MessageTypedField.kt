@@ -66,7 +66,7 @@ import org.intellij.lang.annotations.Language
  *   4. Exposes nested message fields through the instance methods which append the name of the
  *   requested field to the enclosed field path.
  *
- * The created class is then places under the [Field][FieldClassFactory.CLASS_NAME] class, which,
+ * The created class is then placed under the [Field][FieldClassFactory.CLASS_NAME] class, which,
  * in turn, is nested under corresponding Java message class to which the field belongs.
  *
  * @param fieldType
