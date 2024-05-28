@@ -91,7 +91,7 @@ internal class GroupedMessageRendererSpec {
         private fun createSettings(projectDir: Path): GroupSettings {
             val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
             val codegenOptions = CodegenConfig(project)
-            codegenOptions.forMessage("given.signals.Student") {
+            codegenOptions.forMessage("given.groups.Student") {
                 it.markFieldsAs(CustomField::class.java.canonicalName)
             }
             return codegenOptions.toProto().groupSettings
