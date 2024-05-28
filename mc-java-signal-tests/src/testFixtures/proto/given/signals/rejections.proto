@@ -85,4 +85,3 @@ message RejectionWithRepeatedField {
 message RejectionWithMapField {
     map<int32, int32> map = 1;
 }
-
