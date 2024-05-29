@@ -30,8 +30,8 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.base.EventMessage
+import io.spine.string.count
 import io.spine.protodata.java.reference
-import io.spine.protodata.renderer.SourceFileSet
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll

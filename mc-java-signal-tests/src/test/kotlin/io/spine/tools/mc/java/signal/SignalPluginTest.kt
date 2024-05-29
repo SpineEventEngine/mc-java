@@ -109,24 +109,3 @@ internal abstract class SignalPluginTest {
  * Creates [FilePattern] corresponding to this [MessageFile] type.
  */
 internal fun MessageFile.pattern(): FilePattern = suffix(suffix())
-
-/**
- * Counts a number of times the given [substring] appears in this one.
- *
- * @param substring
- *         the substring to look for in this one.
- */
-internal fun String.count(substring: String): Int {
-    var count = 0
-    var startIndex = 0
-    while (startIndex < length) {
-        val index = indexOf(substring, startIndex)
-        if (index >= 0) {
-            count++
-            startIndex = index + substring.length
-        } else {
-            break
-        }
-    }
-    return count
-}
