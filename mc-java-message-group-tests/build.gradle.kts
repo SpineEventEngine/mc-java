@@ -45,9 +45,7 @@ dependencies {
     arrayOf(
         project(":mc-java-base"),
         project(":mc-java-message-group"),
-        gradleTestKit(),
-        Spine.testlib,
-        ProtoData.testlib
+        testFixtures(project(":mc-java-base"))
     ).forEach {
         testImplementation(it)
     }

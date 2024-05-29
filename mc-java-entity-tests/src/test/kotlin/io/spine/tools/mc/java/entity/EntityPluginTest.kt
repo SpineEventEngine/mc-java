@@ -24,29 +24,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+package io.spine.tools.mc.java.entity
 
-plugins {
-    id("com.google.protobuf")
-    `java-test-fixtures`
-    prototap
-}
+import io.spine.tools.mc.java.PluginTestSetup
+import io.spine.tools.mc.java.settings.Entities
+import java.nio.file.Path
 
-dependencies {
-    arrayOf(
-        Spine.base,
-        Validation.runtime
-    ).forEach {
-        testFixturesImplementation(it)
-    }
+/**
+ * Abstract base for suites testing [EntityPlugin] parts.
+ */
+@Suppress("UtilityClassWithPublicConstructor")
+abstract class EntityPluginTest {
 
-    arrayOf(
-        project(":mc-java-base"),
-        project(":mc-java-signal"),
-        testFixtures(project(":mc-java-base")),
-    ).forEach {
-        testImplementation(it)
+    companion object : PluginTestSetup<Entities>(
+        EntityPlugin(),
+        EntityPlugin.SETTINGS_ID
+    ) {
+        @JvmStatic
+        override fun createSettings(projectDir: Path): Entities {
+            val codegenConfig = createCodegenConfig(projectDir)
+            return codegenConfig.toProto().entities
+        }
     }
 }

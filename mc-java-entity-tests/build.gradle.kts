@@ -1,3 +1,7 @@
+import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
+
 /*
  * Copyright 2024, TeamDev. All rights reserved.
  *
@@ -24,10 +28,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
-
 plugins {
     id("com.google.protobuf")
     `java-test-fixtures`
@@ -44,8 +44,11 @@ dependencies {
 
     arrayOf(
         project(":mc-java-base"),
-        project(":mc-java-signal"),
-        testFixtures(project(":mc-java-base")),
+        project(":mc-java-entity"),
+//        gradleTestKit(),
+//        Spine.testlib,
+//        ProtoData.testlib,
+        testFixtures(project(":mc-java-base"))
     ).forEach {
         testImplementation(it)
     }

@@ -53,7 +53,7 @@ internal class SignalDiscoverySpec : SignalPluginTest() {
         @TempDir outputDir: Path,
         @TempDir settingsDir: Path
     ) {
-        val signalSettings = createSignalSettings(projectDir)
+        val signalSettings = createSettings(projectDir)
         val setup = setup(outputDir, settingsDir, signalSettings)
         val (pipeline, blackbox) = setup.createPipelineWithBlackBox()
 

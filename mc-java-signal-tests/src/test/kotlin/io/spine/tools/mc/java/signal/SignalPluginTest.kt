@@ -29,17 +29,9 @@ package io.spine.tools.mc.java.signal
 import io.spine.base.MessageFile
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory.suffix
-import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.settings.Format
-import io.spine.protodata.settings.SettingsDirectory
-import io.spine.protodata.testing.PipelineSetup
-import io.spine.protodata.testing.PipelineSetup.Companion.byResources
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.SignalSettings
-import io.spine.type.toJson
 import java.nio.file.Path
-import org.gradle.testfixtures.ProjectBuilder
 
 /**
  * The abstract base for test suites of the Signal Plugin.
@@ -47,60 +39,20 @@ import org.gradle.testfixtures.ProjectBuilder
 @Suppress("UtilityClassWithPublicConstructor")
 internal abstract class SignalPluginTest {
 
-    companion object {
-
+    companion object : PluginTestSetup<SignalSettings>(
+        SignalPlugin(),
+        SignalPlugin.SETTINGS_ID
+    ) {
         const val FIELD_CLASS_SIGNATURE = "public static final class Field"
 
         /**
          * Creates an instance of [SignalSettings] as if it was created by McJava added to
          * a Gradle project.
          */
-        fun createSignalSettings(projectDir: Path): SignalSettings {
-            val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
-            // This mimics the call `McJavaOptions` perform on `injectProject`.
-            val codegenOptions = CodegenConfig(project)
-            return codegenOptions.toProto().signalSettings
-        }
-
-        /**
-         * Creates an instance of [PipelineSetup] with the given parameters.
-         *
-         * [settings] will be written to the [settingsDir] before creation of
-         * a [Pipeline][io.spine.protodata.backend.Pipeline].
-         */
-        fun setup(outputDir: Path, settingsDir: Path, settings: SignalSettings): PipelineSetup {
-            val setup = byResources(
-                listOf(
-                    SignalPlugin(),
-                    // We want to be able to see the code in debug with human eyes. Mercy!..
-                    JavaCodeStyleFormatterPlugin()
-                ),
-                outputDir,
-                settingsDir
-            ) {
-                writeSettings(it, settings)
-            }
-            return setup
-        }
-
-        private fun writeSettings(settings: SettingsDirectory, signalSettings: SignalSettings) {
-            settings.write(
-                SignalPlugin.SETTINGS_ID,
-                Format.PROTO_JSON,
-                signalSettings.toJson()
-            )
-        }
-
-        fun runPipelineWithDefaultSettings(
-            projectDir: Path,
-            outputDir: Path,
-            settingsDir: Path
-        ): SourceFileSet {
-            val signalSettings = createSignalSettings(projectDir)
-            val setup = setup(outputDir, settingsDir, signalSettings)
-            val pipeline = setup.createPipeline()
-            pipeline()
-            return setup.sourceFileSet
+        @JvmStatic
+        override fun createSettings(projectDir: Path): SignalSettings {
+            val codegenConfig = createCodegenConfig(projectDir)
+            return codegenConfig.toProto().signalSettings
         }
     }
 }
