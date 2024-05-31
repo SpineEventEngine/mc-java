@@ -31,7 +31,6 @@ import io.spine.string.Indent.Companion.defaultJavaIndent
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -59,7 +58,6 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
     }
 
     @Test
-//    @Disabled("Until we find out why Spine options are not included into descriptors.")
     fun `contain nested 'Column' class`() {
         val decl = defaultJavaIndent.toString() + "public static final class Column"
         entityStateCode shouldContain decl
