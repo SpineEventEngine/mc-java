@@ -26,7 +26,7 @@
 
 syntax = "proto3";
 
-package given.entity;
+package given.entities;
 
 import "spine/options.proto";
 
@@ -40,9 +40,9 @@ message EmployeeId {
 }
 
 message Employee {
-    option (.entity).kind = AGGREGATE;
+    option (entity).kind = AGGREGATE;
     EmployeeId id = 1;
-    string name = 2 [(required) = true];
+    string name = 2 [(required) = true, (column) = true];
 }
 
 message DepartmentId {
@@ -50,17 +50,17 @@ message DepartmentId {
 }
 
 message Department {
-    option (.entity).kind = AGGREGATE;
+    option (entity).kind = AGGREGATE;
     DepartmentId id = 1;
-    string name = 2 [(required) = true];
-    string description = 3;
-    Employee manager = 4 [(required) = true];
+    string name = 2 [(required) = true, (column) = true];
+    string description = 3 [(column) = true];
+    Employee manager = 4 [(required) = true, (column) = true];
     repeated Employee staff = 5;
 }
 
 message Organization {
-    option (.entity).kind = PROJECTION;
+    option (entity).kind = PROJECTION;
     string id = 1;
-    string name = 2 [(required) = true];
+    string name = 2 [(required) = true, (column) = true];
     repeated Department department = 3 [(required) = true];
 }
