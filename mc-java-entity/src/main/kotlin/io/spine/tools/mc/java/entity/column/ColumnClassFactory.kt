@@ -72,11 +72,6 @@ internal class ColumnClassFactory(
     companion object {
 
         /**
-         * The name of the created class.
-         */
-        const val CLASS_NAME = "Column"
-
-        /**
          * The name of the method for obtaining all the columns.
          *
          * We use `buildString` instead of a plain literal to avoid the `Missing identifier`

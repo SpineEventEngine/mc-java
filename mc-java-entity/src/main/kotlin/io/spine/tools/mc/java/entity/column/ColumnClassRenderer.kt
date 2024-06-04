@@ -33,8 +33,8 @@ import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named [Columns][ColumnClassFactory.CLASS_NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
+ * Renders classes named [Columns][io.spine.tools.mc.java.entity.EntityPlugin.COLUMN_CLASS_NAME]
+ * which are nested into [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
  * @see ColumnClassFactory
