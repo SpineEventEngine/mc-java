@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiMethod
-import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
