@@ -32,17 +32,16 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.protodata.renderer.SourceFile
 import io.spine.string.Indent.Companion.defaultJavaIndent
-import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
+import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.psi.java.locate
-import io.spine.tools.psi.java.method
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("Generated 'Column' class should")
@@ -81,7 +80,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
     }
 
     @Test
-    fun `nested under entity state class`() {
+    fun `nested under the entity state class`() {
         columnClass() shouldNotBe null
     }
 
@@ -94,14 +93,15 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
     @Test
     fun `expose methods for columns`() {
         val columnClass = columnClass()!!
+        columnClass.run {
+            // See that we have methods for columns.
+            assertHasMethod("name")
+            assertHasMethod("description")
+            assertHasMethod("manager")
 
-        // See that we have methods for columns.
-        assertDoesNotThrow { columnClass.method("name") }
-        assertDoesNotThrow { columnClass.method("description") }
-        assertDoesNotThrow { columnClass.method("manager") }
-
-        // See that we don't have methods for other fields.
-        assertThrows<IllegalStateException> { columnClass.method("id") }
-        assertThrows<IllegalStateException> { columnClass.method("staff") }
+            // See that we don't have methods for other fields.
+            assertDoesNotHaveMethod("id")
+            assertDoesNotHaveMethod("staff")
+        }
     }
 }

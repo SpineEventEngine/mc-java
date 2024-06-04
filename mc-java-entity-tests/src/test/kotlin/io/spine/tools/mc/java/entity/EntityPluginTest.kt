@@ -26,9 +26,14 @@
 
 package io.spine.tools.mc.java.entity
 
+import com.intellij.psi.PsiClass
+import io.spine.base.EntityState
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Entities
+import io.spine.tools.psi.java.method
 import java.nio.file.Path
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 
 /**
  * Abstract base for suites testing [EntityPlugin] parts.
@@ -45,5 +50,23 @@ abstract class EntityPluginTest {
             val codegenConfig = createCodegenConfig(projectDir)
             return codegenConfig.toProto().entities
         }
+    }
+}
+
+/**
+ * Asserts that this class has a method with the given name.
+ */
+internal fun PsiClass.assertHasMethod(name: String) {
+    assertDoesNotThrow {
+        method(name)
+    }
+}
+
+/**
+ * Asserts that this class does not have a method with the given name.
+ */
+internal fun PsiClass.assertDoesNotHaveMethod(name: String) {
+    assertThrows<IllegalStateException> {
+        method(name)
     }
 }
