@@ -37,7 +37,7 @@ import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a nested class called [`Field`][CLASS_NAME] under a Java class generated for
+ * Creates a nested class called [`Field`][NAME] under a Java class generated for
  * the given message [type].
  *
  * @param type
@@ -46,17 +46,17 @@ import org.intellij.lang.annotations.Language
  *         the class name for the supertype of generated nested field classes, e.g.,
  *         [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
  */
-public class FieldClassFactory(
+public class FieldClass(
     type: MessageType,
     private val fieldSupertype: ClassName,
     typeSystem: TypeSystem
-) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, NAME, typeSystem) {
 
     public companion object {
         /**
          * The name of the class generated Java class.
          */
-        public const val CLASS_NAME: String = "Field"
+        public const val NAME: String = "Field"
     }
 
     @Language("JAVA") @Suppress("EmptyClass")

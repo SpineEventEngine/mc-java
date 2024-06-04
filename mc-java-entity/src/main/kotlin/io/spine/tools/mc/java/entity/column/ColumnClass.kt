@@ -35,7 +35,7 @@ import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
+import io.spine.tools.mc.java.entity.column.ColumnClass.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
 import java.lang.String.format
@@ -61,12 +61,11 @@ import org.intellij.lang.annotations.Language
  *         the type system used for resolving field types.
  * @see render
  */
-internal class ColumnClassFactory(
+internal class ColumnClass(
     type: MessageType,
     typeSystem: TypeSystem
 ) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
 
-    private val columnClass = cls
     private val columns: List<Field> = type.columns
 
     companion object {
@@ -99,14 +98,14 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(messageClass, column, columnClass, typeSystem)
-            columnClass.addLast(accessor.method())
+            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem)
+            cls.addLast(accessor.method())
         }
     }
 
     private fun addDefinitionsMethod() {
         val method = DefinitionsMethod().create()
-        columnClass.addLast(method)
+        cls.addLast(method)
     }
 
     /**
@@ -156,7 +155,7 @@ internal class ColumnClassFactory(
         }
 
         fun create(): PsiMethod {
-            val method = elementFactory.createMethodFromText(methodText, columnClass)
+            val method = elementFactory.createMethodFromText(methodText, cls)
             return method
         }
     }

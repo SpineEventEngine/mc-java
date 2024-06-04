@@ -65,5 +65,17 @@ public class EntityPlugin : Plugin {
          */
         @VisibleForTesting
         public val COLUMN_CLASS_NAME: String = "Column"
+
+        /**
+         * The name of the `Query` class generated under an entity state.
+         */
+        @VisibleForTesting
+        public val QUERY_CLASS_NAME: String = "Query"
+
+        /**
+         * The name of the `QueryBuilder` class generated under an entity state.
+         */
+        @VisibleForTesting
+        public val QUERY_BUILDER_CLASS_NAME: String = "QueryBuilder"
     }
 }

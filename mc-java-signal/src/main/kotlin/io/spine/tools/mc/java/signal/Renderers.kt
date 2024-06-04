@@ -34,7 +34,7 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.WithTypeList
-import io.spine.tools.mc.java.field.FieldClassFactory
+import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
@@ -68,8 +68,8 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         execute {
-            val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
-            factory.render(sourceFile)
+            val cls = FieldClass(type, fieldSupertype, typeSystem!!)
+            cls.render(sourceFile)
         }
     }
 }

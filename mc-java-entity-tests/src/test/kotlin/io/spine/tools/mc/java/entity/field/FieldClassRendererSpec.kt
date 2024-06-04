@@ -34,7 +34,7 @@ import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.mc.java.entity.innerClass
-import io.spine.tools.mc.java.field.FieldClassFactory.Companion.CLASS_NAME
+import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -69,12 +69,12 @@ internal class FieldClassRendererSpec : EntityPluginTest() {
             psiFile = sourceFile.psi() as PsiJavaFile
         }
 
-        fun fieldClass() = psiFile.locate(ENTITY_STATE, CLASS_NAME)
+        fun fieldClass() = psiFile.locate(ENTITY_STATE, NAME)
     }
 
     @Test
     fun `be 'public', 'static', and 'final'`() {
-        val decl = defaultJavaIndent.toString() + "public static final class $CLASS_NAME"
+        val decl = defaultJavaIndent.toString() + "public static final class $NAME"
         entityStateCode shouldContain decl
     }
 

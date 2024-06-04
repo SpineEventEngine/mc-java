@@ -37,15 +37,15 @@ import io.spine.tools.psi.java.execute
  * which are nested into [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see ColumnClassFactory
+ * @see ColumnClass
  */
 internal class ColumnClassRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {
             execute {
-                val factory = ColumnClassFactory(type, typeSystem!!)
-                factory.render(sourceFile)
+                val cls = ColumnClass(type, typeSystem!!)
+                cls.render(sourceFile)
             }
         }
     }

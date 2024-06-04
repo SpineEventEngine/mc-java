@@ -43,7 +43,7 @@ import org.intellij.lang.annotations.Language
 /**
  * Abstract base for generating a method accessing a message field via a generated `Field` class.
  *
- * @see FieldClassFactory
+ * @see FieldClass
  */
 internal abstract class FieldAccessor(
     /**
