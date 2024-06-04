@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.entity
 
 import com.intellij.psi.PsiClass
-import io.spine.base.EntityState
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.method
@@ -69,4 +68,21 @@ internal fun PsiClass.assertDoesNotHaveMethod(name: String) {
     assertThrows<IllegalStateException> {
         method(name)
     }
+}
+
+/**
+ * Obtains an inner class with the given name.
+ *
+ * The class is immediately inner to this one.
+ * Base classes for this one are not searched.
+ *
+ * @throws IllegalStateException
+ *          if the inner class was not found.
+ * @see PsiClass.findInnerClassByName
+ */
+internal fun PsiClass.innerClass(name: String): PsiClass {
+    val innerClass = findInnerClassByName(name, false)
+    return innerClass ?: error(
+        "The class `$qualifiedName` does not have an inner class `$name`."
+    )
 }
