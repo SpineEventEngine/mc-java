@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -35,7 +35,7 @@ import io.spine.protodata.columns
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.NestedUnderMessage
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
@@ -43,7 +43,7 @@ import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a class called [Column][CLASS_NAME] and nests it under an entity state class.
+ * Creates a class called [Column][COLUMN_CLASS_NAME] and nests it under an entity state class.
  *
  * The class provides API for obtaining columns for given `EntityState` [type].
  * The `Column` class is `public static` and stateless.
@@ -65,12 +65,12 @@ import org.intellij.lang.annotations.Language
 internal class ColumnClassFactory(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
 
     private val columnClass = cls
     private val columns: List<Field> = type.columns
 
-    companion object: WithLogging {
+    companion object {
 
         /**
          * The name of the created class.
