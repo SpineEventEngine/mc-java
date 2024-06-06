@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -55,17 +55,10 @@ internal class EntityDiscovery : Policy<TypeDiscovered>(), EntityPluginComponent
         loadSettings()
     }
 
-    /**
-     * The names of the message options that make those messages entity types.
-     */
-    private val options: List<String> by lazy {
-        settings.optionList.map { it.name }
-    }
-
     @React
     override fun whenever(@External event: TypeDiscovered): Iterable<EntityStateDiscovered> {
-        val typeOptions = event.type.optionList.map { it.name }
-        if (typeOptions.any { it in options }) {
+        val isEntityState = event.type.isEntityState(settings)
+        if (isEntityState) {
             return listOf(entityStateDiscovered {
                 name = event.type.name
                 file = event.file

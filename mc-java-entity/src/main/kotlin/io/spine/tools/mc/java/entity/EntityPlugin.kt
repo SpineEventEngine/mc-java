@@ -33,6 +33,7 @@ import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
 import io.spine.tools.mc.java.entity.column.ColumnClassRenderer
 import io.spine.tools.mc.java.entity.field.FieldClassRenderer
+import io.spine.tools.mc.java.entity.query.QuerySupportRenderer
 
 /**
  * A ProtoData plugin responsible for handling code generation aspects related to
@@ -50,7 +51,8 @@ public class EntityPlugin : Plugin {
 
     override fun renderers(): List<Renderer<*>> = listOf(
         ColumnClassRenderer(),
-        FieldClassRenderer()
+        FieldClassRenderer(),
+        QuerySupportRenderer()
     )
 
     public companion object {

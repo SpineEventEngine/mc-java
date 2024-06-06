@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,13 +28,13 @@ package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.code.manifest.Version
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
@@ -43,7 +43,7 @@ import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
 import io.spine.tools.psi.java.topLevelClass
-import org.intellij.lang.annotations.Language
+import org.gradle.kotlin.dsl.provideDelegate
 
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
@@ -103,6 +103,19 @@ public abstract class NestedUnderMessage(
     protected abstract fun classJavadoc(): String
 
     /**
+     * Creates the constructor for the class.
+     *
+     * Default implementation creates a parameterless private constructor.
+     */
+    protected open fun createConstructor(cls: PsiClass): PsiMethod {
+        val ctor = elementFactory.createPrivateConstructor(
+            cls,
+            javadocLine = "Prevents instantiation of this class."
+        )
+        return ctor
+    }
+
+    /**
      * Adds a nested class the top class of the given [file].
      *
      * @param file
@@ -130,23 +143,14 @@ public abstract class NestedUnderMessage(
 
     private fun PsiClass.commonSetup() {
         makePublic().makeStatic().makeFinal()
-        val ctor = elementFactory.createPrivateConstructor(
-            this,
-            javadocLine = "Prevents instantiation of this class."
-        )
+        val ctor = createConstructor(this)
         addLast(ctor)
         addAnnotation()
         addClassJavadoc()
     }
 
     private fun PsiClass.addAnnotation() {
-        val version = Version.fromManifestOf(this::class.java).value
-        @Language("JAVA") @Suppress("EmptyClass")
-        val annotation = elementFactory.createAnnotationFromText(
-            """
-            @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
-            """.trimIndent(), null
-        )
+        val annotation = GeneratedAnnotation.create()
         addFirst(annotation)
     }
 
