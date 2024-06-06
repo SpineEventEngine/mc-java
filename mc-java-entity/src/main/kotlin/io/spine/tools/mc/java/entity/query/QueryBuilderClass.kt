@@ -113,13 +113,13 @@ internal class QueryBuilderClass(
     }
 
     private fun PsiClass.addIdMethod() {
-        val idColumn = IdColumn(
+        val idMethod = IdMethod(
             entityStateClass,
             queryBuilderClass = this,
             methodName = idField.name.javaCase(),
             idType,
         )
-        idColumn.render()
+        idMethod.render()
     }
 
     private fun PsiClass.addColumnsMethod() {

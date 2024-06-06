@@ -46,7 +46,7 @@ import org.intellij.lang.annotations.Language
  * @param idType
  *         the name of entity state identifier type.
  */
-internal class IdColumn(
+internal class IdMethod(
     private val entityStateClass: ClassName,
     private val queryBuilderClass: PsiClass,
     private val methodName: String,
