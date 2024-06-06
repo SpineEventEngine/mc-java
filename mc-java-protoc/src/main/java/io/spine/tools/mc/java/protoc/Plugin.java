@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -31,12 +31,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
-import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.message.BuilderGen;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
 import io.spine.tools.mc.java.protoc.message.NestedClassGen;
 import io.spine.tools.mc.java.protoc.method.MethodGen;
-import io.spine.tools.mc.java.protoc.query.EntityQueryGen;
+import io.spine.tools.mc.java.settings.CodegenSettings;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -78,8 +77,8 @@ public final class Plugin {
                 InterfaceGen.instance(config),
                 MethodGen.instance(config),
                 new BuilderGen(),
-                NestedClassGen.instance(config),
-                EntityQueryGen.instance(config)
+                NestedClassGen.instance(config)
+                //EntityQueryGen.instance(config)
                 //FieldGen.instance(config)
         );
         var response = generator.process(request);
