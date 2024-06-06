@@ -137,7 +137,7 @@ internal class MessageTypedField(
     private fun PsiClass.addFieldMethods() {
         fieldType.fieldList.forEach {
             val accessor = NestedFieldAccessor(it, fieldSupertype, typeSystem)
-            add(accessor.method())
+            addLast(accessor.method())
         }
     }
 
