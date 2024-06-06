@@ -26,23 +26,29 @@
 
 package io.spine.tools.mc.java.entity.query
 
+import com.intellij.lang.jvm.JvmModifier.PROTECTED
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.java.reference
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.THIS_REF_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.DEPARTMENT_JAVA
 import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runWithDefaultSettings
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.mc.java.entity.file
+import io.spine.tools.psi.java.isPublic
+import io.spine.tools.psi.java.method
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("Generated `QueryBuilder` class should")
@@ -104,6 +110,31 @@ internal class QueryBuilderClassSpec {
 
             // See that we don't have methods for other fields.
             assertDoesNotHaveMethod("staff")
+        }
+    }
+
+    @Test
+    fun `implement 'thisRef' method`() {
+        val method = assertDoesNotThrow {
+            queryBuilderClass()!!.method(THIS_REF_METHOD_NAME)
+        }
+        method.run {
+            annotations.size shouldBe 1
+            annotations[0].qualifiedName shouldBe Override::class.reference
+            hasModifier(PROTECTED) shouldBe true
+        }
+    }
+
+    @Test
+    fun `implement 'build' method`() {
+        val method = assertDoesNotThrow {
+            queryBuilderClass()!!.method(BUILD_METHOD_NAME)
+        }
+        method.run {
+            annotations.size shouldBe 1
+            annotations[0].qualifiedName shouldBe Override::class.reference
+            isPublic shouldBe true
+            docComment shouldNotBe null
         }
     }
 }

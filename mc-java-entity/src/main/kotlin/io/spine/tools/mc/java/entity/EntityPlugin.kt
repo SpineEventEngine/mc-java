@@ -88,9 +88,20 @@ public class EntityPlugin : Plugin {
 
         /**
          * The name of the `definitions()` method of a `Column` class for
-         * obtaining all the columns.
+         * obtaining all the columns of an entity state.
          */
         @VisibleForTesting
         public const val DEFINITIONS_METHOD_NAME: String = "definitions"
+
+        /**
+         * The name of the `thisRef()` method of a `QueryBuilder` class.
+         */
+        @VisibleForTesting
+        public const val THIS_REF_METHOD_NAME: String = "thisRef"
+
+        /**
+         * The name of the `build()` method of a `QueryBuilder` class.
+         */
+        public const val BUILD_METHOD_NAME: String = "build"
     }
 }

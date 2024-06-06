@@ -131,10 +131,14 @@ internal class QueryBuilderClass(
     }
 
     private fun PsiClass.addThisRefMethod() {
-        //TODO("Not yet implemented")
+        ThisRefMethod(queryBuilder = this).run {
+            render()
+        }
     }
 
     private fun PsiClass.addBuildMethod() {
-        //TODO("Not yet implemented")
+        BuildMethod(queryBuilder = this).run {
+            render()
+        }
     }
 }
