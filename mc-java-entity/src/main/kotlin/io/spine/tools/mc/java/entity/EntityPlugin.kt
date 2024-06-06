@@ -85,5 +85,12 @@ public class EntityPlugin : Plugin {
          */
         @VisibleForTesting
         public const val QUERY_METHOD_NAME: String = "query"
+
+        /**
+         * The name of the `definitions()` method of a `Column` class for
+         * obtaining all the columns.
+         */
+        @VisibleForTesting
+        public const val DEFINITIONS_METHOD_NAME: String = "definitions"
     }
 }

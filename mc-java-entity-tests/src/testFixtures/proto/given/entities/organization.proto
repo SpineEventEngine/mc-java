@@ -45,13 +45,15 @@ message Employee {
     string name = 2 [(required) = true, (column) = true];
 }
 
-message DepartmentId {
+message DepartmentKey {
     string uuid = 1;
 }
 
 message Department {
     option (entity).kind = AGGREGATE;
-    DepartmentId id = 1;
+    // We deliberately name this ID field with unusual name to test the generation of
+    // the methods for working with this field.
+    DepartmentKey key = 1;
     string name = 2 [(required) = true, (column) = true];
     string description = 3 [(column) = true];
     Employee manager = 4 [(required) = true, (column) = true];

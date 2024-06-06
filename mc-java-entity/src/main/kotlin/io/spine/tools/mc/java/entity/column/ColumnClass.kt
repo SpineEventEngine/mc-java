@@ -35,7 +35,7 @@ import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
-import io.spine.tools.mc.java.entity.column.ColumnClass.Companion.DEFINITIONS_METHOD
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
 import java.lang.String.format
@@ -52,7 +52,7 @@ import org.intellij.lang.annotations.Language
  * Since the `Column` class is not meant to be instantiated, a private parameterless
  * constructor is generated.
  *
- * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
+ * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD_NAME]
  * for obtaining all the columns is also generated.
  *
  * @param type
@@ -67,19 +67,6 @@ internal class ColumnClass(
 ) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
 
     private val columns: List<Field> = type.columns
-
-    companion object {
-
-        /**
-         * The name of the method for obtaining all the columns.
-         *
-         * We use `buildString` instead of a plain literal to avoid the `Missing identifier`
-         * warning in IDEA.
-         */
-        val DEFINITIONS_METHOD = buildString {
-            append("definitions")
-        }
-    }
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """
@@ -109,7 +96,7 @@ internal class ColumnClass(
     }
 
     /**
-     * Method object for creating [definitions][DEFINITIONS_METHOD] method.
+     * Method object for creating [definitions][DEFINITIONS_METHOD_NAME] method.
      */
     private inner class DefinitionsMethod {
 
@@ -145,7 +132,7 @@ internal class ColumnClass(
             /**
              * Returns all the column definitions of $messageJavadocRef.
              */
-            public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD() {
+            public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD_NAME() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();
               %s
               return $resultSet.copyOf($accumulator);

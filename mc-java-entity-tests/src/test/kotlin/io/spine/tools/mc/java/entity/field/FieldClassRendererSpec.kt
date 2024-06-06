@@ -27,8 +27,10 @@
 package io.spine.tools.mc.java.entity.field
 
 import com.intellij.psi.PsiJavaFile
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
+import io.spine.protodata.java.reference
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.assertHasMethod
@@ -37,6 +39,7 @@ import io.spine.tools.mc.java.entity.innerClass
 import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
+import javax.annotation.Generated
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -83,7 +86,7 @@ internal class FieldClassRendererSpec : EntityPluginTest() {
     fun `provide methods for accessing fields`() {
         val fieldClass = fieldClass()!!
         fieldClass.run {
-            assertHasMethod("id")
+            assertHasMethod("key")
             assertHasMethod("name")
             assertHasMethod("description")
             assertHasMethod("manager")
@@ -94,12 +97,20 @@ internal class FieldClassRendererSpec : EntityPluginTest() {
     @Test
     fun `provide nested classes for fields with message types`() {
         val fieldClass = fieldClass()!!
-        fieldClass.innerClass("DepartmentIdField").run {
+        fieldClass.innerClass("DepartmentKeyField").run {
             assertHasMethod("uuid")
         }
         fieldClass.innerClass("EmployeeField").run {
             assertHasMethod("id")
             assertHasMethod("name")
+        }
+    }
+
+    @Test
+    fun `be annotated as 'Generated'`() {
+        fieldClass()!!.run {
+            annotations.size shouldBe 1
+            annotations[0].qualifiedName shouldBe Generated::class.reference
         }
     }
 }

@@ -42,12 +42,12 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`QueryClass` should")
+@DisplayName("Generated `Query` class should")
 internal class QueryClassSpec : EntityPluginTest() {
 
     companion object {
 
-        private lateinit var enityStateClass: PsiClass
+        private lateinit var entityStateClass: PsiClass
 
         @BeforeAll
         @JvmStatic
@@ -59,22 +59,22 @@ internal class QueryClassSpec : EntityPluginTest() {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
             val psiFile = sourceFile.psi() as PsiJavaFile
-            enityStateClass = psiFile.topLevelClass
+            entityStateClass = psiFile.topLevelClass
         }
 
-        fun queryClass(): PsiClass? = enityStateClass.findInnerClassByName(QUERY_CLASS_NAME, false)
+        fun queryClass(): PsiClass? = entityStateClass.findInnerClassByName(QUERY_CLASS_NAME, false)
     }
 
     @Test
-    fun `generate the 'Query' class`() {
+    fun `be nested under the entity state`() {
         queryClass() shouldNotBe null
     }
 
     @Test
-    fun `annotate the class as 'Generated'`() {
-        queryClass()!!.annotations.run {
-            size shouldBe 1
-            get(0).qualifiedName shouldBe Generated::class.reference
+    fun `be annotated as 'Generated'`() {
+        queryClass()!!.run {
+            annotations.size shouldBe 1
+            annotations[0].qualifiedName shouldBe Generated::class.reference
         }
     }
 }
