@@ -29,11 +29,9 @@ package io.spine.tools.mc.java.entity.query
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.javaType
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityQueryBuilder
-import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.idField
@@ -51,14 +49,8 @@ import org.intellij.lang.annotations.Language
 internal class QueryBuilderClass(
     type: MessageType,
     typeSystem: TypeSystem,
-    private val settings: Entities
-) : NestedUnderMessage(type, QUERY_BUILDER_CLASS_NAME, typeSystem) {
-
-    /**
-     * The simple name of the entity state type which is equivalent of
-     * the simple class name for the generated Java class.
-     */
-    private val stateType = type.name.simpleName
+    settings: Entities
+) : QuerySupportClass(QUERY_BUILDER_CLASS_NAME, type, typeSystem, settings) {
 
     /**
      * The value used for brevity when referencing in the generated code.
@@ -73,14 +65,6 @@ internal class QueryBuilderClass(
          * @see $query
          */       
         """.trimIndent()
-
-    /**
-     * The type of the [first][idField] entity state type field.
-     */
-    private val idType: String by lazy {
-        val idField = type.idField(settings)
-        idField.javaType(typeSystem)
-    }
 
     /**
      * Creates the private constructor which calls `super()` with two parameters:

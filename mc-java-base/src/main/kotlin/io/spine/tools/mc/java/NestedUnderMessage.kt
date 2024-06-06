@@ -61,7 +61,7 @@ public abstract class NestedUnderMessage(
 ) : WithLogging {
 
     /**
-     * The product of the factory.
+     * The product of the code generator.
      */
     protected val cls: PsiClass by lazy {
         createClass()

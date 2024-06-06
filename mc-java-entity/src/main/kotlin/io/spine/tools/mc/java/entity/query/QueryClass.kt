@@ -29,8 +29,11 @@ package io.spine.tools.mc.java.entity.query
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.javaType
 import io.spine.protodata.java.reference
+import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityQuery
 import io.spine.tools.mc.java.NestedUnderMessage
@@ -51,14 +54,8 @@ import org.intellij.lang.annotations.Language
 internal class QueryClass(
     type: MessageType,
     typeSystem: TypeSystem,
-    private val settings: Entities
-) : NestedUnderMessage(type, QUERY_CLASS_NAME, typeSystem) {
-
-    /**
-     * The simple name of the entity state type which is equivalent of
-     * the simple class name for the generated Java class.
-     */
-    private val stateType = type.name.simpleName
+    settings: Entities
+) : QuerySupportClass(QUERY_CLASS_NAME, type, typeSystem, settings) {
 
     /**
      * The value used for brevity when referencing in the generated code.
@@ -98,8 +95,6 @@ internal class QueryClass(
      * 3) The generated [QueryBuilder][QUERY_BUILDER_CLASS_NAME] class.
      */
     override fun tuneClass() {
-        val idField = type.idField(settings)
-        val idType = idField.javaType(typeSystem)
         val superClass = elementFactory.createClassReference(
             cls,
             EntityQuery::class.reference,
