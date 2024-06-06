@@ -24,34 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java.entity.query
 
 import com.intellij.psi.PsiJavaFile
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
-import io.spine.protodata.renderer.SourceFile
-import io.spine.string.Indent.Companion.defaultJavaIndent
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
-import io.spine.tools.mc.java.entity.assertHasMethod
-import io.spine.tools.mc.java.entity.innerClass
-import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
-import io.spine.tools.psi.java.locate
+import io.spine.tools.psi.java.method
+import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated `Field` class should")
-internal class FieldClassRendererSpec : EntityPluginTest() {
+@DisplayName("`QueryMethod` should")
+internal class QueryMethodSpec : EntityPluginTest() {
 
     companion object {
 
         private const val ENTITY_STATE = "Department"
 
-        lateinit var entityStateCode: String
-        lateinit var sourceFile: SourceFile
         lateinit var psiFile: PsiJavaFile
 
         @BeforeAll
@@ -62,48 +59,19 @@ internal class FieldClassRendererSpec : EntityPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            sourceFile = sourceFileSet.find(
+            val sourceFile = sourceFileSet.find(
                 Path("io/spine/tools/mc/java/entity/given/$ENTITY_STATE.java")
             )?: error("Source file not found.")
-            entityStateCode = sourceFile.code()
             psiFile = sourceFile.psi() as PsiJavaFile
         }
-
-        fun fieldClass() = psiFile.locate(ENTITY_STATE, NAME)
     }
 
     @Test
-    fun `be 'public', 'static', and 'final'`() {
-        val decl = defaultJavaIndent.toString() + "public static final class $NAME"
-        entityStateCode shouldContain decl
-    }
-
-    @Test
-    fun `nested under the entity state class`() {
-        fieldClass() shouldNotBe null
-    }
-
-    @Test
-    fun `provide methods for accessing fields`() {
-        val fieldClass = fieldClass()!!
-        fieldClass.run {
-            assertHasMethod("id")
-            assertHasMethod("name")
-            assertHasMethod("description")
-            assertHasMethod("manager")
-            assertHasMethod("staff")
+    fun `generated the 'query()' method`() {
+        val method = assertDoesNotThrow {
+            psiFile.topLevelClass.method(QUERY_METHOD_NAME)
         }
-    }
-
-    @Test
-    fun `provide nested classes for fields with message types`() {
-        val fieldClass = fieldClass()!!
-        fieldClass.innerClass("DepartmentIdField").run {
-            assertHasMethod("uuid")
-        }
-        fieldClass.innerClass("EmployeeField").run {
-            assertHasMethod("id")
-            assertHasMethod("name")
-        }
+        method.returnType shouldNotBe null
+        method.returnType!!.presentableText shouldBe QUERY_BUILDER_CLASS_NAME
     }
 }

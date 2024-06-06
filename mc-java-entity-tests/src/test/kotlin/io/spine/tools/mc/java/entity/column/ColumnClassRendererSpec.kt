@@ -62,7 +62,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipelineWithDefaultSettings(projectDir, outputDir, settingsDir)
+            val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
             sourceFile = sourceFileSet.find(
                 Path("io/spine/tools/mc/java/entity/given/$ENTITY_STATE.java")
             )?: error("Source file not found.")

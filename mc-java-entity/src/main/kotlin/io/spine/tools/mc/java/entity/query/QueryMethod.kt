@@ -33,6 +33,7 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_METHOD_NAME
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.topLevelClass
@@ -61,10 +62,12 @@ internal class QueryMethod(private val file: SourceFile) : WithLogging {
         doc
     }
 
+    private val methodName = QUERY_METHOD_NAME
+
     private val method by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
-            public static $queryBuilder query() {
+            public static $queryBuilder $methodName() {
                 return new $queryBuilder();
             }            
             """.trimIndent(), entityStateClass
