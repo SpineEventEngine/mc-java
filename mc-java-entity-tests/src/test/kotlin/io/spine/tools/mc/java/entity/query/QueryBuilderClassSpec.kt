@@ -24,21 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.column
+package io.spine.tools.mc.java.entity.query
 
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
 import io.spine.protodata.java.reference
-import io.spine.string.Indent.Companion.defaultJavaIndent
-import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
-import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.DEPARTMENT_JAVA
+import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runWithDefaultSettings
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.mc.java.entity.file
-import io.spine.tools.psi.java.locate
+import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
 import org.junit.jupiter.api.BeforeAll
@@ -46,15 +45,12 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated 'Column' class should")
-internal class ColumnClassRendererSpec : EntityPluginTest() {
+@DisplayName("Generated `QueryBuilder` class should")
+internal class QueryBuilderClassSpec {
 
     companion object {
 
-        private const val ENTITY_STATE = "Department"
-
-        lateinit var entityStateCode: String
-        private lateinit var psiFile: PsiJavaFile
+        private lateinit var entityStateClass: PsiClass
 
         @BeforeAll
         @JvmStatic
@@ -65,57 +61,49 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
-            entityStateCode = sourceFile.code()
-            psiFile = sourceFile.psi() as PsiJavaFile
+            val psiFile = sourceFile.psi() as PsiJavaFile
+            entityStateClass = psiFile.topLevelClass
         }
 
-        fun columnClass() = psiFile.locate(ENTITY_STATE, COLUMN_CLASS_NAME)
+        fun queryBuilderClass(): PsiClass? =
+            entityStateClass.findInnerClassByName(QUERY_BUILDER_CLASS_NAME, false)
     }
 
     @Test
-    fun `be 'public', 'static', and 'final'`() {
-        val decl = defaultJavaIndent.toString() + "public static final class $COLUMN_CLASS_NAME"
-        entityStateCode shouldContain decl
+    fun `be nested under the entity state`() {
+        queryBuilderClass() shouldNotBe null
     }
 
     @Test
-    fun `be nested under the entity state class`() {
-        columnClass() shouldNotBe null
+    fun `be annotated as 'Generated'`() {
+        queryBuilderClass()!!.run {
+            annotations.size shouldBe 1
+            annotations[0].qualifiedName shouldBe Generated::class.reference
+        }
     }
 
     @Test
-    fun `provide 'definitions' method`() {
-        val methods = columnClass()!!.findMethodsByName(DEFINITIONS_METHOD_NAME)
-        methods.size shouldBe 1
+    fun `have the method for working with entity state IDs`() {
+        queryBuilderClass()!!.assertHasMethod("key")
     }
 
     /**
-     * Tests that the `Column` class has methods only for the marked fields.
+     * Tests that the `QueryBuilder` class has methods only for the marked fields.
      *
-     * See also a similar test for generated `QueryBuilder` class.
+     * See also a similar test for generated `Column` class.
      *
-     * @see io.spine.tools.mc.java.entity.query.QueryBuilderClassSpec
+     * @see io.spine.tools.mc.java.entity.column.ColumnClassRendererSpec
      */
     @Test
     fun `expose methods for columns`() {
-        val columnClass = columnClass()!!
-        columnClass.run {
+        queryBuilderClass()!!.run {
             // See that we have methods for columns.
             assertHasMethod("name")
             assertHasMethod("description")
             assertHasMethod("manager")
 
             // See that we don't have methods for other fields.
-            assertDoesNotHaveMethod("key")
             assertDoesNotHaveMethod("staff")
-        }
-    }
-
-    @Test
-    fun `be annotated as 'Generated'`() {
-        columnClass()!!.run {
-            annotations.size shouldBe 1
-            annotations[0].qualifiedName shouldBe Generated::class.reference
         }
     }
 }
