@@ -30,15 +30,14 @@ import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.protodata.renderer.SourceFile
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
+import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
-import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -52,8 +51,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
         private const val ENTITY_STATE = "Department"
 
         lateinit var entityStateCode: String
-        lateinit var sourceFile: SourceFile
-        lateinit var psiFile: PsiJavaFile
+        private lateinit var psiFile: PsiJavaFile
 
         @BeforeAll
         @JvmStatic
@@ -63,9 +61,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/java/entity/given/$ENTITY_STATE.java")
-            )?: error("Source file not found.")
+            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
             entityStateCode = sourceFile.code()
             psiFile = sourceFile.psi() as PsiJavaFile
         }

@@ -32,10 +32,10 @@ import io.kotest.matchers.shouldNotBe
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.method
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
-import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -47,8 +47,6 @@ internal class QueryMethodSpec : EntityPluginTest() {
 
     companion object {
 
-        private const val ENTITY_STATE = "Department"
-
         lateinit var psiFile: PsiJavaFile
 
         @BeforeAll
@@ -59,9 +57,7 @@ internal class QueryMethodSpec : EntityPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/java/entity/given/$ENTITY_STATE.java")
-            )?: error("Source file not found.")
+            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
             psiFile = sourceFile.psi() as PsiJavaFile
         }
     }

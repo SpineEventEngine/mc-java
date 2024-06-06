@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,10 +27,13 @@
 package io.spine.tools.mc.java.entity
 
 import com.intellij.psi.PsiClass
+import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.method
 import java.nio.file.Path
+import kotlin.io.path.Path
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 
@@ -44,12 +47,28 @@ abstract class EntityPluginTest {
         EntityPlugin(),
         EntityPlugin.SETTINGS_ID
     ) {
+
+        /**
+         * The path to the Java file generated for the `Department` entity state.
+         */
+        const val DEPARTMENT_JAVA = "io/spine/tools/mc/java/entity/given/Department.java"
+
         @JvmStatic
         override fun createSettings(projectDir: Path): Entities {
             val codegenConfig = createCodegenConfig(projectDir)
             return codegenConfig.toProto().entities
         }
     }
+}
+
+/**
+ * Locates the file with the given [path] in this source file set.
+ *
+ * @throws IllegalStateException
+ *          if the file was not found.
+ */
+internal fun SourceFileSet.file(path: String): SourceFile {
+    return find(Path(path))?: error("Source file `$path` not found.")
 }
 
 /**

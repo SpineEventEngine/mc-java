@@ -32,25 +32,22 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runWithDefaultSettings
+import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
-import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`QueryClass` should")
-internal class QueryClassSpec {
+internal class QueryClassSpec : EntityPluginTest() {
 
     companion object {
 
-        private const val ENTITY_STATE = "Department"
-
-        lateinit var psiFile: PsiJavaFile
-        lateinit var enityStateClass: PsiClass
+        private lateinit var enityStateClass: PsiClass
 
         @BeforeAll
         @JvmStatic
@@ -60,10 +57,8 @@ internal class QueryClassSpec {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/java/entity/given/$ENTITY_STATE.java")
-            )?: error("Source file not found.")
-            psiFile = sourceFile.psi() as PsiJavaFile
+            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
+            val psiFile = sourceFile.psi() as PsiJavaFile
             enityStateClass = psiFile.topLevelClass
         }
 
