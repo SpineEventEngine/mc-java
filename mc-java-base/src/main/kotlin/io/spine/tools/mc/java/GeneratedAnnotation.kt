@@ -52,7 +52,7 @@ public object GeneratedAnnotation {
         @Language("JAVA") @Suppress("EmptyClass")
         val annotation = elementFactory.createAnnotationFromText(
             """
-            @javax.annotation.Generated("by Spine Model Compiler (version: $version)")
+            @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value})")
             """.trimIndent(), null
         )
         return annotation
