@@ -26,29 +26,17 @@
 
 package io.spine.tools.mc.java
 
-import com.intellij.psi.PsiAnnotation
-import io.spine.tools.mc.java.GeneratedAnnotation.create
-import io.spine.tools.mc.java.VersionHolder.version
-import io.spine.tools.psi.java.Environment.elementFactory
-import org.intellij.lang.annotations.Language
+import io.spine.tools.code.manifest.Version
 
 /**
- * Creates [PsiAnnotation] for marking code elements created by McJava.
- *
- * @see create
+ * Holds the version of McJava loaded from the manifest.
  */
-public object GeneratedAnnotation {
+public object VersionHolder {
 
     /**
-     * Creates a new [PsiAnnotation].
+     * The version of McJava loaded from the manifest.
      */
-    public fun create(): PsiAnnotation {
-        @Language("JAVA") @Suppress("EmptyClass")
-        val annotation = elementFactory.createAnnotationFromText(
-            """
-            @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value})")
-            """.trimIndent(), null
-        )
-        return annotation
+    public val version: Version by lazy {
+        Version.fromManifestOf(this::class.java)
     }
 }
