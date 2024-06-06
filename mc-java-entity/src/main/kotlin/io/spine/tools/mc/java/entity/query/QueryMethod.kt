@@ -39,7 +39,10 @@ import io.spine.tools.psi.java.topLevelClass
 import org.intellij.lang.annotations.Language
 
 /**
- * Renders the `query()` method in the top level Java class of the given file.
+ * Renders the `query()` method at the top level Java class of the given file.
+ *
+ * The method is added after the constructors.
+ * This makes it more visible to the people who dare to look at the generated code.
  */
 internal class QueryMethod(private val file: SourceFile) : WithLogging {
 

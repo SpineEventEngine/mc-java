@@ -32,20 +32,26 @@ import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders [Query][QueryClass], [QueryBuilder][QueryBuilderClass] classes and
- * the [query][QueryMethod] under a Java class generated for an entity state type.
+ * Renders [QueryBuilder][QueryBuilderClass] and [Query][QueryClass] classes and
+ * the [query][QueryMethod] under an entity state class.
  */
 internal class QuerySupportRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         execute {
             val ts = typeSystem!!
-            val queryBuilderClass = QueryBuilderClass(type, ts, settings)
-            queryBuilderClass.render(sourceFile)
-            val queryClass = QueryClass(type, ts, settings)
-            queryClass.render(sourceFile)
-            val queryMethod = QueryMethod(sourceFile)
-            queryMethod.render()
+            // The `query()` method is added after constructors.
+            QueryMethod(sourceFile).run {
+                render()
+            }
+            // The `QueryBuilder` class is added at the bottom, before the `Query` class.
+            QueryBuilderClass(type, ts, settings).run {
+                render(sourceFile)
+            }
+            // The `Query` class comes last.
+            QueryClass(type, ts, settings).run {
+                render(sourceFile)
+            }
         }
     }
 }
