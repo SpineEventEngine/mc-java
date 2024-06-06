@@ -26,71 +26,64 @@
 
 package io.spine.tools.mc.java.entity.query
 
-import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiClass
 import com.intellij.psi.javadoc.PsiDocComment
-import com.intellij.refactoring.extractMethod.newImpl.ExtractMethodHelper.addSiblingAfter
-import io.spine.logging.WithLogging
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.reference
+import io.spine.query.IdCriterion
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.topLevelClass
+import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
- * Renders the `query()` method in the top level Java class of the given file.
+ * Generates the method for restricting query results to certain entity identifiers.
+ *
+ * @param queryBuilderClass
+ *         the class in which to generate the method.
+ * @param methodName
+ *         the name of the method to generate.
+ * @param idType
+ *         the name of entity state identifier type.
  */
-internal class QueryMethod(private val file: SourceFile) : WithLogging {
-
-    private val psiFile = file.psi() as PsiJavaFile
-    private val entityStateClass = psiFile.topLevelClass
-    private val queryBuilder = QUERY_BUILDER_CLASS_NAME
-
+internal class IdColumn(
+    private val entityStateClass: ClassName,
+    private val queryBuilderClass: PsiClass,
+    private val methodName: String,
+    private val idType: String,
+) {
     private val javadoc: PsiDocComment by lazy {
+        val entityStateType = entityStateClass.simpleName
         @Language("JAVA") @Suppress("EmptyClass")
         val doc = elementFactory.createDocCommentFromText("""
             /**
-             * Creates a new instance of {@link QueryBuilder}.
+             * Creates a criterion for the identifier of the {@link $entityStateType} entity state.
              */
             """.trimIndent()
         )
         doc
     }
 
+    private val returnType: String by lazy {
+        "${IdCriterion::class.reference}<$idType, ${queryBuilderClass.name}>"
+    }
+
     private val method by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
-            public static $queryBuilder query() {
-                return new $queryBuilder();
+            public $returnType $methodName() {
+                return new ${IdCriterion::class.reference}<>(this);
             }            
-            """.trimIndent(), entityStateClass
+            """.trimIndent(), queryBuilderClass
         )
-        newMethod.run {
-            val annotation = GeneratedAnnotation.create()
-            addFirst(annotation)
-            addFirst(javadoc)
-        }
+        newMethod.addFirst(javadoc)
         newMethod
     }
 
     /**
-     * Renders the `query()` method placing it after the last constructor.
+     * Adds the method to [queryBuilderClass].
      */
-    @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
     fun render() {
-        try {
-            val lastConstructor = entityStateClass.constructors.last()
-            lastConstructor.addSiblingAfter(method)
-
-            val updatedFile = psiFile.text
-            file.overwrite(updatedFile)
-        } catch (e: Throwable) {
-            logger.atError().withCause(e).log { """
-                Caught exception while rendering the `query()` method in `${entityStateClass.name}`.
-                Message: ${e.message}.                
-                """.trimIndent()
-            }
-        }
+        queryBuilderClass.addLast(method)
     }
 }

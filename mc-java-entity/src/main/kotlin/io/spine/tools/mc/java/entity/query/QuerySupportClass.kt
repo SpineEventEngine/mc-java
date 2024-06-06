@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.entity.query
 
+import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
@@ -60,10 +61,16 @@ internal abstract class QuerySupportClass(
     protected val stateType: String = type.name.simpleName
 
     /**
+     * The identifier field of the entity state.
+     */
+    val idField: Field by lazy {
+        type.idField(settings)
+    }
+
+    /**
      * The type of the [first][idField] entity state type field.
      */
-    protected val idType: String by lazy {
-        val idField = type.idField(settings)
+    val idType: String by lazy {
         idField.typeReference(entityStateClass, typeSystem)
     }
 }

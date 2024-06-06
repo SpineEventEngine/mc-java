@@ -99,7 +99,7 @@ internal class ColumnClass(
     private fun addColumnMethods() {
         columns.forEach { column ->
             val accessor = ColumnAccessor(messageClass, column, cls, typeSystem)
-            cls.addLast(accessor.method())
+            accessor.render()
         }
     }
 

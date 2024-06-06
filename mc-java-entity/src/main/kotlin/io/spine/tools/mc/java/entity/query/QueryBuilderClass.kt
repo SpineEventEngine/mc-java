@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.entity.query
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.MessageType
+import io.spine.protodata.columns
+import io.spine.protodata.java.javaCase
 import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityQueryBuilder
@@ -111,11 +113,21 @@ internal class QueryBuilderClass(
     }
 
     private fun PsiClass.addIdMethod() {
-        //TODO("Not yet implemented")
+        val idColumn = IdColumn(
+            entityStateClass,
+            queryBuilderClass = this,
+            methodName = idField.name.javaCase(),
+            idType,
+        )
+        idColumn.render()
     }
 
     private fun PsiClass.addColumnsMethod() {
-        //TODO("Not yet implemented")
+        val columns = type.columns
+        columns.forEach {
+            val column = QueryColumn(entityStateClass, it, queryBuilder = this, typeSystem)
+            column.render()
+        }
     }
 
     private fun PsiClass.addThisRefMethod() {

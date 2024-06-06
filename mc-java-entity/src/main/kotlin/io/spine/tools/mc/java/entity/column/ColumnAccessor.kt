@@ -39,6 +39,7 @@ import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
@@ -87,32 +88,39 @@ internal class ColumnAccessor(
         "$stateRef::${field.getterName}"
     }
 
-    fun method(): PsiMethod {
+    private val methodName: String
+        get() = columnMethodName(this.field)
+
+    private val javadoc: PsiDocComment by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
-        val method = elementFactory.createMethodFromText("""
+        val doc = elementFactory.createDocCommentFromText("""
+            /**
+             * Returns the {@code "$fieldName"} column.
+             *
+             * <p>The Java type of the column is {@code $fieldType}.
+             */           
+            """.trimIndent()
+        )
+        doc
+    }
+
+    private val method: PsiMethod by lazy {
+        @Language("JAVA") @Suppress("EmptyClass")
+        val newMethod = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
               return new $container<>("$fieldName", $fieldType.class, $getterRef);    
             }                                
             """.trimIndent(), columnClass
         )
-        method.addFirst(javaDoc)
-        return method
+        newMethod.addFirst(javadoc)
+        newMethod
     }
 
-    private val methodName: String
-        get() = columnMethodName(this.field)
-
-    private val javaDoc: PsiDocComment by lazy {
-        @Language("JAVA") @Suppress("EmptyClass")
-        val methodDoc = elementFactory.createDocCommentFromText("""
-        /**
-         * Returns the {@code "$fieldName"} column.
-         *
-         * <p>The Java type of the column is {@code $fieldType}.
-         */           
-        """.trimIndent()
-        )
-        methodDoc
+    /**
+     * Adds the method to [columnClass].
+     */
+    fun render() {
+        columnClass.addLast(method)
     }
 }
 
