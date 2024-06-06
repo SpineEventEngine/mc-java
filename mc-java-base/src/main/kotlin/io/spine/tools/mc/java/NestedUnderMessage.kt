@@ -43,7 +43,6 @@ import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
 import io.spine.tools.psi.java.topLevelClass
-import org.gradle.kotlin.dsl.provideDelegate
 
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
@@ -69,9 +68,9 @@ public abstract class NestedUnderMessage(
     }
 
     private fun createClass(): PsiClass {
-        val cls = elementFactory.createClass(className)
-        cls.commonSetup()
-        return cls
+        val c = elementFactory.createClass(className)
+        c.commonSetup()
+        return c
     }
 
     /**
