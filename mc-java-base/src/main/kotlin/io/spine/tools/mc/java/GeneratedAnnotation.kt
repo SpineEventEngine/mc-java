@@ -37,6 +37,11 @@ import org.intellij.lang.annotations.Language
 /**
  * Creates [PsiAnnotation] for marking code elements created by McJava.
  *
+ * ## Implementation note
+ * We do not cache the created instance of [PsiAnnotation] because PSI elements are mutable.
+ * We would like to avoid unwanted propagation of a modification which could be made by
+ * one renderer to others.
+ *
  * @see create
  */
 public object GeneratedAnnotation {
