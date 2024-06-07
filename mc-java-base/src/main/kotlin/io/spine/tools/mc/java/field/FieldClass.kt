@@ -53,6 +53,7 @@ public class FieldClass(
 ) : NestedUnderMessage(type, NAME, typeSystem) {
 
     public companion object {
+
         /**
          * The name of the generated Java class.
          */
