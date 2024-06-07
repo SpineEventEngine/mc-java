@@ -27,9 +27,11 @@
 package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiAnnotation
+import io.spine.protodata.java.reference
 import io.spine.tools.mc.java.GeneratedAnnotation.create
 import io.spine.tools.mc.java.VersionHolder.version
 import io.spine.tools.psi.java.Environment.elementFactory
+import javax.annotation.Generated
 import org.intellij.lang.annotations.Language
 
 /**
@@ -40,13 +42,15 @@ import org.intellij.lang.annotations.Language
 public object GeneratedAnnotation {
 
     /**
-     * Creates a new [PsiAnnotation].
+     * Creates a new [PsiAnnotation] with [javax.annotation.Generated] referencing the current
+     * version of Spine Model Compiler.
      */
     public fun create(): PsiAnnotation {
+        val reference = Generated::class.reference
         @Language("JAVA") @Suppress("EmptyClass")
         val annotation = elementFactory.createAnnotationFromText(
             """
-            @javax.annotation.Generated("by Spine Model Compiler (version: ${version.value})")
+            @$reference("by Spine Model Compiler (version: ${version.value})")
             """.trimIndent(), null
         )
         return annotation
