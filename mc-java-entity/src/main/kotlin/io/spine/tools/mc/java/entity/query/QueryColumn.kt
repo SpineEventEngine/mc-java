@@ -53,9 +53,7 @@ internal class QueryColumn(
     private val typeSystem: TypeSystem
 ) {
 
-    private val methodName: String by lazy {
-        columnMethodName(field)
-    }
+    private val methodName: String = columnMethodName(field)
 
     /**
      * The name of the column class as local value for brevity at usage sites.
