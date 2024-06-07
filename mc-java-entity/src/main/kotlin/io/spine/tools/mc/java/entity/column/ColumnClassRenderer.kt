@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -44,8 +44,9 @@ internal class ColumnClassRenderer : EntityStateRenderer() {
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {
             execute {
-                val cls = ColumnClass(type, typeSystem!!)
-                cls.render(sourceFile)
+                ColumnClass(type, typeSystem!!).run {
+                    render(sourceFile)
+                }
             }
         }
     }
