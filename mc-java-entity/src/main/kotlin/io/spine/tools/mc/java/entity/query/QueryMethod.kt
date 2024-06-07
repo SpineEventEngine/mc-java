@@ -62,6 +62,9 @@ internal class QueryMethod(private val file: SourceFile) : WithLogging {
         doc
     }
 
+    /**
+     * The value used for brevity when referencing in the generated code.
+     */
     private val methodName = QUERY_METHOD_NAME
 
     private val method by lazy {
