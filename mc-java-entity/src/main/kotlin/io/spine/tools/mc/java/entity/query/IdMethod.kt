@@ -64,15 +64,16 @@ internal class IdMethod(
         doc
     }
 
-    private val returnType: String by lazy {
-        "${IdCriterion::class.reference}<$idType, ${queryBuilderClass.name}>"
-    }
+    private val idCriterion: String = IdCriterion::class.reference
+
+    @Language("JAVA") @Suppress("EmptyClass")
+    private val returnType: String = "$idCriterion<$idType, ${queryBuilderClass.name}>"
 
     private val method by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
             public $returnType $methodName() {
-                return new ${IdCriterion::class.reference}<>(this);
+                return new $idCriterion<>(this);
             }            
             """.trimIndent(), queryBuilderClass
         )
