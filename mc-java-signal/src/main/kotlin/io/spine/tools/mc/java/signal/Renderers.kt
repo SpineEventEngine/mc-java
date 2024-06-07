@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -68,8 +68,9 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         execute {
-            val cls = FieldClass(type, fieldSupertype, typeSystem!!)
-            cls.render(sourceFile)
+            FieldClass(type, fieldSupertype, typeSystem!!).run {
+                render(sourceFile)
+            }
         }
     }
 }
