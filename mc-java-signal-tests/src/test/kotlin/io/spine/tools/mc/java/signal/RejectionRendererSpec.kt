@@ -29,10 +29,10 @@ package io.spine.tools.mc.java.signal
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.base.RejectionMessage
-import io.spine.protodata.java.reference
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.count
 import io.spine.string.repeat
+import io.spine.tools.java.reference
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll

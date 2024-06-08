@@ -31,7 +31,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.spine.protodata.java.reference
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.THIS_REF_METHOD_NAME
@@ -84,7 +84,7 @@ internal class QueryBuilderClassSpec {
     fun `be annotated as 'Generated'`() {
         queryBuilderClass()!!.run {
             annotations.size shouldBe 1
-            annotations[0].qualifiedName shouldBe Generated::class.reference
+            annotations[0].qualifiedName shouldBe Generated::class.java.reference
         }
     }
 
@@ -120,7 +120,7 @@ internal class QueryBuilderClassSpec {
         }
         method.run {
             annotations.size shouldBe 1
-            annotations[0].qualifiedName shouldBe Override::class.reference
+            annotations[0].qualifiedName shouldBe Override::class.java.reference
             hasModifier(PROTECTED) shouldBe true
         }
     }
@@ -132,7 +132,7 @@ internal class QueryBuilderClassSpec {
         }
         method.run {
             annotations.size shouldBe 1
-            annotations[0].qualifiedName shouldBe Override::class.reference
+            annotations[0].qualifiedName shouldBe Override::class.java.reference
             isPublic shouldBe true
             docComment shouldNotBe null
         }

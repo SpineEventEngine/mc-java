@@ -31,8 +31,8 @@ import com.intellij.psi.PsiMethod
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.NestedUnderMessage
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
@@ -114,7 +114,7 @@ internal class ColumnClass(
         }
 
         /** The type which is returned by the method. */
-        private val resultSet: String = ImmutableSet::class.reference
+        private val resultSet: String = ImmutableSet::class.java.reference
 
         /** The piece of method body which adds columns to [accumulator]. */
         private val addingColumns: String by lazy {

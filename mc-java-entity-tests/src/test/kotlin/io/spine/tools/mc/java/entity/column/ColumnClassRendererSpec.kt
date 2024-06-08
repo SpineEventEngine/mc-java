@@ -30,8 +30,8 @@ import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.protodata.java.reference
 import io.spine.string.Indent.Companion.defaultJavaIndent
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
@@ -115,7 +115,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
     fun `be annotated as 'Generated'`() {
         columnClass()!!.run {
             annotations.size shouldBe 1
-            annotations[0].qualifiedName shouldBe Generated::class.reference
+            annotations[0].qualifiedName shouldBe Generated::class.java.reference
         }
     }
 }

@@ -31,9 +31,9 @@ import com.intellij.psi.PsiMethod
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityQueryBuilder
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.idField
@@ -105,7 +105,7 @@ internal class QueryBuilderClass(
     private fun PsiClass.extendEntityQueryBuilder() {
         val superClass = elementFactory.createClassReference(
             cls,
-            EntityQueryBuilder::class.reference,
+            EntityQueryBuilder::class.java.reference,
             // Generic parameters:
             idType, stateType, this.name!!, query
         )

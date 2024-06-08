@@ -29,14 +29,9 @@ package io.spine.tools.mc.java.entity.query
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaClassName
-import io.spine.protodata.java.javaType
-import io.spine.protodata.java.reference
-import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityQuery
-import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.idField
@@ -97,7 +92,7 @@ internal class QueryClass(
     override fun tuneClass() {
         val superClass = elementFactory.createClassReference(
             cls,
-            EntityQuery::class.reference,
+            EntityQuery::class.java.reference,
             // Generic parameters:
             idType, stateType, queryBuilder
         )

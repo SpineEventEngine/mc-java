@@ -33,10 +33,10 @@ import io.spine.protodata.Field
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.getterName
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.reference
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
+import io.spine.tools.java.reference
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
@@ -45,7 +45,7 @@ import org.intellij.lang.annotations.Language
 /**
  * The reference to the class which provides column information.
  */
-internal val container = EntityColumn::class.reference
+internal val container = EntityColumn::class.java.reference
 
 /**
  * Generates a method which returns a [strongly typed][EntityColumn] entity column.

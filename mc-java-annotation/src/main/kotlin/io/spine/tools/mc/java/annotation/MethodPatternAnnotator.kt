@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -30,10 +30,10 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.java.file.isJava
-import io.spine.protodata.java.isRepeatable
-import io.spine.protodata.java.reference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.java.isRepeatable
+import io.spine.tools.java.reference
 import io.spine.tools.psi.java.annotate
 import io.spine.tools.psi.java.execute
 

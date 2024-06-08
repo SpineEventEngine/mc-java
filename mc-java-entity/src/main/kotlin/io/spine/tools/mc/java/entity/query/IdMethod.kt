@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.entity.query
 import com.intellij.psi.PsiClass
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.reference
 import io.spine.query.IdCriterion
+import io.spine.tools.java.reference
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
@@ -64,7 +64,7 @@ internal class IdMethod(
         doc
     }
 
-    private val idCriterion: String = IdCriterion::class.reference
+    private val idCriterion: String = IdCriterion::class.java.reference
 
     @Language("JAVA") @Suppress("EmptyClass")
     private val returnType: String = "$idCriterion<$idType, ${queryBuilderClass.name}>"

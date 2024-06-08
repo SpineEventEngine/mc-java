@@ -31,10 +31,10 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.Field
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.reference
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityCriterion
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.column.columnMethodName
 import io.spine.tools.psi.addFirst
@@ -75,7 +75,7 @@ internal class QueryColumn(
         field.typeReference(entityState, typeSystem)
     }
 
-    private val entityCriterion: String = EntityCriterion::class.reference
+    private val entityCriterion: String = EntityCriterion::class.java.reference
 
     private val returnType: String by lazy {
         "$entityCriterion<${entityState.simpleName}, $fieldType, ${queryBuilder.name}>"

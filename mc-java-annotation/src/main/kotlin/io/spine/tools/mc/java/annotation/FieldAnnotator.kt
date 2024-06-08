@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -31,10 +31,10 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MessageOrBuilderConvention
 import io.spine.protodata.java.MessageOrEnumConvention
+import io.spine.tools.java.reference
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.FieldOptions
 import io.spine.tools.mc.annotation.MessageFieldAnnotations
-import io.spine.protodata.java.reference
 
 /**
  * Annotates methods for accessing fields of a message class, the builder of the message, and
