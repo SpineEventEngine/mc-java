@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,22 +28,21 @@ package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiMethod
-import io.spine.logging.WithLogging
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.java.reference
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.NestedUnderMessage
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.CLASS_NAME
-import io.spine.tools.mc.java.entity.column.ColumnClassFactory.Companion.DEFINITIONS_METHOD
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
+import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
 import java.lang.String.format
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a class called [Column][CLASS_NAME] and nests it under an entity state class.
+ * Creates a class called [Column][COLUMN_CLASS_NAME] and nests it under an entity state class.
  *
  * The class provides API for obtaining columns for given `EntityState` [type].
  * The `Column` class is `public static` and stateless.
@@ -53,7 +52,7 @@ import org.intellij.lang.annotations.Language
  * Since the `Column` class is not meant to be instantiated, a private parameterless
  * constructor is generated.
  *
- * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD]
+ * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD_NAME]
  * for obtaining all the columns is also generated.
  *
  * @param type
@@ -62,31 +61,12 @@ import org.intellij.lang.annotations.Language
  *         the type system used for resolving field types.
  * @see render
  */
-internal class ColumnClassFactory(
+internal class ColumnClass(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
 
-    private val columnClass = cls
     private val columns: List<Field> = type.columns
-
-    companion object: WithLogging {
-
-        /**
-         * The name of the created class.
-         */
-        const val CLASS_NAME = "Column"
-
-        /**
-         * The name of the method for obtaining all the columns.
-         *
-         * We use `buildString` instead of a plain literal to avoid the `Missing identifier`
-         * warning in IDEA.
-         */
-        val DEFINITIONS_METHOD = buildString {
-            append("definitions")
-        }
-    }
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """
@@ -105,18 +85,18 @@ internal class ColumnClassFactory(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(messageClass, column, columnClass, typeSystem)
-            columnClass.addLast(accessor.method())
+            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem)
+            accessor.render()
         }
     }
 
     private fun addDefinitionsMethod() {
         val method = DefinitionsMethod().create()
-        columnClass.addLast(method)
+        cls.addLast(method)
     }
 
     /**
-     * Method object for creating [definitions][DEFINITIONS_METHOD] method.
+     * Method object for creating [definitions][DEFINITIONS_METHOD_NAME] method.
      */
     private inner class DefinitionsMethod {
 
@@ -134,7 +114,7 @@ internal class ColumnClassFactory(
         }
 
         /** The type which is returned by the method. */
-        private val resultSet: String = ImmutableSet::class.reference
+        private val resultSet: String = ImmutableSet::class.java.reference
 
         /** The piece of method body which adds columns to [accumulator]. */
         private val addingColumns: String by lazy {
@@ -152,7 +132,7 @@ internal class ColumnClassFactory(
             /**
              * Returns all the column definitions of $messageJavadocRef.
              */
-            public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD() {
+            public static $resultSet<$columnWildcard> $DEFINITIONS_METHOD_NAME() {
               var $accumulator = new java.util.HashSet<$columnWildcard>();
               %s
               return $resultSet.copyOf($accumulator);
@@ -162,7 +142,7 @@ internal class ColumnClassFactory(
         }
 
         fun create(): PsiMethod {
-            val method = elementFactory.createMethodFromText(methodText, columnClass)
+            val method = elementFactory.createMethodFromText(methodText, cls)
             return method
         }
     }

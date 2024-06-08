@@ -30,16 +30,16 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.mc.java.field.FieldClassFactory
+import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named [Field][FieldClassFactory.CLASS_NAME] which are nested into
+ * Renders classes named [Field][FieldClass.NAME] which are nested into
  * [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see FieldClassFactory
+ * @see FieldClass
  */
 internal class FieldClassRenderer : EntityStateRenderer() {
 
@@ -49,7 +49,7 @@ internal class FieldClassRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         execute {
-            val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
+            val factory = FieldClass(type, fieldSupertype, typeSystem!!)
             factory.render(sourceFile)
         }
     }

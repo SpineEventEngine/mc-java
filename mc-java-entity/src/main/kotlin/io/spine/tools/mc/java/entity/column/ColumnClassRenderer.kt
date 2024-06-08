@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -33,19 +33,20 @@ import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named [Columns][ColumnClassFactory.CLASS_NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
+ * Renders classes named [Columns][io.spine.tools.mc.java.entity.EntityPlugin.COLUMN_CLASS_NAME]
+ * which are nested into [EntityState][io.spine.base.EntityState] classes.
  *
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see ColumnClassFactory
+ * @see ColumnClass
  */
 internal class ColumnClassRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         if (type.columns.isNotEmpty()) {
             execute {
-                val factory = ColumnClassFactory(type, typeSystem!!)
-                factory.render(sourceFile)
+                ColumnClass(type, typeSystem!!).run {
+                    render(sourceFile)
+                }
             }
         }
     }

@@ -30,6 +30,7 @@ import io.spine.internal.dependency.Validation
 
 plugins {
     id("io.spine.mc-java")
+    `java-test-fixtures`
 }
 
 dependencies {
@@ -42,6 +43,17 @@ dependencies {
     api(Validation.config)
     api(Validation.runtime)
     api(Spine.pluginBase)
+
+    arrayOf(
+        Spine.base,
+        Validation.runtime,
+        gradleTestKit() /* for creating a Gradle project. */,
+        Spine.testlib,
+        ProtoData.testlib /* `PipelineSetup` API. */
+    ).forEach {
+        // Expose using API level for the submodules.
+        testFixturesApi(it)
+    }
 
     testImplementation(Spine.testlib)
     testImplementation(gradleTestKit())

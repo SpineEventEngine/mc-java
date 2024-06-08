@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -37,7 +37,7 @@ import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a nested class called [`Field`][CLASS_NAME] under a Java class generated for
+ * Creates a nested class called [`Field`][NAME] under a Java class generated for
  * the given message [type].
  *
  * @param type
@@ -46,17 +46,18 @@ import org.intellij.lang.annotations.Language
  *         the class name for the supertype of generated nested field classes, e.g.,
  *         [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
  */
-public class FieldClassFactory(
+public class FieldClass(
     type: MessageType,
     private val fieldSupertype: ClassName,
     typeSystem: TypeSystem
-) : NestedUnderMessage(type, CLASS_NAME, typeSystem) {
+) : NestedUnderMessage(type, NAME, typeSystem) {
 
     public companion object {
+
         /**
-         * The name of the class generated Java class.
+         * The name of the generated Java class.
          */
-        public const val CLASS_NAME: String = "Field"
+        public const val NAME: String = "Field"
     }
 
     @Language("JAVA") @Suppress("EmptyClass")

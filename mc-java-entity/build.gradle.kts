@@ -25,23 +25,20 @@
  */
 
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
 
 plugins {
     id("io.spine.mc-java")
-    `java-test-fixtures`
 }
 
 dependencies {
-    implementation(project(":mc-java-base"))
-    implementation(Spine.server)
-    implementation(Spine.Logging.lib)
-    implementation(Spine.psiJavaBundle)
-
-    arrayOf(Spine.base, Validation.runtime)
-        .forEach {
-            testFixturesImplementation(it)
-        }
+    arrayOf(
+        project(":mc-java-base"),
+        Spine.Logging.lib,
+        Spine.server,
+        Spine.psiJavaBundle
+    ).forEach {
+        implementation(it)
+    }
 
     testImplementation(Spine.testlib)
 }

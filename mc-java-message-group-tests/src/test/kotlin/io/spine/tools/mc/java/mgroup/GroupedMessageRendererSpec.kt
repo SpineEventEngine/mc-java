@@ -33,13 +33,12 @@ import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.mgroup.given.CustomField
 import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.type.toJson
 import java.nio.file.Path
 import kotlin.io.path.Path
-import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -48,9 +47,10 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`GroupedMessageRenderer` should")
 internal class GroupedMessageRendererSpec {
 
-    companion object {
-
-        lateinit var sourceFileSet: SourceFileSet
+    companion object : PluginTestSetup<GroupSettings>(
+        MessageGroupPlugin(),
+        MessageGroupPlugin.SETTINGS_ID
+    ) {
         lateinit var code: String
 
         @BeforeAll
@@ -64,45 +64,18 @@ internal class GroupedMessageRendererSpec {
             val setup = setup(outputDir, settingsDir, settings)
             val pipeline = setup.createPipeline()
             pipeline()
-            sourceFileSet = setup.sourceFileSet
+            val sourceFileSet = setup.sourceFileSet
             code = sourceFileSet.find(
                 Path("io/spine/tools/mc/mgroup/given/Student.java")
             )!!.code()
         }
 
-        private fun setup(
-            outputDir: Path,
-            settingsDir: Path,
-            settings: GroupSettings
-        ): PipelineSetup {
-            val setup = byResources(
-                listOf(
-                    MessageGroupPlugin(),
-                    JavaCodeStyleFormatterPlugin()
-                ),
-                outputDir,
-                settingsDir
-            ) {
-                writeSettings(it, settings)
-            }
-            return setup
-        }
-
-        private fun createSettings(projectDir: Path): GroupSettings {
-            val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
-            val codegenOptions = CodegenConfig(project)
-            codegenOptions.forMessage("given.groups.Student") {
+        override fun createSettings(projectDir: Path): GroupSettings {
+            val codegenConfig = createCodegenConfig(projectDir)
+            codegenConfig.forMessage("given.groups.Student") {
                 it.markFieldsAs(CustomField::class.java.canonicalName)
             }
-            return codegenOptions.toProto().groupSettings
-        }
-
-        private fun writeSettings(settings:SettingsDirectory, groupSettings: GroupSettings) {
-            settings.write(
-                MessageGroupPlugin.SETTINGS_ID,
-                Format.PROTO_JSON,
-                groupSettings.toJson()
-            )
+            return codegenConfig.toProto().groupSettings
         }
     }
 

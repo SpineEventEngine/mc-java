@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -34,7 +34,7 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.WithTypeList
-import io.spine.tools.mc.java.field.FieldClassFactory
+import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
@@ -68,8 +68,9 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, sourceFile: SourceFile) {
         execute {
-            val factory = FieldClassFactory(type, fieldSupertype, typeSystem!!)
-            factory.render(sourceFile)
+            FieldClass(type, fieldSupertype, typeSystem!!).run {
+                render(sourceFile)
+            }
         }
     }
 }

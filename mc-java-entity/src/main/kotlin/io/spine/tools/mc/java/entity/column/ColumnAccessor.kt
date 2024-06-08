@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -33,18 +33,19 @@ import io.spine.protodata.Field
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.getterName
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.reference
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
 import io.spine.query.EntityColumn
+import io.spine.tools.java.reference
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
  * The reference to the class which provides column information.
  */
-internal val container = EntityColumn::class.reference
+internal val container = EntityColumn::class.java.reference
 
 /**
  * Generates a method which returns a [strongly typed][EntityColumn] entity column.
@@ -87,32 +88,39 @@ internal class ColumnAccessor(
         "$stateRef::${field.getterName}"
     }
 
-    fun method(): PsiMethod {
+    private val methodName: String
+        get() = columnMethodName(this.field)
+
+    private val javadoc: PsiDocComment by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
-        val method = elementFactory.createMethodFromText("""
+        val doc = elementFactory.createDocCommentFromText("""
+            /**
+             * Returns the {@code "$fieldName"} column.
+             *
+             * <p>The Java type of the column is {@code $fieldType}.
+             */           
+            """.trimIndent()
+        )
+        doc
+    }
+
+    private val method: PsiMethod by lazy {
+        @Language("JAVA") @Suppress("EmptyClass")
+        val newMethod = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
               return new $container<>("$fieldName", $fieldType.class, $getterRef);    
             }                                
             """.trimIndent(), columnClass
         )
-        method.addFirst(javaDoc)
-        return method
+        newMethod.addFirst(javadoc)
+        newMethod
     }
 
-    private val methodName: String
-        get() = columnMethodName(this.field)
-
-    private val javaDoc: PsiDocComment by lazy {
-        @Language("JAVA") @Suppress("EmptyClass")
-        val methodDoc = elementFactory.createDocCommentFromText("""
-        /**
-         * Returns the {@code "$fieldName"} column.
-         *
-         * <p>The Java type of the column is {@code $fieldType}.
-         */           
-        """.trimIndent()
-        )
-        methodDoc
+    /**
+     * Adds the method to [columnClass].
+     */
+    fun render() {
+        columnClass.addLast(method)
     }
 }
 

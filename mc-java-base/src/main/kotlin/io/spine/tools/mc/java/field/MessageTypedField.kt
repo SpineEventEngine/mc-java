@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -35,6 +35,7 @@ import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
+import io.spine.tools.psi.java.addSuperclass
 import io.spine.tools.psi.java.createClassType
 import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
@@ -66,7 +67,7 @@ import org.intellij.lang.annotations.Language
  *   4. Exposes nested message fields through the instance methods which append the name of the
  *   requested field to the enclosed field path.
  *
- * The created class is then placed under the [Field][FieldClassFactory.CLASS_NAME] class, which,
+ * The created class is then placed under the [Field][FieldClass.NAME] class, which,
  * in turn, is nested under corresponding Java message class to which the field belongs.
  *
  * @param fieldType
@@ -99,7 +100,7 @@ internal class MessageTypedField(
         val cls = elementFactory.createClass(className)
         cls.run {
             makePublic().makeStatic().makeFinal()
-            addSuperclass()
+            addSuperclass(superClassReference)
             addJavadoc()
             addConstructor()
             addFieldMethods()
@@ -116,18 +117,6 @@ internal class MessageTypedField(
              */                
             """.trimIndent())
         addFirst(javadoc)
-    }
-
-    private fun PsiClass.addSuperclass() {
-        val superTypes = extendsList
-        if (superTypes == null) {
-            val newList = elementFactory.createReferenceList(arrayOf(
-                superClassReference
-            ))
-            addBefore(newList, lBrace)
-        } else {
-            superTypes.add(superClassReference)
-        }
     }
 
     private fun PsiClass.addConstructor() {
@@ -148,7 +137,7 @@ internal class MessageTypedField(
     private fun PsiClass.addFieldMethods() {
         fieldType.fieldList.forEach {
             val accessor = NestedFieldAccessor(it, fieldSupertype, typeSystem)
-            add(accessor.method())
+            addLast(accessor.method())
         }
     }
 

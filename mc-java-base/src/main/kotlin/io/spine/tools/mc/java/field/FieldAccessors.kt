@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -33,9 +33,9 @@ import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.isMessage
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.reference
 import io.spine.protodata.toMessageType
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.java.reference
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
@@ -43,7 +43,7 @@ import org.intellij.lang.annotations.Language
 /**
  * Abstract base for generating a method accessing a message field via a generated `Field` class.
  *
- * @see FieldClassFactory
+ * @see FieldClass
  */
 internal abstract class FieldAccessor(
     /**
