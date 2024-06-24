@@ -163,7 +163,7 @@ public abstract class NestedUnderMessage(
 /**
  * Locates the class with the given name in this [PsiJavaFile].
  *
- * If the given class is a nested one, the function finds the class nested into the top level class
+ * If the given class is nested, the function finds the class nested into the top level class
  * of this Java file. Otherwise, top level class is returned.
  *
  * This is a naïve implementation of locating a class in a Java file that serves our needs for
