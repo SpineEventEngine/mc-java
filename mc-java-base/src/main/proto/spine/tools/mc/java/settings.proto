@@ -166,7 +166,8 @@ message GenerateFields {
 
     // The name of the superclass of the fields class.
     //
-    // It's recommended that the class extends `io.spine.base.SubscribableField`.
+    // It's required that the class extends `io.spine.base.SubscribableField` either
+    // directly or via one of its subclasses.
     //
     tools.java.JavaClassName superclass = 1;
 }
