@@ -34,6 +34,7 @@ import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaFiles
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 
 /**
  * An abstract base for Java renders handling message types.
@@ -67,7 +68,7 @@ public abstract class MessageTypeRenderer<V, S : Message>(
      * Implement this method to render the code for the given entity state [type]
      * the source code of which present in the given [sourceFile].
      */
-    protected abstract fun doRender(type: MessageType, sourceFile: SourceFile)
+    protected abstract fun doRender(type: MessageType, sourceFile: SourceFile<Java>)
 
     final override fun render(sources: SourceFileSet) {
         val relevant = sources.hasJavaFiles && enabledBySettings

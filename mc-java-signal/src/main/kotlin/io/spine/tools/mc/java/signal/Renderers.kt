@@ -32,6 +32,7 @@ import io.spine.protodata.File
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.WithTypeList
 import io.spine.tools.mc.java.field.FieldClass
@@ -66,7 +67,7 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     }
 
     @OverridingMethodsMustInvokeSuper
-    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+    override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
         execute {
             FieldClass(type, fieldSupertype, typeSystem!!).run {
                 render(sourceFile)

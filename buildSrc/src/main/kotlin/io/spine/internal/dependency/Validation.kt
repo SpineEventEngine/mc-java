@@ -36,7 +36,7 @@ object Validation {
     /**
      * The version of the Validation library artifacts.
      */
-    const val version = "2.0.0-SNAPSHOT.133"
+    const val version = "2.0.0-SNAPSHOT.140"
 
     /**
      * The distinct version of the Validation library used by build tools during

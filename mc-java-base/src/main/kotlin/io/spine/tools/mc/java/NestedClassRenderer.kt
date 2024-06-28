@@ -34,8 +34,10 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
+import io.spine.protodata.renderer.FileRenderer
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.type.TypeSystem
+import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
@@ -59,7 +61,7 @@ public abstract class NestedClassRenderer(
     protected val type: MessageType,
     protected val className: String,
     protected val typeSystem: TypeSystem
-) : WithLogging {
+) : FileRenderer<Java>, WithLogging {
 
     /**
      * The product of the code generator.
@@ -122,7 +124,7 @@ public abstract class NestedClassRenderer(
      *         the Java file to add the class produced by this factory.
      */
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    public fun render(file: SourceFile) {
+    override fun render(file: SourceFile<Java>) {
         try {
             tuneClass()
             val psiJavaFile = file.psi() as PsiJavaFile

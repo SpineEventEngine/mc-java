@@ -31,6 +31,7 @@ import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaFiles
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.GenerateFields
@@ -61,7 +62,7 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         }
     }
 
-    private fun GroupedMessage.doRender(sourceFile: SourceFile) {
+    private fun GroupedMessage.doRender(sourceFile: SourceFile<Java>) {
         groupList.forEach {
             if (it.hasGenerateFields()) {
                 it.generateFields.render(type, sourceFile)
@@ -69,7 +70,7 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         }
     }
 
-    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile) {
+    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile<Java>) {
         execute {
             val factory = FieldClass(type, superClassName, typeSystem!!)
             factory.render(sourceFile)

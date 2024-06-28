@@ -29,9 +29,10 @@ package io.spine.tools.mc.java.annotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.java.file.isJava
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.renderer.forEachOfLanguage
+import io.spine.tools.code.Java
 import io.spine.tools.java.isRepeatable
 import io.spine.tools.java.reference
 import io.spine.tools.psi.java.annotate
@@ -55,12 +56,12 @@ internal class MethodPatternAnnotator : PatternAnnotator() {
     }
 
     override fun render(sources: SourceFileSet) {
-        sources.filter { it.isJava }.forEach {
+        sources.forEachOfLanguage<Java> {
             annotateIn(it)
         }
     }
 
-    private fun annotateIn(file: SourceFile) {
+    private fun annotateIn(file: SourceFile<Java>) {
         var updated = false
         val javaFile = file.psi() as PsiJavaFile
         execute {
