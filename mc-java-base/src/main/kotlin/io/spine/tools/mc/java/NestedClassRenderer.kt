@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
@@ -54,7 +55,7 @@ import io.spine.tools.psi.java.topLevelClass
  * @param typeSystem
  *         the type system used for resolving field types.
  */
-public abstract class NestedUnderMessage(
+public abstract class NestedClassRenderer(
     protected val type: MessageType,
     protected val className: String,
     protected val typeSystem: TypeSystem
@@ -148,9 +149,20 @@ public abstract class NestedUnderMessage(
         addClassJavadoc()
     }
 
+    /**
+     * Generates an annotation to be added for the created class.
+     *
+     * The default implementation returns the result of [GeneratedAnnotation.create].
+     *
+     * Overriding methods may return custom annotation or `null`, if no annotation is needed.
+     */
+    protected open fun createAnnotation(): PsiAnnotation? = GeneratedAnnotation.create()
+
     private fun PsiClass.addAnnotation() {
-        val annotation = GeneratedAnnotation.create()
-        addFirst(annotation)
+        val annotation = createAnnotation()
+        annotation?.let {
+            addFirst(it)
+        }
     }
 
     private fun PsiClass.addClassJavadoc() {

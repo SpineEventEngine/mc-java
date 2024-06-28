@@ -33,7 +33,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.tools.mc.java.NestedClassRenderer
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -64,7 +64,7 @@ import org.intellij.lang.annotations.Language
 internal class ColumnClass(
     type: MessageType,
     typeSystem: TypeSystem
-) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
+) : NestedClassRenderer(type, COLUMN_CLASS_NAME, typeSystem) {
 
     private val columns: List<Field> = type.columns
 

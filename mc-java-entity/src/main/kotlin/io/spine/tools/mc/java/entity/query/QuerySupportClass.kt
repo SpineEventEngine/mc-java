@@ -32,7 +32,7 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.tools.mc.java.NestedClassRenderer
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 
@@ -45,7 +45,7 @@ internal abstract class QuerySupportClass(
     type: MessageType,
     typeSystem: TypeSystem,
     protected val settings: Entities
-) : NestedUnderMessage(type, className, typeSystem) {
+) : NestedClassRenderer(type, className, typeSystem) {
 
     /**
      * The class of the entity state.
