@@ -154,7 +154,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
     }
 
     /**
-     * Configures code generation for a group messages.
+     * Configures code generation for a group of messages.
      *
      * <p>The group is defined by a file-based selector.
      *
