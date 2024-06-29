@@ -67,7 +67,7 @@ abstract class EntityPluginTest {
  * @throws IllegalStateException
  *          if the file was not found.
  */
-internal fun SourceFileSet.file(path: String): SourceFile {
+internal fun SourceFileSet.file(path: String): SourceFile<*> {
     return find(Path(path))?: error("Source file `$path` not found.")
 }
 
