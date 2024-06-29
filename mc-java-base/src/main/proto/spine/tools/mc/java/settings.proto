@@ -199,8 +199,9 @@ message MessageGroup {
     // Settings for generating Java type-safe field API for messages in this group.
     GenerateFields generate_fields = 5;
 
-    // ProtoData Renderers to be applied to the messages of this group.
-    repeated tools.java.JavaClassName renderer = 6;
+    // Names of classes implementing the `io.spine.protodata.renderer.FileRenderer` interface
+    // that are to be applied to the messages of this group.
+    repeated tools.java.JavaClassName file_renderer = 6;
 }
 
 // A pattern which matches one or multiple messages.
