@@ -192,16 +192,16 @@ message MessageGroup {
 
     // Settings for adding nested classes for messages in this group.
     //
-    // Deprecated: please use `render` instead.
+    // Deprecated: please use `action` instead.
     //
     repeated GenerateNestedClasses generate_nested_classes = 4 [deprecated = true];
 
     // Settings for generating Java type-safe field API for messages in this group.
     GenerateFields generate_fields = 5;
 
-    // Names of classes implementing the `io.spine.protodata.renderer.FileRenderer` interface
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the messages of this group.
-    repeated tools.java.JavaClassName file_renderer = 6;
+    repeated string action = 6;
 }
 
 // A pattern which matches one or multiple messages.
