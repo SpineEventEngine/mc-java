@@ -35,10 +35,14 @@ plugins {
 dependencies {
     arrayOf(
         Spine.base,
-        Validation.runtime
+        Validation.runtime,
     ).forEach {
         testFixturesImplementation(it)
     }
+
+    testFixturesImplementation(project(":mc-java-base"))?.because(
+        "We need base classes for render actions."
+    )
 
     arrayOf(
         project(":mc-java-base"),
