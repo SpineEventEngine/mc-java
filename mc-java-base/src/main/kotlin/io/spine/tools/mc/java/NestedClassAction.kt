@@ -99,6 +99,9 @@ public abstract class NestedClassAction(
      *
      * Implementing methods may use [messageJavadocRef] to reference the class for which
      * this factory produces a nested class [cls].
+     *
+     * @return full text of the Javadoc comment to be created for the class, or
+     *         an empty string if the comment is not needed.
      */
     protected abstract fun classJavadoc(): String
 
@@ -166,8 +169,10 @@ public abstract class NestedClassAction(
 
     private fun PsiClass.addClassJavadoc() {
         val text = classJavadoc()
-        val classJavadoc = elementFactory.createDocCommentFromText(text, null)
-        addFirst(classJavadoc)
+        if (text.isNotEmpty()) {
+            val classJavadoc = elementFactory.createDocCommentFromText(text, null)
+            addFirst(classJavadoc)
+        }
     }
 }
 
