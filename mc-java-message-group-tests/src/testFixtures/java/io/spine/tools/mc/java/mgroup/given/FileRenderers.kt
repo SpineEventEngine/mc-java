@@ -37,8 +37,8 @@ import org.intellij.lang.annotations.Language
 /**
  * A stub renderer that adds a nested class called [`StudentId`][CLASS_NAME].
  */
-class StudentIdClass(type: MessageType, sourceFile: SourceFile<Java>, context: CodegenContext) :
-    NestedClassAction(type, sourceFile, CLASS_NAME, context) {
+class StudentIdClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
+    NestedClassAction(type, file, CLASS_NAME, context) {
 
     override fun tuneClass() {
         // Do nothing.

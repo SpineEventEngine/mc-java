@@ -33,10 +33,10 @@ import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
-import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
+import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -57,7 +57,7 @@ internal class QueryClassSpec : EntityPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
+            val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
             val psiFile = sourceFile.psi() as PsiJavaFile
             entityStateClass = psiFile.topLevelClass
         }

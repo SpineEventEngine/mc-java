@@ -39,12 +39,12 @@ import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.DEPARTMENT_JAVA
 import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runWithDefaultSettings
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
-import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.isPublic
 import io.spine.tools.psi.java.method
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
+import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -66,7 +66,7 @@ internal class QueryBuilderClassSpec {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
+            val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
             val psiFile = sourceFile.psi() as PsiJavaFile
             entityStateClass = psiFile.topLevelClass
         }

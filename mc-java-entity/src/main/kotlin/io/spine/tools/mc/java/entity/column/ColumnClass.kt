@@ -85,8 +85,9 @@ internal class ColumnClass(type: MessageType, file: SourceFile<Java>, context: C
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem!!)
-            accessor.render()
+            ColumnAccessor(messageClass, column, cls, typeSystem!!).run {
+                render()
+            }
         }
     }
 
