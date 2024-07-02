@@ -151,7 +151,7 @@ internal fun columnType(
     require(!(typeSystem == null && field != null)) {
         "Unable to obtain a field type without type system."
     }
-    // We can use simple class name because the generated code is
+    // We can use a simple class name because the generated code is
     // nested inside the entity state class.
     val state = entityState.simpleName
 

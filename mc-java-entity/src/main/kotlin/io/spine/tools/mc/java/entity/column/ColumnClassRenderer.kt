@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.entity.column
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
@@ -41,11 +42,11 @@ import io.spine.tools.psi.java.execute
  */
 internal class ColumnClassRenderer : EntityStateRenderer() {
 
-    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
         if (type.columns.isNotEmpty()) {
             execute {
-                ColumnClass(type, typeSystem!!).run {
-                    render(sourceFile)
+                ColumnClass(type, file, context!!).run {
+                    render()
                 }
             }
         }

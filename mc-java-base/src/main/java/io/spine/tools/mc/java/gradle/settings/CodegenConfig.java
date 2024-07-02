@@ -35,6 +35,7 @@ import io.spine.base.EventMessageField;
 import io.spine.base.RejectionMessage;
 import io.spine.base.UuidValue;
 import io.spine.option.OptionsProto;
+import io.spine.protodata.FilePattern;
 import io.spine.protodata.FilePatternFactory;
 import io.spine.query.EntityStateField;
 import io.spine.tools.java.code.Classpath;
@@ -46,7 +47,6 @@ import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.settings.SignalSettings;
 import io.spine.tools.mc.java.settings.TypePattern;
 import io.spine.tools.proto.code.ProtoTypeName;
-import io.spine.protodata.FilePattern;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
@@ -76,7 +76,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
     private final EntityConfig entities;
     private final UuidConfig uuids;
     private final ValidationConfig validation;
-    private final Set<MessageGroup> messagesConfigs = new HashSet<>();
+    private final Set<MessageGroup> messageGroups = new HashSet<>();
 
     @Internal
     public CodegenConfig(Project project) {
@@ -154,7 +154,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
     }
 
     /**
-     * Configures code generation for a group messages.
+     * Configures code generation for a group of messages.
      *
      * <p>The group is defined by a file-based selector.
      *
@@ -166,7 +166,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
                 .build();
         var config = new MessageGroupConfig(project, pattern);
         action.execute(config);
-        messagesConfigs.add(config.toProto());
+        messageGroups.add(config.toProto());
     }
 
     /**
@@ -190,7 +190,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
                 .build();
         var config = new MessageGroupConfig(project, pattern);
         action.execute(config);
-        messagesConfigs.add(config.toProto());
+        messageGroups.add(config.toProto());
     }
 
     @Override
@@ -203,7 +203,7 @@ public final class CodegenConfig extends Config<CodegenSettings> {
                 .build();
 
         var groupSettings = GroupSettings.newBuilder();
-        messagesConfigs.forEach(groupSettings::addGroup);
+        messageGroups.forEach(groupSettings::addGroup);
 
         var classpath = buildClasspath();
 

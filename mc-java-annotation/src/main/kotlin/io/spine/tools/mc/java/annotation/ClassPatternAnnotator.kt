@@ -27,9 +27,10 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.java.annotation.TypeAnnotation
-import io.spine.protodata.java.file.isJava
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.renderer.forEachOfLanguage
+import io.spine.tools.code.Java
 
 /**
  * Annotates classes matching [name patterns specified][Settings.getInternalClassPatternList]
@@ -45,7 +46,7 @@ internal class ClassPatternAnnotator : PatternAnnotator() {
         settings.internalClassPatternList
 
     override fun render(sources: SourceFileSet) {
-        sources.filter { it.isJava }.forEach { file ->
+        sources.forEachOfLanguage<Java> { file ->
             val className = file.qualifiedTopClassName()
             if (matches(className)) {
                 annotate(sources, file)
@@ -53,7 +54,7 @@ internal class ClassPatternAnnotator : PatternAnnotator() {
         }
     }
 
-    private fun annotate(sources: SourceFileSet, file: SourceFile) {
+    private fun annotate(sources: SourceFileSet, file: SourceFile<Java>) {
         TopClassAnnotation(annotationClass, file = file).let {
             it.registerWith(context!!)
             it.renderSources(sources)
@@ -61,7 +62,7 @@ internal class ClassPatternAnnotator : PatternAnnotator() {
     }
 }
 
-private class TopClassAnnotation(annotation: Class<Annotation>, file: SourceFile) :
+private class TopClassAnnotation(annotation: Class<Annotation>, file: SourceFile<Java>) :
     TypeAnnotation<Annotation>(annotation, file = file) {
-    override fun renderAnnotationArguments(file: SourceFile): String = ""
+    override fun renderAnnotationArguments(file: SourceFile<Java>): String = ""
 }

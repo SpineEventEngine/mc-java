@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.entity.field
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
@@ -47,10 +48,11 @@ internal class FieldClassRenderer : EntityStateRenderer() {
         settings.generateFields.superClassName
     }
 
-    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            val factory = FieldClass(type, fieldSupertype, typeSystem!!)
-            factory.render(sourceFile)
+            FieldClass(type, file, fieldSupertype, context!!).run {
+                render()
+            }
         }
     }
 }

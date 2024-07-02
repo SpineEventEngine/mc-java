@@ -30,6 +30,7 @@ import io.spine.protodata.java.ClassOrEnumName
 import io.spine.protodata.java.annotation.TypeAnnotation
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 
 /**
  * Annotates a type with an annotation of the given class.
@@ -40,7 +41,7 @@ internal class ApiAnnotation<T : Annotation>(
 ) :
     TypeAnnotation<T>(annotationClass, subject) {
 
-    override fun renderAnnotationArguments(file: SourceFile): String = ""
+    override fun renderAnnotationArguments(file: SourceFile<Java>): String = ""
 
     /**
      * Opens access to [render] method inside this module.

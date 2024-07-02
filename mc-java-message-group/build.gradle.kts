@@ -26,7 +26,6 @@
 
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
 
 plugins {
     id("io.spine.mc-java")
@@ -34,6 +33,7 @@ plugins {
 
 dependencies {
     arrayOf(
+        Spine.reflect,
         Spine.Logging.lib,
         Spine.server,
         Spine.psiJavaBundle,

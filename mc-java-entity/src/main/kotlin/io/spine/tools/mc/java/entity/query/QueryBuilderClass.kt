@@ -28,11 +28,13 @@ package io.spine.tools.mc.java.entity.query
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.type.TypeSystem
+import io.spine.protodata.renderer.SourceFile
 import io.spine.query.EntityQueryBuilder
+import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
@@ -50,9 +52,10 @@ import org.intellij.lang.annotations.Language
  */
 internal class QueryBuilderClass(
     type: MessageType,
-    typeSystem: TypeSystem,
-    settings: Entities
-) : QuerySupportClass(QUERY_BUILDER_CLASS_NAME, type, typeSystem, settings) {
+    file: SourceFile<Java>,
+    settings: Entities,
+    context: CodegenContext
+) : QuerySupportClass(type, file, QUERY_BUILDER_CLASS_NAME, settings, context) {
 
     /**
      * The value used for brevity when referencing in the generated code.
@@ -125,20 +128,18 @@ internal class QueryBuilderClass(
     private fun PsiClass.addColumnsMethod() {
         val columns = type.columns
         columns.forEach {
-            val column = QueryColumn(entityStateClass, it, queryBuilder = this, typeSystem)
+            val column = QueryColumn(entityStateClass, it, queryBuilder = this, typeSystem!!)
             column.render()
         }
     }
 
-    private fun PsiClass.addThisRefMethod() {
+    private fun PsiClass.addThisRefMethod() =
         ThisRefMethod(queryBuilder = this).run {
             render()
         }
-    }
 
-    private fun PsiClass.addBuildMethod() {
+    private fun PsiClass.addBuildMethod() =
         BuildMethod(queryBuilder = this).run {
             render()
         }
-    }
 }

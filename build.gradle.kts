@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -26,6 +26,7 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import Build_gradle.Module
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -58,6 +59,7 @@ buildscript {
                     io.spine.internal.dependency.Grpc.api,
                     spine.reflect,
                     spine.base,
+                    spine.toolBase,
                     spine.server,
                     protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,

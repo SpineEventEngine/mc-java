@@ -27,12 +27,15 @@
 package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiClass
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
@@ -48,9 +51,10 @@ import org.intellij.lang.annotations.Language
  */
 public class FieldClass(
     type: MessageType,
+    file: SourceFile<Java>,
     private val fieldSupertype: ClassName,
-    typeSystem: TypeSystem
-) : NestedUnderMessage(type, NAME, typeSystem) {
+    context: CodegenContext
+) : NestedClassAction(type, file, NAME, context) {
 
     public companion object {
 
@@ -80,16 +84,16 @@ public class FieldClass(
 
     private fun PsiClass.addTopLevelFieldMethods() {
         type.fieldList.forEach {
-            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem)
+            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem!!)
             addLast(accessor.method())
         }
     }
 
     private fun PsiClass.addFieldClasses() {
         val nestedFieldTypes =
-            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).asSet()
+            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem!!).asSet()
         nestedFieldTypes.forEach {
-            val fld = MessageTypedField(it, fieldSupertype, typeSystem)
+            val fld = MessageTypedField(it, fieldSupertype, typeSystem!!)
             val messageTypeField = fld.createClass()
             addLast(messageTypeField)
         }
