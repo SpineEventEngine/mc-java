@@ -32,6 +32,8 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.typeReference
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
@@ -41,11 +43,12 @@ import io.spine.tools.mc.java.settings.Entities
  * entity state types.
  */
 internal abstract class QuerySupportClass(
-    className: String,
     type: MessageType,
+    file: SourceFile<Java>,
+    className: String,
     protected val settings: Entities,
     context: CodegenContext
-) : NestedClassAction(type, className, context) {
+) : NestedClassAction(type, file, className, context) {
 
     /**
      * The class of the entity state.

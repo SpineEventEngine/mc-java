@@ -28,6 +28,8 @@ package io.spine.tools.mc.java.mgroup.given
 
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
 import org.intellij.lang.annotations.Language
@@ -35,8 +37,8 @@ import org.intellij.lang.annotations.Language
 /**
  * A stub renderer that adds a nested class called [`StudentId`][CLASS_NAME].
  */
-class StudentIdClass(type: MessageType, context: CodegenContext) :
-    NestedClassAction(type, CLASS_NAME, context) {
+class StudentIdClass(type: MessageType, sourceFile: SourceFile<Java>, context: CodegenContext) :
+    NestedClassAction(type, sourceFile, CLASS_NAME, context) {
 
     override fun tuneClass() {
         // Do nothing.

@@ -32,6 +32,8 @@ import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
@@ -49,9 +51,10 @@ import org.intellij.lang.annotations.Language
  */
 public class FieldClass(
     type: MessageType,
+    file: SourceFile<Java>,
     private val fieldSupertype: ClassName,
     context: CodegenContext
-) : NestedClassAction(type, NAME, context) {
+) : NestedClassAction(type, file, NAME, context) {
 
     public companion object {
 

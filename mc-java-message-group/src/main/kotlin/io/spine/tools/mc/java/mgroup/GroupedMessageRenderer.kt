@@ -83,13 +83,14 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
     ) {
         val classloader = Thread.currentThread().contextClassLoader
         val factory = Factory<MessageAction<Java>>(classloader)
-        val action = factory.create(actionClass, type, context!!)
-        action.render(sourceFile)
+        val action = factory.create(actionClass, type, sourceFile, context!!)
+        action.render()
     }
 
-    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile<Java>) {
-        val factory = FieldClass(type, superClassName, context!!)
-        factory.render(sourceFile)
+    private fun GenerateFields.render(type: MessageType, file: SourceFile<Java>) {
+        FieldClass(type, file, superClassName, context!!).run {
+            render()
+        }
     }
 
     private fun findTypes(): Set<GroupedMessage> {

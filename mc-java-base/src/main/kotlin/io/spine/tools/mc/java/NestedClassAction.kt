@@ -50,16 +50,17 @@ import io.spine.tools.psi.java.topLevelClass
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
  *
- * @param type
- *         the type of the message.
- * @param className
- *         a simple name of the nested class to be generated.
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property className a simple name of the nested class to be generated.
+ * @property context the code generation context in which this action runs.
  */
 public abstract class NestedClassAction(
     type: MessageType,
+    file: SourceFile<Java>,
     protected val className: String,
     context: CodegenContext
-) : MessageAction<Java>(Java, type, context), WithLogging {
+) : MessageAction<Java>(Java, type, file, context), WithLogging {
 
     /**
      * The product of the code generator.
@@ -125,7 +126,7 @@ public abstract class NestedClassAction(
      *         the Java file to add the class produced by this factory.
      */
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    override fun render(file: SourceFile<Java>) {
+    override fun render() {
         try {
             val psiJavaFile = file.psi() as PsiJavaFile
             tuneClass()

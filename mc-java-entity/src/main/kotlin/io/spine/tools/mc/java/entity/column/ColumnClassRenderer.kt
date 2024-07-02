@@ -42,11 +42,11 @@ import io.spine.tools.psi.java.execute
  */
 internal class ColumnClassRenderer : EntityStateRenderer() {
 
-    override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
         if (type.columns.isNotEmpty()) {
             execute {
-                ColumnClass(type, context!!).run {
-                    render(sourceFile)
+                ColumnClass(type, file, context!!).run {
+                    render()
                 }
             }
         }

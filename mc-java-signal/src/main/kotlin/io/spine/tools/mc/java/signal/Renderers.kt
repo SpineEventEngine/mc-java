@@ -67,10 +67,10 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     }
 
     @OverridingMethodsMustInvokeSuper
-    override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            FieldClass(type, fieldSupertype, context!!).run {
-                render(sourceFile)
+            FieldClass(type, file, fieldSupertype, context!!).run {
+                render()
             }
         }
     }
