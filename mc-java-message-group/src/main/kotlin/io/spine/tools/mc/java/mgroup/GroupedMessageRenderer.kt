@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,8 +29,10 @@ package io.spine.tools.mc.java.mgroup
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaFiles
+import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.reflect.Factory
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
@@ -58,7 +60,9 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         val types = findTypes()
         types.forEach {
             val sourceFile = sources.javaFileOf(it.type)
-            it.doRender(sourceFile)
+            execute {
+                it.doRender(sourceFile)
+            }
         }
     }
 
@@ -67,14 +71,25 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
             if (it.hasGenerateFields()) {
                 it.generateFields.render(type, sourceFile)
             }
+            it.actionList.forEach { actionClass ->
+                runAction(actionClass, sourceFile)
+            }
         }
     }
 
+    private fun GroupedMessage.runAction(
+        actionClass: String,
+        sourceFile: SourceFile<Java>
+    ) {
+        val classloader = Thread.currentThread().contextClassLoader
+        val factory = Factory<MessageAction<Java>>(classloader)
+        val action = factory.create(actionClass, type, context!!)
+        action.render(sourceFile)
+    }
+
     private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile<Java>) {
-        execute {
-            val factory = FieldClass(type, superClassName, context!!)
-            factory.render(sourceFile)
-        }
+        val factory = FieldClass(type, superClassName, context!!)
+        factory.render(sourceFile)
     }
 
     private fun findTypes(): Set<GroupedMessage> {

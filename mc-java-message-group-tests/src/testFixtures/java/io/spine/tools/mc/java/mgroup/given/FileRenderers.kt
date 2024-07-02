@@ -30,6 +30,7 @@ import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
+import org.intellij.lang.annotations.Language
 
 /**
  * A stub renderer that adds a nested class called [`StudentId`][CLASS_NAME].
@@ -41,7 +42,8 @@ class StudentIdClass(type: MessageType, context: CodegenContext) :
         // Do nothing.
     }
 
-    override fun classJavadoc(): String = ""
+    @Language("JAVA") @Suppress("EmptyClass")
+    override fun classJavadoc(): String = "/** The class of student ID. */"
 
     companion object {
         const val CLASS_NAME = "StudentId"

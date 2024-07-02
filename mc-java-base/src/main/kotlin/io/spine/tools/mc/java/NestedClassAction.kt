@@ -35,7 +35,7 @@ import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
-import io.spine.protodata.renderer.RenderAction
+import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -56,10 +56,10 @@ import io.spine.tools.psi.java.topLevelClass
  *         a simple name of the nested class to be generated.
  */
 public abstract class NestedClassAction(
-    protected val type: MessageType,
+    type: MessageType,
     protected val className: String,
     context: CodegenContext
-) : RenderAction<Java, MessageType>(Java, type, context), WithLogging {
+) : MessageAction<Java>(Java, type, context), WithLogging {
 
     /**
      * The product of the code generator.
@@ -124,11 +124,10 @@ public abstract class NestedClassAction(
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
     override fun render(file: SourceFile<Java>) {
         try {
-            tuneClass()
             val psiJavaFile = file.psi() as PsiJavaFile
+            tuneClass()
             val targetClass = psiJavaFile.findClass(messageClass)
             targetClass.addLast(cls)
-
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
