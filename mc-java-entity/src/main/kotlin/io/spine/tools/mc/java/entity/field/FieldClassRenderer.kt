@@ -50,8 +50,9 @@ internal class FieldClassRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
         execute {
-            val factory = FieldClass(type, fieldSupertype)
-            factory.render(sourceFile)
+            FieldClass(type, fieldSupertype, context!!).run {
+                render(sourceFile)
+            }
         }
     }
 }

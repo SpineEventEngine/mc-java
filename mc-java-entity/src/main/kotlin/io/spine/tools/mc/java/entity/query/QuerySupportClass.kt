@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.entity.query
 
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
@@ -42,8 +43,9 @@ import io.spine.tools.mc.java.settings.Entities
 internal abstract class QuerySupportClass(
     className: String,
     type: MessageType,
-    protected val settings: Entities
-) : NestedClassAction(type, className) {
+    protected val settings: Entities,
+    context: CodegenContext
+) : NestedClassAction(type, className, context) {
 
     /**
      * The class of the entity state.

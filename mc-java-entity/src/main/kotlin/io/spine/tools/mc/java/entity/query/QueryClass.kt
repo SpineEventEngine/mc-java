@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.entity.query
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.query.EntityQuery
 import io.spine.tools.java.reference
@@ -47,8 +48,9 @@ import org.intellij.lang.annotations.Language
  */
 internal class QueryClass(
     type: MessageType,
-    settings: Entities
-) : QuerySupportClass(QUERY_CLASS_NAME, type, settings) {
+    settings: Entities,
+    context: CodegenContext
+) : QuerySupportClass(QUERY_CLASS_NAME, type, settings, context) {
 
     /**
      * The value used for brevity when referencing in the generated code.

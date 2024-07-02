@@ -45,7 +45,7 @@ internal class ColumnClassRenderer : EntityStateRenderer() {
     override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
         if (type.columns.isNotEmpty()) {
             execute {
-                ColumnClass(type).run {
+                ColumnClass(type, context!!).run {
                     render(sourceFile)
                 }
             }

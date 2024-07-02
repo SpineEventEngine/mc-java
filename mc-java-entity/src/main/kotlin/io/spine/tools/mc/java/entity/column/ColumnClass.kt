@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiMethod
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
@@ -58,7 +59,8 @@ import org.intellij.lang.annotations.Language
  *         the type of the `EntityState` message.
  * @see render
  */
-internal class ColumnClass(type: MessageType) : NestedClassAction(type, COLUMN_CLASS_NAME) {
+internal class ColumnClass(type: MessageType, context: CodegenContext) :
+    NestedClassAction(type, COLUMN_CLASS_NAME, context) {
 
     private val columns: List<Field> = type.columns
 

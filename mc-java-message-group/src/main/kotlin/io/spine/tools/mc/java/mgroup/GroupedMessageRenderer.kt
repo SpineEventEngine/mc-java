@@ -72,7 +72,7 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
 
     private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile<Java>) {
         execute {
-            val factory = FieldClass(type, superClassName)
+            val factory = FieldClass(type, superClassName, context!!)
             factory.render(sourceFile)
         }
     }

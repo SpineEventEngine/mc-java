@@ -31,6 +31,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
@@ -57,7 +58,8 @@ import io.spine.tools.psi.java.topLevelClass
 public abstract class NestedClassAction(
     protected val type: MessageType,
     protected val className: String,
-) : RenderAction<Java, MessageType>(Java, type), WithLogging {
+    context: CodegenContext
+) : RenderAction<Java, MessageType>(Java, type, context), WithLogging {
 
     /**
      * The product of the code generator.

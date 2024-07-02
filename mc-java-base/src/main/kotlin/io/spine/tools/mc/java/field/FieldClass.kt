@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiClass
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
@@ -49,7 +50,8 @@ import org.intellij.lang.annotations.Language
 public class FieldClass(
     type: MessageType,
     private val fieldSupertype: ClassName,
-) : NestedClassAction(type, NAME) {
+    context: CodegenContext
+) : NestedClassAction(type, NAME, context) {
 
     public companion object {
 

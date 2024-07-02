@@ -45,11 +45,11 @@ internal class QuerySupportRenderer : EntityStateRenderer() {
                 render()
             }
             // The `QueryBuilder` class is added at the bottom, before the `Query` class.
-            QueryBuilderClass(type, settings).run {
+            QueryBuilderClass(type, settings, context!!).run {
                 render(sourceFile)
             }
             // The `Query` class comes last.
-            QueryClass(type, settings).run {
+            QueryClass(type, settings, context!!).run {
                 render(sourceFile)
             }
         }
