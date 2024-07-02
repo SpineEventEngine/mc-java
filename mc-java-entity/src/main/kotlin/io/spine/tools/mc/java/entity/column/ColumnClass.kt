@@ -31,9 +31,8 @@ import com.intellij.psi.PsiMethod
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.NestedClassRenderer
+import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -57,14 +56,9 @@ import org.intellij.lang.annotations.Language
  *
  * @param type
  *         the type of the `EntityState` message.
- * @param typeSystem
- *         the type system used for resolving field types.
  * @see render
  */
-internal class ColumnClass(
-    type: MessageType,
-    typeSystem: TypeSystem
-) : NestedClassRenderer(type, COLUMN_CLASS_NAME, typeSystem) {
+internal class ColumnClass(type: MessageType) : NestedClassAction(type, COLUMN_CLASS_NAME) {
 
     private val columns: List<Field> = type.columns
 
@@ -85,7 +79,7 @@ internal class ColumnClass(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem)
+            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem!!)
             accessor.render()
         }
     }

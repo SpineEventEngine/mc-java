@@ -35,10 +35,12 @@ import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.protobuf.Messages.isNotDefault;
 import static io.spine.tools.java.code.Names.className;
 import static java.util.stream.Collectors.toSet;
@@ -53,14 +55,14 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
+    private final Multiple<String> actions;
 
     MessageGroupConfig(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
-        methodFactories.convention(ImmutableList.of());
         nestedClassFactories = new Multiple<>(p, String.class);
-        nestedClassFactories.convention(ImmutableList.of());
+        actions = new Multiple<>(p, String.class);
         emptyByConvention();
     }
 
@@ -68,6 +70,21 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
         interfaceNames().convention(ImmutableSet.of());
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());
+        actions.convention(ImmutableSet.of());
+    }
+
+    public void useAction(@FqBinaryName String action) {
+        checkNotNull(action);
+        actions.add(action);
+    }
+
+    public void useActions(Iterable<@FqBinaryName String> classNames) {
+        checkNotNull(classNames);
+        actions.addAll(classNames);
+    }
+
+    public void useActions(@FqBinaryName String... classNames) {
+        useActions(ImmutableList.copyOf(classNames));
     }
 
     /**
@@ -91,7 +108,9 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
      *
      * @param factoryClassName
      *         the canonical class name of the nested class factory
+     * @deprecated please use {@link #useAction} instead.
      */
+    @Deprecated
     public void generateNestedClassesWith(String factoryClassName) {
         nestedClassFactories.add(factoryClassName);
     }
@@ -102,7 +121,8 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
-                .addAllGenerateNestedClasses(generateNestedClasses());
+                .addAllGenerateNestedClasses(generateNestedClasses())
+                .addAllAction(actions.get());
         var generateFields = generateFields();
         if (isNotDefault(generateFields)) {
             result.setGenerateFields(generateFields);

@@ -34,9 +34,8 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
-import io.spine.protodata.renderer.FileRenderer
+import io.spine.protodata.renderer.RenderAction
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
@@ -54,14 +53,11 @@ import io.spine.tools.psi.java.topLevelClass
  *         the type of the message.
  * @param className
  *         a simple name of the nested class to be generated.
- * @param typeSystem
- *         the type system used for resolving field types.
  */
-public abstract class NestedClassRenderer(
+public abstract class NestedClassAction(
     protected val type: MessageType,
     protected val className: String,
-    protected val typeSystem: TypeSystem
-) : FileRenderer<Java>, WithLogging {
+) : RenderAction<Java, MessageType>(Java, type), WithLogging {
 
     /**
      * The product of the code generator.
@@ -80,7 +76,7 @@ public abstract class NestedClassRenderer(
      * The name of the message class under which the [cls] is going to places.
      */
     protected val messageClass: ClassName by lazy {
-        type.javaClassName(typeSystem)
+        type.javaClassName(typeSystem!!)
     }
 
     /**

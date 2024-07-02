@@ -31,8 +31,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.typeReference
-import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.NestedClassRenderer
+import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 
@@ -43,15 +42,14 @@ import io.spine.tools.mc.java.settings.Entities
 internal abstract class QuerySupportClass(
     className: String,
     type: MessageType,
-    typeSystem: TypeSystem,
     protected val settings: Entities
-) : NestedClassRenderer(type, className, typeSystem) {
+) : NestedClassAction(type, className) {
 
     /**
      * The class of the entity state.
      */
     protected val entityStateClass: ClassName by lazy {
-        type.javaClassName(typeSystem)
+        type.javaClassName(typeSystem!!)
     }
 
     /**
@@ -71,6 +69,6 @@ internal abstract class QuerySupportClass(
      * The type of the [first][idField] entity state type field.
      */
     val idType: String by lazy {
-        idField.typeReference(entityStateClass, typeSystem)
+        idField.typeReference(entityStateClass, typeSystem!!)
     }
 }

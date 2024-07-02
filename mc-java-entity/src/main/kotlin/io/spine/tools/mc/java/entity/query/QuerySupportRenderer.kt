@@ -40,17 +40,16 @@ internal class QuerySupportRenderer : EntityStateRenderer() {
 
     override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
         execute {
-            val ts = typeSystem!!
             // The `query()` method is added after constructors.
             QueryMethod(sourceFile).run {
                 render()
             }
             // The `QueryBuilder` class is added at the bottom, before the `Query` class.
-            QueryBuilderClass(type, ts, settings).run {
+            QueryBuilderClass(type, settings).run {
                 render(sourceFile)
             }
             // The `Query` class comes last.
-            QueryClass(type, ts, settings).run {
+            QueryClass(type, settings).run {
                 render(sourceFile)
             }
         }

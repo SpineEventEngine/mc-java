@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,34 +24,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java.mgroup.given
 
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.superClassName
-import io.spine.tools.psi.java.execute
+import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
 
 /**
- * Renders classes named [Field][FieldClass.NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
- *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see FieldClass
+ * A stub renderer that adds a nested class called [`StudentId`][CLASS_NAME].
  */
-internal class FieldClassRenderer : EntityStateRenderer() {
+class StudentIdClass(type: MessageType) : NestedClassAction(type, CLASS_NAME) {
 
-    private val fieldSupertype: ClassName by lazy {
-        settings.generateFields.superClassName
+    override fun tuneClass() {
+        // Do nothing.
     }
 
-    override fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
-        execute {
-            val factory = FieldClass(type, fieldSupertype)
-            factory.render(sourceFile)
-        }
+    override fun classJavadoc(): String = ""
+
+    companion object {
+        const val CLASS_NAME = "StudentId"
     }
 }

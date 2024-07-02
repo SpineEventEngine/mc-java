@@ -31,8 +31,7 @@ import io.spine.protodata.Field.CardinalityCase.SINGLE
 import io.spine.protodata.MessageType
 import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.type.TypeSystem
-import io.spine.tools.mc.java.NestedClassRenderer
+import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
@@ -50,8 +49,7 @@ import org.intellij.lang.annotations.Language
 public class FieldClass(
     type: MessageType,
     private val fieldSupertype: ClassName,
-    typeSystem: TypeSystem
-) : NestedClassRenderer(type, NAME, typeSystem) {
+) : NestedClassAction(type, NAME) {
 
     public companion object {
 
@@ -81,16 +79,16 @@ public class FieldClass(
 
     private fun PsiClass.addTopLevelFieldMethods() {
         type.fieldList.forEach {
-            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem)
+            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem!!)
             addLast(accessor.method())
         }
     }
 
     private fun PsiClass.addFieldClasses() {
         val nestedFieldTypes =
-            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem).asSet()
+            MessageTypeDependencies(type, cardinality = SINGLE, typeSystem!!).asSet()
         nestedFieldTypes.forEach {
-            val fld = MessageTypedField(it, fieldSupertype, typeSystem)
+            val fld = MessageTypedField(it, fieldSupertype, typeSystem!!)
             val messageTypeField = fld.createClass()
             addLast(messageTypeField)
         }
