@@ -1,11 +1,11 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,24 +27,19 @@
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
 import io.spine.internal.dependency.ErrorProne
-import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Grpc
+import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Kotlin
+import io.spine.internal.dependency.KotlinX
+import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
-import io.spine.internal.gradle.applyStandard
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
+import io.spine.internal.gradle.standardToSpineSdk
 import io.spine.internal.gradle.testing.configureLogging
-import java.io.File
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 buildscript {
 
@@ -106,7 +101,7 @@ allprojects {
     apply(plugin = "java")
 
     repositories {
-        applyStandard()
+        standardToSpineSdk()
         gitHub("base")
         gitHub("tool-base")
         gitHub("model-compiler")
@@ -123,6 +118,8 @@ allprojects {
             resolutionStrategy {
                 force(
                     Kotlin.stdLibJdk7,
+                    KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.jdk8,
                     Grpc.api,
                     Spine.reflect,
                     Spine.base,
@@ -131,6 +128,9 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
+                    Spine.psiJavaBundle,
+                    ProtoData.api,
+                    Validation.config,
                     Validation.runtime,
                 )
             }
