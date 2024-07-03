@@ -30,13 +30,14 @@ plugins {
 }
 
 dependencies {
+    protoData(project(":factories"))
     testImplementation(project(":factories"))
 }
 
 modelCompiler {
     java {
         codegen {
-            // Turn off validation codegen during the transition to new ProtoData API.
+            // Turn off validation codegen during the transition to the new ProtoData API.
             validation().enabled.set(false)
 
             val methodFactory = "io.spine.tools.mc.java.protoc.TestMethodFactory"
