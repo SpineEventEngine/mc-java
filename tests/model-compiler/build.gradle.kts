@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -72,5 +72,14 @@ modelCompiler {
                 generateMethodsWith(methodFactory)
             }
         }
+    }
+}
+
+tasks.findByName("launchTestProtoData")?.apply { this as JavaExec
+    debugOptions {
+        enabled.set(false) // Set this option to `true` to enable remote debugging.
+        port.set(5566)
+        server.set(true)
+        suspend.set(true)
     }
 }
