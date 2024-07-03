@@ -29,15 +29,14 @@ package io.spine.tools.mc.java.mgroup
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaFiles
-import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import io.spine.reflect.Factory
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.GenerateFields
 import io.spine.tools.mc.java.settings.GroupSettings
+import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import io.spine.tools.psi.java.execute
 
 /**
@@ -77,13 +76,9 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         }
     }
 
-    private fun GroupedMessage.runAction(
-        actionClass: String,
-        sourceFile: SourceFile<Java>
-    ) {
+    private fun GroupedMessage.runAction(actionClass: String, file: SourceFile<Java>) {
         val classloader = Thread.currentThread().contextClassLoader
-        val factory = Factory<MessageAction<Java>>(classloader)
-        val action = factory.create(actionClass, type, sourceFile, context!!)
+        val action = createAction(classloader, actionClass, type, file, context!!)
         action.render()
     }
 

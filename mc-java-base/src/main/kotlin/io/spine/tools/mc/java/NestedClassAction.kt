@@ -121,9 +121,6 @@ public abstract class NestedClassAction(
 
     /**
      * Adds a nested class the top class of the given [file].
-     *
-     * @param file
-     *         the Java file to add the class produced by this factory.
      */
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
     override fun render() {
@@ -180,8 +177,8 @@ public abstract class NestedClassAction(
 /**
  * Locates the class with the given name in this [PsiJavaFile].
  *
- * If the given class is nested, the function finds the class nested into the top level class
- * of this Java file. Otherwise, top level class is returned.
+ * If the given class is nested, the function finds the class nested into the top-level class
+ * of this Java file. Otherwise, the top-level class is returned.
  *
  * This is a naïve implementation of locating a class in a Java file that serves our needs for
  * handling top level message classes of entity states, command messages, and events.
