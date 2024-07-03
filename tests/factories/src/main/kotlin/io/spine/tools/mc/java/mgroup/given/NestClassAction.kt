@@ -31,7 +31,6 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.NestedClassAction
-import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
 import org.intellij.lang.annotations.Language
 
 /**
