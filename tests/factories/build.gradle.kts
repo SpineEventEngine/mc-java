@@ -25,13 +25,17 @@
  */
 
 import io.spine.internal.dependency.JavaPoet
+import io.spine.internal.dependency.ProtoData
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Spine.McJava
 
 plugins {
+    kotlin("jvm")
     // To allow `modelCompiler` syntax below.
     id("io.spine.mc-java")
 }
 
-// Turn off validation codegen during the transition to new ProtoData API.
+// Turn off validation codegen during the transition to the new ProtoData API.
 modelCompiler {
     java {
         codegen {
@@ -47,5 +51,8 @@ modelCompiler {
 
 dependencies {
     implementation(JavaPoet.lib)
-    implementation(io.spine.internal.dependency.Spine.toolBase)
+    implementation(Spine.toolBase)
+    implementation(ProtoData.api)!!.because("Custom codegen actions use ProtoData API.")
+    val mcJavaBase = McJava.base(version.toString())
+    implementation(mcJavaBase)!!.because("We take abstract base classes from this artifact.")
 }
