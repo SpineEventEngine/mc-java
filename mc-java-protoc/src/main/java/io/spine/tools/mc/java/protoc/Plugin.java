@@ -75,7 +75,7 @@ public final class Plugin {
         var generator = CompositeGenerator.of(
                 InterfaceGen.instance(config),
                 MethodGen.instance(config),
-                new BuilderGen()//,
+                new BuilderGen()
                 //NestedClassGen.instance(config)
                 //EntityQueryGen.instance(config)
                 //FieldGen.instance(config)
