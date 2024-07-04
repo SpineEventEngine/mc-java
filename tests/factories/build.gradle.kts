@@ -29,12 +29,6 @@ import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Spine.McJava
 
-plugins {
-    kotlin("jvm")
-    // To allow `modelCompiler` syntax below.
-    id("io.spine.mc-java")
-}
-
 // Turn off validation codegen during the transition to the new ProtoData API.
 modelCompiler {
     java {

@@ -41,7 +41,6 @@ modelCompiler {
             validation().enabled.set(false)
 
             val methodFactory = "io.spine.tools.mc.java.protoc.TestMethodFactory"
-            //val nestedClassFactory = "io.spine.tools.mc.java.protoc.TestNestedClassFactory"
             val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"
 
             forMessages(by().suffix("documents.proto")) {
@@ -51,7 +50,6 @@ modelCompiler {
             forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
                 markAs("io.spine.tools.mc.java.protoc.PrefixedMessage")
                 generateMethodsWith(methodFactory)
-                //generateNestedClassesWith(nestedClassFactory)
                 useAction(nestedClassAction)
             }
 

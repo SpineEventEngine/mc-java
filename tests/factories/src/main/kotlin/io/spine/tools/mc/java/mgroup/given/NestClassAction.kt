@@ -26,11 +26,17 @@
 
 package io.spine.tools.mc.java.mgroup.given
 
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.java.javaClassName
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.psi.addFirst
+import io.spine.tools.psi.java.addLast
+import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
 
 /**
@@ -40,7 +46,31 @@ class NestClassAction(type: MessageType, file: SourceFile<Java>, context: Codege
     NestedClassAction(type, file, CLASS_NAME, context) {
 
     override fun tuneClass() {
-        // Do nothing.
+        cls.addLast(method)
+    }
+
+    private val javadoc: PsiDocComment by lazy {
+        @Language("JAVA") @Suppress("EmptyClass")
+        val doc = elementFactory.createDocCommentFromText("""
+            /**
+             * Returns the message class for test purposes.
+             */           
+            """.trimIndent()
+        )
+        doc
+    }
+
+    private val method: PsiMethod by lazy {
+        val messageClassName = type.javaClassName(typeSystem!!)
+        @Language("JAVA") @Suppress("EmptyClass")
+        val newMethod = elementFactory.createMethodFromText("""
+            public static Class messageClass() {
+              return $messageClassName.class;    
+            }                                
+            """.trimIndent(), cls
+        )
+        newMethod.addFirst(javadoc)
+        newMethod
     }
 
     @Language("JAVA") @Suppress("EmptyClass")

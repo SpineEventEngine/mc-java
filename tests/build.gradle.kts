@@ -146,8 +146,9 @@ subprojects {
 
     apply {
         plugin("com.google.protobuf")
-        plugin("net.ltgt.errorprone")
+        plugin("kotlin")
         plugin("io.spine.mc-java")
+        plugin("net.ltgt.errorprone")
         plugin("idea")
     }
 
