@@ -190,17 +190,14 @@ message MessageGroup {
     // Settings for adding Java methods for messages in this group.
     repeated GenerateMethods generate_methods = 3;
 
-    // Settings for adding nested classes for messages in this group.
-    //
-    // Deprecated: please use `action` instead.
-    //
-    repeated GenerateNestedClasses generate_nested_classes = 4 [deprecated = true];
+     reserved 4;
+     reserved "generate_nested_classes";
 
     // Settings for generating Java type-safe field API for messages in this group.
     GenerateFields generate_fields = 5;
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
-    // that are to be applied to the messages of this group.
+    // that are to be applied to the messages of thisP group.
     repeated string action = 6;
 }
 
