@@ -115,7 +115,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-//                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -141,7 +140,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-//                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -166,7 +164,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-//                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -213,7 +210,7 @@ final class PluginTest {
     }
 
     /**
-     * Selects all files from the given response which contain the specified insertion point.
+     * Selects all files from the given response, which contain the specified insertion point.
      */
     private static List<File> filterFiles(CodeGeneratorResponse response,
                                           InsertionPoint insertionPoint) {
@@ -268,7 +265,5 @@ final class PluginTest {
         var assertClassScope = assertThat(classScopeFile.getContent());
         assertClassScope
                 .contains(TEST_METHOD.toString());
-//        assertClassScope
-//                .contains(NESTED_CLASS.toString());
     }
 }
