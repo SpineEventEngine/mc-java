@@ -28,12 +28,13 @@ package io.spine.tools.mc.java.gradle.plugins;
 import com.google.protobuf.gradle.ExecutableLocator;
 import com.google.protobuf.gradle.ProtobufExtension;
 import io.spine.tools.gradle.DependencyVersions;
+import io.spine.tools.gradle.protobuf.ProtobufDependencies;
 import io.spine.tools.mc.gradle.LanguagePlugin;
 import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin;
+import io.spine.tools.mc.java.gradle.McJava;
 import io.spine.tools.mc.java.gradle.McJavaOptions;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import io.spine.tools.mc.java.gradle.McJava;
 
 import java.util.stream.Stream;
 
@@ -55,8 +56,15 @@ public class McJavaPlugin extends LanguagePlugin {
 
     @Override
     public void apply(Project project) {
-        logApplyingTo(project);
         super.apply(project);
+        var manager = project.getPluginManager();
+        manager.withPlugin(ProtobufDependencies.gradlePlugin.id, (plugin) -> {
+            doApply(project);
+        });
+    }
+
+    private void doApply(Project project) {
+        logApplyingTo(project);
         setProtocArtifact(project);
         var extension = getMcJava(project);
         extension.injectProject(project);
@@ -79,6 +87,7 @@ public class McJavaPlugin extends LanguagePlugin {
         var protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation();
         protobuf.protoc((ExecutableLocator locator) -> locator.setArtifact(protocArtifact));
     }
+
     /**
      * Creates all the plugins that are parts of {@code mc-java} and applies them to
      * the given project.
