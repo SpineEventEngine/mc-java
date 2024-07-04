@@ -30,10 +30,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.mc.java.settings.GenerateMethods;
-import io.spine.tools.mc.java.settings.GenerateNestedClasses;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
-import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
@@ -73,16 +71,40 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
         actions.convention(ImmutableSet.of());
     }
 
-    public void useAction(@FqBinaryName String action) {
-        checkNotNull(action);
-        actions.add(action);
+    /**
+     * Instructs Model Compiler to use
+     * the {@link io.spine.protodata.renderer.RenderAction code generation action} specified
+     * by the binary name of the class.
+     *
+     * @param className
+     *         the binary name of the action class
+     */
+    public void useAction(@FqBinaryName String className) {
+        checkNotNull(className);
+        actions.add(className);
     }
 
+    /**
+     * Instructs Model Compiler to apply
+     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action class
+     */
     public void useActions(Iterable<@FqBinaryName String> classNames) {
         checkNotNull(classNames);
         actions.addAll(classNames);
     }
 
+    /**
+     * Instructs Model Compiler to apply
+     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action classes
+     */
     public void useActions(@FqBinaryName String... classNames) {
         useActions(ImmutableList.copyOf(classNames));
     }
@@ -121,7 +143,6 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
-                .addAllGenerateNestedClasses(generateNestedClasses())
                 .addAllAction(actions.get());
         var generateFields = generateFields();
         if (isNotDefault(generateFields)) {
@@ -142,23 +163,6 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
                 .setClassName(className(methodFactoryClass))
                 .build();
         var config = GenerateMethods.newBuilder()
-                .setFactory(factoryName)
-                .build();
-        return config;
-    }
-
-    private Set<GenerateNestedClasses> generateNestedClasses() {
-        return nestedClassFactories.get()
-                                   .stream()
-                                   .map(MessageGroupConfig::nestedClassFactoryConfig)
-                                   .collect(toSet());
-    }
-
-    private static GenerateNestedClasses nestedClassFactoryConfig(String methodFactoryClass) {
-        var factoryName = NestedClassFactoryName.newBuilder()
-                .setClassName(className(methodFactoryClass))
-                .build();
-        var config = GenerateNestedClasses.newBuilder()
                 .setFactory(factoryName)
                 .build();
         return config;
