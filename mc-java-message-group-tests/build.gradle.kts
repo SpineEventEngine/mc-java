@@ -35,7 +35,7 @@ plugins {
 dependencies {
     arrayOf(
         Spine.base,
-        Validation.runtime,
+        Validation.runtime
     ).forEach {
         testFixturesImplementation(it)
     }
