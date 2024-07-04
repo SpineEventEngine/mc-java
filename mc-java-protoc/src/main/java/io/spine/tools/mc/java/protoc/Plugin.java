@@ -33,7 +33,6 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.protoc.message.BuilderGen;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
-import io.spine.tools.mc.java.protoc.message.NestedClassGen;
 import io.spine.tools.mc.java.protoc.method.MethodGen;
 import io.spine.tools.mc.java.settings.CodegenSettings;
 
@@ -76,8 +75,8 @@ public final class Plugin {
         var generator = CompositeGenerator.of(
                 InterfaceGen.instance(config),
                 MethodGen.instance(config),
-                new BuilderGen(),
-                NestedClassGen.instance(config)
+                new BuilderGen()
+                //NestedClassGen.instance(config)
                 //EntityQueryGen.instance(config)
                 //FieldGen.instance(config)
         );

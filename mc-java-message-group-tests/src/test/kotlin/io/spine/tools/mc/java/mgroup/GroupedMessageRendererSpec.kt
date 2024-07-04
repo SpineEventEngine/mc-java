@@ -27,16 +27,10 @@
 package io.spine.tools.mc.java.mgroup
 
 import io.kotest.matchers.string.shouldContain
-import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.settings.Format
-import io.spine.protodata.settings.SettingsDirectory
-import io.spine.protodata.testing.PipelineSetup
-import io.spine.protodata.testing.PipelineSetup.Companion.byResources
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.mgroup.given.CustomField
+import io.spine.tools.mc.java.mgroup.given.StudentIdClass
 import io.spine.tools.mc.java.settings.GroupSettings
-import io.spine.type.toJson
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
@@ -74,6 +68,7 @@ internal class GroupedMessageRendererSpec {
             val codegenConfig = createCodegenConfig(projectDir)
             codegenConfig.forMessage("given.groups.Student") {
                 it.markFieldsAs(CustomField::class.java.canonicalName)
+                it.useAction(StudentIdClass::class.java.canonicalName)
             }
             return codegenConfig.toProto().groupSettings
         }
@@ -82,5 +77,10 @@ internal class GroupedMessageRendererSpec {
     @Test
     fun `render 'Field' class`() {
         code shouldContain "public static final class Field"
+    }
+
+    @Test
+    fun `render a nested class using a renderer`() {
+        code shouldContain "public static final class ${StudentIdClass.CLASS_NAME}"
     }
 }

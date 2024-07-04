@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,29 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.JavaPoet
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Spine.McJava
+package io.spine.internal.dependency
 
-// Turn off validation codegen during the transition to the new ProtoData API.
-modelCompiler {
-    java {
-        codegen {
-            validation().enabled.set(false)
-        }
-    }
-}
-
-/* 
-    This Smoke Tests module holds a `TestMethodFactory` that is used in
-    the `model-compiler` module.
-*/
-
-dependencies {
-    implementation(JavaPoet.lib)
-    implementation(Spine.toolBase)
-    implementation(ProtoData.api)!!.because("Custom codegen actions use ProtoData API.")
-    val mcJavaBase = McJava.base(version.toString())
-    implementation(mcJavaBase)!!.because("We take abstract base classes from this artifact.")
+/**
+ * Kotlin Symbol Processing API.
+ *
+ * @see <a href="https://github.com/google/ksp">KSP GitHub repository</a>
+ */
+object Ksp {
+    /**
+     * The latest version compatible with Kotlin v1.8.22, which is bundled with Gradle 7.6.4.
+     */
+    const val version = "1.8.22-1.0.11"
+    const val id = "com.google.devtools.ksp"
 }

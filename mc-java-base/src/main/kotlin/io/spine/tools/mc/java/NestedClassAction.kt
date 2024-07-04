@@ -26,15 +26,18 @@
 
 package io.spine.tools.mc.java
 
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
 import io.spine.logging.WithLogging
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
+import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.type.TypeSystem
+import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
@@ -47,18 +50,17 @@ import io.spine.tools.psi.java.topLevelClass
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
  *
- * @param type
- *         the type of the message.
- * @param className
- *         a simple name of the nested class to be generated.
- * @param typeSystem
- *         the type system used for resolving field types.
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property className a simple name of the nested class to be generated.
+ * @property context the code generation context in which this action runs.
  */
-public abstract class NestedUnderMessage(
-    protected val type: MessageType,
+public abstract class NestedClassAction(
+    type: MessageType,
+    file: SourceFile<Java>,
     protected val className: String,
-    protected val typeSystem: TypeSystem
-) : WithLogging {
+    context: CodegenContext
+) : MessageAction<Java>(Java, type, file, context), WithLogging {
 
     /**
      * The product of the code generator.
@@ -77,7 +79,7 @@ public abstract class NestedUnderMessage(
      * The name of the message class under which the [cls] is going to places.
      */
     protected val messageClass: ClassName by lazy {
-        type.javaClassName(typeSystem)
+        type.javaClassName(typeSystem!!)
     }
 
     /**
@@ -98,6 +100,9 @@ public abstract class NestedUnderMessage(
      *
      * Implementing methods may use [messageJavadocRef] to reference the class for which
      * this factory produces a nested class [cls].
+     *
+     * @return full text of the Javadoc comment to be created for the class, or
+     *         an empty string if the comment is not needed.
      */
     protected abstract fun classJavadoc(): String
 
@@ -116,18 +121,14 @@ public abstract class NestedUnderMessage(
 
     /**
      * Adds a nested class the top class of the given [file].
-     *
-     * @param file
-     *         the Java file to add the class produced by this factory.
      */
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    public fun render(file: SourceFile) {
+    override fun render() {
         try {
-            tuneClass()
             val psiJavaFile = file.psi() as PsiJavaFile
+            tuneClass()
             val targetClass = psiJavaFile.findClass(messageClass)
             targetClass.addLast(cls)
-
             val updatedText = psiJavaFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
@@ -148,23 +149,36 @@ public abstract class NestedUnderMessage(
         addClassJavadoc()
     }
 
+    /**
+     * Generates an annotation to be added for the created class.
+     *
+     * The default implementation returns the result of [GeneratedAnnotation.create].
+     *
+     * Overriding methods may return custom annotation or `null`, if no annotation is needed.
+     */
+    protected open fun createAnnotation(): PsiAnnotation? = GeneratedAnnotation.create()
+
     private fun PsiClass.addAnnotation() {
-        val annotation = GeneratedAnnotation.create()
-        addFirst(annotation)
+        val annotation = createAnnotation()
+        annotation?.let {
+            addFirst(it)
+        }
     }
 
     private fun PsiClass.addClassJavadoc() {
         val text = classJavadoc()
-        val classJavadoc = elementFactory.createDocCommentFromText(text, null)
-        addFirst(classJavadoc)
+        if (text.isNotEmpty()) {
+            val classJavadoc = elementFactory.createDocCommentFromText(text, null)
+            addFirst(classJavadoc)
+        }
     }
 }
 
 /**
  * Locates the class with the given name in this [PsiJavaFile].
  *
- * If the given class is a nested one, the function finds the class nested into the top level class
- * of this Java file. Otherwise, top level class is returned.
+ * If the given class is nested, the function finds the class nested into the top-level class
+ * of this Java file. Otherwise, the top-level class is returned.
  *
  * This is a naïve implementation of locating a class in a Java file that serves our needs for
  * handling top level message classes of entity states, command messages, and events.

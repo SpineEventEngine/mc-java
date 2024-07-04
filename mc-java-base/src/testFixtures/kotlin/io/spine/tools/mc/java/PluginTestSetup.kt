@@ -29,6 +29,7 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
@@ -111,6 +112,8 @@ abstract class PluginTestSetup<S: Message>(
         outputDir: Path,
         settingsDir: Path
     ): SourceFileSet {
+        // Clear the cache of previously parsed files to avoid repeated code generation.
+        SourceFile.clearCache()
         val settings = createSettings(projectDir)
         val setup = setup(outputDir, settingsDir, settings)
         val pipeline = setup.createPipeline()

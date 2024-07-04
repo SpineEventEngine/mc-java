@@ -37,10 +37,10 @@ import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_N
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
-import io.spine.tools.mc.java.entity.file
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
 import javax.annotation.Generated
+import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -64,7 +64,7 @@ internal class ColumnClassRendererSpec : EntityPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.file(DEPARTMENT_JAVA)
+            val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
             entityStateCode = sourceFile.code()
             psiFile = sourceFile.psi() as PsiJavaFile
         }

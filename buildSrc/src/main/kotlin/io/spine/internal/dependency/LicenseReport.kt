@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2022, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,29 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.JavaPoet
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Spine.McJava
+package io.spine.internal.dependency
 
-// Turn off validation codegen during the transition to the new ProtoData API.
-modelCompiler {
-    java {
-        codegen {
-            validation().enabled.set(false)
-        }
+// https://github.com/jk1/Gradle-License-Report
+@Suppress("unused")
+object LicenseReport {
+    private const val version = "1.16"
+    const val lib = "com.github.jk1:gradle-license-report:${version}"
+
+    object GradlePlugin {
+        const val version = LicenseReport.version
+        const val id = "com.github.jk1.dependency-license-report"
+        const val lib = LicenseReport.lib
     }
-}
-
-/* 
-    This Smoke Tests module holds a `TestMethodFactory` that is used in
-    the `model-compiler` module.
-*/
-
-dependencies {
-    implementation(JavaPoet.lib)
-    implementation(Spine.toolBase)
-    implementation(ProtoData.api)!!.because("Custom codegen actions use ProtoData API.")
-    val mcJavaBase = McJava.base(version.toString())
-    implementation(mcJavaBase)!!.because("We take abstract base classes from this artifact.")
 }

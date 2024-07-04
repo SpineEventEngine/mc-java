@@ -53,10 +53,13 @@ internal class QueryColumn(
     private val typeSystem: TypeSystem
 ) {
 
-    private val methodName: String = columnMethodName(field)
+    /**
+     * The name of the method for accessing the column.
+     */
+    private val method: String = columnMethodName(field)
 
     /**
-     * The name of the column class as local value for brevity at usage sites.
+     * The name of the column class, as a local value for brevity at usage sites.
      */
     private val column = COLUMN_CLASS_NAME
 
@@ -64,7 +67,7 @@ internal class QueryColumn(
         @Language("JAVA") @Suppress("EmptyClass")
         val doc = elementFactory.createDocCommentFromText("""
             /**
-             * Creates a criterion for the {@link $column#$methodName() $column.$methodName()} column.
+             * Creates a criterion for the {@link $column#$method() $column.$method()} column.
              */           
             """.trimIndent(), queryBuilder
         )
@@ -81,11 +84,14 @@ internal class QueryColumn(
         "$entityCriterion<${entityState.simpleName}, $fieldType, ${queryBuilder.name}>"
     }
 
-    private val method: PsiMethod by lazy {
+    /**
+     * The code of the method.
+     */
+    private val result: PsiMethod by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
-            public $returnType $methodName() {
-                return new $entityCriterion<>($column.$methodName(), this);
+            public $returnType $method() {
+                return new $entityCriterion<>($column.$method(), this);
             }                   
             """.trimIndent(), queryBuilder
         )
@@ -97,6 +103,6 @@ internal class QueryColumn(
      * Renders the method in [queryBuilder].
      */
     fun render() {
-        queryBuilder.addLast(method)
+        queryBuilder.addLast(result)
     }
 }

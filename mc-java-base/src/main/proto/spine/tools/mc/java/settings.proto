@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -166,7 +166,8 @@ message GenerateFields {
 
     // The name of the superclass of the fields class.
     //
-    // It's recommended that the class extends `io.spine.base.SubscribableField`.
+    // It's required that the class extends `io.spine.base.SubscribableField` either
+    // directly or via one of its subclasses.
     //
     tools.java.JavaClassName superclass = 1;
 }
@@ -189,11 +190,15 @@ message MessageGroup {
     // Settings for adding Java methods for messages in this group.
     repeated GenerateMethods generate_methods = 3;
 
-    // Settings for adding nested classes for messages in this group.
-    repeated GenerateNestedClasses generate_nested_classes = 4;
+     reserved 4;
+     reserved "generate_nested_classes";
 
     // Settings for generating Java type-safe field API for messages in this group.
     GenerateFields generate_fields = 5;
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the messages of this group.
+    repeated string action = 6;
 }
 
 // A pattern which matches one or multiple messages.
@@ -255,7 +260,12 @@ message GenerateMethods {
 }
 
 // Configuration for adding nested classes into a generated class.
+//
+// Deprecated: please use `Renderer` API instead.
+//
 message GenerateNestedClasses {
+
+    option deprecated = true;
 
     NestedClassFactoryName factory = 1;
 }
@@ -264,7 +274,11 @@ message GenerateNestedClasses {
 //
 // The class must implement `io.spine.tools.protoc.NestedClassFactory`.
 //
+// Deprecated: please use `Renderer` API instead.
+//
 message NestedClassFactoryName {
+
+    option deprecated = true;
 
     tools.java.JavaClassName class_name = 1;
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,38 +24,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.gradle.java
+package io.spine.tools.mc.java.mgroup.given
 
-import net.ltgt.gradle.errorprone.errorprone
-import org.gradle.api.Project
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.named
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
+import org.intellij.lang.annotations.Language
 
 /**
- * Disables Java linters in this [Project].
- *
- * In particular, the following linters will be disabled:
- *
- * 1. CheckStyle.
- * 2. PMD.
- * 3. ErrorProne.
- *
- * Apply this configuration for modules that have original Flogger sources,
- * which have not been migrated to Kotlin yet. They produce a lot of
- * errors/warnings failing the build.
- *
- * Our own sources are mostly in Kotlin (as for `spine-logging` repo),
- * so this action seems quite safe.
+ * A stub renderer that adds a nested class called [`StudentId`][CLASS_NAME].
  */
-// TODO:2023-09-22:yevhenii.nadtochii: Remove this piece of configuration.
-// See issue: https://github.com/SpineEventEngine/logging/issues/56
-fun Project.disableLinters() {
-    tasks {
-        named("checkstyleMain") { enabled = false }
-        named("pmdMain") { enabled = false }
-        named<JavaCompile>("compileJava") {
-            options.errorprone.isEnabled.set(false)
-        }
+class StudentIdClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
+    NestedClassAction(type, file, CLASS_NAME, context) {
+
+    override fun tuneClass() {
+        // Do nothing.
+    }
+
+    @Language("JAVA") @Suppress("EmptyClass")
+    override fun classJavadoc(): String = "/** The class of student ID. */"
+
+    companion object {
+        const val CLASS_NAME = "StudentId"
     }
 }

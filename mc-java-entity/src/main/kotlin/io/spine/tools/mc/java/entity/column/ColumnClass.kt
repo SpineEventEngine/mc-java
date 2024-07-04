@@ -28,12 +28,14 @@ package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
 import com.intellij.psi.PsiMethod
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.columns
-import io.spine.protodata.type.TypeSystem
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.NestedUnderMessage
+import io.spine.tools.mc.java.NestedClassAction
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -55,16 +57,14 @@ import org.intellij.lang.annotations.Language
  * In addition to methods for obtaining individual columns, a [method][DEFINITIONS_METHOD_NAME]
  * for obtaining all the columns is also generated.
  *
- * @param type
- *         the type of the `EntityState` message.
- * @param typeSystem
- *         the type system used for resolving field types.
+ * @param type the type of the `EntityState` message.
+ * @param file the file to which the action is applied.
+ * @param context the code generation context in which this action runs.
+ *
  * @see render
  */
-internal class ColumnClass(
-    type: MessageType,
-    typeSystem: TypeSystem
-) : NestedUnderMessage(type, COLUMN_CLASS_NAME, typeSystem) {
+internal class ColumnClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
+    NestedClassAction(type, file, COLUMN_CLASS_NAME, context) {
 
     private val columns: List<Field> = type.columns
 
@@ -85,8 +85,9 @@ internal class ColumnClass(
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            val accessor = ColumnAccessor(messageClass, column, cls, typeSystem)
-            accessor.render()
+            ColumnAccessor(messageClass, column, cls, typeSystem!!).run {
+                render()
+            }
         }
     }
 

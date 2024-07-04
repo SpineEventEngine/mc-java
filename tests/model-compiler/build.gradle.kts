@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -30,17 +30,18 @@ plugins {
 }
 
 dependencies {
+    protoData(project(":factories"))
     testImplementation(project(":factories"))
 }
 
 modelCompiler {
     java {
         codegen {
-            // Turn off validation codegen during the transition to new ProtoData API.
+            // Turn off validation codegen during the transition to the new ProtoData API.
             validation().enabled.set(false)
 
             val methodFactory = "io.spine.tools.mc.java.protoc.TestMethodFactory"
-            val nestedClassFactory = "io.spine.tools.mc.java.protoc.TestNestedClassFactory"
+            val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"
 
             forMessages(by().suffix("documents.proto")) {
                 markAs("io.spine.tools.mc.java.protoc.DocumentMessage")
@@ -49,24 +50,35 @@ modelCompiler {
             forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
                 markAs("io.spine.tools.mc.java.protoc.PrefixedMessage")
                 generateMethodsWith(methodFactory)
-                generateNestedClassesWith(nestedClassFactory)
+                useAction(nestedClassAction)
             }
 
             forMessages(by().suffix("suffix_generation_test.proto")) {
                 markAs("io.spine.tools.mc.java.protoc.SuffixedMessage")
                 generateMethodsWith(methodFactory)
-                generateNestedClassesWith(nestedClassFactory)
+                //generateNestedClassesWith(nestedClassFactory)
+                useAction(nestedClassAction)
             }
 
             forMessages(by().regex(".*regex.*test.*")) {
                 markAs("io.spine.tools.mc.java.protoc.RegexedMessage")
                 generateMethodsWith(methodFactory)
-                generateNestedClassesWith(nestedClassFactory)
+                //generateNestedClassesWith(nestedClassFactory)
+                useAction(nestedClassAction)
             }
 
             forMessages(by().regex(".*multi.*factory.*test.*")) {
                 generateMethodsWith(methodFactory)
             }
         }
+    }
+}
+
+tasks.findByName("launchTestProtoData")?.apply { this as JavaExec
+    debugOptions {
+        enabled.set(false) // Set this option to `true` to enable remote debugging.
+        port.set(5566)
+        server.set(true)
+        suspend.set(true)
     }
 }

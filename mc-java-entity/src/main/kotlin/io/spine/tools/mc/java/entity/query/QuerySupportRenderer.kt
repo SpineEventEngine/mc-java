@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.entity.query
 
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.psi.java.execute
 
@@ -37,20 +38,19 @@ import io.spine.tools.psi.java.execute
  */
 internal class QuerySupportRenderer : EntityStateRenderer() {
 
-    override fun doRender(type: MessageType, sourceFile: SourceFile) {
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            val ts = typeSystem!!
             // The `query()` method is added after constructors.
-            QueryMethod(sourceFile).run {
+            QueryMethod(file).run {
                 render()
             }
             // The `QueryBuilder` class is added at the bottom, before the `Query` class.
-            QueryBuilderClass(type, ts, settings).run {
-                render(sourceFile)
+            QueryBuilderClass(type, file, settings, context!!).run {
+                render()
             }
             // The `Query` class comes last.
-            QueryClass(type, ts, settings).run {
-                render(sourceFile)
+            QueryClass(type, file, settings, context!!).run {
+                render()
             }
         }
     }

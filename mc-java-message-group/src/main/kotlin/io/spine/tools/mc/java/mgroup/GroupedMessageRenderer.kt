@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -31,10 +31,12 @@ import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaFiles
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.GenerateFields
 import io.spine.tools.mc.java.settings.GroupSettings
+import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import io.spine.tools.psi.java.execute
 
 /**
@@ -57,22 +59,32 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         val types = findTypes()
         types.forEach {
             val sourceFile = sources.javaFileOf(it.type)
-            it.doRender(sourceFile)
-        }
-    }
-
-    private fun GroupedMessage.doRender(sourceFile: SourceFile) {
-        groupList.forEach {
-            if (it.hasGenerateFields()) {
-                it.generateFields.render(type, sourceFile)
+            execute {
+                it.doRender(sourceFile)
             }
         }
     }
 
-    private fun GenerateFields.render(type: MessageType, sourceFile: SourceFile) {
-        execute {
-            val factory = FieldClass(type, superClassName, typeSystem!!)
-            factory.render(sourceFile)
+    private fun GroupedMessage.doRender(sourceFile: SourceFile<Java>) {
+        groupList.forEach {
+            if (it.hasGenerateFields()) {
+                it.generateFields.render(type, sourceFile)
+            }
+            it.actionList.forEach { actionClass ->
+                runAction(actionClass, sourceFile)
+            }
+        }
+    }
+
+    private fun GroupedMessage.runAction(actionClass: String, file: SourceFile<Java>) {
+        val classloader = Thread.currentThread().contextClassLoader
+        val action = createAction(classloader, actionClass, type, file, context!!)
+        action.render()
+    }
+
+    private fun GenerateFields.render(type: MessageType, file: SourceFile<Java>) {
+        FieldClass(type, file, superClassName, context!!).run {
+            render()
         }
     }
 

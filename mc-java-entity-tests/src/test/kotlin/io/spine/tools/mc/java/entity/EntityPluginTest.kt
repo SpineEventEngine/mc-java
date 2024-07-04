@@ -27,13 +27,10 @@
 package io.spine.tools.mc.java.entity
 
 import com.intellij.psi.PsiClass
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.method
 import java.nio.file.Path
-import kotlin.io.path.Path
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 
@@ -59,16 +56,6 @@ abstract class EntityPluginTest {
             return codegenConfig.toProto().entities
         }
     }
-}
-
-/**
- * Locates the file with the given [path] in this source file set.
- *
- * @throws IllegalStateException
- *          if the file was not found.
- */
-internal fun SourceFileSet.file(path: String): SourceFile {
-    return find(Path(path))?: error("Source file `$path` not found.")
 }
 
 /**

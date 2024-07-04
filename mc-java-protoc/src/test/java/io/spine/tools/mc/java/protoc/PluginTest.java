@@ -34,7 +34,6 @@ import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
-import io.spine.tools.mc.java.protoc.given.TestNestedClassFactory;
 import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GroupSettings;
@@ -61,13 +60,11 @@ import java.util.List;
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateNested;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.methodFactory;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.pattern;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocConfig;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
 import static io.spine.tools.mc.java.protoc.given.TestMethodFactory.TEST_METHOD;
-import static io.spine.tools.mc.java.protoc.given.TestNestedClassFactory.NESTED_CLASS;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -118,7 +115,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -144,7 +140,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -169,7 +164,6 @@ final class PluginTest {
                 .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
                 .addGenerateMethods(generateMethods(TestMethodFactory.class))
-                .addGenerateNestedClasses(generateNested(TestNestedClassFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -216,7 +210,7 @@ final class PluginTest {
     }
 
     /**
-     * Selects all files from the given response which contain the specified insertion point.
+     * Selects all files from the given response, which contain the specified insertion point.
      */
     private static List<File> filterFiles(CodeGeneratorResponse response,
                                           InsertionPoint insertionPoint) {
@@ -271,7 +265,5 @@ final class PluginTest {
         var assertClassScope = assertThat(classScopeFile.getContent());
         assertClassScope
                 .contains(TEST_METHOD.toString());
-        assertClassScope
-                .contains(NESTED_CLASS.toString());
     }
 }

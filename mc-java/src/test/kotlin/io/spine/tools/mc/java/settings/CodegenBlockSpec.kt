@@ -44,10 +44,10 @@ import io.spine.query.EntityStateField
 import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
-import io.spine.tools.mc.java.gradle.settings.SignalConfig
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
+import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.gradle.settings.SignalConfig
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -74,7 +74,7 @@ class CodegenBlockSpec {
     /**
      * Creates the project in the given directory.
      *
-     * The directory is set not to be cleaned up by JUnit because cleanup sometime
+     * The directory is set not to be cleaned up by JUnit because cleanup sometimes
      * fails under Windows.
      * See [this comment](https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489)
      * on the corresponding issue for details:
@@ -264,14 +264,14 @@ class CodegenBlockSpec {
             val firstInterface = "com.acme.Foo"
             val secondInterface = "com.acme.Bar"
             val methodFactory = "custom.MethodFactory"
-            val classFactory = "custom.NestedClassFactory"
+            val nestedClassAction = "custom.NestedClassAction"
             val fieldSuperclass = "acme.Searchable"
             val firstMessageType = "acme.small.yellow.Bird"
             options.codegen { config ->
                 config.forMessage(firstMessageType) {
                     it.markAs(firstInterface)
                     it.markFieldsAs(fieldSuperclass)
-                    it.generateNestedClassesWith(classFactory)
+                    it.useAction(nestedClassAction)
                 }
                 config.forMessages(config.by().regex(".+_.+")) {
                     it.markAs(secondInterface)
@@ -296,8 +296,8 @@ class CodegenBlockSpec {
                 pattern.type.expectedType.value shouldBe firstMessageType
                 addInterfaceList.first().name.canonical shouldBe firstInterface
                 generateFields.superclass.canonical shouldBe fieldSuperclass
-                generateNestedClassesList shouldHaveSize 1
-                generateNestedClassesList.first().factory.className.canonical shouldBe classFactory
+                actionList shouldHaveSize 1
+                actionList.first() shouldBe nestedClassAction
             }
 
             second.run {

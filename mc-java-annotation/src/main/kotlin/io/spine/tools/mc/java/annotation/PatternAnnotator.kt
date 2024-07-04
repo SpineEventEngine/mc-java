@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.annotation.ApiOption
 import java.io.File
 
@@ -61,5 +62,5 @@ internal abstract class PatternAnnotator : Annotator() {
         patterns.any { it.matches(codeElement) }
 }
 
-internal fun SourceFile.qualifiedTopClassName(): String
+internal fun SourceFile<Java>.qualifiedTopClassName(): String
     = relativePath.toString().replace(File.separator, ".").replace(".java", "")

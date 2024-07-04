@@ -31,6 +31,7 @@ import com.intellij.psi.javadoc.PsiDocComment
 import com.intellij.refactoring.extractMethod.newImpl.ExtractMethodHelper.addSiblingAfter
 import io.spine.logging.WithLogging
 import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_METHOD_NAME
@@ -45,7 +46,7 @@ import org.intellij.lang.annotations.Language
  * The method is added after the constructors.
  * This makes it more visible to the people who dare to look at the generated code.
  */
-internal class QueryMethod(private val file: SourceFile) : WithLogging {
+internal class QueryMethod(private val file: SourceFile<Java>) : WithLogging {
 
     private val psiFile = file.psi() as PsiJavaFile
     private val entityStateClass = psiFile.topLevelClass
