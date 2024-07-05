@@ -28,11 +28,9 @@ package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -42,7 +40,6 @@ import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
-import io.spine.tools.psi.java.topLevelClass
 
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
@@ -146,29 +143,4 @@ public abstract class CreateNestedClass(
     override fun toString(): String {
         return "CreateNestedClass(type=$type, file=$file, simpleName=\"$simpleName\")"
     }
-}
-
-/**
- * Locates the class with the given name in this [PsiJavaFile].
- *
- * If the given class is nested, the function finds the class nested into the top-level class
- * of this Java file. Otherwise, the top-level class is returned.
- *
- * This is a naïve implementation of locating a class in a Java file that serves our needs for
- * handling top level message classes of entity states, command messages, and events.
- * For rejection messages, we use the logic of one level nesting.
- *
- * If more levels are needed or there is a change of mismatching a class name with a file, this
- * extension function should be rewritten with due test coverage.
- */
-private fun PsiJavaFile.findClass(cls: ClassName): PsiClass {
-    val targetClass =
-        if (cls.isNested)
-            topLevelClass.findInnerClassByName(cls.simpleName, false)
-        else
-            topLevelClass
-    check(targetClass != null) {
-        "Unable to locate the `${cls.canonical}` class."
-    }
-    return targetClass
 }

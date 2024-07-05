@@ -36,6 +36,7 @@ import io.spine.protodata.java.javaClassName
 import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.psi.java.locate
 
 /**
  * Abstract base for code generation actions for message types in Java code.
@@ -106,4 +107,18 @@ public abstract class MessageAction(
     override fun toString(): String {
         return "MessageAction(type=$type, file=$file)"
     }
+}
+
+/**
+ * Locates the class with the given name in this [PsiJavaFile].
+ *
+ * @throws IllegalStateException if the class could not be found.
+ * @see locate
+ */
+public fun PsiJavaFile.findClass(cls: ClassName): PsiClass {
+    val targetClass = locate(cls.simpleNames)
+    check(targetClass != null) {
+        "Unable to locate the `${cls.canonical}` class in the file `$name`."
+    }
+    return targetClass
 }
