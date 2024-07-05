@@ -55,7 +55,7 @@ import io.spine.tools.psi.java.topLevelClass
  * @property className a simple name of the nested class to be generated.
  * @property context the code generation context in which this action runs.
  */
-public abstract class NestedClassAction(
+public abstract class CreateNestedClass(
     type: MessageType,
     file: SourceFile<Java>,
     protected val className: String,

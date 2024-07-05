@@ -35,7 +35,7 @@ import io.spine.protodata.columns
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.CreateNestedClass
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -64,7 +64,7 @@ import org.intellij.lang.annotations.Language
  * @see render
  */
 internal class ColumnClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
-    NestedClassAction(type, file, COLUMN_CLASS_NAME, context) {
+    CreateNestedClass(type, file, COLUMN_CLASS_NAME, context) {
 
     private val columns: List<Field> = type.columns
 
