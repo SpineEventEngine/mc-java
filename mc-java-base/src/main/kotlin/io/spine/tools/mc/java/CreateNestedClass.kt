@@ -30,7 +30,6 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
-import io.spine.logging.WithLogging
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
@@ -58,7 +57,7 @@ public abstract class CreateNestedClass(
     file: SourceFile<Java>,
     protected val simpleName: String,
     context: CodegenContext
-) : MessageAction(type, file, context), WithLogging {
+) : MessageAction(type, file, context) {
 
     /**
      * The target of the code generation action.
@@ -103,6 +102,9 @@ public abstract class CreateNestedClass(
         return ctor
     }
 
+    /**
+     * Calls [tuneClass] and the inserts the tuned class into the message class.
+     */
     protected override fun doRender() {
         tuneClass()
         val targetClass = psiFile.findClass(messageClass)
@@ -142,7 +144,7 @@ public abstract class CreateNestedClass(
     }
 
     override fun toString(): String {
-        return "CreateNestedClass(type=$type, file=$file, simpleName='$simpleName')"
+        return "CreateNestedClass(type=$type, file=$file, simpleName=\"$simpleName\")"
     }
 }
 
