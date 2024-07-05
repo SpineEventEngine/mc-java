@@ -52,15 +52,29 @@ import io.spine.tools.psi.java.topLevelClass
  *
  * @property type the type of the message.
  * @property file the source code to which the action is applied.
- * @property className a simple name of the nested class to be generated.
+ * @property simpleName a simple name of the nested class to be generated.
  * @property context the code generation context in which this action runs.
  */
 public abstract class CreateNestedClass(
     type: MessageType,
     file: SourceFile<Java>,
-    protected val className: String,
+    protected val simpleName: String,
     context: CodegenContext
 ) : MessageAction<Java>(Java, type, file, context), WithLogging {
+
+    /**
+     * The [file] parsed into instance of [PsiJavaFile].
+     */
+    protected val psiFile: PsiJavaFile by lazy {
+        file.psi() as PsiJavaFile
+    }
+
+    /**
+     * The name of the message class under which [cls] is going to places.
+     */
+    protected val messageClass: ClassName by lazy {
+        type.javaClassName(typeSystem!!)
+    }
 
     /**
      * The product of the code generator.
@@ -70,16 +84,9 @@ public abstract class CreateNestedClass(
     }
 
     private fun createClass(): PsiClass {
-        val c = elementFactory.createClass(className)
+        val c = elementFactory.createClass(simpleName)
         c.commonSetup()
         return c
-    }
-
-    /**
-     * The name of the message class under which the [cls] is going to places.
-     */
-    protected val messageClass: ClassName by lazy {
-        type.javaClassName(typeSystem!!)
     }
 
     /**
@@ -125,15 +132,14 @@ public abstract class CreateNestedClass(
     @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
     override fun render() {
         try {
-            val psiJavaFile = file.psi() as PsiJavaFile
             tuneClass()
-            val targetClass = psiJavaFile.findClass(messageClass)
+            val targetClass = psiFile.findClass(messageClass)
             targetClass.addLast(cls)
-            val updatedText = psiJavaFile.text
+            val updatedText = psiFile.text
             file.overwrite(updatedText)
         } catch (e: Throwable) {
             logger.atError().withCause(e).log { """
-                Caught exception while generating the `$className` class in `$messageClass`.
+                Caught exception while generating the `$simpleName` class under `$messageClass`.
                 Message: ${e.message}.                                
                 """.trimIndent()
             }
