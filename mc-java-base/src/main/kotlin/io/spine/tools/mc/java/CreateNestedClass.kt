@@ -34,8 +34,6 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaClassName
-import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -60,26 +58,12 @@ public abstract class CreateNestedClass(
     file: SourceFile<Java>,
     protected val simpleName: String,
     context: CodegenContext
-) : MessageAction<Java>(Java, type, file, context), WithLogging {
+) : MessageAction(type, file, context), WithLogging {
 
     /**
-     * The [file] parsed into instance of [PsiJavaFile].
+     * The target of the code generation action.
      */
-    protected val psiFile: PsiJavaFile by lazy {
-        file.psi() as PsiJavaFile
-    }
-
-    /**
-     * The name of the message class under which [cls] is going to places.
-     */
-    protected val messageClass: ClassName by lazy {
-        type.javaClassName(typeSystem!!)
-    }
-
-    /**
-     * The product of the code generator.
-     */
-    protected val cls: PsiClass by lazy {
+    protected override val cls: PsiClass by lazy {
         createClass()
     }
 
@@ -88,13 +72,6 @@ public abstract class CreateNestedClass(
         c.commonSetup()
         return c
     }
-
-    /**
-     * Reference to [messageClass] which can be made in Javadoc.
-     *
-     * The reference is a link to the simple class name of the enclosing class.
-     */
-    protected val messageJavadocRef: String = "{@link ${messageClass.simpleName}}"
 
     /**
      * A callback to tune the [cls] in addition to the actions performed during
@@ -126,25 +103,10 @@ public abstract class CreateNestedClass(
         return ctor
     }
 
-    /**
-     * Adds a nested class the top class of the given [file].
-     */
-    @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    override fun render() {
-        try {
-            tuneClass()
-            val targetClass = psiFile.findClass(messageClass)
-            targetClass.addLast(cls)
-            val updatedText = psiFile.text
-            file.overwrite(updatedText)
-        } catch (e: Throwable) {
-            logger.atError().withCause(e).log { """
-                Caught exception while generating the `$simpleName` class under `$messageClass`.
-                Message: ${e.message}.                                
-                """.trimIndent()
-            }
-            throw e
-        }
+    protected override fun doRender() {
+        tuneClass()
+        val targetClass = psiFile.findClass(messageClass)
+        targetClass.addLast(cls)
     }
 
     private fun PsiClass.commonSetup() {
@@ -177,6 +139,10 @@ public abstract class CreateNestedClass(
             val classJavadoc = elementFactory.createDocCommentFromText(text, null)
             addFirst(classJavadoc)
         }
+    }
+
+    override fun toString(): String {
+        return "CreateNestedClass(type=$type, file=$file, simpleName='$simpleName')"
     }
 }
 
