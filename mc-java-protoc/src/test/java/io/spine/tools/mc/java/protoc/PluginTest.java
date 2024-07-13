@@ -45,6 +45,7 @@ import io.spine.tools.protoc.plugin.method.TestMethodProtos;
 import io.spine.type.MessageType;
 import io.spine.validate.ValidatingBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -182,6 +183,7 @@ final class PluginTest {
     }
 
     @Test
+    @Disabled("because the interface is now added by the Validation library")
     @DisplayName("mark generated message builders with the `ValidatingBuilder` interface")
     void markBuildersWithInterface() {
         var testGeneratorsDescriptor = TestGeneratorsProto.getDescriptor();
