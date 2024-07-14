@@ -98,7 +98,6 @@ spinePublishing {
         .toSet()
     destinations = PublishingRepos.run {
         setOf(
-            cloudRepo,
             cloudArtifactRegistry,
             gitHub("mc-java"),
         )

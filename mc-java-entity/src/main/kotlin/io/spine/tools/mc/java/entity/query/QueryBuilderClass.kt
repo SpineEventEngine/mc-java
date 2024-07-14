@@ -78,7 +78,7 @@ internal class QueryBuilderClass(
      */
     override fun createConstructor(cls: PsiClass): PsiMethod {
         val ctor = elementFactory.createMethodFromText("""
-            private $className() {
+            private $simpleName() {
                 super($idType.class, $stateType.class);
             }
             """.trimIndent(), cls

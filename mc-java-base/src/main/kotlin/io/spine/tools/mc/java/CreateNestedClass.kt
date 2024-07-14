@@ -28,14 +28,9 @@ package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
-import io.spine.logging.WithLogging
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaClassName
-import io.spine.protodata.renderer.MessageAction
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -45,49 +40,34 @@ import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
-import io.spine.tools.psi.java.topLevelClass
 
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
  *
  * @property type the type of the message.
  * @property file the source code to which the action is applied.
- * @property className a simple name of the nested class to be generated.
+ * @property simpleName a simple name of the nested class to be generated.
  * @property context the code generation context in which this action runs.
  */
-public abstract class NestedClassAction(
+public abstract class CreateNestedClass(
     type: MessageType,
     file: SourceFile<Java>,
-    protected val className: String,
+    protected val simpleName: String,
     context: CodegenContext
-) : MessageAction<Java>(Java, type, file, context), WithLogging {
+) : MessageAction(type, file, context) {
 
     /**
-     * The product of the code generator.
+     * The target of the code generation action.
      */
-    protected val cls: PsiClass by lazy {
+    protected override val cls: PsiClass by lazy {
         createClass()
     }
 
     private fun createClass(): PsiClass {
-        val c = elementFactory.createClass(className)
+        val c = elementFactory.createClass(simpleName)
         c.commonSetup()
         return c
     }
-
-    /**
-     * The name of the message class under which the [cls] is going to places.
-     */
-    protected val messageClass: ClassName by lazy {
-        type.javaClassName(typeSystem!!)
-    }
-
-    /**
-     * Reference to [messageClass] which can be made in Javadoc.
-     *
-     * The reference is a link to the simple class name of the enclosing class.
-     */
-    protected val messageJavadocRef: String = "{@link ${messageClass.simpleName}}"
 
     /**
      * A callback to tune the [cls] in addition to the actions performed during
@@ -120,25 +100,12 @@ public abstract class NestedClassAction(
     }
 
     /**
-     * Adds a nested class the top class of the given [file].
+     * Calls [tuneClass] and the inserts the tuned class into the message class.
      */
-    @Suppress("TooGenericExceptionCaught") // ... to log diagnostic.
-    override fun render() {
-        try {
-            val psiJavaFile = file.psi() as PsiJavaFile
-            tuneClass()
-            val targetClass = psiJavaFile.findClass(messageClass)
-            targetClass.addLast(cls)
-            val updatedText = psiJavaFile.text
-            file.overwrite(updatedText)
-        } catch (e: Throwable) {
-            logger.atError().withCause(e).log { """
-                Caught exception while generating the `$className` class in `$messageClass`.
-                Message: ${e.message}.                                
-                """.trimIndent()
-            }
-            throw e
-        }
+    protected override fun doRender() {
+        tuneClass()
+        val targetClass = psiFile.findClass(messageClass)
+        targetClass.addLast(cls)
     }
 
     private fun PsiClass.commonSetup() {
@@ -172,29 +139,8 @@ public abstract class NestedClassAction(
             addFirst(classJavadoc)
         }
     }
-}
 
-/**
- * Locates the class with the given name in this [PsiJavaFile].
- *
- * If the given class is nested, the function finds the class nested into the top-level class
- * of this Java file. Otherwise, the top-level class is returned.
- *
- * This is a naïve implementation of locating a class in a Java file that serves our needs for
- * handling top level message classes of entity states, command messages, and events.
- * For rejection messages, we use the logic of one level nesting.
- *
- * If more levels are needed or there is a change of mismatching a class name with a file, this
- * extension function should be rewritten with due test coverage.
- */
-private fun PsiJavaFile.findClass(cls: ClassName): PsiClass {
-    val targetClass =
-        if (cls.isNested)
-            topLevelClass.findInnerClassByName(cls.simpleName, false)
-        else
-            topLevelClass
-    check(targetClass != null) {
-        "Unable to locate the `${cls.canonical}` class."
+    override fun toString(): String {
+        return "CreateNestedClass(type=$type, file=$file, simpleName=\"$simpleName\")"
     }
-    return targetClass
 }

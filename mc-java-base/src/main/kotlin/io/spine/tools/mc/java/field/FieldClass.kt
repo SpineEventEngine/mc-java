@@ -34,7 +34,7 @@ import io.spine.protodata.MessageTypeDependencies
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.CreateNestedClass
 import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
@@ -54,7 +54,7 @@ public class FieldClass(
     file: SourceFile<Java>,
     private val fieldSupertype: ClassName,
     context: CodegenContext
-) : NestedClassAction(type, file, NAME, context) {
+) : CreateNestedClass(type, file, NAME, context) {
 
     public companion object {
 

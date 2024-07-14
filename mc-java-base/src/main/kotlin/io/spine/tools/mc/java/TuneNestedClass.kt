@@ -24,19 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.gradle.publish
+package io.spine.tools.mc.java
 
-import io.spine.internal.gradle.Repository
+import com.intellij.psi.PsiClass
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 
 /**
- * Repositories to which we may publish.
+ * Abstract base for code generators modifying classes nested under Java classes of message types.
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property simpleName a simple name of the nested class to be modified.
+ * @property context the code generation context in which this action runs.
  */
-object PublishingRepos {
+public abstract class TuneNestedClass(
+    type: MessageType,
+    file: SourceFile<Java>,
+    protected val simpleName: String,
+    context: CodegenContext
+) : MessageAction(type, file, context) {
 
-    val cloudArtifactRegistry = CloudArtifactRegistry.repository
-
-    /**
-     * Obtains a GitHub repository by the given name.
-     */
-    fun gitHub(repoName: String): Repository = GitHubPackages.repository(repoName)
+    override val cls: PsiClass by lazy {
+        val nestedClass = messageClass.nested(simpleName)
+        psiFile.findClass(nestedClass)
+    }
 }

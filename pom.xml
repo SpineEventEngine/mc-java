@@ -10,7 +10,7 @@ all modules and does not describe the project structure per-subproject.
  -->
 <groupId>io.spine.tools</groupId>
 <artifactId>mc-java</artifactId>
-<version>2.0.0-SNAPSHOT.209</version>
+<version>2.0.0-SNAPSHOT.210</version>
 
 <inceptionYear>2015</inceptionYear>
 
@@ -104,7 +104,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-configuration</artifactId>
-    <version>2.0.0-SNAPSHOT.141</version>
+    <version>2.0.0-SNAPSHOT.150</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -194,7 +194,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-java-runtime</artifactId>
-    <version>2.0.0-SNAPSHOT.141</version>
+    <version>2.0.0-SNAPSHOT.150</version>
     <scope>test</scope>
   </dependency>
   <dependency>

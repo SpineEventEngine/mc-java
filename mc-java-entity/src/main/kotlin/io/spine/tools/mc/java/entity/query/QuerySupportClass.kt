@@ -30,11 +30,10 @@ import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.typeReference
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.NestedClassAction
+import io.spine.tools.mc.java.CreateNestedClass
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 
@@ -48,17 +47,15 @@ internal abstract class QuerySupportClass(
     className: String,
     protected val settings: Entities,
     context: CodegenContext
-) : NestedClassAction(type, file, className, context) {
+) : CreateNestedClass(type, file, className, context) {
 
     /**
-     * The class of the entity state.
+     * The class of the entity state, same as [messageClass].
      */
-    protected val entityStateClass: ClassName by lazy {
-        type.javaClassName(typeSystem!!)
-    }
+    protected val entityStateClass: ClassName by ::messageClass
 
     /**
-     * The simple name of the entity state type which is equivalent of
+     * The simple name of the entity state type, which is equivalent of
      * the simple class name for the generated Java class.
      */
     protected val stateType: String = type.name.simpleName
