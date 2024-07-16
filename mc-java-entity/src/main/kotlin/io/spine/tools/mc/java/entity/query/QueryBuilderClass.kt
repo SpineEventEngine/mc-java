@@ -46,9 +46,47 @@ import io.spine.tools.psi.java.createClassReference
 import org.intellij.lang.annotations.Language
 
 /**
- * Creates a [QueryBuilder][QUERY_BUILDER_CLASS_NAME] class nested under an entity state class.
+ * Creates a [QueryBuilder][QUERY_BUILDER_CLASS_NAME] class nested under an entity state class
+ * to allow creating typed queries for the state of an [Entity][io.spine.server.entity.Entity].
  *
+ * Builds a DSL specific to the declared entity [columns][io.spine.query.EntityColumn].
+ *
+ * ## Example
+ *
+ * Consider the following proto definition:
+ *
+ * ```proto
+ *   message Customer {
+ *       option (entity).kind = PROJECTION;
+ *
+ *       CustomerId id = 1;
+ *
+ *       string name = 2 [(required) = true];
+ *
+ *       EmailAddress email = 3;
+ *
+ *       Address address = 4;
+ *
+ *       CustomerType type = 5 [(required) = true, (column) = true];
+ *
+ *       int32 discount_percent = 6 [(min).value = "0", (column) = true];
+ *   }
+ * ```
+ * Taking the above definition, this generator would produce DSL for building a query:
+ *
+ * ```java
+ *     Customer.query()
+ *             .id().in(westCustomerIds())
+ *             .type().is("permanent")    // `type()` is a `...Criterion`.
+ *             .discountPercent().isGreaterThan(10)
+ *             .sortAscendingBy(Column.name())
+ *             .withMask(Field.name(), Field.address())  // `Customer.Field` type is generated.
+ *             .limit(1)
+ *             .build()     // `Customer.Query`
+ * ```
  * @see QueryClass
+ * @see io.spine.tools.mc.java.entity.ColumnClass
+ * @see io.spine.tools.mc.java.field.FieldClass
  */
 internal class QueryBuilderClass(
     type: MessageType,
