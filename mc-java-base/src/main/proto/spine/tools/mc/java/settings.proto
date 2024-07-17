@@ -190,8 +190,8 @@ message MessageGroup {
     // Settings for adding Java methods for messages in this group.
     repeated GenerateMethods generate_methods = 3;
 
-     reserved 4;
-     reserved "generate_nested_classes";
+    reserved 4;
+    reserved "generate_nested_classes";
 
     // Settings for generating Java type-safe field API for messages in this group.
     GenerateFields generate_fields = 5;
@@ -234,17 +234,21 @@ message GroupSettings {
     repeated MessageGroup group = 1;
 }
 
-// Code generation config for the messages holding a UUID value.
+// Code generation settings for the messages holding a UUID value.
 //
 // Messages which only have one `string` field called `uuid` are known as UUID messages.
 //
 message Uuids {
 
     // Java interfaces to be added to all the UUID messages.
-    repeated AddInterface add_interface = 1;
+    repeated AddInterface add_interface = 1 [deprecated = true];
 
     // Java method generation config for UUID messages.
-    repeated MethodFactoryName method_factory = 2;
+    repeated MethodFactoryName method_factory = 2 [deprecated = true];
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the UUID messages.
+    repeated string action = 3;
 }
 
 // Configuration for adding a Java interface to a generated class.
