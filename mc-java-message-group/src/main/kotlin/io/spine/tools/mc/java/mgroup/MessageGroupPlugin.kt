@@ -54,7 +54,7 @@ public class MessageGroupPlugin : Plugin {
     public companion object {
 
         /**
-         * The ID for obtaining settings of the plugin.
+         * The ID for obtaining settings for the plugin.
          */
         public val SETTINGS_ID: String = MessageGroupPlugin::class.java.canonicalName
     }
