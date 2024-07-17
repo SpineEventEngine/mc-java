@@ -157,19 +157,11 @@ fun Module.forceConfigurations() {
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
-                    validationJavaBundle(),
+                    Validation.javaBundle,
                     ProtoData.api,
                 )
             }
         }
-    }
-}
-
-fun Configuration.validationJavaBundle(): String {
-    return if (name == "protoData") {
-        Validation.javaBundle(Validation.dogfoodingVersion)
-    } else {
-        Validation.javaBundle
     }
 }
 
