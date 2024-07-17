@@ -30,7 +30,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.spine.protodata.java.reference
+import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.psi.java.topLevelClass
