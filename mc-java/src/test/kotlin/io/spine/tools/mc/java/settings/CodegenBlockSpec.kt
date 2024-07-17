@@ -265,6 +265,7 @@ class CodegenBlockSpec {
             val secondInterface = "com.acme.Bar"
             val methodFactory = "custom.MethodFactory"
             val nestedClassAction = "custom.NestedClassAction"
+            val anotherNestedClassAction = "custom.AnotherNestedClassAction"
             val fieldSuperclass = "acme.Searchable"
             val firstMessageType = "acme.small.yellow.Bird"
             options.codegen { config ->
@@ -276,6 +277,7 @@ class CodegenBlockSpec {
                 config.forMessages(config.by().regex(".+_.+")) {
                     it.markAs(secondInterface)
                     it.generateMethodsWith(methodFactory)
+                    it.useAction(anotherNestedClassAction)
                 }
             }
             val configs = options.codegen!!.toProto().groupSettings.groupList
@@ -304,6 +306,7 @@ class CodegenBlockSpec {
                 pattern.file.hasRegex() shouldBe true
                 addInterfaceList.first().name.canonical shouldBe secondInterface
                 generateMethodsList.first().factory.className.canonical shouldBe methodFactory
+                actionList.first() shouldBe anotherNestedClassAction
             }
         }
 
