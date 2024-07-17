@@ -74,7 +74,7 @@ object ProtoData {
      * transitional dependencies, this is the version used to build the project itself.
      */
     val dogfoodingVersion: String
-    private const val fallbackDfVersion = "0.27.0"
+    private const val fallbackDfVersion = "0.50.0"
 
     /**
      * The artifact for the ProtoData Gradle plugin.

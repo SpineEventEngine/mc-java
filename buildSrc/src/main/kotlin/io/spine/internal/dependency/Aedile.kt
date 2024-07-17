@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,33 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc.message;
-
-import com.google.common.collect.ImmutableSet;
-import io.spine.tools.mc.java.protoc.CodeGenerator;
-import io.spine.tools.mc.java.protoc.CompilerOutput;
-import io.spine.type.MessageType;
-import io.spine.type.Type;
-
-import static io.spine.tools.mc.java.protoc.message.BuilderImplements.implementValidatingBuilder;
+package io.spine.internal.dependency
 
 /**
- * A code generator which makes the generated message builders implement
- * {@link io.spine.validate.ValidatingBuilder ValidatingBuilder}.
+ * A Kotlin wrapper over [Caffeine].
+ *
+ * @see <a href="https://github.com/sksamuel/aedile">Aedile at GitHub</a>
  */
-public final class BuilderGen extends CodeGenerator {
-
-    public BuilderGen() {
-        super();
-    }
-
-    @Override
-    protected ImmutableSet<CompilerOutput> generate(Type<?, ?> type) {
-        if (type instanceof MessageType) {
-            CompilerOutput insertionPoint = implementValidatingBuilder((MessageType) type);
-            return ImmutableSet.of(insertionPoint);
-        } else {
-            return ImmutableSet.of();
-        }
-    }
+@Suppress("unused")
+object Aedile {
+    private const val version = "1.3.1"
+    const val lib = "com.sksamuel.aedile:aedile-core:$version"
 }

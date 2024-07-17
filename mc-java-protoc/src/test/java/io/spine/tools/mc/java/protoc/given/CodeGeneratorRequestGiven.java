@@ -29,14 +29,12 @@ package io.spine.tools.mc.java.protoc.given;
 import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.compiler.PluginProtos;
 import io.spine.option.OptionsProto;
+import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.AddInterface;
 import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.settings.GenerateMethods;
-import io.spine.tools.mc.java.settings.GenerateNestedClasses;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
-import io.spine.tools.mc.java.settings.NestedClassFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.protodata.FilePattern;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -77,24 +75,6 @@ public final class CodeGeneratorRequestGiven {
                 .setMajor(6)
                 .setPatch(1)
                 .setSuffix("")
-                .build();
-    }
-
-    /**
-     * Creates a {@link GenerateNestedClasses} config with the given factory class.
-     */
-    public static GenerateNestedClasses generateNested(Class<?> cls) {
-        return GenerateNestedClasses.newBuilder()
-                .setFactory(nestedClassFactory(cls))
-                .build();
-    }
-
-    /**
-     * Creates a {@link NestedClassFactoryName} with the name of the given class.
-     */
-    private static NestedClassFactoryName nestedClassFactory(Class<?> cls) {
-        return NestedClassFactoryName.newBuilder()
-                .setClassName(className(cls))
                 .build();
     }
 

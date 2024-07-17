@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -23,32 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.protoc.message
 
-import com.google.protobuf.compiler.PluginProtos
-import com.google.protobuf.compiler.codeGeneratorRequest
-import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.string.shouldNotBeEmpty
-import io.spine.test.tools.mc.java.protoc.BuilderTestProto
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.Validation
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.`java-test-fixtures`
 
-@DisplayName("`BuilderGen` should")
-internal class BuilderGenSpec {
+plugins {
+    java
+    `java-test-fixtures`
+}
 
-    @Test
-    fun `produce builder insertion points`() {
-        val generator = BuilderGen()
-        val file = BuilderTestProto.getDescriptor()
-        val request = codeGeneratorRequest {
-            protoFile.add(file.toProto())
-            fileToGenerate.add(file.fullName)
-            compilerVersion = PluginProtos.Version.newBuilder().setMajor(3).build()
-        }
-        val response = generator.process(request)
-        val files = response.fileList
-
-        files shouldHaveSize 1
-        files[0]!!.insertionPoint.shouldNotBeEmpty()
+dependencies {
+    arrayOf(
+        Spine.base,
+        Validation.runtime
+    ).forEach {
+        testFixturesImplementation(it)?.because(
+            """
+            We do not apply McJava Gradle plugin which adds the `implementation` dependency on
+            Validation runtime automatically (see `Project.configureValidation()` function in 
+            `ProtoDataConfigPlugin.kt`).
+            
+            In this test module we use vanilla `protoc` (via ProtoTap) and then run codegen
+            using ProtoData pipeline and ProtoData plugins of the module under the test.
+            Because of this we need to add the dependencies above explicitly for the
+            generated code of test fixtures to compile.                
+            """.trimIndent()
+        )
     }
 }
