@@ -169,7 +169,6 @@ subprojects {
         implementation(Spine.base)
         implementation(Spine.Logging.lib)
         testImplementation(Spine.testlib)
-        implementation(Validation.runtime)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
     }

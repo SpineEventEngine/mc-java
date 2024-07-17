@@ -24,22 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
-
 plugins {
-    `java-test-fixtures`
     prototap
+    `test-module`
 }
 
 dependencies {
-    arrayOf(
-        Spine.base,
-        Validation.runtime
-    ).forEach {
-        testFixturesImplementation(it)
-    }
-
     testFixturesImplementation(project(":mc-java-base"))?.because(
         "We need base classes for render actions."
     )

@@ -116,8 +116,6 @@ fun Module.addDependencies() {
         JUnit.api.forEach { testImplementation(it) }
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
-
-        testImplementation(Validation.runtime)
     }
 }
 
