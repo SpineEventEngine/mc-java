@@ -168,11 +168,13 @@ fun Module.forceConfigurations() {
 }
 
 fun Configuration.validationJavaBundle(): String {
-    return if (name == "protoData") {
+    val value = if (name == "protoData") {
         Validation.javaBundle(Validation.dogfoodingVersion)
     } else {
         Validation.javaBundle
     }
+    System.err.println(" ---- Configuration [${name}], Validation artifact = `${value}`.")
+    return value
 }
 
 fun Module.configureJava(javaVersion: JavaLanguageVersion) {
