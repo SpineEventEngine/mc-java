@@ -49,8 +49,7 @@ public abstract class ConfigWithFields<P extends Message> extends ConfigWithInte
 
     ConfigWithFields(Project p) {
         super(p);
-        markFieldsAs = p.getObjects()
-                        .property(String.class);
+        markFieldsAs = p.getObjects().property(String.class);
     }
 
     /**

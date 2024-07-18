@@ -56,10 +56,6 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
         nestedClassFactories = new Multiple<>(p, String.class);
-        emptyByConvention();
-    }
-
-    private void emptyByConvention() {
         interfaceNames().convention(ImmutableSet.of());
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());

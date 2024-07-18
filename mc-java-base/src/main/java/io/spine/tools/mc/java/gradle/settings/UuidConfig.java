@@ -44,7 +44,6 @@ import static io.spine.tools.java.code.Names.className;
  */
 public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
 
-    @Deprecated
     private final Multiple<String> methodFactories;
 
     private final Ordered<String> actions;
@@ -53,10 +52,6 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
         actions = new Ordered<>(p, String.class);
-        defaultConvention();
-    }
-
-    private void defaultConvention() {
         methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
         interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
     }
