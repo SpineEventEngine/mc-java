@@ -162,7 +162,7 @@ private fun ProtoDataSettings.setSubdirectories() {
 }
 
 private fun Project.configureValidation(protodata: ProtoDataSettings) {
-    val validationConfig = messageOptions.validation()
+    val validationConfig = messageOptions.validation
     val version = validationConfig.version.get()
     if (validationConfig.enabled.get()) {
         addUserClasspathDependency(ValidationSdk.javaCodegenBundle(version))
@@ -187,7 +187,7 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
 private fun Project.configureSignals(protodata: ProtoDataSettings) {
     protodata.addPlugin<SignalPlugin>()
 
-    val rejectionCodegen = messageOptions.rejections()
+    val rejectionCodegen = messageOptions.rejections
     if (rejectionCodegen.enabled.get()) {
         protodata.addPlugin<RThrowablePlugin>()
     }

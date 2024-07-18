@@ -34,7 +34,7 @@ tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
 modelCompiler {
     java {
         codegen {
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
     }
 }

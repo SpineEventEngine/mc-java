@@ -30,7 +30,7 @@ modelCompiler {
     java {
         // Turn off validation codegen during the transition to new ProtoData API.
         codegen {
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
 
         annotation {

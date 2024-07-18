@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import com.google.protobuf.Message;
 import io.spine.annotation.Internal;
 import io.spine.tools.mc.java.settings.Entities;
@@ -57,9 +57,15 @@ public final class EntityConfig extends ConfigWithFields<Entities> {
         generateQueries = p.getObjects().property(Boolean.class);
     }
 
-    void convention(GeneratedMessage.GeneratedExtension<?, ?> option,
-                    Class<? extends Message> markerInterface,
-                    Class<?> fieldSuperclass) {
+    /**
+     * Initializes the instance with the defaults.
+     *
+     * <p>This method is internal and is not supposed to be called by the end users.
+     */
+    @Internal
+    public void convention(GeneratedExtension<?, ?> option,
+                           Class<? extends Message> markerInterface,
+                           Class<?> fieldSuperclass) {
         convention(fieldSuperclass);
         options.convention(ImmutableSet.of(option.getDescriptor().getName()));
         interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));

@@ -55,7 +55,7 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
         actions = new Ordered<>(p, String.class);
     }
 
-    void convention(Class<? extends MethodFactory> methodFactory,
+    public void convention(Class<? extends MethodFactory> methodFactory,
                     Class<? extends Message> markerInterface) {
         methodFactories.convention(ImmutableSet.of(methodFactory.getCanonicalName()));
         interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));

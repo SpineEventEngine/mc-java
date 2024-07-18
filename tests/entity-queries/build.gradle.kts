@@ -28,7 +28,7 @@ modelCompiler {
     java {
         codegen {
             // Turn off validation codegen during the transition to new ProtoData API.
-            validation().enabled.set(false)
+            validation.enabled.set(false)
 
             forMessage("spine.tools.column.ProjectName") {
                 markFieldsAs("io.spine.tools.mc.java.protoc.given.ProjectNameField")

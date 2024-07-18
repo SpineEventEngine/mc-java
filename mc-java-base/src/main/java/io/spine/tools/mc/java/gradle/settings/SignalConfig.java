@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.collect.ImmutableSet;
 import io.spine.base.MessageFile;
 import io.spine.base.SignalMessage;
-import io.spine.tools.mc.java.settings.Signals;
 import io.spine.protodata.FilePattern;
+import io.spine.tools.mc.java.settings.Signals;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
 
@@ -58,7 +58,7 @@ public final class SignalConfig extends GroupedByFilePatterns<Signals> {
      * @param interfaceClass
      *         the default marker interface
      */
-    void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
+    public void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
         convention(file, interfaceClass, null);
     }
 
@@ -74,7 +74,7 @@ public final class SignalConfig extends GroupedByFilePatterns<Signals> {
      *         the default superclass for the nested {@code Field} class; {@code null} denotes
      *         not generating a {@code Field} class at all
      */
-    void convention(MessageFile file,
+    public void convention(MessageFile file,
                     Class<? extends SignalMessage> interfaceClass,
                     @Nullable Class<?> fieldSuperclass) {
         var pattern = FilePattern.newBuilder()
