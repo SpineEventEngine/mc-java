@@ -39,13 +39,13 @@ import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
 import io.spine.tools.mc.java.settings.CodegenSettings
-import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.mc.java.settings.MessageGroup
-import io.spine.tools.mc.java.settings.Pattern
-import io.spine.tools.mc.java.settings.SignalSettings
-import io.spine.tools.mc.java.settings.TypePattern
-import io.spine.tools.proto.code.ProtoTypeName
-import java.util.function.Consumer
+import io.spine.tools.mc.java.settings.codegenSettings
+import io.spine.tools.mc.java.settings.groupSettings
+import io.spine.tools.mc.java.settings.pattern
+import io.spine.tools.mc.java.settings.signalSettings
+import io.spine.tools.mc.java.settings.typePattern
+import io.spine.tools.proto.code.protoTypeName
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
@@ -90,7 +90,7 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
     /**
      * Settings for the generated code of grouped messages.
      */
-    public val messageGroups: MutableSet<MessageGroup> = HashSet()
+    public val messageGroups: MutableSet<MessageGroup> = mutableSetOf()
 
     init {
         commands.convention(
@@ -169,9 +169,9 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      * @see by
      */
     public fun forMessages(filePattern: FilePattern, action: Action<MessageGroupConfig>) {
-        val pattern = Pattern.newBuilder()
-            .setFile(filePattern)
-            .build()
+        val pattern = pattern {
+            file = filePattern
+        }
         val config = MessageGroupConfig(project, pattern)
         action.execute(config)
         messageGroups.add(config.toProto())
@@ -190,37 +190,38 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      * Configures code generation for particular message.
      */
     public fun forMessage(protoTypeName: String, action: Action<MessageGroupConfig>) {
-        val name = ProtoTypeName.newBuilder()
-            .setValue(protoTypeName)
-            .build()
-        val pattern = Pattern.newBuilder()
-            .setType(TypePattern.newBuilder().setExpectedType(name))
-            .build()
+        val pattern = pattern {
+            type = typePattern {
+                expectedType = protoTypeName {
+                    value = protoTypeName
+                }
+            }
+        }
         val config = MessageGroupConfig(project, pattern)
         action.execute(config)
         messageGroups.add(config.toProto())
     }
 
     override fun toProto(): CodegenSettings {
-        val signalSettings = SignalSettings.newBuilder()
-            .setCommands(commands.toProto())
-            .setEvents(events.toProto())
-            .setRejections(rejections.toProto())
-            .build()
+        val self = this@CodegenConfig
+        val ss = signalSettings {
+            commands = self.commands.toProto()
+            events = self.events.toProto()
+            rejections = self.rejections.toProto()
+        }
+        val gs = groupSettings {
+            group.addAll(messageGroups)
+        }
+        val cp = buildClasspath()
 
-        val groupSettings = GroupSettings.newBuilder()
-        messageGroups.forEach(Consumer { groupSettings.addGroup(it) })
-
-        val classpath = buildClasspath()
-
-        return CodegenSettings.newBuilder()
-            .setSignalSettings(signalSettings)
-            .setGroupSettings(groupSettings)
-            .setEntities(entities.toProto())
-            .setValidation(validation.toProto())
-            .setUuids(uuids.toProto())
-            .setClasspath(classpath)
-            .build()
+        return codegenSettings {
+            signalSettings = ss
+            groupSettings = gs
+            entities = self.entities.toProto()
+            validation = self.validation.toProto()
+            uuids = self.uuids.toProto()
+            classpath = cp
+        }
     }
 
     private fun buildClasspath(): Classpath {
