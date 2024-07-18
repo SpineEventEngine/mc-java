@@ -71,6 +71,11 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         project.mcJava
     }
 
+    @get:Internal
+    internal val codegenSettings by lazy {
+        options.codegen!!.toProto()
+    }
+
     @TaskAction
     @Throws(IOException::class)
     private fun writeFile() {
@@ -116,7 +121,7 @@ private fun WriteProtoDataSettings.settingsDirectory(): SettingsDirectory {
  * [io.spine.validation.ValidationConfig], which is later written as JSON file.
  */
 private fun WriteProtoDataSettings.forValidationPlugin(settings: SettingsDirectory) {
-    val codegen = options.codegen!!.toProto()
+    val codegen = codegenSettings
     val signalSettings = codegen.signalSettings
     val markers = messageMarkers {
         signalSettings.let {
@@ -168,12 +173,12 @@ private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) 
 }
 
 private fun WriteProtoDataSettings.forMessageGroupPlugin(settings: SettingsDirectory) {
-    val groupSettings = options.codegen!!.toProto().groupSettings
+    val groupSettings = codegenSettings.groupSettings
     settings.write(MessageGroupPlugin.SETTINGS_ID, groupSettings)
 }
 
 private fun WriteProtoDataSettings.forUuidPlugin(settings: SettingsDirectory) {
-    val uuidSettings = options.codegen!!.toProto().uuids
+    val uuidSettings = codegenSettings.uuids
     settings.write(UuidPlugin.SETTINGS_ID, uuidSettings)
 }
 
