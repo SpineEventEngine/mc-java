@@ -26,19 +26,16 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.mc.java.settings.GenerateMethods;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.protobuf.Messages.isNotDefault;
 import static io.spine.tools.java.code.Names.className;
 import static java.util.stream.Collectors.toSet;
@@ -53,14 +50,12 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
-    private final Multiple<String> actions;
 
     MessageGroupConfig(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
         nestedClassFactories = new Multiple<>(p, String.class);
-        actions = new Multiple<>(p, String.class);
         emptyByConvention();
     }
 
@@ -68,45 +63,6 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
         interfaceNames().convention(ImmutableSet.of());
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());
-        actions.convention(ImmutableSet.of());
-    }
-
-    /**
-     * Instructs Model Compiler to use
-     * the {@link io.spine.protodata.renderer.RenderAction code generation action} specified
-     * by the binary name of the class.
-     *
-     * @param className
-     *         the binary name of the action class
-     */
-    public void useAction(@FqBinaryName String className) {
-        checkNotNull(className);
-        actions.add(className);
-    }
-
-    /**
-     * Instructs Model Compiler to apply
-     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
-     * to the code generated for messages of this group.
-     *
-     * @param classNames
-     *         the binary names of the action class
-     */
-    public void useActions(Iterable<@FqBinaryName String> classNames) {
-        checkNotNull(classNames);
-        actions.addAll(classNames);
-    }
-
-    /**
-     * Instructs Model Compiler to apply
-     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
-     * to the code generated for messages of this group.
-     *
-     * @param classNames
-     *         the binary names of the action classes
-     */
-    public void useActions(@FqBinaryName String... classNames) {
-        useActions(ImmutableList.copyOf(classNames));
     }
 
     /**
@@ -130,7 +86,7 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
      *
      * @param factoryClassName
      *         the canonical class name of the nested class factory
-     * @deprecated please use {@link #useAction} instead.
+     * @deprecated please use {@link ConfigWithInterfaces#useAction} instead.
      */
     @Deprecated
     public void generateNestedClassesWith(String factoryClassName) {
@@ -143,7 +99,7 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
-                .addAllAction(actions.get());
+                .addAllAction(actions());
         var generateFields = generateFields();
         if (isNotDefault(generateFields)) {
             result.setGenerateFields(generateFields);

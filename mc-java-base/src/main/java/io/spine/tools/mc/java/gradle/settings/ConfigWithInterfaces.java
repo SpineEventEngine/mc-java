@@ -26,13 +26,16 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.Message;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.mc.java.settings.AddInterface;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 import org.gradle.api.provider.SetProperty;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.java.code.Names.className;
 
 /**
@@ -45,9 +48,13 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
 
     private final Multiple<String> interfaceNames;
 
+    private final Multiple<String> actions;
+
     ConfigWithInterfaces(Project p) {
         super(p);
         this.interfaceNames = new Multiple<>(p, String.class);
+        this.actions = new Multiple<>(p, String.class);
+        actions.convention(ImmutableSet.of());
     }
 
     /**
@@ -61,6 +68,51 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
      */
     public final void markAs(String interfaceName) {
         interfaceNames.add(interfaceName);
+    }
+
+    /**
+     * Instructs Model Compiler to use
+     * the {@link io.spine.protodata.renderer.RenderAction code generation action} specified
+     * by the binary name of the class.
+     *
+     * @param className
+     *         the binary name of the action class
+     */
+    public void useAction(@FqBinaryName String className) {
+        checkNotNull(className);
+        actions.add(className);
+    }
+
+    /**
+     * Instructs Model Compiler to apply
+     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action class
+     */
+    public void useActions(Iterable<@FqBinaryName String> classNames) {
+        checkNotNull(classNames);
+        actions.addAll(classNames);
+    }
+
+    /**
+     * Instructs Model Compiler to apply
+     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action classes
+     */
+    public void useActions(@FqBinaryName String... classNames) {
+        useActions(ImmutableList.copyOf(classNames));
+    }
+
+    /**
+     * Obtains currently assigned codegen actions.
+     */
+    protected final Iterable<String> actions() {
+        return actions.get();
     }
 
     /**
