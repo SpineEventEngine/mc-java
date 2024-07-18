@@ -41,7 +41,6 @@ include(
     "mc-java-uuid",
     "mc-java-uuid-tests",
     "mc-java-validation",
-    "mc-java-protodata-params",
     "mc-java-plugin-bundle"
 )
 
