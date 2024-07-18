@@ -31,7 +31,7 @@ import com.google.protobuf.compiler.PluginProtos;
 import io.spine.option.OptionsProto;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.AddInterface;
-import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Combined;
 import io.spine.tools.mc.java.settings.GenerateMethods;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
@@ -120,7 +120,7 @@ public final class CodeGeneratorRequestGiven {
      *
      * @return the path to the serialized config, encoded in Base64
      */
-    public static String protocConfig(CodegenSettings config, Path configFile) {
+    public static String protocConfig(Combined config, Path configFile) {
         try (var fos = new FileOutputStream(configFile.toFile())) {
             config.writeTo(fos);
         } catch (IOException e) {

@@ -28,13 +28,13 @@ package io.spine.tools.mc.java.protoc.method;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.MethodFactory;
-import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.ExternalClassLoader;
 import io.spine.tools.mc.java.protoc.InsertionPoint;
+import io.spine.tools.mc.java.settings.Combined;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 
@@ -61,7 +61,7 @@ public final class MethodGen extends CodeGenerator {
     /**
      * Retrieves the single instance of the {@code MethodGenerator}.
      */
-    public static MethodGen instance(CodegenSettings config) {
+    public static MethodGen instance(Combined config) {
         checkNotNull(config);
         var classpath = config.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, MethodFactory.class);

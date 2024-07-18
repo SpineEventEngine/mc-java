@@ -49,7 +49,7 @@ import "spine/protodata/file.proto";
 //
 // The referenced file contains the serialized version of this type.
 //
-message CodegenSettings {
+message Combined {
 
     // The configuration related to validation code.
     Validation validation = 1;

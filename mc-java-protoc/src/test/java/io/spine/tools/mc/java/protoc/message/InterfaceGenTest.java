@@ -42,7 +42,7 @@ import io.spine.tools.java.fs.JavaFiles;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.tools.mc.java.gradle.settings.CodegenConfig;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
-import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Combined;
 import io.spine.tools.protoc.plugin.message.tests.EveryIsGeneratedProto;
 import io.spine.tools.protoc.plugin.message.tests.EveryIsInOneFileProto;
 import io.spine.tools.protoc.plugin.message.tests.EveryIsTestProto;
@@ -135,7 +135,7 @@ final class InterfaceGenTest {
                       .build();
     }
 
-    private static CodegenSettings config = CodegenSettings.getDefaultInstance();
+    private static Combined config = Combined.getDefaultInstance();
 
     @BeforeAll
     static void setUpConfig() {

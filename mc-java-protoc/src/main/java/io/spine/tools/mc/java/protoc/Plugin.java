@@ -33,7 +33,7 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
 import io.spine.tools.mc.java.protoc.method.MethodGen;
-import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Combined;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -96,10 +96,10 @@ public final class Plugin {
         }
     }
 
-    private static CodegenSettings readConfig(CodeGeneratorRequest request) {
+    private static Combined readConfig(CodeGeneratorRequest request) {
         var configFilePath = decodeBase64(request.getParameter());
         try (var fis = new FileInputStream(configFilePath)) {
-            var config = CodegenSettings.parseFrom(fis, registry());
+            var config = Combined.parseFrom(fis, registry());
             return config;
         } catch (InvalidProtocolBufferException e) {
             throw newIllegalStateException(e, "Unable to decode Spine Protoc Plugin config.");

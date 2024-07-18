@@ -38,7 +38,7 @@ import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.JAVA_CODE_STYLE_ID
 import io.spine.tools.mc.java.gradle.plugins.WriteProtoDataSettings.Companion.VALIDATION_SETTINGS_ID
 import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
-import io.spine.tools.mc.java.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.Combined
 import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.uuid.UuidPlugin
@@ -138,7 +138,7 @@ private fun WriteProtoDataSettings.forValidationPlugin(dir: SettingsDirectory) {
     dir.write(VALIDATION_SETTINGS_ID, config)
 }
 
-private fun CodegenSettings.entityOptionsNames(): Iterable<String> =
+private fun Combined.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
 
 private fun WriteProtoDataSettings.forAnnotationPlugin(dir: SettingsDirectory) {

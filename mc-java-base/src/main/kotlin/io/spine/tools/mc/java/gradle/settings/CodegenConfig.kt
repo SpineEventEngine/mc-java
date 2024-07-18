@@ -38,9 +38,9 @@ import io.spine.base.RejectionMessage
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
-import io.spine.tools.mc.java.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.Combined
 import io.spine.tools.mc.java.settings.MessageGroup
-import io.spine.tools.mc.java.settings.codegenSettings
+import io.spine.tools.mc.java.settings.combined
 import io.spine.tools.mc.java.settings.groupSettings
 import io.spine.tools.mc.java.settings.pattern
 import io.spine.tools.mc.java.settings.signalSettings
@@ -55,7 +55,7 @@ import org.gradle.api.tasks.compile.JavaCompile
  * for code generation settings.
  */
 public class CodegenConfig @Internal public constructor(private val project: Project) :
-    Config<CodegenSettings>(project) {
+    Config<Combined>(project) {
 
     /**
      * Settings for the generated command code.
@@ -202,7 +202,7 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
         messageGroups.add(config.toProto())
     }
 
-    override fun toProto(): CodegenSettings {
+    override fun toProto(): Combined {
         val self = this@CodegenConfig
         val ss = signalSettings {
             commands = self.commands.toProto()
@@ -214,7 +214,7 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
         }
         val cp = buildClasspath()
 
-        return codegenSettings {
+        return combined {
             signalSettings = ss
             groupSettings = gs
             entities = self.entities.toProto()
