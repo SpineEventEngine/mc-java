@@ -41,6 +41,7 @@ import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.settings.CodegenSettings
 import io.spine.tools.mc.java.settings.signalSettings
 import io.spine.tools.mc.java.signal.SignalPlugin
+import io.spine.tools.mc.java.uuid.UuidPlugin
 import io.spine.type.toJson
 import io.spine.validation.messageMarkers
 import io.spine.validation.validationConfig
@@ -79,6 +80,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         forEntityPlugin(settings)
         forSignalPlugin(settings)
         forMessageGroupPlugin(settings)
+        forUuidPlugin(settings)
         forStyleFormattingPlugin(settings)
     }
 
@@ -168,6 +170,11 @@ private fun WriteProtoDataSettings.forSignalPlugin(settings: SettingsDirectory) 
 private fun WriteProtoDataSettings.forMessageGroupPlugin(settings: SettingsDirectory) {
     val groupSettings = options.codegen!!.toProto().groupSettings
     settings.write(MessageGroupPlugin.SETTINGS_ID, groupSettings)
+}
+
+private fun WriteProtoDataSettings.forUuidPlugin(settings: SettingsDirectory) {
+    val uuidSettings = options.codegen!!.toProto().uuids
+    settings.write(UuidPlugin.SETTINGS_ID, uuidSettings)
 }
 
 private fun WriteProtoDataSettings.forStyleFormattingPlugin(settings: SettingsDirectory) {

@@ -161,6 +161,18 @@ internal object McJava {
     }
 
     /**
+     * The Maven artifact for the `spine-mc-java-uuid` group.
+     */
+    internal val uuid: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name = "spine-mc-java-uuid"
+            version = this@McJava.version
+            extension = JAR_EXTENSION
+        }
+    }
+
+    /**
      * The Maven artifact containing the `spine-mc-java-signal` module.
      */
     internal val signals: Artifact by lazy {

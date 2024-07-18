@@ -43,6 +43,7 @@ import io.spine.tools.mc.java.gradle.McJava.base
 import io.spine.tools.mc.java.gradle.McJava.entity
 import io.spine.tools.mc.java.gradle.McJava.messageGroup
 import io.spine.tools.mc.java.gradle.McJava.signals
+import io.spine.tools.mc.java.gradle.McJava.uuid
 import io.spine.tools.mc.java.gradle.ValidationSdk
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
@@ -54,6 +55,7 @@ import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
+import io.spine.tools.mc.java.uuid.UuidPlugin
 import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -143,6 +145,7 @@ private fun Project.configureProtoDataPlugins() {
     configureValidation(protodata)
     configureSignals(protodata)
     configureMessageGroup(protodata)
+    configureUuids(protodata)
     configureEntities(protodata)
 
     // Annotations should follow `RejectionPlugin` and `EntityPlugin`
@@ -200,6 +203,11 @@ private fun Project.configureSignals(protodata: ProtoDataSettings) {
 private fun Project.configureMessageGroup(protodata: ProtoDataSettings) {
     addUserClasspathDependency(messageGroup)
     protodata.addPlugin<MessageGroupPlugin>()
+}
+
+private fun Project.configureUuids(protodata: CodegenSettings) {
+    addUserClasspathDependency(uuid)
+    protodata.addPlugin<UuidPlugin>()
 }
 
 private fun Project.configureEntities(protodata: ProtoDataSettings) {
