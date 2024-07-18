@@ -31,16 +31,13 @@ package io.spine.tools.mc.java.gradle.settings
 import com.google.common.collect.ImmutableList
 import io.spine.annotation.Internal
 import io.spine.base.CommandMessage
-import io.spine.base.EntityState
 import io.spine.base.EventMessage
 import io.spine.base.EventMessageField
 import io.spine.base.MessageFile
 import io.spine.base.RejectionMessage
 import io.spine.base.UuidValue
-import io.spine.option.OptionsProto
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
-import io.spine.query.EntityStateField
 import io.spine.tools.java.code.Classpath
 import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.settings.CodegenSettings
@@ -245,11 +242,6 @@ public fun CodegenConfig.applyConventions() {
         MessageFile.REJECTIONS,
         RejectionMessage::class.java,
         EventMessageField::class.java
-    )
-    entities.convention(
-        OptionsProto.entity,
-        EntityState::class.java,
-        EntityStateField::class.java
     )
     uuids.convention(
         UuidMethodFactory::class.java,

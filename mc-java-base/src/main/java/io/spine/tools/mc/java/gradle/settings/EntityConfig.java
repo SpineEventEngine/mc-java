@@ -26,10 +26,14 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import com.google.protobuf.Message;
 import io.spine.annotation.Internal;
+import io.spine.base.EntityState;
+import io.spine.option.OptionsProto;
+import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.proto.code.ProtoOption;
 import org.gradle.api.Action;
@@ -51,10 +55,12 @@ public final class EntityConfig extends ConfigWithFields<Entities> {
     private final SetProperty<String> options;
     private final Property<Boolean> generateQueries;
 
-    EntityConfig(Project p) {
+    @VisibleForTesting
+    public EntityConfig(Project p) {
         super(p);
         options = p.getObjects().setProperty(String.class);
         generateQueries = p.getObjects().property(Boolean.class);
+        defaultConvention();
     }
 
     /**
@@ -70,6 +76,16 @@ public final class EntityConfig extends ConfigWithFields<Entities> {
         options.convention(ImmutableSet.of(option.getDescriptor().getName()));
         interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));
         generateQueries.convention(true);
+    }
+
+    /**
+     * Initializes the instance with the defaults.
+     *
+     * <p>This method is internal and is not supposed to be called by the end users.
+     */
+    @Internal
+    public void defaultConvention() {
+        convention(OptionsProto.entity, EntityState.class, EntityStateField.class);
     }
 
     /**

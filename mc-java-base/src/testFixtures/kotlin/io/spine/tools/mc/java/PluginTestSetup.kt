@@ -39,6 +39,7 @@ import io.spine.tools.mc.java.gradle.settings.CodegenConfig
 import io.spine.tools.mc.java.gradle.settings.applyConventions
 import io.spine.type.toJson
 import java.nio.file.Path
+import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 /**
@@ -49,6 +50,15 @@ abstract class PluginTestSetup<S: Message>(
     protected val plugin: Plugin,
     protected val settingsId: String
 ) {
+
+    /**
+     * Creates a Gradle project to be used in the tests.
+     *
+     * @param dir the project directory.
+     */
+    protected fun createProject(dir: Path): Project {
+        return ProjectBuilder.builder().withProjectDir(dir.toFile()).build()
+    }
 
     /**
      * Creates settings for the [plugin] under the test.
@@ -63,7 +73,7 @@ abstract class PluginTestSetup<S: Message>(
      * McJava Gradle plugin is applied.
      */
     protected fun createCodegenConfig(projectDir: Path): CodegenConfig {
-        val project = ProjectBuilder.builder().withProjectDir(projectDir.toFile()).build()
+        val project = createProject(projectDir)
         // This mimics the call `McJavaOptions` perform on `injectProject`.
         val codegenConfig = CodegenConfig(project).also {
             it.applyConventions()
