@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.Message;
 import io.spine.tools.gradle.Multiple;
+import io.spine.tools.gradle.Ordered;
 import io.spine.tools.java.code.MethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Uuids;
@@ -39,18 +40,19 @@ import java.util.Set;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * Configuration for code generation for UUID messages.
- *
- * <p>A UUID message is a message which the only {@code string} field called "uuid".
- * Such messages may represent randomized typed identifiers for entities.
+ * Configuration for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
 public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
 
+    @Deprecated
     private final Multiple<String> methodFactories;
+
+    private final Ordered<String> actions;
 
     UuidConfig(Project p) {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
+        actions = new Ordered<>(p, String.class);
     }
 
     void convention(Class<? extends MethodFactory> methodFactory,
@@ -61,10 +63,13 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
 
     @Override
     public Uuids toProto() {
-        return Uuids.newBuilder()
-                .addAllMethodFactory(factories())
-                .addAllAddInterface(interfaces())
-                .build();
+        var builder = Uuids.newBuilder();
+        builder.addAllMethodFactory(factories())
+               .addAllAddInterface(interfaces());
+        if (actions.isPresent()) {
+            builder.addAllAction(actions.get());
+        }
+        return builder.build();
     }
 
     /**
