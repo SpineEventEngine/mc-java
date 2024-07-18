@@ -57,15 +57,15 @@ public final class EntityConfig extends ConfigWithFields<Entities> {
     public EntityConfig(Project p) {
         super(p);
         convention(EntityStateField.class);
+        interfaceNames().convention(ImmutableSet.of(
+                EntityState.class.getCanonicalName()
+        ));
         options = p.getObjects().setProperty(String.class);
+        options.convention(ImmutableSet.of(
+                OptionsProto.entity.getDescriptor().getName()
+        ));
         generateQueries = p.getObjects().property(Boolean.class);
         generateQueries.convention(true);
-        options.convention(ImmutableSet.of(
-                OptionsProto.entity.getDescriptor().getName())
-        );
-        interfaceNames().convention(ImmutableSet.of(
-                EntityState.class.getCanonicalName())
-        );
     }
 
     /**

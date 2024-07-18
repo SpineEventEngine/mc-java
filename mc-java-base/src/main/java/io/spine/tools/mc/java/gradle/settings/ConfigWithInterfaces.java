@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.Message;
 import io.spine.tools.gradle.Multiple;
+import io.spine.tools.gradle.Ordered;
 import io.spine.tools.mc.java.settings.AddInterface;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
@@ -48,12 +49,12 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
 
     private final Multiple<String> interfaceNames;
 
-    private final Multiple<String> actions;
+    private final Ordered<String> actions;
 
     ConfigWithInterfaces(Project p) {
         super(p);
         this.interfaceNames = new Multiple<>(p, String.class);
-        this.actions = new Multiple<>(p, String.class);
+        this.actions = new Ordered<>(p, String.class);
         actions.convention(ImmutableSet.of());
     }
 
@@ -112,7 +113,7 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
      * Obtains currently assigned codegen actions.
      */
     protected final Iterable<String> actions() {
-        return actions.get();
+        return actions.getOrElse(ImmutableList.of());
     }
 
     /**

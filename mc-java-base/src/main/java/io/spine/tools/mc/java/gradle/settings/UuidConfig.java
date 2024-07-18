@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.collect.ImmutableSet;
 import io.spine.base.UuidValue;
 import io.spine.tools.gradle.Multiple;
-import io.spine.tools.gradle.Ordered;
 import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Uuids;
@@ -46,25 +45,20 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
 
     private final Multiple<String> methodFactories;
 
-    private final Ordered<String> actions;
-
     UuidConfig(Project p) {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
-        actions = new Ordered<>(p, String.class);
         methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
         interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
     }
 
     @Override
     public Uuids toProto() {
-        var builder = Uuids.newBuilder();
-        builder.addAllMethodFactory(factories())
-               .addAllAddInterface(interfaces());
-        if (actions.isPresent()) {
-            builder.addAllAction(actions.get());
-        }
-        return builder.build();
+        return Uuids.newBuilder()
+                .addAllMethodFactory(factories())
+                .addAllAddInterface(interfaces())
+                .addAllAction(actions())
+                .build();
     }
 
     /**
