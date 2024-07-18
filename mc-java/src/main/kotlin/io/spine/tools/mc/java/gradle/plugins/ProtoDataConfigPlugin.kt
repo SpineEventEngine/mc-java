@@ -28,7 +28,6 @@
 
 package io.spine.tools.mc.java.gradle.plugins
 
-import io.spine.protodata.gradle.CodegenSettings
 import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
@@ -38,12 +37,7 @@ import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.entity.EntityPlugin
-import io.spine.tools.mc.java.gradle.McJava.annotation
-import io.spine.tools.mc.java.gradle.McJava.base
-import io.spine.tools.mc.java.gradle.McJava.entity
-import io.spine.tools.mc.java.gradle.McJava.messageGroup
-import io.spine.tools.mc.java.gradle.McJava.signals
-import io.spine.tools.mc.java.gradle.McJava.uuid
+import io.spine.tools.mc.java.gradle.McJava.allPlugins
 import io.spine.tools.mc.java.gradle.ValidationSdk
 import io.spine.tools.mc.java.gradle.generatedGrpcDirName
 import io.spine.tools.mc.java.gradle.generatedJavaDirName
@@ -51,7 +45,6 @@ import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.settings.CodegenConfig
-import io.spine.tools.mc.java.gradle.toolBase
 import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
@@ -124,9 +117,9 @@ private fun Project.configureProtoData() {
 private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
     val settingsDirTask = tasks.withType(CreateSettingsDirectory::class.java).theOnly()
     val result = tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java) {
-            it.settingsDir.set(settingsDirTask.settingsDir.get())
-            it.dependsOn(settingsDirTask)
-        }
+        it.settingsDir.set(settingsDirTask.settingsDir.get())
+        it.dependsOn(settingsDirTask)
+    }
     return result
 }
 
@@ -134,33 +127,34 @@ private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
  * Configures ProtoData with plugins, for the given Gradle project.
  */
 private fun Project.configureProtoDataPlugins() {
-    // Dependencies common to all the plugins.
-    addUserClasspathDependency(
-        base,
-        toolBase,
-    )
+    // Pass the uber JAR of McJava so that plugins from all the submodules are available.
+    addUserClasspathDependency(allPlugins)
+
     val protodata = extensions.getByType<ProtoDataSettings>()
-    setSubdirectories(protodata)
+    protodata.setSubdirectories()
 
     configureValidation(protodata)
     configureSignals(protodata)
-    configureMessageGroup(protodata)
-    configureUuids(protodata)
-    configureEntities(protodata)
 
-    // Annotations should follow `RejectionPlugin` and `EntityPlugin`
-    // so that their output is annotated too.
-    configureAnnotations(protodata)
+    protodata.run {
+        addPlugin<MessageGroupPlugin>()
+        addPlugin<UuidPlugin>()
+        addPlugin<EntityPlugin>()
 
-    // The Java style formatting comes last to conclude all the rendering.
-    configureStyleFormatting(protodata)
+        // Annotations should follow `SignalPlugin` and `EntityPlugin`
+        // so that their output is annotated too.
+        addPlugin<ApiAnnotationsPlugin>()
+
+        // The Java style formatting comes last to conclude all the rendering.
+        addPlugin<JavaCodeStyleFormatterPlugin>()
+    }
 }
 
 private val Project.messageOptions: CodegenConfig
     get() = mcJava.codegen!!
 
-private fun setSubdirectories(protodata: ProtoDataSettings) {
-    protodata.subDirs = listOf(
+private fun ProtoDataSettings.setSubdirectories() {
+    subDirs = listOf(
         generatedJavaDirName.value(),
         generatedGrpcDirName.value(),
         DirectoryName.kotlin.value()
@@ -191,39 +185,12 @@ private fun Project.configureValidation(protodata: ProtoDataSettings) {
 }
 
 private fun Project.configureSignals(protodata: ProtoDataSettings) {
-    addUserClasspathDependency(signals)
     protodata.addPlugin<SignalPlugin>()
 
     val rejectionCodegen = messageOptions.rejections()
     if (rejectionCodegen.enabled.get()) {
         protodata.addPlugin<RThrowablePlugin>()
     }
-}
-
-private fun Project.configureMessageGroup(protodata: ProtoDataSettings) {
-    addUserClasspathDependency(messageGroup)
-    protodata.addPlugin<MessageGroupPlugin>()
-}
-
-private fun Project.configureUuids(protodata: CodegenSettings) {
-    addUserClasspathDependency(uuid)
-    protodata.addPlugin<UuidPlugin>()
-}
-
-private fun Project.configureEntities(protodata: ProtoDataSettings) {
-    addUserClasspathDependency(entity)
-    protodata.addPlugin<EntityPlugin>()
-}
-
-private fun Project.configureAnnotations(protodata: ProtoDataSettings) {
-    addUserClasspathDependency(annotation)
-    protodata.addPlugin<ApiAnnotationsPlugin>()
-}
-
-private fun configureStyleFormatting(protodata: CodegenSettings) {
-    protodata.plugins(
-        JavaCodeStyleFormatterPlugin::class.java.canonicalName
-    )
 }
 
 private fun Project.addUserClasspathDependency(vararg artifacts: Artifact) = artifacts.forEach {
@@ -244,6 +211,6 @@ private fun Project.findDependency(artifact: Artifact): Dependency? {
     return found
 }
 
-private inline fun <reified T: ProtoDataPlugin> ProtoDataSettings.addPlugin() {
+private inline fun <reified T : ProtoDataPlugin> ProtoDataSettings.addPlugin() {
     plugins(T::class.java.name)
 }
