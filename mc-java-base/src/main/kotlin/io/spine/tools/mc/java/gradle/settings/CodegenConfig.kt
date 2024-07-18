@@ -35,11 +35,9 @@ import io.spine.base.EventMessage
 import io.spine.base.EventMessageField
 import io.spine.base.MessageFile
 import io.spine.base.RejectionMessage
-import io.spine.base.UuidValue
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
-import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.settings.CodegenSettings
 import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.mc.java.settings.MessageGroup
@@ -93,6 +91,23 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      * Settings for the generated code of grouped messages.
      */
     public val messageGroups: MutableSet<MessageGroup> = HashSet()
+
+    init {
+        commands.convention(
+            MessageFile.COMMANDS,
+            CommandMessage::class.java
+        )
+        events.convention(
+            MessageFile.EVENTS,
+            EventMessage::class.java,
+            EventMessageField::class.java
+        )
+        rejections.convention(
+            MessageFile.REJECTIONS,
+            RejectionMessage::class.java,
+            EventMessageField::class.java
+        )
+    }
 
     /**
      * Obtains the configuration settings for the generated validation code.
@@ -198,14 +213,14 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
 
         val classpath = buildClasspath()
 
-        val builder = CodegenSettings.newBuilder()
+        return CodegenSettings.newBuilder()
             .setSignalSettings(signalSettings)
             .setGroupSettings(groupSettings)
             .setEntities(entities.toProto())
             .setValidation(validation.toProto())
             .setUuids(uuids.toProto())
             .setClasspath(classpath)
-        return builder.build()
+            .build()
     }
 
     private fun buildClasspath(): Classpath {
@@ -219,32 +234,4 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
             .forEach { classpath.addItem(it) }
         return classpath.build()
     }
-}
-
-/**
- * Sets up default values for the [CodegenConfig] settings.
- *
- * Default values are based on the Gradle conventions principle.
- * If the user changes the value, the default is completely overridden,
- * even if the used invokes a method which has a name related to appending, e.g. `add()`.
- */
-public fun CodegenConfig.applyConventions() {
-    commands.convention(
-        MessageFile.COMMANDS,
-        CommandMessage::class.java
-    )
-    events.convention(
-        MessageFile.EVENTS,
-        EventMessage::class.java,
-        EventMessageField::class.java
-    )
-    rejections.convention(
-        MessageFile.REJECTIONS,
-        RejectionMessage::class.java,
-        EventMessageField::class.java
-    )
-    uuids.convention(
-        UuidMethodFactory::class.java,
-        UuidValue::class.java
-    )
 }

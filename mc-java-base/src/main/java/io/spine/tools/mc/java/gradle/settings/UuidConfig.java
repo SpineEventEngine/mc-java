@@ -27,10 +27,10 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.Message;
+import io.spine.base.UuidValue;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.gradle.Ordered;
-import io.spine.tools.java.code.MethodFactory;
+import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Uuids;
 import org.gradle.api.Project;
@@ -53,12 +53,12 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
         actions = new Ordered<>(p, String.class);
+        defaultConvention();
     }
 
-    public void convention(Class<? extends MethodFactory> methodFactory,
-                    Class<? extends Message> markerInterface) {
-        methodFactories.convention(ImmutableSet.of(methodFactory.getCanonicalName()));
-        interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));
+    private void defaultConvention() {
+        methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
+        interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
     }
 
     @Override

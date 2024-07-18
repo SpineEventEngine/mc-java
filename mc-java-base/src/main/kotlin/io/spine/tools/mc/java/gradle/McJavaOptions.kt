@@ -30,7 +30,6 @@ import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.javaCodeStyleDefaults
 import io.spine.tools.java.fs.DefaultJavaPaths
 import io.spine.tools.mc.java.gradle.settings.CodegenConfig
-import io.spine.tools.mc.java.gradle.settings.applyConventions
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
@@ -81,9 +80,7 @@ public abstract class McJavaOptions {
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.codegen = CodegenConfig(project).also {
-            it.applyConventions()
-        }
+        this.codegen = CodegenConfig(project)
     }
 
     public fun annotation(action: Action<AnnotationSettings>) {

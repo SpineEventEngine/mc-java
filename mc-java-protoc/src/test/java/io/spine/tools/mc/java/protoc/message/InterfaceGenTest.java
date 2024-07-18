@@ -68,7 +68,6 @@ import java.util.regex.Pattern;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.testing.Assertions.assertIllegalArgument;
-import static io.spine.tools.mc.java.gradle.settings.CodegenConfigKt.applyConventions;
 import static java.lang.String.format;
 import static java.util.regex.Pattern.compile;
 import static java.util.stream.Collectors.toSet;
@@ -146,7 +145,6 @@ final class InterfaceGenTest {
         project.getPluginManager()
                .apply("java");
         var options = new CodegenConfig(project);
-        applyConventions(options);
         config = options.toProto();
     }
 
