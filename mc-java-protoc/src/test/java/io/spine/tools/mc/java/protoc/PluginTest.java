@@ -63,7 +63,7 @@ import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addI
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.methodFactory;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.pattern;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocConfig;
+import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocSettings;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
 import static io.spine.tools.mc.java.protoc.given.TestMethodFactory.TEST_METHOD;
 import static java.util.stream.Collectors.toList;
@@ -99,7 +99,7 @@ final class PluginTest {
         var request = requestBuilder()
                 .addProtoFile(TestMethodProtos.getDescriptor().toProto())
                 .addFileToGenerate("spine/tools/protoc/method/test_protos.proto")
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(config, testPluginConfig))
                 .build();
 
         var response = runPlugin(request);
@@ -127,7 +127,7 @@ final class PluginTest {
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(config, testPluginConfig))
                 .build();
 
         var response = runPlugin(request);
@@ -151,7 +151,7 @@ final class PluginTest {
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(config, testPluginConfig))
                 .build();
 
         var response = runPlugin(request);
@@ -175,7 +175,7 @@ final class PluginTest {
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(config, testPluginConfig))
                 .build();
 
         var response = runPlugin(request);
@@ -188,7 +188,7 @@ final class PluginTest {
     void markBuildersWithInterface() {
         var testGeneratorsDescriptor = TestGeneratorsProto.getDescriptor();
         var config = Combined.getDefaultInstance();
-        var protocConfigPath = protocConfig(config, testPluginConfig);
+        var protocConfigPath = protocSettings(config, testPluginConfig);
         var request = requestBuilder()
                 .addProtoFile(testGeneratorsDescriptor.toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)

@@ -116,11 +116,12 @@ public final class CodeGeneratorRequestGiven {
     }
 
     /**
-     * Writes the given Protoc config into the given file and obtains the Protoc plugin argument.
+     * Writes the given Protoc plugin settings into the given file and
+     * obtains the Protoc plugin argument.
      *
-     * @return the path to the serialized config, encoded in Base64
+     * @return the path to the serialized settings, encoded in Base64
      */
-    public static String protocConfig(Combined config, Path configFile) {
+    public static String protocSettings(Combined config, Path configFile) {
         try (var fos = new FileOutputStream(configFile.toFile())) {
             config.writeTo(fos);
         } catch (IOException e) {

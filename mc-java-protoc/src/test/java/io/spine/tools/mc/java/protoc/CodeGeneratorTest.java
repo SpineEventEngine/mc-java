@@ -49,7 +49,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static io.spine.testing.Assertions.assertIllegalArgument;
 import static io.spine.testing.Assertions.assertNpe;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocConfig;
+import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocSettings;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
 
 @DisplayName("`SpineProtoGenerator` should")
@@ -57,27 +57,27 @@ final class CodeGeneratorTest {
 
     private static final String TEST_PROTO_FILE = "spine/tools/protoc/test_generators.proto";
 
-    private Path testPluginConfig;
+    private Path pluginSettingsFile;
 
     @BeforeEach
     void setUp(@TempDir Path tempDirPath) {
-        testPluginConfig = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
+        pluginSettingsFile = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
     }
 
-    @DisplayName("process valid `CodeGeneratorRequest`")
     @Test
+    @DisplayName("process valid `CodeGeneratorRequest`")
     void processValidRequest() {
         var uuids = Uuids.newBuilder()
                 .addAddInterface(addInterface(TestInterface.class))
                 .build();
-        var config = Combined.newBuilder()
+        var settings = Combined.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
         var type = new MessageType(EnhancedWithCodeGeneration.getDescriptor());
         var firstFile = File.newBuilder()
@@ -104,12 +104,12 @@ final class CodeGeneratorTest {
     @DisplayName("concatenate code generated for the same insertion point")
     @Test
     void concatenateGeneratedCode() {
-        var config = Combined.getDefaultInstance();
+        var settings = Combined.getDefaultInstance();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
         var type = new MessageType(EnhancedWithCodeGeneration.getDescriptor());
         var firstMethod = "public void test1(){}";
@@ -141,12 +141,12 @@ final class CodeGeneratorTest {
     @DisplayName("drop duplicates in generated code for the same insertion point")
     @Test
     void dropCodeDuplicates() {
-        var config = Combined.getDefaultInstance();
+        var settings = Combined.getDefaultInstance();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfig(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
         var type = new MessageType(EnhancedWithCodeGeneration.getDescriptor());
         var method = "public void test1(){}";
