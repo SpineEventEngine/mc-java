@@ -39,7 +39,7 @@ import "spine/protodata/ast.proto";
 
 import "spine/tools/mc/java/settings.proto";
 
-// A message type which represents [UuidValue][io.spine.base.UuidValue] was discovered.
+// A message type representing [UuidValue][io.spine.base.UuidValue] was discovered.
 message UuidValueDiscovered {
 
     // The discovered type.
