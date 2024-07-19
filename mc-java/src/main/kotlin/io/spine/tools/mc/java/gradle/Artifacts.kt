@@ -73,23 +73,6 @@ internal val gRpcProtocPlugin: Artifact by lazy {
     gRpcPlugin.withVersionFrom(versions)
 }
 
-@get:JvmName("toolBase")
-internal val toolBase: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        name = "spine-tool-base"
-        version = toolBaseVersion
-        extension = JAR_EXTENSION
-    }
-}
-
-@get:JvmName("toolBaseVersion")
-internal val toolBaseVersion: String by lazy {
-    val toolBase: Dependency = MavenDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
-    versions.versionOf(toolBase)
-        .orElseThrow { error("Unable to load versions of `$toolBase`.") }
-}
-
 /**
  * Artifacts of McJava.
  */
@@ -176,7 +159,7 @@ internal object ValidationSdk {
      * The Maven artifact containing the `spine-validation-java-runtime` module.
      *
      * @param version
-     *         the version of Validation library to be used.
+     *         the version of the Validation library to be used.
      *         If empty, the version of the build time dependency used is used.
      * @see javaCodegenBundle
      */
@@ -190,7 +173,7 @@ internal object ValidationSdk {
      * The Maven artifact containing the `spine-validation-configuration` module.
      *
      * @param version
-     *         the version of Validation library to be used.
+     *         the version of the Validation library to be used.
      *         If empty, the version of the build time dependency used is used.
      * @see javaCodegenBundle
      */
