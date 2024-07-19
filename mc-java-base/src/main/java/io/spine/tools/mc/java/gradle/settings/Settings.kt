@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -23,32 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package io.spine.tools.mc.java.gradle.settings
 
-import io.spine.tools.mc.java.settings.Validation
-import io.spine.tools.mc.java.settings.validation
+import com.google.protobuf.Message
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 
 /**
- * Configuration for validation code generation.
+ * Settings for a specific aspect of the Model Compiler, established through Gradle.
+ *
+ * @param P the type that captures a snapshot of the current state of the settings.
  */
-public class ValidationConfig internal constructor(p: Project) : Config<Validation>(p) {
+public abstract class Settings<P : Message>(p: Project) {
 
     /**
-     * Allows specifying a version of the validation code generator used by McJava.
+     * Whether this configuration is enabled.
      *
-     * If empty, the version on which McJava depends during build time will be used.
-     * The default value of this property is empty string.
+     * If `false`, the configuration is ignored by the Model Compiler.
+     * The default value is `true`.
      */
-    public val version: Property<String> = p.objects.property(String::class.java)
+    public val enabled: Property<Boolean> = p.objects.property(Boolean::class.java)
 
     init {
-        version.convention("")
+        enabled.convention(true)
     }
 
-    public override fun toProto(): Validation = validation {
-        version = this@ValidationConfig.version.getOrElse("")
-    }
+    /**
+     * Converts this instance into a Protobuf message.
+     */
+    public abstract fun toProto(): P
 }

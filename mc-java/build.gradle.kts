@@ -57,7 +57,7 @@ dependencies {
         ":mc-java-entity",
         ":mc-java-signal",
         ":mc-java-message-group",
-        ":mc-java-protodata-params"
+        ":mc-java-uuid",
     ).forEach {
         implementation(project(it))
     }

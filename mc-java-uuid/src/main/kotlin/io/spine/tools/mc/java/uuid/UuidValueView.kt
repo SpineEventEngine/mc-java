@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,14 +24,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package io.spine.tools.mc.java.uuid
+
+import io.spine.core.Subscribe
+import io.spine.protodata.MessageType
+import io.spine.protodata.plugin.View
+import io.spine.server.entity.alter
+import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
+
 /**
- * This package defines the parameters used by {@code modelCompiler} plugin
- * to configure ProtoData.
+ * Gathers codegen settings from [UuidValueDiscovered] events.
  */
-@CheckReturnValue
-@ParametersAreNonnullByDefault
-package io.spine.tools.mc.java.protodata.params;
+internal class UuidValueView : View<MessageType, UuidMessage, UuidMessage.Builder>() {
 
-import com.google.errorprone.annotations.CheckReturnValue;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+    @Subscribe
+    fun on(e: UuidValueDiscovered) = alter {
+        settings = e.settings
+    }
+}

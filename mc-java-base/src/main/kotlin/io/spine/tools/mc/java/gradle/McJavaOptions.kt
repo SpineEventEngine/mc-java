@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,7 +29,7 @@ import groovy.lang.Closure
 import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.java.style.javaCodeStyleDefaults
 import io.spine.tools.java.fs.DefaultJavaPaths
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
@@ -49,8 +49,8 @@ public abstract class McJavaOptions {
      * Code generation settings related to specific kinds of messages and their validation.
      */
     @JvmField
-    public var codegen: CodegenConfig? = null
-    
+    public var codegen: CodegenSettings? = null
+
     /**
      * The indent for the generated code.
      */
@@ -80,7 +80,7 @@ public abstract class McJavaOptions {
      * Injects the dependency to the given project.
      */
     public fun injectProject(project: Project) {
-        this.codegen = CodegenConfig(project)
+        this.codegen = CodegenSettings(project)
     }
 
     public fun annotation(action: Action<AnnotationSettings>) {
@@ -90,7 +90,7 @@ public abstract class McJavaOptions {
     /**
      * Applies the given action for code generation options.
      */
-    public fun codegen(action: Action<CodegenConfig>) {
+    public fun codegen(action: Action<CodegenSettings>) {
         action.execute(codegen!!)
     }
 

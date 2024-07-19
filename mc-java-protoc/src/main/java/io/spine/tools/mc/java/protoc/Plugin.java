@@ -33,7 +33,7 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
 import io.spine.tools.mc.java.protoc.method.MethodGen;
-import io.spine.tools.mc.java.settings.CodegenSettings;
+import io.spine.tools.mc.java.settings.Combined;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -70,14 +70,14 @@ public final class Plugin {
      */
     public static void main(String[] args) {
         var request = readRequest();
-        var config = readConfig(request);
+        var settings = readSettings(request);
         var generator = CompositeGenerator.of(
-                InterfaceGen.instance(config),
-                MethodGen.instance(config)//,
+                InterfaceGen.instance(settings),
+                MethodGen.instance(settings)//,
                 //new BuilderGen()
-                //NestedClassGen.instance(config)
-                //EntityQueryGen.instance(config)
-                //FieldGen.instance(config)
+                //NestedClassGen.instance(settings)
+                //EntityQueryGen.instance(settings)
+                //FieldGen.instance(settings)
         );
         var response = generator.process(request);
         writeResponse(response);
@@ -96,10 +96,10 @@ public final class Plugin {
         }
     }
 
-    private static CodegenSettings readConfig(CodeGeneratorRequest request) {
+    private static Combined readSettings(CodeGeneratorRequest request) {
         var configFilePath = decodeBase64(request.getParameter());
         try (var fis = new FileInputStream(configFilePath)) {
-            var config = CodegenSettings.parseFrom(fis, registry());
+            var config = Combined.parseFrom(fis, registry());
             return config;
         } catch (InvalidProtocolBufferException e) {
             throw newIllegalStateException(e, "Unable to decode Spine Protoc Plugin config.");

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -26,10 +26,12 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.GeneratedMessage;
-import com.google.protobuf.Message;
 import io.spine.annotation.Internal;
+import io.spine.base.EntityState;
+import io.spine.option.OptionsProto;
+import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.proto.code.ProtoOption;
 import org.gradle.api.Action;
@@ -44,25 +46,25 @@ import static java.util.stream.Collectors.toList;
 /**
  * Configuration for entity state types' code generation.
  *
- * @see CodegenConfig#forEntities(Action)
+ * @see CodegenSettings#forEntities(Action)
  */
-public final class EntityConfig extends ConfigWithFields<Entities> {
+public final class EntitySettings extends SettingsWithFields<Entities> {
 
     private final SetProperty<String> options;
     private final Property<Boolean> generateQueries;
 
-    EntityConfig(Project p) {
+    @VisibleForTesting
+    public EntitySettings(Project p) {
         super(p);
+        convention(EntityStateField.class);
+        interfaceNames().convention(ImmutableSet.of(
+                EntityState.class.getCanonicalName()
+        ));
         options = p.getObjects().setProperty(String.class);
+        options.convention(ImmutableSet.of(
+                OptionsProto.entity.getDescriptor().getName()
+        ));
         generateQueries = p.getObjects().property(Boolean.class);
-    }
-
-    void convention(GeneratedMessage.GeneratedExtension<?, ?> option,
-                    Class<? extends Message> markerInterface,
-                    Class<?> fieldSuperclass) {
-        convention(fieldSuperclass);
-        options.convention(ImmutableSet.of(option.getDescriptor().getName()));
-        interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));
         generateQueries.convention(true);
     }
 

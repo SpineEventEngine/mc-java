@@ -35,11 +35,3 @@
 
 apply(from = "$rootDir/test-env.gradle")
 val originalProjectDir = extra["enclosingRootDir"];
-
-
-includeBuild("$originalProjectDir/") {
-    dependencySubstitution {
-        substitute(module("io.spine.tools:spine-mc-java-protodata-params"))
-            .using(project(":mc-java-protodata-params"))
-    }
-}

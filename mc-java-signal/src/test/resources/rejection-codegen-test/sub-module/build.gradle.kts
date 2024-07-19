@@ -24,15 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
+import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
-import io.spine.internal.dependency.Protobuf
 import org.gradle.api.tasks.JavaExec
 
 plugins {
@@ -46,7 +40,7 @@ plugins {
 modelCompiler {
     java {
         codegen {
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
     }
 }

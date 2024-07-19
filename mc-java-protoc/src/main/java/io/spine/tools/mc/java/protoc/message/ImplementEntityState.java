@@ -28,9 +28,9 @@ package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.JavaClassName;
-import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.EntityMatcher;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.type.MessageType;
 
 import java.util.function.Predicate;
@@ -46,9 +46,9 @@ final class ImplementEntityState extends ImplementInterface {
 
     private final Predicate<MessageType> matcher;
 
-    ImplementEntityState(JavaClassName interfaceName, Entities config) {
+    ImplementEntityState(JavaClassName interfaceName, Entities settings) {
         super(interfaceName);
-        this.matcher = new EntityMatcher(config);
+        this.matcher = new EntityMatcher(settings);
     }
 
     @Override

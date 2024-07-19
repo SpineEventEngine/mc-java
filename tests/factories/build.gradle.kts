@@ -33,7 +33,7 @@ import io.spine.internal.dependency.Spine.McJava
 modelCompiler {
     java {
         codegen {
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
     }
 }

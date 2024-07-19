@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,25 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protodata.params;
+package io.spine.tools.mc.java.uuid
 
-import com.google.auto.service.AutoService;
-import com.google.protobuf.ExtensionRegistry;
-import io.spine.option.OptionsProto;
-import io.spine.option.OptionsProvider;
-import io.spine.time.validation.TimeOptionsProto;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import io.spine.protodata.plugin.Plugin
+import io.spine.protodata.plugin.Policy
+import io.spine.protodata.plugin.View
 
 /**
- * Registers the definitions from {@code spine/options.proto} and {@code spine/time_options.proto}
- * in the {@code ExtensionRegistry} for ProtoData.
+ * Discovers [UuidValue][io.spine.base.UuidValue] message types and renders the code
+ * according to the settings specified in
+ * [io.spine.tools.mc.java.gradle.settings.CodegenSettings.forUuids] clause.
  */
-@AutoService(OptionsProvider.class)
-public final class DefaultOptionsProvider implements OptionsProvider {
+public class UuidPlugin : Plugin {
 
-    @Override
-    public void registerIn(@NonNull ExtensionRegistry registry) {
-        OptionsProto.registerAllExtensions(registry);
-        TimeOptionsProto.registerAllExtensions(registry);
+    override fun policies(): Set<Policy<*>> = setOf(
+        UuidValueDiscovery()
+    )
+
+    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
+        UuidValueView::class.java
+    )
+
+    public companion object {
+
+        /**
+         * The ID for obtaining settings for the plugin.
+         */
+        public val SETTINGS_ID: String = UuidPlugin::class.java.canonicalName
     }
 }

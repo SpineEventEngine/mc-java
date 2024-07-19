@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,9 +27,9 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.Message;
+import io.spine.base.UuidValue;
 import io.spine.tools.gradle.Multiple;
-import io.spine.tools.java.code.MethodFactory;
+import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Uuids;
 import org.gradle.api.Project;
@@ -39,24 +39,17 @@ import java.util.Set;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * Configuration for code generation for UUID messages.
- *
- * <p>A UUID message is a message which the only {@code string} field called "uuid".
- * Such messages may represent randomized typed identifiers for entities.
+ * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
-public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
+public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
 
     private final Multiple<String> methodFactories;
 
-    UuidConfig(Project p) {
+    UuidSettings(Project p) {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
-    }
-
-    void convention(Class<? extends MethodFactory> methodFactory,
-                    Class<? extends Message> markerInterface) {
-        methodFactories.convention(ImmutableSet.of(methodFactory.getCanonicalName()));
-        interfaceNames().convention(ImmutableSet.of(markerInterface.getCanonicalName()));
+        methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
+        interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
     }
 
     @Override
@@ -64,6 +57,7 @@ public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
         return Uuids.newBuilder()
                 .addAllMethodFactory(factories())
                 .addAllAddInterface(interfaces())
+                .addAllAction(actions())
                 .build();
     }
 

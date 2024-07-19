@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -35,22 +35,22 @@ import org.gradle.api.provider.Property;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * A configuration which includes field generation.
+ * Code generation settings that include generation of
+ * {@linkplain io.spine.base.SubscribableField field classes}.
  *
  * <p>Model Compiler generates type-safe API for filtering messages by fields in queries
  * and subscriptions.
  *
  * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
+ *         Protobuf type reflecting a snapshot of these settings
  */
-public abstract class ConfigWithFields<P extends Message> extends ConfigWithInterfaces<P> {
+public abstract class SettingsWithFields<P extends Message> extends SettingsWithInterfaces<P> {
 
     private final Property<String> markFieldsAs;
 
-    ConfigWithFields(Project p) {
+    SettingsWithFields(Project p) {
         super(p);
-        markFieldsAs = p.getObjects()
-                        .property(String.class);
+        markFieldsAs = p.getObjects().property(String.class);
     }
 
     /**
@@ -79,7 +79,8 @@ public abstract class ConfigWithFields<P extends Message> extends ConfigWithInte
     }
 
     /**
-     * Obtains the {@link GenerateFields} config.
+     * Obtains the {@link GenerateFields} instance containing specified names of
+     * field superclasses.
      */
     final GenerateFields generateFields() {
         GenerateFields generateFields;

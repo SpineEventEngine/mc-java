@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -26,28 +26,36 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.Message;
 import io.spine.tools.gradle.Multiple;
+import io.spine.tools.gradle.Ordered;
 import io.spine.tools.mc.java.settings.AddInterface;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 import org.gradle.api.provider.SetProperty;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * A config for messages which can implement certain Java interfaces.
+ * Code generation settings that cover implementing certain Java interfaces.
  *
  * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
+ *         Protobuf type reflecting a snapshot of these settings
  */
-abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
+abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     private final Multiple<String> interfaceNames;
 
-    ConfigWithInterfaces(Project p) {
+    private final Ordered<String> actions;
+
+    SettingsWithInterfaces(Project p) {
         super(p);
         this.interfaceNames = new Multiple<>(p, String.class);
+        this.actions = new Ordered<>(p, String.class);
+        actions.convention(ImmutableSet.of());
     }
 
     /**
@@ -61,6 +69,51 @@ abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
      */
     public final void markAs(String interfaceName) {
         interfaceNames.add(interfaceName);
+    }
+
+    /**
+     * Instructs Model Compiler to use
+     * the {@linkplain io.spine.protodata.renderer.RenderAction code generation action}
+     * specified by the binary name of the class.
+     *
+     * @param className
+     *         the binary name of the action class
+     */
+    public void useAction(@FqBinaryName String className) {
+        checkNotNull(className);
+        actions.add(className);
+    }
+
+    /**
+     * Instructs Model Compiler to apply
+     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action class
+     */
+    public void useActions(Iterable<@FqBinaryName String> classNames) {
+        checkNotNull(classNames);
+        actions.addAll(classNames);
+    }
+
+    /**
+     * Instructs Model Compiler to apply
+     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
+     * to the code generated for messages of this group.
+     *
+     * @param classNames
+     *         the binary names of the action classes
+     */
+    public void useActions(@FqBinaryName String... classNames) {
+        useActions(ImmutableList.copyOf(classNames));
+    }
+
+    /**
+     * Obtains currently assigned codegen actions.
+     */
+    protected final Iterable<String> actions() {
+        return actions.getOrElse(ImmutableList.of());
     }
 
     /**

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -30,37 +30,33 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ValidationConfig` should")
-internal class ValidationConfigSpec {
+@DisplayName("`ValidationSettings` should")
+internal class ValidationSettingsSpec {
 
-    companion object {
+    private lateinit var settings: ValidationSettings
 
-        lateinit var config: ValidationConfig
-
-        @BeforeAll
-        @JvmStatic
-        fun createProject(@TempDir projectDir: File) {
-            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-            config = ValidationConfig(project)
-        }
+    @BeforeEach
+    fun createProject(@TempDir projectDir: File) {
+        val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+        settings = ValidationSettings(project)
     }
 
     @Test
-    fun `use built-in version of validation config by default`() {
-        config.version.get().shouldBeEmpty()
-        config.toProto().version.shouldBeEmpty()
+    fun `use built-in version of validation settings by default`() {
+        settings.version.get().shouldBeEmpty()
+        settings.toProto().version.shouldBeEmpty()
     }
 
     @Test
-    fun `allow specifying a version of validation config`() {
+    fun `allow specifying a version in validation settings`() {
         val expected = "1.2.3"
-        config.version.set(expected)
-        config.run {
+        settings.version.set(expected)
+        settings.run {
             version.get() shouldBe expected
             toProto().version shouldBe expected
         }

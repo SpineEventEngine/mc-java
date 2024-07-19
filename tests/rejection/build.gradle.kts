@@ -33,7 +33,7 @@ plugins {
 modelCompiler {
     java {
         codegen {
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
     }
 }

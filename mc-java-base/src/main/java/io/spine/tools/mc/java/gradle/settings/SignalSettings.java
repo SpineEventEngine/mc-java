@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.collect.ImmutableSet;
 import io.spine.base.MessageFile;
 import io.spine.base.SignalMessage;
-import io.spine.tools.mc.java.settings.Signals;
 import io.spine.protodata.FilePattern;
+import io.spine.tools.mc.java.settings.Signals;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.gradle.api.Project;
 
@@ -39,11 +39,11 @@ import org.gradle.api.Project;
  *
  * <p>May configure all the events, all the rejections, or all the commands.
  *
- * <p>The configuration applied to events does not automatically apply to rejections.
+ * <p>Settings applied to events do not automatically apply to rejections.
  */
-public final class SignalConfig extends GroupedByFilePatterns<Signals> {
+public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
-    SignalConfig(Project p) {
+    SignalSettings(Project p) {
         super(p);
     }
 

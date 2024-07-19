@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,15 +24,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.AutoService
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.ProtoData
+package io.spine.tools.mc.java.uuid
 
-dependencies {
-    annotationProcessor(AutoService.processor)
-    compileOnlyApi(AutoService.annotations)
+import io.spine.protodata.settings.LoadsSettings
 
-    implementation(ProtoData.backend)
-    implementation(Spine.base)
-    implementation(Spine.time)
+/**
+ * A part of [UuidPlugin] that loads [settings][io.spine.tools.mc.java.settings.Uuids] stored
+ * using [consumerId] as the file name.
+ */
+internal interface UuidPluginComponent : LoadsSettings {
+
+    override val consumerId: String
+        get() = UuidPlugin.SETTINGS_ID
 }

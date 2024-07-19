@@ -121,10 +121,10 @@ class ImplementEntityStateTest {
         var option = ProtoOption.newBuilder()
                 .setName(OptionsProto.entity.getDescriptor().getName())
                 .build();
-        var config = Entities.newBuilder()
+        var settings = Entities.newBuilder()
                 .addAddInterface(iface)
                 .addOption(option)
                 .build();
-        return new ImplementEntityState(className, config);
+        return new ImplementEntityState(className, settings);
     }
 }

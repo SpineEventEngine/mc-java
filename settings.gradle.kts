@@ -38,8 +38,9 @@ include(
     "mc-java-protoc",
     "mc-java-message-group",
     "mc-java-message-group-tests",
+    "mc-java-uuid",
+    "mc-java-uuid-tests",
     "mc-java-validation",
-    "mc-java-protodata-params",
     "mc-java-plugin-bundle"
 )
 

@@ -73,23 +73,6 @@ internal val gRpcProtocPlugin: Artifact by lazy {
     gRpcPlugin.withVersionFrom(versions)
 }
 
-@get:JvmName("toolBase")
-internal val toolBase: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        name = "spine-tool-base"
-        version = toolBaseVersion
-        extension = JAR_EXTENSION
-    }
-}
-
-@get:JvmName("toolBaseVersion")
-internal val toolBaseVersion: String by lazy {
-    val toolBase: Dependency = MavenDependency(SPINE_TOOLS_GROUP, "spine-tool-base")
-    versions.versionOf(toolBase)
-        .orElseThrow { error("Unable to load versions of `$toolBase`.") }
-}
-
 /**
  * Artifacts of McJava.
  */
@@ -106,70 +89,6 @@ internal object McJava {
         val self: Dependency = MavenDependency(SPINE_TOOLS_GROUP, MC_JAVA_NAME)
         versions.versionOf(self)
             .orElseThrow { error("Unable to load versions of `$self`.") }
-    }
-
-    /**
-     * The Maven artifact containing the `spine-mc-java-base` module.
-     */
-    @JvmStatic
-    @get:JvmName("base")
-    internal val base: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-base"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
-     * The Maven artifact containing the `spine-mc-java-annotation` module.
-     */
-    @get:JvmName("annotation")
-    @JvmStatic
-    internal val annotation: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-annotation"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
-     * The Maven artifact containing the `spine-mc-java-entity` module.
-     */
-    internal val entity: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-entity"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
-     * The Maven artifact containing the `spine-mc-java-message-group` module.
-     */
-    internal val messageGroup: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-message-group"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
-     * The Maven artifact containing the `spine-mc-java-signal` module.
-     */
-    internal val signals: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-signal"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
     }
 
     /**
@@ -240,7 +159,7 @@ internal object ValidationSdk {
      * The Maven artifact containing the `spine-validation-java-runtime` module.
      *
      * @param version
-     *         the version of Validation library to be used.
+     *         the version of the Validation library to be used.
      *         If empty, the version of the build time dependency used is used.
      * @see javaCodegenBundle
      */
@@ -254,7 +173,7 @@ internal object ValidationSdk {
      * The Maven artifact containing the `spine-validation-configuration` module.
      *
      * @param version
-     *         the version of Validation library to be used.
+     *         the version of the Validation library to be used.
      *         If empty, the version of the build time dependency used is used.
      * @see javaCodegenBundle
      */

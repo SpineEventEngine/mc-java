@@ -29,13 +29,13 @@ package io.spine.tools.mc.java.protoc.message;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
-import io.spine.tools.mc.java.settings.CodegenSettings;
-import io.spine.tools.mc.java.settings.Entities;
-import io.spine.tools.mc.java.settings.Signals;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
+import io.spine.tools.mc.java.settings.Combined;
+import io.spine.tools.mc.java.settings.Entities;
+import io.spine.tools.mc.java.settings.Signals;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 
@@ -71,9 +71,9 @@ public final class InterfaceGen extends CodeGenerator {
     /**
      * Retrieves the single instance of the {@code InterfaceGenerator}.
      */
-    public static CodeGenerator instance(CodegenSettings config) {
-        checkNotNull(config);
-        var signalSettings = config.getSignalSettings();
+    public static CodeGenerator instance(Combined settings) {
+        checkNotNull(settings);
+        var signalSettings = settings.getSignalSettings();
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
         if (signalSettings.hasCommands()) {
             tasks.addAll(tasksFor(signalSettings.getCommands()));
@@ -84,17 +84,17 @@ public final class InterfaceGen extends CodeGenerator {
         if (signalSettings.hasRejections()) {
             tasks.addAll(tasksFor(signalSettings.getRejections()));
         }
-        if (config.hasUuids()) {
-            var uuids = config.getUuids();
+        if (settings.hasUuids()) {
+            var uuids = settings.getUuids();
             var addInterfaces = uuids.getAddInterfaceList();
             addInterfaces.stream()
                          .map(ImplementUuidValue::new)
                          .forEach(tasks::add);
         }
-        if (config.hasEntities()) {
-            tasks.addAll(tasksFor(config.getEntities()));
+        if (settings.hasEntities()) {
+            tasks.addAll(tasksFor(settings.getEntities()));
         }
-        for (var messages : config.getGroupSettings().getGroupList()) {
+        for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getAddInterfaceList()
                     .stream()

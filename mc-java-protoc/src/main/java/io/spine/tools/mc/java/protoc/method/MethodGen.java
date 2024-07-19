@@ -28,13 +28,13 @@ package io.spine.tools.mc.java.protoc.method;
 
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.MethodFactory;
-import io.spine.tools.mc.java.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.CodeGenerationTask;
 import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.ExternalClassLoader;
 import io.spine.tools.mc.java.protoc.InsertionPoint;
+import io.spine.tools.mc.java.settings.Combined;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 
@@ -61,19 +61,19 @@ public final class MethodGen extends CodeGenerator {
     /**
      * Retrieves the single instance of the {@code MethodGenerator}.
      */
-    public static MethodGen instance(CodegenSettings config) {
-        checkNotNull(config);
-        var classpath = config.getClasspath();
+    public static MethodGen instance(Combined settings) {
+        checkNotNull(settings);
+        var classpath = settings.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, MethodFactory.class);
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
-        if (config.hasUuids()) {
-            var methodFactoryNames = config.getUuids().getMethodFactoryList();
+        if (settings.hasUuids()) {
+            var methodFactoryNames = settings.getUuids().getMethodFactoryList();
             methodFactoryNames
                     .stream()
                     .map(name -> new GenerateUuidMethods(classLoader, name))
                     .forEach(tasks::add);
         }
-        for (var messages : config.getGroupSettings().getGroupList()) {
+        for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getGenerateMethodsList()
                     .stream()

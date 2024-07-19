@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,9 +29,9 @@ package io.spine.tools.mc.java.protoc.field;
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.java.code.JavaClassName;
 import io.spine.tools.java.code.field.FieldFactory;
-import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.EntityMatcher;
+import io.spine.tools.mc.java.settings.Entities;
 import io.spine.type.MessageType;
 
 import java.util.function.Predicate;
@@ -47,9 +47,9 @@ final class GenerateEntityStateFields extends FieldGenerationTask {
 
     private final Predicate<MessageType> matcher;
 
-    GenerateEntityStateFields(Entities config, FieldFactory factory) {
-        super(fieldSupertype(checkNotNull(config)), checkNotNull(factory));
-        this.matcher = new EntityMatcher(config);
+    GenerateEntityStateFields(Entities settings, FieldFactory factory) {
+        super(fieldSupertype(checkNotNull(settings)), checkNotNull(factory));
+        this.matcher = new EntityMatcher(settings);
     }
 
     @Override
@@ -61,11 +61,11 @@ final class GenerateEntityStateFields extends FieldGenerationTask {
         return ImmutableList.of();
     }
 
-    private static JavaClassName fieldSupertype(Entities config) {
-        var generateFields = config.getGenerateFields();
+    private static JavaClassName fieldSupertype(Entities settings) {
+        var generateFields = settings.getGenerateFields();
         if (!generateFields.hasSuperclass()) {
             throw newIllegalStateException(
-                    "Expected a field class supertype, but got: `%s`.", config
+                    "Expected a field class supertype, but got: `%s`.", settings
             );
         }
         return generateFields.getSuperclass();

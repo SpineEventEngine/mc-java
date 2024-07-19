@@ -58,7 +58,7 @@ class AnnotationProcessorConfigurationTest
     }
 
     @Test
-    @DisplayName("create annotation processor config if it does not exist")
+    @DisplayName("create annotation processor configuration if it does not exist")
     void createAndReturnAnnotationProcessorConfigIfItDoesNotExist() {
         configurations.remove(preprocessorConfig);
         assertThat(configurations.findByName(annotationProcessor.value()))
