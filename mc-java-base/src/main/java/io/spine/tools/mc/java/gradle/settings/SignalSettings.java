@@ -39,7 +39,7 @@ import org.gradle.api.Project;
  *
  * <p>May configure all the events, all the rejections, or all the commands.
  *
- * <p>The configuration applied to events does not automatically apply to rejections.
+ * <p>Settings applied to events do not automatically apply to rejections.
  */
 public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
