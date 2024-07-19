@@ -109,20 +109,6 @@ internal object McJava {
     }
 
     /**
-     * The Maven artifact containing the `spine-mc-java-base` module.
-     */
-    @JvmStatic
-    @get:JvmName("base")
-    internal val base: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name = "spine-mc-java-base"
-            version = this@McJava.version
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
      * The Maven artifact containing the `spine-mc-java-protoc` uber JAR.
      */
     @get:JvmName("protocExe")
