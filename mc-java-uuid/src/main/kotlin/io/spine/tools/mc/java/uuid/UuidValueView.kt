@@ -33,7 +33,7 @@ import io.spine.server.entity.alter
 import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
 
 /**
- * Gathers codegen settings in response to the [UuidValueDiscovered] event.
+ * Gathers codegen settings from [UuidValueDiscovered] events.
  */
 internal class UuidValueView : View<MessageType, UuidMessage, UuidMessage.Builder>() {
 
