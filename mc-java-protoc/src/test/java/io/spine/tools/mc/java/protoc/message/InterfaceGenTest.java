@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -40,7 +40,7 @@ import io.spine.code.java.PackageName;
 import io.spine.tools.java.fs.FileName;
 import io.spine.tools.java.fs.JavaFiles;
 import io.spine.tools.java.fs.SourceFile;
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig;
+import io.spine.tools.mc.java.gradle.settings.CodegenSettings;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.settings.Combined;
 import io.spine.tools.protoc.plugin.message.tests.EveryIsGeneratedProto;
@@ -144,7 +144,7 @@ final class InterfaceGenTest {
                 .build();
         project.getPluginManager()
                .apply("java");
-        var options = new CodegenConfig(project);
+        var options = new CodegenSettings(project);
         config = options.toProto();
     }
 

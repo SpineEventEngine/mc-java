@@ -46,15 +46,15 @@ import static java.util.stream.Collectors.toList;
 /**
  * Configuration for entity state types' code generation.
  *
- * @see CodegenConfig#forEntities(Action)
+ * @see CodegenSettings#forEntities(Action)
  */
-public final class EntityConfig extends ConfigWithFields<Entities> {
+public final class EntitySettings extends SettingsWithFields<Entities> {
 
     private final SetProperty<String> options;
     private final Property<Boolean> generateQueries;
 
     @VisibleForTesting
-    public EntityConfig(Project p) {
+    public EntitySettings(Project p) {
         super(p);
         convention(EntityStateField.class);
         interfaceNames().convention(ImmutableSet.of(

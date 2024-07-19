@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -43,15 +43,15 @@ import static java.util.stream.Collectors.toSet;
 /**
  * A codegen configuration for messages which match a certain pattern.
  *
- * @see CodegenConfig#forMessages
+ * @see CodegenSettings#forMessages
  */
-public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
+public final class MessageGroupSettings extends SettingsWithFields<MessageGroup> {
 
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
 
-    MessageGroupConfig(Project p, Pattern pattern) {
+    MessageGroupSettings(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
@@ -82,7 +82,7 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
      *
      * @param factoryClassName
      *         the canonical class name of the nested class factory
-     * @deprecated please use {@link ConfigWithInterfaces#useAction} instead.
+     * @deprecated please use {@link SettingsWithInterfaces#useAction} instead.
      */
     @Deprecated
     public void generateNestedClassesWith(String factoryClassName) {
@@ -106,7 +106,7 @@ public final class MessageGroupConfig extends ConfigWithFields<MessageGroup> {
     private Set<GenerateMethods> generateMethods() {
         return methodFactories.get()
                               .stream()
-                              .map(MessageGroupConfig::methodFactoryConfig)
+                              .map(MessageGroupSettings::methodFactoryConfig)
                               .collect(toSet());
     }
 

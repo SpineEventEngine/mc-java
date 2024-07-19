@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -45,13 +45,13 @@ import static io.spine.tools.java.code.Names.className;
  * @param <P>
  *         Protobuf type reflecting a snapshot of this configuration
  */
-abstract class ConfigWithInterfaces<P extends Message> extends Config<P> {
+abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     private final Multiple<String> interfaceNames;
 
     private final Ordered<String> actions;
 
-    ConfigWithInterfaces(Project p) {
+    SettingsWithInterfaces(Project p) {
         super(p);
         this.interfaceNames = new Multiple<>(p, String.class);
         this.actions = new Ordered<>(p, String.class);

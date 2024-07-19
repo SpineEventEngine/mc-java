@@ -54,38 +54,43 @@ import org.gradle.api.tasks.compile.JavaCompile
  * A part of [McJavaOptions][io.spine.tools.mc.java.gradle.McJavaOptions] responsible
  * for code generation settings.
  */
-public class CodegenConfig @Internal public constructor(private val project: Project) :
-    Config<Combined>(project) {
+public class CodegenSettings @Internal public constructor(private val project: Project) :
+    Settings<Combined>(project) {
 
     /**
      * Settings for the generated command code.
      */
-    public val commands: SignalConfig = SignalConfig(project)
+    public val commands: SignalSettings =
+        SignalSettings(project)
 
     /**
      * Settings for the generated event code.
      */
-    public val events: SignalConfig = SignalConfig(project)
+    public val events: SignalSettings =
+        SignalSettings(project)
 
     /**
      * Settings for the generated rejection code.
      */
-    public val rejections: SignalConfig = SignalConfig(project)
+    public val rejections: SignalSettings =
+        SignalSettings(project)
 
     /**
      * Settings for the generated entities code.
      */
-    public val entities: EntityConfig = EntityConfig(project)
+    public val entities: EntitySettings =
+        EntitySettings(project)
 
     /**
      * Settings for the generated code of [io.spine.base.UuidValue] types.
      */
-    public val uuids: UuidConfig = UuidConfig(project)
+    public val uuids: UuidSettings =
+        UuidSettings(project)
 
     /**
      * Settings for the generated validation code.
      */
-    public val validation: ValidationConfig = ValidationConfig(project)
+    public val validation: ValidationSettings = ValidationSettings(project)
 
     /**
      * Settings for the generated code of grouped messages.
@@ -113,12 +118,12 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      * Obtains the configuration settings for the generated validation code.
      */
     @Deprecated("Please use property syntax instead.", ReplaceWith("validation"))
-    public fun validation(): ValidationConfig = validation
+    public fun validation(): ValidationSettings = validation
 
     /**
      * Configures code generation for command messages.
      */
-    public fun forCommands(action: Action<SignalConfig>) {
+    public fun forCommands(action: Action<SignalSettings>) {
         action.execute(commands)
     }
 
@@ -127,7 +132,7 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      *
      * Settings applied to events do not automatically apply to rejections as well.
      */
-    public fun forEvents(action: Action<SignalConfig>) {
+    public fun forEvents(action: Action<SignalSettings>) {
         action.execute(events)
     }
 
@@ -136,28 +141,28 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      *
      * Settings applied to events do not automatically apply to rejections as well.
      */
-    public fun forRejections(action: Action<SignalConfig>) {
+    public fun forRejections(action: Action<SignalSettings>) {
         action.execute(rejections)
     }
 
     /**
      * Configures code generation for entity state messages.
      */
-    public fun forEntities(action: Action<EntityConfig>) {
+    public fun forEntities(action: Action<EntitySettings>) {
         action.execute(entities)
     }
 
     /**
      * Configures code generation for UUID messages.
      */
-    public fun forUuids(action: Action<UuidConfig>) {
+    public fun forUuids(action: Action<UuidSettings>) {
         action.execute(uuids)
     }
 
     /**
      * Configures code generation for validation messages.
      */
-    public fun validation(action: Action<ValidationConfig>) {
+    public fun validation(action: Action<ValidationSettings>) {
         action.execute(validation)
     }
 
@@ -168,11 +173,14 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
      *
      * @see by
      */
-    public fun forMessages(filePattern: FilePattern, action: Action<MessageGroupConfig>) {
+    public fun forMessages(filePattern: FilePattern, action: Action<MessageGroupSettings>) {
         val pattern = pattern {
             file = filePattern
         }
-        val config = MessageGroupConfig(project, pattern)
+        val config = MessageGroupSettings(
+            project,
+            pattern
+        )
         action.execute(config)
         messageGroups.add(config.toProto())
     }
@@ -189,7 +197,7 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
     /**
      * Configures code generation for particular message.
      */
-    public fun forMessage(protoTypeName: String, action: Action<MessageGroupConfig>) {
+    public fun forMessage(protoTypeName: String, action: Action<MessageGroupSettings>) {
         val pattern = pattern {
             type = typePattern {
                 expectedType = protoTypeName {
@@ -197,13 +205,16 @@ public class CodegenConfig @Internal public constructor(private val project: Pro
                 }
             }
         }
-        val config = MessageGroupConfig(project, pattern)
+        val config = MessageGroupSettings(
+            project,
+            pattern
+        )
         action.execute(config)
         messageGroups.add(config.toProto())
     }
 
     override fun toProto(): Combined {
-        val self = this@CodegenConfig
+        val self = this@CodegenSettings
         val ss = signalSettings {
             commands = self.commands.toProto()
             events = self.events.toProto()

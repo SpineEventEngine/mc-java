@@ -24,32 +24,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.gradle.settings
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
+import java.io.File
+import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-/**
- * Discovers [UuidValue][io.spine.base.UuidValue] message types and renders the code
- * according to the settings specified in
- * [io.spine.tools.mc.java.gradle.settings.CodegenSettings.forUuids] clause.
- */
-public class UuidPlugin : Plugin {
+@DisplayName("`ValidationConfig` should")
+internal class ValidationSettingsSpec {
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        UuidValueDiscovery()
-    )
+    companion object {
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        UuidValueView::class.java
-    )
+        lateinit var config: ValidationSettings
 
-    public companion object {
+        @BeforeAll
+        @JvmStatic
+        fun createProject(@TempDir projectDir: File) {
+            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+            config = ValidationSettings(project)
+        }
+    }
 
-        /**
-         * The ID for obtaining settings for the plugin.
-         */
-        public val SETTINGS_ID: String = UuidPlugin::class.java.canonicalName
+    @Test
+    fun `use built-in version of validation config by default`() {
+        config.version.get().shouldBeEmpty()
+        config.toProto().version.shouldBeEmpty()
+    }
+
+    @Test
+    fun `allow specifying a version of validation config`() {
+        val expected = "1.2.3"
+        config.version.set(expected)
+        config.run {
+            version.get() shouldBe expected
+            toProto().version shouldBe expected
+        }
     }
 }

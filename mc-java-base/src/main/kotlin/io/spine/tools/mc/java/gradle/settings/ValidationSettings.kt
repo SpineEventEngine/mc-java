@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -26,43 +26,29 @@
 
 package io.spine.tools.mc.java.gradle.settings
 
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.shouldBeEmpty
-import java.io.File
-import org.gradle.testfixtures.ProjectBuilder
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
+import io.spine.tools.mc.java.settings.Validation
+import io.spine.tools.mc.java.settings.validation
+import org.gradle.api.Project
+import org.gradle.api.provider.Property
 
-@DisplayName("`ValidationConfig` should")
-internal class ValidationConfigSpec {
+/**
+ * Configuration for validation code generation.
+ */
+public class ValidationSettings internal constructor(p: Project) : Settings<Validation>(p) {
 
-    companion object {
+    /**
+     * Allows specifying a version of the validation code generator used by McJava.
+     *
+     * If empty, the version on which McJava depends during build time will be used.
+     * The default value of this property is empty string.
+     */
+    public val version: Property<String> = p.objects.property(String::class.java)
 
-        lateinit var config: ValidationConfig
-
-        @BeforeAll
-        @JvmStatic
-        fun createProject(@TempDir projectDir: File) {
-            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-            config = ValidationConfig(project)
-        }
+    init {
+        version.convention("")
     }
 
-    @Test
-    fun `use built-in version of validation config by default`() {
-        config.version.get().shouldBeEmpty()
-        config.toProto().version.shouldBeEmpty()
-    }
-
-    @Test
-    fun `allow specifying a version of validation config`() {
-        val expected = "1.2.3"
-        config.version.set(expected)
-        config.run {
-            version.get() shouldBe expected
-            toProto().version shouldBe expected
-        }
+    public override fun toProto(): Validation = validation {
+        version = this@ValidationSettings.version.getOrElse("")
     }
 }

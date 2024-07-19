@@ -41,11 +41,11 @@ import static io.spine.tools.java.code.Names.className;
 /**
  * Configuration for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
-public final class UuidConfig extends ConfigWithInterfaces<Uuids> {
+public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
 
     private final Multiple<String> methodFactories;
 
-    UuidConfig(Project p) {
+    UuidSettings(Project p) {
         super(p);
         methodFactories = new Multiple<>(p, String.class);
         methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));

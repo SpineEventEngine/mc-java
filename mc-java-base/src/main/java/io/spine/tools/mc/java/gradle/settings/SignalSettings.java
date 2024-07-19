@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -41,9 +41,9 @@ import org.gradle.api.Project;
  *
  * <p>The configuration applied to events does not automatically apply to rejections.
  */
-public final class SignalConfig extends GroupedByFilePatterns<Signals> {
+public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
-    SignalConfig(Project p) {
+    SignalSettings(Project p) {
         super(p);
     }
 

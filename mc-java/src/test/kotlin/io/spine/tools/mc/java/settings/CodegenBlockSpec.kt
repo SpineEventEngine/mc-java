@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -46,8 +46,6 @@ import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
-import io.spine.tools.mc.java.gradle.settings.SignalConfig
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -132,8 +130,8 @@ class CodegenBlockSpec {
             val secondInterface = "test.iface.TestCommand"
             val fieldSuperclass = "test.cmd.Field"
             val suffix = "_my_commands.proto"
-            options.codegen { config: CodegenConfig ->
-                config.forCommands { commands: SignalConfig ->
+            options.codegen { config ->
+                config.forCommands { commands ->
                     with(commands) {
                         includeFiles(by().suffix(suffix))
                         markAs(firstInterface)
@@ -157,8 +155,8 @@ class CodegenBlockSpec {
             val iface = "test.iface.Event"
             val fieldSuperclass = "test.event.Field"
             val prefix = "my_"
-            options.codegen { config: CodegenConfig ->
-                config.forEvents { events: SignalConfig ->
+            options.codegen { config ->
+                config.forEvents { events ->
                     with(events) {
                         includeFiles(by().prefix(prefix))
                         markAs(iface)
@@ -180,8 +178,8 @@ class CodegenBlockSpec {
             val iface = "test.iface.RejectionMessage"
             val fieldSuperclass = "test.rejection.Field"
             val regex = ".*rejection.*"
-            options.codegen { config: CodegenConfig ->
-                config.forEvents { events: SignalConfig ->
+            options.codegen { config ->
+                config.forEvents { events ->
                     events.includeFiles(events.by().regex(regex))
                     events.markAs(iface)
                     events.markFieldsAs(fieldSuperclass)

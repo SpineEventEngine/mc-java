@@ -35,7 +35,7 @@ import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import io.spine.type.toJson
 import java.nio.file.Path
 import org.gradle.api.Project
@@ -71,10 +71,10 @@ abstract class PluginTestSetup<S: Message>(
      * Creates default code generation settings created for a project when
      * McJava Gradle plugin is applied.
      */
-    protected fun createCodegenConfig(projectDir: Path): CodegenConfig {
+    protected fun createCodegenConfig(projectDir: Path): CodegenSettings {
         val project = createProject(projectDir)
         // This mimics the call `McJavaOptions` perform on `injectProject`.
-        val codegenConfig = CodegenConfig(project)
+        val codegenConfig = CodegenSettings(project)
         return codegenConfig
     }
 

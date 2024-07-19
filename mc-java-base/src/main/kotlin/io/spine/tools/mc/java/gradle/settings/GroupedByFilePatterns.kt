@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,9 +28,9 @@ package io.spine.tools.mc.java.gradle.settings
 import com.google.common.collect.ImmutableSet
 import com.google.protobuf.Message
 import io.spine.protobuf.isDefault
-import io.spine.tools.gradle.Multiple
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
+import io.spine.tools.gradle.Multiple
 import org.gradle.api.Project
 
 /**
@@ -39,7 +39,7 @@ import org.gradle.api.Project
  * @param P the Protobuf type reflecting a snapshot of this configuration.
 */
 public abstract class GroupedByFilePatterns<P : Message>
-internal constructor(p: Project) : ConfigWithFields<P>(p) {
+internal constructor(p: Project) : SettingsWithFields<P>(p) {
 
     private val file = Multiple(p, FilePattern::class.java)
 

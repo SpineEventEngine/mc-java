@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -44,7 +44,7 @@ import io.spine.tools.mc.java.gradle.generatedJavaDirName
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
-import io.spine.tools.mc.java.gradle.settings.CodegenConfig
+import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
@@ -150,7 +150,7 @@ private fun Project.configureProtoDataPlugins() {
     }
 }
 
-private val Project.messageOptions: CodegenConfig
+private val Project.messageOptions: CodegenSettings
     get() = mcJava.codegen!!
 
 private fun ProtoDataSettings.setSubdirectories() {
