@@ -38,7 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Generates methods for supplied UUID value type based
- * on {@linkplain UuidSettings uuid configuration}.
+ * on {@linkplain UuidSettings code generation settings}.
  */
 final class GenerateUuidMethods extends MethodGenerationTask {
 

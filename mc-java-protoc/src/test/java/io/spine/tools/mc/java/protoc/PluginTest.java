@@ -80,11 +80,11 @@ final class PluginTest {
     private static final String BUILDER_INTERFACE =
             ValidatingBuilder.class.getName() + TEST_MESSAGE_TYPE_PARAMETER + ',';
 
-    private Path testPluginConfig;
+    private Path pluginSettingsFile;
 
     @BeforeEach
     void setUp(@TempDir Path tempDirPath) {
-        testPluginConfig = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
+        pluginSettingsFile = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
     }
 
     @Test
@@ -93,13 +93,13 @@ final class PluginTest {
         var uuids = Uuids.newBuilder()
                 .addMethodFactory(methodFactory(UuidMethodFactory.class))
                 .build();
-        var config = Combined.newBuilder()
+        var settings = Combined.newBuilder()
                 .setUuids(uuids)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestMethodProtos.getDescriptor().toProto())
                 .addFileToGenerate("spine/tools/protoc/method/test_protos.proto")
-                .setParameter(protocSettings(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
 
         var response = runPlugin(request);
@@ -120,14 +120,14 @@ final class PluginTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var config = Combined.newBuilder()
+        var settings = Combined.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor()
                                                  .toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocSettings(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
 
         var response = runPlugin(request);
@@ -145,13 +145,13 @@ final class PluginTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var config = Combined.newBuilder()
+        var settings = Combined.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocSettings(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
 
         var response = runPlugin(request);
@@ -169,13 +169,13 @@ final class PluginTest {
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
                 .build();
-        var config = Combined.newBuilder()
+        var settings = Combined.newBuilder()
                 .setGroupSettings(groupSettings)
                 .build();
         var request = requestBuilder()
                 .addProtoFile(TestGeneratorsProto.getDescriptor().toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocSettings(config, testPluginConfig))
+                .setParameter(protocSettings(settings, pluginSettingsFile))
                 .build();
 
         var response = runPlugin(request);
@@ -187,12 +187,12 @@ final class PluginTest {
     @DisplayName("mark generated message builders with the `ValidatingBuilder` interface")
     void markBuildersWithInterface() {
         var testGeneratorsDescriptor = TestGeneratorsProto.getDescriptor();
-        var config = Combined.getDefaultInstance();
-        var protocConfigPath = protocSettings(config, testPluginConfig);
+        var settings = Combined.getDefaultInstance();
+        var settingsFile = protocSettings(settings, pluginSettingsFile);
         var request = requestBuilder()
                 .addProtoFile(testGeneratorsDescriptor.toProto())
                 .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocConfigPath)
+                .setParameter(settingsFile)
                 .build();
         var response = runPlugin(request);
 

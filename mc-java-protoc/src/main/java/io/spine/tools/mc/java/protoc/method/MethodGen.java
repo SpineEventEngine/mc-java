@@ -61,19 +61,19 @@ public final class MethodGen extends CodeGenerator {
     /**
      * Retrieves the single instance of the {@code MethodGenerator}.
      */
-    public static MethodGen instance(Combined config) {
-        checkNotNull(config);
-        var classpath = config.getClasspath();
+    public static MethodGen instance(Combined settings) {
+        checkNotNull(settings);
+        var classpath = settings.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, MethodFactory.class);
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
-        if (config.hasUuids()) {
-            var methodFactoryNames = config.getUuids().getMethodFactoryList();
+        if (settings.hasUuids()) {
+            var methodFactoryNames = settings.getUuids().getMethodFactoryList();
             methodFactoryNames
                     .stream()
                     .map(name -> new GenerateUuidMethods(classLoader, name))
                     .forEach(tasks::add);
         }
-        for (var messages : config.getGroupSettings().getGroupList()) {
+        for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getGenerateMethodsList()
                     .stream()

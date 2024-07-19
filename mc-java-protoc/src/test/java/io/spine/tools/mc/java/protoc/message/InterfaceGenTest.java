@@ -135,22 +135,21 @@ final class InterfaceGenTest {
                       .build();
     }
 
-    private static Combined config = Combined.getDefaultInstance();
+    private static Combined settings = Combined.getDefaultInstance();
 
     @BeforeAll
-    static void setUpConfig() {
+    static void getDefaultSettings() {
         var project = ProjectBuilder.builder()
                 .withName("Test")
                 .build();
         project.getPluginManager()
                .apply("java");
-        var options = new CodegenSettings(project);
-        config = options.toProto();
+        settings = new CodegenSettings(project).toProto();
     }
 
     @BeforeEach
     void setUp() {
-        codeGenerator = InterfaceGen.instance(config);
+        codeGenerator = InterfaceGen.instance(settings);
     }
 
     @Test
