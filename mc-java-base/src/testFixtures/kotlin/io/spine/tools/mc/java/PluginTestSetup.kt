@@ -73,7 +73,7 @@ abstract class PluginTestSetup<S: Message>(
      */
     protected fun createCodegenConfig(projectDir: Path): CodegenSettings {
         val project = createProject(projectDir)
-        // This mimics the call `McJavaOptions` perform on `injectProject`.
+        // This mimics the call `McJavaOptions` performed on `injectProject`.
         val codegenConfig = CodegenSettings(project)
         return codegenConfig
     }
