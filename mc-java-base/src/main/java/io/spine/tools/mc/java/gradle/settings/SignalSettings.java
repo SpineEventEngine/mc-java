@@ -58,7 +58,7 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
      * @param interfaceClass
      *         the default marker interface
      */
-    public void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
+    void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
         convention(file, interfaceClass, null);
     }
 
@@ -74,7 +74,7 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
      *         the default superclass for the nested {@code Field} class; {@code null} denotes
      *         not generating a {@code Field} class at all
      */
-    public void convention(MessageFile file,
+    void convention(MessageFile file,
                     Class<? extends SignalMessage> interfaceClass,
                     @Nullable Class<?> fieldSuperclass) {
         var pattern = FilePattern.newBuilder()

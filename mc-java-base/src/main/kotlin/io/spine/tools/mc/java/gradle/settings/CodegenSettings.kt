@@ -60,32 +60,27 @@ public class CodegenSettings @Internal public constructor(private val project: P
     /**
      * Settings for the generated command code.
      */
-    public val commands: SignalSettings =
-        SignalSettings(project)
+    public val commands: SignalSettings = SignalSettings(project)
 
     /**
      * Settings for the generated event code.
      */
-    public val events: SignalSettings =
-        SignalSettings(project)
+    public val events: SignalSettings = SignalSettings(project)
 
     /**
      * Settings for the generated rejection code.
      */
-    public val rejections: SignalSettings =
-        SignalSettings(project)
+    public val rejections: SignalSettings = SignalSettings(project)
 
     /**
      * Settings for the generated entities code.
      */
-    public val entities: EntitySettings =
-        EntitySettings(project)
+    public val entities: EntitySettings = EntitySettings(project)
 
     /**
      * Settings for the generated code of [io.spine.base.UuidValue] types.
      */
-    public val uuids: UuidSettings =
-        UuidSettings(project)
+    public val uuids: UuidSettings = UuidSettings(project)
 
     /**
      * Settings for the generated validation code.
@@ -121,6 +116,13 @@ public class CodegenSettings @Internal public constructor(private val project: P
     public fun validation(): ValidationSettings = validation
 
     /**
+     * Obtains an instance of [FilePatternFactory] which creates file patterns.
+     *
+     * @see forMessages
+     */
+    public fun by(): FilePatternFactory = FilePatternFactory
+
+    /**
      * Configures code generation for command messages.
      */
     public fun forCommands(action: Action<SignalSettings>) {
@@ -153,20 +155,6 @@ public class CodegenSettings @Internal public constructor(private val project: P
     }
 
     /**
-     * Configures code generation for UUID messages.
-     */
-    public fun forUuids(action: Action<UuidSettings>) {
-        action.execute(uuids)
-    }
-
-    /**
-     * Configures code generation for validation messages.
-     */
-    public fun validation(action: Action<ValidationSettings>) {
-        action.execute(validation)
-    }
-
-    /**
      * Configures code generation for a group of messages.
      *
      * The group is defined by a file-based selector.
@@ -177,21 +165,9 @@ public class CodegenSettings @Internal public constructor(private val project: P
         val pattern = pattern {
             file = filePattern
         }
-        val config = MessageGroupSettings(
-            project,
-            pattern
-        )
-        action.execute(config)
-        messageGroups.add(config.toProto())
-    }
-
-    /**
-     * Obtains an instance of [FilePatternFactory] which creates file patterns.
-     *
-     * @see forMessages
-     */
-    public fun by(): FilePatternFactory {
-        return FilePatternFactory
+        val mgs = MessageGroupSettings(project, pattern)
+        action.execute(mgs)
+        messageGroups.add(mgs.toProto())
     }
 
     /**
@@ -205,12 +181,23 @@ public class CodegenSettings @Internal public constructor(private val project: P
                 }
             }
         }
-        val config = MessageGroupSettings(
-            project,
-            pattern
-        )
-        action.execute(config)
-        messageGroups.add(config.toProto())
+        val mgs = MessageGroupSettings(project, pattern)
+        action.execute(mgs)
+        messageGroups.add(mgs.toProto())
+    }
+
+    /**
+     * Configures code generation for UUID messages.
+     */
+    public fun forUuids(action: Action<UuidSettings>) {
+        action.execute(uuids)
+    }
+
+    /**
+     * Configures code generation for validation messages.
+     */
+    public fun validation(action: Action<ValidationSettings>) {
+        action.execute(validation)
     }
 
     override fun toProto(): Combined {
