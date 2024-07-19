@@ -27,10 +27,10 @@
 package io.spine.tools.mc.java.protoc.method;
 
 import com.google.common.collect.ImmutableList;
+import io.spine.tools.java.code.MethodFactory;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.protoc.ExternalClassLoader;
 import io.spine.tools.mc.java.protoc.PatternMatcher;
-import io.spine.tools.java.code.MethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.type.MessageType;
@@ -47,9 +47,9 @@ final class GenerateMethods extends MethodGenerationTask {
     private final Predicate<MessageType> patternMatcher;
 
     GenerateMethods(ExternalClassLoader<MethodFactory> classLoader,
-                    MethodFactoryName config,
+                    MethodFactoryName factory,
                     Pattern pattern) {
-        super(classLoader, config);
+        super(classLoader, factory);
         patternMatcher = new PatternMatcher(pattern);
     }
 

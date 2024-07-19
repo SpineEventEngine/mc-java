@@ -70,14 +70,14 @@ public final class Plugin {
      */
     public static void main(String[] args) {
         var request = readRequest();
-        var config = readConfig(request);
+        var settings = readSettings(request);
         var generator = CompositeGenerator.of(
-                InterfaceGen.instance(config),
-                MethodGen.instance(config)//,
+                InterfaceGen.instance(settings),
+                MethodGen.instance(settings)//,
                 //new BuilderGen()
-                //NestedClassGen.instance(config)
-                //EntityQueryGen.instance(config)
-                //FieldGen.instance(config)
+                //NestedClassGen.instance(settings)
+                //EntityQueryGen.instance(settings)
+                //FieldGen.instance(settings)
         );
         var response = generator.process(request);
         writeResponse(response);
@@ -96,7 +96,7 @@ public final class Plugin {
         }
     }
 
-    private static Combined readConfig(CodeGeneratorRequest request) {
+    private static Combined readSettings(CodeGeneratorRequest request) {
         var configFilePath = decodeBase64(request.getParameter());
         try (var fis = new FileInputStream(configFilePath)) {
             var config = Combined.parseFrom(fis, registry());

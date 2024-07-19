@@ -107,8 +107,8 @@ final class GenerateEntityStateFieldsTest {
         return newTask(config());
     }
 
-    private GenerateEntityStateFields newTask(Entities config) {
-        return new GenerateEntityStateFields(config, factory);
+    private GenerateEntityStateFields newTask(Entities settings) {
+        return new GenerateEntityStateFields(settings, factory);
     }
 
     private static Entities config() {

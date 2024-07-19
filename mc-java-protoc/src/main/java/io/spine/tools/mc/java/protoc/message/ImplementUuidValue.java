@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.protoc.message;
 
 import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.settings.AddInterface;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
+import io.spine.tools.mc.java.settings.AddInterface;
 import io.spine.type.MessageType;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,8 +38,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 final class ImplementUuidValue extends ImplementInterface {
 
-    ImplementUuidValue(AddInterface config) {
-        super(config.getName());
+    ImplementUuidValue(AddInterface settings) {
+        super(settings.getName());
     }
 
     @Override
