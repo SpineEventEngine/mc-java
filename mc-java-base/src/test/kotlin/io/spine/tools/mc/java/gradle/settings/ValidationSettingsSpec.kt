@@ -30,7 +30,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -38,16 +38,12 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`ValidationConfig` should")
 internal class ValidationSettingsSpec {
 
-    companion object {
+    private lateinit var settings: ValidationSettings
 
-        lateinit var settings: ValidationSettings
-
-        @BeforeAll
-        @JvmStatic
-        fun createProject(@TempDir projectDir: File) {
-            val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-            settings = ValidationSettings(project)
-        }
+    @BeforeEach
+    fun createProject(@TempDir projectDir: File) {
+        val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+        settings = ValidationSettings(project)
     }
 
     @Test
