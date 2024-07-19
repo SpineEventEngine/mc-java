@@ -32,7 +32,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.Property
 
 /**
- * Configuration for validation code generation.
+ * Settings for validation code generation.
  */
 public class ValidationSettings internal constructor(p: Project) : Settings<Validation>(p) {
 
