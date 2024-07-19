@@ -39,7 +39,7 @@ import java.util.Set;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * Configuration for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
+ * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
 public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
 
