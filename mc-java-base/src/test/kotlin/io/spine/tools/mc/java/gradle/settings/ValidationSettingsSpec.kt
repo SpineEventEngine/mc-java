@@ -35,7 +35,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ValidationConfig` should")
+@DisplayName("`ValidationSettings` should")
 internal class ValidationSettingsSpec {
 
     private lateinit var settings: ValidationSettings
