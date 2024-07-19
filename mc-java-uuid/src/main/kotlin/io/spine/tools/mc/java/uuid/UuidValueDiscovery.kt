@@ -67,7 +67,7 @@ internal class UuidValueDiscovery : Policy<TypeDiscovered>(), UuidPluginComponen
 }
 
 /**
- * Tells of this message type qualify as [UuidValue][io.spine.base.UuidValue]
+ * Tells if this message type qualifies as [UuidValue][io.spine.base.UuidValue].
  */
 private fun MessageType.isUuidValue(): Boolean {
     val oneField = fieldList.size == 1
