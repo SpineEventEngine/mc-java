@@ -40,10 +40,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * A config for messages which can implement certain Java interfaces.
+ * Code generation settings that cover implementing certain Java interfaces.
  *
  * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
+ *         Protobuf type reflecting a snapshot of these settings
  */
 abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
@@ -73,8 +73,8 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     /**
      * Instructs Model Compiler to use
-     * the {@link io.spine.protodata.renderer.RenderAction code generation action} specified
-     * by the binary name of the class.
+     * the {@linkplain io.spine.protodata.renderer.RenderAction code generation action}
+     * specified by the binary name of the class.
      *
      * @param className
      *         the binary name of the action class
@@ -86,7 +86,7 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     /**
      * Instructs Model Compiler to apply
-     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
      * to the code generated for messages of this group.
      *
      * @param classNames
@@ -99,7 +99,7 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     /**
      * Instructs Model Compiler to apply
-     * {@link io.spine.protodata.renderer.RenderAction code generation actions}
+     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
      * to the code generated for messages of this group.
      *
      * @param classNames
