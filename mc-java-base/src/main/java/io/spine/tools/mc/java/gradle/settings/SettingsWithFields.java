@@ -79,7 +79,8 @@ public abstract class SettingsWithFields<P extends Message> extends SettingsWith
     }
 
     /**
-     * Obtains the {@link GenerateFields} config.
+     * Obtains the {@link GenerateFields} instance containing specified names of
+     * field superclasses.
      */
     final GenerateFields generateFields() {
         GenerateFields generateFields;

@@ -131,11 +131,11 @@ private fun WriteProtoDataSettings.forValidationPlugin(dir: SettingsDirectory) {
         }
         entityOptionName.addAll(codegen.entityOptionsNames())
     }
-    val config = validationConfig {
+    val settings = validationConfig {
         messageMarkers = markers
     }
 
-    dir.write(VALIDATION_SETTINGS_ID, config)
+    dir.write(VALIDATION_SETTINGS_ID, settings)
 }
 
 private fun Combined.entityOptionsNames(): Iterable<String> =

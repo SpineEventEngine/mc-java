@@ -31,10 +31,10 @@ import io.spine.testing.Assertions.assertNpe
 import io.spine.tools.java.code.Classpath
 import io.spine.tools.java.code.JavaClassName
 import io.spine.tools.java.code.MethodFactory
-import io.spine.tools.mc.java.settings.MethodFactoryName
-import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.protoc.ExternalClassLoader
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory
+import io.spine.tools.mc.java.settings.MethodFactoryName
+import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.protoc.plugin.method.NonEnhancedMessage
 import io.spine.tools.protoc.plugin.method.TestUuidValue
 import io.spine.type.MessageType
@@ -60,8 +60,8 @@ internal class GenerateUuidMethodsSpec {
 
         @Test
         fun `'null' 'MessageType' is supplied`() {
-            val config = newTaskConfig("test")
-            val task = newTask(config)
+            val settings = newTaskSettings("test")
+            val task = newTask(settings)
             assertNpe { task.generateFor(null) }
         }
     }
@@ -70,8 +70,8 @@ internal class GenerateUuidMethodsSpec {
     @ValueSource(strings = ["", "  "])
     @DisplayName("throw 'IllegalArgumentException' if factory name is ")
     fun throwIAE(factoryName: String) {
-        val config = newTaskConfig(factoryName)
-        assertIllegalArgument { newTask(config) }
+        val settings = newTaskSettings(factoryName)
+        assertIllegalArgument { newTask(settings) }
     }
 
     @Nested
@@ -83,22 +83,22 @@ internal class GenerateUuidMethodsSpec {
             assertEmptyResult(TestMethodFactory::class.java.name)
 
         private fun assertEmptyResult(factoryName: String) {
-            val config = newTaskConfig(factoryName)
-            val result = newTask(config)
-                .generateFor(MessageType(NonEnhancedMessage.getDescriptor()))
+            val settings = newTaskSettings(factoryName)
+            val messageType = MessageType(NonEnhancedMessage.getDescriptor())
+            val result = newTask(settings).generateFor(messageType)
             assertThat(result).isEmpty()
         }
     }
 
     @Test
     fun `generate new methods`() {
-        val config = newTaskConfig(TestMethodFactory::class.java.name)
-        assertThat(newTask(config).generateFor(testType()))
+        val settings = newTaskSettings(TestMethodFactory::class.java.name)
+        assertThat(newTask(settings).generateFor(testType()))
             .isNotEmpty()
     }
 }
 
-private fun newTaskConfig(factoryName: String): Uuids {
+private fun newTaskSettings(factoryName: String): Uuids {
     val factoryClass = JavaClassName.newBuilder()
         .setCanonical(factoryName)
         .buildPartial()

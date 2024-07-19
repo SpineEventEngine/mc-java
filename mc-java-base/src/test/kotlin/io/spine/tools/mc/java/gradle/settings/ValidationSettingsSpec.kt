@@ -40,27 +40,27 @@ internal class ValidationSettingsSpec {
 
     companion object {
 
-        lateinit var config: ValidationSettings
+        lateinit var settings: ValidationSettings
 
         @BeforeAll
         @JvmStatic
         fun createProject(@TempDir projectDir: File) {
             val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-            config = ValidationSettings(project)
+            settings = ValidationSettings(project)
         }
     }
 
     @Test
-    fun `use built-in version of validation config by default`() {
-        config.version.get().shouldBeEmpty()
-        config.toProto().version.shouldBeEmpty()
+    fun `use built-in version of validation settings by default`() {
+        settings.version.get().shouldBeEmpty()
+        settings.toProto().version.shouldBeEmpty()
     }
 
     @Test
-    fun `allow specifying a version of validation config`() {
+    fun `allow specifying a version in validation settings`() {
         val expected = "1.2.3"
-        config.version.set(expected)
-        config.run {
+        settings.version.set(expected)
+        settings.run {
             version.get() shouldBe expected
             toProto().version shouldBe expected
         }
