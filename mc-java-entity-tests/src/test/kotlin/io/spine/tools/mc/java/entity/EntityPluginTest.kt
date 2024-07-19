@@ -54,8 +54,7 @@ abstract class EntityPluginTest {
         @JvmStatic
         override fun createSettings(projectDir: Path): Entities {
             val project = createProject(projectDir)
-            val entityConfig =
-                EntitySettings(project)
+            val entityConfig = EntitySettings(project)
             return entityConfig.toProto()
         }
     }
