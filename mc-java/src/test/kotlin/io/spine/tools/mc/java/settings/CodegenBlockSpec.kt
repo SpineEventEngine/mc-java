@@ -107,14 +107,14 @@ class CodegenBlockSpec {
     @Test
     fun `apply changes immediately`() {
         val factoryName = "fake.Factory"
-        options.codegen { config ->
-            config.forUuids {
+        options.codegen { settings ->
+            settings.forUuids {
                 it.generateMethodsWith(factoryName)
             }
         }
-        val config = options.codegen!!.toProto()
-        config.uuids.methodFactoryList shouldHaveSize 1
-        config.uuids
+        val settings = options.codegen!!.toProto()
+        settings.uuids.methodFactoryList shouldHaveSize 1
+        settings.uuids
             .methodFactoryList[0]
             .className
             .canonical shouldBe factoryName
@@ -130,8 +130,8 @@ class CodegenBlockSpec {
             val secondInterface = "test.iface.TestCommand"
             val fieldSuperclass = "test.cmd.Field"
             val suffix = "_my_commands.proto"
-            options.codegen { config ->
-                config.forCommands { commands ->
+            options.codegen { settings ->
+                settings.forCommands { commands ->
                     with(commands) {
                         includeFiles(by().suffix(suffix))
                         markAs(firstInterface)
@@ -155,8 +155,8 @@ class CodegenBlockSpec {
             val iface = "test.iface.Event"
             val fieldSuperclass = "test.event.Field"
             val prefix = "my_"
-            options.codegen { config ->
-                config.forEvents { events ->
+            options.codegen { settings ->
+                settings.forEvents { events ->
                     with(events) {
                         includeFiles(by().prefix(prefix))
                         markAs(iface)
@@ -178,8 +178,8 @@ class CodegenBlockSpec {
             val iface = "test.iface.RejectionMessage"
             val fieldSuperclass = "test.rejection.Field"
             val regex = ".*rejection.*"
-            options.codegen { config ->
-                config.forEvents { events ->
+            options.codegen { settings ->
+                settings.forEvents { events ->
                     events.includeFiles(events.by().regex(regex))
                     events.markAs(iface)
                     events.markFieldsAs(fieldSuperclass)
@@ -198,11 +198,11 @@ class CodegenBlockSpec {
         fun `rejections separately from events`() {
             val eventInterface = "test.iface.EventMsg"
             val rejectionInterface = "test.iface.RejectionMsg"
-            options.codegen { config ->
-                config.forEvents {
+            options.codegen { settings ->
+                settings.forEvents {
                     it.markAs(eventInterface)
                 }
-                config.forRejections {
+                settings.forRejections {
                     it.markAs(rejectionInterface)
                 }
             }
@@ -221,8 +221,8 @@ class CodegenBlockSpec {
             val iface = "custom.EntityMessage"
             val fieldSupertype = "custom.FieldSupertype"
             val option = "view"
-            options.codegen { config ->
-                config.forEntities {
+            options.codegen { settings ->
+                settings.forEntities {
                     it.options.add(option)
                     it.skipQueries()
                     it.markAs(iface)
@@ -243,8 +243,8 @@ class CodegenBlockSpec {
         fun `UUID messages`() {
             val iface = "custom.RandomizedId"
             val methodFactory = "custom.MethodFactory"
-            options.codegen { config ->
-                config.forUuids {
+            options.codegen { settings ->
+                settings.forUuids {
                     it.markAs(iface)
                     it.generateMethodsWith(methodFactory)
                 }
@@ -266,23 +266,23 @@ class CodegenBlockSpec {
             val anotherNestedClassAction = "custom.AnotherNestedClassAction"
             val fieldSuperclass = "acme.Searchable"
             val firstMessageType = "acme.small.yellow.Bird"
-            options.codegen { config ->
-                config.forMessage(firstMessageType) {
+            options.codegen { settings ->
+                settings.forMessage(firstMessageType) {
                     it.markAs(firstInterface)
                     it.markFieldsAs(fieldSuperclass)
                     it.useAction(nestedClassAction)
                 }
-                config.forMessages(config.by().regex(".+_.+")) {
+                settings.forMessages(settings.by().regex(".+_.+")) {
                     it.markAs(secondInterface)
                     it.generateMethodsWith(methodFactory)
                     it.useAction(anotherNestedClassAction)
                 }
             }
-            val configs = options.codegen!!.toProto().groupSettings.groupList
+            val groups = options.codegen!!.toProto().groupSettings.groupList
 
-            configs shouldHaveSize 2
+            groups shouldHaveSize 2
 
-            var (first, second) = configs
+            var (first, second) = groups
 
             // Restore ordering. When generating code, it does not matter which group goes
             // after which.
@@ -378,24 +378,24 @@ class CodegenBlockSpec {
 
         @Test
         fun `arbitrary message groups`() {
-            val config = options.codegen!!.toProto()
+            val settings = options.codegen!!.toProto()
 
-            config.groupSettings.groupList shouldBe emptyList()
+            settings.groupSettings.groupList shouldBe emptyList()
 
             val type = "test.Message"
             options.codegen {
                 it.forMessage(type) { /* Do nothing. */ }
             }
-            val updatedConfig = options.codegen!!.toProto()
+            val updated = options.codegen!!.toProto()
 
-            updatedConfig.groupSettings.groupList shouldHaveSize 1
+            updated.groupSettings.groupList shouldHaveSize 1
             val typeName = ProtoTypeName.newBuilder().setValue(type)
             val typePattern = TypePattern.newBuilder()
                 .setExpectedType(typeName)
             val pattern = Pattern.newBuilder()
                 .setType(typePattern)
 
-            updatedConfig.groupSettings.groupList.first() shouldBe
+            updated.groupSettings.groupList.first() shouldBe
                     MessageGroup.newBuilder()
                         .setPattern(pattern)
                         .buildPartial()
