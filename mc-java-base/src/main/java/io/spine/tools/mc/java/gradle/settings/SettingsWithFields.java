@@ -35,13 +35,14 @@ import org.gradle.api.provider.Property;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * A configuration which includes field generation.
+ * Code generation settings that include generation of
+ * {@linkplain io.spine.base.SubscribableField field classes}.
  *
  * <p>Model Compiler generates type-safe API for filtering messages by fields in queries
  * and subscriptions.
  *
  * @param <P>
- *         Protobuf type reflecting a snapshot of this configuration
+ *         Protobuf type reflecting a snapshot of these settings
  */
 public abstract class SettingsWithFields<P extends Message> extends SettingsWithInterfaces<P> {
 
