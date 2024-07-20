@@ -241,7 +241,7 @@ message GroupSettings {
 message Uuids {
 
     // Java interfaces to be added to all the UUID messages.
-    repeated AddInterface add_interface = 1;
+    repeated AddInterface add_interface = 1 [deprecated = true];
 
     // Java method generation config for UUID messages.
     repeated MethodFactoryName method_factory = 2;
