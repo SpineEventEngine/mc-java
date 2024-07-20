@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.mgroup
 
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaFiles
+import io.spine.protodata.java.file.hasJavaOutput
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
@@ -52,7 +52,7 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
         get() = settings != GroupSettings.getDefaultInstance()
 
     override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaFiles && enabledBySettings
+        val relevant = sources.hasJavaOutput && enabledBySettings
         if (!relevant) {
             return
         }
