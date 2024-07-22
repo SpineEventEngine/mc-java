@@ -159,6 +159,7 @@ fun Module.forceConfigurations() {
                     Validation.runtime,
                     Validation.javaBundle,
                     ProtoData.api,
+                    ProtoData.java,
                 )
             }
         }

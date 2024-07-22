@@ -37,7 +37,7 @@ dependencies {
         Spine.reflect,
         Spine.Logging.lib,
         Spine.server,
-        Spine.psiJavaBundle,
+        ProtoData.java,
         project(":mc-java-base")
     ).forEach {
         implementation(it)
