@@ -28,12 +28,17 @@ package io.spine.tools.mc.java.uuid
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
+import io.spine.base.UuidValue
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.MessageAction
 import io.spine.tools.mc.java.findClass
+import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.createClassReference
+import io.spine.tools.psi.java.implement
 
 public class UuidValueAction(
     type: MessageType,
@@ -48,6 +53,14 @@ public class UuidValueAction(
         }
 
     override fun doRender() {
-        TODO("Not yet implemented")
+        cls.implementUuidValue()
     }
+}
+
+private fun PsiClass.implementUuidValue() {
+    val superInterface = elementFactory.createClassReference(
+        this,
+        UuidValue::class.java.reference
+    )
+    implement(superInterface)
 }
