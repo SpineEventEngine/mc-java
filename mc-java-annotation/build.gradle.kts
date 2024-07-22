@@ -103,7 +103,7 @@ tasks.withType<ProcessResources>().configureEach {
 modelCompiler {
     java {
         codegen {
-            rejections().enabled.set(false)
+            rejections.enabled.set(false)
         }
     }
 }
