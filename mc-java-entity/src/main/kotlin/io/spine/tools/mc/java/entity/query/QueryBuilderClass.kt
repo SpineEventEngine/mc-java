@@ -85,7 +85,7 @@ import org.intellij.lang.annotations.Language
  *             .build()     // `Customer.Query`
  * ```
  * @see QueryClass
- * @see io.spine.tools.mc.java.entity.ColumnClass
+ * @see io.spine.tools.mc.java.entity.column.ColumnClass
  * @see io.spine.tools.mc.java.field.FieldClass
  */
 internal class QueryBuilderClass(
