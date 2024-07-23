@@ -54,7 +54,7 @@ public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
     /**
      * Does nothing.
      *
-     * @deprecated Please use {@link #useAction(String)} instead.
+     * @deprecated Please use {@link SettingsWithInterfaces#useAction(String)} instead.
      */
     @Deprecated
     public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {
