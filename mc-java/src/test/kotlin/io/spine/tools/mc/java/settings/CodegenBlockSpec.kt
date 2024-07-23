@@ -38,20 +38,18 @@ import io.spine.base.MessageFile
 import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.base.RejectionMessage
-import io.spine.base.UuidValue
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
-import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
+import io.spine.tools.mc.java.gradle.settings.UuidSettings.DEFAULT_ACTION
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -107,10 +105,10 @@ class CodegenBlockSpec {
 
     @Test
     fun `apply changes immediately`() {
-        val factoryName = "fake.Factory"
+        val actionName = "fake.Action"
         options.codegen { settings ->
             settings.forUuids {
-                it.generateMethodsWith(factoryName)
+                it.useAction(actionName)
             }
         }
         val settings = options.codegen!!.toProto()
@@ -118,7 +116,7 @@ class CodegenBlockSpec {
         settings.uuids
             .methodFactoryList[0]
             .className
-            .canonical shouldBe factoryName
+            .canonical shouldBe actionName
     }
 
     @Nested
@@ -243,18 +241,17 @@ class CodegenBlockSpec {
         @Test
         fun `UUID messages`() {
             val iface = "custom.RandomizedId"
-            val methodFactory = "custom.MethodFactory"
+            val customAction = "custom.UuidCodegenAction"
             options.codegen { settings ->
                 settings.forUuids {
                     it.markAs(iface)
-                    it.generateMethodsWith(methodFactory)
+                    it.useAction(customAction)
                 }
             }
             val uuids = options.codegen!!.toProto().uuids
             uuids.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-                methodFactoryList shouldHaveSize 1
-                methodFactoryList.first().className.canonical shouldBe methodFactory
+                actionList shouldHaveSize 1
+                actionList.first() shouldBe customAction
             }
         }
 
@@ -365,16 +362,12 @@ class CodegenBlockSpec {
         }
 
         @Test
-        @Disabled("During migration to new codegen")
         fun `UUID messages`() {
             val uuids = options.codegen!!.toProto().uuids
 
             uuids.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(UuidValue::class.qualifiedName)
-                methodFactoryList shouldHaveSize 1
-                methodFactoryList.first().className.canonical shouldBe
-                        UuidMethodFactory::class.qualifiedName
+                actionList shouldHaveSize 1
+                actionList.first() shouldBe DEFAULT_ACTION
             }
         }
 
