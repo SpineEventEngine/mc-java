@@ -112,11 +112,8 @@ class CodegenBlockSpec {
             }
         }
         val settings = options.codegen!!.toProto()
-        settings.uuids.methodFactoryList shouldHaveSize 1
-        settings.uuids
-            .methodFactoryList[0]
-            .className
-            .canonical shouldBe actionName
+        settings.uuids.actionList shouldHaveSize 1
+        settings.uuids.actionList[0] shouldBe actionName
     }
 
     @Nested
