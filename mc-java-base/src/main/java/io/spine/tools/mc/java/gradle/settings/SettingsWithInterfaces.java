@@ -51,11 +51,16 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     private final Ordered<String> actions;
 
-    SettingsWithInterfaces(Project p) {
+    SettingsWithInterfaces(Project p, Iterable<String> defaultActions) {
         super(p);
+        checkNotNull(defaultActions);
         this.interfaceNames = new Multiple<>(p, String.class);
         this.actions = new Ordered<>(p, String.class);
-        actions.convention(ImmutableSet.of());
+        actions.convention(defaultActions);
+    }
+
+    SettingsWithInterfaces(Project p) {
+        this(p, ImmutableList.of());
     }
 
     /**
