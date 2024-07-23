@@ -39,8 +39,8 @@ import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.addSuperclass
 import io.spine.tools.psi.java.createClassReference
+import io.spine.tools.psi.java.setSuperclass
 import org.intellij.lang.annotations.Language
 
 /**
@@ -99,6 +99,6 @@ internal class QueryClass(
             // Generic parameters:
             idType, stateType, queryBuilder
         )
-        cls.addSuperclass(superClass)
+        cls.setSuperclass(superClass)
     }
 }

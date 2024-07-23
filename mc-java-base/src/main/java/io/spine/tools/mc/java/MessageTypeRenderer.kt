@@ -31,7 +31,7 @@ import io.spine.base.EntityState
 import io.spine.protodata.File
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaOutput
+import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
@@ -71,7 +71,7 @@ public abstract class MessageTypeRenderer<V, S : Message>(
     protected abstract fun doRender(type: MessageType, file: SourceFile<Java>)
 
     final override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaOutput && enabledBySettings
+        val relevant = sources.hasJavaRoot && enabledBySettings
         if (!relevant) {
             return
         }

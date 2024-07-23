@@ -35,12 +35,12 @@ import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.addLast
-import io.spine.tools.psi.java.addSuperclass
 import io.spine.tools.psi.java.createClassType
 import io.spine.tools.psi.java.createPrivateConstructor
 import io.spine.tools.psi.java.makeFinal
 import io.spine.tools.psi.java.makePublic
 import io.spine.tools.psi.java.makeStatic
+import io.spine.tools.psi.java.setSuperclass
 import org.intellij.lang.annotations.Language
 
 /**
@@ -100,7 +100,7 @@ internal class MessageTypedField(
         val cls = elementFactory.createClass(className)
         cls.run {
             makePublic().makeStatic().makeFinal()
-            addSuperclass(superClassReference)
+            setSuperclass(superClassReference)
             addJavadoc()
             addConstructor()
             addFieldMethods()
