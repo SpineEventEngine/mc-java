@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.uuid
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
+import io.spine.protodata.renderer.Renderer
 
 /**
  * Discovers [UuidValue][io.spine.base.UuidValue] message types and renders the code
@@ -43,6 +44,10 @@ public class UuidPlugin : Plugin {
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
         UuidValueView::class.java
+    )
+
+    override fun renderers(): List<Renderer<*>> = listOf(
+        UuidActionRenderer()
     )
 
     public companion object {

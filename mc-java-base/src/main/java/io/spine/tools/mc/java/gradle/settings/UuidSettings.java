@@ -26,10 +26,8 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
-import com.google.common.collect.ImmutableSet;
-import io.spine.base.UuidValue;
+import com.google.common.collect.ImmutableList;
 import io.spine.tools.gradle.Multiple;
-import io.spine.tools.java.code.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Uuids;
 import org.gradle.api.Project;
@@ -46,10 +44,8 @@ public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
     private final Multiple<String> methodFactories;
 
     UuidSettings(Project p) {
-        super(p);
+        super(p, ImmutableList.of("io.spine.tools.mc.java.uuid.UuidValueAction"));
         methodFactories = new Multiple<>(p, String.class);
-        methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
-        interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
     }
 
     @Override
