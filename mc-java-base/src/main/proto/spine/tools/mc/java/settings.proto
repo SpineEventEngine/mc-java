@@ -188,7 +188,7 @@ message MessageGroup {
     repeated AddInterface add_interface = 2;
 
     // Settings for adding Java methods for messages in this group.
-    repeated GenerateMethods generate_methods = 3;
+    repeated GenerateMethods generate_methods = 3 [deprecated = true];
 
     reserved 4;
     reserved "generate_nested_classes";
@@ -244,7 +244,7 @@ message Uuids {
     repeated AddInterface add_interface = 1 [deprecated = true];
 
     // Java method generation config for UUID messages.
-    repeated MethodFactoryName method_factory = 2;
+    repeated MethodFactoryName method_factory = 2 [deprecated = true];
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the UUID messages.
