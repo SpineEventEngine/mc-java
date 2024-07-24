@@ -43,7 +43,7 @@ public class UuidPlugin : Plugin {
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        UuidValueView::class.java
+        UuidMessageView::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(

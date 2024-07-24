@@ -26,54 +26,10 @@
 
 package io.spine.tools.mc.java.uuid
 
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaRoot
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.settings.loadSettings
-import io.spine.tools.code.Java
-import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
-import io.spine.tools.mc.java.settings.Uuids
-import io.spine.tools.psi.java.execute
+import io.spine.tools.mc.java.ActionListRenderer
 
 /**
  * Renders code by applying actions specified in
  * [settings][io.spine.tools.mc.java.settings.Uuids.getActionList].
  */
-internal class UuidActionRenderer : JavaRenderer(), UuidPluginComponent {
-
-    private val settings: Uuids by lazy {
-        loadSettings()
-    }
-
-    override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaRoot
-        if (!relevant) {
-            return
-        }
-        val types = findTypes()
-        types.forEach {
-            val sourceFile = sources.javaFileOf(it.type)
-            execute {
-                it.doRender(sourceFile)
-            }
-        }
-    }
-
-    private fun UuidMessage.doRender(sourceFile: SourceFile<Java>) {
-        settings.actionList.forEach { actionClass ->
-            runAction(actionClass, sourceFile)
-        }
-    }
-
-    private fun UuidMessage.runAction(actionClass: String, file: SourceFile<Java>) {
-        val classloader = Thread.currentThread().contextClassLoader
-        val action = createAction(classloader, actionClass, type, file, context!!)
-        action.render()
-    }
-
-    private fun findTypes(): Set<UuidMessage> {
-        val found = select(UuidMessage::class.java).all()
-        return found
-    }
-}
+internal class UuidActionRenderer : ActionListRenderer<UuidMessage>(UuidMessage::class.java)
