@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.google.common.reflect.TypeToken
 import io.spine.base.EntityState
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
@@ -35,6 +36,7 @@ import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import io.spine.tools.psi.java.execute
+import java.lang.reflect.ParameterizedType
 
 /**
  * The abstract base for renderers running one or more render actions on a message type.
@@ -42,10 +44,16 @@ import io.spine.tools.psi.java.execute
  * The type and actions on are obtained from a view implementing [WithActionList].
  * The renderer acts on all the views queried by their [viewClass].
  */
-public abstract class ActionListRenderer<V>(
-    private val viewClass: Class<V>,
-)  : JavaRenderer()
+public abstract class ActionListRenderer<V>  : JavaRenderer()
     where V: EntityState<*>, V: WithActionList {
+
+    private val viewClass: Class<V> by lazy {
+        val token = TypeToken.of(this::class.java).getSupertype(ActionListRenderer::class.java)
+        val typeArguments = (token.type as ParameterizedType).actualTypeArguments
+        @Suppress("UNCHECKED_CAST")
+        val result = typeArguments[0] as Class<V>
+        result
+    }
 
     override fun render(sources: SourceFileSet) {
         val relevant = sources.hasJavaRoot

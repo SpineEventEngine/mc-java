@@ -32,4 +32,4 @@ import io.spine.tools.mc.java.ActionListRenderer
  * Renders code by applying actions specified in
  * [settings][io.spine.tools.mc.java.settings.Uuids.getActionList].
  */
-internal class UuidActionRenderer : ActionListRenderer<UuidMessage>(UuidMessage::class.java)
+internal class UuidActionRenderer : ActionListRenderer<UuidMessage>()
