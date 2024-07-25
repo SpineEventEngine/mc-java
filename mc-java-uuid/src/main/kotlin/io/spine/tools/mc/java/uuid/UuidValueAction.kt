@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.uuid
 
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.base.UuidValue
 import io.spine.protodata.CodegenContext
@@ -35,8 +34,7 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.MessageAction
-import io.spine.tools.mc.java.findClass
+import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
@@ -50,20 +48,14 @@ import org.intellij.lang.annotations.Language
  * making the type implement the [UuidValue] interface and adding `generate()` and
  * `of(String)` static factory methods.
  *
- * The class is public because its fully-qualified name is used as a default
+ * The class is public because its fully qualified name is used as a default
  * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
  */
 public class UuidValueAction(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : MessageAction(type, file, context)  {
-
-    override val cls: PsiClass
-        get() {
-            val f = file.psi() as PsiJavaFile
-            return f.findClass(messageClass)
-        }
+) : DirectMessageAction(type, file, context)  {
 
     override fun doRender() {
         cls.implementUuidValue()
