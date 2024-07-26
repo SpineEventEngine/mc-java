@@ -44,7 +44,6 @@ import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
-import io.spine.tools.mc.java.gradle.settings.UuidSettings.DEFAULT_ACTION
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -355,16 +354,6 @@ class CodegenBlockSpec {
                         EntityStateField::class.qualifiedName
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
-            }
-        }
-
-        @Test
-        fun `UUID messages`() {
-            val uuids = options.codegen!!.toProto().uuids
-
-            uuids.run {
-                actionList shouldHaveSize 1
-                actionList.first() shouldBe DEFAULT_ACTION
             }
         }
 

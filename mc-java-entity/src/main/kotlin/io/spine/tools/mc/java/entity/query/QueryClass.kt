@@ -94,10 +94,10 @@ internal class QueryClass(
      */
     override fun tuneClass() {
         val superClass = elementFactory.createClassReference(
-            cls,
             EntityQuery::class.java.reference,
             // Generic parameters:
-            idType, stateType, queryBuilder
+            idType, stateType, queryBuilder,
+            context = cls
         )
         cls.setSuperclass(superClass)
     }

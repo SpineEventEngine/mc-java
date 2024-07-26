@@ -24,43 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings;
+package io.spine.tools.mc.java.uuid
 
-import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.settings.Uuids;
-import org.gradle.api.Project;
+import io.spine.base.UuidValue
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
+ * Updates the code of the message which qualifies as [UuidValue] type by
+ * making the type implement the [UuidValue] interface.
+ *
+ * The class is public because its fully qualified name is used as a default
+ * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
  */
-public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
-
-    /**
-     * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
-     */
-    public static final ImmutableList<String> DEFAULT_ACTIONS = ImmutableList.of(
-            "io.spine.tools.mc.java.uuid.ImplementUuidValue",
-            "io.spine.tools.mc.java.uuid.AddFactoryMethods"
-    );
-
-    UuidSettings(Project p) {
-        super(p, DEFAULT_ACTIONS);
-    }
-
-    @Override
-    public Uuids toProto() {
-        return Uuids.newBuilder()
-                .addAllAction(actions())
-                .build();
-    }
-
-    /**
-     * Does nothing.
-     *
-     * @deprecated Please use {@link SettingsWithInterfaces#useAction(String)} instead.
-     */
-    @Deprecated
-    public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {
-        // Does nothing.
-    }
-}
+public class ImplementUuidValue(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(type, file, ClassName(UuidValue::class.java), context = context)

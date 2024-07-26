@@ -24,43 +24,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings;
+package io.spine.tools.mc.java.gradle.settings
 
-import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.settings.Uuids;
-import org.gradle.api.Project;
+import io.kotest.matchers.collections.shouldContainInOrder
+import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.uuid.AddFactoryMethods
+import io.spine.tools.mc.java.uuid.ImplementUuidValue
+import java.io.File
+import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 /**
- * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
+ * This is a test suite for [UuidSettings] class which belongs to `mc-java-base` module.
+ *
+ * We have this test suite in another module to check the correctness of default settings
+ * specified as strings against classes of this module.
  */
-public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
+@DisplayName("`UuidSettings` should")
+internal class UuidSettingsSpec {
 
-    /**
-     * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
-     */
-    public static final ImmutableList<String> DEFAULT_ACTIONS = ImmutableList.of(
-            "io.spine.tools.mc.java.uuid.ImplementUuidValue",
-            "io.spine.tools.mc.java.uuid.AddFactoryMethods"
-    );
+    @Test
+    fun `provide default action class names`(@TempDir projectDir: File) {
+        val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+        val settings = UuidSettings(project)
 
-    UuidSettings(Project p) {
-        super(p, DEFAULT_ACTIONS);
-    }
+        val expected = listOf(
+            ImplementUuidValue::class.reference,
+            AddFactoryMethods::class.reference,
+        )
 
-    @Override
-    public Uuids toProto() {
-        return Uuids.newBuilder()
-                .addAllAction(actions())
-                .build();
-    }
-
-    /**
-     * Does nothing.
-     *
-     * @deprecated Please use {@link SettingsWithInterfaces#useAction(String)} instead.
-     */
-    @Deprecated
-    public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {
-        // Does nothing.
+        settings.actions() shouldContainInOrder expected
+        settings.toProto().actionList shouldContainInOrder expected
     }
 }

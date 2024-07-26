@@ -145,10 +145,10 @@ internal class QueryBuilderClass(
      */
     private fun PsiClass.extendEntityQueryBuilder() {
         val superClass = elementFactory.createClassReference(
-            cls,
             EntityQueryBuilder::class.java.reference,
             // Generic parameters:
-            idType, stateType, this.name!!, query
+            idType, stateType, this.name!!, query,
+            context = cls
         )
         setSuperclass(superClass)
     }

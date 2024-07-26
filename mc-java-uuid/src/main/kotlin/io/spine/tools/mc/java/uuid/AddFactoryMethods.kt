@@ -38,38 +38,30 @@ import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
-import io.spine.tools.psi.java.createClassReference
-import io.spine.tools.psi.java.implement
 import java.util.*
 import org.intellij.lang.annotations.Language
 
 /**
  * Updates the code of the message which qualifies as [UuidValue] type by
- * making the type implement the [UuidValue] interface and adding `generate()` and
- * `of(String)` static factory methods.
+ * adding `generate()` and `of(String)` static factory methods.
  *
  * The class is public because its fully qualified name is used as a default
  * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
  */
-public class UuidValueAction(
+public class AddFactoryMethods(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
 ) : DirectMessageAction(type, file, context)  {
 
     override fun doRender() {
-        cls.implementUuidValue()
         MethodGenerate(cls).render()
         MethodOf(cls).render()
     }
-}
-
-private fun PsiClass.implementUuidValue() {
-    val superInterface = elementFactory.createClassReference(
-        this,
-        UuidValue::class.java.reference
-    )
-    implement(superInterface)
 }
 
 /**
