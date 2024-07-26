@@ -26,31 +26,41 @@
 
 package io.spine.tools.mc.java.uuid
 
-import io.kotest.matchers.shouldBe
-import io.spine.base.UuidValue
-import io.spine.tools.mc.java.implementsInterface
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.MessageAction
+import io.spine.tools.mc.java.PluginTestSetup
+import io.spine.tools.mc.java.settings.Uuids
+import io.spine.tools.mc.java.settings.copy
 import java.nio.file.Path
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import kotlin.io.path.Path
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ImplementUuidValue` should")
-internal class ImplementUuidValueSpec {
+abstract class UuidPluginTestSetup(
+    private val actionClass: Class<out MessageAction>
+) : PluginTestSetup<Uuids>(UuidPlugin(), UuidPlugin.SETTINGS_ID) {
 
-    companion object : UuidPluginTestSetup(actionClass = ImplementUuidValue::class.java) {
+    lateinit var generatedCode: String
 
-        @BeforeAll
-        @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) = generateCode(projectDir, outputDir, settingsDir)
+    /**
+     * Creates an instance of [Uuids] with only one action under the test.
+     */
+    override fun createSettings(projectDir: Path): Uuids {
+        val codegenConfig = createCodegenConfig(projectDir)
+        return codegenConfig.toProto().uuids.copy {
+            action.clear()
+            action.add(actionClass.reference)
+        }
     }
 
-    @Test
-    fun `make a message implement 'UuidValue'`() {
-        implementsInterface(generatedCode, UuidValue::class.java) shouldBe true
+    fun generateCode(
+        @TempDir projectDir: Path,
+        @TempDir outputDir: Path,
+        @TempDir settingsDir: Path
+    ) {
+        val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
+        val sourceFile = sourceFileSet.file(
+            Path("io/spine/tools/mc/java/uuid/given/AccountId.java")
+        )
+        generatedCode = sourceFile.code()
     }
 }
