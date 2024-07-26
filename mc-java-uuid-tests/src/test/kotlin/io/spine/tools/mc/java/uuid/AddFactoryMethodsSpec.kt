@@ -26,47 +26,34 @@
 
 package io.spine.tools.mc.java.uuid
 
-import io.spine.tools.java.reference
-import io.spine.tools.mc.java.MessageAction
-import io.spine.tools.mc.java.PluginTestSetup
-import io.spine.tools.mc.java.settings.Uuids
-import io.spine.tools.mc.java.settings.copy
+import io.kotest.matchers.string.shouldContain
 import java.nio.file.Path
-import kotlin.io.path.Path
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-/**
- * The base class for companion objects of test suites that test codegen
- * actions of [UuidPlugin].
- */
-abstract class UuidPluginTestSetup(
-    private val actionClass: Class<out MessageAction>
-) : PluginTestSetup<Uuids>(UuidPlugin(), UuidPlugin.SETTINGS_ID) {
+@DisplayName("`AddFactoryMethods` should")
+internal class AddFactoryMethodsSpec {
 
-    val uuidType = "AccountId"
+    companion object : UuidPluginTestSetup(actionClass = AddFactoryMethods::class.java) {
 
-    lateinit var generatedCode: String
-
-    /**
-     * Creates an instance of [Uuids] with only one action under the test.
-     */
-    override fun createSettings(projectDir: Path): Uuids {
-        val codegenConfig = createCodegenConfig(projectDir)
-        return codegenConfig.toProto().uuids.copy {
-            action.clear()
-            action.add(actionClass.reference)
-        }
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) = generateCode(projectDir, outputDir, settingsDir)
     }
 
-    fun generateCode(
-        @TempDir projectDir: Path,
-        @TempDir outputDir: Path,
-        @TempDir settingsDir: Path
-    ) {
-        val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-        val sourceFile = sourceFileSet.file(
-            Path("io/spine/tools/mc/java/uuid/given/$uuidType.java")
-        )
-        generatedCode = sourceFile.code()
+    @Test
+    fun `add factory method 'generate()'`() {
+        generatedCode shouldContain "public static $uuidType generate() {"
+    }
+
+    @Test
+    fun `add factory method 'of()'`() {
+        generatedCode shouldContain "public static $uuidType of(String uuid) {"
     }
 }
