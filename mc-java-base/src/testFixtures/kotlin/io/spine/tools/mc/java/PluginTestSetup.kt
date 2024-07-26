@@ -106,20 +106,11 @@ abstract class PluginTestSetup<S: Message>(
     }
 
     /**
-     * Runs the pipeline with the default plugin settings.
-     *
-     * For running a pipeline with custom settings, please call [createSettings], modify
-     * the returned instance and then:
-     *
-     * ```kotlin
-     * val setup = setup(outputDir, settingsDir, settings)
-     * val pipeline = setup.createPipeline()
-     * pipeline()
-     * ```
+     * Runs the pipeline with the plugin settings obtained from [createSettings].
      *
      * @see createSettings
      */
-    fun runWithDefaultSettings(
+    fun runPipeline(
         projectDir: Path,
         outputDir: Path,
         settingsDir: Path

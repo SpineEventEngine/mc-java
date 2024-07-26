@@ -24,27 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.uuid
 
-import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldNotContain
-import io.spine.base.CommandMessage
-import io.spine.tools.java.reference
+import io.kotest.matchers.shouldBe
+import io.spine.base.UuidValue
+import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.PluginTestSetup
+import io.spine.tools.mc.java.settings.Uuids
+import io.spine.tools.mc.java.settings.copy
 import java.nio.file.Path
 import kotlin.io.path.Path
+import kotlin.text.RegexOption.DOT_MATCHES_ALL
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`CommandRenderer` should")
-internal class CommandRendererSpec : SignalPluginTest() {
+@DisplayName("`ImplementUuidValue` should")
+internal class ImplementUuidValueSpec {
 
-    companion object {
+    companion object : PluginTestSetup<Uuids>(UuidPlugin(), UuidPlugin.SETTINGS_ID) {
 
-        lateinit var commandCode: String
+        lateinit var generatedCode: String
+
+        /**
+         * Creates an instance of [Uuids] with only one action under the test.
+         */
+        @JvmStatic
+        override fun createSettings(projectDir: Path): Uuids {
+            val codegenConfig = createCodegenConfig(projectDir)
+            return codegenConfig.toProto().uuids.copy {
+                action.clear()
+                action.add(ImplementUuidValue::class.reference)
+            }
+        }
 
         @BeforeAll
         @JvmStatic
@@ -54,22 +67,20 @@ internal class CommandRendererSpec : SignalPluginTest() {
             @TempDir settingsDir: Path
         ) {
             val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/signal/given/command/StartScanning.java")
+            val sourceFile = sourceFileSet.file(
+                Path("io/spine/tools/mc/java/uuid/given/AccountId.java")
             )
-            sourceFile shouldNotBe null
-            commandCode = sourceFile!!.code()
+            generatedCode = sourceFile.code()
         }
     }
 
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
-    fun `add 'CommandMessage' interface`() {
-        commandCode shouldContain "${CommandMessage::class.java.reference},"
+    fun `make a message implement 'UuidValue'`() {
+        implementsInterface(generatedCode, UuidValue::class.reference) shouldBe true
     }
+}
 
-    @Test
-    fun `not generate nested 'Field' class`() {
-        commandCode shouldNotContain FIELD_CLASS_SIGNATURE
-    }
+fun implementsInterface(javaCode: String, interfaceName: String): Boolean {
+    val regex = Regex("""implements.*$interfaceName""", DOT_MATCHES_ALL)
+    return regex.containsMatchIn(javaCode)
 }

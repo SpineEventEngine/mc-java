@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.entity.EntityPlugin.Companion.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.THIS_REF_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.DEPARTMENT_JAVA
-import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runWithDefaultSettings
+import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runPipeline
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.psi.java.isPublic
@@ -65,7 +65,7 @@ internal class QueryBuilderClassSpec {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
+            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
             val psiFile = sourceFile.psi() as PsiJavaFile
             entityStateClass = psiFile.topLevelClass
