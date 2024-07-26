@@ -27,6 +27,8 @@
 package io.spine.tools.mc.java.uuid
 
 import io.kotest.matchers.string.shouldContain
+import io.spine.tools.mc.java.GeneratedAnnotation
+import io.spine.tools.psi.java.method
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
@@ -36,6 +38,8 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`AddFactoryMethods` should")
 internal class AddFactoryMethodsSpec {
 
+    private val annotationText = GeneratedAnnotation.create().text
+
     companion object : UuidPluginTestSetup(actionClass = AddFactoryMethods::class.java) {
 
         @BeforeAll
@@ -44,16 +48,20 @@ internal class AddFactoryMethodsSpec {
             @TempDir projectDir: Path,
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
-        ) = generateCode(projectDir, outputDir, settingsDir)
+        ) {
+            generateCode(projectDir, outputDir, settingsDir)
+        }
     }
 
     @Test
     fun `add factory method 'generate()'`() {
         generatedCode shouldContain "public static $uuidType generate() {"
+        cls.method("generate").text shouldContain annotationText
     }
 
     @Test
     fun `add factory method 'of()'`() {
         generatedCode shouldContain "public static $uuidType of(String uuid) {"
+        cls.method("of").text shouldContain annotationText
     }
 }

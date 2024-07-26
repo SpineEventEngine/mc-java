@@ -26,11 +26,14 @@
 
 package io.spine.tools.mc.java.uuid
 
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiJavaFile
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.MessageAction
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.copy
+import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.io.TempDir
@@ -46,6 +49,7 @@ abstract class UuidPluginTestSetup(
     val uuidType = "AccountId"
 
     lateinit var generatedCode: String
+    lateinit var cls: PsiClass
 
     /**
      * Creates an instance of [Uuids] with only one action under the test.
@@ -68,5 +72,7 @@ abstract class UuidPluginTestSetup(
             Path("io/spine/tools/mc/java/uuid/given/$uuidType.java")
         )
         generatedCode = sourceFile.code()
+        val file = sourceFile.psi() as PsiJavaFile
+        cls = file.topLevelClass
     }
 }

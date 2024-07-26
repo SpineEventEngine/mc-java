@@ -35,6 +35,7 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.addLast
@@ -93,7 +94,11 @@ private class MethodGenerate(private val cls: PsiClass) {
             }            
             """.trimIndent(), cls
         )
-        method.addFirst(javadoc)
+        method.run {
+            val annotation = GeneratedAnnotation.create()
+            addFirst(annotation)
+            addFirst(javadoc)
+        }
         cls.addLast(method)
     }
 }
@@ -130,7 +135,11 @@ private class MethodOf(private val cls: PsiClass) {
             }                
             """.trimIndent(), cls
         )
-        method.addFirst(javadoc)
+        method.run {
+            val annotation = GeneratedAnnotation.create()
+            addFirst(annotation)
+            addFirst(javadoc)
+        }
         cls.addLast(method)
     }
 }
