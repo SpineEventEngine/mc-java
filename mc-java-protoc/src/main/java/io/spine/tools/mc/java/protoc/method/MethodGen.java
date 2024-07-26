@@ -66,13 +66,6 @@ public final class MethodGen extends CodeGenerator {
         var classpath = settings.getClasspath();
         var classLoader = new ExternalClassLoader<>(classpath, MethodFactory.class);
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
-        if (settings.hasUuids()) {
-            var methodFactoryNames = settings.getUuids().getMethodFactoryList();
-            methodFactoryNames
-                    .stream()
-                    .map(name -> new GenerateUuidMethods(classLoader, name))
-                    .forEach(tasks::add);
-        }
         for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getGenerateMethodsList()

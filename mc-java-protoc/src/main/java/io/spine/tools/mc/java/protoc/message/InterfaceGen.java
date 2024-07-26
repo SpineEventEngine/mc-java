@@ -84,13 +84,6 @@ public final class InterfaceGen extends CodeGenerator {
         if (signalSettings.hasRejections()) {
             tasks.addAll(tasksFor(signalSettings.getRejections()));
         }
-        if (settings.hasUuids()) {
-            var uuids = settings.getUuids();
-            var addInterfaces = uuids.getAddInterfaceList();
-            addInterfaces.stream()
-                         .map(ImplementUuidValue::new)
-                         .forEach(tasks::add);
-        }
         if (settings.hasEntities()) {
             tasks.addAll(tasksFor(settings.getEntities()));
         }
