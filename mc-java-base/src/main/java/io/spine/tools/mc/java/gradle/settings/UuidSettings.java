@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import io.spine.tools.mc.java.settings.Uuids;
 import org.gradle.api.Project;
@@ -38,6 +39,7 @@ public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
     /**
      * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
      */
+    @VisibleForTesting
     public static final ImmutableList<String> DEFAULT_ACTIONS = ImmutableList.of(
             "io.spine.tools.mc.java.uuid.ImplementUuidValue",
             "io.spine.tools.mc.java.uuid.AddFactoryMethods"
