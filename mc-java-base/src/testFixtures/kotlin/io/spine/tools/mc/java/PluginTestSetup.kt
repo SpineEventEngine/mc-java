@@ -44,6 +44,8 @@ import org.gradle.testfixtures.ProjectBuilder
 /**
  * An abstract base for companion objects for the suites testing ProtoData plugins
  * provided by other modules.
+ *
+ * @param S the type of the plugin settings in the form of a Protobuf message.
  */
 abstract class PluginTestSetup<S: Message>(
     protected val plugin: Plugin,
