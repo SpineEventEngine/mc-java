@@ -30,11 +30,11 @@ import io.kotest.matchers.shouldBe
 import io.spine.base.UuidValue
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.PluginTestSetup
+import io.spine.tools.mc.java.implementsInterface
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.copy
 import java.nio.file.Path
 import kotlin.io.path.Path
-import kotlin.text.RegexOption.DOT_MATCHES_ALL
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -76,11 +76,6 @@ internal class ImplementUuidValueSpec {
 
     @Test
     fun `make a message implement 'UuidValue'`() {
-        implementsInterface(generatedCode, UuidValue::class.reference) shouldBe true
+        implementsInterface(generatedCode, UuidValue::class.java) shouldBe true
     }
-}
-
-fun implementsInterface(javaCode: String, interfaceName: String): Boolean {
-    val regex = Regex("""implements.*$interfaceName""", DOT_MATCHES_ALL)
-    return regex.containsMatchIn(javaCode)
 }
