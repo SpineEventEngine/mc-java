@@ -41,7 +41,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * The abstract base for renderers running one or more render actions on a message type.
  *
- * The type and actions on are obtained from a view implementing [WithActionList].
+ * The type and actions are obtained from a view implementing [WithActionList].
  * The renderer acts on all the views queried by their [viewClass].
  */
 public abstract class ActionListRenderer<V>  : JavaRenderer()
