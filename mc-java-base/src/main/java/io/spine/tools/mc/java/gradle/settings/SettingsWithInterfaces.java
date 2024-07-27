@@ -49,9 +49,9 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     private final Multiple<String> interfaceNames;
 
-    private final Ordered<String> actions;
+    private final Ordered<@FqBinaryName String> actions;
 
-    SettingsWithInterfaces(Project p, Iterable<String> defaultActions) {
+    SettingsWithInterfaces(Project p, Iterable<@FqBinaryName String> defaultActions) {
         super(p);
         checkNotNull(defaultActions);
         this.interfaceNames = new Multiple<>(p, String.class);
@@ -117,7 +117,7 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
     /**
      * Obtains currently assigned codegen actions.
      */
-    protected final Iterable<String> actions() {
+    protected final Iterable<@FqBinaryName String> actions() {
         return actions.getOrElse(ImmutableList.of());
     }
 
