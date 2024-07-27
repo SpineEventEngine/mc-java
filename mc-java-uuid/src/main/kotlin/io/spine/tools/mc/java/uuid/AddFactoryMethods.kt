@@ -120,7 +120,8 @@ private class MethodOf(private val cls: PsiClass) {
              * @throws ${IllegalArgumentException::class.java.reference} 
              *          if the passed value is not a valid UUID string
              */
-            """.trimIndent())
+            """.trimIndent()
+        )
         doc
     }
 
