@@ -35,7 +35,7 @@ import org.gradle.api.Project;
 /**
  * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
-public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
+public final class UuidSettings extends SettingsWithActions<Uuids> {
 
     /**
      * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
@@ -61,7 +61,7 @@ public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
     /**
      * Does nothing.
      *
-     * @deprecated Please use {@link SettingsWithInterfaces#useAction(String)} instead.
+     * @deprecated Please use {@link SettingsWithActions#useAction(String)} instead.
      */
     @Deprecated
     public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {

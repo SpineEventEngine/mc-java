@@ -44,10 +44,13 @@ import static io.spine.tools.java.code.Names.className;
  * @param <P>
  *         Protobuf type reflecting a snapshot of these settings
  */
-public abstract class SettingsWithFields<P extends Message> extends SettingsWithInterfaces<P> {
+public abstract class SettingsWithFields<P extends Message> extends SettingsWithActions<P> {
 
     private final Property<String> markFieldsAs;
 
+    /**
+     * Creates an instance of settings for the given project.
+     */
     SettingsWithFields(Project p) {
         super(p);
         markFieldsAs = p.getObjects().property(String.class);
