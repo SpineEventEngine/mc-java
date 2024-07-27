@@ -38,10 +38,8 @@ import io.spine.base.MessageFile
 import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.base.RejectionMessage
-import io.spine.base.UuidValue
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
-import io.spine.tools.java.code.UuidMethodFactory
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
@@ -106,18 +104,15 @@ class CodegenBlockSpec {
 
     @Test
     fun `apply changes immediately`() {
-        val factoryName = "fake.Factory"
+        val actionName = "fake.Action"
         options.codegen { settings ->
             settings.forUuids {
-                it.generateMethodsWith(factoryName)
+                it.useAction(actionName)
             }
         }
         val settings = options.codegen!!.toProto()
-        settings.uuids.methodFactoryList shouldHaveSize 1
-        settings.uuids
-            .methodFactoryList[0]
-            .className
-            .canonical shouldBe factoryName
+        settings.uuids.actionList shouldHaveSize 1
+        settings.uuids.actionList[0] shouldBe actionName
     }
 
     @Nested
@@ -242,18 +237,17 @@ class CodegenBlockSpec {
         @Test
         fun `UUID messages`() {
             val iface = "custom.RandomizedId"
-            val methodFactory = "custom.MethodFactory"
+            val customAction = "custom.UuidCodegenAction"
             options.codegen { settings ->
                 settings.forUuids {
                     it.markAs(iface)
-                    it.generateMethodsWith(methodFactory)
+                    it.useAction(customAction)
                 }
             }
             val uuids = options.codegen!!.toProto().uuids
             uuids.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-                methodFactoryList shouldHaveSize 1
-                methodFactoryList.first().className.canonical shouldBe methodFactory
+                actionList shouldHaveSize 1
+                actionList.first() shouldBe customAction
             }
         }
 
@@ -360,19 +354,6 @@ class CodegenBlockSpec {
                         EntityStateField::class.qualifiedName
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
-            }
-        }
-
-        @Test
-        fun `UUID messages`() {
-            val uuids = options.codegen!!.toProto().uuids
-
-            uuids.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(UuidValue::class.qualifiedName)
-                methodFactoryList shouldHaveSize 1
-                methodFactoryList.first().className.canonical shouldBe
-                        UuidMethodFactory::class.qualifiedName
             }
         }
 

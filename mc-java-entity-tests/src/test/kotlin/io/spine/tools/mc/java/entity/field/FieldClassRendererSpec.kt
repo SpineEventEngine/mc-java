@@ -62,7 +62,7 @@ internal class FieldClassRendererSpec : EntityPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
+            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
             entityStateCode = sourceFile.code()
             psiFile = sourceFile.psi() as PsiJavaFile

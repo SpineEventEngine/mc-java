@@ -35,7 +35,6 @@ import com.google.protobuf.compiler.PluginProtos.Version;
 import io.spine.base.CommandMessage;
 import io.spine.base.EventMessage;
 import io.spine.base.RejectionMessage;
-import io.spine.base.UuidValue;
 import io.spine.code.java.PackageName;
 import io.spine.tools.java.fs.FileName;
 import io.spine.tools.java.fs.JavaFiles;
@@ -49,13 +48,11 @@ import io.spine.tools.protoc.plugin.message.tests.EveryIsTestProto;
 import io.spine.tools.protoc.plugin.message.tests.IsGeneratedProto;
 import io.spine.tools.protoc.plugin.message.tests.IsInOneFileProto;
 import io.spine.tools.protoc.plugin.message.tests.IsTestProto;
-import io.spine.tools.protoc.plugin.message.tests.NonUuidValues;
 import io.spine.tools.protoc.plugin.message.tests.Rejections;
 import io.spine.tools.protoc.plugin.message.tests.TestCommandsProto;
 import io.spine.tools.protoc.plugin.message.tests.TestEventsProto;
 import io.spine.tools.protoc.plugin.message.tests.UserNameProto;
 import io.spine.tools.protoc.plugin.message.tests.UserProto;
-import io.spine.tools.protoc.plugin.message.tests.UuidValues;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -317,36 +314,6 @@ final class InterfaceGenTest {
                 assertGeneratedInterface(RejectionMessage.class, file);
             }
         }
-
-        @Test
-        @DisplayName("`UuidValue`")
-        void uuidValue() {
-            var filePath = protoFile("uuid_values.proto");
-
-            var fileDescr = UuidValues.getDescriptor().toProto();
-            var response = processCodeGenRequest(filePath, fileDescr);
-            assertNotNull(response);
-            var files = response.getFileList();
-            assertEquals(1, files.size());
-            for (var file : files) {
-                assertTrue(file.hasInsertionPoint());
-                assertTrue(file.hasName());
-                assertThat(file.getContent())
-                        .isEqualTo(UuidValue.class.getName() + ',');
-            }
-        }
-    }
-
-    @Test
-    @DisplayName("not generate `UuidValue` insertion points for ineligible messages")
-    void notGenerateUuidValueForNonEligible() {
-        var filePath = protoFile("non_uuid_values.proto");
-
-        var fileDescr = NonUuidValues.getDescriptor().toProto();
-        var response = processCodeGenRequest(filePath, fileDescr);
-        assertNotNull(response);
-        var files = response.getFileList();
-        assertThat(files).isEmpty();
     }
 
     @Test

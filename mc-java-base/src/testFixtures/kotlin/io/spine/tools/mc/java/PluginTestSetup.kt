@@ -44,6 +44,8 @@ import org.gradle.testfixtures.ProjectBuilder
 /**
  * An abstract base for companion objects for the suites testing ProtoData plugins
  * provided by other modules.
+ *
+ * @param S the type of the plugin settings in the form of a Protobuf message.
  */
 abstract class PluginTestSetup<S: Message>(
     protected val plugin: Plugin,
@@ -104,20 +106,11 @@ abstract class PluginTestSetup<S: Message>(
     }
 
     /**
-     * Runs the pipeline with the default plugin settings.
-     *
-     * For running a pipeline with custom settings, please call [createSettings], modify
-     * the returned instance and then:
-     *
-     * ```kotlin
-     * val setup = setup(outputDir, settingsDir, settings)
-     * val pipeline = setup.createPipeline()
-     * pipeline()
-     * ```
+     * Runs the pipeline with the plugin settings obtained from [createSettings].
      *
      * @see createSettings
      */
-    fun runWithDefaultSettings(
+    fun runPipeline(
         projectDir: Path,
         outputDir: Path,
         settingsDir: Path

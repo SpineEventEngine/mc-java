@@ -41,8 +41,8 @@ import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.addSuperclass
 import io.spine.tools.psi.java.createClassReference
+import io.spine.tools.psi.java.setSuperclass
 import org.intellij.lang.annotations.Language
 
 /**
@@ -85,7 +85,7 @@ import org.intellij.lang.annotations.Language
  *             .build()     // `Customer.Query`
  * ```
  * @see QueryClass
- * @see io.spine.tools.mc.java.entity.ColumnClass
+ * @see io.spine.tools.mc.java.entity.column.ColumnClass
  * @see io.spine.tools.mc.java.field.FieldClass
  */
 internal class QueryBuilderClass(
@@ -145,12 +145,12 @@ internal class QueryBuilderClass(
      */
     private fun PsiClass.extendEntityQueryBuilder() {
         val superClass = elementFactory.createClassReference(
-            cls,
             EntityQueryBuilder::class.java.reference,
             // Generic parameters:
-            idType, stateType, this.name!!, query
+            idType, stateType, this.name!!, query,
+            context = cls
         )
-        addSuperclass(superClass)
+        setSuperclass(superClass)
     }
 
     private fun PsiClass.addIdMethod() {

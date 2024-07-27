@@ -49,12 +49,12 @@ internal class EventRendererSpec : SignalPluginTest() {
 
         @BeforeAll
         @JvmStatic
-        fun runPipeline(
+        fun setup(
             @TempDir projectDir: Path,
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runWithDefaultSettings(projectDir, outputDir, settingsDir)
+            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
             val sourceFile = sourceFileSet.find(
                 Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java")
             )

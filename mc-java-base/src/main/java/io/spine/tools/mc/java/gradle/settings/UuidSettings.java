@@ -26,57 +26,45 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
-import com.google.common.collect.ImmutableSet;
-import io.spine.base.UuidValue;
-import io.spine.tools.gradle.Multiple;
-import io.spine.tools.java.code.UuidMethodFactory;
-import io.spine.tools.mc.java.settings.MethodFactoryName;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import io.spine.tools.mc.java.settings.Uuids;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
-
-import java.util.Set;
-
-import static io.spine.tools.java.code.Names.className;
 
 /**
  * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
  */
-public final class UuidSettings extends SettingsWithInterfaces<Uuids> {
+public final class UuidSettings extends SettingsWithActions<Uuids> {
 
-    private final Multiple<String> methodFactories;
+    /**
+     * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
+     */
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS =
+            ImmutableList.of(
+                    "io.spine.tools.mc.java.uuid.ImplementUuidValue",
+                    "io.spine.tools.mc.java.uuid.AddFactoryMethods"
+            );
 
     UuidSettings(Project p) {
-        super(p);
-        methodFactories = new Multiple<>(p, String.class);
-        methodFactories.convention(ImmutableSet.of(UuidMethodFactory.class.getCanonicalName()));
-        interfaceNames().convention(ImmutableSet.of(UuidValue.class.getCanonicalName()));
+        super(p, DEFAULT_ACTIONS);
     }
 
     @Override
     public Uuids toProto() {
         return Uuids.newBuilder()
-                .addAllMethodFactory(factories())
-                .addAllAddInterface(interfaces())
                 .addAllAction(actions())
                 .build();
     }
 
     /**
-     * Specifies a {@link io.spine.tools.java.code.MethodFactory} to generate methods for
-     * the UUID message classes.
+     * Does nothing.
      *
-     * <p>Calling this method multiple times will add provide factories for code generation.
-     *
-     * @param factoryClassName
-     *         the canonical class name of the method factory
+     * @deprecated Please use {@link SettingsWithActions#useAction(String)} instead.
      */
-    public void generateMethodsWith(String factoryClassName) {
-        methodFactories.add(factoryClassName);
-    }
-
-    private Set<MethodFactoryName> factories() {
-        return methodFactories.transform(name -> MethodFactoryName.newBuilder()
-                .setClassName(className(name))
-                .build());
+    @Deprecated
+    public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {
+        // Does nothing.
     }
 }

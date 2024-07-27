@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -31,7 +31,7 @@ import io.spine.base.EntityState
 import io.spine.protodata.File
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaOutput
+import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
@@ -42,7 +42,7 @@ import io.spine.tools.code.Java
  * @param V
  *        the type of the view state which gathers messages types served by this renderer.
  *        The type is an [EntityState] that has [File] as its identifier and
- *        implements the [WithTypeList] interface.
+ *        implements the [io.spine.tools.mc.java.WithTypeList] interface.
  * @param S
  *        the type of the settings used by the renderer.
  * @param viewClass
@@ -71,7 +71,7 @@ public abstract class MessageTypeRenderer<V, S : Message>(
     protected abstract fun doRender(type: MessageType, file: SourceFile<Java>)
 
     final override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaOutput && enabledBySettings
+        val relevant = sources.hasJavaRoot && enabledBySettings
         if (!relevant) {
             return
         }

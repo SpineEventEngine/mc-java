@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,15 +29,21 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.MessageType
+import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
- * An interface common to view states that gather message types.
+ * An interface common to view states that contain a list of render actions to be applied.
  */
 @GeneratedMixin
-public interface WithTypeList: Message {
+public interface WithActionList : Message {
 
     /**
-     * Returns the list of gathered message types.
+     * The type for which we apply render actions.
      */
-    public fun getTypeList(): List<MessageType>
+    public fun getType(): MessageType
+
+    /**
+     * Returns the list of render actions to be applied.
+     */
+    public fun getActionList(): List<@FqBinaryName String>
 }

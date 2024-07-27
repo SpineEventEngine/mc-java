@@ -24,21 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java
 
-import io.spine.core.Subscribe
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiJavaFile
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 
 /**
- * Gathers codegen settings from [UuidValueDiscovered] events.
+ * A code generation action on the message class itself.
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
+ * @property cls the message class located in the [file].
  */
-internal class UuidValueView : View<MessageType, UuidMessage, UuidMessage.Builder>() {
+public abstract class DirectMessageAction(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : MessageAction(type, file, context) {
 
-    @Subscribe
-    fun on(e: UuidValueDiscovered) = alter {
-        settings = e.settings
+    final override val cls: PsiClass by lazy {
+        val f = file.psi() as PsiJavaFile
+        f.findClass(messageClass)
     }
 }

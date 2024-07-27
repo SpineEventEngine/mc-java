@@ -51,6 +51,9 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
     private final Multiple<String> methodFactories;
     private final Multiple<String> nestedClassFactories;
 
+    /**
+     * Creates an instance of settings for the given project and the specified pattern.
+     */
     MessageGroupSettings(Project p, Pattern pattern) {
         super(p);
         this.pattern = pattern;
@@ -69,7 +72,9 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
      *
      * @param factoryClassName
      *         the canonical class name of the method factory
+     * @deprecated please use {@link SettingsWithActions#useAction} instead.
      */
+    @Deprecated
     public void generateMethodsWith(String factoryClassName) {
         methodFactories.add(factoryClassName);
     }
@@ -82,7 +87,7 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
      *
      * @param factoryClassName
      *         the canonical class name of the nested class factory
-     * @deprecated please use {@link SettingsWithInterfaces#useAction} instead.
+     * @deprecated please use {@link SettingsWithActions#useAction} instead.
      */
     @Deprecated
     public void generateNestedClassesWith(String factoryClassName) {

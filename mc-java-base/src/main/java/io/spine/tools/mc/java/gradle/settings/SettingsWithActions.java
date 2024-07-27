@@ -40,22 +40,45 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.tools.java.code.Names.className;
 
 /**
- * Code generation settings that cover implementing certain Java interfaces.
+ * Code generation settings that cover applying code generation actions specified as
+ * fully qualified binary names of classes that extend {@link io.spine.tools.mc.java.MessageAction}.
  *
  * @param <P>
  *         Protobuf type reflecting a snapshot of these settings
  */
-abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
+abstract class SettingsWithActions<P extends Message> extends Settings<P> {
 
     private final Multiple<String> interfaceNames;
 
-    private final Ordered<String> actions;
+    private final Ordered<@FqBinaryName String> actions;
 
-    SettingsWithInterfaces(Project p) {
+    /**
+     * Creates an instance of settings for the specified project, configuring the convention
+     * using the passed default values.
+     *
+     * @param p
+     *        the project for which settings are created
+     * @param defaultActions
+     *         actions to be specified as the default value for the settings
+     */
+    SettingsWithActions(Project p, Iterable<@FqBinaryName String> defaultActions) {
         super(p);
+        checkNotNull(defaultActions);
         this.interfaceNames = new Multiple<>(p, String.class);
         this.actions = new Ordered<>(p, String.class);
-        actions.convention(ImmutableSet.of());
+        actions.convention(defaultActions);
+    }
+
+    /**
+     * Creates an instance of settings for the specified project.
+     *
+     * <p>The created instance assumes that no actions will be applied by default.
+     *
+     * @param p
+     *        the project for which settings are created
+     */
+    SettingsWithActions(Project p) {
+        this(p, ImmutableList.of());
     }
 
     /**
@@ -66,7 +89,10 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
      *
      * @param interfaceName
      *         the canonical name of the interface
+     * @deprecated Please call {@link #useAction(String)} with corresponding codegen action
+     *         class name instead.
      */
+    @Deprecated
     public final void markAs(String interfaceName) {
         interfaceNames.add(interfaceName);
     }
@@ -112,14 +138,17 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
     /**
      * Obtains currently assigned codegen actions.
      */
-    protected final Iterable<String> actions() {
+    protected final Iterable<@FqBinaryName String> actions() {
         return actions.getOrElse(ImmutableList.of());
     }
 
     /**
      * Obtains the set of {@link AddInterface}s which define which interfaces to add
      * to the associated messages.
+     *
+     * @deprecated Please use {@link #actions()} instead.
      */
+    @Deprecated
     final ImmutableSet<AddInterface> interfaces() {
         return interfaceNames.transform(name -> AddInterface.newBuilder()
                 .setName(className(name))
@@ -128,7 +157,10 @@ abstract class SettingsWithInterfaces<P extends Message> extends Settings<P> {
 
     /**
      * Obtains the Gradle property containing the set of Java interface names.
+     *
+     * @deprecated Please use {@link #actions()} instead.
      */
+    @Deprecated
     final SetProperty<String> interfaceNames() {
         return interfaceNames;
     }

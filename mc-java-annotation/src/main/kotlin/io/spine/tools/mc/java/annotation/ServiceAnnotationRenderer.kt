@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.java.GrpcServiceConvention
-import io.spine.protodata.java.file.hasGrpcOutput
+import io.spine.protodata.java.file.hasGrpcRoot
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.ServiceAnnotations
@@ -53,7 +53,7 @@ internal class ServiceAnnotationRenderer :
     }
 
     override fun suitableFor(sources: SourceFileSet): Boolean =
-        sources.hasGrpcOutput
+        sources.hasGrpcRoot
 
     /**
      * Always returns `true` because gRPC services are top-level classes and

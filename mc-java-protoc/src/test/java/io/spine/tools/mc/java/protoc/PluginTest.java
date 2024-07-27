@@ -34,14 +34,11 @@ import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
-import io.spine.tools.mc.java.protoc.given.UuidMethodFactory;
 import io.spine.tools.mc.java.settings.Combined;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
-import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
-import io.spine.tools.protoc.plugin.method.TestMethodProtos;
 import io.spine.type.MessageType;
 import io.spine.validate.ValidatingBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,7 +58,6 @@ import java.util.List;
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.methodFactory;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.pattern;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocSettings;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
@@ -85,28 +81,6 @@ final class PluginTest {
     @BeforeEach
     void setUp(@TempDir Path tempDirPath) {
         pluginSettingsFile = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
-    }
-
-    @Test
-    @DisplayName("generate UUID message")
-    void generateUuidMethod() {
-        var uuids = Uuids.newBuilder()
-                .addMethodFactory(methodFactory(UuidMethodFactory.class))
-                .build();
-        var settings = Combined.newBuilder()
-                .setUuids(uuids)
-                .build();
-        var request = requestBuilder()
-                .addProtoFile(TestMethodProtos.getDescriptor().toProto())
-                .addFileToGenerate("spine/tools/protoc/method/test_protos.proto")
-                .setParameter(protocSettings(settings, pluginSettingsFile))
-                .build();
-
-        var response = runPlugin(request);
-        var messageMethods =
-                filterFiles(response, InsertionPoint.class_scope);
-        assertThat(messageMethods)
-                .hasSize(1);
     }
 
     @Test

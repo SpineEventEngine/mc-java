@@ -31,11 +31,11 @@ import com.squareup.javapoet.JavaFile
 import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufSourceFile
+import io.spine.protodata.find
 import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaOutput
+import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.java.javaOuterClassName
 import io.spine.protodata.java.javaPackage
-import io.spine.protodata.find
 import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.string.Indent.Companion.defaultJavaIndent
@@ -54,7 +54,7 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
 
     override fun render(sources: SourceFileSet) {
         // We could receive `grpc` or `kotlin` output roots here. Now we do only `java`.
-        if (!sources.hasJavaOutput) {
+        if (!sources.hasJavaRoot) {
             return
         }
         this.sources = sources

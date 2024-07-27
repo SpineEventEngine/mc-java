@@ -29,9 +29,7 @@ package io.spine.tools.mc.java.protoc;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
-import io.spine.tools.mc.java.protoc.given.TestInterface;
 import io.spine.tools.mc.java.settings.Combined;
-import io.spine.tools.mc.java.settings.Uuids;
 import io.spine.tools.protoc.plugin.EnhancedWithCodeGeneration;
 import io.spine.tools.protoc.plugin.TestGeneratorsProto;
 import io.spine.type.MessageType;
@@ -48,7 +46,6 @@ import java.util.Collection;
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.testing.Assertions.assertIllegalArgument;
 import static io.spine.testing.Assertions.assertNpe;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocSettings;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
 
@@ -62,43 +59,6 @@ final class CodeGeneratorTest {
     @BeforeEach
     void setUp(@TempDir Path tempDirPath) {
         pluginSettingsFile = tempDirPath.resolve("test-spine-mc-java-protoc.pb");
-    }
-
-    @Test
-    @DisplayName("process valid `CodeGeneratorRequest`")
-    void processValidRequest() {
-        var uuids = Uuids.newBuilder()
-                .addAddInterface(addInterface(TestInterface.class))
-                .build();
-        var settings = Combined.newBuilder()
-                .setUuids(uuids)
-                .build();
-        var request = requestBuilder()
-                .addProtoFile(TestGeneratorsProto.getDescriptor()
-                                                 .toProto())
-                .addFileToGenerate(TEST_PROTO_FILE)
-                .setParameter(protocSettings(settings, pluginSettingsFile))
-                .build();
-        var type = new MessageType(EnhancedWithCodeGeneration.getDescriptor());
-        var firstFile = File.newBuilder()
-                .setName("file.proto")
-                .setContent(TestInterface.class.getName() + ',')
-                .setInsertionPoint(InsertionPoint.message_implements.forType(type))
-                .build();
-        var secondFile = File.newBuilder()
-                .setName("file.proto")
-                .setContent("public void test(){}")
-                .setInsertionPoint(InsertionPoint.class_scope.forType(type))
-                .build();
-        var firstGenerator = new TestGenerator(new TestCompilerOutput(firstFile),
-                                               new TestCompilerOutput(secondFile));
-        var result = firstGenerator.process(request);
-
-        var assertFiles = assertThat(result.getFileList());
-        assertFiles
-                .hasSize(2);
-        assertFiles
-                .containsExactly(firstFile, secondFile);
     }
 
     @DisplayName("concatenate code generated for the same insertion point")
