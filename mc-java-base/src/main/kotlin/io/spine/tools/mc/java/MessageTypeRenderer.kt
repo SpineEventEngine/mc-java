@@ -106,8 +106,8 @@ public abstract class MessageTypeRenderer<V, S : Message> :
     /**
      * Obtains a generic argument of a leaf class extending [MessageTypeRenderer].
      *
-     * This way we don't have to pass the classes as the parameters in addition to specifying
-     * generic parameters.
+     * This way we don't have to pass information about the classes twice: as
+     * generic type arguments and as classes passed to constructors.
      */
     private fun <T : Any> genericArgument(index: Int): Class<T> {
         @Suppress("UNCHECKED_CAST")
