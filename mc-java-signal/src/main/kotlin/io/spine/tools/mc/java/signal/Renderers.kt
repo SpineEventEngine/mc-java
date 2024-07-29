@@ -44,15 +44,12 @@ import io.spine.tools.psi.java.execute
 /**
  * An abstract base for renders of signal messages.
  *
- * @param V
- *        the type of the view state which gathers signals of the type served by
- *        this renderer.
- * @param viewClass
- *        the view state class matching the generic parameter [V].
+ * @param V the type of the view state which gathers signals of the type served by this renderer.
  */
-internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
-    MessageTypeRenderer<V, SignalSettings>(viewClass, SignalSettings::class.java),
-    SignalPluginComponent where V : EntityState<File>, V : WithTypeList {
+internal abstract class SignalRenderer<V> :
+    MessageTypeRenderer<V, SignalSettings>(),
+    SignalPluginComponent
+        where V : EntityState<File>, V : WithTypeList {
 
     /**
      * The settings for the kind of signals served by this renderer, obtained from [settings].
@@ -83,7 +80,7 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class CommandRenderer : SignalRenderer<Commands>(Commands::class.java) {
+internal class CommandRenderer : SignalRenderer<Commands>() {
 
     override val typeSettings: Signals
         get() = settings.commands
@@ -96,7 +93,7 @@ internal class CommandRenderer : SignalRenderer<Commands>(Commands::class.java) 
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class EventRenderer : SignalRenderer<Events>(Events::class.java) {
+internal class EventRenderer : SignalRenderer<Events>() {
 
     override val typeSettings: Signals
         get() = settings.events
@@ -109,7 +106,7 @@ internal class EventRenderer : SignalRenderer<Events>(Events::class.java) {
  *
  * @see [io.spine.base.RejectionMessage]
  */
-internal class RejectionRenderer : SignalRenderer<Rejections>(Rejections::class.java) {
+internal class RejectionRenderer : SignalRenderer<Rejections>() {
 
     override val typeSettings: Signals
         get() = settings.rejections

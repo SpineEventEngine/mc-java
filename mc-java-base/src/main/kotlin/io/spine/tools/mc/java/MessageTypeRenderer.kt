@@ -34,26 +34,38 @@ import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.reflect.argumentIn
 import io.spine.tools.code.Java
 
 /**
  * An abstract base for Java renders handling message types.
  *
- * @param V
- *        the type of the view state which gathers messages types served by this renderer.
- *        The type is an [EntityState] that has [File] as its identifier and
- *        implements the [io.spine.tools.mc.java.WithTypeList] interface.
- * @param S
- *        the type of the settings used by the renderer.
- * @param viewClass
- *        the class matching by the generic parameter [V].
- * @param settingsClass
- *        the class matching the generic parameter [S].
+ * This class applies multiple render actions to multiple types.
+ * For applying rendering actions to one type, please see [ActionListRenderer].
+ *
+ * @param V the type of the view state which gathers messages types served by this renderer.
+ *  The type is an [EntityState] that has [File] as its identifier and
+ *  implements the [io.spine.tools.mc.java.WithTypeList] interface.
+ * @param S the type of the settings used by the renderer.
+ *
+ * @se ActionListRenderer
  */
-public abstract class MessageTypeRenderer<V, S : Message>(
-    private val viewClass: Class<V>,
-    private val settingsClass: Class<S>
-) : JavaRenderer() where V : EntityState<File>, V : WithTypeList {
+public abstract class MessageTypeRenderer<V, S : Message> :
+    JavaRenderer() where V : EntityState<File>, V : WithTypeList {
+
+    /**
+     * The class matching by the generic parameter [V].
+     */
+    private val viewClass: Class<V> by lazy {
+        genericArgument(0)
+    }
+
+    /**
+     * The class matching the generic parameter [S].
+     */
+    private val settingsClass: Class<S> by lazy {
+        genericArgument(1)
+    }
 
     protected val settings: S by lazy {
         loadSettings(settingsClass)
@@ -89,5 +101,16 @@ public abstract class MessageTypeRenderer<V, S : Message>(
         val found = select(viewClass).all()
         val result = found.flatMap { it.getTypeList() }
         return result
+    }
+
+    /**
+     * Obtains a generic argument of a leaf class extending [MessageTypeRenderer].
+     *
+     * This way we don't have to pass the classes as the parameters in addition to specifying
+     * generic parameters.
+     */
+    private fun <T : Any> genericArgument(index: Int): Class<T> {
+        @Suppress("UNCHECKED_CAST")
+        return this::class.java.argumentIn<MessageTypeRenderer<V, S>>(index) as Class<T>
     }
 }
