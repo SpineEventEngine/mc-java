@@ -41,7 +41,7 @@ import "spine/tools/mc/java/settings.proto";
 
 // Matches a UUID value message to corresponding code generation settings.
 message UuidMessage {
-    option (is).java_type = "io.spine.tools.mc.java.WithActionList";
+    option (is).java_type = "io.spine.tools.mc.java.TypeActions";
     option (entity).kind = VIEW;
 
     // The type of the message.

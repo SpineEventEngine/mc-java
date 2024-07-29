@@ -40,7 +40,7 @@ import "spine/protodata/file.proto";
 
 // Provides commands declared in a proto file.
 message Commands {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 
     // The file which declares commands.
@@ -48,11 +48,14 @@ message Commands {
 
     // Declared command types.
     repeated protodata.MessageType type = 2;
+
+    // Rendering actions to be applied to commands.
+    repeated string action = 3;
 }
 
 // Provides events declared in a proto file.
 message Events {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 
     // The file which declares events.
@@ -60,11 +63,14 @@ message Events {
 
     // Declared event types.
     repeated protodata.MessageType type = 2;
+
+    // Rendering actions to be applied to events.
+    repeated string action = 3;
 }
 
 // Provides rejections declared in a proto file.
 message Rejections {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 
     // The file which declares rejections.
@@ -72,4 +78,7 @@ message Rejections {
 
     // Declared rejection types.
     repeated protodata.MessageType type = 2;
+
+    // Rendering actions to be applied to rejections.
+    repeated string action = 3;
 }
