@@ -30,7 +30,7 @@ import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.settings.MessageActionFactory
+import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
@@ -61,7 +61,7 @@ public class RenderActions(
 
     private fun runAction(actionClass: String) {
         val classloader = Thread.currentThread().contextClassLoader
-        val action = MessageActionFactory.createAction(
+        val action = createAction(
             classloader,
             actionClass,
             type,
