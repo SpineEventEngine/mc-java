@@ -112,6 +112,10 @@ message Signals {
 
     // Configuration for type-safe field API generation for all the messages in this group.
     GenerateFields generate_fields = 3;
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the signal messages selected by `pattern`.
+    repeated string action = 4;
 }
 
 // Code generation settings for `Signal` messages.
@@ -132,6 +136,7 @@ message Entities {
 
     // For previously deprecated `pattern` field.
     reserved 1;
+    reserved "pattern";
 
     // Protobuf options which may mark an entity state definition.
     //
