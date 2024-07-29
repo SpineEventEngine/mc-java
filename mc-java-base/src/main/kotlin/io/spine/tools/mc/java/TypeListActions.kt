@@ -29,21 +29,15 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.MessageType
-import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
  * An interface common to view states that gather message types.
  */
 @GeneratedMixin
-public interface TypeListActions : Message {
+public interface TypeListActions : Message, WithActionList {
 
     /**
      * Returns the list of gathered message types.
      */
     public fun getTypeList(): List<MessageType>
-
-    /**
-     * Returns the list of render actions to be applied.
-     */
-    public fun getActionList(): List<@FqBinaryName String>
 }
