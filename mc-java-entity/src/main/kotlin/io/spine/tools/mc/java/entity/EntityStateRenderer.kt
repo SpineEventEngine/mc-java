@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.entity
 
-import io.spine.tools.mc.java.MessageTypeRenderer
+import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.settings.Entities
 
 /**
@@ -39,7 +39,7 @@ import io.spine.tools.mc.java.settings.Entities
  * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
  */
 internal abstract class EntityStateRenderer :
-    MessageTypeRenderer<DiscoveredEntities, Entities>(),
+    TypeListRenderer<DiscoveredEntities, Entities>(),
     EntityPluginComponent {
 
     override val enabledBySettings

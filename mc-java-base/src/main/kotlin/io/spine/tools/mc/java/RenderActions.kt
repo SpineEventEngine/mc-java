@@ -41,8 +41,8 @@ import org.checkerframework.checker.signature.qual.FqBinaryName
  * @property actions fully qualified names of the action classes.
  * @property context the code generation context of the operation.
  *
- * @see ActionListRenderer
- * @see MessageTypeRenderer
+ * @see TypeRenderer
+ * @see TypeListRenderer
  */
 public class RenderActions(
     private val type: MessageType,

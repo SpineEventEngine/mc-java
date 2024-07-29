@@ -33,8 +33,8 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.MessageTypeRenderer
 import io.spine.tools.mc.java.TypeListActions
+import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.field.FieldClass
 import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.SignalSettings
@@ -47,7 +47,7 @@ import io.spine.tools.psi.java.execute
  * @param V the type of the view state which gathers signals of the type served by this renderer.
  */
 internal abstract class SignalRenderer<V> :
-    MessageTypeRenderer<V, SignalSettings>(),
+    TypeListRenderer<V, SignalSettings>(),
     SignalPluginComponent
         where V : EntityState<File>, V : TypeListActions {
 

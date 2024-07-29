@@ -41,14 +41,15 @@ import io.spine.tools.psi.java.execute
  *
  * The type and actions are obtained from a view implementing [TypeActions].
  * The renderer acts on all the views queried by their [viewClass].
+ *
+ * @see TypeListRenderer
  */
-//TODO:2024-07-29:alexander.yevsyukov: Rename to `MessageRenderer`.
-public abstract class ActionListRenderer<V>  : JavaRenderer()
-    where V: EntityState<*>, V: TypeActions {
+public abstract class TypeRenderer<V>  : JavaRenderer()
+        where V : EntityState<*>, V : TypeActions {
 
     private val viewClass: Class<V> by lazy {
         @Suppress("UNCHECKED_CAST")
-        this::class.java.argumentIn<ActionListRenderer<V>>(0) as Class<V>
+        this::class.java.argumentIn<TypeRenderer<V>>(0) as Class<V>
     }
 
     override fun render(sources: SourceFileSet) {

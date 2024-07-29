@@ -26,10 +26,10 @@
 
 package io.spine.tools.mc.java.uuid
 
-import io.spine.tools.mc.java.ActionListRenderer
+import io.spine.tools.mc.java.TypeRenderer
 
 /**
  * Renders code by applying actions specified in
  * [settings][io.spine.tools.mc.java.settings.Uuids.getActionList].
  */
-internal class UuidActionRenderer : ActionListRenderer<UuidMessage>()
+internal class UuidActionRenderer : TypeRenderer<UuidMessage>()

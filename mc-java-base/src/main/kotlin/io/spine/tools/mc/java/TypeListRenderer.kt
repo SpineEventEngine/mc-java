@@ -41,18 +41,17 @@ import io.spine.tools.code.Java
  * An abstract base for Java renders handling message types.
  *
  * This class applies multiple render actions to multiple types.
- * For applying rendering actions to one type, please see [ActionListRenderer].
+ * For applying rendering actions to one type, please see [TypeRenderer].
  *
  * @param V the type of the view state which gathers messages types served by this renderer.
  *  The type is an [EntityState] that has [File] as its identifier and
  *  implements the [io.spine.tools.mc.java.TypeListActions] interface.
  * @param S the type of the settings used by the renderer.
  *
- * @see ActionListRenderer
+ * @see TypeRenderer
  */
-//TODO:2024-07-29:alexander.yevsyukov: Rename to `MessageListRenderer`.
-public abstract class MessageTypeRenderer<V, S : Message> :
-    JavaRenderer() where V : EntityState<File>, V : TypeListActions {
+public abstract class TypeListRenderer<V, S : Message> : JavaRenderer()
+        where V : EntityState<File>, V : TypeListActions {
 
     /**
      * The class matching by the generic parameter [V].
@@ -105,13 +104,13 @@ public abstract class MessageTypeRenderer<V, S : Message> :
     }
 
     /**
-     * Obtains a generic argument of a leaf class extending [MessageTypeRenderer].
+     * Obtains a generic argument of a leaf class extending [TypeListRenderer].
      *
      * This way we don't have to pass information about the classes twice: as
      * generic type arguments and as classes passed to constructors.
      */
     private fun <T : Any> genericArgument(index: Int): Class<T> {
         @Suppress("UNCHECKED_CAST")
-        return this::class.java.argumentIn<MessageTypeRenderer<V, S>>(index) as Class<T>
+        return this::class.java.argumentIn<TypeListRenderer<V, S>>(index) as Class<T>
     }
 }
