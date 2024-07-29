@@ -26,24 +26,48 @@
 
 package io.spine.tools.mc.java
 
-import com.google.protobuf.Message
-import io.spine.annotation.GeneratedMixin
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.settings.MessageActionFactory
 import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
- * An interface common to view states that contain a list of render actions to be applied.
+ * Runs code generation actions for the given [type].
+ *
+ * @property type the message type for which code generation is performed.
+ * @property file the file with the Java class with the message type.
+ * @property actions fully qualified names of the action classes.
+ * @property context the code generation context of the operation.
+ *
+ * @see ActionListRenderer
+ * @see MessageTypeRenderer
  */
-@GeneratedMixin
-public interface WithActionList : Message {
-
+public class RenderActions(
+    private val type: MessageType,
+    private val file: SourceFile<Java>,
+    private val actions: List<@FqBinaryName String>,
+    private val context: CodegenContext
+) {
     /**
-     * The type for which we apply render actions.
+     * Applies code generation to the [file].
      */
-    public fun getType(): MessageType
+    public fun apply() {
+        actions.forEach { actionClass ->
+            runAction(actionClass)
+        }
+    }
 
-    /**
-     * Returns the list of render actions to be applied.
-     */
-    public fun getActionList(): List<@FqBinaryName String>
+    private fun runAction(actionClass: String) {
+        val classloader = Thread.currentThread().contextClassLoader
+        val action = MessageActionFactory.createAction(
+            classloader,
+            actionClass,
+            type,
+            file,
+            context
+        )
+        action.render()
+    }
 }

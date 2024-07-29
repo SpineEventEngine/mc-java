@@ -24,31 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-syntax = "proto3";
+package io.spine.tools.mc.java
 
-package spine.tools.mc.java.entity;
+import com.google.protobuf.Message
+import io.spine.annotation.GeneratedMixin
+import io.spine.protodata.MessageType
+import org.checkerframework.checker.signature.qual.FqBinaryName
 
-import "spine/options.proto";
+/**
+ * An interface common to view states that contain a list of render actions
+ * to be applied to a message type.
+ */
+@GeneratedMixin
+public interface TypeActions : Message {
 
-option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.java.entity";
-option java_outer_classname = "ViewsProto";
-option java_multiple_files = true;
+    /**
+     * The type for which we apply render actions.
+     */
+    public fun getType(): MessageType
 
-import "spine/protodata/ast.proto";
-import "spine/protodata/file.proto";
-
-// Provides entity state types declared in a proto file.
-message DiscoveredEntities {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
-    option (.entity).kind = PROJECTION;
-
-    // The file which declares entity state types.
-    protodata.File file = 1;
-
-    // Message types that qualify as entity states.
-    repeated protodata.MessageType type = 2;
-
-    // Rendering actions to be applied to the entity states.
-    repeated string action = 3;
+    /**
+     * Returns the list of render actions to be applied.
+     */
+    public fun getActionList(): List<@FqBinaryName String>
 }

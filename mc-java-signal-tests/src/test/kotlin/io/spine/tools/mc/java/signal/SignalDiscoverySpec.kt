@@ -38,7 +38,7 @@ import io.spine.protodata.File
 import io.spine.protodata.file
 import io.spine.protodata.matches
 import io.spine.protodata.toMessageType
-import io.spine.tools.mc.java.WithTypeList
+import io.spine.tools.mc.java.TypeListActions
 import java.nio.file.Path
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -83,7 +83,7 @@ internal class SignalDiscoverySpec : SignalPluginTest() {
             val assertEntity = blackbox.assertEntityWithState(file, viewStateClass)
             assertEntity.exists()
 
-            val state = assertEntity.actual()!!.state() as WithTypeList
+            val state = assertEntity.actual()!!.state() as TypeListActions
             state.getTypeList() shouldContainExactlyInAnyOrder allMessages
         }
 

@@ -45,13 +45,14 @@ import io.spine.tools.code.Java
  *
  * @param V the type of the view state which gathers messages types served by this renderer.
  *  The type is an [EntityState] that has [File] as its identifier and
- *  implements the [io.spine.tools.mc.java.WithTypeList] interface.
+ *  implements the [io.spine.tools.mc.java.TypeListActions] interface.
  * @param S the type of the settings used by the renderer.
  *
- * @se ActionListRenderer
+ * @see ActionListRenderer
  */
+//TODO:2024-07-29:alexander.yevsyukov: Rename to `MessageListRenderer`.
 public abstract class MessageTypeRenderer<V, S : Message> :
-    JavaRenderer() where V : EntityState<File>, V : WithTypeList {
+    JavaRenderer() where V : EntityState<File>, V : TypeListActions {
 
     /**
      * The class matching by the generic parameter [V].

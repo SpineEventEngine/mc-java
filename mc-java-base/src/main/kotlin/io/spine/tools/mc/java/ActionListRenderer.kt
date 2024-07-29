@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java
 
 import io.spine.base.EntityState
-import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
@@ -35,18 +34,17 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.reflect.argumentIn
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import io.spine.tools.psi.java.execute
-import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
  * The abstract base for renderers running one or more render actions on a message type.
  *
- * The type and actions are obtained from a view implementing [WithActionList].
+ * The type and actions are obtained from a view implementing [TypeActions].
  * The renderer acts on all the views queried by their [viewClass].
  */
+//TODO:2024-07-29:alexander.yevsyukov: Rename to `MessageRenderer`.
 public abstract class ActionListRenderer<V>  : JavaRenderer()
-    where V: EntityState<*>, V: WithActionList {
+    where V: EntityState<*>, V: TypeActions {
 
     private val viewClass: Class<V> by lazy {
         @Suppress("UNCHECKED_CAST")
@@ -77,45 +75,5 @@ public abstract class ActionListRenderer<V>  : JavaRenderer()
     private fun findViews(): Set<V> {
         val found = select(viewClass).all()
         return found
-    }
-}
-
-/**
- * Runs code generation actions for the given [type].
- *
- * @property type the message type for which code generation is performed.
- * @property file the file with the Java class with the message type.
- * @property actions fully qualified names of the action classes.
- * @property context the code generation context of the operation.
- *
- * @see ActionListRenderer
- * @see
- */
-public class RenderActions(
-    private val type: MessageType,
-    private val file: SourceFile<Java>,
-    private val actions: List<@FqBinaryName String>,
-    private val context: CodegenContext
-) {
-
-    /**
-     * Applies code generation to the [file].
-     */
-    public fun apply() {
-        actions.forEach { actionClass ->
-            runAction(actionClass)
-        }
-    }
-
-    private fun runAction(actionClass: String) {
-        val classloader = Thread.currentThread().contextClassLoader
-        val action = createAction(
-            classloader,
-            actionClass,
-            type,
-            file,
-            context
-        )
-        action.render()
     }
 }
