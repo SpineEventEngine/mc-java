@@ -60,17 +60,35 @@ public class CodegenSettings @Internal public constructor(private val project: P
     /**
      * Settings for the generated command code.
      */
-    public val commands: SignalSettings = SignalSettings(project)
+    public val commands: SignalSettings = SignalSettings(
+        project,
+        MessageFile.COMMANDS,
+        CommandMessage::class.java,
+        null,
+        ImmutableList.of()
+    )
 
     /**
      * Settings for the generated event code.
      */
-    public val events: SignalSettings = SignalSettings(project)
+    public val events: SignalSettings = SignalSettings(
+        project,
+        MessageFile.EVENTS,
+        EventMessage::class.java,
+        EventMessageField::class.java,
+        ImmutableList.of()
+    )
 
     /**
      * Settings for the generated rejection code.
      */
-    public val rejections: SignalSettings = SignalSettings(project)
+    public val rejections: SignalSettings = SignalSettings(
+        project,
+        MessageFile.REJECTIONS,
+        RejectionMessage::class.java,
+        EventMessageField::class.java,
+        ImmutableList.of()
+    )
 
     /**
      * Settings for the generated entities code.
@@ -91,23 +109,6 @@ public class CodegenSettings @Internal public constructor(private val project: P
      * Settings for the generated code of grouped messages.
      */
     public val messageGroups: MutableSet<MessageGroup> = mutableSetOf()
-
-    init {
-        commands.convention(
-            MessageFile.COMMANDS,
-            CommandMessage::class.java
-        )
-        events.convention(
-            MessageFile.EVENTS,
-            EventMessage::class.java,
-            EventMessageField::class.java
-        )
-        rejections.convention(
-            MessageFile.REJECTIONS,
-            RejectionMessage::class.java,
-            EventMessageField::class.java
-        )
-    }
 
     /**
      * Obtains the configuration settings for the generated validation code.

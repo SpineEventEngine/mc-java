@@ -26,9 +26,11 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Message;
 import io.spine.tools.mc.java.settings.GenerateFields;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
 
@@ -48,12 +50,16 @@ public abstract class SettingsWithFields<P extends Message> extends SettingsWith
 
     private final Property<String> markFieldsAs;
 
+    SettingsWithFields(Project p, Iterable<@FqBinaryName String> defaultActions) {
+        super(p, defaultActions);
+        markFieldsAs = p.getObjects().property(String.class);
+    }
+
     /**
      * Creates an instance of settings for the given project.
      */
     SettingsWithFields(Project p) {
-        super(p);
-        markFieldsAs = p.getObjects().property(String.class);
+        this(p, ImmutableList.of());
     }
 
     /**

@@ -48,6 +48,7 @@ import static io.spine.tools.java.code.Names.className;
  */
 abstract class SettingsWithActions<P extends Message> extends Settings<P> {
 
+    @Deprecated
     private final Multiple<String> interfaceNames;
 
     private final Ordered<@FqBinaryName String> actions;

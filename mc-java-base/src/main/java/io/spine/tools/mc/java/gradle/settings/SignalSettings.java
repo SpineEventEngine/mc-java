@@ -32,6 +32,7 @@ import io.spine.base.SignalMessage;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.Signals;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 
 /**
@@ -43,23 +44,13 @@ import org.gradle.api.Project;
  */
 public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
-    SignalSettings(Project p) {
-        super(p);
-    }
-
-    /**
-     * Sets up default values for the properties of this config.
-     *
-     * <p>By default, the nested {@code Field} class will not be generated for this type of signals.
-     *
-     * @param file
-     *         the type of files associated with this config; used to derive the default
-     *         file pattern
-     * @param interfaceClass
-     *         the default marker interface
-     */
-    void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
-        convention(file, interfaceClass, null);
+    SignalSettings(Project p,
+                   MessageFile pattern,
+                   Class<? extends SignalMessage> interfaceClass,
+                   @Nullable Class<?> fieldSuperclass,
+                   Iterable<@FqBinaryName String> defaultActions) {
+        super(p, defaultActions);
+        convention(pattern, interfaceClass, fieldSuperclass);
     }
 
     /**
@@ -74,9 +65,9 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
      *         the default superclass for the nested {@code Field} class; {@code null} denotes
      *         not generating a {@code Field} class at all
      */
-    void convention(MessageFile file,
-                    Class<? extends SignalMessage> interfaceClass,
-                    @Nullable Class<?> fieldSuperclass) {
+    private void convention(MessageFile file,
+                            Class<? extends SignalMessage> interfaceClass,
+                            @Nullable Class<?> fieldSuperclass) {
         var pattern = FilePattern.newBuilder()
                 .setSuffix(file.suffix())
                 .build();
