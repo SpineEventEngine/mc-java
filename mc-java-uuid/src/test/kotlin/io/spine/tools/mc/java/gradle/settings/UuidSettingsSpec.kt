@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.gradle.settings
 
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.uuid.AddFactoryMethods
 import io.spine.tools.mc.java.uuid.ImplementUuidValue
@@ -51,11 +51,11 @@ internal class UuidSettingsSpec {
         val settings = UuidSettings(project)
 
         val expected = listOf(
-            AddFactoryMethods::class.reference,
             ImplementUuidValue::class.reference,
+            AddFactoryMethods::class.reference,
         )
 
-        settings.actions().toList() shouldContainExactlyInAnyOrder expected
-        settings.toProto().actionList shouldContainExactlyInAnyOrder expected
+        settings.actions().toList() shouldContainExactly expected
+        settings.toProto().actionList shouldContainExactly expected
     }
 }

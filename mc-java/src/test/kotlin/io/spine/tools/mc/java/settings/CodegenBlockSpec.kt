@@ -30,14 +30,10 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
-import io.spine.base.CommandMessage
 import io.spine.base.EntityState
-import io.spine.base.EventMessage
-import io.spine.base.EventMessageField
 import io.spine.base.MessageFile
 import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
-import io.spine.base.RejectionMessage
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
 import io.spine.tools.mc.java.applyStandard
@@ -121,17 +117,15 @@ class CodegenBlockSpec {
 
         @Test
         fun commands() {
-            val firstInterface = "test.iface.Command"
-            val secondInterface = "test.iface.TestCommand"
-            val fieldSuperclass = "test.cmd.Field"
+            val action1 = "org.example.command.codegen.Action1"
+            val action2 = "org.example.command.codegen.Action2"
             val suffix = "_my_commands.proto"
             options.codegen { settings ->
                 settings.forCommands { commands ->
                     with(commands) {
                         includeFiles(by().suffix(suffix))
-                        markAs(firstInterface)
-                        markAs(secondInterface)
-                        markFieldsAs(fieldSuperclass)
+                        useActions(action1)
+                        useActions(action2)
                     }
                 }
             }
@@ -139,23 +133,20 @@ class CodegenBlockSpec {
             signalSettings.commands.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe suffix
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(firstInterface, secondInterface)
-                generateFields.superclass.canonical shouldBe fieldSuperclass
+                actionList shouldContainExactly listOf(action1, action2)
             }
         }
 
         @Test
         fun events() {
-            val iface = "test.iface.Event"
-            val fieldSuperclass = "test.event.Field"
+            val action1 = "org.example.event.codegen.Action1"
+            val action2 = "org.example.event.codegen.Action2"
             val prefix = "my_"
             options.codegen { settings ->
                 settings.forEvents { events ->
                     with(events) {
                         includeFiles(by().prefix(prefix))
-                        markAs(iface)
-                        markFieldsAs(fieldSuperclass)
+                        useActions(action1, action2)
                     }
                 }
             }
@@ -163,52 +154,44 @@ class CodegenBlockSpec {
             signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].prefix shouldBe prefix
-                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-                generateFields.superclass.canonical shouldBe fieldSuperclass
+                actionList shouldContainExactly listOf(action1, action2)
             }
         }
 
         @Test
         fun rejections() {
-            val iface = "test.iface.RejectionMessage"
-            val fieldSuperclass = "test.rejection.Field"
+            val action1 = "org.example.rejection.codegen.Action1"
+            val action2 = "org.example.rejection.codegen.Action2"
             val regex = ".*rejection.*"
             options.codegen { settings ->
-                settings.forEvents { events ->
-                    events.includeFiles(events.by().regex(regex))
-                    events.markAs(iface)
-                    events.markFieldsAs(fieldSuperclass)
+                settings.forRejections { rejections ->
+                    rejections.includeFiles(rejections.by().regex(regex))
+                    rejections.useActions(listOf(action1, action2))
                 }
             }
 
-            signalSettings.events.run {
+            signalSettings.rejections.run {
                 patternList shouldHaveSize 1
                 patternList[0].regex shouldBe regex
-                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-                generateFields.superclass.canonical shouldBe fieldSuperclass
+                actionList shouldContainExactly listOf(action1, action2)
             }
         }
 
         @Test
         fun `rejections separately from events`() {
-            val eventInterface = "test.iface.EventMsg"
-            val rejectionInterface = "test.iface.RejectionMsg"
+            val eventAction = "org.example.event.Action"
+            val rejectionAction = "org.example.rejection.Action"
             options.codegen { settings ->
                 settings.forEvents {
-                    it.markAs(eventInterface)
+                    it.useAction(eventAction)
                 }
                 settings.forRejections {
-                    it.markAs(rejectionInterface)
+                    it.useActions(rejectionAction)
                 }
             }
 
-            val eventInterfaces = signalSettings.events.addInterfaceList
-            val rejectionInterfaces = signalSettings.rejections.addInterfaceList
-
-            eventInterfaces shouldHaveSize 1
-            rejectionInterfaces shouldHaveSize 1
-            eventInterfaces.first().name.canonical shouldBe eventInterface
-            rejectionInterfaces.first().name.canonical shouldBe rejectionInterface
+            signalSettings.events.actionList shouldContainExactly listOf(eventAction)
+            signalSettings.rejections.actionList shouldContainExactly listOf(rejectionAction)
         }
 
         @Test
@@ -236,11 +219,9 @@ class CodegenBlockSpec {
 
         @Test
         fun `UUID messages`() {
-            val iface = "custom.RandomizedId"
             val customAction = "custom.UuidCodegenAction"
             options.codegen { settings ->
                 settings.forUuids {
-                    it.markAs(iface)
                     it.useAction(customAction)
                 }
             }
@@ -313,9 +294,6 @@ class CodegenBlockSpec {
             signalSettings.commands.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe COMMANDS.suffix()
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(CommandMessage::class.qualifiedName)
-                generateFields shouldBe GenerateFields.getDefaultInstance()
             }
         }
 
@@ -324,10 +302,6 @@ class CodegenBlockSpec {
             signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe EVENTS.suffix()
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(EventMessage::class.qualifiedName)
-                generateFields.superclass.canonical shouldBe
-                        EventMessageField::class.qualifiedName
             }
         }
 
@@ -336,10 +310,6 @@ class CodegenBlockSpec {
             signalSettings.rejections.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe MessageFile.REJECTIONS.suffix()
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(RejectionMessage::class.qualifiedName)
-                generateFields.superclass.canonical shouldBe
-                        EventMessageField::class.qualifiedName
             }
         }
 

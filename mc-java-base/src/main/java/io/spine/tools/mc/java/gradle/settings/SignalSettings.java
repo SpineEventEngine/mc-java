@@ -28,11 +28,8 @@ package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import io.spine.base.SignalMessage;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.Signals;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 
@@ -89,36 +86,12 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
      */
     SignalSettings(Project p,
                    String suffix,
-                   Class<? extends SignalMessage> interfaceClass,
-                   @Nullable Class<?> fieldSuperclass,
                    Iterable<@FqBinaryName String> defaultActions) {
         super(p, defaultActions);
-        convention(suffix, interfaceClass, fieldSuperclass);
-    }
-
-    /**
-     * Sets up default values for the properties of this config.
-     *
-     * @param suffix
-     *         the default file suffix for this kind of signals
-     * @param interfaceClass
-     *         the default marker interface
-     * @param fieldSuperclass
-     *         the default superclass for the nested {@code Field} class; {@code null} denotes
-     *         not generating a {@code Field} class at all
-     */
-    private void convention(String suffix,
-                            Class<? extends SignalMessage> interfaceClass,
-                            @Nullable Class<?> fieldSuperclass) {
         var pattern = FilePattern.newBuilder()
                 .setSuffix(suffix)
                 .build();
         convention(pattern);
-        this.interfaceNames()
-            .convention(ImmutableSet.of(interfaceClass.getCanonicalName()));
-        if (fieldSuperclass != null) {
-            convention(fieldSuperclass);
-        }
     }
 
     @Override
@@ -126,8 +99,6 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
         return Signals.newBuilder()
                 .addAllPattern(patterns())
                 .addAllAction(actions())
-                .addAllAddInterface(interfaces())
-                .setGenerateFields(generateFields())
                 .build();
     }
 }

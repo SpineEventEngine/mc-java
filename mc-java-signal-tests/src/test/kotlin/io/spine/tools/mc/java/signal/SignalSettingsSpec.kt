@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import java.io.File
@@ -58,14 +58,14 @@ internal class SignalSettingsSpec {
 
     @Test
     fun `provide default actions for command messages`() {
-        codegenSettings.commands.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+        codegenSettings.commands.toProto().actionList shouldContainExactly listOf(
             ImplementCommandMessage::class.java.reference,
         )
     }
 
     @Test
     fun `provide default actions for event messages`() {
-        codegenSettings.events.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+        codegenSettings.events.toProto().actionList shouldContainExactly listOf(
             ImplementEventMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )
@@ -73,7 +73,7 @@ internal class SignalSettingsSpec {
 
     @Test
     fun `provide default actions for rejection messages`() {
-        codegenSettings.rejections.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+        codegenSettings.rejections.toProto().actionList shouldContainExactly listOf(
             ImplementRejectionMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )

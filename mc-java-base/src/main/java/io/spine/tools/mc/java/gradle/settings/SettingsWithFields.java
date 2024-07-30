@@ -82,7 +82,10 @@ public abstract class SettingsWithFields<P extends Message> extends SettingsWith
      *
      * @param className
      *         the canonical class name of an existing Java class
+     * @deprecated Please call {@link SettingsWithActions#useAction(String)} with
+     *          corresponding codegen action class name instead.
      */
+    @Deprecated
     public final void markFieldsAs(String className) {
         markFieldsAs.set(className);
     }
@@ -90,7 +93,10 @@ public abstract class SettingsWithFields<P extends Message> extends SettingsWith
     /**
      * Obtains the {@link GenerateFields} instance containing specified names of
      * field superclasses.
+     *
+     * @deprecated Please use {@link #actions()} instead.
      */
+    @Deprecated
     final GenerateFields generateFields() {
         GenerateFields generateFields;
         var superclassName = markFieldsAs.getOrElse("");
