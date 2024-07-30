@@ -45,24 +45,36 @@ import org.gradle.api.Project;
  */
 public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
+    private static final String FIELD_ACTION =
+            "io.spine.tools.mc.java.signal.AddEventMessageField";
+
+    /**
+     * Default codegen action for command messages.
+     */
     @VisibleForTesting
     public static final ImmutableList<@FqBinaryName String> DEFAULT_COMMAND_ACTIONS =
             ImmutableList.of(
-                    //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementCommandMessage`
+                    "io.spine.tools.mc.java.signal.ImplementCommandMessage"
             );
 
+    /**
+     * Default codegen action for event messages.
+     */
     @VisibleForTesting
     public static final ImmutableList<@FqBinaryName String> DEFAULT_EVENT_ACTIONS =
             ImmutableList.of(
-               "io.spine.tools.mc.java.signal.AddEventMessageField"
-               //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementEventMessage`
+                    "io.spine.tools.mc.java.signal.ImplementEventMessage",
+                    FIELD_ACTION
             );
 
+    /**
+     * Default codegen action for rejection messages.
+     */
     @VisibleForTesting
     public static final ImmutableList<@FqBinaryName String> DEFAULT_REJECTION_ACTIONS =
             ImmutableList.of(
-                    DEFAULT_EVENT_ACTIONS.get(0)
-                    //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementEventMessage`
+                    "io.spine.tools.mc.java.signal.ImplementRejectionMessage",
+                    FIELD_ACTION
             );
 
     /**

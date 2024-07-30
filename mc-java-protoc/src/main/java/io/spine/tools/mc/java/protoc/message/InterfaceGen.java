@@ -73,17 +73,8 @@ public final class InterfaceGen extends CodeGenerator {
      */
     public static CodeGenerator instance(Combined settings) {
         checkNotNull(settings);
-        var signalSettings = settings.getSignalSettings();
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
-        if (signalSettings.hasCommands()) {
-            tasks.addAll(tasksFor(signalSettings.getCommands()));
-        }
-        if (signalSettings.hasEvents()) {
-            tasks.addAll(tasksFor(signalSettings.getEvents()));
-        }
-        if (signalSettings.hasRejections()) {
-            tasks.addAll(tasksFor(signalSettings.getRejections()));
-        }
+
         if (settings.hasEntities()) {
             tasks.addAll(tasksFor(settings.getEntities()));
         }

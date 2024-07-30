@@ -33,7 +33,6 @@ import java.io.File
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -58,23 +57,24 @@ internal class SignalSettingsSpec {
     }
 
     @Test
-    @Disabled("Until command message interface is implemented via an aciton")
     fun `provide default actions for command messages`() {
         codegenSettings.commands.toProto().actionList shouldContainExactlyInAnyOrder listOf(
-            //TODO:2024-07-30:alexander.yevsyukov: Add interface action.
+            ImplementCommandMessage::class.java.reference,
         )
     }
 
     @Test
     fun `provide default actions for event messages`() {
         codegenSettings.events.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+            ImplementEventMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )
     }
 
     @Test
     fun `provide default actions for rejection messages`() {
-        codegenSettings.events.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+        codegenSettings.rejections.toProto().actionList shouldContainExactlyInAnyOrder listOf(
+            ImplementRejectionMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )
     }
