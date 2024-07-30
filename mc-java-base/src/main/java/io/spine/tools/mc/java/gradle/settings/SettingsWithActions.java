@@ -71,18 +71,6 @@ abstract class SettingsWithActions<P extends Message> extends Settings<P> {
     }
 
     /**
-     * Creates an instance of settings for the specified project.
-     *
-     * <p>The created instance assumes that no actions will be applied by default.
-     *
-     * @param p
-     *        the project for which settings are created
-     */
-    SettingsWithActions(Project p) {
-        this(p, ImmutableList.of());
-    }
-
-    /**
      * Configures the associated messages to implement a Java interface with the given name.
      *
      * <p>The declaration of the interface in Java must exist. It will not be generated. Providing
