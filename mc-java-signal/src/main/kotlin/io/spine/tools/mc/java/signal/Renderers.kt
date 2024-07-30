@@ -30,13 +30,11 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.File
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.mc.java.RenderActions
 import io.spine.tools.mc.java.TypeListActions
 import io.spine.tools.mc.java.TypeListRenderer
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.superClassName
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.psi.java.execute
@@ -56,25 +54,13 @@ internal abstract class SignalRenderer<V> :
      */
     protected abstract val typeSettings: Signals
 
-    //TODO:2024-07-29:alexander.yevsyukov: Check `pattern` and `actions` instead.
     override val enabledBySettings: Boolean
-        get() = typeSettings.generateFields.hasSuperclass()
-
-    //TODO:2024-07-29:alexander.yevsyukov: Transform to a parameter, avoiding default value in settings.
-    private val fieldSupertype: ClassName by lazy {
-        typeSettings.generateFields.superClassName
-    }
+        get() = typeSettings.actionList.size > 0
 
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            //TODO:2024-07-29:alexander.yevsyukov: Uncomment.
-            // ImplementInterface(type, file, superInterface, context = context!!).run {
-            //    render()
-            // }
-            FieldClass(type, file, fieldSupertype, context!!).run {
-                render()
-            }
+            RenderActions(type, file, typeSettings.actionList, context!!).apply()
         }
     }
 }

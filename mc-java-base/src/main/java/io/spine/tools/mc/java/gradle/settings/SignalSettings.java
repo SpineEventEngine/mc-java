@@ -26,8 +26,9 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import io.spine.base.MessageFile;
 import io.spine.base.SignalMessage;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.Signals;
@@ -44,32 +45,61 @@ import org.gradle.api.Project;
  */
 public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_COMMAND_ACTIONS =
+            ImmutableList.of(
+                    //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementCommandMessage`
+            );
+
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_EVENT_ACTIONS =
+            ImmutableList.of(
+               "io.spine.tools.mc.java.signal.AddEventMessageField"
+               //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementEventMessage`
+            );
+
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_REJECTION_ACTIONS =
+            ImmutableList.of(
+                    DEFAULT_EVENT_ACTIONS.get(0)
+                    //TODO:2024-07-30:alexander.yevsyukov: Add `ImplementEventMessage`
+            );
+
+    /**
+     * Creates a new instance under the given project.
+     *
+     * @param p
+     *         the project under which settings are created
+     * @param suffix
+     *         the default file suffix to initialize file filtering pattern in conventions
+     * @param defaultActions
+     *         code generation actions to be executed for this kind of signals
+     */
     SignalSettings(Project p,
-                   MessageFile pattern,
+                   String suffix,
                    Class<? extends SignalMessage> interfaceClass,
                    @Nullable Class<?> fieldSuperclass,
                    Iterable<@FqBinaryName String> defaultActions) {
         super(p, defaultActions);
-        convention(pattern, interfaceClass, fieldSuperclass);
+        convention(suffix, interfaceClass, fieldSuperclass);
     }
 
     /**
      * Sets up default values for the properties of this config.
      *
-     * @param file
-     *         the type of files associated with this config; used to derive the default
-     *         file pattern
+     * @param suffix
+     *         the default file suffix for this kind of signals
      * @param interfaceClass
      *         the default marker interface
      * @param fieldSuperclass
      *         the default superclass for the nested {@code Field} class; {@code null} denotes
      *         not generating a {@code Field} class at all
      */
-    private void convention(MessageFile file,
+    private void convention(String suffix,
                             Class<? extends SignalMessage> interfaceClass,
                             @Nullable Class<?> fieldSuperclass) {
         var pattern = FilePattern.newBuilder()
-                .setSuffix(file.suffix())
+                .setSuffix(suffix)
                 .build();
         convention(pattern);
         this.interfaceNames()
@@ -82,9 +112,10 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
     @Override
     public Signals toProto() {
         return Signals.newBuilder()
+                .addAllPattern(patterns())
+                .addAllAction(actions())
                 .addAllAddInterface(interfaces())
                 .setGenerateFields(generateFields())
-                .addAllPattern(patterns())
                 .build();
     }
 }

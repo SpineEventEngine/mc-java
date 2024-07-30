@@ -43,13 +43,13 @@ import org.intellij.lang.annotations.Language
  * Creates a nested class called [`Field`][NAME] under a Java class generated for
  * the given message [type].
  *
- * @param type
- *         the message type for the Java code of which to generate the nested class.
- * @param fieldSupertype
- *         the class name for the supertype of generated nested field classes, e.g.,
- *         [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
+ * @property type the message type for the Java code of which to generate the nested class.
+ * @property file the file with Java code generated for the [type].
+ * @property fieldSupertype the class name for the supertype of generated nested field classes,
+ *   e.g., [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
+ * @property context the code generation context under which this code generation action runs.
  */
-public class FieldClass(
+public open class FieldClass(
     type: MessageType,
     file: SourceFile<Java>,
     private val fieldSupertype: ClassName,

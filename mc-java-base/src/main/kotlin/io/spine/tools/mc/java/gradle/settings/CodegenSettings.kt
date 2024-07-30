@@ -38,6 +38,9 @@ import io.spine.base.RejectionMessage
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_COMMAND_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_EVENT_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_REJECTION_ACTIONS
 import io.spine.tools.mc.java.settings.Combined
 import io.spine.tools.mc.java.settings.MessageGroup
 import io.spine.tools.mc.java.settings.combined
@@ -62,10 +65,10 @@ public class CodegenSettings @Internal public constructor(private val project: P
      */
     public val commands: SignalSettings = SignalSettings(
         project,
-        MessageFile.COMMANDS,
+        MessageFile.COMMANDS.suffix(),
         CommandMessage::class.java,
         null,
-        ImmutableList.of()
+        DEFAULT_COMMAND_ACTIONS
     )
 
     /**
@@ -73,10 +76,10 @@ public class CodegenSettings @Internal public constructor(private val project: P
      */
     public val events: SignalSettings = SignalSettings(
         project,
-        MessageFile.EVENTS,
+        MessageFile.EVENTS.suffix(),
         EventMessage::class.java,
         EventMessageField::class.java,
-        ImmutableList.of()
+        DEFAULT_EVENT_ACTIONS
     )
 
     /**
@@ -84,10 +87,10 @@ public class CodegenSettings @Internal public constructor(private val project: P
      */
     public val rejections: SignalSettings = SignalSettings(
         project,
-        MessageFile.REJECTIONS,
+        MessageFile.REJECTIONS.suffix(),
         RejectionMessage::class.java,
         EventMessageField::class.java,
-        ImmutableList.of()
+        DEFAULT_REJECTION_ACTIONS
     )
 
     /**
