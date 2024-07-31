@@ -31,7 +31,6 @@ import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
-import io.spine.tools.mc.java.entity.column.ColumnClassRenderer
 import io.spine.tools.mc.java.entity.field.FieldClassRenderer
 import io.spine.tools.mc.java.entity.query.QuerySupportRenderer
 
@@ -50,9 +49,10 @@ public class EntityPlugin : Plugin {
         setOf(DiscoveredEntitiesView::class.java)
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        ColumnClassRenderer(),
+        //ColumnClassRenderer(),
         FieldClassRenderer(),
-        QuerySupportRenderer()
+        QuerySupportRenderer(),
+        NewEntityStateRenderer()
     )
 
     public companion object {

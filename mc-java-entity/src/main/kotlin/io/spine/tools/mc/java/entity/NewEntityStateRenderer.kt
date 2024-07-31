@@ -24,31 +24,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.column
+package io.spine.tools.mc.java.entity
 
 import io.spine.protodata.MessageType
-import io.spine.protodata.columns
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
+import io.spine.tools.mc.java.RenderActions
+import io.spine.tools.mc.java.TypeListRenderer
+import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.execute
 
-/**
- * Renders classes named [Columns][io.spine.tools.mc.java.entity.EntityPlugin.COLUMN_CLASS_NAME]
- * which are nested into [EntityState][io.spine.base.EntityState] classes.
- *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see ColumnClass
- */
-internal class ColumnClassRenderer : EntityStateRenderer() {
+public class NewEntityStateRenderer :
+    TypeListRenderer<DiscoveredEntities, Entities>(),
+    EntityPluginComponent {
+
+    override val enabledBySettings: Boolean
+        get() = settings.generateQueries
 
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
-        if (type.columns.isNotEmpty()) {
-            execute {
-                ColumnClass(type, file, context!!).run {
-                    render()
-                }
-            }
+        execute {
+            RenderActions(type, file, settings.actionList, context!!).apply()
         }
     }
 }
