@@ -46,7 +46,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("Generated `Field` class should")
-internal class FieldClassRendererSpec : EntityPluginTest() {
+internal class AddFieldClassSpec : EntityPluginTest() {
 
     companion object {
 
