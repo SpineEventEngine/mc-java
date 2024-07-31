@@ -26,22 +26,33 @@
 
 package io.spine.tools.mc.java.entity
 
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.RenderActions
 import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.settings.Entities
+import io.spine.tools.psi.java.execute
 
 /**
- * An abstract state for renderers of classes nested under
- * [EntityState][io.spine.base.EntityState] classes.
+ * Renders the code for the message types that qualify as [io.spine.base.EntityState].
  *
- * These nested classes provide additional APIs for working with entity
- * state messages such as querying or subscribing.
+ * The renderer modifies the code if the [generateQueries][Entities.getGenerateQueries] flag is
+ * set to `true` in the code generation settings.
  *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
+ * The actual code generation is performed by actions [defined][Entities.getActionList] in
+ * the code generation settings.
  */
-internal abstract class EntityStateRenderer :
+public class EntityStateRenderer :
     TypeListRenderer<DiscoveredEntities, Entities>(),
     EntityPluginComponent {
 
-    override val enabledBySettings
+    override val enabledBySettings: Boolean
         get() = settings.generateQueries
+
+    override fun doRender(type: MessageType, file: SourceFile<Java>) {
+        execute {
+            RenderActions(type, file, settings.actionList, context!!).apply()
+        }
+    }
 }

@@ -145,16 +145,9 @@ message Entities {
     //
     repeated proto.ProtoOption option = 2;
 
-    // Java interfaces to be added to all entity states.
-    //
-    // Entity state interfaces receive the entity ID as a type argument.
-    // If an interface does not declare a single non-bounded type parameter,
-    // a Java compilation error may occur.
-    //
-    repeated AddInterface add_interface = 3 [deprecated = true];
-
-    // Configuration for type-safe field API generation for entity states.
-    GenerateFields generate_fields = 4 [deprecated = true];
+    reserved 3, 4;
+    reserved "add_interface";
+    reserved "generate_fields";
 
     // Whether or not query type-safe query API should be generated for all the entity states.
     //

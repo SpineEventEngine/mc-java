@@ -47,10 +47,7 @@ public class EntityPlugin : Plugin {
         setOf(DiscoveredEntitiesView::class.java)
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        //ColumnClassRenderer(),
-        //FieldClassRenderer(),
-        //QuerySupportRenderer(),
-        NewEntityStateRenderer()
+        EntityStateRenderer()
     )
 
     public companion object {

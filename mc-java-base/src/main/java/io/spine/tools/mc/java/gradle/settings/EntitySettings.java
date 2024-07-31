@@ -114,8 +114,6 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
                 .addAllOption(options())
                 .setGenerateQueries(generateQueries.get())
                 .addAllAction(actions())
-                .addAllAddInterface(interfaces())
-                .setGenerateFields(generateFields())
                 .build();
     }
 

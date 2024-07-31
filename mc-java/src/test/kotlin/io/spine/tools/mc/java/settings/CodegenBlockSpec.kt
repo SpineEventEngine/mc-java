@@ -30,16 +30,15 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
-import io.spine.base.EntityState
 import io.spine.base.MessageFile
 import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
-import io.spine.query.EntityStateField
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
+import io.spine.tools.mc.java.gradle.settings.EntitySettings
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -196,22 +195,21 @@ class CodegenBlockSpec {
 
         @Test
         fun entities() {
-            val iface = "custom.EntityMessage"
-            val fieldSupertype = "custom.FieldSupertype"
+            val action = "custom.Action"
             val option = "view"
             options.codegen { settings ->
                 settings.forEntities {
                     it.options.add(option)
                     it.skipQueries()
-                    it.markAs(iface)
-                    it.markFieldsAs(fieldSupertype)
+                    it.useAction(action)
                 }
             }
             val entities = options.codegen!!.toProto().entities
 
             entities.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly listOf(iface)
-                generateFields.superclass.canonical shouldBe fieldSupertype
+                actionList shouldHaveSize 1
+                actionList shouldContainExactly listOf(action)
+
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe option
             }
@@ -318,12 +316,9 @@ class CodegenBlockSpec {
             val entities = options.codegen!!.toProto().entities
 
             entities.run {
-                addInterfaceList.map { it.name.canonical } shouldContainExactly
-                        listOf(EntityState::class.qualifiedName)
-                generateFields.superclass.canonical shouldBe
-                        EntityStateField::class.qualifiedName
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
+                actionList shouldContainExactly EntitySettings.DEFAULT_ACTIONS
             }
         }
 
