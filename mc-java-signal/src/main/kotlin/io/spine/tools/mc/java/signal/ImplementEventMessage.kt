@@ -44,6 +44,8 @@ import io.spine.tools.mc.java.ImplementInterface
  * @property type the type of the message.
  * @property file the source code to which the action is applied.
  * @property context the code generation context in which this action runs.
+ *
+ * @see ImplementInterface
  */
 public class ImplementEventMessage(
     type: MessageType,
