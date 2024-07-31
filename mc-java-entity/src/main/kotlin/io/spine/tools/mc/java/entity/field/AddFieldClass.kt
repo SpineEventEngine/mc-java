@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -26,33 +26,23 @@
 
 package io.spine.tools.mc.java.entity.field
 
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
+import io.spine.query.EntityStateField
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
 import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.superClassName
-import io.spine.tools.psi.java.execute
+import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 
 /**
- * Renders classes named [Field][FieldClass.NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
+ * Creates a nested class called [`Field`][NAME] under a Java class
+ * generated for an entity state.
  *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
  * @see FieldClass
  */
-internal class FieldClassRenderer : EntityStateRenderer() {
-
-    private val fieldSupertype: ClassName by lazy {
-        settings.generateFields.superClassName
-    }
-
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
-        execute {
-            FieldClass(type, file, fieldSupertype, context!!).run {
-                render()
-            }
-        }
-    }
-}
+public class AddFieldClass(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : FieldClass(type, file, ClassName(EntityStateField::class.java), context)
