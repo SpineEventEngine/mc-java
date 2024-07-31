@@ -45,7 +45,7 @@ import io.spine.tools.psi.java.implement
  * @property genericParameters optional generic parameters if [superInterface] is a generic type.
  * @property context the code generation context in which this action runs.
  */
-public abstract class ImplementInterface(
+public open class ImplementInterface(
     type: MessageType,
     file: SourceFile<Java>,
     private val superInterface: ClassName,
