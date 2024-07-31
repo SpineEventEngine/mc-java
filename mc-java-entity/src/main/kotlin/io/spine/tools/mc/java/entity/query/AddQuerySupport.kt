@@ -26,19 +26,35 @@
 
 package io.spine.tools.mc.java.entity.query
 
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.settings.loadSettings
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
+import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.tools.mc.java.entity.EntityPluginComponent
+import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders [QueryBuilder][QueryBuilderClass] and [Query][QueryClass] classes and
- * the [query][QueryMethod] under an entity state class.
+ * Extends the code of an entity state type for supporting queries.
+ *
+ * In particular:
+ *  * Adds a nested class called [QueryBuilder][QueryBuilderClass].
+ *  * Adds a nested class called [Query][QueryClass].
+ *  * Adds the method called [query][QueryMethod] under the entity state class.
  */
-internal class QuerySupportRenderer : EntityStateRenderer() {
+public class AddQuerySupport(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : DirectMessageAction(type, file, context), EntityPluginComponent {
 
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
+    private val settings: Entities by lazy {
+        loadSettings()
+    }
+
+    override fun doRender() {
         execute {
             // The `query()` method is added after constructors.
             QueryMethod(file).run {

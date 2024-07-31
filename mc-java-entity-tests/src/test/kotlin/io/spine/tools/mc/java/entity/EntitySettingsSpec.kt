@@ -24,11 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.entity
 
 import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.java.reference
+import io.spine.tools.mc.java.entity.column.AddColumnClass
+import io.spine.tools.mc.java.entity.field.AddFieldClass
+import io.spine.tools.mc.java.entity.query.AddQuerySupport
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.Entities
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
@@ -37,43 +41,30 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 /**
- * This is a test suite for [io.spine.tools.mc.java.gradle.settings.SignalSettings] class
+ * This is a test suite for [io.spine.tools.mc.java.gradle.settings.EntitySettings] class
  * which belongs to `mc-java-base` module.
  *
  * We have this test suite in another module to check the correctness of default settings
  * specified as strings against classes of this module.
  */
-@DisplayName("`SignalSettings` should")
-internal class SignalSettingsSpec {
+@DisplayName("`EntitySettings` should")
+internal class EntitySettingsSpec {
 
-    private lateinit var codegenSettings: CodegenSettings
+    private lateinit var settings: Entities
 
     @BeforeEach
     fun createProject(@TempDir projectDir: File) {
         val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-        codegenSettings = CodegenSettings(project)
+        val codegenSettings = CodegenSettings(project)
+        settings = codegenSettings.entities.toProto()
     }
 
     @Test
-    fun `provide default actions for command messages`() {
-        codegenSettings.commands.toProto().actionList shouldContainExactly listOf(
-            ImplementCommandMessage::class.java.reference,
-        )
-    }
-
-    @Test
-    fun `provide default actions for event messages`() {
-        codegenSettings.events.toProto().actionList shouldContainExactly listOf(
-            ImplementEventMessage::class.java.reference,
-            AddEventMessageField::class.java.reference
-        )
-    }
-
-    @Test
-    fun `provide default actions for rejection messages`() {
-        codegenSettings.rejections.toProto().actionList shouldContainExactly listOf(
-            ImplementRejectionMessage::class.java.reference,
-            AddEventMessageField::class.java.reference
+    fun `provide default actions`() {
+        settings.actionList shouldContainExactly listOf(
+            AddColumnClass::class.java.reference,
+            AddFieldClass::class.java.reference,
+            AddQuerySupport::class.java.reference,
         )
     }
 }
