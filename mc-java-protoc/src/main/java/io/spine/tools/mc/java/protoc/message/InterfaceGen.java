@@ -34,15 +34,12 @@ import io.spine.tools.mc.java.protoc.CodeGenerationTasks;
 import io.spine.tools.mc.java.protoc.CodeGenerator;
 import io.spine.tools.mc.java.protoc.CompilerOutput;
 import io.spine.tools.mc.java.settings.Combined;
-import io.spine.tools.mc.java.settings.Entities;
-import io.spine.tools.mc.java.settings.Signals;
 import io.spine.type.MessageType;
 import io.spine.type.Type;
 
 import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 /**
  * The {@link CodeGenerator} implementation generating the specific interfaces implemented by
@@ -75,9 +72,6 @@ public final class InterfaceGen extends CodeGenerator {
         checkNotNull(settings);
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
 
-        if (settings.hasEntities()) {
-            tasks.addAll(tasksFor(settings.getEntities()));
-        }
         for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
             messages.getAddInterfaceList()
@@ -86,24 +80,6 @@ public final class InterfaceGen extends CodeGenerator {
                     .forEach(tasks::add);
         }
         return new InterfaceGen(tasks.build());
-    }
-
-    private static ImmutableList<ImplementInterface> tasksFor(Signals signals) {
-        ImmutableList.Builder<ImplementInterface> tasks = ImmutableList.builder();
-        var addInterfaces = signals.getAddInterfaceList();
-        for (var pattern : signals.getPatternList()) {
-            addInterfaces.stream()
-                         .map(ai -> new ImplementByPattern(ai.getName(), pattern))
-                         .forEach(tasks::add);
-        }
-        return tasks.build();
-    }
-
-    private static ImmutableList<ImplementInterface> tasksFor(Entities entities) {
-        var interfaces = entities.getAddInterfaceList();
-        return interfaces.stream()
-                         .map(ai -> new ImplementEntityState(ai.getName(), entities))
-                         .collect(toImmutableList());
     }
 
     /**

@@ -65,6 +65,7 @@ internal class EntitySettingsSpec {
             AddColumnClass::class.java.reference,
             AddFieldClass::class.java.reference,
             AddQuerySupport::class.java.reference,
+            ImplementEntityState::class.java.reference,
         )
     }
 }

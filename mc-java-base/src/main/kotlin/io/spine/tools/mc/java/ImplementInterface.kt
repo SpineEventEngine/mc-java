@@ -28,7 +28,6 @@ package io.spine.tools.mc.java
 
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -48,15 +47,15 @@ import io.spine.tools.psi.java.implement
 public open class ImplementInterface(
     type: MessageType,
     file: SourceFile<Java>,
-    private val superInterface: ClassName,
-    private val genericParameters: List<ClassName> = listOf(),
+    private val superInterface: String,
+    private val genericParameters: List<String> = listOf(),
     context: CodegenContext
 ) : DirectMessageAction(type, file, context) {
 
     override fun doRender() {
         val si = elementFactory.createClassReference(
-            superInterface.canonical,
-            genericParameters.map { it.canonical },
+            superInterface,
+            genericParameters,
             cls
         )
         cls.implement(si)

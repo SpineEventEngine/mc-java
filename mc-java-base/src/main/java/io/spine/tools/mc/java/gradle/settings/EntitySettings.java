@@ -59,7 +59,8 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS = ImmutableList.of(
         "io.spine.tools.mc.java.entity.column.AddColumnClass",
         "io.spine.tools.mc.java.entity.field.AddFieldClass",
-        "io.spine.tools.mc.java.entity.query.AddQuerySupport"
+        "io.spine.tools.mc.java.entity.query.AddQuerySupport",
+        "io.spine.tools.mc.java.entity.ImplementEntityState"
     );
 
     private final SetProperty<String> options;

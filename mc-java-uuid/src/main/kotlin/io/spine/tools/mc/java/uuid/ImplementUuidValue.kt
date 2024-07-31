@@ -29,9 +29,9 @@ package io.spine.tools.mc.java.uuid
 import io.spine.base.UuidValue
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.java.reference
 import io.spine.tools.mc.java.ImplementInterface
 
 /**
@@ -49,4 +49,4 @@ public class ImplementUuidValue(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : ImplementInterface(type, file, ClassName(UuidValue::class.java), context = context)
+) : ImplementInterface(type, file, UuidValue::class.java.reference, context = context)
