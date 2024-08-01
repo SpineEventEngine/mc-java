@@ -40,7 +40,7 @@ import io.spine.tools.mc.java.ImplementInterface
 
 /**
  * Updates the Java code of a message type which qualifies as [EntityState] by
- * making the type implement the [EntityState] interface.
+ * making it implement this interface.
  *
  * The class is public because its fully qualified name is used as a default
  * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.EntitySettings].
