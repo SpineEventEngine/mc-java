@@ -35,8 +35,8 @@ import io.spine.tools.java.reference
 import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Updates the code of message which qualifies as [RejectionMessage] making it implement
- * this interface.
+ * Updates the Java code of a message type which qualifies as [RejectionMessage]
+ * making it implement this interface.
  *
  * The class is public because its fully qualified name is used as a default
  * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
