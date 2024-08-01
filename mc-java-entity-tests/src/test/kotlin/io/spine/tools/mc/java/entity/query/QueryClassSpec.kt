@@ -42,7 +42,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated `Query` class should")
+@DisplayName("`QueryClass` should")
 internal class QueryClassSpec : EntityPluginTest() {
 
     companion object {

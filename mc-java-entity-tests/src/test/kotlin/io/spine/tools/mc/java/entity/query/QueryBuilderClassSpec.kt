@@ -51,7 +51,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated `QueryBuilder` class should")
+@DisplayName("`QueryBuilderClass` should")
 internal class QueryBuilderClassSpec {
 
     companion object {
