@@ -31,6 +31,7 @@ import io.spine.protobuf.isDefault
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.gradle.Multiple
+import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 
 /**
@@ -39,7 +40,8 @@ import org.gradle.api.Project
  * @param P the Protobuf type reflecting a snapshot of these settings.
 */
 public abstract class GroupedByFilePatterns<P : Message>
-internal constructor(p: Project) : SettingsWithFields<P>(p) {
+internal constructor(p: Project, defaultActions: Iterable<@FqBinaryName String>) :
+    SettingsWithFields<P>(p, defaultActions) {
 
     private val file = Multiple(p, FilePattern::class.java)
 

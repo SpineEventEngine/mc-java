@@ -30,29 +30,24 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.File
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.MessageTypeRenderer
-import io.spine.tools.mc.java.WithTypeList
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.superClassName
+import io.spine.tools.mc.java.RenderActions
+import io.spine.tools.mc.java.TypeListActions
+import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.psi.java.execute
 
 /**
- * An abstract base for renders of signal messages.
+ * An abstract base for renderers of signal messages.
  *
- * @param V
- *        the type of the view state which gathers signals of the type served by
- *        this renderer.
- * @param viewClass
- *        the view state class matching the generic parameter [V].
+ * @param V the type of the view state which gathers signals of the type served by this renderer.
  */
-internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
-    MessageTypeRenderer<V, SignalSettings>(viewClass, SignalSettings::class.java),
-    SignalPluginComponent where V : EntityState<File>, V : WithTypeList {
+internal abstract class SignalRenderer<V> :
+    TypeListRenderer<V, SignalSettings>(),
+    SignalPluginComponent
+        where V : EntityState<File>, V : TypeListActions {
 
     /**
      * The settings for the kind of signals served by this renderer, obtained from [settings].
@@ -60,18 +55,12 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
     protected abstract val typeSettings: Signals
 
     override val enabledBySettings: Boolean
-        get() = typeSettings.generateFields.hasSuperclass()
-
-    private val fieldSupertype: ClassName by lazy {
-        typeSettings.generateFields.superClassName
-    }
+        get() = typeSettings.actionList.size > 0
 
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            FieldClass(type, file, fieldSupertype, context!!).run {
-                render()
-            }
+            RenderActions(type, file, typeSettings.actionList, context!!).apply()
         }
     }
 }
@@ -83,7 +72,7 @@ internal abstract class SignalRenderer<V>(viewClass: Class<V>) :
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class CommandRenderer : SignalRenderer<Commands>(Commands::class.java) {
+internal class CommandRenderer : SignalRenderer<CommandActions>() {
 
     override val typeSettings: Signals
         get() = settings.commands
@@ -96,7 +85,7 @@ internal class CommandRenderer : SignalRenderer<Commands>(Commands::class.java) 
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class EventRenderer : SignalRenderer<Events>(Events::class.java) {
+internal class EventRenderer : SignalRenderer<EventActions>() {
 
     override val typeSettings: Signals
         get() = settings.events
@@ -109,7 +98,7 @@ internal class EventRenderer : SignalRenderer<Events>(Events::class.java) {
  *
  * @see [io.spine.base.RejectionMessage]
  */
-internal class RejectionRenderer : SignalRenderer<Rejections>(Rejections::class.java) {
+internal class RejectionRenderer : SignalRenderer<RejectionActions>() {
 
     override val typeSettings: Signals
         get() = settings.rejections

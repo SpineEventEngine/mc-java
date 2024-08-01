@@ -48,6 +48,7 @@ import static io.spine.tools.java.code.Names.className;
  */
 abstract class SettingsWithActions<P extends Message> extends Settings<P> {
 
+    @Deprecated
     private final Multiple<String> interfaceNames;
 
     private final Ordered<@FqBinaryName String> actions;
@@ -67,18 +68,6 @@ abstract class SettingsWithActions<P extends Message> extends Settings<P> {
         this.interfaceNames = new Multiple<>(p, String.class);
         this.actions = new Ordered<>(p, String.class);
         actions.convention(defaultActions);
-    }
-
-    /**
-     * Creates an instance of settings for the specified project.
-     *
-     * <p>The created instance assumes that no actions will be applied by default.
-     *
-     * @param p
-     *        the project for which settings are created
-     */
-    SettingsWithActions(Project p) {
-        this(p, ImmutableList.of());
     }
 
     /**

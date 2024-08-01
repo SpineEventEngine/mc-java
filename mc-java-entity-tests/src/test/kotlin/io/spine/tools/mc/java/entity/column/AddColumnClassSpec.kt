@@ -46,8 +46,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated 'Column' class should")
-internal class ColumnClassRendererSpec : EntityPluginTest() {
+@DisplayName("`AddColumnClass` should")
+internal class AddColumnClassSpec : EntityPluginTest() {
 
     companion object {
 

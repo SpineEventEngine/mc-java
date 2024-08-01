@@ -24,17 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.signal
 
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.base.CommandMessage
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * The interface common to types holding a list of render action class names.
+ * Updates the Java code of a message type which qualifies as [CommandMessage]
+ * making it implement this interface.
+ *
+ * The class is public because its fully qualified name is used as a default
+ * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
+ *
+ * @see ImplementInterface
  */
-public interface WithActionList {
-
-    /**
-     * Returns the list of render actions to be applied.
-     */
-    public fun getActionList(): List<@FqBinaryName String>
-}
+public class ImplementCommandMessage(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(type, file, CommandMessage::class.java.reference, context = context)

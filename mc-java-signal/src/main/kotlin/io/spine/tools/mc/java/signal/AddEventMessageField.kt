@@ -24,20 +24,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.signal
 
-import com.google.protobuf.Message
-import io.spine.annotation.GeneratedMixin
+import io.spine.base.EventMessageField
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.field.FieldClass
+import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 
 /**
- * An interface common to view states that gather message types.
+ * Creates a nested class called [`Field`][NAME] under a Java class generated for
+ * an event or rejection message.
+ *
+ * @see FieldClass
  */
-@GeneratedMixin
-public interface WithTypeList : Message {
-
-    /**
-     * Returns the list of gathered message types.
-     */
-    public fun getTypeList(): List<MessageType>
-}
+public class AddEventMessageField(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : FieldClass(type, file, ClassName(EventMessageField::class.java), context)

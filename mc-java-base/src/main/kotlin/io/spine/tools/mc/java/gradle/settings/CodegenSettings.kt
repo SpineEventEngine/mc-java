@@ -30,14 +30,13 @@ package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.collect.ImmutableList
 import io.spine.annotation.Internal
-import io.spine.base.CommandMessage
-import io.spine.base.EventMessage
-import io.spine.base.EventMessageField
 import io.spine.base.MessageFile
-import io.spine.base.RejectionMessage
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_COMMAND_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_EVENT_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_REJECTION_ACTIONS
 import io.spine.tools.mc.java.settings.Combined
 import io.spine.tools.mc.java.settings.MessageGroup
 import io.spine.tools.mc.java.settings.combined
@@ -60,17 +59,29 @@ public class CodegenSettings @Internal public constructor(private val project: P
     /**
      * Settings for the generated command code.
      */
-    public val commands: SignalSettings = SignalSettings(project)
+    public val commands: SignalSettings = SignalSettings(
+        project,
+        MessageFile.COMMANDS.suffix(),
+        DEFAULT_COMMAND_ACTIONS
+    )
 
     /**
      * Settings for the generated event code.
      */
-    public val events: SignalSettings = SignalSettings(project)
+    public val events: SignalSettings = SignalSettings(
+        project,
+        MessageFile.EVENTS.suffix(),
+        DEFAULT_EVENT_ACTIONS
+    )
 
     /**
      * Settings for the generated rejection code.
      */
-    public val rejections: SignalSettings = SignalSettings(project)
+    public val rejections: SignalSettings = SignalSettings(
+        project,
+        MessageFile.REJECTIONS.suffix(),
+        DEFAULT_REJECTION_ACTIONS
+    )
 
     /**
      * Settings for the generated entities code.
@@ -91,23 +102,6 @@ public class CodegenSettings @Internal public constructor(private val project: P
      * Settings for the generated code of grouped messages.
      */
     public val messageGroups: MutableSet<MessageGroup> = mutableSetOf()
-
-    init {
-        commands.convention(
-            MessageFile.COMMANDS,
-            CommandMessage::class.java
-        )
-        events.convention(
-            MessageFile.EVENTS,
-            EventMessage::class.java,
-            EventMessageField::class.java
-        )
-        rejections.convention(
-            MessageFile.REJECTIONS,
-            RejectionMessage::class.java,
-            EventMessageField::class.java
-        )
-    }
 
     /**
      * Obtains the configuration settings for the generated validation code.

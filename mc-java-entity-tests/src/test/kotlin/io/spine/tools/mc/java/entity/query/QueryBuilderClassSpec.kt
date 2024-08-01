@@ -51,7 +51,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("Generated `QueryBuilder` class should")
+@DisplayName("`QueryBuilderClass` should")
 internal class QueryBuilderClassSpec {
 
     companion object {
@@ -98,7 +98,7 @@ internal class QueryBuilderClassSpec {
      *
      * See also a similar test for generated `Column` class.
      *
-     * @see io.spine.tools.mc.java.entity.column.ColumnClassRendererSpec
+     * @see io.spine.tools.mc.java.entity.column.AddColumnClassSpec
      */
     @Test
     fun `expose methods for columns`() {

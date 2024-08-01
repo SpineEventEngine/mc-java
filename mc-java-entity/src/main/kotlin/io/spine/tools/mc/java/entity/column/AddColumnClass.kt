@@ -63,7 +63,7 @@ import org.intellij.lang.annotations.Language
  *
  * @see render
  */
-internal class ColumnClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
+public class AddColumnClass(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
     CreateNestedClass(type, file, COLUMN_CLASS_NAME, context) {
 
     private val columns: List<Field> = type.columns

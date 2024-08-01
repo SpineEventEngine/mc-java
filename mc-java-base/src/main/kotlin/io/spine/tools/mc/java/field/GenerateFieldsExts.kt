@@ -43,11 +43,11 @@ public val GenerateFields.superClassName: ClassName
         check(hasSuperclass()) {
             val clsName = GenerateFields::class.java.canonicalName
             val debugStr = shortDebugString()
-            "Unable a field class supertype from this `$clsName` instance: `$debugStr`."
+            "Unable to obtain a field class supertype from this `$clsName` instance: `$debugStr`."
         }
         try {
             // Try finding a class by its name.
-            // This is the preferred because it covers tricky cases with nested classes.
+            // This is preferred because it covers tricky cases with nested classes.
             // This may not work if the class is not yet available because it's in the same
             // module with the generated code. When so, we'd get `ClassNotFoundException`.
             val cls = Class.forName(superclass.canonical)

@@ -40,7 +40,7 @@ import "spine/protodata/file.proto";
 
 // Provides entity state types declared in a proto file.
 message DiscoveredEntities {
-    option (is).java_type = "io.spine.tools.mc.java.WithTypeList";
+    option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (.entity).kind = PROJECTION;
 
     // The file which declares entity state types.
@@ -48,4 +48,7 @@ message DiscoveredEntities {
 
     // Message types that qualify as entity states.
     repeated protodata.MessageType type = 2;
+
+    // Rendering actions to be applied to the entity states.
+    repeated string action = 3;
 }

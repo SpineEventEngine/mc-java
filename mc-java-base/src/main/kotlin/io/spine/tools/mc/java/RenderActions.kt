@@ -26,15 +26,48 @@
 
 package io.spine.tools.mc.java
 
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
 import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
- * The interface common to types holding a list of render action class names.
+ * Runs code generation actions for the given [type].
+ *
+ * @property type the message type for which code generation is performed.
+ * @property file the file with the Java class with the message type.
+ * @property actions fully qualified names of the action classes.
+ * @property context the code generation context of the operation.
+ *
+ * @see TypeRenderer
+ * @see TypeListRenderer
  */
-public interface WithActionList {
-
+public class RenderActions(
+    private val type: MessageType,
+    private val file: SourceFile<Java>,
+    private val actions: List<@FqBinaryName String>,
+    private val context: CodegenContext
+) {
     /**
-     * Returns the list of render actions to be applied.
+     * Applies code generation to the [file].
      */
-    public fun getActionList(): List<@FqBinaryName String>
+    public fun apply() {
+        actions.forEach { actionClass ->
+            runAction(actionClass)
+        }
+    }
+
+    private fun runAction(actionClass: String) {
+        val classloader = Thread.currentThread().contextClassLoader
+        val action = createAction(
+            classloader,
+            actionClass,
+            type,
+            file,
+            context
+        )
+        action.render()
+    }
 }

@@ -24,31 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.column
+package io.spine.tools.mc.java.signal
 
+import io.spine.base.RejectionMessage
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.columns
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.psi.java.execute
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Renders classes named [Columns][io.spine.tools.mc.java.entity.EntityPlugin.COLUMN_CLASS_NAME]
- * which are nested into [EntityState][io.spine.base.EntityState] classes.
+ * Updates the Java code of a message type which qualifies as [RejectionMessage]
+ * making it implement this interface.
  *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see ColumnClass
+ * The class is public because its fully qualified name is used as a default
+ * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
+ *
+ * @see ImplementInterface
  */
-internal class ColumnClassRenderer : EntityStateRenderer() {
-
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
-        if (type.columns.isNotEmpty()) {
-            execute {
-                ColumnClass(type, file, context!!).run {
-                    render()
-                }
-            }
-        }
-    }
-}
+public class ImplementRejectionMessage(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(type, file, RejectionMessage::class.java.reference, context = context)

@@ -24,29 +24,55 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.entity
 
-import io.spine.base.UuidValue
+import io.spine.base.EntityState
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.java.javaType
+import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
+import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Updates the code of the message which qualifies as [UuidValue] type by
- * making the type implement the [UuidValue] interface.
+ * Updates the Java code of a message type which qualifies as [EntityState] by
+ * making it implement this interface.
  *
  * The class is public because its fully qualified name is used as a default
- * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
+ * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.EntitySettings].
  *
  * @property type the type of the message.
  * @property file the source code to which the action is applied.
  * @property context the code generation context in which this action runs.
  */
-public class ImplementUuidValue(
+public class ImplementEntityState(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : ImplementInterface(type, file, UuidValue::class.java.reference, context = context)
+) : DirectMessageAction(type, file, context) {
+
+    override fun doRender() {
+        val idFieldType = type.firstFieldType(typeSystem!!)
+        val action = ImplementInterface(
+            type,
+            file,
+            EntityState::class.java.reference,
+            listOf(idFieldType),
+            context!!
+        )
+        action.render()
+    }
+}
+
+private fun MessageType.firstFieldType(typeSystem: TypeSystem): String {
+    //TODO:2024-07-31:alexander.yevsyukov: Migrate to `MessageType.firstField` from ProtoData.
+    check(fieldCount != 0) {
+        "The type `${name.qualifiedName}` must have at least one field."
+    }
+    val field = getField(0)
+    return field.javaType(typeSystem)
+}

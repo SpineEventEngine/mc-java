@@ -39,7 +39,7 @@ import io.spine.tools.mc.java.signal.event.RejectionDiscovered
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class CommandsPerFile : View<File, Commands, Commands.Builder>() {
+internal class CommandsPerFile : View<File, CommandActions, CommandActions.Builder>() {
 
     @Subscribe
     fun on(e: CommandDiscovered) = alter {
@@ -52,7 +52,7 @@ internal class CommandsPerFile : View<File, Commands, Commands.Builder>() {
  *
  * @see [io.spine.base.EventMessage]
  */
-internal class EventsPerFile : View<File, Events, Events.Builder>() {
+internal class EventsPerFile : View<File, EventActions, EventActions.Builder>() {
 
     @Subscribe
     fun on(e: EventDiscovered) = alter {
@@ -65,7 +65,7 @@ internal class EventsPerFile : View<File, Events, Events.Builder>() {
  *
  * @see [io.spine.base.RejectionMessage]
  */
-internal class RejectionsPerFile : View<File, Rejections, Rejections.Builder>() {
+internal class RejectionsPerFile : View<File, RejectionActions, RejectionActions.Builder>() {
 
     @Subscribe
     fun on(e: RejectionDiscovered) = alter {

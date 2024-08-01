@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,35 +24,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.field
+package io.spine.tools.mc.java
 
+import com.google.protobuf.Message
+import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.superClassName
-import io.spine.tools.psi.java.execute
 
 /**
- * Renders classes named [Field][FieldClass.NAME] which are nested into
- * [EntityState][io.spine.base.EntityState] classes.
- *
- * @see io.spine.tools.mc.java.entity.DiscoveredEntitiesView
- * @see FieldClass
+ * An interface common to view states that contain a list of render actions
+ * to be applied to a message type.
  */
-internal class FieldClassRenderer : EntityStateRenderer() {
+@GeneratedMixin
+public interface TypeActions : Message, WithActionList {
 
-    private val fieldSupertype: ClassName by lazy {
-        settings.generateFields.superClassName
-    }
-
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
-        execute {
-            FieldClass(type, file, fieldSupertype, context!!).run {
-                render()
-            }
-        }
-    }
+    /**
+     * The type for which we apply render actions.
+     */
+    public fun getType(): MessageType
 }

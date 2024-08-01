@@ -26,12 +26,11 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
-import com.google.common.collect.ImmutableSet;
-import io.spine.base.MessageFile;
-import io.spine.base.SignalMessage;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.Signals;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
 
 /**
@@ -43,57 +42,63 @@ import org.gradle.api.Project;
  */
 public final class SignalSettings extends GroupedByFilePatterns<Signals> {
 
-    SignalSettings(Project p) {
-        super(p);
-    }
+    private static final String FIELD_ACTION =
+            "io.spine.tools.mc.java.signal.AddEventMessageField";
 
     /**
-     * Sets up default values for the properties of this config.
-     *
-     * <p>By default, the nested {@code Field} class will not be generated for this type of signals.
-     *
-     * @param file
-     *         the type of files associated with this config; used to derive the default
-     *         file pattern
-     * @param interfaceClass
-     *         the default marker interface
+     * Default codegen action for command messages.
      */
-    void convention(MessageFile file, Class<? extends SignalMessage> interfaceClass) {
-        convention(file, interfaceClass, null);
-    }
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_COMMAND_ACTIONS =
+            ImmutableList.of(
+                    "io.spine.tools.mc.java.signal.ImplementCommandMessage"
+            );
 
     /**
-     * Sets up default values for the properties of this config.
-     *
-     * @param file
-     *         the type of files associated with this config; used to derive the default
-     *         file pattern
-     * @param interfaceClass
-     *         the default marker interface
-     * @param fieldSuperclass
-     *         the default superclass for the nested {@code Field} class; {@code null} denotes
-     *         not generating a {@code Field} class at all
+     * Default codegen action for event messages.
      */
-    void convention(MessageFile file,
-                    Class<? extends SignalMessage> interfaceClass,
-                    @Nullable Class<?> fieldSuperclass) {
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_EVENT_ACTIONS =
+            ImmutableList.of(
+                    "io.spine.tools.mc.java.signal.ImplementEventMessage",
+                    FIELD_ACTION
+            );
+
+    /**
+     * Default codegen action for rejection messages.
+     */
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_REJECTION_ACTIONS =
+            ImmutableList.of(
+                    "io.spine.tools.mc.java.signal.ImplementRejectionMessage",
+                    FIELD_ACTION
+            );
+
+    /**
+     * Creates a new instance under the given project.
+     *
+     * @param p
+     *         the project under which settings are created
+     * @param suffix
+     *         the default file suffix to initialize file filtering pattern in conventions
+     * @param defaultActions
+     *         code generation actions to be executed for this kind of signals
+     */
+    SignalSettings(Project p,
+                   String suffix,
+                   Iterable<@FqBinaryName String> defaultActions) {
+        super(p, defaultActions);
         var pattern = FilePattern.newBuilder()
-                .setSuffix(file.suffix())
+                .setSuffix(suffix)
                 .build();
         convention(pattern);
-        this.interfaceNames()
-            .convention(ImmutableSet.of(interfaceClass.getCanonicalName()));
-        if (fieldSuperclass != null) {
-            convention(fieldSuperclass);
-        }
     }
 
     @Override
     public Signals toProto() {
         return Signals.newBuilder()
-                .addAllAddInterface(interfaces())
-                .setGenerateFields(generateFields())
                 .addAllPattern(patterns())
+                .addAllAction(actions())
                 .build();
     }
 }

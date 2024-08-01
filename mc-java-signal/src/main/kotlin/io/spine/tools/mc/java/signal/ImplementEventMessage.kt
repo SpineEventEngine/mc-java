@@ -24,34 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity.query
+package io.spine.tools.mc.java.signal
 
+import io.spine.base.EventMessage
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.entity.EntityStateRenderer
-import io.spine.tools.psi.java.execute
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Renders [QueryBuilder][QueryBuilderClass] and [Query][QueryClass] classes and
- * the [query][QueryMethod] under an entity state class.
+ * Updates the Java code of a message type which qualifies as [EventMessage]
+ * making it implement this interface.
+ *
+ * The class is public because its fully qualified name is used as a default
+ * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
+ *
+ * @see ImplementInterface
  */
-internal class QuerySupportRenderer : EntityStateRenderer() {
-
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
-        execute {
-            // The `query()` method is added after constructors.
-            QueryMethod(file).run {
-                render()
-            }
-            // The `QueryBuilder` class is added at the bottom, before the `Query` class.
-            QueryBuilderClass(type, file, settings, context!!).run {
-                render()
-            }
-            // The `Query` class comes last.
-            QueryClass(type, file, settings, context!!).run {
-                render()
-            }
-        }
-    }
-}
+public class ImplementEventMessage(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(type, file, EventMessage::class.java.reference, context = context)

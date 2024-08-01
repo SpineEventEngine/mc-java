@@ -24,38 +24,48 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings
+package io.spine.tools.mc.java.entity
 
 import io.kotest.matchers.collections.shouldContainExactly
-import io.spine.tools.kotlin.reference
-import io.spine.tools.mc.java.uuid.AddFactoryMethods
-import io.spine.tools.mc.java.uuid.ImplementUuidValue
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.entity.column.AddColumnClass
+import io.spine.tools.mc.java.entity.field.AddFieldClass
+import io.spine.tools.mc.java.entity.query.AddQuerySupport
+import io.spine.tools.mc.java.gradle.settings.CodegenSettings
+import io.spine.tools.mc.java.settings.Entities
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 /**
- * This is a test suite for [UuidSettings] class which belongs to `mc-java-base` module.
+ * This is a test suite for [io.spine.tools.mc.java.gradle.settings.EntitySettings] class
+ * which belongs to `mc-java-base` module.
  *
  * We have this test suite in another module to check the correctness of default settings
  * specified as strings against classes of this module.
  */
-@DisplayName("`UuidSettings` should")
-internal class UuidSettingsSpec {
+@DisplayName("`EntitySettings` should")
+internal class EntitySettingsSpec {
+
+    private lateinit var settings: Entities
+
+    @BeforeEach
+    fun createProject(@TempDir projectDir: File) {
+        val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+        val codegenSettings = CodegenSettings(project)
+        settings = codegenSettings.entities.toProto()
+    }
 
     @Test
-    fun `provide default action class names`(@TempDir projectDir: File) {
-        val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-        val settings = UuidSettings(project)
-
-        val expected = listOf(
-            ImplementUuidValue::class.reference,
-            AddFactoryMethods::class.reference,
+    fun `provide default actions`() {
+        settings.actionList shouldContainExactly listOf(
+            AddColumnClass::class.java.reference,
+            AddFieldClass::class.java.reference,
+            AddQuerySupport::class.java.reference,
+            ImplementEntityState::class.java.reference,
         )
-
-        settings.actions().toList() shouldContainExactly expected
-        settings.toProto().actionList shouldContainExactly expected
     }
 }

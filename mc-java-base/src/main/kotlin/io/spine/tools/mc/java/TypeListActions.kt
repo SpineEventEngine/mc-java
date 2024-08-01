@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,39 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc.message;
+package io.spine.tools.mc.java
 
-import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.protoc.CompilerOutput;
-import io.spine.tools.mc.java.settings.AddInterface;
-import io.spine.type.MessageType;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.protobuf.Message
+import io.spine.annotation.GeneratedMixin
+import io.spine.protodata.MessageType
 
 /**
- * Generates {@link io.spine.base.UuidValue UuidValue} interfaces.
+ * An interface common to view states that gather message types.
  */
-final class ImplementUuidValue extends ImplementInterface {
-
-    ImplementUuidValue(AddInterface settings) {
-        super(settings.getName());
-    }
-
-    @Override
-    public InterfaceParameters interfaceParameters(MessageType type) {
-        return InterfaceParameters.empty();
-    }
+@GeneratedMixin
+public interface TypeListActions : Message, WithActionList {
 
     /**
-     * Makes supplied {@link io.spine.base.UuidValue UuidValue} type implement
-     * the configured interface.
+     * Returns the list of gathered message types.
      */
-    @Override
-    public ImmutableList<CompilerOutput> generateFor(MessageType type) {
-        checkNotNull(type);
-        if (!type.isUuidValue()) {
-            return ImmutableList.of();
-        }
-        return super.generateFor(type);
-    }
+    public fun getTypeList(): List<MessageType>
 }

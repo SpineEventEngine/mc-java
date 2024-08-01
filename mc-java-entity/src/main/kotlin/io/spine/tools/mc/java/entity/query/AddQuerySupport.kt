@@ -24,35 +24,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.entity
+package io.spine.tools.mc.java.entity.query
 
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.settings.loadSettings
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.RenderActions
-import io.spine.tools.mc.java.TypeListRenderer
+import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.tools.mc.java.entity.EntityPluginComponent
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.execute
 
 /**
- * Renders the code for the message types that qualify as [io.spine.base.EntityState].
+ * Extends the code of an entity state type for supporting queries.
  *
- * The renderer modifies the code if the [generateQueries][Entities.getGenerateQueries] flag is
- * set to `true` in the code generation settings.
- *
- * The actual code generation is performed by actions [defined][Entities.getActionList] in
- * the code generation settings.
+ * In particular:
+ *  * Adds a nested class called [QueryBuilder][QueryBuilderClass].
+ *  * Adds a nested class called [Query][QueryClass].
+ *  * Adds the method called [query][QueryMethod] under the entity state class.
  */
-public class EntityStateRenderer :
-    TypeListRenderer<DiscoveredEntities, Entities>(),
-    EntityPluginComponent {
+public class AddQuerySupport(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : DirectMessageAction(type, file, context), EntityPluginComponent {
 
-    override val enabledBySettings: Boolean
-        get() = settings.generateQueries
+    private val settings: Entities by lazy {
+        loadSettings()
+    }
 
-    override fun doRender(type: MessageType, file: SourceFile<Java>) {
+    override fun doRender() {
         execute {
-            RenderActions(type, file, settings.actionList, context!!).apply()
+            // The `query()` method is added after constructors.
+            QueryMethod(file).run {
+                render()
+            }
+            // The `QueryBuilder` class is added at the bottom, before the `Query` class.
+            QueryBuilderClass(type, file, settings, context!!).run {
+                render()
+            }
+            // The `Query` class comes last.
+            QueryClass(type, file, settings, context!!).run {
+                render()
+            }
         }
     }
 }

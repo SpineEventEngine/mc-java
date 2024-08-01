@@ -32,9 +32,6 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 import com.google.protobuf.compiler.PluginProtos.Version;
-import io.spine.base.CommandMessage;
-import io.spine.base.EventMessage;
-import io.spine.base.RejectionMessage;
 import io.spine.code.java.PackageName;
 import io.spine.tools.java.fs.FileName;
 import io.spine.tools.java.fs.JavaFiles;
@@ -48,9 +45,6 @@ import io.spine.tools.protoc.plugin.message.tests.EveryIsTestProto;
 import io.spine.tools.protoc.plugin.message.tests.IsGeneratedProto;
 import io.spine.tools.protoc.plugin.message.tests.IsInOneFileProto;
 import io.spine.tools.protoc.plugin.message.tests.IsTestProto;
-import io.spine.tools.protoc.plugin.message.tests.Rejections;
-import io.spine.tools.protoc.plugin.message.tests.TestCommandsProto;
-import io.spine.tools.protoc.plugin.message.tests.TestEventsProto;
 import io.spine.tools.protoc.plugin.message.tests.UserNameProto;
 import io.spine.tools.protoc.plugin.message.tests.UserProto;
 import org.gradle.testfixtures.ProjectBuilder;
@@ -262,56 +256,6 @@ final class InterfaceGenTest {
                 var content = file.getContent();
                 assertThat(content)
                         .matches(CUSTOMER_EVENT_INTERFACE_PATTERN);
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("generate insertion points for specific types")
-    class TypeInsertionPoints {
-
-        @Test
-        @DisplayName("`EventMessage`")
-        void eventMessage() {
-            var filePath = protoFile("test_events.proto");
-
-            var fileDescr = TestEventsProto.getDescriptor().toProto();
-            var response = processCodeGenRequest(filePath, fileDescr);
-            assertNotNull(response);
-            var files = response.getFileList();
-            assertEquals(2, files.size());
-            for (var file : files) {
-                assertGeneratedInterface(EventMessage.class, file);
-            }
-        }
-
-        @Test
-        @DisplayName("`CommandMessage`")
-        void commandMessage() {
-            var filePath = protoFile("test_commands.proto");
-
-            var fileDescr = TestCommandsProto.getDescriptor().toProto();
-            var response = processCodeGenRequest(filePath, fileDescr);
-            assertNotNull(response);
-            var files = response.getFileList();
-            assertEquals(2, files.size());
-            for (var file : files) {
-                assertGeneratedInterface(CommandMessage.class, file);
-            }
-        }
-
-        @Test
-        @DisplayName("`RejectionMessage`")
-        void generateRejectionMessageInsertionPoints() {
-            var filePath = protoFile("test_rejections.proto");
-
-            var fileDescr = Rejections.getDescriptor().toProto();
-            var response = processCodeGenRequest(filePath, fileDescr);
-            assertNotNull(response);
-            var files = response.getFileList();
-            assertEquals(1, files.size());
-            for (var file : files) {
-                assertGeneratedInterface(RejectionMessage.class, file);
             }
         }
     }

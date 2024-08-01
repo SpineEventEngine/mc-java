@@ -24,17 +24,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.entity.field
 
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
+import io.spine.query.EntityStateField
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.field.FieldClass
+import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
 
 /**
- * The interface common to types holding a list of render action class names.
+ * Creates a nested class called [`Field`][NAME] under a Java class
+ * generated for an entity state.
+ *
+ * @see FieldClass
  */
-public interface WithActionList {
-
-    /**
-     * Returns the list of render actions to be applied.
-     */
-    public fun getActionList(): List<@FqBinaryName String>
-}
+public class AddFieldClass(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : FieldClass(type, file, ClassName(EntityStateField::class.java), context)

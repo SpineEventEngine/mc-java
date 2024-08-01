@@ -82,7 +82,7 @@ public abstract class CreateNestedClass(
      * this factory produces a nested class [cls].
      *
      * @return full text of the Javadoc comment to be created for the class, or
-     *         an empty string if the comment is not needed.
+     *         an empty string if the comment is unnecessary.
      */
     protected abstract fun classJavadoc(): String
 

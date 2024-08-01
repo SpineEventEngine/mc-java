@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.annotation.Internal;
 import io.spine.base.EntityState;
@@ -34,6 +35,7 @@ import io.spine.option.OptionsProto;
 import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
 import io.spine.tools.proto.code.ProtoOption;
+import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
@@ -50,12 +52,23 @@ import static java.util.stream.Collectors.toList;
  */
 public final class EntitySettings extends SettingsWithFields<Entities> {
 
+    /**
+     * Names of render action classes applied by default to entity states.
+     */
+    @VisibleForTesting
+    public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS = ImmutableList.of(
+        "io.spine.tools.mc.java.entity.column.AddColumnClass",
+        "io.spine.tools.mc.java.entity.field.AddFieldClass",
+        "io.spine.tools.mc.java.entity.query.AddQuerySupport",
+        "io.spine.tools.mc.java.entity.ImplementEntityState"
+    );
+
     private final SetProperty<String> options;
     private final Property<Boolean> generateQueries;
 
     @VisibleForTesting
     public EntitySettings(Project p) {
-        super(p);
+        super(p, DEFAULT_ACTIONS);
         convention(EntityStateField.class);
         interfaceNames().convention(ImmutableSet.of(
                 EntityState.class.getCanonicalName()
@@ -98,10 +111,9 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     @Override
     public Entities toProto() {
         return Entities.newBuilder()
-                .addAllAddInterface(interfaces())
                 .addAllOption(options())
                 .setGenerateQueries(generateQueries.get())
-                .setGenerateFields(generateFields())
+                .addAllAction(actions())
                 .build();
     }
 
