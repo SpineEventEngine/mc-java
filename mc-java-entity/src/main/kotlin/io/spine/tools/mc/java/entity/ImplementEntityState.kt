@@ -39,7 +39,7 @@ import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.ImplementInterface
 
 /**
- * Updates the code of a message which qualifies as [EntityState] type by
+ * Updates the Java code of a message type which qualifies as [EntityState] by
  * making the type implement the [EntityState] interface.
  *
  * The class is public because its fully qualified name is used as a default
