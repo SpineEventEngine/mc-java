@@ -35,7 +35,7 @@ import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
 /**
  * Gathers codegen settings from [UuidValueDiscovered] events.
  */
-internal class UuidMessageView : View<MessageType, UuidMessage, UuidMessage.Builder>() {
+internal class UuidMessageView : View<MessageType, UuidActions, UuidActions.Builder>() {
 
     @Subscribe
     fun on(e: UuidValueDiscovered) = alter {

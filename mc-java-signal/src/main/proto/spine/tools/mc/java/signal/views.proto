@@ -39,7 +39,7 @@ import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
 
 // Provides commands declared in a proto file.
-message Commands {
+message CommandActions {
     option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 
@@ -54,7 +54,7 @@ message Commands {
 }
 
 // Provides events declared in a proto file.
-message Events {
+message EventActions {
     option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 
@@ -69,7 +69,7 @@ message Events {
 }
 
 // Provides rejections declared in a proto file.
-message Rejections {
+message RejectionActions {
     option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
     option (entity).kind = PROJECTION;
 

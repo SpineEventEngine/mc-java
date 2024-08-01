@@ -32,4 +32,4 @@ import io.spine.tools.mc.java.TypeRenderer
  * Renders code by applying actions specified in
  * [settings][io.spine.tools.mc.java.settings.Uuids.getActionList].
  */
-internal class UuidActionRenderer : TypeRenderer<UuidMessage>()
+internal class UuidActionRenderer : TypeRenderer<UuidActions>()
