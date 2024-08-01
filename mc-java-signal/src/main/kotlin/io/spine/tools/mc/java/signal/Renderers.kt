@@ -40,7 +40,7 @@ import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.psi.java.execute
 
 /**
- * An abstract base for renders of signal messages.
+ * An abstract base for renderers of signal messages.
  *
  * @param V the type of the view state which gathers signals of the type served by this renderer.
  */
@@ -72,7 +72,7 @@ internal abstract class SignalRenderer<V> :
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class CommandRenderer : SignalRenderer<Commands>() {
+internal class CommandRenderer : SignalRenderer<CommandActions>() {
 
     override val typeSettings: Signals
         get() = settings.commands
@@ -85,7 +85,7 @@ internal class CommandRenderer : SignalRenderer<Commands>() {
  *
  * @see [io.spine.base.CommandMessage]
  */
-internal class EventRenderer : SignalRenderer<Events>() {
+internal class EventRenderer : SignalRenderer<EventActions>() {
 
     override val typeSettings: Signals
         get() = settings.events
@@ -98,7 +98,7 @@ internal class EventRenderer : SignalRenderer<Events>() {
  *
  * @see [io.spine.base.RejectionMessage]
  */
-internal class RejectionRenderer : SignalRenderer<Rejections>() {
+internal class RejectionRenderer : SignalRenderer<RejectionActions>() {
 
     override val typeSettings: Signals
         get() = settings.rejections
