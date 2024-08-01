@@ -49,5 +49,5 @@ message UuidMessage {
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the UUID messages.
-    repeated string action = 3;
+    repeated string action = 2;
 }
