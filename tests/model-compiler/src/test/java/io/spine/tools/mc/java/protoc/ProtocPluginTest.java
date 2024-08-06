@@ -249,6 +249,8 @@ final class ProtocPluginTest {
         @DisplayName("top-level message declarations as specified in `modelCompiler` settings")
         void markMessagesByFilePattern() {
             assertThat(WeatherForecast.class).isAssignableTo(DocumentMessage.class);
+
+            // Only top-level message types should be marked.
             assertThat(WeatherForecast.Temperature.getDefaultInstance())
                     .isNotInstanceOf(DocumentMessage.class);
         }
