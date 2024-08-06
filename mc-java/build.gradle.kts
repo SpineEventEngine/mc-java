@@ -56,6 +56,7 @@ dependencies {
         ":mc-java-checks",
         ":mc-java-entity",
         ":mc-java-signal",
+        ":mc-java-marker",
         ":mc-java-message-group",
         ":mc-java-uuid",
     ).forEach {

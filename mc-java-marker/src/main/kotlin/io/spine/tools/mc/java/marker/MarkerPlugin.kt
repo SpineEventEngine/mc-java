@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.mgroup
+package io.spine.tools.mc.java.marker
 
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
@@ -32,30 +32,21 @@ import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
 
 /**
- * The ProtoData plugin responsible for code generation for groups of messages
- * specified by a file or type name patterns.
- *
- * @see io.spine.tools.mc.java.settings.GroupSettings
+ * The ProtoData plugin which performs code generation in response to discovering
+ * [every_is][io.spine.option.IsOption] file option and [is][io.spine.option.IsOption]
+ * message type option.
  */
-public class MessageGroupPlugin : Plugin {
+public class MarkerPlugin : Plugin {
 
     override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
+        EveryIsOptionDiscovery()
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        GroupedMessageView::class.java
+        EveryIsMessagesView::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        GroupedMessageRenderer()
+        EveryIsMessagesRenderer()
     )
-
-    public companion object {
-
-        /**
-         * The ID for obtaining settings for the plugin.
-         */
-        public val SETTINGS_ID: String = MessageGroupPlugin::class.java.canonicalName
-    }
 }
