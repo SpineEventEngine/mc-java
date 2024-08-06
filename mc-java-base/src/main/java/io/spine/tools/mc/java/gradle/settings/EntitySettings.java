@@ -30,7 +30,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.annotation.Internal;
-import io.spine.base.EntityState;
 import io.spine.option.OptionsProto;
 import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
@@ -70,9 +69,6 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     public EntitySettings(Project p) {
         super(p, DEFAULT_ACTIONS);
         convention(EntityStateField.class);
-        interfaceNames().convention(ImmutableSet.of(
-                EntityState.class.getCanonicalName()
-        ));
         options = p.getObjects().setProperty(String.class);
         options.convention(ImmutableSet.of(
                 OptionsProto.entity.getDescriptor().getName()

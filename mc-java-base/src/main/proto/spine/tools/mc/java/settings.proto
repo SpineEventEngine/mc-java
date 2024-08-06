@@ -186,7 +186,7 @@ message MessageGroup {
     Pattern pattern = 1;
 
     // Java interfaces to be added to all the messages in this group.
-    repeated AddInterface add_interface = 2;
+    repeated AddInterface add_interface = 2 [deprecated = true];
 
     // Settings for adding Java methods for messages in this group.
     repeated GenerateMethods generate_methods = 3 [deprecated = true];
@@ -195,7 +195,7 @@ message MessageGroup {
     reserved "generate_nested_classes";
 
     // Settings for generating Java type-safe field API for messages in this group.
-    GenerateFields generate_fields = 5;
+    GenerateFields generate_fields = 5 [deprecated = true];
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the messages of this group.

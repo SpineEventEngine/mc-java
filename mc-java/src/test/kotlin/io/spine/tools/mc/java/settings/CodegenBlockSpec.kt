@@ -232,8 +232,6 @@ class CodegenBlockSpec {
 
         @Test
         fun `arbitrary message groups`() {
-            val firstInterface = "com.acme.Foo"
-            val secondInterface = "com.acme.Bar"
             val methodFactory = "custom.MethodFactory"
             val nestedClassAction = "custom.NestedClassAction"
             val anotherNestedClassAction = "custom.AnotherNestedClassAction"
@@ -241,12 +239,10 @@ class CodegenBlockSpec {
             val firstMessageType = "acme.small.yellow.Bird"
             options.codegen { settings ->
                 settings.forMessage(firstMessageType) {
-                    it.markAs(firstInterface)
                     it.markFieldsAs(fieldSuperclass)
                     it.useAction(nestedClassAction)
                 }
                 settings.forMessages(settings.by().regex(".+_.+")) {
-                    it.markAs(secondInterface)
                     it.generateMethodsWith(methodFactory)
                     it.useAction(anotherNestedClassAction)
                 }
@@ -267,7 +263,6 @@ class CodegenBlockSpec {
 
             first.run {
                 pattern.type.expectedType.value shouldBe firstMessageType
-                addInterfaceList.first().name.canonical shouldBe firstInterface
                 generateFields.superclass.canonical shouldBe fieldSuperclass
                 actionList shouldHaveSize 1
                 actionList.first() shouldBe nestedClassAction
@@ -275,7 +270,6 @@ class CodegenBlockSpec {
 
             second.run {
                 pattern.file.hasRegex() shouldBe true
-                addInterfaceList.first().name.canonical shouldBe secondInterface
                 generateMethodsList.first().factory.className.canonical shouldBe methodFactory
                 actionList.first() shouldBe anotherNestedClassAction
             }

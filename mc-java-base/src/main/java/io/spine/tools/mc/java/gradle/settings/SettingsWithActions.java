@@ -27,17 +27,12 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.Message;
-import io.spine.tools.gradle.Multiple;
 import io.spine.tools.gradle.Ordered;
-import io.spine.tools.mc.java.settings.AddInterface;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
-import org.gradle.api.provider.SetProperty;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.java.code.Names.className;
 
 /**
  * Code generation settings that cover applying code generation actions specified as
@@ -47,9 +42,6 @@ import static io.spine.tools.java.code.Names.className;
  *         Protobuf type reflecting a snapshot of these settings
  */
 abstract class SettingsWithActions<P extends Message> extends Settings<P> {
-
-    @Deprecated
-    private final Multiple<String> interfaceNames;
 
     private final Ordered<@FqBinaryName String> actions;
 
@@ -65,25 +57,8 @@ abstract class SettingsWithActions<P extends Message> extends Settings<P> {
     SettingsWithActions(Project p, Iterable<@FqBinaryName String> defaultActions) {
         super(p);
         checkNotNull(defaultActions);
-        this.interfaceNames = new Multiple<>(p, String.class);
         this.actions = new Ordered<>(p, String.class);
         actions.convention(defaultActions);
-    }
-
-    /**
-     * Configures the associated messages to implement a Java interface with the given name.
-     *
-     * <p>The declaration of the interface in Java must exist. It will not be generated. Providing
-     * a non-existent interface may lead to a compiler error.
-     *
-     * @param interfaceName
-     *         the canonical name of the interface
-     * @deprecated Please call {@link #useAction(String)} with corresponding codegen action
-     *         class name instead.
-     */
-    @Deprecated
-    public final void markAs(String interfaceName) {
-        interfaceNames.add(interfaceName);
     }
 
     /**
@@ -129,28 +104,5 @@ abstract class SettingsWithActions<P extends Message> extends Settings<P> {
      */
     protected final Iterable<@FqBinaryName String> actions() {
         return actions.getOrElse(ImmutableList.of());
-    }
-
-    /**
-     * Obtains the set of {@link AddInterface}s which define which interfaces to add
-     * to the associated messages.
-     *
-     * @deprecated Please use {@link #actions()} instead.
-     */
-    @Deprecated
-    final ImmutableSet<AddInterface> interfaces() {
-        return interfaceNames.transform(name -> AddInterface.newBuilder()
-                .setName(className(name))
-                .build());
-    }
-
-    /**
-     * Obtains the Gradle property containing the set of Java interface names.
-     *
-     * @deprecated Please use {@link #actions()} instead.
-     */
-    @Deprecated
-    final SetProperty<String> interfaceNames() {
-        return interfaceNames;
     }
 }
