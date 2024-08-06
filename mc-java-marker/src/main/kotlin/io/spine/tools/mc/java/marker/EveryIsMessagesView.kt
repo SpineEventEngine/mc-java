@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,32 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+package io.spine.tools.mc.java.marker
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-marker",
-    "mc-java-marker-tests",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-validation",
-    "mc-java-plugin-bundle"
-)
+import io.spine.core.Subscribe
+import io.spine.protodata.File
+import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.plugin.View
+import io.spine.server.entity.alter
+import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+/**
+ * Gathers messages declared in a file with `every_is` option.
+ */
+internal class EveryIsMessagesView : View<File, EveryIsMessages, EveryIsMessages.Builder>() {
+
+    @Subscribe
+    fun on(e: EveryIsOptionDiscovered) = alter {
+        option = e.option
+        header = e.header
+    }
+
+    @Subscribe
+    fun on(e: TypeDiscovered) {
+        if (state().hasOption()) {
+            alter {
+                addType(e.type)
+            }
+        }
     }
 }

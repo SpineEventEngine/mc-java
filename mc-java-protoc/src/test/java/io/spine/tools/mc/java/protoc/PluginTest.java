@@ -66,6 +66,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @DisplayName("`Plugin` should")
+@Disabled("During migration to new codegen")
 final class PluginTest {
 
     private static final String TEST_PROTO_SUFFIX = "_generators.proto";

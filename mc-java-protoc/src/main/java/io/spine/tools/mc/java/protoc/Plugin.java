@@ -31,7 +31,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
-import io.spine.tools.mc.java.protoc.message.InterfaceGen;
 import io.spine.tools.mc.java.protoc.method.MethodGen;
 import io.spine.tools.mc.java.settings.Combined;
 
@@ -72,7 +71,7 @@ public final class Plugin {
         var request = readRequest();
         var settings = readSettings(request);
         var generator = CompositeGenerator.of(
-                InterfaceGen.instance(settings),
+                //InterfaceGen.instance(settings),
                 MethodGen.instance(settings)//,
                 //new BuilderGen()
                 //NestedClassGen.instance(settings)

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,32 +24,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+package io.spine.tools.mc.java.marker
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-marker",
-    "mc-java-marker-tests",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-validation",
-    "mc-java-plugin-bundle"
-)
+import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaRoot
+import io.spine.protodata.renderer.SourceFileSet
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+internal class EveryIsMessagesRenderer : JavaRenderer() {
+
+    override fun render(sources: SourceFileSet) {
+        if (!sources.hasJavaRoot) {
+            return
+        }
+        val views = findViews()
+        views.forEach {
+            it.doRender()
+        }
+    }
+
+    private fun findViews(): Set<EveryIsMessages> {
+        val found = select(EveryIsMessages::class.java).all()
+        return found
+    }
+
+    private fun EveryIsMessages.doRender() {
+        //TODO:2024-08-06:alexander.yevsyukov: Implement.
     }
 }
