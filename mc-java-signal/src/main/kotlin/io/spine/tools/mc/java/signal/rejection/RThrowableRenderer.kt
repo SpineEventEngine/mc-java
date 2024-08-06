@@ -144,6 +144,7 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
 private fun ProtobufSourceFile.isRejections(): Boolean =
     file.path.endsWith("rejections.proto")
 
+//TODO:2024-08-06:alexander.yevsyukov: Migrate to `isTopLevel` from ProtoData.
 private fun MessageType.isTopLevel(): Boolean =
     !hasDeclaredIn()
 
