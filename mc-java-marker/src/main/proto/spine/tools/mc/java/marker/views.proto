@@ -37,6 +37,7 @@ option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
+import "spine/protodata/source.proto";
 
 
 // Messages discovered in a file with `every_is` option declared.
