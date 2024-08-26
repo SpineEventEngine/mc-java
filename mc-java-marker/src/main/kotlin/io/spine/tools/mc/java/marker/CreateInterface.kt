@@ -26,34 +26,14 @@
 
 package io.spine.tools.mc.java.marker
 
-import com.google.protobuf.Message
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaRoot
-import io.spine.protodata.java.qualifiedJavaType
 import io.spine.protodata.renderer.SourceFileSet
+import java.lang.reflect.Type
 
-internal class EveryIsMessagesRenderer : JavaRenderer() {
+public class CreateInterface(name: String, superInterface: Type) {
 
-    override fun render(sources: SourceFileSet) {
-        if (!sources.hasJavaRoot) {
-            return
-        }
-        val views = findViews()
-        views.forEach {
-            it.doRender(sources)
-        }
+    public fun render(sources: SourceFileSet) {
+
+        TODO("Not yet implemented")
     }
 
-    private fun findViews(): Set<EveryIsMessages> {
-        val found = select(EveryIsMessages::class.java).all()
-        return found
-    }
-
-    private fun EveryIsMessages.doRender(sources: SourceFileSet) {
-        if (option.generate) {
-            val interfaceName = option.qualifiedJavaType(header)
-            CreateInterface(interfaceName, Message::class.java).render(sources)
-        }
-        //TODO:2024-08-06:alexander.yevsyukov: Implement.
-    }
 }
