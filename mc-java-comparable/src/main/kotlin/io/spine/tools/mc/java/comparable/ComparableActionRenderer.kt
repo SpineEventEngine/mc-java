@@ -26,30 +26,11 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import io.spine.tools.mc.java.TypeRenderer
+import io.spine.tools.mc.java.uuid.ComparableActions
 
-public class ComparablePlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        ComparableMessageDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableMessageView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        ComparableActionRenderer()
-    )
-
-    public companion object {
-
-        /**
-         * The ID for getting settings for the plugin.
-         */
-        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
-    }
-}
+/**
+ * Renders code by applying actions specified in
+ * [settings][io.spine.tools.mc.java.settings.Comparables.getActionList].
+ */
+internal class ComparableActionRenderer : TypeRenderer<ComparableActions>()
