@@ -42,11 +42,8 @@ import "spine/protodata/file.proto";
 message ComparableMessageDiscovered {
 
     // The type in which the option is discovered.
-    protodata.TypeName type = 1 [(required) = true];
-
-    // The file in which the type is defined.
-    protodata.File file = 2 [(required) = true];
+    protodata.MessageType type = 1;
 
     // The discovered `compare_by` option.
-    protodata.Option option = 3 [(required) = true];
+    protodata.Option option = 2;
 }

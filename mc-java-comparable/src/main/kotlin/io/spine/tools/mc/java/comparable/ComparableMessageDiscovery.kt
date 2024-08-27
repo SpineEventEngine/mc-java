@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.comparable
 
 import io.spine.core.External
 import io.spine.protodata.Option
-import io.spine.protodata.event.TypeOptionDiscovered
+import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.server.event.React
 import io.spine.server.model.NoReaction
@@ -38,24 +38,22 @@ import io.spine.server.tuple.EitherOf2.withB
 import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
 import io.spine.tools.mc.java.comparable.event.comparableMessageDiscovered
 
-internal class ComparableMessageDiscovery : Policy<TypeOptionDiscovered>(),
-    ComparablePluginComponent {
+internal class ComparableMessageDiscovery : Policy<TypeDiscovered>() {
 
     @React
     override fun whenever(
-        @External event: TypeOptionDiscovered
-    ): EitherOf2<ComparableMessageDiscovered, NoReaction> =
-        if (event.option.isComparable()) {
-            withA(
-                comparableMessageDiscovered {
-                    type = event.type
-                    file = event.file
-                    option = event.option
-                }
-            )
-        } else {
-            withB(nothing())
-        }
+        @External event: TypeDiscovered
+    ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
+        val options = event.type.optionList
+        val compareBy = options.find(::isComparable) ?: return withB(nothing())
+        return withA(
+            comparableMessageDiscovered {
+                type = event.type
+                option = compareBy
+            }
+        )
+    }
+
 }
 
-private fun Option.isComparable(): Boolean = name == "compare_by"
+private fun isComparable(option: Option): Boolean = option.name == "compare_by"

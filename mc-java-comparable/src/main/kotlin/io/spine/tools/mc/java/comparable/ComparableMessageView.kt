@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.comparable
 
 import io.spine.core.Subscribe
-import io.spine.protodata.TypeName
+import io.spine.protodata.MessageType
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
@@ -36,11 +36,11 @@ import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
  * Gathers codegen settings from [ComparableMessageDiscovered] events.
  */
 internal class ComparableMessageView :
-    View<TypeName, ComparableActions, ComparableActions.Builder>() {
+    View<MessageType, ComparableMessage, ComparableMessage.Builder>() {
 
     @Subscribe
-    fun on(e: ComparableMessageDiscovered) = alter {
-        file = e.file
-        option = e.option
+    fun on(event: ComparableMessageDiscovered) = alter {
+        type = event.type
+        option = event.option
     }
 }
