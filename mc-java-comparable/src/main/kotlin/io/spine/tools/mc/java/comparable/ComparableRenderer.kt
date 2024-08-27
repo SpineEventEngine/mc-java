@@ -26,10 +26,43 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.tools.mc.java.TypeRenderer
+import io.spine.protodata.MessageType
+import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.file.hasJavaRoot
+import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
+import io.spine.tools.psi.java.execute
 
-/**
- * Renders code by applying actions specified in
- * [settings][io.spine.tools.mc.java.settings.Comparables.getActionList].
- */
-internal class ComparableActionRenderer : TypeRenderer<ComparableActions>()
+internal class ComparableRenderer : JavaRenderer() {
+
+    override fun render(sources: SourceFileSet) {
+        val relevant = sources.hasJavaRoot
+        if (!relevant) {
+            return
+        }
+        val views = findViews()
+        views.forEach { view ->
+            val type = view.type
+            val sourceFile = sources.javaFileOf(type)
+            execute {
+                doRender(type, sourceFile)
+            }
+        }
+    }
+
+    private fun doRender(type: MessageType, sourceFile: SourceFile<Java>) {
+        val actions = listOf(
+            ImplementComparable(type, sourceFile, context!!),
+            AddCompareToMethod(type, sourceFile, context!!),
+        )
+        actions.forEach {
+            it.render()
+        }
+    }
+
+    private fun findViews(): Set<ComparableMessage> {
+        val found = select(ComparableMessage::class.java).all()
+        return found
+    }
+}

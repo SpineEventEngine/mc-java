@@ -42,14 +42,6 @@ public class ComparablePlugin : Plugin {
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        ComparableActionRenderer()
+        ComparableRenderer()
     )
-
-    public companion object {
-
-        /**
-         * The ID for getting settings for the plugin.
-         */
-        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
-    }
 }
