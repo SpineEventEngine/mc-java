@@ -43,7 +43,9 @@ internal class ComparableMessageDiscovery : Policy<TypeOptionDiscovered>(),
         loadSettings()
     }
 
-    override fun whenever(event: TypeOptionDiscovered): EitherOf2<ComparableMessageDiscovered, NoReaction> {
+    override fun whenever(
+        event: TypeOptionDiscovered
+    ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
         val option = event.option
         return if (option.isComparable()) {
             EitherOf2.withA(
