@@ -44,7 +44,7 @@ public final class ComparableSettings extends SettingsWithActions<Comparables> {
     public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS =
             ImmutableList.of(
                     "io.spine.tools.mc.java.comparable.ImplementComparable",
-                    "io.spine.tools.mc.java.comparable.AddFactoryMethods"
+                    "io.spine.tools.mc.java.comparable.AddCompareToMethod"
             );
 
     ComparableSettings(Project p) {
