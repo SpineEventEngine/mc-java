@@ -26,10 +26,12 @@
 
 package io.spine.tools.mc.java.comparable
 
+import io.spine.core.External
 import io.spine.protodata.Option
 import io.spine.protodata.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.React
 import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
@@ -43,8 +45,9 @@ internal class ComparableMessageDiscovery : Policy<TypeOptionDiscovered>(),
         loadSettings()
     }
 
+    @React
     override fun whenever(
-        event: TypeOptionDiscovered
+        @External event: TypeOptionDiscovered
     ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
         val option = event.option
         return if (option.isComparable()) {
