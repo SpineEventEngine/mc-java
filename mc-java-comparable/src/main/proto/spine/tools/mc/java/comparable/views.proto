@@ -24,32 +24,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable
+syntax = "proto3";
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+package spine.tools.mc.java.comparable;
 
-public class ComparablePlugin : Plugin {
+import "spine/options.proto";
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        ComparableMessageDiscovery()
-    )
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.java.uuid";
+option java_outer_classname = "ViewsProto";
+option java_multiple_files = true;
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableMessageView::class.java
-    )
+import "spine/protodata/ast.proto";
 
-    override fun renderers(): List<Renderer<*>> = listOf(
-        UuidActionRenderer()
-    )
+import "spine/tools/mc/java/settings.proto";
 
-    public companion object {
+// Matches a UUID value message to corresponding code generation settings.
+message ComparableActions {
+    option (is).java_type = "io.spine.tools.mc.java.TypeActions";
+    option (entity).kind = VIEW;
 
-        /**
-         * The ID for getting settings for the plugin.
-         */
-        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
-    }
+    // The type of the message.
+    protodata.MessageType type = 1 [(required) = true];
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the comparable messages.
+    repeated string action = 2;
 }

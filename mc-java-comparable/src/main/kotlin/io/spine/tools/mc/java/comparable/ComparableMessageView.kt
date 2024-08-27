@@ -26,30 +26,20 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
+import io.spine.core.Subscribe
+import io.spine.protodata.MessageType
 import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import io.spine.server.entity.alter
+import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
+import io.spine.tools.mc.java.uuid.ComparableActions
 
-public class ComparablePlugin : Plugin {
+/**
+ * Gathers codegen settings from [ComparableMessageDiscovered] events.
+ */
+internal class ComparableMessageView : View<MessageType, ComparableActions, ComparableActions.Builder>() {
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        ComparableMessageDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableMessageView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        UuidActionRenderer()
-    )
-
-    public companion object {
-
-        /**
-         * The ID for getting settings for the plugin.
-         */
-        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
+    @Subscribe
+    fun on(e: ComparableMessageDiscovered) = alter {
+        addAllAction(e.settings.actionList)
     }
 }

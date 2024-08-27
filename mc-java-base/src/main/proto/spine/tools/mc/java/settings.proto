@@ -251,6 +251,13 @@ message Uuids {
     repeated string action = 3;
 }
 
+message Comparables {
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the comparable messages.
+    repeated string action = 1;
+}
+
 // Configuration for adding a Java interface to a generated class.
 message AddInterface {
 
