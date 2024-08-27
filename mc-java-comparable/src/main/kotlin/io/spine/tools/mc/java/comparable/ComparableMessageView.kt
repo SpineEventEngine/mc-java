@@ -31,7 +31,6 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
-import io.spine.tools.mc.java.uuid.ComparableActions
 
 /**
  * Gathers codegen settings from [ComparableMessageDiscovered] events.

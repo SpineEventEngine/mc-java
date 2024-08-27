@@ -36,6 +36,7 @@ import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
+import io.spine.tools.mc.java.comparable.ComparablePlugin
 import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJava.allPlugins
 import io.spine.tools.mc.java.gradle.ValidationSdk
@@ -139,6 +140,7 @@ private fun Project.configureProtoDataPlugins() {
     protodata.run {
         addPlugin<MessageGroupPlugin>()
         addPlugin<UuidPlugin>()
+        addPlugin<ComparablePlugin>()
         addPlugin<EntityPlugin>()
 
         // Annotations should follow `SignalPlugin` and `EntityPlugin`

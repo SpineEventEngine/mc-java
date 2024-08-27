@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.comparable
 
 import io.spine.tools.mc.java.TypeRenderer
-import io.spine.tools.mc.java.uuid.ComparableActions
 
 /**
  * Renders code by applying actions specified in
