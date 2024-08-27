@@ -36,18 +36,18 @@ option java_outer_classname = "ViewsProto";
 option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
-
-import "spine/tools/mc/java/settings.proto";
+import "spine/protodata/file.proto";
 
 // Matches a comparable message to the corresponding code generation settings.
 message ComparableActions {
-    option (is).java_type = "io.spine.tools.mc.java.TypeActions";
     option (entity).kind = VIEW;
 
-    // The type of the message.
-    protodata.MessageType type = 1 [(required) = true];
+    // The type in which the option is discovered.
+    protodata.TypeName type = 1 [(required) = true];
 
-    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
-    // that are to be applied to the comparable messages.
-    repeated string action = 2;
+    // The file in which the type is defined.
+    protodata.File file = 2 [(required) = true];
+
+    // The discovered `compare_by` option.
+    protodata.Option option = 3 [(required) = true];
 }

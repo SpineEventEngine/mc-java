@@ -36,15 +36,17 @@ option java_outer_classname = "EventsProto";
 option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
-
-import "spine/tools/mc/java/settings.proto";
+import "spine/protodata/file.proto";
 
 // A message with `option (compare_by)` was discovered.
 message ComparableMessageDiscovered {
 
-    // The discovered type.
+    // The type in which the option is discovered.
     protodata.TypeName type = 1 [(required) = true];
 
-    // Code generation settings for this type.
-    spine.tools.mc.java.Comparables settings = 2 [(required) = true];
+    // The file in which the type is defined.
+    protodata.File file = 2 [(required) = true];
+
+    // The discovered `compare_by` option.
+    protodata.Option option = 3 [(required) = true];
 }
