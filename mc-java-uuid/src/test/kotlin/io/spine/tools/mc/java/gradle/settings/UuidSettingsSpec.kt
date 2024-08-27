@@ -50,12 +50,12 @@ internal class UuidSettingsSpec {
         val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
         val settings = UuidSettings(project)
 
-        val expected = listOf(
+        val expected = setOf(
             ImplementUuidValue::class.reference,
             AddFactoryMethods::class.reference,
         )
 
-        settings.actions().toList() shouldContainExactly expected
-        settings.toProto().actionList shouldContainExactly expected
+        settings.actions().actionMap.keys shouldContainExactly expected
+        settings.toProto().actions.actionMap.keys shouldContainExactly expected
     }
 }

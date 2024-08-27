@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.logging.WithLogging
@@ -41,15 +42,18 @@ import io.spine.tools.psi.java.locate
 /**
  * Abstract base for code generation actions for message types in Java code.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param P the type of the parameter passed to the action.
+ *
+ * @param type the type of the message.
+ * @param file the source code to which the action is applied.
+ * @param context the code generation context in which this action runs.
  */
-public abstract class MessageAction(
+public abstract class MessageAction<P : Message>(
     type: MessageType,
     file: SourceFile<Java>,
+    parameter: P,
     context: CodegenContext
-) : MessageAction<Java>(Java, type, file, context), WithLogging {
+) : MessageAction<Java, P>(Java, type, file, parameter, context), WithLogging {
 
     /**
      * The [file] parsed into instance of [PsiJavaFile].

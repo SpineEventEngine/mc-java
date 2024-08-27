@@ -113,7 +113,7 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
         return Entities.newBuilder()
                 .addAllOption(options())
                 .setGenerateQueries(generateQueries.get())
-                .addAllAction(actions())
+                .setActions(actions())
                 .build();
     }
 

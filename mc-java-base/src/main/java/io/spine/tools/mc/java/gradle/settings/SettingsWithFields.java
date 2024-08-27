@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Message;
 import io.spine.tools.mc.java.settings.GenerateFields;
+import io.spine.tools.mc.java.settings.SettingsWithActions;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;

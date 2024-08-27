@@ -56,14 +56,14 @@ internal class SignalSettingsSpec {
 
     @Test
     fun `provide default actions for command messages`() {
-        codegenSettings.commands.toProto().actionList shouldContainExactly listOf(
+        codegenSettings.commands.toProto().actions.actionMap.keys shouldContainExactly setOf(
             ImplementCommandMessage::class.java.reference,
         )
     }
 
     @Test
     fun `provide default actions for event messages`() {
-        codegenSettings.events.toProto().actionList shouldContainExactly listOf(
+        codegenSettings.events.toProto().actions.actionMap.keys shouldContainExactly setOf(
             ImplementEventMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )
@@ -71,7 +71,7 @@ internal class SignalSettingsSpec {
 
     @Test
     fun `provide default actions for rejection messages`() {
-        codegenSettings.rejections.toProto().actionList shouldContainExactly listOf(
+        codegenSettings.rejections.toProto().actions.actionMap.keys shouldContainExactly setOf(
             ImplementRejectionMessage::class.java.reference,
             AddEventMessageField::class.java.reference
         )

@@ -61,7 +61,7 @@ internal class EntitySettingsSpec {
 
     @Test
     fun `provide default actions`() {
-        settings.actionList shouldContainExactly listOf(
+        settings.actions.actionMap.keys shouldContainExactly setOf(
             AddColumnClass::class.java.reference,
             AddFieldClass::class.java.reference,
             AddQuerySupport::class.java.reference,

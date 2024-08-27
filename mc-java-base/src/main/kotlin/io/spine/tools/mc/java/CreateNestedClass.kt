@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.StringValue
+import com.google.protobuf.stringValue
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
@@ -44,17 +46,17 @@ import io.spine.tools.psi.java.makeStatic
 /**
  * Abstract base for code generators creating classes nested into Java code of message types.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
+ * @param type the type of the message.
+ * @param file the source code to which the action is applied.
  * @property simpleName a simple name of the nested class to be generated.
- * @property context the code generation context in which this action runs.
+ * @param context the code generation context in which this action runs.
  */
 public abstract class CreateNestedClass(
     type: MessageType,
     file: SourceFile<Java>,
     protected val simpleName: String,
     context: CodegenContext
-) : MessageAction(type, file, context) {
+) : MessageAction<StringValue>(type, file, stringValue { value = simpleName }, context) {
 
     /**
      * The target of the code generation action.

@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.StringValue
+import com.google.protobuf.stringValue
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
@@ -38,8 +40,8 @@ import io.spine.tools.psi.java.implement
  * An abstract base for code generation actions that make a message class
  * implement the given [interface][superInterface].
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
+ * @param type the type of the message.
+ * @param file the source code to which the action is applied.
  * @property superInterface the interface to implement.
  * @property genericParameters optional generic parameters if [superInterface] is a generic type.
  * @property context the code generation context in which this action runs.
@@ -50,7 +52,7 @@ public open class ImplementInterface(
     private val superInterface: String,
     private val genericParameters: List<String> = listOf(),
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<StringValue>(type, file, stringValue { value = superInterface}, context) {
 
     override fun doRender() {
         val si = elementFactory.createClassReference(

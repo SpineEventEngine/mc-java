@@ -98,7 +98,7 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
     public Signals toProto() {
         return Signals.newBuilder()
                 .addAllPattern(patterns())
-                .addAllAction(actions())
+                .setActions(actions())
                 .build();
     }
 }

@@ -26,15 +26,15 @@
 
 package io.spine.tools.mc.java
 
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.protodata.settings.Actions
 
 /**
  * The interface common to types holding a list of render action class names.
  */
-public interface WithActionList {
+public interface WithActions {
 
     /**
-     * Returns the list of render actions to be applied.
+     * Returns the render actions to be applied.
      */
-    public fun getActionList(): List<@FqBinaryName String>
+    public fun getActions(): Actions
 }

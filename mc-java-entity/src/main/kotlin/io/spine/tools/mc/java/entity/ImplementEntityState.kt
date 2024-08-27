@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.entity
 
+import com.google.protobuf.Empty
 import io.spine.base.EntityState
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
@@ -53,7 +54,7 @@ public class ImplementEntityState(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
         val idFieldType = type.firstFieldType(typeSystem!!)

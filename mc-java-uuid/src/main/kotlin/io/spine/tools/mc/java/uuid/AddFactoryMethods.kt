@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.uuid
 
+import com.google.protobuf.Empty
 import com.intellij.psi.PsiClass
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.base.UuidValue
@@ -57,7 +58,7 @@ public class AddFactoryMethods(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context)  {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context)  {
 
     override fun doRender() {
         MethodGenerate(cls).render()
@@ -85,7 +86,7 @@ private class MethodGenerate(private val cls: PsiClass) {
     }
 
     fun render() {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val method = elementFactory.createMethodFromText("""
             public static ${cls.name} generate() {
                 return newBuilder()
@@ -126,7 +127,7 @@ private class MethodOf(private val cls: PsiClass) {
     }
 
     fun render() {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val method = elementFactory.createMethodFromText("""
             public static ${cls.name} of(String uuid) {
                 ${UuidValue::class.java.reference}.checkValid(uuid);

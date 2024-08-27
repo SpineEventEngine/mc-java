@@ -29,17 +29,17 @@ package io.spine.tools.mc.java
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.settings.ActionFactory
+import io.spine.protodata.settings.Actions
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.settings.MessageActionFactory.Companion.createAction
-import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
  * Runs code generation actions for the given [type].
  *
- * @property type the message type for which code generation is performed.
- * @property file the file with the Java class with the message type.
- * @property actions fully qualified names of the action classes.
- * @property context the code generation context of the operation.
+ * @property type The message type for which code generation is performed.
+ * @property file The file with the Java class with the message type.
+ * @property actions Rendering actions to be applied to the [type].
+ * @property context The code generation context of the operation.
  *
  * @see TypeRenderer
  * @see TypeListRenderer
@@ -47,27 +47,19 @@ import org.checkerframework.checker.signature.qual.FqBinaryName
 public class RenderActions(
     private val type: MessageType,
     private val file: SourceFile<Java>,
-    private val actions: List<@FqBinaryName String>,
+    private val actions: Actions,
     private val context: CodegenContext
 ) {
+    private val classloader = Thread.currentThread().contextClassLoader
+    private val factory = ActionFactory<Java, MessageType>(Java, actions, classloader)
+
     /**
      * Applies code generation to the [file].
      */
     public fun apply() {
-        actions.forEach { actionClass ->
-            runAction(actionClass)
+        val acs = factory.create(type, file, context)
+        acs.forEach {
+            it.render()
         }
-    }
-
-    private fun runAction(actionClass: String) {
-        val classloader = Thread.currentThread().contextClassLoader
-        val action = createAction(
-            classloader,
-            actionClass,
-            type,
-            file,
-            context
-        )
-        action.render()
     }
 }

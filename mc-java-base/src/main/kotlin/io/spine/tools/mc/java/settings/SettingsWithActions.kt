@@ -23,134 +23,140 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.protobuf.Message;
-import io.spine.tools.gradle.Multiple;
-import io.spine.tools.gradle.Ordered;
-import io.spine.tools.mc.java.settings.AddInterface;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
-import org.gradle.api.Project;
-import org.gradle.api.provider.SetProperty;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.tools.java.code.Names.className;
+import com.google.common.annotations.VisibleForTesting
+import com.google.common.base.Preconditions
+import com.google.common.collect.ImmutableList
+import com.google.common.collect.ImmutableSet
+import com.google.protobuf.Any
+import com.google.protobuf.Message
+import io.spine.protodata.settings.Actions
+import io.spine.protodata.settings.actions
+import io.spine.tools.gradle.Multiple
+import io.spine.tools.java.code.Names
+import io.spine.tools.mc.java.gradle.settings.Settings
+import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.gradle.api.Project
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.SetProperty
 
 /**
  * Code generation settings that cover applying code generation actions specified as
- * fully qualified binary names of classes that extend {@link io.spine.tools.mc.java.MessageAction}.
+ * fully qualified binary names of classes that extend [io.spine.tools.mc.java.MessageAction].
  *
- * @param <P>
- *         Protobuf type reflecting a snapshot of these settings
+ * @param P Protobuf type reflecting a snapshot of these settings.
+ *
+ * @param p The project for which settings are created.
+ * @param defaultActions Actions to be specified as the default value for the settings.
+ *
+ * @constructor Creates an instance of settings for the specified project, configuring
+ *  the convention using the passed default values.
  */
-abstract class SettingsWithActions<P extends Message> extends Settings<P> {
+public abstract class SettingsWithActions<P : Message>(
+    p: Project,
+    defaultActions: Iterable<@FqBinaryName String>
+) : Settings<P>(p) {
 
-    @Deprecated
-    private final Multiple<String> interfaceNames;
+    @Deprecated("")
+    private val interfaceNames: Multiple<@FqBinaryName String> = Multiple(p, String::class.java)
 
-    private final Ordered<@FqBinaryName String> actions;
+    private val actions: MapProperty<String, Any> =
+        p.objects.mapProperty(String::class.java, Any::class.java)
 
-    /**
-     * Creates an instance of settings for the specified project, configuring the convention
-     * using the passed default values.
-     *
-     * @param p
-     *        the project for which settings are created
-     * @param defaultActions
-     *         actions to be specified as the default value for the settings
-     */
-    SettingsWithActions(Project p, Iterable<@FqBinaryName String> defaultActions) {
-        super(p);
-        checkNotNull(defaultActions);
-        this.interfaceNames = new Multiple<>(p, String.class);
-        this.actions = new Ordered<>(p, String.class);
-        actions.convention(defaultActions);
+    init {
+        actions.convention(defaultActions.associateWith { Any.getDefaultInstance() })
     }
 
     /**
      * Configures the associated messages to implement a Java interface with the given name.
      *
-     * <p>The declaration of the interface in Java must exist. It will not be generated. Providing
+     *
+     * The declaration of the interface in Java must exist. It will not be generated. Providing
      * a non-existent interface may lead to a compiler error.
      *
-     * @param interfaceName
-     *         the canonical name of the interface
-     * @deprecated Please call {@link #useAction(String)} with corresponding codegen action
-     *         class name instead.
+     * @param interfaceName The canonical name of the interface.
      */
-    @Deprecated
-    public final void markAs(String interfaceName) {
-        interfaceNames.add(interfaceName);
+    @Deprecated(
+        """Please call {@link #useAction(String)} with corresponding codegen action
+              class name instead."""
+    )
+    public fun markAs(interfaceName: String) {
+        interfaceNames.add(interfaceName)
     }
 
     /**
      * Instructs Model Compiler to use
-     * the {@linkplain io.spine.protodata.renderer.RenderAction code generation action}
+     * the [code generation action][io.spine.protodata.renderer.RenderAction]
      * specified by the binary name of the class.
      *
      * @param className
-     *         the binary name of the action class
+     * the binary name of the action class
      */
-    public void useAction(@FqBinaryName String className) {
-        checkNotNull(className);
-        actions.add(className);
+    public fun useAction(className: @FqBinaryName String) {
+        actions.put(className, Any.getDefaultInstance())
     }
 
     /**
      * Instructs Model Compiler to apply
-     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
+     * [code generation actions][io.spine.protodata.renderer.RenderAction]
      * to the code generated for messages of this group.
      *
      * @param classNames
-     *         the binary names of the action class
+     * the binary names of the action class
      */
-    public void useActions(Iterable<@FqBinaryName String> classNames) {
-        checkNotNull(classNames);
-        actions.addAll(classNames);
+    public fun useActions(classNames: Iterable<String>) {
+        Preconditions.checkNotNull(classNames)
+        actions.putAll(classNames.associateWith { Any.getDefaultInstance() })
     }
 
     /**
      * Instructs Model Compiler to apply
-     * {@linkplain io.spine.protodata.renderer.RenderAction code generation actions}
+     * [code generation actions][io.spine.protodata.renderer.RenderAction]
      * to the code generated for messages of this group.
      *
      * @param classNames
-     *         the binary names of the action classes
+     * the binary names of the action classes
      */
-    public void useActions(@FqBinaryName String... classNames) {
-        useActions(ImmutableList.copyOf(classNames));
+    public fun useActions(vararg classNames: String) {
+        useActions(ImmutableList.copyOf<@FqBinaryName String>(classNames))
     }
 
     /**
      * Obtains currently assigned codegen actions.
      */
-    protected final Iterable<@FqBinaryName String> actions() {
-        return actions.getOrElse(ImmutableList.of());
+    @VisibleForTesting
+    public fun actions(): Actions {
+        val collected = actions.get()
+        return if (collected.isEmpty()) {
+            Actions.getDefaultInstance()
+        } else {
+            actions {
+                action.putAll(actions.get())
+            }
+        }
     }
 
     /**
-     * Obtains the set of {@link AddInterface}s which define which interfaces to add
+     * Obtains the set of [AddInterface]s which define which interfaces to add
      * to the associated messages.
      *
-     * @deprecated Please use {@link #actions()} instead.
      */
-    @Deprecated
-    final ImmutableSet<AddInterface> interfaces() {
-        return interfaceNames.transform(name -> AddInterface.newBuilder()
-                .setName(className(name))
-                .build());
+    @Deprecated("Please use {@link #actions()} instead.")
+    public fun interfaces(): ImmutableSet<AddInterface> {
+        return interfaceNames.transform { name: String? ->
+            AddInterface.newBuilder()
+                .setName(Names.className(name))
+                .build()
+        }
     }
 
     /**
      * Obtains the Gradle property containing the set of Java interface names.
      *
-     * @deprecated Please use {@link #actions()} instead.
      */
-    @Deprecated
-    final SetProperty<String> interfaceNames() {
-        return interfaceNames;
+    @Deprecated("Please use {@link #actions()} instead.")
+    public fun interfaceNames(): SetProperty<String> {
+        return interfaceNames
     }
 }

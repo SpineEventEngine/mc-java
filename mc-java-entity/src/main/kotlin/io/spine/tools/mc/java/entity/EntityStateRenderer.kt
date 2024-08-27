@@ -52,7 +52,7 @@ public class EntityStateRenderer :
 
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            RenderActions(type, file, settings.actionList, context!!).apply()
+            RenderActions(type, file, settings.actions, context!!).apply()
         }
     }
 }

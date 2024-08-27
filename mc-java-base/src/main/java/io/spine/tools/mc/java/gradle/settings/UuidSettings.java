@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import io.spine.tools.mc.java.settings.SettingsWithActions;
 import io.spine.tools.mc.java.settings.Uuids;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Project;
@@ -54,7 +55,7 @@ public final class UuidSettings extends SettingsWithActions<Uuids> {
     @Override
     public Uuids toProto() {
         return Uuids.newBuilder()
-                .addAllAction(actions())
+                .setActions(actions())
                 .build();
     }
 

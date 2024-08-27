@@ -32,6 +32,7 @@ import io.spine.tools.mc.java.settings.GenerateMethods;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
+import io.spine.tools.mc.java.settings.SettingsWithActions;
 import org.gradle.api.Project;
 
 import java.util.Set;
@@ -100,7 +101,7 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
                 .setPattern(pattern)
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
-                .addAllAction(actions());
+                .setActions(actions());
         var generateFields = generateFields();
         if (isNotDefault(generateFields)) {
             result.setGenerateFields(generateFields);

@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.StringValue
+import com.google.protobuf.stringValue
 import com.intellij.psi.PsiClass
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
@@ -35,17 +37,17 @@ import io.spine.tools.code.Java
 /**
  * Abstract base for code generators modifying classes nested under Java classes of message types.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
+ * @param type the type of the message.
+ * @param file the source code to which the action is applied.
  * @property simpleName a simple name of the nested class to be modified.
- * @property context the code generation context in which this action runs.
+ * @param context the code generation context in which this action runs.
  */
 public abstract class TuneNestedClass(
     type: MessageType,
     file: SourceFile<Java>,
     protected val simpleName: String,
     context: CodegenContext
-) : MessageAction(type, file, context) {
+) : MessageAction<StringValue>(type, file, stringValue { value = simpleName},  context) {
 
     override val cls: PsiClass by lazy {
         val nestedClass = messageClass.nested(simpleName)
