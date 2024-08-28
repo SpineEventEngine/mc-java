@@ -42,4 +42,12 @@ dependencies {
     ).forEach {
         implementation(it)
     }
+
+    arrayOf(
+        gradleTestKit(),
+        Spine.testlib,
+        ProtoData.testlib
+    ).forEach {
+        testImplementation(it)
+    }
 }
