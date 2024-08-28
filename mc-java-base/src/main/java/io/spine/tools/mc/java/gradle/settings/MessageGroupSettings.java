@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.gradle.settings;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 import io.spine.tools.gradle.Multiple;
 import io.spine.tools.mc.java.settings.GenerateMethods;
@@ -37,6 +38,7 @@ import org.gradle.api.Project;
 
 import java.util.Set;
 
+import static com.google.protobuf.TextFormat.shortDebugString;
 import static io.spine.protobuf.Messages.isNotDefault;
 import static io.spine.tools.java.code.Names.className;
 import static java.util.stream.Collectors.toSet;
@@ -124,5 +126,12 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
                 .setFactory(factoryName)
                 .build();
         return config;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                          .add("pattern", shortDebugString(pattern))
+                          .toString();
     }
 }

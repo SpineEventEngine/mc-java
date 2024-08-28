@@ -35,7 +35,6 @@ import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.gradle.Multiple
 import io.spine.tools.java.code.Names
-import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.gradle.settings.Settings
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
@@ -130,7 +129,7 @@ public abstract class SettingsWithActions<P : Message>(
     public fun actions(): Actions {
         val collected = actions.get()
         check(collected.isNotEmpty()) {
-            "Code generation settings in `${this::class.reference}` do not have any actions." +
+            "Code generation settings (`$this`) do not declare any actions." +
                     " Please specify actions using `useAction()` or `useActions()` methods."
         }
         return actions {
