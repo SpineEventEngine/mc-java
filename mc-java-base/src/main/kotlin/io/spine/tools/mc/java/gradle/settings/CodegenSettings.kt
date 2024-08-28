@@ -94,6 +94,11 @@ public class CodegenSettings @Internal public constructor(private val project: P
     public val uuids: UuidSettings = UuidSettings(project)
 
     /**
+     * Settings for the generated code of [Comparable] messages.
+     */
+    public val comparables: ComparableSettings = ComparableSettings(project)
+
+    /**
      * Settings for the generated validation code.
      */
     public val validation: ValidationSettings = ValidationSettings(project)
@@ -188,6 +193,13 @@ public class CodegenSettings @Internal public constructor(private val project: P
     }
 
     /**
+     * Configures code generation for comparable messages.
+     */
+    public fun forComparables(action: Action<ComparableSettings>) {
+        action.execute(comparables)
+    }
+
+    /**
      * Configures code generation for validation messages.
      */
     public fun validation(action: Action<ValidationSettings>) {
@@ -212,6 +224,7 @@ public class CodegenSettings @Internal public constructor(private val project: P
             entities = self.entities.toProto()
             validation = self.validation.toProto()
             uuids = self.uuids.toProto()
+            comparables = self.comparables.toProto()
             classpath = cp
         }
     }
