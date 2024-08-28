@@ -35,7 +35,10 @@ import io.spine.base.MessageFile
 import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
-import io.spine.protodata.settings.Actions
+import io.spine.protodata.settings.actions
+import io.spine.protodata.settings.add
+import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.NoOpMessageAction
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
@@ -284,7 +287,6 @@ class CodegenBlockSpec {
                 actions.actionMap.keys.first() shouldBe anotherNestedClassAction
             }
         }
-
     }
 
     @Nested
@@ -332,9 +334,12 @@ class CodegenBlockSpec {
 
             settings.groupSettings.groupList shouldBe emptyList()
 
+            val stubActionClass = NoOpMessageAction::class
             val type = "test.Message"
             options.codegen {
-                it.forMessage(type) { /* Do nothing. */ }
+                it.forMessage(type) { group ->
+                    group.useAction(stubActionClass.reference)
+                }
             }
             val updated = options.codegen!!.toProto()
 
@@ -348,7 +353,9 @@ class CodegenBlockSpec {
             updated.groupSettings.groupList.first() shouldBe
                     MessageGroup.newBuilder()
                         .setPattern(pattern)
-                        .setActions(Actions.getDefaultInstance())
+                        .setActions(actions {
+                            add(stubActionClass)
+                        })
                         .buildPartial()
         }
 

@@ -35,6 +35,7 @@ import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.gradle.Multiple
 import io.spine.tools.java.code.Names
+import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.gradle.settings.Settings
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
@@ -128,12 +129,12 @@ public abstract class SettingsWithActions<P : Message>(
     @VisibleForTesting
     public fun actions(): Actions {
         val collected = actions.get()
-        return if (collected.isEmpty()) {
-            Actions.getDefaultInstance()
-        } else {
-            actions {
-                action.putAll(actions.get())
-            }
+        check(collected.isNotEmpty()) {
+            "Code generation settings in `${this::class.reference}` do not have any actions." +
+                    " Please specify actions using `useAction()` or `useActions()` methods."
+        }
+        return actions {
+            action.putAll(collected)
         }
     }
 
@@ -144,7 +145,7 @@ public abstract class SettingsWithActions<P : Message>(
      */
     @Deprecated("Please use {@link #actions()} instead.")
     public fun interfaces(): ImmutableSet<AddInterface> {
-        return interfaceNames.transform { name: String? ->
+        return interfaceNames.transform { name: String ->
             AddInterface.newBuilder()
                 .setName(Names.className(name))
                 .build()
