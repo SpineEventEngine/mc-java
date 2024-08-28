@@ -40,15 +40,14 @@ import "spine/protodata/file.proto";
 import "spine/tools/mc/java/settings.proto";
 
 // A comparable message.
-message ComparableMessage {
+message ComparableActions {
+    option (is).java_type = "io.spine.tools.mc.java.TypeActions";
     option (entity).kind = VIEW;
 
     // The type in which the option is discovered.
     protodata.MessageType type = 1;
 
-    // The discovered `compare_by` option.
-    protodata.Option option = 2;
-
-    // Code generation settings for the message.
-    spine.tools.mc.java.Comparables settings = 3;
+    // Names of classes implementing `io.spine.protodata.renderer.RenderAction`
+    // to be applied to this messages.
+    repeated string action = 2;
 }

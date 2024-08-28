@@ -50,6 +50,6 @@ public class ComparablePlugin : Plugin {
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        ComparableRenderer()
+        ComparableActionRenderer()
     )
 }
