@@ -33,6 +33,14 @@ import io.spine.protodata.renderer.Renderer
 
 public class ComparablePlugin : Plugin {
 
+    public companion object {
+
+        /**
+         * The ID for getting settings for this plugin.
+         */
+        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
+    }
+
     override fun policies(): Set<Policy<*>> = setOf(
         ComparableMessageDiscovery()
     )

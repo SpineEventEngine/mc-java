@@ -42,5 +42,6 @@ internal class ComparableMessageView :
     fun on(event: ComparableMessageDiscovered) = alter {
         type = event.type
         option = event.option
+        settings = event.settings
     }
 }

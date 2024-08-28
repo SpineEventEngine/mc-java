@@ -30,6 +30,7 @@ import io.spine.core.External
 import io.spine.protodata.Option
 import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
+import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
 import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
@@ -37,8 +38,11 @@ import io.spine.server.tuple.EitherOf2.withA
 import io.spine.server.tuple.EitherOf2.withB
 import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
 import io.spine.tools.mc.java.comparable.event.comparableMessageDiscovered
+import io.spine.tools.mc.java.settings.Comparables
 
-internal class ComparableMessageDiscovery : Policy<TypeDiscovered>() {
+internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), ComparableComponent {
+
+    private val loadedSettings: Comparables by lazy { loadSettings() }
 
     @React
     override fun whenever(
@@ -50,6 +54,7 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>() {
             comparableMessageDiscovered {
                 type = event.type
                 option = compareBy
+                settings = loadedSettings
             }
         )
     }

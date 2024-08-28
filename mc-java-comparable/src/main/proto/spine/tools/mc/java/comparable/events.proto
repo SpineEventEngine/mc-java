@@ -37,6 +37,7 @@ option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
+import "spine/tools/mc/java/settings.proto";
 
 // A message with `option (compare_by)` was discovered.
 message ComparableMessageDiscovered {
@@ -46,4 +47,7 @@ message ComparableMessageDiscovered {
 
     // The discovered `compare_by` option.
     protodata.Option option = 2;
+
+    // Code generation settings for the message.
+    spine.tools.mc.java.Comparables settings = 3;
 }
