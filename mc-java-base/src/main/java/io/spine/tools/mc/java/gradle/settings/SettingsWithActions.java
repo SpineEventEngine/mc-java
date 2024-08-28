@@ -46,7 +46,7 @@ import static io.spine.tools.java.code.Names.className;
  * @param <P>
  *         Protobuf type reflecting a snapshot of these settings
  */
-abstract class SettingsWithActions<P extends Message> extends Settings<P> {
+public abstract class SettingsWithActions<P extends Message> extends Settings<P> {
 
     @Deprecated
     private final Multiple<String> interfaceNames;

@@ -69,6 +69,9 @@ message Combined {
     // The configuration related to UUID messages.
     Uuids uuids = 7;
 
+    // The code generation settings for comparable messages.
+    Comparables comparables = 11;
+
     // The classpath used to lookup types by their fully-qualified names.
     tools.java.Classpath classpath = 8;
 }
@@ -248,6 +251,17 @@ message Uuids {
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the UUID messages.
+    repeated string action = 3;
+}
+
+// Code generation settings for comparable messages.
+//
+// A message is comparable when it has `compare_by` option.
+//
+message Comparables {
+
+    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
+    // that are to be applied to the comparable messages.
     repeated string action = 3;
 }
 
