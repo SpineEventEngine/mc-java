@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,32 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+plugins {
+    prototap
+    `test-module`
+}
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-comparable",
-    "mc-java-comparable-tests",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-validation",
-    "mc-java-plugin-bundle"
-)
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+dependencies {
+    arrayOf(
+        project(":mc-java-base"),
+        project(":mc-java-comparable"),
+        testFixtures(project(":mc-java-base")),
+    ).forEach {
+        testImplementation(it)
     }
 }

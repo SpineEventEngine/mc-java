@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,32 +24,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+package io.spine.tools.mc.java.uuid
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-comparable",
-    "mc-java-comparable-tests",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-protoc",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-validation",
-    "mc-java-plugin-bundle"
-)
+import io.kotest.matchers.shouldBe
+import io.spine.base.UuidValue
+import io.spine.tools.mc.java.comparable.ImplementComparable
+import io.spine.tools.mc.java.implementsInterface
+import java.nio.file.Path
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
+@DisplayName("`ImplementComparable` should")
+internal class ImplementComparableSpec {
+
+    companion object : ComparablePluginTestSetup(actionClass = ImplementComparable::class.java) {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) = generateCode(projectDir, outputDir, settingsDir)
+    }
+
+    @Test
+    fun `make a message implement 'Comparable'`() {
+        implementsInterface(generatedCode, Comparable::class.java) shouldBe true
     }
 }
