@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.field
 
+import com.google.protobuf.StringValue
 import com.intellij.psi.PsiClass
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field.CardinalityCase.SINGLE
@@ -35,7 +36,7 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.CreateNestedClass
-import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
+import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
@@ -43,18 +44,20 @@ import org.intellij.lang.annotations.Language
  * Creates a nested class called [`Field`][NAME] under a Java class generated for
  * the given message [type].
  *
- * @property type the message type for the Java code of which to generate the nested class.
- * @property file the file with Java code generated for the [type].
+ * @param type the message type for the Java code of which to generate the nested class.
+ * @param file the file with Java code generated for the [type].
  * @property fieldSupertype the class name for the supertype of generated nested field classes,
  *   e.g., [io.spine.base.EventMessageField] or [io.spine.query.EntityStateField].
  * @property context the code generation context under which this code generation action runs.
  */
-public open class FieldClass(
+public open class AddFieldClass(
     type: MessageType,
     file: SourceFile<Java>,
-    private val fieldSupertype: ClassName,
+    fieldSuperClassName: StringValue,
     context: CodegenContext
 ) : CreateNestedClass(type, file, NAME, context) {
+
+    private val fieldSupertype: ClassName = fieldSuperClassName.value.toClassName()
 
     public companion object {
 
@@ -98,4 +101,18 @@ public open class FieldClass(
             addLast(messageTypeField)
         }
     }
+}
+
+/**
+ * Converts this string to [ClassName] by parsing its value.
+ *
+ * The function assumes that package names start with a lowercase letter, and
+ * class names start with an uppercase letter.
+ */
+private fun String.toClassName(): ClassName {
+    val packageSeparator = "."
+    val items = split(packageSeparator)
+    val packageName = items.filter { it[0].isLowerCase() }.joinToString(packageSeparator)
+    val simpleNames = items.filter { it[0].isUpperCase() }
+    return ClassName(packageName, simpleNames)
 }

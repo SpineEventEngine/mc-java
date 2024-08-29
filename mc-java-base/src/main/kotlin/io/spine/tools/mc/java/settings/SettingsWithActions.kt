@@ -31,6 +31,8 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.protobuf.Any
 import com.google.protobuf.Message
+import com.google.protobuf.stringValue
+import io.spine.protobuf.pack
 import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.gradle.Multiple
@@ -65,15 +67,14 @@ public abstract class SettingsWithActions<P : Message>(
         p.objects.mapProperty(String::class.java, Any::class.java)
 
     init {
-        actions.convention(defaultActions.associateWith { Any.getDefaultInstance() })
+        actions.putAll(defaultActions.associateWith { Any.getDefaultInstance() })
     }
 
     /**
      * Configures the associated messages to implement a Java interface with the given name.
      *
-     *
-     * The declaration of the interface in Java must exist. It will not be generated. Providing
-     * a non-existent interface may lead to a compiler error.
+     * The declaration of the interface in Java must exist. It will not be generated.
+     * Providing a non-existent interface may lead to a compiler error.
      *
      * @param interfaceName The canonical name of the interface.
      */
@@ -90,11 +91,40 @@ public abstract class SettingsWithActions<P : Message>(
      * the [code generation action][io.spine.protodata.renderer.RenderAction]
      * specified by the binary name of the class.
      *
-     * @param className
-     * the binary name of the action class
+     * @param className The binary name of the action class.
      */
     public fun useAction(className: @FqBinaryName String) {
         actions.put(className, Any.getDefaultInstance())
+    }
+
+    /**
+     * Instructs Model Compiler to use
+     * the [code generation action][io.spine.protodata.renderer.RenderAction]
+     * specified by the binary name of the class.
+     *
+     * @param className The binary name of the action class.
+     * @param parameter The parameter to be passed to the constructor of the action.
+     */
+    public fun useAction(className: @FqBinaryName String, parameter: Message) {
+        actions.put(className, parameter.pack())
+    }
+
+    /**
+     * Instructs Model Compiler to use
+     * the [code generation action][io.spine.protodata.renderer.RenderAction]
+     * specified by the binary name of the class.
+     *
+     * This is a convenience method for creating an action with
+     * a [StringValue][com.google.protobuf.StringValue] parameter.
+     *
+     * @param className The binary name of the action class.
+     * @param parameter The string which would wrapped into
+     *   [StringValue][com.google.protobuf.StringValue] and passed
+     *   as a parameter to the constructor of the action.
+     */
+    public fun useAction(className: @FqBinaryName String, parameter: String) {
+        val stringValue = stringValue { value = parameter }
+        actions.put(className, stringValue.pack())
     }
 
     /**

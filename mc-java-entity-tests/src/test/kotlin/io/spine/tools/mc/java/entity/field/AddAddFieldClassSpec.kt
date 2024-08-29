@@ -35,7 +35,7 @@ import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPluginTest
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.mc.java.entity.innerClass
-import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
+import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
 import javax.annotation.Generated
@@ -46,7 +46,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddFieldClass` should")
-internal class AddFieldClassSpec : EntityPluginTest() {
+internal class AddAddFieldClassSpec : EntityPluginTest() {
 
     companion object {
 

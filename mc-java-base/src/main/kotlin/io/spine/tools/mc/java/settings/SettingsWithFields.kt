@@ -23,91 +23,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.collect.ImmutableList;
-import com.google.protobuf.Message;
-import io.spine.tools.mc.java.settings.GenerateFields;
-import io.spine.tools.mc.java.settings.SettingsWithActions;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
-import org.gradle.api.Project;
-import org.gradle.api.provider.Property;
-
-import static io.spine.tools.java.code.Names.className;
+import com.google.common.collect.ImmutableList
+import com.google.protobuf.Message
+import io.spine.tools.java.code.Names
+import io.spine.tools.mc.java.field.AddFieldClass
+import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.gradle.api.Project
+import org.gradle.api.provider.Property
 
 /**
  * Code generation settings that include generation of
- * {@linkplain io.spine.base.SubscribableField field classes}.
+ * [field classes][io.spine.base.SubscribableField].
  *
- * <p>Model Compiler generates type-safe API for filtering messages by fields in queries
+ * Model Compiler generates the type-safe API for filtering messages by fields in queries
  * and subscriptions.
  *
- * @param <P>
- *         Protobuf type reflecting a snapshot of these settings
+ * @param P The Protobuf type reflecting a snapshot of these settings.
  */
-public abstract class SettingsWithFields<P extends Message> extends SettingsWithActions<P> {
+public abstract class SettingsWithFields<P : Message> @JvmOverloads internal constructor(
+    p: Project,
+    defaultActions: Iterable<String> = ImmutableList.of<@FqBinaryName String>()
+) : SettingsWithActions<P>(p, defaultActions) {
 
-    private final Property<String> markFieldsAs;
-
-    SettingsWithFields(Project p, Iterable<@FqBinaryName String> defaultActions) {
-        super(p, defaultActions);
-        markFieldsAs = p.getObjects().property(String.class);
-    }
-
-    /**
-     * Creates an instance of settings for the given project.
-     */
-    SettingsWithFields(Project p) {
-        this(p, ImmutableList.of());
-    }
-
-    /**
-     * Sets up the default state for the {@code Field} class generation config.
-     *
-     * <p>If a class is provided, the {@code Field} class will be generated with the given class
-     * as a supertype.
-     *
-     * <p>If the {@code fieldSuperclass} is {@code null}, the {@code Field} class will not be
-     * generated.
-     */
-    final void convention(@Nullable Class<?> fieldSuperclass) {
-        if (fieldSuperclass != null) {
-            markFieldsAs.convention(fieldSuperclass.getCanonicalName());
-        }
-    }
+    private val markFieldsAs: Property<String> = p.objects.property(String::class.java)
 
     /**
      * Equips the field type with a superclass.
      *
-     * @param className
-     *         the canonical class name of an existing Java class
-     * @deprecated Please call {@link SettingsWithActions#useAction(String)} with
-     *          corresponding codegen action class name instead.
+     * @param className The canonical class name of an existing Java class.
      */
-    @Deprecated
-    public final void markFieldsAs(String className) {
-        markFieldsAs.set(className);
+    public fun markFieldsAs(className: String) {
+        useAction(AddFieldClass::class.java.name, className)
+        markFieldsAs.set(className)
     }
 
     /**
-     * Obtains the {@link GenerateFields} instance containing specified names of
+     * Obtains the [GenerateFields] instance containing specified names of
      * field superclasses.
-     *
-     * @deprecated Please use {@link #actions()} instead.
      */
-    @Deprecated
-    final GenerateFields generateFields() {
-        GenerateFields generateFields;
-        var superclassName = markFieldsAs.getOrElse("");
-        if (superclassName.isEmpty()) {
-            generateFields = GenerateFields.getDefaultInstance();
+    @Deprecated("Please use `actions()` instead.")
+    public fun generateFields(): GenerateFields {
+        val generateFields: GenerateFields
+        val superclassName = markFieldsAs.getOrElse("")
+        generateFields = if (superclassName.isEmpty()) {
+            GenerateFields.getDefaultInstance()
         } else {
-            generateFields = GenerateFields.newBuilder()
-                    .setSuperclass(className(superclassName))
-                    .build();
+            GenerateFields.newBuilder()
+                .setSuperclass(Names.className(superclassName))
+                .build()
         }
-        return generateFields;
+        return generateFields
     }
 }

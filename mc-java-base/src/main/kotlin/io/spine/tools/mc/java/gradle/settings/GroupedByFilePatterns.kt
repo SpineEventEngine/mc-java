@@ -31,6 +31,7 @@ import io.spine.protobuf.isDefault
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.gradle.Multiple
+import io.spine.tools.mc.java.settings.SettingsWithFields
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 

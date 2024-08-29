@@ -44,9 +44,10 @@ import io.spine.tools.psi.java.locate
  *
  * @param P the type of the parameter passed to the action.
  *
- * @param type the type of the message.
- * @param file the source code to which the action is applied.
- * @param context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param parameter The parameter passed to the action.
+ * @param context The code generation context in which this action runs.
  */
 public abstract class MessageAction<P : Message>(
     type: MessageType,

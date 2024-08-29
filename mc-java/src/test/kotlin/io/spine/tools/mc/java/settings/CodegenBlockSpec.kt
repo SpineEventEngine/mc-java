@@ -27,8 +27,8 @@ package io.spine.tools.mc.java.settings
 
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeEmpty
 import io.spine.base.MessageFile
@@ -37,13 +37,19 @@ import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
 import io.spine.protodata.settings.actions
 import io.spine.protodata.settings.add
+import io.spine.tools.java.reference
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.NoOpMessageAction
 import io.spine.tools.mc.java.applyStandard
+import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.mc.java.gradle.settings.EntitySettings
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_COMMAND_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_EVENT_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_REJECTION_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.UuidSettings
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -111,8 +117,9 @@ class CodegenBlockSpec {
             }
         }
         val settings = options.codegen!!.toProto()
-        settings.uuids.actions.actionMap shouldHaveSize 1
-        settings.uuids.actions.actionMap.keys.first() shouldBe actionName
+
+        settings.uuids.actions.actionMap.keys shouldBe
+                UuidSettings.DEFAULT_ACTIONS.toSet() + actionName
     }
 
     @Nested
@@ -137,7 +144,8 @@ class CodegenBlockSpec {
             signalSettings.commands.run {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe suffix
-                actions.actionMap.keys shouldContainExactly setOf(action1, action2)
+                actions.actionMap.keys shouldBe
+                        DEFAULT_COMMAND_ACTIONS.toSet() + setOf(action1, action2)
             }
         }
 
@@ -158,7 +166,8 @@ class CodegenBlockSpec {
             signalSettings.events.run {
                 patternList shouldHaveSize 1
                 patternList[0].prefix shouldBe prefix
-                actions.actionMap.keys shouldContainExactly setOf(action1, action2)
+                actions.actionMap.keys shouldBe
+                        DEFAULT_EVENT_ACTIONS.toSet() + setOf(action1, action2)
             }
         }
 
@@ -177,7 +186,8 @@ class CodegenBlockSpec {
             signalSettings.rejections.run {
                 patternList shouldHaveSize 1
                 patternList[0].regex shouldBe regex
-                actions.actionMap.keys shouldContainExactly setOf(action1, action2)
+                actions.actionMap.keys shouldBe
+                        DEFAULT_REJECTION_ACTIONS.toSet() + setOf(action1, action2)
             }
         }
 
@@ -194,10 +204,10 @@ class CodegenBlockSpec {
                 }
             }
 
-            signalSettings.events.actions.actionMap.keys shouldContainExactly setOf(eventAction)
-            signalSettings.rejections.actions.actionMap.keys shouldContainExactly setOf(
-                rejectionAction
-            )
+            signalSettings.events.actions.actionMap.keys shouldBe
+                    DEFAULT_EVENT_ACTIONS.toSet() + eventAction
+            signalSettings.rejections.actions.actionMap.keys shouldBe
+                    DEFAULT_REJECTION_ACTIONS.toSet() + rejectionAction
         }
 
         @Test
@@ -214,8 +224,8 @@ class CodegenBlockSpec {
             val entities = options.codegen!!.toProto().entities
 
             entities.run {
-                actions.actionMap.keys shouldHaveSize 1
-                actions.actionMap.keys shouldContainExactly setOf(action)
+                actions.actionMap.keys shouldContainExactly
+                        EntitySettings.DEFAULT_ACTIONS.toSet() + action
 
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe option
@@ -232,8 +242,7 @@ class CodegenBlockSpec {
             }
             val uuids = options.codegen!!.toProto().uuids
             uuids.run {
-                actions.actionMap.keys shouldHaveSize 1
-                actions.actionMap.keys.first() shouldBe customAction
+                actions.actionMap.keys shouldBe UuidSettings.DEFAULT_ACTIONS.toSet() + customAction
             }
         }
 
@@ -275,9 +284,11 @@ class CodegenBlockSpec {
             first.run {
                 pattern.type.expectedType.value shouldBe firstMessageType
                 addInterfaceList.first().name.canonical shouldBe firstInterface
-                generateFields.superclass.canonical shouldBe fieldSuperclass
-                actions.actionMap.keys shouldHaveSize 1
-                actions.actionMap.keys.first() shouldBe nestedClassAction
+                actions.actionMap.keys shouldHaveSize 2
+                actions.actionMap.keys shouldBe setOf(
+                    AddFieldClass::class.java.reference,
+                    nestedClassAction
+                )
             }
 
             second.run {
@@ -324,7 +335,8 @@ class CodegenBlockSpec {
             entities.run {
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
-                actions.actionMap.keys shouldContainExactly EntitySettings.DEFAULT_ACTIONS.toSet()
+                actions.actionMap.keys shouldContainExactlyInAnyOrder
+                        EntitySettings.DEFAULT_ACTIONS.toSet()
             }
         }
 

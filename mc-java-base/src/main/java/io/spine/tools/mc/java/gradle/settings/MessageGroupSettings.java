@@ -34,12 +34,12 @@ import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
 import io.spine.tools.mc.java.settings.SettingsWithActions;
+import io.spine.tools.mc.java.settings.SettingsWithFields;
 import org.gradle.api.Project;
 
 import java.util.Set;
 
 import static com.google.protobuf.TextFormat.shortDebugString;
-import static io.spine.protobuf.Messages.isNotDefault;
 import static io.spine.tools.java.code.Names.className;
 import static java.util.stream.Collectors.toSet;
 
@@ -104,10 +104,10 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
                 .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
                 .setActions(actions());
-        var generateFields = generateFields();
-        if (isNotDefault(generateFields)) {
-            result.setGenerateFields(generateFields);
-        }
+//        var generateFields = generateFields();
+//        if (isNotDefault(generateFields)) {
+//            result.setGenerateFields(generateFields);
+//        }
         return result.build();
     }
 

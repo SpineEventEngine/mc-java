@@ -26,23 +26,24 @@
 
 package io.spine.tools.mc.java.signal
 
+import com.google.protobuf.stringValue
 import io.spine.base.EventMessageField
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.field.AddFieldClass
+import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
 
 /**
  * Creates a nested class called [`Field`][NAME] under a Java class generated for
  * an event or rejection message.
  *
- * @see FieldClass
+ * @see AddFieldClass
  */
 public class AddEventMessageField(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : FieldClass(type, file, ClassName(EventMessageField::class.java), context)
+) : AddFieldClass(type, file, stringValue { value = EventMessageField::class.java.reference }, context)

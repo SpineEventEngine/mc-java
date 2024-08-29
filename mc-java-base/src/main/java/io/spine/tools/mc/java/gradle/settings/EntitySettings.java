@@ -34,6 +34,7 @@ import io.spine.base.EntityState;
 import io.spine.option.OptionsProto;
 import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
+import io.spine.tools.mc.java.settings.SettingsWithFields;
 import io.spine.tools.proto.code.ProtoOption;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Action;
@@ -58,7 +59,7 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     @VisibleForTesting
     public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS = ImmutableList.of(
         "io.spine.tools.mc.java.entity.column.AddColumnClass",
-        "io.spine.tools.mc.java.entity.field.AddFieldClass",
+        "io.spine.tools.mc.java.field.AddFieldClass",
         "io.spine.tools.mc.java.entity.query.AddQuerySupport",
         "io.spine.tools.mc.java.entity.ImplementEntityState"
     );
@@ -69,7 +70,7 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     @VisibleForTesting
     public EntitySettings(Project p) {
         super(p, DEFAULT_ACTIONS);
-        convention(EntityStateField.class);
+        markFieldsAs(EntityStateField.class.getCanonicalName());
         interfaceNames().convention(ImmutableSet.of(
                 EntityState.class.getCanonicalName()
         ));
