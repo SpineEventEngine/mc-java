@@ -47,7 +47,9 @@ abstract class ComparablePluginTestSetup(
     private val actionClass: Class<out MessageAction>
 ) : PluginTestSetup<Uuids>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
-    val uuidType = "AccountId"
+    companion object {
+        const val MESSAGE_SIMPLE_NAME = "AccountId"
+    }
 
     lateinit var generatedCode: String
     lateinit var cls: PsiClass
@@ -70,7 +72,7 @@ abstract class ComparablePluginTestSetup(
     ) {
         val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
         val sourceFile = sourceFileSet.file(
-            Path("io/spine/tools/mc/java/comparable/given/$uuidType.java")
+            Path("io/spine/tools/mc/java/comparable/given/$MESSAGE_SIMPLE_NAME.java")
         )
         generatedCode = sourceFile.code()
         val file = sourceFile.psi() as PsiJavaFile

@@ -27,9 +27,9 @@
 package io.spine.tools.mc.java.uuid
 
 import io.kotest.matchers.shouldBe
-import io.spine.base.UuidValue
 import io.spine.tools.mc.java.comparable.ImplementComparable
 import io.spine.tools.mc.java.implementsInterface
+import io.spine.tools.mc.java.uuid.ComparablePluginTestSetup.Companion.MESSAGE_SIMPLE_NAME
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
@@ -52,6 +52,7 @@ internal class ImplementComparableSpec {
 
     @Test
     fun `make a message implement 'Comparable'`() {
-        implementsInterface(generatedCode, Comparable::class.java) shouldBe true
+        val genericParameters = listOf(MESSAGE_SIMPLE_NAME)
+        implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
     }
 }
