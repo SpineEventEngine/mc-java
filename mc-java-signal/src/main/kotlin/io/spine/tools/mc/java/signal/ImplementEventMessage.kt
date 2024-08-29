@@ -33,6 +33,7 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.settings.superInterface
 
 /**
  * Updates the Java code of a message type which qualifies as [EventMessage]
@@ -41,9 +42,9 @@ import io.spine.tools.mc.java.ImplementInterface
  * The class is public because its fully qualified name is used as a default
  * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  *
  * @see ImplementInterface
  */
@@ -51,4 +52,9 @@ public class ImplementEventMessage(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : ImplementInterface(type, file, EventMessage::class.java.reference, context = context)
+) : ImplementInterface(
+    type,
+    file,
+    superInterface { name = EventMessage::class.java.reference },
+    context = context
+)

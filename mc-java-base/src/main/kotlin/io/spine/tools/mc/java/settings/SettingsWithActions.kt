@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.settings
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableSet
 import com.google.protobuf.Any
 import com.google.protobuf.Message
 import com.google.protobuf.stringValue
@@ -36,7 +35,7 @@ import io.spine.protobuf.pack
 import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.gradle.Multiple
-import io.spine.tools.java.code.Names
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.gradle.settings.Settings
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
@@ -78,12 +77,11 @@ public abstract class SettingsWithActions<P : Message>(
      *
      * @param interfaceName The canonical name of the interface.
      */
-    @Deprecated(
-        """Please call {@link #useAction(String)} with corresponding codegen action
-              class name instead."""
-    )
     public fun markAs(interfaceName: String) {
-        interfaceNames.add(interfaceName)
+        useAction(
+            ImplementInterface::class.java.name,
+            superInterface { name = interfaceName }
+        )
     }
 
     /**
@@ -160,24 +158,10 @@ public abstract class SettingsWithActions<P : Message>(
         val collected = actions.get()
         check(collected.isNotEmpty()) {
             "Code generation settings (`$this`) do not declare any actions." +
-                    " Please specify actions using `useAction()` or `useActions()` methods."
+                    " Please specify actions using `useAction()` methods."
         }
         return actions {
             action.putAll(collected)
-        }
-    }
-
-    /**
-     * Obtains the set of [AddInterface]s which define which interfaces to add
-     * to the associated messages.
-     *
-     */
-    @Deprecated("Please use {@link #actions()} instead.")
-    public fun interfaces(): ImmutableSet<AddInterface> {
-        return interfaceNames.transform { name: String ->
-            AddInterface.newBuilder()
-                .setName(Names.className(name))
-                .build()
         }
     }
 

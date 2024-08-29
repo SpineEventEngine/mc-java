@@ -37,8 +37,8 @@ import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
 import io.spine.protodata.settings.actions
 import io.spine.protodata.settings.add
-import io.spine.tools.java.reference
 import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.NoOpMessageAction
 import io.spine.tools.mc.java.applyStandard
 import io.spine.tools.mc.java.field.AddFieldClass
@@ -283,19 +283,20 @@ class CodegenBlockSpec {
 
             first.run {
                 pattern.type.expectedType.value shouldBe firstMessageType
-                addInterfaceList.first().name.canonical shouldBe firstInterface
-                actions.actionMap.keys shouldHaveSize 2
                 actions.actionMap.keys shouldBe setOf(
-                    AddFieldClass::class.java.reference,
+                    ImplementInterface::class.java.name,
+                    AddFieldClass::class.java.name,
                     nestedClassAction
                 )
             }
 
             second.run {
                 pattern.file.hasRegex() shouldBe true
-                addInterfaceList.first().name.canonical shouldBe secondInterface
+                actions.actionMap.keys shouldBe setOf(
+                    ImplementInterface::class.java.name,
+                    anotherNestedClassAction
+                )
                 generateMethodsList.first().factory.className.canonical shouldBe methodFactory
-                actions.actionMap.keys.first() shouldBe anotherNestedClassAction
             }
         }
     }

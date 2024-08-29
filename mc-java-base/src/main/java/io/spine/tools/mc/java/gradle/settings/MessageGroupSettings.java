@@ -62,7 +62,6 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
         this.pattern = pattern;
         methodFactories = new Multiple<>(p, String.class);
         nestedClassFactories = new Multiple<>(p, String.class);
-        interfaceNames().convention(ImmutableSet.of());
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());
     }
@@ -101,13 +100,8 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
     public MessageGroup toProto() {
         var result = MessageGroup.newBuilder()
                 .setPattern(pattern)
-                .addAllAddInterface(interfaces())
                 .addAllGenerateMethods(generateMethods())
                 .setActions(actions());
-//        var generateFields = generateFields();
-//        if (isNotDefault(generateFields)) {
-//            result.setGenerateFields(generateFields);
-//        }
         return result.build();
     }
 

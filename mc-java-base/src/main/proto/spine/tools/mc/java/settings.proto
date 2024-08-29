@@ -248,6 +248,20 @@ message Uuids {
     protodata.Actions actions = 6;
 }
 
+// Specification of an existing super interface a generated Java type should implement.
+message SuperInterface {
+
+    // The name of the interface.
+    //
+    // It could be a simple name if the generated types are in the same Java package.
+    // Otherwise, this value must contain a fully-qualified name.
+    //
+    string name = 1 [(required) = true];
+
+    // Optional generic parameters.
+    repeated string generic_parameter = 2;
+}
+
 // Configuration for adding a Java interface to a generated class.
 message AddInterface {
 
