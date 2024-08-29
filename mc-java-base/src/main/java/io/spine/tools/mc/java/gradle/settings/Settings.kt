@@ -32,9 +32,9 @@ import org.gradle.api.provider.Property
 /**
  * Settings for a specific aspect of the Model Compiler, established through Gradle.
  *
- * @param P the type that captures a snapshot of the current state of the settings.
+ * @param S The type that captures a snapshot of the current settings state.
  */
-public abstract class Settings<P : Message>(p: Project) {
+public abstract class Settings<S : Message>(project: Project) {
 
     /**
      * Whether this configuration is enabled.
@@ -42,7 +42,7 @@ public abstract class Settings<P : Message>(p: Project) {
      * If `false`, the configuration is ignored by the Model Compiler.
      * The default value is `true`.
      */
-    public val enabled: Property<Boolean> = p.objects.property(Boolean::class.java)
+    public val enabled: Property<Boolean> = project.objects.property(Boolean::class.java)
 
     init {
         enabled.convention(true)
@@ -51,5 +51,5 @@ public abstract class Settings<P : Message>(p: Project) {
     /**
      * Converts this instance into a Protobuf message.
      */
-    public abstract fun toProto(): P
+    public abstract fun toProto(): S
 }

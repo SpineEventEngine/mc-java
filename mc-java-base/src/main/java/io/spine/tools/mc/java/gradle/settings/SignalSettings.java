@@ -77,17 +77,17 @@ public final class SignalSettings extends GroupedByFilePatterns<Signals> {
     /**
      * Creates a new instance under the given project.
      *
-     * @param p
+     * @param project
      *         the project under which settings are created
      * @param suffix
-     *         the default file suffix to initialize file filtering pattern in conventions
+     *         the default file suffix to initialize the file filtering pattern in conventions
      * @param defaultActions
      *         code generation actions to be executed for this kind of signals
      */
-    SignalSettings(Project p,
+    SignalSettings(Project project,
                    String suffix,
                    Iterable<@FqBinaryName String> defaultActions) {
-        super(p, defaultActions);
+        super(project, defaultActions);
         var pattern = FilePattern.newBuilder()
                 .setSuffix(suffix)
                 .build();

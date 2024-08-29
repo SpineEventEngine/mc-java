@@ -48,8 +48,8 @@ public final class UuidSettings extends SettingsWithActions<Uuids> {
                     "io.spine.tools.mc.java.uuid.AddFactoryMethods"
             );
 
-    UuidSettings(Project p) {
-        super(p, DEFAULT_ACTIONS);
+    UuidSettings(Project project) {
+        super(project, DEFAULT_ACTIONS);
     }
 
     @Override

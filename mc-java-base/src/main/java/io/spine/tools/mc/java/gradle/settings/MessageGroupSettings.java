@@ -57,11 +57,11 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
     /**
      * Creates an instance of settings for the given project and the specified pattern.
      */
-    MessageGroupSettings(Project p, Pattern pattern) {
-        super(p);
+    MessageGroupSettings(Project project, Pattern pattern) {
+        super(project);
         this.pattern = pattern;
-        methodFactories = new Multiple<>(p, String.class);
-        nestedClassFactories = new Multiple<>(p, String.class);
+        methodFactories = new Multiple<>(project, String.class);
+        nestedClassFactories = new Multiple<>(project, String.class);
         methodFactories.convention(ImmutableSet.of());
         nestedClassFactories.convention(ImmutableSet.of());
     }

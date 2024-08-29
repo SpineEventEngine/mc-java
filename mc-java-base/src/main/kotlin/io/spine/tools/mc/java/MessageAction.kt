@@ -42,7 +42,7 @@ import io.spine.tools.psi.java.locate
 /**
  * Abstract base for code generation actions for message types in Java code.
  *
- * @param P the type of the parameter passed to the action.
+ * @param P The type of the parameter passed to the action.
  *
  * @param type The type of the message.
  * @param file The source code to which the action is applied.

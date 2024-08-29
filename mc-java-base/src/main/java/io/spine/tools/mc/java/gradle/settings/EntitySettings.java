@@ -30,7 +30,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.spine.annotation.Internal;
-import io.spine.base.EntityState;
 import io.spine.option.OptionsProto;
 import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
@@ -68,17 +67,14 @@ public final class EntitySettings extends SettingsWithFields<Entities> {
     private final Property<Boolean> generateQueries;
 
     @VisibleForTesting
-    public EntitySettings(Project p) {
-        super(p, DEFAULT_ACTIONS);
+    public EntitySettings(Project project) {
+        super(project, DEFAULT_ACTIONS);
         markFieldsAs(EntityStateField.class.getCanonicalName());
-        interfaceNames().convention(ImmutableSet.of(
-                EntityState.class.getCanonicalName()
-        ));
-        options = p.getObjects().setProperty(String.class);
+        options = project.getObjects().setProperty(String.class);
         options.convention(ImmutableSet.of(
                 OptionsProto.entity.getDescriptor().getName()
         ));
-        generateQueries = p.getObjects().property(Boolean.class);
+        generateQueries = project.getObjects().property(Boolean.class);
         generateQueries.convention(true);
     }
 

@@ -40,14 +40,14 @@ import org.gradle.api.provider.Property
  * Model Compiler generates the type-safe API for filtering messages by fields in queries
  * and subscriptions.
  *
- * @param P The Protobuf type reflecting a snapshot of these settings.
+ * @param S The Protobuf type reflecting a snapshot of these settings.
  */
-public abstract class SettingsWithFields<P : Message> @JvmOverloads internal constructor(
-    p: Project,
+public abstract class SettingsWithFields<S : Message> @JvmOverloads internal constructor(
+    project: Project,
     defaultActions: Iterable<String> = ImmutableList.of<@FqBinaryName String>()
-) : SettingsWithActions<P>(p, defaultActions) {
+) : SettingsWithActions<S>(project, defaultActions) {
 
-    private val markFieldsAs: Property<String> = p.objects.property(String::class.java)
+    private val markFieldsAs: Property<String> = project.objects.property(String::class.java)
 
     /**
      * Equips the field type with a superclass.

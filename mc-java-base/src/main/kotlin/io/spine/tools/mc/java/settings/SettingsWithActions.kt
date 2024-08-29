@@ -34,36 +34,31 @@ import com.google.protobuf.stringValue
 import io.spine.protobuf.pack
 import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
-import io.spine.tools.gradle.Multiple
 import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.gradle.settings.Settings
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.SetProperty
 
 /**
  * Code generation settings that cover applying code generation actions specified as
  * fully qualified binary names of classes that extend [io.spine.tools.mc.java.MessageAction].
  *
- * @param P Protobuf type reflecting a snapshot of these settings.
+ * @param S Protobuf type reflecting a snapshot of these settings.
  *
- * @param p The project for which settings are created.
+ * @param project The project for which settings are created.
  * @param defaultActions Actions to be specified as the default value for the settings.
  *
  * @constructor Creates an instance of settings for the specified project, configuring
  *  the convention using the passed default values.
  */
-public abstract class SettingsWithActions<P : Message>(
-    p: Project,
+public abstract class SettingsWithActions<S : Message>(
+    project: Project,
     defaultActions: Iterable<@FqBinaryName String>
-) : Settings<P>(p) {
-
-    @Deprecated("")
-    private val interfaceNames: Multiple<@FqBinaryName String> = Multiple(p, String::class.java)
+) : Settings<S>(project) {
 
     private val actions: MapProperty<String, Any> =
-        p.objects.mapProperty(String::class.java, Any::class.java)
+        project.objects.mapProperty(String::class.java, Any::class.java)
 
     init {
         actions.putAll(defaultActions.associateWith { Any.getDefaultInstance() })
@@ -163,14 +158,5 @@ public abstract class SettingsWithActions<P : Message>(
         return actions {
             action.putAll(collected)
         }
-    }
-
-    /**
-     * Obtains the Gradle property containing the set of Java interface names.
-     *
-     */
-    @Deprecated("Please use {@link #actions()} instead.")
-    public fun interfaceNames(): SetProperty<String> {
-        return interfaceNames
     }
 }

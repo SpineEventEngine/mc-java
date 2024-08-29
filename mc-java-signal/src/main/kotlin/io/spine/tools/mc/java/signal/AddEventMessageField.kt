@@ -46,4 +46,9 @@ public class AddEventMessageField(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : AddFieldClass(type, file, stringValue { value = EventMessageField::class.java.reference }, context)
+) : AddFieldClass(
+    type,
+    file,
+    stringValue { value = EventMessageField::class.java.reference },
+    context
+)
