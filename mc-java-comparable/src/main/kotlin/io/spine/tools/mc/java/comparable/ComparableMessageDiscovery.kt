@@ -58,7 +58,6 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
             }
         )
     }
-
 }
 
 private fun isComparable(option: Option): Boolean = option.name == "compare_by"
