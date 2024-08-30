@@ -64,14 +64,14 @@ public abstract class MessageAction<P : Message>(
     }
 
     /**
-     * The name of the message class under which [cls] is going to places.
+     * The name of the message class for which this action runs.
      */
     protected val messageClass: ClassName by lazy {
         type.javaClassName(typeSystem!!)
     }
 
     /**
-     * The target of the code generation action.
+     * The target class of the code generation action.
      */
     protected abstract val cls: PsiClass
 

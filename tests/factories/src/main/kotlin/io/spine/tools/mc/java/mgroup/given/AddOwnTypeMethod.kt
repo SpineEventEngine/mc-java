@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.mgroup.given
 
+import com.google.protobuf.Empty
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.CodegenContext
@@ -38,23 +39,32 @@ import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.addLast
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
+import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.tools.java.reference
+import io.spine.type.MessageType as MType
 
 /**
- * A stub rendering action that adds a nested class called [`StudentId`][CLASS_NAME].
+ * A stub rendering action which adds a static method called `ownClass` which
+ * obtains [io.spine.type.MessageType] instance which represents the generated message class.
  */
-class NestClassAction(type: MessageType, file: SourceFile<Java>, context: CodegenContext) :
-    CreateNestedClass(type, file, CLASS_NAME, context) {
+class AddOwnTypeMethod(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    override fun tuneClass() {
+    override fun doRender() {
         cls.addLast(method)
     }
+
+    private val returnType: String = MType::class.java.reference
 
     private val javadoc: PsiDocComment by lazy {
         @Language("JAVA") @Suppress("EmptyClass")
         val doc = elementFactory.createDocCommentFromText("""
             /**
-             * Returns the message class for test purposes.
-             */           
+             * Returns an instance of {@link $returnType} describing this message class.
+             */
             """.trimIndent()
         )
         doc
@@ -64,19 +74,12 @@ class NestClassAction(type: MessageType, file: SourceFile<Java>, context: Codege
         val messageClassName = type.javaClassName(typeSystem!!)
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
-            public static Class messageClass() {
-              return $messageClassName.class;    
+            public static $returnType ownType() {
+              return new $returnType(getDescriptor());    
             }                                
             """.trimIndent(), cls
         )
         newMethod.addFirst(javadoc)
         newMethod
-    }
-
-    @Language("JAVA") @Suppress("EmptyClass")
-    override fun classJavadoc(): String = ""
-
-    companion object {
-        const val CLASS_NAME = "SomeNestedClass"
     }
 }
