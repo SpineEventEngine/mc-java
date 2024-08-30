@@ -35,7 +35,7 @@ import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
 /**
  * Gathers codegen settings from [ComparableMessageDiscovered] events.
  */
-internal class ComparableMessageView :
+internal class ComparableActionsView :
     View<MessageType, ComparableActions, ComparableActions.Builder>() {
 
     @Subscribe

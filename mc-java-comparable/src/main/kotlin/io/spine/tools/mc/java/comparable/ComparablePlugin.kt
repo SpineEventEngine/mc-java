@@ -46,7 +46,7 @@ public class ComparablePlugin : Plugin {
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableMessageView::class.java
+        ComparableActionsView::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
