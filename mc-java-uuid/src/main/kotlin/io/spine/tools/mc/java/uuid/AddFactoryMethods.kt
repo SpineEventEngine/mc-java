@@ -50,9 +50,9 @@ import org.intellij.lang.annotations.Language
  * The class is public because its fully qualified name is used as a default
  * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  */
 public class AddFactoryMethods(
     type: MessageType,

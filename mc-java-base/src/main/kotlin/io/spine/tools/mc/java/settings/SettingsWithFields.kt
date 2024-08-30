@@ -27,11 +27,10 @@ package io.spine.tools.mc.java.settings
 
 import com.google.common.collect.ImmutableList
 import com.google.protobuf.Message
-import io.spine.tools.java.code.Names
 import io.spine.tools.mc.java.field.AddFieldClass
 import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.checkerframework.checker.signature.qual.FullyQualifiedName
 import org.gradle.api.Project
-import org.gradle.api.provider.Property
 
 /**
  * Code generation settings that include generation of
@@ -41,39 +40,21 @@ import org.gradle.api.provider.Property
  * and subscriptions.
  *
  * @param S The Protobuf type reflecting a snapshot of these settings.
+ *
+ * @param project The project for which settings are created.
+ * @param defaultActions Actions to be specified as the default value for the settings.
  */
 public abstract class SettingsWithFields<S : Message> @JvmOverloads internal constructor(
     project: Project,
     defaultActions: Iterable<String> = ImmutableList.of<@FqBinaryName String>()
 ) : SettingsWithActions<S>(project, defaultActions) {
 
-    private val markFieldsAs: Property<String> = project.objects.property(String::class.java)
-
     /**
      * Equips the field type with a superclass.
      *
      * @param className The canonical class name of an existing Java class.
      */
-    public fun markFieldsAs(className: String) {
+    public fun markFieldsAs(className: @FullyQualifiedName String) {
         useAction(AddFieldClass::class.java.name, className)
-        markFieldsAs.set(className)
-    }
-
-    /**
-     * Obtains the [GenerateFields] instance containing specified names of
-     * field superclasses.
-     */
-    @Deprecated("Please use `actions()` instead.")
-    public fun generateFields(): GenerateFields {
-        val generateFields: GenerateFields
-        val superclassName = markFieldsAs.getOrElse("")
-        generateFields = if (superclassName.isEmpty()) {
-            GenerateFields.getDefaultInstance()
-        } else {
-            GenerateFields.newBuilder()
-                .setSuperclass(Names.className(superclassName))
-                .build()
-        }
-        return generateFields
     }
 }

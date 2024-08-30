@@ -52,7 +52,6 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
 
     private final Pattern pattern;
     private final Multiple<String> methodFactories;
-    private final Multiple<String> nestedClassFactories;
 
     /**
      * Creates an instance of settings for the given project and the specified pattern.
@@ -61,9 +60,7 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
         super(project);
         this.pattern = pattern;
         methodFactories = new Multiple<>(project, String.class);
-        nestedClassFactories = new Multiple<>(project, String.class);
         methodFactories.convention(ImmutableSet.of());
-        nestedClassFactories.convention(ImmutableSet.of());
     }
 
     /**
@@ -79,21 +76,6 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
     @Deprecated
     public void generateMethodsWith(String factoryClassName) {
         methodFactories.add(factoryClassName);
-    }
-
-    /**
-     * Specifies a {@link io.spine.tools.java.code.NestedClassFactory NestedClassFactory}
-     * to generate nested classes inside the message classes.
-     *
-     * <p>Calling this method multiple times will add the provided factories for code generation.
-     *
-     * @param factoryClassName
-     *         the canonical class name of the nested class factory
-     * @deprecated please use {@link SettingsWithActions#useAction} instead.
-     */
-    @Deprecated
-    public void generateNestedClassesWith(String factoryClassName) {
-        nestedClassFactories.add(factoryClassName);
     }
 
     @Override
