@@ -68,9 +68,10 @@ public abstract class SettingsWithActions<S : Message>(
      * Configures the associated messages to implement a Java interface with the given name.
      *
      * The declaration of the interface in Java must exist. It will not be generated.
-     * Providing a non-existent interface may lead to a compiler error.
+     * Providing a non-existing interface will result in a compile time error.
      *
-     * @param interfaceName The canonical name of the interface.
+     * @param interfaceName The name of interface. It could be a simple name if the generated
+     *   types are in the same package. Otherwise, please use a fully qualified canonical name.
      */
     public fun markAs(interfaceName: String) {
         useAction(
@@ -152,8 +153,8 @@ public abstract class SettingsWithActions<S : Message>(
     public fun actions(): Actions {
         val collected = actions.get()
         check(collected.isNotEmpty()) {
-            "Code generation settings (`$this`) do not declare any actions." +
-                    " Please specify actions using `useAction()` methods."
+            "Code generation settings instance (`$this`) does not declare any actions." +
+                    " Please call `useAction()` methods."
         }
         return actions {
             action.putAll(collected)
