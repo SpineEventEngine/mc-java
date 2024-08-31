@@ -38,7 +38,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ImplementUuidValue` should")
+@DisplayName("Codegen for implementing `UuidValue` should")
 internal class ImplementUuidValueSpec {
 
     companion object : UuidPluginTestSetup(
