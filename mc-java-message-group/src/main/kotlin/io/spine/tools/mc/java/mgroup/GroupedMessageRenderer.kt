@@ -63,18 +63,9 @@ internal class GroupedMessageRenderer : JavaRenderer(), MessageGroupPluginCompon
 
     private fun GroupedMessage.doRender(sourceFile: SourceFile<Java>) {
         groupList.forEach {
-//            if (it.hasGenerateFields()) {
-//                it.generateFields.render(type, sourceFile)
-//            }
             RenderActions(type, sourceFile, it.actions, context!!).apply()
         }
     }
-
-//    private fun GenerateFields.render(type: MessageType, file: SourceFile<Java>) {
-//        FieldClass(type, file, superClassName, context!!).run {
-//            render()
-//        }
-//    }
 
     private fun findTypes(): Set<GroupedMessage> {
         val found = select(GroupedMessage::class.java).all()
