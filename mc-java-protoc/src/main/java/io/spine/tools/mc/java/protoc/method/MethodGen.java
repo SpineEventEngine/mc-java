@@ -68,11 +68,11 @@ public final class MethodGen extends CodeGenerator {
         ImmutableList.Builder<CodeGenerationTask> tasks = ImmutableList.builder();
         for (var messages : settings.getGroupSettings().getGroupList()) {
             var pattern = messages.getPattern();
-            messages.getGenerateMethodsList()
-                    .stream()
-                    .map(generate -> new GenerateMethods(
-                            classLoader, generate.getFactory(), pattern))
-                    .forEach(tasks::add);
+//            messages.getGenerateMethodsList()
+//                    .stream()
+//                    .map(generate -> new GenerateMethods(
+//                            classLoader, generate.getFactory(), pattern))
+//                    .forEach(tasks::add);
         }
         return new MethodGen(tasks.build());
     }

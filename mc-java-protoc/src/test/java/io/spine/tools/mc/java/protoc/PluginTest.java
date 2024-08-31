@@ -33,7 +33,6 @@ import io.spine.option.OptionsProvider;
 import io.spine.protodata.FilePatternFactory;
 import io.spine.tools.java.fs.SourceFile;
 import io.spine.tools.mc.java.protoc.given.TestInterface;
-import io.spine.tools.mc.java.protoc.given.TestMethodFactory;
 import io.spine.tools.mc.java.settings.Combined;
 import io.spine.tools.mc.java.settings.GroupSettings;
 import io.spine.tools.mc.java.settings.MessageGroup;
@@ -57,7 +56,6 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.addInterface;
-import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.generateMethods;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.pattern;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.protocSettings;
 import static io.spine.tools.mc.java.protoc.given.CodeGeneratorRequestGiven.requestBuilder;
@@ -90,7 +88,6 @@ final class PluginTest {
         var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.suffix(TEST_PROTO_SUFFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
-                .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -116,7 +113,6 @@ final class PluginTest {
         var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.prefix(TEST_PROTO_PREFIX)))
                 .addAddInterface(addInterface(TestInterface.class))
-                .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)
@@ -141,7 +137,6 @@ final class PluginTest {
         var messages = MessageGroup.newBuilder()
                 .setPattern(pattern(FilePatternFactory.INSTANCE.regex(TEST_PROTO_REGEX)))
                 .addAddInterface(addInterface(TestInterface.class))
-                .addGenerateMethods(generateMethods(TestMethodFactory.class))
                 .build();
         var groupSettings = GroupSettings.newBuilder()
                 .addGroup(messages)

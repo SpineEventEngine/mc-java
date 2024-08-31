@@ -27,21 +27,12 @@
 package io.spine.tools.mc.java.gradle.settings;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableSet;
-import io.spine.tools.gradle.Multiple;
-import io.spine.tools.mc.java.settings.GenerateMethods;
 import io.spine.tools.mc.java.settings.MessageGroup;
-import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.tools.mc.java.settings.SettingsWithActions;
 import io.spine.tools.mc.java.settings.SettingsWithFields;
 import org.gradle.api.Project;
 
-import java.util.Set;
-
 import static com.google.protobuf.TextFormat.shortDebugString;
-import static io.spine.tools.java.code.Names.className;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * A codegen configuration for messages which match a certain pattern.
@@ -51,7 +42,6 @@ import static java.util.stream.Collectors.toSet;
 public final class MessageGroupSettings extends SettingsWithFields<MessageGroup> {
 
     private final Pattern pattern;
-    private final Multiple<String> methodFactories;
 
     /**
      * Creates an instance of settings for the given project and the specified pattern.
@@ -59,49 +49,14 @@ public final class MessageGroupSettings extends SettingsWithFields<MessageGroup>
     MessageGroupSettings(Project project, Pattern pattern) {
         super(project);
         this.pattern = pattern;
-        methodFactories = new Multiple<>(project, String.class);
-        methodFactories.convention(ImmutableSet.of());
-    }
-
-    /**
-     * Specifies a {@link io.spine.tools.java.code.MethodFactory MethodFactory} to generate
-     * methods for the message classes.
-     *
-     * <p>Calling this method multiple times will add the provided factories for code generation.
-     *
-     * @param factoryClassName
-     *         the canonical class name of the method factory
-     * @deprecated please use {@link SettingsWithActions#useAction} instead.
-     */
-    @Deprecated
-    public void generateMethodsWith(String factoryClassName) {
-        methodFactories.add(factoryClassName);
     }
 
     @Override
     public MessageGroup toProto() {
         var result = MessageGroup.newBuilder()
                 .setPattern(pattern)
-                .addAllGenerateMethods(generateMethods())
                 .setActions(actions());
         return result.build();
-    }
-
-    private Set<GenerateMethods> generateMethods() {
-        return methodFactories.get()
-                              .stream()
-                              .map(MessageGroupSettings::methodFactoryConfig)
-                              .collect(toSet());
-    }
-
-    private static GenerateMethods methodFactoryConfig(String methodFactoryClass) {
-        var factoryName = MethodFactoryName.newBuilder()
-                .setClassName(className(methodFactoryClass))
-                .build();
-        var config = GenerateMethods.newBuilder()
-                .setFactory(factoryName)
-                .build();
-        return config;
     }
 
     @Override
