@@ -34,9 +34,9 @@ import io.spine.base.MessageFile
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.java.code.Classpath
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_COMMAND_ACTIONS
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_EVENT_ACTIONS
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_REJECTION_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_COMMAND_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_EVENT_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_REJECTION_ACTIONS
 import io.spine.tools.mc.java.settings.Combined
 import io.spine.tools.mc.java.settings.MessageGroup
 import io.spine.tools.mc.java.settings.combined

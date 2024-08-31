@@ -23,82 +23,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
-import io.spine.protodata.FilePattern;
-import io.spine.tools.mc.java.settings.Signals;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
-import org.gradle.api.Project;
+import com.google.common.annotations.VisibleForTesting
+import io.spine.protodata.filePattern
+import io.spine.tools.mc.java.settings.Signals
+import io.spine.tools.mc.java.settings.signals
+import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.gradle.api.Project
 
 /**
- * Code generation config for a type of signal messages.
+ * Code generation settings for a type of signal messages.
  *
- * <p>May configure all the events, all the rejections, or all the commands.
+ * May configure all the events, all the rejections, or all the commands.
+ * Settings applied to events do not automatically apply to rejections.
  *
- * <p>Settings applied to events do not automatically apply to rejections.
+ * @param project The project under which settings are created.
+ * @param suffix The default file suffix to initialize the file filtering pattern in conventions.
+ * @param defaultActions Code generation actions to be executed for this kind of signals.
+ *
+ * @constructor Creates a new instance under the given project.
  */
-public final class SignalSettings extends GroupedByFilePatterns<Signals> {
+public class SignalSettings internal constructor(
+    project: Project,
+    suffix: String,
+    defaultActions: Iterable<String>
+) : GroupedByFilePatterns<Signals>(project, defaultActions) {
 
-    private static final String FIELD_ACTION =
-            "io.spine.tools.mc.java.signal.AddEventMessageField";
-
-    /**
-     * Default codegen action for command messages.
-     */
-    @VisibleForTesting
-    public static final ImmutableList<@FqBinaryName String> DEFAULT_COMMAND_ACTIONS =
-            ImmutableList.of(
-                    "io.spine.tools.mc.java.signal.ImplementCommandMessage"
-            );
-
-    /**
-     * Default codegen action for event messages.
-     */
-    @VisibleForTesting
-    public static final ImmutableList<@FqBinaryName String> DEFAULT_EVENT_ACTIONS =
-            ImmutableList.of(
-                    "io.spine.tools.mc.java.signal.ImplementEventMessage",
-                    FIELD_ACTION
-            );
-
-    /**
-     * Default codegen action for rejection messages.
-     */
-    @VisibleForTesting
-    public static final ImmutableList<@FqBinaryName String> DEFAULT_REJECTION_ACTIONS =
-            ImmutableList.of(
-                    "io.spine.tools.mc.java.signal.ImplementRejectionMessage",
-                    FIELD_ACTION
-            );
-
-    /**
-     * Creates a new instance under the given project.
-     *
-     * @param project
-     *         the project under which settings are created
-     * @param suffix
-     *         the default file suffix to initialize the file filtering pattern in conventions
-     * @param defaultActions
-     *         code generation actions to be executed for this kind of signals
-     */
-    SignalSettings(Project project,
-                   String suffix,
-                   Iterable<@FqBinaryName String> defaultActions) {
-        super(project, defaultActions);
-        var pattern = FilePattern.newBuilder()
-                .setSuffix(suffix)
-                .build();
-        convention(pattern);
+    init {
+        val pattern = filePattern {
+            this@filePattern.suffix = suffix
+        }
+        convention(pattern)
     }
 
-    @Override
-    public Signals toProto() {
-        return Signals.newBuilder()
-                .addAllPattern(patterns())
-                .setActions(actions())
-                .build();
+    override fun toProto(): Signals {
+        return signals {
+            pattern.addAll(patterns())
+            actions = actions()
+        }
+    }
+
+    public companion object {
+
+        private const val FIELD_ACTION = "io.spine.tools.mc.java.signal.AddEventMessageField"
+
+        /**
+         * Default codegen action for command messages.
+         */
+        @VisibleForTesting
+        public val DEFAULT_COMMAND_ACTIONS: List<@FqBinaryName String> = listOf(
+            "io.spine.tools.mc.java.signal.ImplementCommandMessage"
+        )
+
+        /**
+         * Default codegen action for event messages.
+         */
+        @VisibleForTesting
+        public val DEFAULT_EVENT_ACTIONS: List<@FqBinaryName String> = listOf(
+            "io.spine.tools.mc.java.signal.ImplementEventMessage",
+            FIELD_ACTION
+        )
+
+        /**
+         * Default codegen action for rejection messages.
+         */
+        @VisibleForTesting
+        public val DEFAULT_REJECTION_ACTIONS: List<@FqBinaryName String> = listOf(
+            "io.spine.tools.mc.java.signal.ImplementRejectionMessage",
+            FIELD_ACTION
+        )
     }
 }

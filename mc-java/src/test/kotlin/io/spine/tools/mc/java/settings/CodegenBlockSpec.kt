@@ -46,9 +46,9 @@ import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.McJavaPlugin
 import io.spine.tools.mc.java.gradle.settings.EntitySettings
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_COMMAND_ACTIONS
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_EVENT_ACTIONS
-import io.spine.tools.mc.java.gradle.settings.SignalSettings.DEFAULT_REJECTION_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_COMMAND_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_EVENT_ACTIONS
+import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_REJECTION_ACTIONS
 import io.spine.tools.mc.java.gradle.settings.UuidSettings
 import io.spine.tools.proto.code.ProtoTypeName
 import java.io.File
