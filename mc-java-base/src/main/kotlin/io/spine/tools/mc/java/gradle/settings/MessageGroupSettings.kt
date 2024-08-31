@@ -50,7 +50,7 @@ public class MessageGroupSettings internal constructor(
 
     override fun toProto(): MessageGroup {
         return messageGroup {
-            this@messageGroup.pattern = pattern
+            pattern = this@MessageGroupSettings.pattern
             actions = actions()
         }
     }
