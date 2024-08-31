@@ -33,7 +33,6 @@ import io.spine.annotation.Internal;
 import io.spine.option.OptionsProto;
 import io.spine.query.EntityStateField;
 import io.spine.tools.mc.java.settings.Entities;
-import io.spine.tools.mc.java.settings.SettingsWithFields;
 import io.spine.tools.proto.code.ProtoOption;
 import org.checkerframework.checker.signature.qual.FqBinaryName;
 import org.gradle.api.Action;

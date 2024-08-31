@@ -52,8 +52,7 @@ import static io.spine.util.Exceptions.newIllegalStateException;
  * into the {@code System.out}.
  *
  * <p>For the description of the plugin behavior see
- * {@link io.spine.tools.mc.java.protoc.message.InterfaceGen InterfaceGen} and
- * {@link io.spine.tools.mc.java.protoc.method.MethodGen MethodGen}.
+ * {@link io.spine.tools.mc.java.protoc.message.InterfaceGen InterfaceGen}.
  *
  * <p>For the plugin mechanism see <a href="SpineProtoGenerator.html#contract">
  * {@code SpineProtoGenerator}</a>.

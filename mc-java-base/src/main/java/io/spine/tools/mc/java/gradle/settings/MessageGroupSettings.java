@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.gradle.settings;
 import com.google.common.base.MoreObjects;
 import io.spine.tools.mc.java.settings.MessageGroup;
 import io.spine.tools.mc.java.settings.Pattern;
-import io.spine.tools.mc.java.settings.SettingsWithFields;
 import org.gradle.api.Project;
 
 import static com.google.protobuf.TextFormat.shortDebugString;

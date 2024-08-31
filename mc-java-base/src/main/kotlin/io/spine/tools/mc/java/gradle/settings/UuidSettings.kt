@@ -23,49 +23,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
-import io.spine.tools.mc.java.settings.SettingsWithActions;
-import io.spine.tools.mc.java.settings.Uuids;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
-import org.gradle.api.Project;
+import com.google.common.annotations.VisibleForTesting
+import com.google.common.collect.ImmutableList
+import io.spine.tools.mc.java.settings.Uuids
+import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.gradle.api.Project
 
 /**
- * Settings for code generation for messages that qualify as {@link io.spine.base.UuidValue}.
+ * Settings for code generation for messages that qualify as [io.spine.base.UuidValue].
  */
-public final class UuidSettings extends SettingsWithActions<Uuids> {
+public class UuidSettings(project: Project) : SettingsWithActions<Uuids>(project, DEFAULT_ACTIONS) {
 
-    /**
-     * The name of the default codegen action applied to {@link io.spine.base.UuidValue}s.
-     */
-    @VisibleForTesting
-    public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS =
-            ImmutableList.of(
-                    "io.spine.tools.mc.java.uuid.ImplementUuidValue",
-                    "io.spine.tools.mc.java.uuid.AddFactoryMethods"
-            );
-
-    UuidSettings(Project project) {
-        super(project, DEFAULT_ACTIONS);
-    }
-
-    @Override
-    public Uuids toProto() {
+    override fun toProto(): Uuids {
         return Uuids.newBuilder()
-                .setActions(actions())
-                .build();
+            .setActions(actions())
+            .build()
     }
 
-    /**
-     * Does nothing.
-     *
-     * @deprecated Please use {@link SettingsWithActions#useAction(String)} instead.
-     */
-    @Deprecated
-    public void generateMethodsWith(@SuppressWarnings("unused") String factoryClassName) {
-        // Does nothing.
+    public companion object {
+
+        /**
+         * The name of the default codegen action applied to [io.spine.base.UuidValue]s.
+         */
+        @VisibleForTesting
+        public val DEFAULT_ACTIONS: ImmutableList<String> =
+            ImmutableList.of<@FqBinaryName String>(
+                "io.spine.tools.mc.java.uuid.ImplementUuidValue",
+                "io.spine.tools.mc.java.uuid.AddFactoryMethods"
+            )
     }
 }

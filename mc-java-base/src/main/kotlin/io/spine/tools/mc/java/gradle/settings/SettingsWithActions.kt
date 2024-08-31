@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package io.spine.tools.mc.java.settings
+package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions
@@ -35,7 +35,7 @@ import io.spine.protobuf.pack
 import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.gradle.settings.Settings
+import io.spine.tools.mc.java.settings.superInterface
 import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
@@ -77,6 +77,28 @@ public abstract class SettingsWithActions<S : Message>(
         useAction(
             ImplementInterface::class.java.name,
             superInterface { name = interfaceName }
+        )
+    }
+
+    /**
+     * Configures the associated messages to implement a Java interface with the given name.
+     *
+     * The declaration of the interface in Java must exist. It will not be generated.
+     * Providing a non-existing interface will result in a compile time error.
+     *
+     * @param interfaceName The name of interface. It could be a simple name if the generated
+     *   types are in the same package. Otherwise, please use a fully qualified canonical name.
+     * @param genericParams The arguments for generic parameters, if [interfaceName] accepts them.
+     *   Similarly to [interfaceName] they could be simple names or qualified names depending
+     *   on the package.
+     */
+    public fun markAs(interfaceName: String, genericParams: Iterable<String>) {
+        useAction(
+            ImplementInterface::class.java.name,
+            superInterface {
+                name = interfaceName
+                this@superInterface.genericParameter.addAll(genericParams)
+            }
         )
     }
 
