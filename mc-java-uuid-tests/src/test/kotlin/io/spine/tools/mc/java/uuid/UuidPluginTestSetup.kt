@@ -26,10 +26,11 @@
 
 package io.spine.tools.mc.java.uuid
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
+import io.spine.protobuf.pack
 import io.spine.protodata.settings.actions
-import io.spine.tools.java.reference
 import io.spine.tools.mc.java.MessageAction
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Uuids
@@ -38,14 +39,14 @@ import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.io.TempDir
-import com.google.protobuf.Any as ProtoAny
 
 /**
  * The base class for companion objects of test suites that test codegen
  * actions of [UuidPlugin].
  */
 abstract class UuidPluginTestSetup(
-    private val actionClass: Class<out MessageAction<*>>
+    private val actionClass: Class<out MessageAction<*>>,
+    private val parameter: Message,
 ) : PluginTestSetup<Uuids>(UuidPlugin(), UuidPlugin.SETTINGS_ID) {
 
     val uuidType = "AccountId"
@@ -60,7 +61,7 @@ abstract class UuidPluginTestSetup(
         val codegenConfig = createCodegenConfig(projectDir)
         return codegenConfig.toProto().uuids.copy {
             actions = actions {
-                action.put(actionClass.reference, ProtoAny.getDefaultInstance())
+                action.put(actionClass.name, parameter.pack())
             }
         }
     }

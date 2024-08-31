@@ -34,13 +34,17 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import com.google.protobuf.Any as ProtoAny
 
 @DisplayName("`AddFactoryMethods` should")
 internal class AddFactoryMethodsSpec {
 
     private val annotationText = GeneratedAnnotation.create().text
 
-    companion object : UuidPluginTestSetup(actionClass = AddFactoryMethods::class.java) {
+    companion object : UuidPluginTestSetup(
+        AddFactoryMethods::class.java,
+        ProtoAny.getDefaultInstance()
+    ) {
 
         @BeforeAll
         @JvmStatic
