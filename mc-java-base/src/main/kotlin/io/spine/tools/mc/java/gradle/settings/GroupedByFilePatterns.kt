@@ -31,17 +31,20 @@ import io.spine.protobuf.isDefault
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.gradle.Multiple
-import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 
 /**
  * A configuration for code generation for a certain group of messages joined by a file pattern.
  *
  * @param S The Protobuf type reflecting a snapshot of these settings.
-*/
-public abstract class GroupedByFilePatterns<S : Message>
-internal constructor(project: Project, defaultActions: Iterable<@FqBinaryName String>) :
-    SettingsWithFields<S>(project, defaultActions) {
+ *
+ * @param project The project under which settings are created.
+ * @param defaultActions Code generation actions to be executed for the grouped kind of messages.
+ */
+public abstract class GroupedByFilePatterns<S : Message> internal constructor(
+    project: Project,
+    defaultActions: ActionMap
+) : SettingsWithFields<S>(project, defaultActions) {
 
     private val file = Multiple(project, FilePattern::class.java)
 

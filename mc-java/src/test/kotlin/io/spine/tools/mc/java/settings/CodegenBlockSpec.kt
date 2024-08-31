@@ -119,7 +119,7 @@ class CodegenBlockSpec {
         val settings = options.codegen!!.toProto()
 
         settings.uuids.actions.actionMap.keys shouldBe
-                UuidSettings.DEFAULT_ACTIONS.toSet() + actionName
+                UuidSettings.DEFAULT_ACTIONS.keys + actionName
     }
 
     @Nested
@@ -145,7 +145,7 @@ class CodegenBlockSpec {
                 patternList shouldHaveSize 1
                 patternList[0].suffix shouldBe suffix
                 actions.actionMap.keys shouldBe
-                        DEFAULT_COMMAND_ACTIONS.toSet() + setOf(action1, action2)
+                        DEFAULT_COMMAND_ACTIONS.keys + setOf(action1, action2)
             }
         }
 
@@ -167,7 +167,7 @@ class CodegenBlockSpec {
                 patternList shouldHaveSize 1
                 patternList[0].prefix shouldBe prefix
                 actions.actionMap.keys shouldBe
-                        DEFAULT_EVENT_ACTIONS.toSet() + setOf(action1, action2)
+                        DEFAULT_EVENT_ACTIONS.keys + setOf(action1, action2)
             }
         }
 
@@ -187,7 +187,7 @@ class CodegenBlockSpec {
                 patternList shouldHaveSize 1
                 patternList[0].regex shouldBe regex
                 actions.actionMap.keys shouldBe
-                        DEFAULT_REJECTION_ACTIONS.toSet() + setOf(action1, action2)
+                        DEFAULT_REJECTION_ACTIONS.keys + setOf(action1, action2)
             }
         }
 
@@ -205,9 +205,9 @@ class CodegenBlockSpec {
             }
 
             signalSettings.events.actions.actionMap.keys shouldBe
-                    DEFAULT_EVENT_ACTIONS.toSet() + eventAction
+                    DEFAULT_EVENT_ACTIONS.keys + eventAction
             signalSettings.rejections.actions.actionMap.keys shouldBe
-                    DEFAULT_REJECTION_ACTIONS.toSet() + rejectionAction
+                    DEFAULT_REJECTION_ACTIONS.keys + rejectionAction
         }
 
         @Test
@@ -225,7 +225,7 @@ class CodegenBlockSpec {
 
             entities.run {
                 actions.actionMap.keys shouldContainExactly
-                        EntitySettings.DEFAULT_ACTIONS.toSet() + action
+                        EntitySettings.DEFAULT_ACTIONS.keys + action
 
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe option
@@ -242,7 +242,7 @@ class CodegenBlockSpec {
             }
             val uuids = options.codegen!!.toProto().uuids
             uuids.run {
-                actions.actionMap.keys shouldBe UuidSettings.DEFAULT_ACTIONS.toSet() + customAction
+                actions.actionMap.keys shouldBe UuidSettings.DEFAULT_ACTIONS.keys + customAction
             }
         }
 
@@ -334,7 +334,7 @@ class CodegenBlockSpec {
                 optionList shouldHaveSize 1
                 optionList.first().name shouldBe OptionsProto.entity.descriptor.name
                 actions.actionMap.keys shouldContainExactlyInAnyOrder
-                        EntitySettings.DEFAULT_ACTIONS.toSet()
+                        EntitySettings.DEFAULT_ACTIONS.keys
             }
         }
 

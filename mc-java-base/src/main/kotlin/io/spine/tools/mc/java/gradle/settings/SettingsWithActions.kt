@@ -41,6 +41,11 @@ import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
 
 /**
+ * Maps qualified render action class names to parameters specified via Gradle settings.
+ */
+public typealias ActionMap = Map<@FqBinaryName String, Message>
+
+/**
  * Code generation settings that cover applying code generation actions specified as
  * fully qualified binary names of classes that extend [io.spine.tools.mc.java.MessageAction].
  *
@@ -54,14 +59,14 @@ import org.gradle.api.provider.MapProperty
  */
 public abstract class SettingsWithActions<S : Message>(
     project: Project,
-    defaultActions: Iterable<@FqBinaryName String>
+    defaultActions: ActionMap
 ) : Settings<S>(project) {
 
-    private val actions: MapProperty<String, Any> =
-        project.objects.mapProperty(String::class.java, Any::class.java)
+    private val actions: MapProperty<String, Message> =
+        project.objects.mapProperty(String::class.java, Message::class.java)
 
     init {
-        actions.putAll(defaultActions.associateWith { Any.getDefaultInstance() })
+        actions.putAll(defaultActions)
     }
 
     /**
@@ -153,7 +158,7 @@ public abstract class SettingsWithActions<S : Message>(
      */
     public fun useActions(classNames: Iterable<String>) {
         Preconditions.checkNotNull(classNames)
-        actions.putAll(classNames.associateWith { Any.getDefaultInstance() })
+        actions.putAll(classNames.associateWith { noParameter })
     }
 
     /**
@@ -179,7 +184,25 @@ public abstract class SettingsWithActions<S : Message>(
                     " Please call `useAction()` methods."
         }
         return actions {
-            action.putAll(collected)
+            action.putAll(collected.pack())
         }
     }
+
+    protected companion object {
+
+        /**
+         * A shortcut for map entries telling that an action has no parameter.
+         */
+        public val noParameter: Message = Any.getDefaultInstance()
+    }
+}
+
+/**
+ * Transforms this action map into the map suitable when creating [Actions] by
+ * packing values if they are not already instances of [Any].
+ */
+private fun ActionMap.pack(): Map<@FqBinaryName String, Any> {
+    return map { (key, value) ->
+        key to if (value is Any) value else value.pack()
+    }.toMap()
 }

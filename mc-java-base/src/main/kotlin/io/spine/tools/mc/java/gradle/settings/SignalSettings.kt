@@ -26,10 +26,18 @@
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
+import com.google.protobuf.stringValue
+import io.spine.base.CommandMessage
+import io.spine.base.EventMessage
+import io.spine.base.EventMessageField
+import io.spine.base.RejectionMessage
 import io.spine.protodata.filePattern
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.mc.java.settings.signals
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 
 /**
@@ -47,7 +55,7 @@ import org.gradle.api.Project
 public class SignalSettings internal constructor(
     project: Project,
     suffix: String,
-    defaultActions: Iterable<String>
+    defaultActions: ActionMap
 ) : GroupedByFilePatterns<Signals>(project, defaultActions) {
 
     init {
@@ -66,32 +74,40 @@ public class SignalSettings internal constructor(
 
     public companion object {
 
-        private const val FIELD_ACTION = "io.spine.tools.mc.java.signal.AddEventMessageField"
+        private val FIELD_ACTION: ActionMap = mapOf(
+            AddFieldClass::class.java.name to stringValue {
+                value = EventMessageField::class.java.reference
+            }
+        )
 
         /**
          * Default codegen action for command messages.
          */
         @VisibleForTesting
-        public val DEFAULT_COMMAND_ACTIONS: List<@FqBinaryName String> = listOf(
-            "io.spine.tools.mc.java.signal.ImplementCommandMessage"
+        public val DEFAULT_COMMAND_ACTIONS: ActionMap = mapOf(
+            ImplementInterface::class.java.name to superInterface {
+                name = CommandMessage::class.java.reference
+            }
         )
 
         /**
          * Default codegen action for event messages.
          */
         @VisibleForTesting
-        public val DEFAULT_EVENT_ACTIONS: List<@FqBinaryName String> = listOf(
-            "io.spine.tools.mc.java.signal.ImplementEventMessage",
-            FIELD_ACTION
-        )
+        public val DEFAULT_EVENT_ACTIONS: ActionMap = mapOf(
+            ImplementInterface::class.java.name to superInterface {
+                name = EventMessage::class.java.reference
+            },
+        ) + FIELD_ACTION
 
         /**
          * Default codegen action for rejection messages.
          */
         @VisibleForTesting
-        public val DEFAULT_REJECTION_ACTIONS: List<@FqBinaryName String> = listOf(
-            "io.spine.tools.mc.java.signal.ImplementRejectionMessage",
-            FIELD_ACTION
-        )
+        public val DEFAULT_REJECTION_ACTIONS: ActionMap = mapOf(
+            ImplementInterface::class.java.name to superInterface {
+                name = RejectionMessage::class.java.reference
+            }
+        ) + FIELD_ACTION
     }
 }

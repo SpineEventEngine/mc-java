@@ -25,10 +25,8 @@
  */
 package io.spine.tools.mc.java.gradle.settings
 
-import com.google.common.collect.ImmutableList
 import com.google.protobuf.Message
 import io.spine.tools.mc.java.field.AddFieldClass
-import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.checkerframework.checker.signature.qual.FullyQualifiedName
 import org.gradle.api.Project
 
@@ -46,7 +44,7 @@ import org.gradle.api.Project
  */
 public abstract class SettingsWithFields<S : Message> @JvmOverloads internal constructor(
     project: Project,
-    defaultActions: Iterable<String> = ImmutableList.of<@FqBinaryName String>()
+    defaultActions: ActionMap = mapOf()
 ) : SettingsWithActions<S>(project, defaultActions) {
 
     /**

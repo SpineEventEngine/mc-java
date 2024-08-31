@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.gradle.settings
 
 import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.uuid.AddFactoryMethods
-import io.spine.tools.mc.java.uuid.ImplementUuidValue
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.DisplayName
@@ -51,7 +51,7 @@ internal class UuidSettingsSpec {
         val settings = UuidSettings(project)
 
         val expected = setOf(
-            ImplementUuidValue::class.reference,
+            ImplementInterface::class.java.name,
             AddFactoryMethods::class.reference,
         )
 

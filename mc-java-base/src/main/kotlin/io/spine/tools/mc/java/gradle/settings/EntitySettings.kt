@@ -23,9 +23,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
+import com.google.protobuf.Message
 import io.spine.annotation.Internal
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
@@ -100,11 +102,11 @@ public class EntitySettings @VisibleForTesting public constructor(project: Proje
          * Names of render action classes applied by default to entity states.
          */
         @VisibleForTesting
-        public val DEFAULT_ACTIONS: List<@FqBinaryName String> = listOf(
-            "io.spine.tools.mc.java.entity.column.AddColumnClass",
-            "io.spine.tools.mc.java.field.AddFieldClass",
-            "io.spine.tools.mc.java.entity.query.AddQuerySupport",
-            "io.spine.tools.mc.java.entity.ImplementEntityState"
+        public val DEFAULT_ACTIONS: Map<@FqBinaryName String, Message> = mapOf(
+            "io.spine.tools.mc.java.entity.column.AddColumnClass" to noParameter,
+            "io.spine.tools.mc.java.field.AddFieldClass" to noParameter,
+            "io.spine.tools.mc.java.entity.query.AddQuerySupport" to noParameter,
+            "io.spine.tools.mc.java.entity.ImplementEntityState" to noParameter
         )
     }
 }

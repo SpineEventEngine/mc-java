@@ -23,12 +23,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
-import com.google.common.collect.ImmutableList
+import io.spine.base.UuidValue
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.settings.Uuids
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.settings.uuids
 import org.gradle.api.Project
 
 /**
@@ -37,9 +40,9 @@ import org.gradle.api.Project
 public class UuidSettings(project: Project) : SettingsWithActions<Uuids>(project, DEFAULT_ACTIONS) {
 
     override fun toProto(): Uuids {
-        return Uuids.newBuilder()
-            .setActions(actions())
-            .build()
+        return uuids {
+            this@uuids.actions = actions()
+        }
     }
 
     public companion object {
@@ -48,10 +51,11 @@ public class UuidSettings(project: Project) : SettingsWithActions<Uuids>(project
          * The name of the default codegen action applied to [io.spine.base.UuidValue]s.
          */
         @VisibleForTesting
-        public val DEFAULT_ACTIONS: ImmutableList<String> =
-            ImmutableList.of<@FqBinaryName String>(
-                "io.spine.tools.mc.java.uuid.ImplementUuidValue",
-                "io.spine.tools.mc.java.uuid.AddFactoryMethods"
-            )
+        public val DEFAULT_ACTIONS: ActionMap = mapOf(
+            ImplementInterface::class.java.name to
+                    superInterface { name = UuidValue::class.java.name },
+
+            "io.spine.tools.mc.java.uuid.AddFactoryMethods" to noParameter
+        )
     }
 }
