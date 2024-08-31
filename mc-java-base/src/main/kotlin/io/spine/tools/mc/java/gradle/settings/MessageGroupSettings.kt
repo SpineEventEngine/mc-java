@@ -30,6 +30,7 @@ import com.google.common.base.MoreObjects
 import com.google.protobuf.TextFormat.shortDebugString
 import io.spine.tools.mc.java.settings.MessageGroup
 import io.spine.tools.mc.java.settings.Pattern
+import io.spine.tools.mc.java.settings.messageGroup
 import org.gradle.api.Project
 
 /**
@@ -48,10 +49,10 @@ public class MessageGroupSettings internal constructor(
 ) : SettingsWithFields<MessageGroup>(project) {
 
     override fun toProto(): MessageGroup {
-        val result = MessageGroup.newBuilder()
-            .setPattern(pattern)
-            .setActions(actions())
-        return result.build()
+        return messageGroup {
+            this@messageGroup.pattern = pattern
+            actions = actions()
+        }
     }
 
     override fun toString(): String {
