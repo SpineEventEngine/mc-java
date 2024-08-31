@@ -23,102 +23,88 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import io.spine.annotation.Internal;
-import io.spine.option.OptionsProto;
-import io.spine.query.EntityStateField;
-import io.spine.tools.mc.java.settings.Entities;
-import io.spine.tools.proto.code.ProtoOption;
-import org.checkerframework.checker.signature.qual.FqBinaryName;
-import org.gradle.api.Action;
-import org.gradle.api.Project;
-import org.gradle.api.provider.Property;
-import org.gradle.api.provider.SetProperty;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import com.google.common.annotations.VisibleForTesting
+import io.spine.annotation.Internal
+import io.spine.option.OptionsProto
+import io.spine.query.EntityStateField
+import io.spine.tools.mc.java.settings.Entities
+import io.spine.tools.mc.java.settings.entities
+import io.spine.tools.proto.code.ProtoOption
+import io.spine.tools.proto.code.protoOption
+import org.checkerframework.checker.signature.qual.FqBinaryName
+import org.gradle.api.Project
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 
 /**
  * Configuration for entity state types' code generation.
  *
- * @see CodegenSettings#forEntities(Action)
+ * @param project The project for which settings are created.
+ *
+ * @see CodegenSettings.forEntities
  */
-public final class EntitySettings extends SettingsWithFields<Entities> {
-
-    /**
-     * Names of render action classes applied by default to entity states.
-     */
-    @VisibleForTesting
-    public static final ImmutableList<@FqBinaryName String> DEFAULT_ACTIONS = ImmutableList.of(
-        "io.spine.tools.mc.java.entity.column.AddColumnClass",
-        "io.spine.tools.mc.java.field.AddFieldClass",
-        "io.spine.tools.mc.java.entity.query.AddQuerySupport",
-        "io.spine.tools.mc.java.entity.ImplementEntityState"
-    );
-
-    private final SetProperty<String> options;
-    private final Property<Boolean> generateQueries;
-
-    @VisibleForTesting
-    public EntitySettings(Project project) {
-        super(project, DEFAULT_ACTIONS);
-        markFieldsAs(EntityStateField.class.getCanonicalName());
-        options = project.getObjects().setProperty(String.class);
-        options.convention(ImmutableSet.of(
-                OptionsProto.entity.getDescriptor().getName()
-        ));
-        generateQueries = project.getObjects().property(Boolean.class);
-        generateQueries.convention(true);
-    }
+public class EntitySettings @VisibleForTesting public constructor(project: Project) :
+    SettingsWithFields<Entities>(project, DEFAULT_ACTIONS) {
 
     /**
      * The Protobuf options which mark entity states.
      *
-     * <p>By default, the {@code (entity)} option is used.
-     *
-     * <p>Note. This is a part of the advanced level API.
-     * See the <a href="#disclaimer">disclaimer</a> above.
+     * By default, the `(entity)` option is used.
      */
-    @Internal
-    public SetProperty<String> getOptions() {
-        return options;
+    @get:Internal
+    public val options: SetProperty<String>
+
+    private val generateQueries: Property<Boolean>
+
+    init {
+        markFieldsAs(EntityStateField::class.java.canonicalName)
+        options = project.objects.setProperty(String::class.java)
+        options.convention(
+            setOf(OptionsProto.entity.descriptor.name)
+        )
+        generateQueries = project.objects.property(Boolean::class.java)
+        generateQueries.convention(true)
     }
 
     /**
      * Enables type-safe query API generation for entity states.
      */
-    public void generateQueries() {
-        generateQueries.set(true);
+    public fun generateQueries() {
+        generateQueries.set(true)
     }
 
     /**
      * Disables type-safe query API generation for entity states.
      */
-    public void skipQueries() {
-        generateQueries.set(false);
+    public fun skipQueries() {
+        generateQueries.set(false)
     }
 
-    @Override
-    public Entities toProto() {
-        return Entities.newBuilder()
-                .addAllOption(options())
-                .setGenerateQueries(generateQueries.get())
-                .setActions(actions())
-                .build();
+    override fun toProto(): Entities {
+        return entities {
+            option.addAll(options())
+            generateQueries = this@EntitySettings.generateQueries.get()
+            this@entities.actions = actions()
+        }
     }
 
-    private List<ProtoOption> options() {
-        return options.get()
-                      .stream()
-                      .map(name -> ProtoOption.newBuilder()
-                              .setName(name)
-                              .build())
-                      .collect(toList());
+    private fun options(): List<ProtoOption> {
+        return options.get().map { protoOption { name = it } }
+    }
+
+    public companion object {
+
+        /**
+         * Names of render action classes applied by default to entity states.
+         */
+        @VisibleForTesting
+        public val DEFAULT_ACTIONS: List<@FqBinaryName String> = listOf(
+            "io.spine.tools.mc.java.entity.column.AddColumnClass",
+            "io.spine.tools.mc.java.field.AddFieldClass",
+            "io.spine.tools.mc.java.entity.query.AddQuerySupport",
+            "io.spine.tools.mc.java.entity.ImplementEntityState"
+        )
     }
 }
