@@ -43,7 +43,6 @@ import io.spine.tools.code.Java
  * @param file The source code to which the action is applied.
  * @param parameter The parameter passed to the action.
  * @param context The code generation context in which this action runs.
- * @property cls The message class located in the [file].
  */
 public abstract class DirectMessageAction<P : Message>(
     type: MessageType,
@@ -52,6 +51,9 @@ public abstract class DirectMessageAction<P : Message>(
     context: CodegenContext
 ) : MessageAction<P>(type, file, parameter, context) {
 
+    /**
+     * The message class located in the [file].
+     */
     final override val cls: PsiClass by lazy {
         val f = file.psi() as PsiJavaFile
         f.findClass(messageClass)
