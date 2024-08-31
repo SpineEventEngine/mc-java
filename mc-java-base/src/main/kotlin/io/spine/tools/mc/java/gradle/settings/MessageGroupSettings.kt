@@ -23,45 +23,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package io.spine.tools.mc.java.gradle.settings
 
-package io.spine.tools.mc.java.gradle.settings;
-
-import com.google.common.base.MoreObjects;
-import io.spine.tools.mc.java.settings.MessageGroup;
-import io.spine.tools.mc.java.settings.Pattern;
-import org.gradle.api.Project;
-
-import static com.google.protobuf.TextFormat.shortDebugString;
+import com.google.common.base.MoreObjects
+import com.google.protobuf.TextFormat.shortDebugString
+import io.spine.tools.mc.java.settings.MessageGroup
+import io.spine.tools.mc.java.settings.Pattern
+import org.gradle.api.Project
 
 /**
- * A codegen configuration for messages which match a certain pattern.
+ * Codegen settings for messages which match a certain pattern.
  *
- * @see CodegenSettings#forMessages
+ * @param project The project for which settings are created.
+ * @property pattern The pattern to select message types.
+ *
+ * @constructor Creates an instance of settings for the given project and the specified pattern.
+ *
+ * @see CodegenSettings.forMessages
  */
-public final class MessageGroupSettings extends SettingsWithFields<MessageGroup> {
+public class MessageGroupSettings internal constructor(
+    project: Project,
+    private val pattern: Pattern
+) : SettingsWithFields<MessageGroup>(project) {
 
-    private final Pattern pattern;
-
-    /**
-     * Creates an instance of settings for the given project and the specified pattern.
-     */
-    MessageGroupSettings(Project project, Pattern pattern) {
-        super(project);
-        this.pattern = pattern;
+    override fun toProto(): MessageGroup {
+        val result = MessageGroup.newBuilder()
+            .setPattern(pattern)
+            .setActions(actions())
+        return result.build()
     }
 
-    @Override
-    public MessageGroup toProto() {
-        var result = MessageGroup.newBuilder()
-                .setPattern(pattern)
-                .setActions(actions());
-        return result.build();
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-                          .add("pattern", shortDebugString(pattern))
-                          .toString();
+            .add("pattern", shortDebugString(pattern))
+            .toString()
     }
 }
