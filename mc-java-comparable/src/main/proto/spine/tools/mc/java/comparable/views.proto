@@ -47,7 +47,13 @@ message ComparableActions {
     // The type in which the option is discovered.
     protodata.MessageType type = 1;
 
+    // The `compare_by` option.
+    protodata.Option option = 2;
+
     // Names of classes implementing `io.spine.protodata.renderer.RenderAction`
     // to be applied to this messages.
-    repeated string action = 2;
+    repeated string action = 3;
+
+    // Maps Proto `type_url` to a fully-qualified name of the comparator to use for this message.
+    map<string, string> default_comparator = 4;
 }
