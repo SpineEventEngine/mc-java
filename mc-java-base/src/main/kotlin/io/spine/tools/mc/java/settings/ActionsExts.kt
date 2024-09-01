@@ -24,40 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings
+package io.spine.tools.mc.java.settings
 
-import com.google.common.annotations.VisibleForTesting
-import io.spine.base.UuidValue
-import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.settings.ActionMap
-import io.spine.tools.mc.java.settings.Uuids
-import io.spine.tools.mc.java.settings.noParameter
-import io.spine.tools.mc.java.settings.superInterface
-import io.spine.tools.mc.java.settings.uuids
-import org.gradle.api.Project
+import com.google.protobuf.Any
+import com.google.protobuf.Message
+import io.spine.protobuf.pack
+import io.spine.protodata.settings.Actions
+import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
- * Settings for code generation for messages that qualify as [io.spine.base.UuidValue].
+ * A fully qualified binary Java class name.
  */
-public class UuidSettings(project: Project) : SettingsWithActions<Uuids>(project, DEFAULT_ACTIONS) {
+public typealias BinaryClassName = @FqBinaryName String
 
-    override fun toProto(): Uuids {
-        return uuids {
-            this@uuids.actions = actions()
-        }
-    }
+/**
+ * Maps qualified render action class names to parameters specified via Gradle settings.
+ */
+public typealias ActionMap = Map<BinaryClassName, Message>
 
-    public companion object {
+/**
+ * The shortcut for map entry value telling that an action has no parameter.
+ *
+ * @see Actions.getActionMap
+ */
+public val noParameter: Message = Any.getDefaultInstance()
 
-        /**
-         * The name of the default codegen action applied to [io.spine.base.UuidValue]s.
-         */
-        @VisibleForTesting
-        public val DEFAULT_ACTIONS: ActionMap = mapOf(
-            ImplementInterface::class.java.name to
-                    superInterface { name = UuidValue::class.java.name },
-
-            "io.spine.tools.mc.java.uuid.AddFactoryMethods" to noParameter
-        )
-    }
+/**
+ * Transforms this action map into the map suitable when creating [Actions] by
+ * packing values if they are not already instances of [Any].
+ */
+public fun ActionMap.pack(): Map<BinaryClassName, Any> {
+    return map { (key, value) ->
+        key to if (value is Any) value else value.pack()
+    }.toMap()
 }

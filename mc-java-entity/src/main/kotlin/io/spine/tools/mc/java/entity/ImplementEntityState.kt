@@ -47,6 +47,7 @@ import io.spine.tools.mc.java.settings.superInterface
  * value in [EntitySettings][io.spine.tools.mc.java.gradle.settings.EntitySettings].
  *
  * ## Implementation note
+ *
  * The class descends from [DirectMessageAction] and delegates to [ImplementInterface] in
  * the [doRender] method instead of extending [ImplementInterface] directly.
  * This is so because of the following.
@@ -73,7 +74,7 @@ public class ImplementEntityState(
             file,
             superInterface {
                 name = EntityState::class.java.reference
-                genericParameter.add(idFieldType)
+                genericArgument.add(idFieldType)
             },
             context!!
         )

@@ -28,7 +28,8 @@ package io.spine.tools.mc.java.gradle.settings
 
 import com.google.protobuf.Message
 import io.spine.tools.mc.java.field.AddFieldClass
-import org.checkerframework.checker.signature.qual.FullyQualifiedName
+import io.spine.tools.mc.java.settings.ActionMap
+import io.spine.tools.mc.java.settings.BinaryClassName
 import org.gradle.api.Project
 
 /**
@@ -53,7 +54,7 @@ public abstract class SettingsWithFields<S : Message> @JvmOverloads internal con
      *
      * @param className The canonical class name of an existing Java class.
      */
-    public fun markFieldsAs(className: @FullyQualifiedName String) {
+    public fun markFieldsAs(className: BinaryClassName) {
         useAction(AddFieldClass::class.java.name, className)
     }
 }

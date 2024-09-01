@@ -33,9 +33,9 @@ import io.spine.base.EventMessage
 import io.spine.base.EventMessageField
 import io.spine.base.RejectionMessage
 import io.spine.protodata.filePattern
-import io.spine.tools.java.reference
 import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.field.AddFieldClass
+import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.mc.java.settings.signals
 import io.spine.tools.mc.java.settings.superInterface
@@ -77,7 +77,7 @@ public class SignalSettings internal constructor(
 
         private val FIELD_ACTION: ActionMap = mapOf(
             AddFieldClass::class.java.name to stringValue {
-                value = EventMessageField::class.java.reference
+                value = EventMessageField::class.java.name
             }
         )
 
@@ -87,7 +87,7 @@ public class SignalSettings internal constructor(
         @VisibleForTesting
         public val DEFAULT_COMMAND_ACTIONS: ActionMap = mapOf(
             ImplementInterface::class.java.name to superInterface {
-                name = CommandMessage::class.java.reference
+                name = CommandMessage::class.java.name
             }
         )
 
@@ -97,7 +97,7 @@ public class SignalSettings internal constructor(
         @VisibleForTesting
         public val DEFAULT_EVENT_ACTIONS: ActionMap = mapOf(
             ImplementInterface::class.java.name to superInterface {
-                name = EventMessage::class.java.reference
+                name = EventMessage::class.java.name
             },
         ) + FIELD_ACTION
 
@@ -107,7 +107,7 @@ public class SignalSettings internal constructor(
         @VisibleForTesting
         public val DEFAULT_REJECTION_ACTIONS: ActionMap = mapOf(
             ImplementInterface::class.java.name to superInterface {
-                name = RejectionMessage::class.java.reference
+                name = RejectionMessage::class.java.name
             }
         ) + FIELD_ACTION
     }

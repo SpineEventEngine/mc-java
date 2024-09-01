@@ -27,24 +27,18 @@
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
-import com.google.common.base.Preconditions
-import com.google.common.collect.ImmutableList
-import com.google.protobuf.Any
 import com.google.protobuf.Message
 import com.google.protobuf.stringValue
-import io.spine.protobuf.pack
 import io.spine.protodata.settings.Actions
 import io.spine.protodata.settings.actions
 import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.settings.ActionMap
+import io.spine.tools.mc.java.settings.BinaryClassName
+import io.spine.tools.mc.java.settings.noParameter
+import io.spine.tools.mc.java.settings.pack
 import io.spine.tools.mc.java.settings.superInterface
-import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
-
-/**
- * Maps qualified render action class names to parameters specified via Gradle settings.
- */
-public typealias ActionMap = Map<@FqBinaryName String, Message>
 
 /**
  * Code generation settings that cover applying code generation actions specified as
@@ -53,7 +47,7 @@ public typealias ActionMap = Map<@FqBinaryName String, Message>
  * @param S Protobuf type reflecting a snapshot of these settings.
  *
  * @param project The project for which settings are created.
- * @param defaultActions Actions to be specified as the default value for the settings.
+ * @param defaultActions Code generation actions applied by default.
  *
  * @constructor Creates an instance of settings for the specified project, configuring
  *  the convention using the passed default values.
@@ -94,16 +88,16 @@ public abstract class SettingsWithActions<S : Message>(
      *
      * @param interfaceName The name of interface. It could be a simple name if the generated
      *   types are in the same package. Otherwise, please use a fully qualified canonical name.
-     * @param genericParams The arguments for generic parameters, if [interfaceName] accepts them.
+     * @param genericArgs The arguments for generic parameters, if [interfaceName] accepts them.
      *   Similarly to [interfaceName] they could be simple names or qualified names depending
      *   on the package.
      */
-    public fun markAs(interfaceName: String, genericParams: Iterable<String>) {
+    public fun markAs(interfaceName: String, genericArgs: Iterable<String>) {
         useAction(
             ImplementInterface::class.java.name,
             superInterface {
                 name = interfaceName
-                this@superInterface.genericParameter.addAll(genericParams)
+                this@superInterface.genericArgument.addAll(genericArgs)
             }
         )
     }
@@ -115,8 +109,8 @@ public abstract class SettingsWithActions<S : Message>(
      *
      * @param className The binary name of the action class.
      */
-    public fun useAction(className: @FqBinaryName String) {
-        actions.put(className, Any.getDefaultInstance())
+    public fun useAction(className: BinaryClassName) {
+        actions.put(className, noParameter)
     }
 
     /**
@@ -127,8 +121,8 @@ public abstract class SettingsWithActions<S : Message>(
      * @param className The binary name of the action class.
      * @param parameter The parameter to be passed to the constructor of the action.
      */
-    public fun useAction(className: @FqBinaryName String, parameter: Message) {
-        actions.put(className, parameter.pack())
+    public fun useAction(className: BinaryClassName, parameter: Message) {
+        actions.put(className, parameter)
     }
 
     /**
@@ -144,9 +138,9 @@ public abstract class SettingsWithActions<S : Message>(
      *   [StringValue][com.google.protobuf.StringValue] and passed
      *   as a parameter to the constructor of the action.
      */
-    public fun useAction(className: @FqBinaryName String, parameter: String) {
+    public fun useAction(className: BinaryClassName, parameter: String) {
         val stringValue = stringValue { value = parameter }
-        actions.put(className, stringValue.pack())
+        actions.put(className, stringValue)
     }
 
     /**
@@ -154,11 +148,9 @@ public abstract class SettingsWithActions<S : Message>(
      * [code generation actions][io.spine.protodata.renderer.RenderAction]
      * to the code generated for messages of this group.
      *
-     * @param classNames
-     * the binary names of the action class
+     * @param classNames The binary names of the action class
      */
-    public fun useActions(classNames: Iterable<String>) {
-        Preconditions.checkNotNull(classNames)
+    public fun useActions(classNames: Iterable<BinaryClassName>) {
         actions.putAll(classNames.associateWith { noParameter })
     }
 
@@ -167,11 +159,10 @@ public abstract class SettingsWithActions<S : Message>(
      * [code generation actions][io.spine.protodata.renderer.RenderAction]
      * to the code generated for messages of this group.
      *
-     * @param classNames
-     * the binary names of the action classes
+     * @param classNames The binary names of the action classes
      */
-    public fun useActions(vararg classNames: String) {
-        useActions(ImmutableList.copyOf<@FqBinaryName String>(classNames))
+    public fun useActions(vararg classNames: BinaryClassName) {
+        useActions(classNames.toList())
     }
 
     /**
@@ -179,7 +170,7 @@ public abstract class SettingsWithActions<S : Message>(
      */
     @VisibleForTesting
     public fun actions(): Actions {
-        val collected = actions.get()
+        val collected: ActionMap = actions.get()
         check(collected.isNotEmpty()) {
             "Code generation settings instance (`$this`) does not declare any actions." +
                     " Please call `useAction()` methods."
@@ -188,22 +179,5 @@ public abstract class SettingsWithActions<S : Message>(
             action.putAll(collected.pack())
         }
     }
-
-    protected companion object {
-
-        /**
-         * A shortcut for map entries telling that an action has no parameter.
-         */
-        public val noParameter: Message = Any.getDefaultInstance()
-    }
 }
 
-/**
- * Transforms this action map into the map suitable when creating [Actions] by
- * packing values if they are not already instances of [Any].
- */
-private fun ActionMap.pack(): Map<@FqBinaryName String, Any> {
-    return map { (key, value) ->
-        key to if (value is Any) value else value.pack()
-    }.toMap()
-}

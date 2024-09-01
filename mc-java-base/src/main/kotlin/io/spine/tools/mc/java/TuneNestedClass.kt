@@ -37,10 +37,10 @@ import io.spine.tools.code.Java
 /**
  * Abstract base for code generators modifying classes nested under Java classes of message types.
  *
- * @param type the type of the message.
- * @param file the source code to which the action is applied.
- * @property simpleName a simple name of the nested class to be modified.
- * @param context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @property simpleName The simple name of the nested class to be modified.
+ * @param context The code generation context in which this action runs.
  */
 public abstract class TuneNestedClass(
     type: MessageType,

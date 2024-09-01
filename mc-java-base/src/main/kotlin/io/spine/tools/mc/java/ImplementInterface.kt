@@ -42,7 +42,7 @@ import io.spine.tools.psi.java.implement
  * @param type The type of the message.
  * @param file The source code to which the action is applied.
  * @param superInterface The interface to implement.
- * @param context the code generation context in which this action runs.
+ * @param context The code generation context in which this action runs.
  */
 public open class ImplementInterface(
     type: MessageType,
@@ -54,7 +54,7 @@ public open class ImplementInterface(
     override fun doRender() {
         val si = elementFactory.createClassReference(
             parameter.name,
-            parameter.genericParameterList,
+            parameter.genericArgumentList,
             cls
         )
         cls.implement(si)

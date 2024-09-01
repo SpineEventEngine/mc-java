@@ -250,12 +250,17 @@ message SuperInterface {
     // The name of the interface.
     //
     // It could be a simple name if the generated types are in the same Java package.
-    // Otherwise, this value must contain a fully-qualified name.
+    // Otherwise, this value must contain a fully qualified canonical name.
     //
     string name = 1 [(required) = true];
 
-    // Optional generic parameters.
-    repeated string generic_parameter = 2;
+    // Optional arguments for generic parameters, if the interface has them.
+    //
+    // As for the interface name, the arguments could be simple names if corresponding
+    // types reside in the same package with the generated code.
+    // Otherwise, fully qualified canonical names must be provided.
+    //
+    repeated string generic_argument = 2;
 }
 
 // Configuration for adding a Java interface to a generated class.

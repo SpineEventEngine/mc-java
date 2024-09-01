@@ -27,15 +27,15 @@
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.annotations.VisibleForTesting
-import com.google.protobuf.Message
 import io.spine.annotation.Internal
 import io.spine.option.OptionsProto
 import io.spine.query.EntityStateField
+import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.mc.java.settings.entities
+import io.spine.tools.mc.java.settings.noParameter
 import io.spine.tools.proto.code.ProtoOption
 import io.spine.tools.proto.code.protoOption
-import org.checkerframework.checker.signature.qual.FqBinaryName
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -102,9 +102,9 @@ public class EntitySettings @VisibleForTesting public constructor(project: Proje
          * Names of render action classes applied by default to entity states.
          */
         @VisibleForTesting
-        public val DEFAULT_ACTIONS: Map<@FqBinaryName String, Message> = mapOf(
-            "io.spine.tools.mc.java.entity.column.AddColumnClass" to noParameter,
+        public val DEFAULT_ACTIONS: ActionMap = mapOf(
             "io.spine.tools.mc.java.field.AddFieldClass" to noParameter,
+            "io.spine.tools.mc.java.entity.column.AddColumnClass" to noParameter,
             "io.spine.tools.mc.java.entity.query.AddQuerySupport" to noParameter,
             "io.spine.tools.mc.java.entity.ImplementEntityState" to noParameter
         )

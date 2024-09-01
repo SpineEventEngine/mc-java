@@ -28,13 +28,13 @@ package io.spine.tools.mc.java.uuid
 
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.GeneratedAnnotation
+import io.spine.tools.mc.java.settings.noParameter
 import io.spine.tools.psi.java.method
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import com.google.protobuf.Any as ProtoAny
 
 @DisplayName("`AddFactoryMethods` should")
 internal class AddFactoryMethodsSpec {
@@ -43,7 +43,7 @@ internal class AddFactoryMethodsSpec {
 
     companion object : UuidPluginTestSetup(
         AddFactoryMethods::class.java,
-        ProtoAny.getDefaultInstance()
+        noParameter
     ) {
 
         @BeforeAll
