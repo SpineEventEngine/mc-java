@@ -241,7 +241,7 @@ message Uuids {
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the UUID messages.
-    protodata.Actions actions = 6;
+    protodata.Actions actions = 3;
 }
 
 // Specification of an existing super interface a generated Java type should implement.
