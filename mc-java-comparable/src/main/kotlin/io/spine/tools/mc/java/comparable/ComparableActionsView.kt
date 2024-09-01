@@ -41,6 +41,10 @@ internal class ComparableActionsView :
     @Subscribe
     fun on(event: ComparableMessageDiscovered) = alter {
         type = event.type
-        addAllAction(event.settings.actionList)
+        option = event.option
+        with(event.settings) {
+            addAllAction(actionList)
+            putAllDefaultComparator(defaultComparatorMap)
+        }
     }
 }
