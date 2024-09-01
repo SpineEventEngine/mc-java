@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable
+package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
@@ -32,10 +32,9 @@ import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.OverrideAnnotation
+import io.spine.tools.mc.java.comparable.isComparable
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
@@ -49,26 +48,27 @@ import org.intellij.lang.annotations.Language
  * @property file the source code to which the action is applied.
  * @property context the code generation context in which this action runs.
  */
-public class AddCompareToMethod(
+public class AddComparator(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
 ) : DirectMessageAction(type, file, context) {
 
+    private val clsName = cls.name!!
+    private val option = type.optionList.find(::isComparable)
+        ?: error("Comparable action is applied to a type without `compare_by` option: `$type`.")
+
     override fun doRender() {
-        val clsName = cls.name!!
-        @Language("JAVA") @Suppress("EmptyClass")
-        val method = elementFactory.createMethodFromText(
-            """
-            public int compareTo($clsName ${clsName.replaceFirstChar { it.lowercaseChar() }}) {
-                return 0;                          
-            }            
-            """.trimIndent(), cls
-        )
-        method.run {
-            addFirst(GeneratedAnnotation.create())
-            addFirst(OverrideAnnotation.create())
-        }
-        cls.addLast(method)
+        val field = elementFactory.createFieldFromText(comparator(), cls)
+        field.addFirst(GeneratedAnnotation.create())
+        cls.addFirst(field)
     }
+
+    @Language("JAVA")
+    private fun comparator(): String =
+        """
+        private static final Comparator<$clsName> comparator = Comparator.comparing(Scratch::getPrice)
+                                                                        .thenComparing(Scratch::getValue)
+                                                                        .thenComparing(Scratch::getWeight);
+        """.trimIndent()
 }

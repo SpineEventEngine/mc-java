@@ -24,35 +24,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.comparable.action
 
-import io.kotest.matchers.shouldBe
-import io.spine.tools.mc.java.comparable.action.ImplementComparable
-import io.spine.tools.mc.java.implementsInterface
-import io.spine.tools.mc.java.uuid.ComparablePluginTestSetup.Companion.MESSAGE_SIMPLE_NAME
-import java.nio.file.Path
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
 
-@DisplayName("`ImplementComparable` should")
-internal class ImplementComparableSpec {
-
-    companion object : ComparablePluginTestSetup(actionClass = ImplementComparable::class.java) {
-
-        @BeforeAll
-        @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) = generateCode(projectDir, outputDir, settingsDir)
-    }
-
-    @Test
-    fun `make a message implement 'Comparable'`() {
-        val genericParameters = listOf(MESSAGE_SIMPLE_NAME)
-        implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
-    }
-}
+/**
+ * Updates the code of the message which qualifies as [Comparable] by
+ * making the type implement the [Comparable] interface.
+ *
+ * The class is public because its fully qualified name is used as a default
+ * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
+ */
+public class ImplementComparable(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(
+    type,
+    file,
+    Comparable::class.java.reference,
+    listOf(type.name.simpleName),
+    context
+)

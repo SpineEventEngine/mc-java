@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.gradle.settings
 
 import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.kotlin.reference
-import io.spine.tools.mc.java.comparable.AddCompareToMethod
-import io.spine.tools.mc.java.comparable.ImplementComparable
+import io.spine.tools.mc.java.comparable.action.AddCompareToMethod
+import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.DisplayName

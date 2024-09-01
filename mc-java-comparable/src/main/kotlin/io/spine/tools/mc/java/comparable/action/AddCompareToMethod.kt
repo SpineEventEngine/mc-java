@@ -24,18 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable
+package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.java.reference
-import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.tools.mc.java.GeneratedAnnotation
+import io.spine.tools.mc.java.OverrideAnnotation
+import io.spine.tools.psi.addFirst
+import io.spine.tools.psi.java.Environment.elementFactory
+import io.spine.tools.psi.java.addLast
+import org.intellij.lang.annotations.Language
 
 /**
- * Updates the code of the message which qualifies as [Comparable] by
- * making the type implement the [Comparable] interface.
+ * Updates the code of the message which qualifies as [Comparable] to
+ * contain `compareTo()` method.
  *
  * The class is public because its fully qualified name is used as a default
  * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
@@ -44,14 +49,26 @@ import io.spine.tools.mc.java.ImplementInterface
  * @property file the source code to which the action is applied.
  * @property context the code generation context in which this action runs.
  */
-public class ImplementComparable(
+public class AddCompareToMethod(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : ImplementInterface(
-    type,
-    file,
-    Comparable::class.java.reference,
-    listOf(type.name.simpleName),
-    context
-)
+) : DirectMessageAction(type, file, context) {
+
+    override fun doRender() {
+        val clsName = cls.name!!
+        @Language("JAVA") @Suppress("EmptyClass")
+        val method = elementFactory.createMethodFromText(
+            """
+            public int compareTo($clsName ${clsName.replaceFirstChar { it.lowercaseChar() }}) {
+                return 0;                          
+            }            
+            """.trimIndent(), cls
+        )
+        method.run {
+            addFirst(GeneratedAnnotation.create())
+            addFirst(OverrideAnnotation.create())
+        }
+        cls.addLast(method)
+    }
+}
