@@ -24,31 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.gradle.settings
 
-import io.spine.base.RejectionMessage
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.java.reference
-import io.spine.tools.mc.java.ImplementInterface
+import com.google.protobuf.Message
+import io.spine.tools.mc.java.field.AddFieldClass
+import io.spine.tools.mc.java.settings.ActionMap
+import io.spine.tools.mc.java.settings.BinaryClassName
+import org.gradle.api.Project
 
 /**
- * Updates the Java code of a message type which qualifies as [RejectionMessage]
- * making it implement this interface.
+ * Code generation settings that include generation of
+ * [field classes][io.spine.base.SubscribableField].
  *
- * The class is public because its fully qualified name is used as a default
- * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
+ * Model Compiler generates the type-safe API for filtering messages by fields in queries
+ * and subscriptions.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param S The Protobuf type reflecting a snapshot of these settings.
  *
- * @see ImplementInterface
+ * @param project The project for which settings are created.
+ * @param defaultActions Actions to be specified as the default value for the settings.
  */
-public class ImplementRejectionMessage(
-    type: MessageType,
-    file: SourceFile<Java>,
-    context: CodegenContext
-) : ImplementInterface(type, file, RejectionMessage::class.java.reference, context = context)
+public abstract class SettingsWithFields<S : Message> @JvmOverloads internal constructor(
+    project: Project,
+    defaultActions: ActionMap = mapOf()
+) : SettingsWithActions<S>(project, defaultActions) {
+
+    /**
+     * Equips the field type with a superclass.
+     *
+     * @param className The canonical class name of an existing Java class.
+     */
+    public fun markFieldsAs(className: BinaryClassName) {
+        useAction(AddFieldClass::class.java.name, className)
+    }
+}

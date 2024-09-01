@@ -35,7 +35,7 @@ import io.spine.protodata.MessageType
  * to be applied to a message type.
  */
 @GeneratedMixin
-public interface TypeActions : Message, WithActionList {
+public interface TypeActions : Message, WithActions {
 
     /**
      * The type for which we apply render actions.

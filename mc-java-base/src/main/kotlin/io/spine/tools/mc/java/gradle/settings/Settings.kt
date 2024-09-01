@@ -24,25 +24,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.gradle.settings
 
-import io.spine.base.EventMessageField
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.mc.java.field.FieldClass
-import io.spine.tools.mc.java.field.FieldClass.Companion.NAME
+import com.google.protobuf.Message
+import org.gradle.api.Project
+import org.gradle.api.provider.Property
 
 /**
- * Creates a nested class called [`Field`][NAME] under a Java class generated for
- * an event or rejection message.
+ * Settings for a specific aspect of the Model Compiler, established through Gradle.
  *
- * @see FieldClass
+ * @param S The type that captures a snapshot of the current settings state.
  */
-public class AddEventMessageField(
-    type: MessageType,
-    file: SourceFile<Java>,
-    context: CodegenContext
-) : FieldClass(type, file, ClassName(EventMessageField::class.java), context)
+public abstract class Settings<S : Message>(project: Project) {
+
+    /**
+     * Whether this configuration is enabled.
+     *
+     * If `false`, the configuration is ignored by the Model Compiler.
+     * The default value is `true`.
+     */
+    public val enabled: Property<Boolean> = project.objects.property(Boolean::class.java)
+
+    init {
+        enabled.convention(true)
+    }
+
+    /**
+     * Converts this instance into a Protobuf message.
+     */
+    public abstract fun toProto(): S
+}

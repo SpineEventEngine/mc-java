@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.mgroup
 
 import io.spine.core.External
 import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.isTopLevel
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React
@@ -55,7 +56,7 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
     ): EitherOf2<GroupedMessageDiscovered, NoReaction> {
         val type = event.type
         val matchingGroups = settings.groupList.filter {
-            it.pattern.matches(type)
+            it.pattern.matches(type) && type.isTopLevel
         }
         return if (matchingGroups.isNotEmpty()) {
             EitherOf2.withA(

@@ -36,6 +36,7 @@ option java_outer_classname = "OuterClassAnnotationsProto";
 option java_multiple_files = true;
 
 import "spine/protodata/file.proto";
+import "spine/protodata/source.proto";
 import "spine/protodata/ast.proto";
 
 // The API level options applied to an outer Java class for types

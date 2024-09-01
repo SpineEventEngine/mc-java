@@ -39,6 +39,6 @@ internal class UuidMessageView : View<MessageType, UuidActions, UuidActions.Buil
 
     @Subscribe
     fun on(e: UuidValueDiscovered) = alter {
-        addAllAction(e.settings.actionList)
+        setActions(e.settings.actions)
     }
 }

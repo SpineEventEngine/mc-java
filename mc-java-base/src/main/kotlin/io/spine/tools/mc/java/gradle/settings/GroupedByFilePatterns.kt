@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.gradle.settings
 
 import com.google.common.collect.ImmutableSet
@@ -31,19 +32,23 @@ import io.spine.protobuf.isDefault
 import io.spine.protodata.FilePattern
 import io.spine.protodata.FilePatternFactory
 import io.spine.tools.gradle.Multiple
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import io.spine.tools.mc.java.settings.ActionMap
 import org.gradle.api.Project
 
 /**
  * A configuration for code generation for a certain group of messages joined by a file pattern.
  *
- * @param P the Protobuf type reflecting a snapshot of these settings.
-*/
-public abstract class GroupedByFilePatterns<P : Message>
-internal constructor(p: Project, defaultActions: Iterable<@FqBinaryName String>) :
-    SettingsWithFields<P>(p, defaultActions) {
+ * @param S The Protobuf type reflecting a snapshot of these settings.
+ *
+ * @param project The project under which settings are created.
+ * @param defaultActions Code generation actions to be executed for the grouped kind of messages.
+ */
+public abstract class GroupedByFilePatterns<S : Message> internal constructor(
+    project: Project,
+    defaultActions: ActionMap
+) : SettingsWithFields<S>(project, defaultActions) {
 
-    private val file = Multiple(p, FilePattern::class.java)
+    private val file = Multiple(project, FilePattern::class.java)
 
     /**
      * Sets up the default value for the file pattern.
@@ -74,8 +79,8 @@ internal constructor(p: Project, defaultActions: Iterable<@FqBinaryName String>)
      * declared in a file which matches at least one of the patterns, the type is included in
      * the group.
      *
-     * In the example below, all messages declared in files which either end with "ids.proto" or
-     * contain the word "identifiers" will be included in the group.
+     * In the example below, all messages declared in files, which either end with `"ids.proto"` or
+     * contain the word `"identifiers"` will be included in the group.
      *
      * ```java
      * includeFiles(by().suffix("ids.proto"))

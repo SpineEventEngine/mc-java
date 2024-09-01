@@ -26,53 +26,58 @@
 
 package io.spine.tools.mc.java.entity
 
+import com.google.protobuf.Empty
 import io.spine.base.EntityState
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.firstField
 import io.spine.protodata.java.javaType
-import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.type.TypeSystem
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.settings.superInterface
 
 /**
  * Updates the Java code of a message type which qualifies as [EntityState] by
  * making it implement this interface.
  *
  * The class is public because its fully qualified name is used as a default
- * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.EntitySettings].
+ * value in [EntitySettings][io.spine.tools.mc.java.gradle.settings.EntitySettings].
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * ## Implementation note
+ *
+ * The class descends from [DirectMessageAction] and delegates to [ImplementInterface] in
+ * the [doRender] method instead of extending [ImplementInterface] directly.
+ * This is so because of the following.
+ * The resolution of the ID field type requires an instance of
+ * [TypeSystem][io.spine.protodata.type.TypeSystem].
+ * The field type is passed as the generic parameter of the [EntityState] interface.
+ * The [typeSystem] property is not yet initialized when the constructor is called.
+ * Therefore, we have to use delegation rather than inheritance here.
+ *
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  */
 public class ImplementEntityState(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
-        val idFieldType = type.firstFieldType(typeSystem!!)
+        val idFieldType = type.firstField.javaType(typeSystem!!)
         val action = ImplementInterface(
             type,
             file,
-            EntityState::class.java.reference,
-            listOf(idFieldType),
+            superInterface {
+                name = EntityState::class.java.reference
+                genericArgument.add(idFieldType)
+            },
             context!!
         )
         action.render()
     }
-}
-
-private fun MessageType.firstFieldType(typeSystem: TypeSystem): String {
-    //TODO:2024-07-31:alexander.yevsyukov: Migrate to `MessageType.firstField` from ProtoData.
-    check(fieldCount != 0) {
-        "The type `${name.qualifiedName}` must have at least one field."
-    }
-    val field = getField(0)
-    return field.javaType(typeSystem)
 }

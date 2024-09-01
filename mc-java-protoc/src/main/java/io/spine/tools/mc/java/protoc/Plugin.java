@@ -32,7 +32,6 @@ import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 import io.spine.option.OptionsProvider;
 import io.spine.tools.mc.java.protoc.message.InterfaceGen;
-import io.spine.tools.mc.java.protoc.method.MethodGen;
 import io.spine.tools.mc.java.settings.Combined;
 
 import java.io.FileInputStream;
@@ -53,8 +52,7 @@ import static io.spine.util.Exceptions.newIllegalStateException;
  * into the {@code System.out}.
  *
  * <p>For the description of the plugin behavior see
- * {@link io.spine.tools.mc.java.protoc.message.InterfaceGen InterfaceGen} and
- * {@link io.spine.tools.mc.java.protoc.method.MethodGen MethodGen}.
+ * {@link io.spine.tools.mc.java.protoc.message.InterfaceGen InterfaceGen}.
  *
  * <p>For the plugin mechanism see <a href="SpineProtoGenerator.html#contract">
  * {@code SpineProtoGenerator}</a>.
@@ -72,8 +70,8 @@ public final class Plugin {
         var request = readRequest();
         var settings = readSettings(request);
         var generator = CompositeGenerator.of(
-                InterfaceGen.instance(settings),
-                MethodGen.instance(settings)//,
+                InterfaceGen.instance(settings)//,
+                //MethodGen.instance(settings),
                 //new BuilderGen()
                 //NestedClassGen.instance(settings)
                 //EntityQueryGen.instance(settings)

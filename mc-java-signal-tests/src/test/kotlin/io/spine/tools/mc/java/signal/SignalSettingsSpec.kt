@@ -27,7 +27,8 @@
 package io.spine.tools.mc.java.signal
 
 import io.kotest.matchers.collections.shouldContainExactly
-import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -56,24 +57,24 @@ internal class SignalSettingsSpec {
 
     @Test
     fun `provide default actions for command messages`() {
-        codegenSettings.commands.toProto().actionList shouldContainExactly listOf(
-            ImplementCommandMessage::class.java.reference,
+        codegenSettings.commands.toProto().actions.actionMap.keys shouldContainExactly setOf(
+            ImplementInterface::class.java.name,
         )
     }
 
     @Test
     fun `provide default actions for event messages`() {
-        codegenSettings.events.toProto().actionList shouldContainExactly listOf(
-            ImplementEventMessage::class.java.reference,
-            AddEventMessageField::class.java.reference
+        codegenSettings.events.toProto().actions.actionMap.keys shouldContainExactly setOf(
+            ImplementInterface::class.java.name,
+            AddFieldClass::class.java.name
         )
     }
 
     @Test
     fun `provide default actions for rejection messages`() {
-        codegenSettings.rejections.toProto().actionList shouldContainExactly listOf(
-            ImplementRejectionMessage::class.java.reference,
-            AddEventMessageField::class.java.reference
+        codegenSettings.rejections.toProto().actions.actionMap.keys shouldContainExactly setOf(
+            ImplementInterface::class.java.name,
+            AddFieldClass::class.java.name
         )
     }
 }

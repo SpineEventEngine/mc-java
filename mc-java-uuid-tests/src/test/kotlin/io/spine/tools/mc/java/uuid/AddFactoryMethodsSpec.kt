@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.uuid
 
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.GeneratedAnnotation
+import io.spine.tools.mc.java.settings.noParameter
 import io.spine.tools.psi.java.method
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
@@ -40,7 +41,10 @@ internal class AddFactoryMethodsSpec {
 
     private val annotationText = GeneratedAnnotation.create().text
 
-    companion object : UuidPluginTestSetup(actionClass = AddFactoryMethods::class.java) {
+    companion object : UuidPluginTestSetup(
+        AddFactoryMethods::class.java,
+        noParameter
+    ) {
 
         @BeforeAll
         @JvmStatic

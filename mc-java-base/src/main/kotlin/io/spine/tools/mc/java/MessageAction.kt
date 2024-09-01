@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.logging.WithLogging
@@ -41,15 +42,19 @@ import io.spine.tools.psi.java.locate
 /**
  * Abstract base for code generation actions for message types in Java code.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param P The type of the parameter passed to the action.
+ *
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param parameter The parameter passed to the action.
+ * @param context The code generation context in which this action runs.
  */
-public abstract class MessageAction(
+public abstract class MessageAction<P : Message>(
     type: MessageType,
     file: SourceFile<Java>,
+    parameter: P,
     context: CodegenContext
-) : MessageAction<Java>(Java, type, file, context), WithLogging {
+) : MessageAction<Java, P>(Java, type, file, parameter, context), WithLogging {
 
     /**
      * The [file] parsed into instance of [PsiJavaFile].
@@ -59,14 +64,14 @@ public abstract class MessageAction(
     }
 
     /**
-     * The name of the message class under which [cls] is going to places.
+     * The name of the message class for which this action runs.
      */
     protected val messageClass: ClassName by lazy {
         type.javaClassName(typeSystem!!)
     }
 
     /**
-     * The target of the code generation action.
+     * The target class of the code generation action.
      */
     protected abstract val cls: PsiClass
 

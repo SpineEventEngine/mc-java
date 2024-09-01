@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.protodata.CodegenContext
@@ -36,17 +37,23 @@ import io.spine.tools.code.Java
 /**
  * A code generation action on the message class itself.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
- * @property cls the message class located in the [file].
+ * @param P The type of the parameter passed to the action.
+ *
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param parameter The parameter passed to the action.
+ * @param context The code generation context in which this action runs.
  */
-public abstract class DirectMessageAction(
+public abstract class DirectMessageAction<P : Message>(
     type: MessageType,
     file: SourceFile<Java>,
+    parameter: P,
     context: CodegenContext
-) : MessageAction(type, file, context) {
+) : MessageAction<P>(type, file, parameter, context) {
 
+    /**
+     * The message class located in the [file].
+     */
     final override val cls: PsiClass by lazy {
         val f = file.psi() as PsiJavaFile
         f.findClass(messageClass)

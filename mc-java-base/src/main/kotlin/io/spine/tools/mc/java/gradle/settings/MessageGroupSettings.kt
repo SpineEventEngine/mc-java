@@ -24,31 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.gradle.settings
 
-import io.spine.base.EventMessage
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.java.reference
-import io.spine.tools.mc.java.ImplementInterface
+import com.google.common.base.MoreObjects
+import com.google.protobuf.TextFormat.shortDebugString
+import io.spine.tools.mc.java.settings.MessageGroup
+import io.spine.tools.mc.java.settings.Pattern
+import io.spine.tools.mc.java.settings.messageGroup
+import org.gradle.api.Project
 
 /**
- * Updates the Java code of a message type which qualifies as [EventMessage]
- * making it implement this interface.
+ * Codegen settings for messages which match a certain pattern.
  *
- * The class is public because its fully qualified name is used as a default
- * value in [SignalSettings][io.spine.tools.mc.java.gradle.settings.SignalSettings].
+ * @param project The project for which settings are created.
+ * @property pattern The pattern to select message types.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @constructor Creates an instance of settings for the given project and the specified pattern.
  *
- * @see ImplementInterface
+ * @see CodegenSettings.forMessages
  */
-public class ImplementEventMessage(
-    type: MessageType,
-    file: SourceFile<Java>,
-    context: CodegenContext
-) : ImplementInterface(type, file, EventMessage::class.java.reference, context = context)
+public class MessageGroupSettings internal constructor(
+    project: Project,
+    private val pattern: Pattern
+) : SettingsWithFields<MessageGroup>(project) {
+
+    override fun toProto(): MessageGroup {
+        return messageGroup {
+            pattern = this@MessageGroupSettings.pattern
+            actions = actions()
+        }
+    }
+
+    override fun toString(): String {
+        return MoreObjects.toStringHelper(this)
+            .add("pattern", shortDebugString(pattern))
+            .toString()
+    }
+}
