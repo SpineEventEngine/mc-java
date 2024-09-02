@@ -56,13 +56,14 @@ public class AddCompareToMethod(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
+    @Language("JAVA") @Suppress("EmptyClass")
     override fun doRender() {
         val clsName = cls.name!!
-        @Language("JAVA") @Suppress("EmptyClass")
+        val lowercasedClsName = clsName.replaceFirstChar { it.lowercaseChar() }
         val method = elementFactory.createMethodFromText(
             """
-            public int compareTo($clsName ${clsName.replaceFirstChar { it.lowercaseChar() }}) {
-                return 0;                          
+            public int compareTo($clsName $lowercasedClsName) {
+                return comparator.compare(this, $lowercasedClsName);                          
             }            
             """.trimIndent(), cls
         )

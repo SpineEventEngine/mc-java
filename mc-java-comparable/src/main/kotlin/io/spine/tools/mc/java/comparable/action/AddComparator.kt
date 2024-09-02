@@ -29,6 +29,12 @@ package io.spine.tools.mc.java.comparable.action
 import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.PrimitiveType
+import io.spine.protodata.PrimitiveType.PT_UNKNOWN
+import io.spine.protodata.PrimitiveType.TYPE_BYTES
+import io.spine.protodata.TypeName
+import io.spine.protodata.isMessage
+import io.spine.protodata.isPrimitive
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
@@ -59,20 +65,62 @@ public class AddComparator(
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
     //  This view contains a discovered `compare_by` option.
-    private val view = select(ComparableActions::class.java)
+    private val option = select(ComparableActions::class.java)
         .findById(type)!!
+        .option
 
     override fun doRender() {
         val field = elementFactory.createFieldFromText(comparator(), cls)
         field.addFirst(GeneratedAnnotation.create())
-        cls.addFirst(field)
+
+        // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extension are inconsistent.
+        cls.addAfter(field, cls.lBrace)
     }
 
     @Language("JAVA")
-    private fun comparator(): String =
-        """
-        private static final Comparator<$clsName> comparator = Comparator.comparing(Scratch::getPrice)
-                                                                        .thenComparing(Scratch::getValue)
-                                                                        .thenComparing(Scratch::getWeight);
-        """.trimIndent()
+    @Suppress("LocalVariableName") // Simplifies reading of string patterns.
+    private fun comparator(): String {
+        val MESSAGE = type.name.simpleName
+        val fields = option.fieldList.iterator()
+        val declaration = buildString {
+            append("Comparator.comparing($MESSAGE::${next(fields)})")
+            while (fields.hasNext()) {
+                append(".thenComparing($MESSAGE::${next(fields)})")
+            }
+        }
+        return "private static final Comparator<$clsName> comparator = $declaration;"
+    }
+
+    // TODO:2024-09-02:yevhenii.nadtochii: Support nested fields.
+    private fun next(fields: Iterator<String>): String {
+        val requested = fields.next()
+        val declaration = type.fieldList.find { it.name.value == requested }!!
+            .also { check(it.hasSingle()) } // Lists, maps and one-ofs are prohibited.
+        val type = declaration.type
+        when {
+            type.isPrimitive && type.primitive.isNotComparable -> error(
+                "Unsupported primitive type: `${type.primitive}`"
+            )
+            type.isMessage && type.message.isNotComparable -> error(
+                "The passed field has a non-comparable type: `${type.message}`."
+            )
+        }
+        val fieldName = toJavaFieldName(requested)
+        return "get$fieldName"
+    }
 }
+
+private fun toJavaFieldName(protobufFieldName: String): String {
+    val parts = protobufFieldName.split("_")
+    val joined = parts.joinToString("") { part ->
+        part.replaceFirstChar { it.uppercaseChar() }
+    }
+    return joined.replaceFirstChar { it.uppercaseChar() }
+}
+
+private val PrimitiveType.isNotComparable
+    get() = this == TYPE_BYTES || this == PT_UNKNOWN
+
+// TODO:2024-09-02:yevhenii.nadtochii: Check if a message implements `Comparable`.
+private val TypeName.isNotComparable
+    get() = simpleName.isNotEmpty()

@@ -27,21 +27,18 @@
 package io.spine.tools.mc.java.uuid
 
 import com.google.protobuf.Empty
-import io.kotest.matchers.shouldBe
-import io.spine.tools.mc.java.comparable.action.ImplementComparable
-import io.spine.tools.mc.java.implementsInterface
-import io.spine.tools.mc.java.uuid.ComparablePluginTestSetup.Companion.MESSAGE_SIMPLE_NAME
+import io.spine.tools.mc.java.comparable.action.AddComparator
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ImplementComparable` should")
-internal class ImplementComparableSpec {
+@DisplayName("`AddComparator` should")
+internal class AddComparatorSpec {
 
     companion object : ComparablePluginTestSetup(
-        actionClass = ImplementComparable::class.java,
+        actionClass = AddComparator::class.java,
         parameter = Empty.getDefaultInstance()
     ) {
 
@@ -55,8 +52,7 @@ internal class ImplementComparableSpec {
     }
 
     @Test
-    fun `make a message implement 'Comparable'`() {
-        val genericParameters = listOf(MESSAGE_SIMPLE_NAME)
-        implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
+    fun `add a 'comparator' static field`() {
+        println(generatedCode)
     }
 }

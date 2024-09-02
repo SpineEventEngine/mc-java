@@ -32,35 +32,31 @@ import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
-option java_outer_classname = "DomainWithComparablesProto";
 option java_multiple_files = true;
 
-// This file defines:
-// 1. Message types that are to implement `java.lang.Comparable` interface.
-// 2. Regular message types and enums.
-// 3. Services.
-// 2nd and 3rd items are added to test how `ComparablePlugin` works in a pipeline which
-// contains variety of Protobuf declarations.
+// This file defines messages that follow the `compare_by` contract.
 
 message AccountId {
-    option (compare_by) = {
-        field: "uuid"
-    };
     string uuid = 1 [(required) = true];
 }
 
-enum AccountStatus {
-    AS_UNDEFINED = 0;
-    ACTIVE = 1;
-    SUSPENDED = 2;
-}
-
 message Account {
+    option (compare_by) = {
+        field: "actual_data"
+        field: "status"
+        field: "tax_number"
+        field: "name"
+    };
+
     AccountId id = 1 [(required) = true];
     string name = 2 [(required) = true];
-    AccountStatus status = 3 [(required) = true];
+    int32 tax_number = 3 [(required) = true];
+    AccountStatus status = 4 [(required) = true];
+    bool actual_data = 5 [(required) = true];
 }
 
-service AccountService {
-    rpc CreateAccount(Account) returns (AccountId);
+enum AccountStatus {
+    UNDEFINED = 0;
+    ACTIVE = 1;
+    SUSPENDED = 2;
 }
