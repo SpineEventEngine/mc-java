@@ -26,9 +26,12 @@
 
 package io.spine.tools.mc.java.gradle.settings
 
+import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.mc.java.settings.noParameter
+import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 
 /**
@@ -45,8 +48,9 @@ public class ComparableSettings(project: Project) :
 /**
  * The actions applied by default to comparable messages.
  */
+// TODO:2024-09-02:yevhenii.nadtochii: Hidden dependency on `mc-java-comparables`.
 private val DEFAULT_ACTIONS = mapOf(
     "io.spine.tools.mc.java.comparable.action.AddComparator" to noParameter,
     "io.spine.tools.mc.java.comparable.action.AddCompareToMethod" to noParameter,
-    "io.spine.tools.mc.java.comparable.action.ImplementComparable" to noParameter
+    ImplementInterface::class.reference to superInterface { name = Comparable::class.reference }
 )
