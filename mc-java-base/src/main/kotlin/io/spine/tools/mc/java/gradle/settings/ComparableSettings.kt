@@ -27,6 +27,8 @@
 package io.spine.tools.mc.java.gradle.settings
 
 import io.spine.tools.mc.java.settings.Comparables
+import io.spine.tools.mc.java.settings.comparables
+import io.spine.tools.mc.java.settings.noParameter
 import org.gradle.api.Project
 
 /**
@@ -35,16 +37,16 @@ import org.gradle.api.Project
 public class ComparableSettings(project: Project) :
     SettingsWithActions<Comparables>(project, DEFAULT_ACTIONS) {
 
-    override fun toProto(): Comparables =
-        Comparables.newBuilder()
-            .addAllAction(actions())
-            .build()
+    override fun toProto(): Comparables = comparables {
+        actions = actions()
+    }
 }
 
 /**
- * The codegen actions applied by default to comparable messages.
+ * The actions applied by default to comparable messages.
  */
-private val DEFAULT_ACTIONS = listOf(
-    "io.spine.tools.mc.java.comparable.ImplementComparable",
-    "io.spine.tools.mc.java.comparable.AddCompareToMethod"
+private val DEFAULT_ACTIONS = mapOf(
+    "io.spine.tools.mc.java.comparable.action.AddComparator" to noParameter,
+    "io.spine.tools.mc.java.comparable.action.AddCompareToMethod" to noParameter,
+    "io.spine.tools.mc.java.comparable.action.ImplementComparable" to noParameter
 )

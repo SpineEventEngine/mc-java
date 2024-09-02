@@ -42,9 +42,6 @@ internal class ComparableActionsView :
     fun on(event: ComparableMessageDiscovered) = alter {
         type = event.type
         option = event.option
-        with(event.settings) {
-            addAllAction(actionList)
-            putAllDefaultComparator(defaultComparatorMap)
-        }
+        actions = event.actions
     }
 }

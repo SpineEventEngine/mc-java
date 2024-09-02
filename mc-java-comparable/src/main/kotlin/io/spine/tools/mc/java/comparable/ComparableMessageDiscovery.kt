@@ -42,7 +42,7 @@ import io.spine.tools.mc.java.settings.Comparables
 
 internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), ComparableComponent {
 
-    private val loadedSettings: Comparables by lazy { loadSettings() }
+    private val settings: Comparables by lazy { loadSettings() }
 
     @React
     override fun whenever(
@@ -54,7 +54,7 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
             comparableMessageDiscovered {
                 type = event.type
                 option = compareBy
-                settings = loadedSettings
+                actions = settings.actions
             }
         )
     }
