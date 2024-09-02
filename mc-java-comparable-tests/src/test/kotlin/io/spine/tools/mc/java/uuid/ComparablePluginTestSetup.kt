@@ -26,14 +26,17 @@
 
 package io.spine.tools.mc.java.uuid
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
-import io.spine.tools.java.reference
+import io.spine.protobuf.pack
+import io.spine.protodata.settings.actions
 import io.spine.tools.mc.java.MessageAction
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.comparable.ComparablePlugin
+import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.Uuids
-import io.spine.tools.mc.java.settings.copy
+import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -44,11 +47,12 @@ import org.junit.jupiter.api.io.TempDir
  * actions of [ComparablePlugin].
  */
 abstract class ComparablePluginTestSetup(
-    private val actionClass: Class<out MessageAction>
-) : PluginTestSetup<Uuids>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
+    private val actionClass: Class<out MessageAction<*>>,
+    private val parameter: Message,
+) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
     companion object {
-        const val MESSAGE_SIMPLE_NAME = "AccountId"
+        const val MESSAGE_SIMPLE_NAME = "Account"
     }
 
     lateinit var generatedCode: String
@@ -57,11 +61,9 @@ abstract class ComparablePluginTestSetup(
     /**
      * Creates an instance of [Uuids] with only one action under the test.
      */
-    override fun createSettings(projectDir: Path): Uuids {
-        val codegenConfig = createCodegenConfig(projectDir)
-        return codegenConfig.toProto().uuids.copy {
-            action.clear()
-            action.add(actionClass.reference)
+    override fun createSettings(projectDir: Path): Comparables = comparables {
+        actions = actions {
+            action.put(actionClass.name, parameter.pack())
         }
     }
 

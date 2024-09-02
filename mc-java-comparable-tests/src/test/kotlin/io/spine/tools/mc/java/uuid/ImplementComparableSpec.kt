@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.uuid
 
+import com.google.protobuf.Empty
 import io.kotest.matchers.shouldBe
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import io.spine.tools.mc.java.implementsInterface
@@ -39,7 +40,10 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`ImplementComparable` should")
 internal class ImplementComparableSpec {
 
-    companion object : ComparablePluginTestSetup(actionClass = ImplementComparable::class.java) {
+    companion object : ComparablePluginTestSetup(
+        actionClass = ImplementComparable::class.java,
+        parameter = Empty.getDefaultInstance()
+    ) {
 
         @BeforeAll
         @JvmStatic
@@ -52,6 +56,7 @@ internal class ImplementComparableSpec {
 
     @Test
     fun `make a message implement 'Comparable'`() {
+        println(generatedCode)
         val genericParameters = listOf(MESSAGE_SIMPLE_NAME)
         implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
     }

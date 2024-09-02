@@ -24,31 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings
+package io.spine.tools.mc.java.comparable.action
 
-import io.spine.tools.mc.java.settings.Comparables
-import io.spine.tools.mc.java.settings.comparables
-import io.spine.tools.mc.java.settings.noParameter
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.settings.superInterface
-import org.gradle.api.Project
 
 /**
- * Code generation settings for messages that qualify as [Comparable].
+ * Updates the code of the message which qualifies as [Comparable] by
+ * making the type implement the [Comparable] interface.
+ *
+ * The class is public because its fully qualified name is used as a default
+ * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
+ *
+ * @property type the type of the message.
+ * @property file the source code to which the action is applied.
+ * @property context the code generation context in which this action runs.
  */
-public class ComparableSettings(project: Project) :
-    SettingsWithActions<Comparables>(project, DEFAULT_ACTIONS) {
-
-    override fun toProto(): Comparables = comparables {
-        actions = actions()
-    }
-}
-
-/**
- * The actions applied by default to comparable messages.
- */
-// TODO:2024-09-02:yevhenii.nadtochii: Hidden dependency on `mc-java-comparables`.
-private val DEFAULT_ACTIONS = mapOf(
-    "io.spine.tools.mc.java.comparable.action.AddComparator" to noParameter,
-    "io.spine.tools.mc.java.comparable.action.AddCompareToMethod" to noParameter,
-    "io.spine.tools.mc.java.comparable.action.ImplementComparable" to noParameter,
+// TODO:2024-09-02:yevhenii.nadtochii: Can't use it directly from the settings because I need a generic parameter.
+public class ImplementComparable(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : ImplementInterface(
+    type,
+    file,
+    superInterface {
+        name = Comparable::class.java.name
+        genericArgument.add(type.name.simpleName)
+    },
+    context
 )
