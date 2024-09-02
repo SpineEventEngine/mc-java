@@ -69,7 +69,8 @@ dependencies {
         gradleKotlinDsl(),
         gradleTestKit(),
         Spine.testlib,
-        Spine.pluginTestlib
+        Spine.pluginTestlib,
+        testFixtures(project(":mc-java-base"))
     ).forEach {
         testImplementation(it)
     }

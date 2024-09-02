@@ -32,8 +32,6 @@ import io.spine.option.OptionsProto;
 import io.spine.protodata.FilePattern;
 import io.spine.tools.mc.java.settings.AddInterface;
 import io.spine.tools.mc.java.settings.Combined;
-import io.spine.tools.mc.java.settings.GenerateMethods;
-import io.spine.tools.mc.java.settings.MethodFactoryName;
 import io.spine.tools.mc.java.settings.Pattern;
 
 import java.io.FileOutputStream;
@@ -75,25 +73,6 @@ public final class CodeGeneratorRequestGiven {
                 .setMajor(6)
                 .setPatch(1)
                 .setSuffix("")
-                .build();
-    }
-
-    /**
-     * Creates a {@link GenerateMethods} config with the given factory class.
-     */
-    public static GenerateMethods generateMethods(Class<?> factory) {
-        var factoryName = methodFactory(factory);
-        return GenerateMethods.newBuilder()
-                .setFactory(factoryName)
-                .build();
-    }
-
-    /**
-     * Creates a {@link MethodFactoryName} with the name of the given class.
-     */
-    public static MethodFactoryName methodFactory(Class<?> cls) {
-        return MethodFactoryName.newBuilder()
-                .setClassName(className(cls))
                 .build();
     }
 

@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.entity
 import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.column.AddColumnClass
-import io.spine.tools.mc.java.entity.field.AddFieldClass
 import io.spine.tools.mc.java.entity.query.AddQuerySupport
+import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import io.spine.tools.mc.java.settings.Entities
 import java.io.File
@@ -61,7 +61,7 @@ internal class EntitySettingsSpec {
 
     @Test
     fun `provide default actions`() {
-        settings.actionList shouldContainExactly listOf(
+        settings.actions.actionMap.keys shouldContainExactly setOf(
             AddColumnClass::class.java.reference,
             AddFieldClass::class.java.reference,
             AddQuerySupport::class.java.reference,

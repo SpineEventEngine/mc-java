@@ -23,33 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.gradle.settings
 
-import com.google.protobuf.Message
+import com.google.common.annotations.VisibleForTesting
+import io.spine.base.UuidValue
+import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.settings.ActionMap
+import io.spine.tools.mc.java.settings.Uuids
+import io.spine.tools.mc.java.settings.noParameter
+import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.settings.uuids
 import org.gradle.api.Project
-import org.gradle.api.provider.Property
 
 /**
- * Settings for a specific aspect of the Model Compiler, established through Gradle.
- *
- * @param P the type that captures a snapshot of the current state of the settings.
+ * Settings for code generation for messages that qualify as [io.spine.base.UuidValue].
  */
-public abstract class Settings<P : Message>(p: Project) {
+public class UuidSettings(project: Project) : SettingsWithActions<Uuids>(project, DEFAULT_ACTIONS) {
 
-    /**
-     * Whether this configuration is enabled.
-     *
-     * If `false`, the configuration is ignored by the Model Compiler.
-     * The default value is `true`.
-     */
-    public val enabled: Property<Boolean> = p.objects.property(Boolean::class.java)
-
-    init {
-        enabled.convention(true)
+    override fun toProto(): Uuids {
+        return uuids {
+            this@uuids.actions = actions()
+        }
     }
 
-    /**
-     * Converts this instance into a Protobuf message.
-     */
-    public abstract fun toProto(): P
+    public companion object {
+
+        /**
+         * The name of the default codegen action applied to [io.spine.base.UuidValue]s.
+         */
+        @VisibleForTesting
+        public val DEFAULT_ACTIONS: ActionMap = mapOf(
+            ImplementInterface::class.java.name to
+                    superInterface { name = UuidValue::class.java.name },
+
+            "io.spine.tools.mc.java.uuid.AddFactoryMethods" to noParameter
+        )
+    }
 }

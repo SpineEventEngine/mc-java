@@ -34,7 +34,7 @@ import io.spine.protodata.MessageType
  * An interface common to view states that gather message types.
  */
 @GeneratedMixin
-public interface TypeListActions : Message, WithActionList {
+public interface TypeListActions : Message, WithActions {
 
     /**
      * Returns the list of gathered message types.

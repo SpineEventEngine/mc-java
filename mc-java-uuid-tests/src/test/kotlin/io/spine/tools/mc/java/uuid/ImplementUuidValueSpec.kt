@@ -28,17 +28,23 @@ package io.spine.tools.mc.java.uuid
 
 import io.kotest.matchers.shouldBe
 import io.spine.base.UuidValue
+import io.spine.tools.java.reference
+import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.implementsInterface
+import io.spine.tools.mc.java.settings.superInterface
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`ImplementUuidValue` should")
+@DisplayName("Codegen for implementing `UuidValue` should")
 internal class ImplementUuidValueSpec {
 
-    companion object : UuidPluginTestSetup(actionClass = ImplementUuidValue::class.java) {
+    companion object : UuidPluginTestSetup(
+        actionClass = ImplementInterface::class.java,
+        parameter = superInterface { name = UuidValue::class.java.reference }
+    ) {
 
         @BeforeAll
         @JvmStatic

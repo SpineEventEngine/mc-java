@@ -40,7 +40,7 @@ modelCompiler {
             // Turn off validation codegen during the transition to the new ProtoData API.
             validation().enabled.set(false)
 
-            val methodFactory = "io.spine.tools.mc.java.protoc.TestMethodFactory"
+            val methodAction = "io.spine.tools.mc.java.mgroup.given.AddOwnTypeMethod"
             val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"
 
             forMessages(by().suffix("documents.proto")) {
@@ -49,26 +49,24 @@ modelCompiler {
 
             forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
                 markAs("io.spine.tools.mc.java.protoc.PrefixedMessage")
-                generateMethodsWith(methodFactory)
+                useAction(methodAction)
                 useAction(nestedClassAction)
             }
 
             forMessages(by().suffix("suffix_generation_test.proto")) {
                 markAs("io.spine.tools.mc.java.protoc.SuffixedMessage")
-                generateMethodsWith(methodFactory)
-                //generateNestedClassesWith(nestedClassFactory)
+                useAction(methodAction)
                 useAction(nestedClassAction)
             }
 
             forMessages(by().regex(".*regex.*test.*")) {
                 markAs("io.spine.tools.mc.java.protoc.RegexedMessage")
-                generateMethodsWith(methodFactory)
-                //generateNestedClassesWith(nestedClassFactory)
+                useAction(methodAction)
                 useAction(nestedClassAction)
             }
 
             forMessages(by().regex(".*multi.*factory.*test.*")) {
-                generateMethodsWith(methodFactory)
+                useAction(methodAction)
             }
         }
     }

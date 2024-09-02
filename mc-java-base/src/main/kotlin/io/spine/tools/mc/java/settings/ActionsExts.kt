@@ -24,29 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.settings
 
-import io.spine.base.UuidValue
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.java.reference
-import io.spine.tools.mc.java.ImplementInterface
+import com.google.protobuf.Any
+import com.google.protobuf.Message
+import io.spine.protobuf.pack
+import io.spine.protodata.settings.Actions
+import org.checkerframework.checker.signature.qual.FqBinaryName
 
 /**
- * Updates the code of the message which qualifies as [UuidValue] type by
- * making the type implement the [UuidValue] interface.
- *
- * The class is public because its fully qualified name is used as a default
- * value in [UuidSettings][io.spine.tools.mc.java.gradle.settings.UuidSettings].
- *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * A fully qualified binary Java class name.
  */
-public class ImplementUuidValue(
-    type: MessageType,
-    file: SourceFile<Java>,
-    context: CodegenContext
-) : ImplementInterface(type, file, UuidValue::class.java.reference, context = context)
+public typealias BinaryClassName = @FqBinaryName String
+
+/**
+ * Maps qualified render action class names to parameters specified via Gradle settings.
+ */
+public typealias ActionMap = Map<BinaryClassName, Message>
+
+/**
+ * The shortcut for map entry value telling that an action has no parameter.
+ *
+ * @see Actions.getActionMap
+ */
+public val noParameter: Message = Any.getDefaultInstance()
+
+/**
+ * Transforms this action map into the map suitable when creating [Actions] by
+ * packing values if they are not already instances of [Any].
+ */
+public fun ActionMap.pack(): Map<BinaryClassName, Any> {
+    return map { (key, value) ->
+        key to if (value is Any) value else value.pack()
+    }.toMap()
+}

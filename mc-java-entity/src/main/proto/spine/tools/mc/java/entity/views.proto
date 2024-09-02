@@ -37,6 +37,7 @@ option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
+import "spine/protodata/settings.proto";
 
 // Provides entity state types declared in a proto file.
 message DiscoveredEntities {
@@ -50,5 +51,5 @@ message DiscoveredEntities {
     repeated protodata.MessageType type = 2;
 
     // Rendering actions to be applied to the entity states.
-    repeated string action = 3;
+    protodata.Actions actions = 3;
 }

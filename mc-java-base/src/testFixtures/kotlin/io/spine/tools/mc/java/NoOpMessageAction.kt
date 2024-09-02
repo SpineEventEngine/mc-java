@@ -26,15 +26,23 @@
 
 package io.spine.tools.mc.java
 
-import org.checkerframework.checker.signature.qual.FqBinaryName
+import com.google.protobuf.Empty
+import io.spine.protodata.CodegenContext
+import io.spine.protodata.MessageType
+import io.spine.protodata.renderer.MessageAction
+import io.spine.protodata.renderer.SourceFile
+import io.spine.tools.code.Java
 
 /**
- * The interface common to types holding a list of render action class names.
+ * A test fixture action which does nothing.
  */
-public interface WithActionList {
+class NoOpMessageAction(
+    type: MessageType,
+    file: SourceFile<Java>,
+    context: CodegenContext
+) : MessageAction<Java, Empty>(Java, type, file, Empty.getDefaultInstance(), context) {
 
-    /**
-     * Returns the list of render actions to be applied.
-     */
-    public fun getActionList(): List<@FqBinaryName String>
+    override fun render() {
+        // Do nothing.
+    }
 }

@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.entity.query
 
+import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
@@ -48,7 +49,8 @@ public class AddQuerySupport(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context), EntityPluginComponent {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context),
+    EntityPluginComponent {
 
     private val settings: Entities by lazy {
         loadSettings()

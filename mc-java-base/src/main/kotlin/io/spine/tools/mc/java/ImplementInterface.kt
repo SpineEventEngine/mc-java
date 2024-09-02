@@ -30,32 +30,31 @@ import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.mc.java.settings.SuperInterface
 import io.spine.tools.psi.java.Environment.elementFactory
 import io.spine.tools.psi.java.createClassReference
 import io.spine.tools.psi.java.implement
 
 /**
  * An abstract base for code generation actions that make a message class
- * implement the given [interface][superInterface].
+ * implement the given superinterface.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property superInterface the interface to implement.
- * @property genericParameters optional generic parameters if [superInterface] is a generic type.
- * @property context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param superInterface The interface to implement.
+ * @param context The code generation context in which this action runs.
  */
 public open class ImplementInterface(
     type: MessageType,
     file: SourceFile<Java>,
-    private val superInterface: String,
-    private val genericParameters: List<String> = listOf(),
+    superInterface: SuperInterface,
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<SuperInterface>(type, file, superInterface, context) {
 
     override fun doRender() {
         val si = elementFactory.createClassReference(
-            superInterface,
-            genericParameters,
+            parameter.name,
+            parameter.genericArgumentList,
             cls
         )
         cls.implement(si)

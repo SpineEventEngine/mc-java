@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,31 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.tools.mc.java
 
-import com.google.common.collect.ImmutableList;
-import com.google.errorprone.annotations.Immutable;
-import com.squareup.javapoet.MethodSpec;
-import io.spine.type.MessageType;
-import io.spine.tools.java.code.Method;
-import io.spine.tools.java.code.MethodFactory;
+import io.spine.protodata.settings.Actions
 
-import javax.lang.model.element.Modifier;
-import java.util.List;
+/**
+ * The interface common to types holding a list of render action class names.
+ */
+public interface WithActions {
 
-@SuppressWarnings("unused")
-@Immutable
-public final class TestMethodFactory implements MethodFactory {
-
-    @Override
-    public List<Method> generateMethodsFor(MessageType messageType) {
-        var spec = MethodSpec.methodBuilder("ownType")
-                .returns(MessageType.class)
-                .addStatement("return new $T(getDescriptor())", MessageType.class)
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .addJavadoc("Returns {@link $T MessageType} of the current message.%n",
-                            MessageType.class)
-                .build();
-        return ImmutableList.of(new Method(spec.toString()));
-    }
+    /**
+     * Returns the render actions to be applied.
+     */
+    public fun getActions(): Actions
 }

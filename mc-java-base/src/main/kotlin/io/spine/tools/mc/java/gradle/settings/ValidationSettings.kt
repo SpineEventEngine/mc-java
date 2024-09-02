@@ -34,15 +34,16 @@ import org.gradle.api.provider.Property
 /**
  * Settings for validation code generation.
  */
-public class ValidationSettings internal constructor(p: Project) : Settings<Validation>(p) {
+public class ValidationSettings internal constructor(project: Project) :
+    Settings<Validation>(project) {
 
     /**
      * Allows specifying a version of the validation code generator used by McJava.
      *
      * If empty, the version on which McJava depends during build time will be used.
-     * The default value of this property is empty string.
+     * The default value of this property is an empty string.
      */
-    public val version: Property<String> = p.objects.property(String::class.java)
+    public val version: Property<String> = project.objects.property(String::class.java)
 
     init {
         version.convention("")

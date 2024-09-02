@@ -41,6 +41,7 @@ import "google/protobuf/empty.proto";
 import "spine/tools/java/java.proto";
 import "spine/tools/proto/proto.proto";
 import "spine/protodata/file.proto";
+import "spine/protodata/settings.proto";
 
 // Code generation settings passed to Spine Protoc Plugin.
 //
@@ -114,9 +115,8 @@ message Signals {
     reserved "add_interface";
     reserved "generate_fields";
 
-    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
-    // that are to be applied to the signal messages selected by `pattern`.
-    repeated string action = 4;
+    // Code generation actions applied to the signal message types.
+    protodata.Actions actions = 4;
 }
 
 // Code generation settings for `Signal` messages.
@@ -157,23 +157,8 @@ message Entities {
     //
     bool generate_queries = 5;
 
-    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
-    // that are to be applied to the entity state messages.
-    repeated string action = 6;
-}
-
-// Code generation settings for type-safe field API.
-//
-// An empty instance of this message indicates that fields should not be generated.
-//
-message GenerateFields {
-
-    // The name of the superclass of the fields class.
-    //
-    // It's required that the class extends `io.spine.base.SubscribableField` either
-    // directly or via one of its subclasses.
-    //
-    tools.java.JavaClassName superclass = 1;
+    // The code generation actions applied to entity state types.
+    protodata.Actions actions = 6;
 }
 
 // Code generation settings for an arbitrary group of messages.
@@ -189,20 +174,15 @@ message MessageGroup {
     Pattern pattern = 1;
 
     // Java interfaces to be added to all the messages in this group.
-    repeated AddInterface add_interface = 2;
+    repeated AddInterface add_interface = 2 [deprecated = true];
 
-    // Settings for adding Java methods for messages in this group.
-    repeated GenerateMethods generate_methods = 3 [deprecated = true];
-
-    reserved 4;
+    reserved 3 to 5;
+    reserved "generate_methods";
     reserved "generate_nested_classes";
+    reserved "generate_fields";
 
-    // Settings for generating Java type-safe field API for messages in this group.
-    GenerateFields generate_fields = 5;
-
-    // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
-    // that are to be applied to the messages of this group.
-    repeated string action = 6;
+    // The code generation actions applied to selected message types.
+    protodata.Actions actions = 6;
 }
 
 // A pattern which matches one or multiple messages.
@@ -251,7 +231,26 @@ message Uuids {
 
     // Names of classes implementing the `io.spine.protodata.renderer.RenderAction` class
     // that are to be applied to the UUID messages.
-    repeated string action = 3;
+    protodata.Actions actions = 3;
+}
+
+// Specification of an existing super interface a generated Java type should implement.
+message SuperInterface {
+
+    // The name of the interface.
+    //
+    // It could be a simple name if the generated types are in the same Java package.
+    // Otherwise, this value must contain a fully qualified canonical name.
+    //
+    string name = 1 [(required) = true];
+
+    // Optional arguments for generic parameters, if the interface has them.
+    //
+    // As for the interface name, the arguments could be simple names if corresponding
+    // types reside in the same package with the generated code.
+    // Otherwise, fully qualified canonical names must be provided.
+    //
+    repeated string generic_argument = 2;
 }
 
 // Code generation settings for comparable messages.
@@ -272,44 +271,5 @@ message Comparables {
 message AddInterface {
 
     tools.java.JavaClassName name = 1;
-}
-
-// Configuration for adding Java methods into a generated class.
-message GenerateMethods {
-
-    MethodFactoryName factory = 1;
-}
-
-// Configuration for adding nested classes into a generated class.
-//
-// Deprecated: please use `Renderer` API instead.
-//
-message GenerateNestedClasses {
-
-    option deprecated = true;
-
-    NestedClassFactoryName factory = 1;
-}
-
-// A Java class name of a nested class factory.
-//
-// The class must implement `io.spine.tools.protoc.NestedClassFactory`.
-//
-// Deprecated: please use `Renderer` API instead.
-//
-message NestedClassFactoryName {
-
-    option deprecated = true;
-
-    tools.java.JavaClassName class_name = 1;
-}
-
-// A Java class name of a method factory.
-//
-// The class must implement `io.spine.tools.protoc.MethodFactory`.
-//
-message MethodFactoryName {
-
-    tools.java.JavaClassName class_name = 1;
 }
 
