@@ -45,7 +45,7 @@ message ComparableMessageDiscovered {
     protodata.MessageType type = 1;
 
     // The discovered `compare_by` option.
-    protodata.Option option = 2;
+    CompareByOption option = 2;
 
     // A collection of code generation actions associated with their parameters.
     protodata.Actions actions = 3;

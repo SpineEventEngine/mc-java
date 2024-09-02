@@ -27,6 +27,8 @@
 package io.spine.tools.mc.java.comparable
 
 import io.spine.core.External
+import io.spine.option.CompareByOption
+import io.spine.protobuf.AnyPacker.unpack
 import io.spine.protodata.Option
 import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
@@ -53,7 +55,7 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
         return withA(
             comparableMessageDiscovered {
                 type = event.type
-                option = compareBy
+                option = unpack(compareBy.value, CompareByOption::class.java)
                 actions = settings.actions
             }
         )
