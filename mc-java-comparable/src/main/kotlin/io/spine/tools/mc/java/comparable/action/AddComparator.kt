@@ -26,13 +26,14 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.comparable.isComparable
+import io.spine.tools.mc.java.comparable.ComparableActions
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
@@ -52,11 +53,14 @@ public class AddComparator(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     private val clsName = cls.name!!
-    private val option = type.optionList.find(::isComparable)
-        ?: error("Comparable action is applied to a type without `compare_by` option: `$type`.")
+
+    // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
+    //  This view contains a discovered `compare_by` option.
+    private val view = select(ComparableActions::class.java)
+        .findById(type)!!
 
     override fun doRender() {
         val field = elementFactory.createFieldFromText(comparator(), cls)

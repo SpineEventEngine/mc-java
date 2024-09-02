@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
@@ -53,7 +54,7 @@ public class AddCompareToMethod(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
-) : DirectMessageAction(type, file, context) {
+) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
         val clsName = cls.name!!
