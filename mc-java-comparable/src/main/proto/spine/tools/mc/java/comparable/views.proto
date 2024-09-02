@@ -36,8 +36,7 @@ option java_outer_classname = "ViewsProto";
 option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
-import "spine/protodata/file.proto";
-import "spine/tools/mc/java/settings.proto";
+import "spine/protodata/settings.proto";
 
 // A comparable message.
 message ComparableActions {
@@ -50,10 +49,6 @@ message ComparableActions {
     // The `compare_by` option.
     protodata.Option option = 2;
 
-    // Names of classes implementing `io.spine.protodata.renderer.RenderAction`
-    // to be applied to this messages.
-    repeated string action = 3;
-
-    // Maps Proto `type_url` to a fully-qualified name of the comparator to use for this message.
-    map<string, string> default_comparator = 4;
+    // A collection of code generation actions associated with their parameters.
+    protodata.Actions actions = 3;
 }
