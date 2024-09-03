@@ -46,7 +46,7 @@ internal class AddComparatorSpec {
     inner class `generate comparator` {
 
         @Test
-        fun `for primitives and enums`() {
+        fun `with primitives and enums`() {
             val (cls, _) = generateCode("Account")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
@@ -60,13 +60,14 @@ internal class AddComparatorSpec {
         }
 
         @Test
-        fun `for other comparable messages and nested fields`() {
+        fun `with comparable messages and nested fields`() {
             val (cls, _) = generateCode("Citizen")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
             val expected = "private static final Comparator<Citizen> comparator = " +
-                    "Comparator.comparing((citizen) -> citizen.getResidence().getRegion())" +
-                    ".thenComparing((citizen) -> citizen.getResidence().getCity())" +
+                    "Comparator.comparing((Citizen citizen) -> citizen.getResidence().getRegion())" +
+                    ".thenComparing((Citizen citizen) -> citizen.getResidence().getAddress().getIsActual())" +
+                    ".thenComparing((Citizen citizen) -> citizen.getResidence().getAddress().getCity())" +
                     ".thenComparing(Citizen::getPassport);"
             field.shouldNotBeNull()
             field.text shouldContain expected
