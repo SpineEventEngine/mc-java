@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.uuid
 
 import com.google.protobuf.Empty
+import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddComparator
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
@@ -52,7 +53,12 @@ internal class AddComparatorSpec {
     }
 
     @Test
-    fun `add a 'comparator' static field`() {
-        println(generatedCode)
+    fun `add 'comparator' static field`() {
+        val expected = "private static final Comparator<Account> comparator = " +
+                "Comparator.comparing(Account::getActualData)" +
+                ".thenComparing(Account::getStatus)" +
+                ".thenComparing(Account::getTaxNumber)" +
+                ".thenComparing(Account::getName);"
+        generatedCode shouldContain expected
     }
 }
