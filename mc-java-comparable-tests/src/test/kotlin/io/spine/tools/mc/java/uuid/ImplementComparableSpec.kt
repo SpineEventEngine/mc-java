@@ -30,12 +30,8 @@ import com.google.protobuf.Empty
 import io.kotest.matchers.shouldBe
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import io.spine.tools.mc.java.implementsInterface
-import io.spine.tools.mc.java.uuid.ComparablePluginTestSetup.Companion.MESSAGE_SIMPLE_NAME
-import java.nio.file.Path
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`ImplementComparable` should")
 internal class ImplementComparableSpec {
@@ -43,20 +39,13 @@ internal class ImplementComparableSpec {
     companion object : ComparablePluginTestSetup(
         actionClass = ImplementComparable::class.java,
         parameter = Empty.getDefaultInstance()
-    ) {
-
-        @BeforeAll
-        @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) = generateCode(projectDir, outputDir, settingsDir)
-    }
+    )
 
     @Test
     fun `make a message implement 'Comparable'`() {
-        val genericParameters = listOf(MESSAGE_SIMPLE_NAME)
+        val message = "Account"
+        val (_, generatedCode) = generateCode(message)
+        val genericParameters = listOf(message)
         implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
     }
 }

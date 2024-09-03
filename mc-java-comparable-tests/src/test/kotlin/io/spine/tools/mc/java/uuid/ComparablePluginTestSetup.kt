@@ -38,9 +38,9 @@ import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.psi.java.topLevelClass
+import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.Path
-import org.junit.jupiter.api.io.TempDir
 
 /**
  * The base class for companion objects of test suites that test codegen
@@ -51,13 +51,6 @@ abstract class ComparablePluginTestSetup(
     private val parameter: Message,
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
-    companion object {
-        const val MESSAGE_SIMPLE_NAME = "Account"
-    }
-
-    lateinit var generatedCode: String
-    lateinit var cls: PsiClass
-
     /**
      * Creates an instance of [Uuids] with only one action under the test.
      */
@@ -67,17 +60,25 @@ abstract class ComparablePluginTestSetup(
         }
     }
 
-    fun generateCode(
-        @TempDir projectDir: Path,
-        @TempDir outputDir: Path,
-        @TempDir settingsDir: Path
-    ) {
+    /**
+     * Generates code for the given [message] simple name and returns the resulting
+     * [PsiClass] along with the generated code (as plain text).
+     */
+    fun generateCode(message: String): Pair<PsiClass, String> {
+        val projectDir = tempDir("projectDit")
+        val outputDir = tempDir("outputDir")
+        val settingsDir = tempDir("settingsDir")
+
         val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
         val sourceFile = sourceFileSet.file(
-            Path("io/spine/tools/mc/java/comparable/given/$MESSAGE_SIMPLE_NAME.java")
+            Path("io/spine/tools/mc/java/comparable/given/$message.java")
         )
-        generatedCode = sourceFile.code()
+
         val file = sourceFile.psi() as PsiJavaFile
-        cls = file.topLevelClass
+        val cls = file.topLevelClass
+        val generatedCode = sourceFile.code()
+        return cls to generatedCode
     }
+
+    private fun tempDir(prefix: String): Path = Files.createTempDirectory(prefix)
 }

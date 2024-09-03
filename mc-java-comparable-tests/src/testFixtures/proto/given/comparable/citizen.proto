@@ -34,28 +34,30 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that primitives and an enum can be passed to `compare_by` option.
-message Account {
+// This message tests that other comparable messages and nested fields can be passed
+// to `compare_by` option.
+message Citizen {
     option (compare_by) = {
-        field: "actual_data"
-        field: "status"
-        field: "tax_number"
-        field: "name"
+        field: "residence.region"
+        field: "residence.city"
+        field: "passport"
     };
 
-    AccountId id = 1 [(required) = true];
-    string name = 2 [(required) = true];
-    int32 tax_number = 3 [(required) = true];
-    AccountStatus status = 4 [(required) = true];
-    bool actual_data = 5 [(required) = true];
+    Residence residence = 1 [(required) = true];
+    Passport passport = 2 [(required) = true];
 }
 
-message AccountId {
-    string uuid = 1 [(required) = true];
+message Passport {
+    option (compare_by) = {
+        field: "first_name"
+        field: "last_name"
+    };
+
+    string first_name = 1 [(required) = true];
+    string last_name = 2 [(required) = true];
 }
 
-enum AccountStatus {
-    UNDEFINED = 0;
-    ACTIVE = 1;
-    SUSPENDED = 2;
+message Residence {
+    string region = 1 [(required) = true];
+    string city = 2 [(required) = true];
 }

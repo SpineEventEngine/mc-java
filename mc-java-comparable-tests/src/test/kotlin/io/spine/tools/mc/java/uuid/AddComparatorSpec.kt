@@ -27,13 +27,12 @@
 package io.spine.tools.mc.java.uuid
 
 import com.google.protobuf.Empty
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddComparator
-import java.nio.file.Path
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
@@ -41,24 +40,36 @@ internal class AddComparatorSpec {
     companion object : ComparablePluginTestSetup(
         actionClass = AddComparator::class.java,
         parameter = Empty.getDefaultInstance()
-    ) {
+    )
 
-        @BeforeAll
-        @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) = generateCode(projectDir, outputDir, settingsDir)
-    }
+    @Nested
+    inner class `generate comparator` {
 
-    @Test
-    fun `add 'comparator' static field`() {
-        val expected = "private static final Comparator<Account> comparator = " +
-                "Comparator.comparing(Account::getActualData)" +
-                ".thenComparing(Account::getStatus)" +
-                ".thenComparing(Account::getTaxNumber)" +
-                ".thenComparing(Account::getName);"
-        generatedCode shouldContain expected
+        @Test
+        fun `for primitives and enums`() {
+            val (cls, _) = generateCode("Account")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<Account> comparator = " +
+                    "Comparator.comparing(Account::getActualData)" +
+                    ".thenComparing(Account::getStatus)" +
+                    ".thenComparing(Account::getTaxNumber)" +
+                    ".thenComparing(Account::getName);"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
+        fun `for other comparable messages and nested fields`() {
+            val (cls, _) = generateCode("Citizen")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<Citizen> comparator = " +
+                    "Comparator.comparing((citizen) -> citizen.getResidence().getRegion())" +
+                    ".thenComparing((citizen) -> citizen.getResidence().getCity())" +
+                    ".thenComparing(Citizen::getPassport);"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
     }
 }
