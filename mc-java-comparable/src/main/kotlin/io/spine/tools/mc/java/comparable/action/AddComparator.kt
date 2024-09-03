@@ -39,7 +39,6 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableActions
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
-import org.intellij.lang.annotations.Language
 
 /**
  * Updates the code of the message which qualifies as [Comparable] to
@@ -59,7 +58,7 @@ public class AddComparator(
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     private val validator = OptionValidator(::findMessage)
-    private val clsName = cls.name!!
+    private val builder = ComparatorBuilder()
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
     //  This view contains a discovered `compare_by` option.
@@ -67,12 +66,12 @@ public class AddComparator(
         .findById(type)!!
         .option
 
+    // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extensions are inconsistent.
     override fun doRender() {
         validator.check(option, type)
-        val field = elementFactory.createFieldFromText(comparator(), cls)
+        val comparator = builder.composeAsText(cls.name!!, option)
+        val field = elementFactory.createFieldFromText(comparator, cls)
         field.addFirst(GeneratedAnnotation.create())
-
-        // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extensions are inconsistent.
         cls.addAfter(field, cls.lBrace)
     }
 
@@ -92,34 +91,4 @@ public class AddComparator(
         return fromDependencies
             ?: error("`$typeUrl` not found in the passed Proto files and its dependencies.")
     }
-
-    @Language("JAVA")
-    @Suppress("LocalVariableName") // Simplifies reading of string patterns.
-    private fun comparator(): String {
-        val MESSAGE = type.name.simpleName
-        val fields = option.fieldList.iterator()
-        val declaration = buildString {
-            append("Comparator.comparing($MESSAGE::${next(fields)})")
-            while (fields.hasNext()) {
-                append(".thenComparing($MESSAGE::${next(fields)})")
-            }
-        }
-        return "private static final Comparator<$clsName> comparator = $declaration;"
-    }
-
-    // TODO:2024-09-02:yevhenii.nadtochii: Support nested fields.
-    private fun next(fields: Iterator<String>): String {
-        val requested = fields.next()
-        val fieldName = toJavaFieldName(requested)
-        return "get$fieldName"
-    }
 }
-
-private fun toJavaFieldName(protobufFieldName: String): String {
-    val parts = protobufFieldName.split("_")
-    val joined = parts.joinToString("") { part ->
-        part.replaceFirstChar { it.uppercaseChar() }
-    }
-    return joined.replaceFirstChar { it.uppercaseChar() }
-}
-
