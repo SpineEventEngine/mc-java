@@ -39,7 +39,7 @@ option java_multiple_files = true;
 message Citizen {
     option (compare_by) = {
         field: "residence.region"
-        field: "residence.city"
+        field: "residence.address.city"
         field: "passport"
     };
 
@@ -57,7 +57,13 @@ message Passport {
     string last_name = 2 [(required) = true];
 }
 
+message Address {
+    string city = 1;
+    string street = 2;
+    string building = 3;
+}
+
 message Residence {
     string region = 1 [(required) = true];
-    string city = 2 [(required) = true];
+    Address address = 2 [(required) = true];
 }

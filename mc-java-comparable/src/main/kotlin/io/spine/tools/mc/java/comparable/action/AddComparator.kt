@@ -29,12 +29,9 @@ package io.spine.tools.mc.java.comparable.action
 import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
-import io.spine.protodata.PrimitiveType
-import io.spine.protodata.PrimitiveType.PT_UNKNOWN
-import io.spine.protodata.PrimitiveType.TYPE_BYTES
+import io.spine.protodata.ProtobufDependency
+import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.TypeName
-import io.spine.protodata.isMessage
-import io.spine.protodata.isPrimitive
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
@@ -61,6 +58,7 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
+    private val validator = OptionValidator(::findMessage)
     private val clsName = cls.name!!
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
@@ -70,11 +68,29 @@ public class AddComparator(
         .option
 
     override fun doRender() {
+        validator.check(option, type)
         val field = elementFactory.createFieldFromText(comparator(), cls)
         field.addFirst(GeneratedAnnotation.create())
 
-        // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extension are inconsistent.
+        // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extensions are inconsistent.
         cls.addAfter(field, cls.lBrace)
+    }
+
+    private fun findMessage(typeName: TypeName): MessageType {
+        val typeUrl = typeName.typeUrl
+        val fromFiles = select(ProtobufSourceFile::class.java).all()
+            .firstOrNull { it.containsType(typeUrl) }
+            ?.typeMap?.get(typeUrl)
+
+        if (fromFiles != null) {
+            return fromFiles
+        }
+
+        val fromDependencies = select(ProtobufDependency::class.java).all()
+            .firstOrNull { it.source.containsType(typeUrl) }
+            ?.source?.typeMap?.get(typeUrl)
+        return fromDependencies
+            ?: error("`$typeUrl` not found in the passed Proto files and its dependencies.")
     }
 
     @Language("JAVA")
@@ -94,17 +110,6 @@ public class AddComparator(
     // TODO:2024-09-02:yevhenii.nadtochii: Support nested fields.
     private fun next(fields: Iterator<String>): String {
         val requested = fields.next()
-        val declaration = type.fieldList.find { it.name.value == requested }!!
-            .also { check(it.hasSingle()) } // Lists, maps and one-ofs are prohibited.
-        val type = declaration.type
-        when {
-            type.isPrimitive && type.primitive.isNotComparable -> error(
-                "Unsupported primitive type: `${type.primitive}`"
-            )
-            type.isMessage && type.message.isNotComparable -> error(
-                "The passed field has a non-comparable type: `${type.message}`."
-            )
-        }
         val fieldName = toJavaFieldName(requested)
         return "get$fieldName"
     }
@@ -118,9 +123,3 @@ private fun toJavaFieldName(protobufFieldName: String): String {
     return joined.replaceFirstChar { it.uppercaseChar() }
 }
 
-private val PrimitiveType.isNotComparable
-    get() = this == TYPE_BYTES || this == PT_UNKNOWN
-
-// TODO:2024-09-02:yevhenii.nadtochii: Check if a message implements `Comparable`.
-private val TypeName.isNotComparable
-    get() = simpleName.isNotEmpty()
