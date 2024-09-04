@@ -84,8 +84,7 @@ public class AddComparator(
         }
 
         requestedFields.associateWith { fields.find(it, type) }
-            .forEach { (path, metadata) ->
-                val (field, message) = metadata
+            .forEach { (path, field) ->
                 check(field)
                 append(path, field)
             }
@@ -100,15 +99,11 @@ public class AddComparator(
         if (field.type.isMessage) {
             when (field.type.typeName.qualifiedName) {
                 wellKnownTimestamp -> {
-                    val timestamps = elementFactory.createClass("Timestamps")
-                    psiFile.importList!!.add(timestamps)
-                    comparator.comparingBy(path, "Timestamps.comparator()")
+                    comparator.comparingBy(path, "com.google.protobuf.util.Timestamps.comparator()")
                 }
 
                 wellKnownDuration -> {
-                    val durations = elementFactory.createClass("Durations")
-                    psiFile.importList!!.add(durations)
-                    comparator.comparingBy(path, "Durations.comparator()")
+                    comparator.comparingBy(path, "com.google.protobuf.util.Durations.comparator()")
                 }
 
                 in wellKnownValues -> {
