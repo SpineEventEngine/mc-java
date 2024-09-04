@@ -62,7 +62,7 @@ message NestedTimestampAndDuration {
     WellKnownNested nested = 1;
 }
 
-message NestedValuesValues {
+message NestedValues {
     option (compare_by) = {
         field: "nested.bool"
         field: "nested.double"
