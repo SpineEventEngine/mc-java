@@ -51,6 +51,8 @@ abstract class ComparablePluginTestSetup(
     private val parameter: Message,
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
+    lateinit var file: PsiJavaFile
+
     /**
      * Creates an instance of [Uuids] with only one action under the test.
      */
@@ -74,7 +76,7 @@ abstract class ComparablePluginTestSetup(
             Path("io/spine/tools/mc/java/comparable/given/$message.java")
         )
 
-        val file = sourceFile.psi() as PsiJavaFile
+        file = sourceFile.psi() as PsiJavaFile
         val cls = file.topLevelClass
         val generatedCode = sourceFile.code()
         return cls to generatedCode

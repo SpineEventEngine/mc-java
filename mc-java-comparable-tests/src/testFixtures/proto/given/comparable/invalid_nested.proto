@@ -36,7 +36,7 @@ option java_multiple_files = true;
 
 import "given/comparable/invalid.proto";
 
-// This file defines messages that contradict the `compare_by` contract.
+// This file declares messages that contradict the `compare_by` contract.
 
 message NestedStub {
     bytes data = 1 [(required) = true];

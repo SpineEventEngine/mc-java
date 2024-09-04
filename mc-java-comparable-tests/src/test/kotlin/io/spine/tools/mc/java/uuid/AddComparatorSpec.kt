@@ -43,7 +43,8 @@ internal class AddComparatorSpec {
         parameter = Empty.getDefaultInstance()
     )
 
-    @Nested inner class
+    @Nested
+    inner class
     `generate comparator` {
 
         @Test
@@ -73,9 +74,46 @@ internal class AddComparatorSpec {
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
+
+        @Test
+        fun `with well-known 'Timestamp' and 'Duration'`() {
+            val (cls, _) = generateCode("WithTimestampAndDuration")
+
+            val imports = file.importList?.text
+            imports.shouldNotBeNull()
+            imports shouldContain "import com.google.protobuf.util.Durations;"
+            imports shouldContain "import com.google.protobuf.util.Timestamps;"
+
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<WithTimestampAndDuration> comparator = " +
+                    "Comparator.comparing(WithTimestampAndDuration::timestamp, Timestamps.comparator())" +
+                    ".thenComparing(WithTimestampAndDuration::duration, Durations.comparator());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
+        fun `with well-known value messages`() {
+            val (cls, _) = generateCode("WithValues")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<WithValues> comparator = " +
+                    "Comparator.comparing((WithValues withValues) -> withValues.getBool().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getDouble().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getFloat().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getInt32().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getInt64().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getUint32().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getUint64().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getString().getValue());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `not generate comparator for a message` {
 
         @Test
@@ -127,7 +165,8 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `not generate comparator for a message with nested` {
 
         @Test

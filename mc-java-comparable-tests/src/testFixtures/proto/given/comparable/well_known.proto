@@ -29,47 +29,43 @@ syntax = "proto3";
 package given.comparable;
 
 import "spine/options.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
 
 option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This file declares messages that contradict the `compare_by` contract.
+// This file tests messages with some well-known Protobuf types, which are not required
+// to have `compare_by` option to be comparable.
 
-message NoCompareByOption {
-    string uuid = 1 [(required) = true];
+message WithTimestampAndDuration {
+    option (compare_by) = {
+        field: "timestamp"
+        field: "duration"
+    };
+    google.protobuf.Timestamp timestamp = 1;
+    google.protobuf.Duration duration = 2;
 }
 
-message NonComparablesProhibited {
+message WithValues {
     option (compare_by) = {
-        field: "id"
+        field: "bool"
+        field: "double"
+        field: "float"
+        field: "int32"
+        field: "int64"
+        field: "uint32"
+        field: "uint64"
+        field: "string"
     };
-    NoCompareByOption id = 1 [(required) = true];
-}
-
-message BytesProhibited {
-    option (compare_by) = {
-        field: "data"
-    };
-    bytes data = 1 [(required) = true];
-}
-
-message RepeatedProhibited {
-    option (compare_by) = {
-        field: "gender"
-    };
-    repeated string gender = 1 [(required) = true];
-}
-
-message MapsProhibited {
-    option (compare_by) = {
-        field: "results"
-    };
-    map<string, int32> results = 1 [(required) = true];
-}
-
-message NonExistingProhibited {
-    option (compare_by) = {
-        field: "non_existing_field"
-    };
+    google.protobuf.BoolValue bool = 1;
+    google.protobuf.DoubleValue double = 2;
+    google.protobuf.FloatValue float = 3;
+    google.protobuf.Int32Value int32 = 4;
+    google.protobuf.Int64Value int64 = 5;
+    google.protobuf.UInt32Value uint32 = 6;
+    google.protobuf.UInt64Value uint64 = 7;
+    google.protobuf.StringValue string = 8;
 }
