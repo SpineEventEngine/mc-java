@@ -32,26 +32,29 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.PrimitiveType.TYPE_BYTES
-import io.spine.protodata.Type
 import io.spine.protodata.TypeName
+import io.spine.protodata.isEnum
 import io.spine.protodata.isMessage
 import io.spine.protodata.isPrimitive
+import io.spine.protodata.qualifiedName
 
 /**
- * Validates fields that are going to participate in a comparison against their types.
+ * Validates fields specified in `compare_by` option, enforcing the option's contract.
  *
- * Not all types are comparable by default. A field type should be one of the following:
+ * The allowed field types are the following:
  *
- * 1. Have any [PrimitiveType], except for PT_UNKNOWN and TYPE_BYTES.
- * 2. Be an enum.
- * 3. Be a comparable message. Such a message is also marked with `compare_by` annotation.
- * 4. Be a well-known type like Timestamp, Duration or Value messages, for which comparators are
- * provided by default.
+ * 1. All primitive types (except for `bytes`) and enums.
+ * 2. Comparable messages (which are also marked with `compare_by` option).
+ * 3. Some Protobuf well-known types: Timestamp, Duration and *Value messages.
+ *
+ * See also: [Protobuf Docs | Well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/).
  */
-// TODO:2024-09-04:yevhenii.nadtochii: Move to model? It is used by a specific action.
+// TODO:2024-09-04:yevhenii.nadtochii: Move to the model? It is used by a specific action.
 //  Though, `ImplementComparable` should also not work if this validation fails.
+//  Naturally, this code belongs to `Proto sources analysis` stage, which is done in the context.
 internal class OptionValidator(private val findMessage: (TypeName) -> MessageType) {
 
+    // TODO:2024-09-04:yevhenii.nadtochii: Support well-known types.
     fun check(option: CompareByOption, message: MessageType) {
         val passedFields = option.fieldList
         check(passedFields.isNotEmpty()) {
@@ -96,19 +99,27 @@ internal class OptionValidator(private val findMessage: (TypeName) -> MessageTyp
                 "Unsupported primitive type: `${type.primitive}`"
             }
 
-            type.isMessage -> check(type.isComparable) {
-                "The passed field has a non-comparable type: `${type.message}`."
+            type.isMessage -> {
+                val message = findMessage(type.message)
+                check(message.isComparable || message.isAllowedWellKnown) {
+                    "The passed field has a non-comparable type: `${type.message}`."
+                }
             }
 
-            // Enums are passed with no checks.
+            else -> {
+                // Enums are passed with no checks.
+                check(type.isEnum) {
+                    "Unrecognized Proto type: `$type`."
+                }
+            }
         }
     }
 
-    private val Type.isComparable: Boolean
-        get() {
-            val message = findMessage(this.message) // We are sure it is a message.
-            return message.optionList.any { it.name == "compare_by" }
-        }
+    private val MessageType.isAllowedWellKnown: Boolean
+        get() = allowedWellKnown.contains(qualifiedName)
+
+    private val MessageType.isComparable: Boolean
+        get() = optionList.any { it.name == "compare_by" }
 }
 
 private fun MessageType.getField(name: String): Field =
@@ -117,3 +128,16 @@ private fun MessageType.getField(name: String): Field =
 
 private val PrimitiveType.isComparable
     get() = this != PT_UNKNOWN && this != TYPE_BYTES
+
+private val allowedWellKnown = listOf(
+    "google.protobuf.Timestamp",
+    "google.protobuf.Duration",
+    "google.protobuf.BoolValue",
+    "google.protobuf.DoubleValue",
+    "google.protobuf.FloatValue",
+    "google.protobuf.Int32Value",
+    "google.protobuf.Int64Value",
+    "google.protobuf.UInt32Value",
+    "google.protobuf.UInt64Value",
+    "google.protobuf.StringValue",
+)

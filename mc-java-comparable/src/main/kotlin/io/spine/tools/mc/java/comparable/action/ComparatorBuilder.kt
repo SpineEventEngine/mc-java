@@ -45,14 +45,14 @@ internal class ComparatorBuilder {
         return "private static final Comparator<$messageName> comparator = $declaration;"
     }
 
-    private fun closure(message: String, field: String): String {
-        val instance = message.lowerCased
+    private fun closure(outerMsg: String, field: String): String {
+        val instance = outerMsg.lowerCased
         return if (field.contains(".")) {
             val parts = field.split(".")
             val joined = parts.joinToString(".") { "${toJavaGetter(it)}()" }
-            "($message $instance) -> $instance.$joined"
+            "($outerMsg $instance) -> $instance.$joined"
         } else {
-            "$message::${toJavaGetter(field)}"
+            "$outerMsg::${toJavaGetter(field)}"
         }
     }
 }
