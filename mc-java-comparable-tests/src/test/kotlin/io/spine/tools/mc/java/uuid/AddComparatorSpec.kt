@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.uuid
 
 import com.google.protobuf.Empty
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddComparator
@@ -71,6 +72,102 @@ internal class AddComparatorSpec {
                     ".thenComparing(Citizen::getPassport);"
             field.shouldNotBeNull()
             field.text shouldContain expected
+        }
+    }
+
+    @Nested
+    inner class `not generate comparator for a message` {
+
+        @Test
+        fun `without the corresponding option`() {
+            val (cls, _) = generateCode("NoCompareByOption")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `with a non-comparable field`() {
+            val (cls, _) = generateCode("NonComparablesProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `with a bytes field`() {
+            val (cls, _) = generateCode("BytesProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `with a repeated field`() {
+            val (cls, _) = generateCode("RepeatedProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `with a map field`() {
+            val (cls, _) = generateCode("MapsProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `with a non-existing field`() {
+            val (cls, _) = generateCode("NonExistingProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class `not generate comparator for a message with nested` {
+
+        @Test
+        fun `non-comparable field`() {
+            val (cls, _) = generateCode("NestedNonComparablesProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `bytes field`() {
+            val (cls, _) = generateCode("NestedBytesProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `repeated field`() {
+            val (cls, _) = generateCode("NestedRepeatedProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `map field`() {
+            val (cls, _) = generateCode("NestedMapsProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
+        }
+
+        @Test
+        fun `non-existing field`() {
+            val (cls, _) = generateCode("NestedNonExistingProhibited")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            field.shouldBeNull()
         }
     }
 }

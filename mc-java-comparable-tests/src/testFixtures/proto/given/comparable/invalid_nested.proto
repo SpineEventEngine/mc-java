@@ -34,28 +34,47 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that primitives and enums can be passed to `compare_by` option.
-message Account {
+import "given/comparable/invalid.proto";
+
+// This file defines messages that contradict the `compare_by` contract.
+
+message NestedStub {
+    bytes data = 1 [(required) = true];
+    NoCompareByOption id = 2 [(required) = true];
+    repeated string gender = 3 [(required) = true];
+    map<string, int32> results = 4 [(required) = true];
+}
+
+message NestedNonComparablesProhibited {
     option (compare_by) = {
-        field: "actual_data"
-        field: "status"
-        field: "tax_number"
-        field: "name"
+        field: "nested.id"
     };
-
-    AccountId id = 1 [(required) = true];
-    string name = 2 [(required) = true];
-    int32 tax_number = 3 [(required) = true];
-    AccountStatus status = 4 [(required) = true];
-    bool actual_data = 5 [(required) = true];
+    NestedStub nested = 1 [(required) = true];
 }
 
-message AccountId {
-    string uuid = 1 [(required) = true];
+message NestedBytesProhibited {
+    option (compare_by) = {
+        field: "nested.data"
+    };
+    NestedStub nested = 1 [(required) = true];
 }
 
-enum AccountStatus {
-    UNDEFINED = 0;
-    ACTIVE = 1;
-    SUSPENDED = 2;
+message NestedRepeatedProhibited {
+    option (compare_by) = {
+        field: "nested.gender"
+    };
+    NestedStub nested = 1 [(required) = true];
+}
+
+message NestedMapsProhibited {
+    option (compare_by) = {
+        field: "nested.results"
+    };
+    NestedStub nested = 1 [(required) = true];
+}
+
+message NestedNonExistingProhibited {
+    option (compare_by) = {
+        field: "non_existing_field"
+    };
 }

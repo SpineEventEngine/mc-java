@@ -34,28 +34,42 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that primitives and enums can be passed to `compare_by` option.
-message Account {
-    option (compare_by) = {
-        field: "actual_data"
-        field: "status"
-        field: "tax_number"
-        field: "name"
-    };
+// This file defines messages that contradict the `compare_by` contract.
 
-    AccountId id = 1 [(required) = true];
-    string name = 2 [(required) = true];
-    int32 tax_number = 3 [(required) = true];
-    AccountStatus status = 4 [(required) = true];
-    bool actual_data = 5 [(required) = true];
-}
-
-message AccountId {
+message NoCompareByOption {
     string uuid = 1 [(required) = true];
 }
 
-enum AccountStatus {
-    UNDEFINED = 0;
-    ACTIVE = 1;
-    SUSPENDED = 2;
+message NonComparablesProhibited {
+    option (compare_by) = {
+        field: "id"
+    };
+    NoCompareByOption id = 1 [(required) = true];
+}
+
+message BytesProhibited {
+    option (compare_by) = {
+        field: "data"
+    };
+    bytes data = 1 [(required) = true];
+}
+
+message RepeatedProhibited {
+    option (compare_by) = {
+        field: "gender"
+    };
+    repeated string gender = 1 [(required) = true];
+}
+
+message MapsProhibited {
+    option (compare_by) = {
+        field: "results"
+    };
+    map<string, int32> results = 1 [(required) = true];
+}
+
+message NonExistingProhibited {
+    option (compare_by) = {
+        field: "non_existing_field"
+    };
 }

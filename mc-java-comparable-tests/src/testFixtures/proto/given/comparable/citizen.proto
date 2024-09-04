@@ -34,7 +34,7 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that other comparable messages and nested fields can be passed
+// This message tests that comparable messages and nested fields can be passed
 // to `compare_by` option.
 message Citizen {
     option (compare_by) = {

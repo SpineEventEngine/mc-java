@@ -42,10 +42,18 @@ internal class ImplementComparableSpec {
     )
 
     @Test
-    fun `make a message implement 'Comparable'`() {
+    fun `make a message with the option implement 'Comparable'`() {
         val message = "Account"
         val (_, generatedCode) = generateCode(message)
-        val genericParameters = listOf(message)
-        implementsInterface(generatedCode, Comparable::class.java, genericParameters) shouldBe true
+        val generics = listOf(message)
+        implementsInterface(generatedCode, Comparable::class.java, generics) shouldBe true
+    }
+
+    @Test
+    fun `ignore messages without the corresponding option`() {
+        val message = "AccountId"
+        val (_, generatedCode) = generateCode(message)
+        val generics = listOf(message)
+        implementsInterface(generatedCode, Comparable::class.java, generics) shouldBe false
     }
 }
