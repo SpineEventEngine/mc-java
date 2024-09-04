@@ -28,7 +28,6 @@ package io.spine.tools.mc.java
 
 import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiJavaFile
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
 import io.spine.protodata.renderer.SourceFile
@@ -55,7 +54,6 @@ public abstract class DirectMessageAction<P : Message>(
      * The message class located in the [file].
      */
     final override val cls: PsiClass by lazy {
-        val f = file.psi() as PsiJavaFile
-        f.findClass(messageClass)
+        psiFile.findClass(messageClass)
     }
 }
