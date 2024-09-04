@@ -48,6 +48,8 @@ import io.spine.protodata.isPrimitive
  * 4. Be a well-known type like Timestamp, Duration or Value messages, for which comparators are
  * provided by default.
  */
+// TODO:2024-09-04:yevhenii.nadtochii: Move to model? It is used by a specific action.
+//  Though, `ImplementComparable` should also not work if this validation fails.
 internal class OptionValidator(private val findMessage: (TypeName) -> MessageType) {
 
     fun check(option: CompareByOption, message: MessageType) {
