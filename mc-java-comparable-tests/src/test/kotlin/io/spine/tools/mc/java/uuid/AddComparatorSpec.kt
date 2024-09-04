@@ -43,8 +43,8 @@ internal class AddComparatorSpec {
         parameter = Empty.getDefaultInstance()
     )
 
-    @Nested
-    inner class `generate comparator` {
+    @Nested inner class
+    `generate comparator` {
 
         @Test
         fun `with primitives and enums`() {
@@ -75,8 +75,8 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested
-    inner class `not generate comparator for a message` {
+    @Nested inner class
+    `not generate comparator for a message` {
 
         @Test
         fun `without the corresponding option`() {
@@ -127,8 +127,8 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested
-    inner class `not generate comparator for a message with nested` {
+    @Nested inner class
+    `not generate comparator for a message with nested` {
 
         @Test
         fun `non-comparable field`() {
