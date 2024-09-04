@@ -26,39 +26,41 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-import io.spine.option.CompareByOption
+internal class ComparatorBuilder(private val simpleClassName: String) {
 
-/**
- * Builds a `private static final Comparator<Message> comparator` field to be inserted
- * by [AddComparator] action.
- */
-internal class ComparatorBuilder {
+    private val classInstance = simpleClassName.lowerCased
+    private val closures = mutableListOf<String>()
 
-    fun composeAsText(messageName: String, option: CompareByOption): String {
-        val fields = option.fieldList.iterator()
-        val declaration = buildString {
-            append("Comparator.comparing(${closure(messageName, fields.next())})")
-            while (fields.hasNext()) {
-                append(".thenComparing(${closure(messageName, fields.next())})")
-            }
+    fun build(): String {
+        var joinedClosures = "Comparator.comparing(${closures[0]})"
+        for (i in 1 until closures.size) {
+            joinedClosures += ".thenComparing(${closures[i]})"
         }
-        return "private static final Comparator<$messageName> comparator = $declaration;"
+        return "private static final Comparator<$simpleClassName> comparator = $joinedClosures;"
     }
 
-    private fun closure(outerMsg: String, field: String): String {
-        val instance = outerMsg.lowerCased
-        return if (field.contains(".")) {
-            val parts = field.split(".")
-            val joined = parts.joinToString(".") { "${toJavaGetter(it)}()" }
-            "($outerMsg $instance) -> $instance.$joined"
-        } else {
-            "$outerMsg::${toJavaGetter(field)}"
-        }
+    fun comparingBy(path: FieldPath, comparator: String? = null) {
+        val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
+        val closure = if (comparator == null) extractor else "$extractor, $comparator"
+        closures.add(closure)
+    }
+
+    private fun extractField(fieldName: String): String = "$simpleClassName::${javaName(fieldName)}"
+
+    private fun extractNestedField(path: FieldPath): String {
+        val parts = path.split(".")
+        val joined = parts.joinToString(".") { "${javaName(it)}()" }
+        return "($simpleClassName $classInstance) -> $classInstance.$joined"
     }
 }
 
-private fun toJavaGetter(protobufFieldName: String): String {
-    val parts = protobufFieldName.split("_")
+/**
+ * Converts the given [protoFieldName] to Java field name.
+ *
+ * For example, `my_best_field` will be converted to `myBestField`.
+ */
+private fun javaName(protoFieldName: String): String {
+    val parts = protoFieldName.split("_")
     val joined = parts.joinToString("") { it.upperCased }
     return "get$joined"
 }

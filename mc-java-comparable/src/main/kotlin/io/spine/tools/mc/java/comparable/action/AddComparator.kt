@@ -28,11 +28,20 @@ package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
 import io.spine.protodata.CodegenContext
+import io.spine.protodata.Field
 import io.spine.protodata.MessageType
+import io.spine.protodata.PrimitiveType
+import io.spine.protodata.PrimitiveType.PT_UNKNOWN
+import io.spine.protodata.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.TypeName
+import io.spine.protodata.isEnum
+import io.spine.protodata.isMessage
+import io.spine.protodata.isPrimitive
+import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.typeName
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
@@ -57,8 +66,8 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    private val validator = OptionValidator(::findMessage)
-    private val builder = ComparatorBuilder()
+    private val fields = OptionFieldLookup(::findMessage)
+    private val comparator = ComparatorBuilder(cls.name!!)
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
     //  This view contains a discovered `compare_by` option.
@@ -66,13 +75,51 @@ public class AddComparator(
         .findById(type)!!
         .option
 
-    // TODO:2024-09-02:yevhenii.nadtochii: addFirst() and addLast() extensions are inconsistent.
+    // TODO:2024-09-02:yevhenii.nadtochii: PsiClass.addFirst() and addLast() extensions
+    //  are inconsistent.
     override fun doRender() {
-        validator.check(option, type)
-        val comparator = builder.composeAsText(cls.name!!, option)
-        val field = elementFactory.createFieldFromText(comparator, cls)
+        val requestedFields = option.fieldList
+        require(requestedFields.isNotEmpty()) {
+            "`compare_by` option should have at least one field: `$messageClass`."
+        }
+
+        requestedFields.associateWith { fields.find(it, type) }
+            .forEach { (path, metadata) ->
+                val (field, message) = metadata
+                check(field)
+                append(path, field)
+            }
+
+
+        val field = elementFactory.createFieldFromText(comparator.build(), cls)
         field.addFirst(GeneratedAnnotation.create())
         cls.addAfter(field, cls.lBrace)
+    }
+
+    private fun append(path: FieldPath, field: Field) {
+        if (field.type.isMessage) {
+            when (field.type.typeName.qualifiedName) {
+                wellKnownTimestamp -> {
+                    val timestamps = elementFactory.createClass("Timestamps")
+                    psiFile.importList!!.add(timestamps)
+                    comparator.comparingBy(path, "Timestamps.comparator()")
+                }
+
+                wellKnownDuration -> {
+                    val durations = elementFactory.createClass("Durations")
+                    psiFile.importList!!.add(durations)
+                    comparator.comparingBy(path, "Durations.comparator()")
+                }
+
+                in wellKnownValues -> {
+                    comparator.comparingBy("$path.value")
+                }
+
+                else -> comparator.comparingBy(path)
+            }
+        } else {
+            comparator.comparingBy(path)
+        }
     }
 
     private fun findMessage(typeName: TypeName): MessageType {
@@ -91,4 +138,55 @@ public class AddComparator(
         return fromDependencies
             ?: error("`$typeUrl` not found in the passed Proto files and its dependencies.")
     }
+
+    private fun check(field: Field) {
+        check(field.hasSingle()) {
+            "`${field.name}` is not a single-value field."
+        }
+        val type = field.type
+        when {
+            type.isPrimitive -> check(type.primitive.isComparable) {
+                "Unsupported primitive type: `${type.primitive}`"
+            }
+
+            type.isMessage -> {
+                val message = findMessage(type.message)
+                check(message.isComparable || message.isAllowedWellKnown) {
+                    "The passed field has a non-comparable type: `${type.message}`."
+                }
+            }
+
+            else -> {
+                // Enums are passed with no checks.
+                check(type.isEnum) {
+                    "Unrecognized Proto type: `$type`."
+                }
+            }
+        }
+    }
 }
+
+private val MessageType.isAllowedWellKnown: Boolean
+    get() = allowedWellKnown.contains(qualifiedName)
+
+private val MessageType.isComparable: Boolean
+    get() = optionList.any { it.name == "compare_by" }
+
+private val PrimitiveType.isComparable
+    get() = this != PT_UNKNOWN && this != TYPE_BYTES
+
+private const val wellKnownDuration = "google.protobuf.Duration"
+private const val wellKnownTimestamp = "google.protobuf.Timestamp"
+private val wellKnownValues = listOf(
+    "google.protobuf.BoolValue",
+    "google.protobuf.DoubleValue",
+    "google.protobuf.FloatValue",
+    "google.protobuf.Int32Value",
+    "google.protobuf.Int64Value",
+    "google.protobuf.UInt32Value",
+    "google.protobuf.UInt64Value",
+    "google.protobuf.StringValue",
+)
+
+private val allowedWellKnown = wellKnownValues + wellKnownDuration + wellKnownTimestamp
+

@@ -33,16 +33,16 @@ import io.spine.protodata.isMessage
 
 internal class OptionFieldLookup(private val findMessage: (TypeName) -> MessageType) {
 
-    fun find(path: FieldPath, messageType: MessageType): Field =
+    fun find(path: FieldPath, messageType: MessageType): Pair<Field, MessageType> =
         if (path.isNotNested) {
-            messageType.getField(path)
+            messageType.getField(path) to messageType
         } else {
             searchRecursively(path, messageType)
         }
 
-    private fun searchRecursively(path: FieldPath, message: MessageType): Field {
+    private fun searchRecursively(path: FieldPath, message: MessageType): Pair<Field, MessageType> {
         if (path.isNotNested) {
-            return message.getField(path)
+            return message.getField(path) to message
         }
 
         val currentFieldName = path.substringBefore(".")
