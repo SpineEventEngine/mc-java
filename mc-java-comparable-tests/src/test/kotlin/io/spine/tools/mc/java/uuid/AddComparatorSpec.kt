@@ -94,6 +94,24 @@ internal class AddComparatorSpec {
         }
 
         @Test
+        fun `with nested well-known 'Timestamp' and 'Duration'`() {
+            val (cls, _) = generateCode("NestedTimestampAndDuration")
+
+            val imports = file.importList?.text
+            imports.shouldNotBeNull()
+            imports shouldContain "import com.google.protobuf.util.Durations;"
+            imports shouldContain "import com.google.protobuf.util.Timestamps;"
+
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<NestedTimestampAndDuration> comparator = " +
+                    "Comparator.comparing((NestedTimestampAndDuration nestedTimestampAndDuration) -> NestedTimestampAndDuration.getNested().getTimestamp(), Timestamps.comparator())" +
+                    ".thenComparing((NestedTimestampAndDuration nestedTimestampAndDuration) -> NestedTimestampAndDuration.getNested().getDuration(), Durations.comparator());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
         fun `with well-known value messages`() {
             val (cls, _) = generateCode("WithValues")
             val checkSuper = false
@@ -107,6 +125,24 @@ internal class AddComparatorSpec {
                     ".thenComparing((WithValues withValues) -> withValues.getUint32().getValue())" +
                     ".thenComparing((WithValues withValues) -> withValues.getUint64().getValue())" +
                     ".thenComparing((WithValues withValues) -> withValues.getString().getValue());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
+        fun `with nested well-known value messages`() {
+            val (cls, _) = generateCode("WithValues")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final Comparator<WithValues> comparator = " +
+                    "Comparator.comparing((WithValues withValues) -> withValues.getNested().getBool().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getDouble().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getFloat().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getInt32().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getInt64().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getUint32().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getUint64().getValue())" +
+                    ".thenComparing((WithValues withValues) -> withValues.getNested().getString().getValue());"
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
