@@ -36,13 +36,14 @@ import io.spine.protodata.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.isEnum
 import io.spine.protodata.isMessage
 import io.spine.protodata.isPrimitive
-import io.spine.protodata.qualifiedName
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.typeName
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
+import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnown
+import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownMessage
+import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownValue
 import io.spine.tools.mc.java.comparable.isComparable
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -81,36 +82,28 @@ public class AddComparator(
         val targetMessage = type
         optionFields
             .associateWith { fields.find(it, targetMessage) }
-            .forEach(::comparingBy)
+            .forEach { (path, field) ->
+                validate(field)
+                comparingBy(path, field)
+            }
 
         val messageField = elementFactory.createFieldFromText(comparator.build(), cls)
             .apply { addFirst(GeneratedAnnotation.create()) }
         cls.addAfter(messageField, cls.lBrace)
     }
 
-    private fun comparingBy(path: FieldPath, field: Field) {
-        validate(field)
-        if (field.type.isMessage) {
-            when (field.type.typeName.qualifiedName) {
-                wellKnownTimestamp -> {
-                    comparator.comparingBy(path, "com.google.protobuf.util.Timestamps.comparator()")
-                }
-
-                wellKnownDuration -> {
-                    comparator.comparingBy(path, "com.google.protobuf.util.Durations.comparator()")
-                }
-
-                in wellKnownValues -> {
-                    comparator.comparingBy("$path.value")
-                }
-
-                else -> comparator.comparingBy(path)
-            }
-        } else {
-            comparator.comparingBy(path)
-        }
-    }
-
+    /**
+     * Checks if the given [field] can be used in the comparison.
+     *
+     * The requirements to the passed field are described in docs to `compare_by`
+     * option in detail. This method enforces those requirements.
+     *
+     * In short, the following types are allowed:
+     *
+     * 1. All primitives except for byte array.
+     * 2. Enumerations (Java enums are implicitly comparable).
+     * 3. Messages with `compare_by` option.
+     */
     private fun validate(field: Field) {
         check(field.hasSingle()) {
             "`${field.name}` is not a single-value field and can not participate in comparison."
@@ -118,44 +111,36 @@ public class AddComparator(
         val type = field.type
         when {
             type.isPrimitive -> check(type.primitive.isComparable) {
-                "Unsupported primitive type: `${type.primitive}`"
+                "The passed field has a non-comparable primitive type: `${type.primitive}`"
             }
 
             type.isMessage -> {
                 val message = messages.find(type.message)
-                check(message.isComparable || message.isAllowedWellKnown) {
-                    "The passed field has a non-comparable type: `${type.message}`."
+                check(message.isComparable || message.isWellKnown) {
+                    "The passed field has a non-comparable message type: `${type.message}`."
                 }
             }
 
-            else -> {
-                // Enums are passed with no checks.
-                check(type.isEnum) {
-                    "Unrecognized Proto type: `$type`."
-                }
+            else -> check(type.isEnum) {
+                "The passed field has an unrecognized type: `$type`."
             }
+        }
+    }
+
+    private fun comparingBy(path: FieldPath, field: Field) {
+        val type = field.type
+        when {
+            type.isWellKnownMessage -> {
+                val fieldComparator = WellKnown.comparatorFor(type)
+                comparator.comparingBy(path, fieldComparator)
+            }
+
+            type.isWellKnownValue -> comparator.comparingBy("$path.value")
+
+            else -> comparator.comparingBy(path)
         }
     }
 }
 
-private val MessageType.isAllowedWellKnown: Boolean
-    get() = allowedWellKnown.contains(qualifiedName)
-
 private val PrimitiveType.isComparable
     get() = this != PT_UNKNOWN && this != TYPE_BYTES
-
-private const val wellKnownDuration = "google.protobuf.Duration"
-private const val wellKnownTimestamp = "google.protobuf.Timestamp"
-private val wellKnownValues = listOf(
-    "google.protobuf.BoolValue",
-    "google.protobuf.DoubleValue",
-    "google.protobuf.FloatValue",
-    "google.protobuf.Int32Value",
-    "google.protobuf.Int64Value",
-    "google.protobuf.UInt32Value",
-    "google.protobuf.UInt64Value",
-    "google.protobuf.StringValue",
-)
-
-private val allowedWellKnown = wellKnownValues + wellKnownDuration + wellKnownTimestamp
-
