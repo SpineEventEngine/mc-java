@@ -40,15 +40,11 @@ import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
 
 /**
- * Updates the code of the message which qualifies as [Comparable] to
- * contain `compareTo()` method.
+ * Adds `compareTo()` method to the message that qualifies as [Comparable].
  *
- * The class is public because its fully qualified name is used as a default
- * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
- *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  */
 public class AddCompareToMethod(
     type: MessageType,
@@ -58,12 +54,12 @@ public class AddCompareToMethod(
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun doRender() {
-        val clsName = cls.name!!
-        val lowercasedClsName = clsName.replaceFirstChar { it.lowercaseChar() }
+        val message = cls.name!!
+        val instance = message.lowerCased
         val method = elementFactory.createMethodFromText(
             """
-            public int compareTo($clsName $lowercasedClsName) {
-                return comparator.compare(this, $lowercasedClsName);                          
+            public int compareTo($message $instance) {
+                return comparator.compare(this, $instance);                          
             }            
             """.trimIndent(), cls
         )

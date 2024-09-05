@@ -26,31 +26,58 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-internal class ComparatorBuilder(private val simpleClassName: String) {
+import com.intellij.psi.PsiClass
 
-    private val classInstance = simpleClassName.lowerCased
+/**
+ * Builds a `comparator` for the given message.
+ *
+ * @param psiCls The message class to be used as comparator's generic parameter.
+ */
+internal class ComparatorBuilder(psiCls: PsiClass) {
+
+    private val message = psiCls.name!!
+    private val instance = message.lowerCased
     private val closures = mutableListOf<String>()
 
+    /**
+     * Builds a `comparator` field in a text form.
+     */
     fun build(): String {
         var joinedClosures = "Comparator.comparing(${closures[0]})"
         for (i in 1 until closures.size) {
             joinedClosures += ".thenComparing(${closures[i]})"
         }
-        return "private static final Comparator<$simpleClassName> comparator = $joinedClosures;"
+        return "private static final Comparator<$message> comparator = $joinedClosures;"
     }
 
+    /**
+     * Adds a field to participate in comparison.
+     *
+     * For example, `event.emittedAt` field, may need
+     * `com.google.protobuf.util.Timestamps.comparator()` comparator.
+     *
+     * @param path The path to the field.
+     * @param comparator The optional comparator to be used for the field's value.
+     */
     fun comparingBy(path: FieldPath, comparator: String? = null) {
         val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
         val closure = if (comparator == null) extractor else "$extractor, $comparator"
         closures.add(closure)
     }
 
-    private fun extractField(fieldName: String): String = "$simpleClassName::${javaName(fieldName)}"
+    /**
+     * Returns a reference to the getter for the given [fieldName] in the [message].
+     */
+    private fun extractField(fieldName: String): String = "$message::${javaName(fieldName)}"
 
+    /**
+     * Builds a lambda key extractor for a nested field in the [message],
+     * denoted by the given [path].
+     */
     private fun extractNestedField(path: FieldPath): String {
         val parts = path.split(".")
         val joined = parts.joinToString(".") { "${javaName(it)}()" }
-        return "($simpleClassName $classInstance) -> $classInstance.$joined"
+        return "($message $instance) -> $instance.$joined"
     }
 }
 
@@ -64,9 +91,3 @@ private fun javaName(protoFieldName: String): String {
     val joined = parts.joinToString("") { it.upperCased }
     return "get$joined"
 }
-
-private val String.upperCased
-    get() = replaceFirstChar { it.uppercase() }
-
-private val String.lowerCased
-    get() = replaceFirstChar { it.lowercase() }

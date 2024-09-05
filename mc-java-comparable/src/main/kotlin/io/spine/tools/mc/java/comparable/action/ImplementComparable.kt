@@ -37,14 +37,10 @@ import io.spine.tools.mc.java.settings.superInterface
  * Updates the code of the message which qualifies as [Comparable] by
  * making the type implement the [Comparable] interface.
  *
- * The class is public because its fully qualified name is used as a default
- * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
- *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  */
-// TODO:2024-09-02:yevhenii.nadtochii: Can't use it directly from the settings because I need a generic parameter.
 public class ImplementComparable(
     type: MessageType,
     file: SourceFile<Java>,

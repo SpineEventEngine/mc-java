@@ -31,13 +31,39 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.TypeName
 import io.spine.protodata.isMessage
 
-internal class OptionFieldLookup(private val findMessage: (TypeName) -> MessageType) {
+/**
+ * Looks for [MessageType] denoted by the given [FieldPath].
+ *
+ * @param query Locates [MessageType] of the given [TypeName].
+ */
+internal class FieldLookup(private val query: (TypeName) -> MessageType) {
 
-    fun find(path: FieldPath, messageType: MessageType): Field =
+    /**
+     * Returns [Field] denoted by the given field path, respectively
+     * to the given [message].
+     *
+     * For example, given the following message:
+     *
+     * ```proto
+     * message Citizen {
+     *     option (compare_by) = {
+     *         field: "passport.first_name"
+     *     };
+     *    Passport passport = 1;
+     * ```
+     *
+     * `passport.first_name` is a field path. `Citizen` is the root message,
+     * in respect to which the path will be resolved. The resulting `Field`
+     * will describe `Passport.first_name`.
+     *
+     * @param path The field path. Can be nested.
+     * @param message The messages, in respect to which the path will be resolved.
+     */
+    fun find(path: FieldPath, message: MessageType): Field =
         if (path.isNotNested) {
-            messageType.getField(path)
+            message.getField(path)
         } else {
-            searchRecursively(path, messageType)
+            searchRecursively(path, message)
         }
 
     private fun searchRecursively(path: FieldPath, message: MessageType): Field {
@@ -50,20 +76,24 @@ internal class OptionFieldLookup(private val findMessage: (TypeName) -> MessageT
         checkIntermediate(currentField)
 
         val remainingFields = path.substringAfter(".")
-        val nextMessage = findMessage(currentField.type.message) // We are sure it is a message.
+        val nextMessage = query(currentField.type.message)
         return searchRecursively(remainingFields, nextMessage)
-    }
-
-    // Otherwise, `findMessage()` will for sure throw.
-    private fun checkIntermediate(field: Field) {
-        check(field.hasSingle()) // Lists, maps and one-ofs are prohibited.
-        check(field.isMessage) // Only a message can be an intermediate part of the "FieldPath".
     }
 }
 
 /**
- * Looks up a field in this [MessageType] by the given [name].
+ * Checks that the intermediate [field] in the path is a message.
+ *
+ * So that, the `query()` is always sure the passed type denotes exactly a message.
+ * Lists, maps, one-of, primitives are prohibited.
+ */
+private fun checkIntermediate(field: Field) {
+    check(field.hasSingle())
+    check(field.isMessage)
+}
+
+/**
+ * Finds a field in this [MessageType] by the given [name].
  */
 private fun MessageType.getField(name: String): Field =
-    fieldList.find { it.name.value == name }
-        ?: error("Field `$name` not found in `$this`.")
+    fieldList.find { it.name.value == name } ?: error("Field `$name` not found in `$this`.")

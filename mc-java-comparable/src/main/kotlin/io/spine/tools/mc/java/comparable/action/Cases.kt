@@ -27,17 +27,19 @@
 package io.spine.tools.mc.java.comparable.action
 
 /**
- * A field path originally passed to `compare_by` option.
+ * Returns this [String] with the uppercased first letter.
  *
- * This string may contain the following:
- *
- * 1. A single field: `first_name`.
- * 2. A nested one: `citizen.passport.first_name`.
+ * This extension is much more primitive compared to the deprecated [capitalize],
+ * buf is enough for our needs.
  */
-internal typealias FieldPath = String
+internal val String.upperCased
+    get() = replaceFirstChar { it.uppercase() }
 
 /**
- * Tells if this [FieldPath] denotes a nested field.
+ * Returns this [String] with the lowercased first letter.
+ *
+ * This extension is much more primitive compared to the deprecated [decapitalize],
+ * buf is enough for our needs.
  */
-internal val FieldPath.isNotNested
-    get() = contains(".").not()
+internal val String.lowerCased
+    get() = replaceFirstChar { it.lowercase() }

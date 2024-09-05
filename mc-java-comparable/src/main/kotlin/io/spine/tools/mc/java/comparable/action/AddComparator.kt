@@ -67,8 +67,8 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    private val fields = OptionFieldLookup(::findMessage)
-    private val comparator = ComparatorBuilder(cls.name!!)
+    private val fields = FieldLookup(::findMessage)
+    private val comparator = ComparatorBuilder(cls)
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
     //  This view contains a discovered `compare_by` option.
