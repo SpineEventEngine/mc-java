@@ -26,22 +26,21 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.core.Subscribe
 import io.spine.protodata.MessageType
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
+import io.spine.protodata.Option
 
 /**
- * Gathers comparable messages along with their codegen settings.
+ * The name of [CompareByOption][io.spine.option.CompareByOption].
  */
-internal class ComparableMessageView :
-    View<MessageType, ComparableMessage, ComparableMessage.Builder>() {
+private const val COMPARE_BY_OPTION_NAME = "compare_by"
 
-    @Subscribe
-    fun on(event: ComparableMessageDiscovered) = alter {
-        type = event.type
-        option = event.option
-        actions = event.actions
-    }
-}
+/**
+ * Tells whether the given option is a [CompareByOption][io.spine.option.CompareByOption].
+ */
+internal fun isComparable(option: Option): Boolean = option.name == COMPARE_BY_OPTION_NAME
+
+/**
+ * Tells whether this [MessageType] has a [CompareByOption][io.spine.option.CompareByOption].
+ */
+internal val MessageType.isComparable: Boolean
+    get() = optionList.any(::isComparable)

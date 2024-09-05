@@ -45,7 +45,8 @@ import io.spine.protodata.typeName
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.comparable.ComparableActions
+import io.spine.tools.mc.java.comparable.ComparableMessage
+import io.spine.tools.mc.java.comparable.isComparable
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
@@ -71,7 +72,7 @@ public class AddComparator(
 
     // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
     //  This view contains a discovered `compare_by` option.
-    private val option = select(ComparableActions::class.java)
+    private val option = select(ComparableMessage::class.java)
         .findById(type)!!
         .option
 
@@ -163,9 +164,6 @@ public class AddComparator(
 
 private val MessageType.isAllowedWellKnown: Boolean
     get() = allowedWellKnown.contains(qualifiedName)
-
-private val MessageType.isComparable: Boolean
-    get() = optionList.any { it.name == "compare_by" }
 
 private val PrimitiveType.isComparable
     get() = this != PT_UNKNOWN && this != TYPE_BYTES

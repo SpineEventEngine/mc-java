@@ -35,7 +35,8 @@ import io.spine.protodata.renderer.Renderer
  * Looks for messages with `compare_by` option and applies render actions specified in
  * [CodegenSettings][io.spine.tools.mc.java.gradle.settings.CodegenSettings.forComparables].
  *
- * The default list of actions is set in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
+ * The default list of actions is configured in
+ * [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
  */
 public class ComparablePlugin : Plugin {
 

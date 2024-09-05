@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.comparable
 import io.spine.core.External
 import io.spine.option.CompareByOption
 import io.spine.protobuf.AnyPacker.unpack
-import io.spine.protodata.Option
 import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
@@ -42,6 +41,9 @@ import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
 import io.spine.tools.mc.java.comparable.event.comparableMessageDiscovered
 import io.spine.tools.mc.java.settings.Comparables
 
+/**
+ * Discovers comparable messages.
+ */
 internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), ComparableComponent {
 
     private val settings: Comparables by lazy { loadSettings() }
@@ -51,15 +53,15 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
         @External event: TypeDiscovered
     ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
         val options = event.type.optionList
-        val compareBy = options.find(::isComparable) ?: return withB(nothing())
-        return withA(
-            comparableMessageDiscovered {
-                type = event.type
-                option = unpack(compareBy.value, CompareByOption::class.java)
-                actions = settings.actions
-            }
-        )
+        val compareBy = options.find(::isComparable)
+        return compareBy?.let {
+            withA(
+                comparableMessageDiscovered {
+                    type = event.type
+                    option = unpack(compareBy.value, CompareByOption::class.java)
+                    actions = settings.actions
+                }
+            )
+        } ?: withB(nothing())
     }
 }
-
-private fun isComparable(option: Option): Boolean = option.name == "compare_by"

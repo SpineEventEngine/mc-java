@@ -28,4 +28,10 @@ package io.spine.tools.mc.java.comparable
 
 import io.spine.tools.mc.java.TypeRenderer
 
-internal class ComparableActionsRenderer : TypeRenderer<ComparableActions>()
+/**
+ * Renders codegen [actions][ComparableMessage.getActions] for each [ComparableMessage]
+ * in [ComparableMessageView].
+ */
+// TODO:2024-09-05:yevhenii.nadtochii: Consider storing actions in one place. As long as
+//  they are the same for every message, why to have them in every message?  It may confuse.
+internal class ComparableActionsRenderer : TypeRenderer<ComparableMessage>()

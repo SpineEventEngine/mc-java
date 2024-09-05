@@ -28,6 +28,9 @@ package io.spine.tools.mc.java.comparable
 
 import io.spine.protodata.settings.LoadsSettings
 
+/**
+ * A component that can access settings of [ComparablePlugin].
+ */
 internal interface ComparableComponent : LoadsSettings {
 
     override val consumerId: String
