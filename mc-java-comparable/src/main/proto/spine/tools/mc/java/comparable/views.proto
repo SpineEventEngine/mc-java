@@ -39,16 +39,16 @@ import "spine/protodata/ast.proto";
 import "spine/protodata/settings.proto";
 
 // A comparable message.
-message ComparableActions {
+message ComparableMessage {
     option (is).java_type = "io.spine.tools.mc.java.TypeActions";
     option (entity).kind = VIEW;
 
-    // The type in which the option is discovered.
+    // The message type.
     protodata.MessageType type = 1;
 
-    // The `compare_by` option.
+    // Message's `compare_by` option.
     CompareByOption option = 2;
 
-    // A collection of code generation actions associated with their parameters.
+    // The code generation actions to apply.
     protodata.Actions actions = 3;
 }
