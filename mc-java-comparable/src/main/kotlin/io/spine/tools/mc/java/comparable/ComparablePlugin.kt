@@ -31,25 +31,31 @@ import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
 
+/**
+ * Looks for messages with `compare_by` option and applies render actions specified in
+ * [CodegenSettings][io.spine.tools.mc.java.gradle.settings.CodegenSettings.forComparables].
+ *
+ * The default list of actions is set in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
+ */
 public class ComparablePlugin : Plugin {
-
-    public companion object {
-
-        /**
-         * The ID for getting settings for this plugin.
-         */
-        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
-    }
 
     override fun policies(): Set<Policy<*>> = setOf(
         ComparableMessageDiscovery()
     )
 
     override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableActionsView::class.java
+        ComparableMessageView::class.java
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        ComparableActionRenderer()
+        ComparableActionsRenderer()
     )
+
+    public companion object {
+
+        /**
+         * Settings ID for this plugin.
+         */
+        public val SETTINGS_ID: String = ComparablePlugin::class.java.canonicalName
+    }
 }

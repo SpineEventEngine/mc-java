@@ -26,22 +26,6 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.core.Subscribe
-import io.spine.protodata.MessageType
-import io.spine.protodata.plugin.View
-import io.spine.server.entity.alter
-import io.spine.tools.mc.java.comparable.event.ComparableMessageDiscovered
+import io.spine.tools.mc.java.TypeRenderer
 
-/**
- * Gathers codegen settings from [ComparableMessageDiscovered] events.
- */
-internal class ComparableActionsView :
-    View<MessageType, ComparableActions, ComparableActions.Builder>() {
-
-    @Subscribe
-    fun on(event: ComparableMessageDiscovered) = alter {
-        type = event.type
-        option = event.option
-        actions = event.actions
-    }
-}
+internal class ComparableActionsRenderer : TypeRenderer<ComparableActions>()
