@@ -33,9 +33,6 @@ import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.PrimitiveType.TYPE_BYTES
-import io.spine.protodata.ProtobufDependency
-import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.TypeName
 import io.spine.protodata.isEnum
 import io.spine.protodata.isMessage
 import io.spine.protodata.isPrimitive
@@ -51,15 +48,14 @@ import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
- * Updates the code of the message which qualifies as [Comparable] to
- * contain `compareTo()` method.
+ * Inserts a `comparator` field into the messages that qualifies as comparable.
  *
- * The class is public because its fully qualified name is used as a default
- * value in [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
+ * This action also validates that the passed fields are eligible to participate
+ * in the comparison. See [validate] method for details.
  *
- * @property type the type of the message.
- * @property file the source code to which the action is applied.
- * @property context the code generation context in which this action runs.
+ * @type type The type of the message.
+ * @type file The source code to which the action is applied.
+ * @type context The code generation context in which this action runs.
  */
 public class AddComparator(
     type: MessageType,
@@ -67,36 +63,33 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    private val fields = FieldLookup(::findMessage)
+    private val messages = MessageLookup(context)
+    private val fields = FieldLookup(messages)
     private val comparator = ComparatorBuilder(cls)
 
-    // TODO:2024-09-01:yevhenii.nadtochii: Can we ask a `TypeRenderer` pass it to us?
-    //  This view contains a discovered `compare_by` option.
+    // TODO:2024-09-01:yevhenii.nadtochii: `TypeRenderer` has this view when creates the action.
     private val option = select(ComparableMessage::class.java)
         .findById(type)!!
         .option
 
-    // TODO:2024-09-02:yevhenii.nadtochii: PsiClass.addFirst() and addLast() extensions
-    //  are inconsistent.
     override fun doRender() {
-        val requestedFields = option.fieldList
-        require(requestedFields.isNotEmpty()) {
-            "`compare_by` option should have at least one field: `$messageClass`."
+        val optionFields = option.fieldList
+        require(optionFields.isNotEmpty()) {
+            "`compare_by` option should have at least one field specified in `$messageClass`."
         }
 
-        requestedFields.associateWith { fields.find(it, type) }
-            .forEach { (path, field) ->
-                check(field)
-                append(path, field)
-            }
+        val targetMessage = type
+        optionFields
+            .associateWith { fields.find(it, targetMessage) }
+            .forEach(::comparingBy)
 
-
-        val field = elementFactory.createFieldFromText(comparator.build(), cls)
-        field.addFirst(GeneratedAnnotation.create())
-        cls.addAfter(field, cls.lBrace)
+        val messageField = elementFactory.createFieldFromText(comparator.build(), cls)
+            .apply { addFirst(GeneratedAnnotation.create()) }
+        cls.addAfter(messageField, cls.lBrace)
     }
 
-    private fun append(path: FieldPath, field: Field) {
+    private fun comparingBy(path: FieldPath, field: Field) {
+        validate(field)
         if (field.type.isMessage) {
             when (field.type.typeName.qualifiedName) {
                 wellKnownTimestamp -> {
@@ -118,26 +111,9 @@ public class AddComparator(
         }
     }
 
-    private fun findMessage(typeName: TypeName): MessageType {
-        val typeUrl = typeName.typeUrl
-        val fromFiles = select(ProtobufSourceFile::class.java).all()
-            .firstOrNull { it.containsType(typeUrl) }
-            ?.typeMap?.get(typeUrl)
-
-        if (fromFiles != null) {
-            return fromFiles
-        }
-
-        val fromDependencies = select(ProtobufDependency::class.java).all()
-            .firstOrNull { it.source.containsType(typeUrl) }
-            ?.source?.typeMap?.get(typeUrl)
-        return fromDependencies
-            ?: error("`$typeUrl` not found in the passed Proto files and its dependencies.")
-    }
-
-    private fun check(field: Field) {
+    private fun validate(field: Field) {
         check(field.hasSingle()) {
-            "`${field.name}` is not a single-value field."
+            "`${field.name}` is not a single-value field and can not participate in comparison."
         }
         val type = field.type
         when {
@@ -146,7 +122,7 @@ public class AddComparator(
             }
 
             type.isMessage -> {
-                val message = findMessage(type.message)
+                val message = messages.find(type.message)
                 check(message.isComparable || message.isAllowedWellKnown) {
                     "The passed field has a non-comparable type: `${type.message}`."
                 }

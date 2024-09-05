@@ -28,15 +28,14 @@ package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
-import io.spine.protodata.TypeName
 import io.spine.protodata.isMessage
 
 /**
- * Looks for [MessageType] denoted by the given [FieldPath].
+ * Looks for [MessageType] denoted by [FieldPath].
  *
- * @param query Locates [MessageType] of the given [TypeName].
+ * @param [messages] Lookup of our own messages and their dependencies.
  */
-internal class FieldLookup(private val query: (TypeName) -> MessageType) {
+internal class FieldLookup(private val messages: MessageLookup) {
 
     /**
      * Returns [Field] denoted by the given field path, respectively
@@ -76,7 +75,7 @@ internal class FieldLookup(private val query: (TypeName) -> MessageType) {
         checkIntermediate(currentField)
 
         val remainingFields = path.substringAfter(".")
-        val nextMessage = query(currentField.type.message)
+        val nextMessage = messages.find(currentField.type.message)
         return searchRecursively(remainingFields, nextMessage)
     }
 }
