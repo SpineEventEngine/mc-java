@@ -158,52 +158,22 @@ internal class AddComparatorSpec {
     `not generate comparator for a message` {
 
         @Test
-        fun `without the corresponding option`() {
-            val message = "NoCompareByOption"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `without the corresponding option`() = testNotGenerateFor("NoCompareByOption")
 
         @Test
-        fun `with a non-comparable field`() {
-            val message = "NonComparablesProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `with a non-comparable field`() = testNotGenerateFor("NonComparablesProhibited")
 
         @Test
-        fun `with a bytes field`() {
-            val message = "BytesProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `with a bytes field`() = testNotGenerateFor("BytesProhibited")
 
         @Test
-        fun `with a repeated field`() {
-            val message = "RepeatedProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `with a repeated field`() = testNotGenerateFor("RepeatedProhibited")
 
         @Test
-        fun `with a map field`() {
-            val message = "MapsProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `with a map field`() = testNotGenerateFor("MapsProhibited")
 
         @Test
-        fun `with a non-existing field`() {
-            val message = "NonExistingProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `with a non-existing field`() = testNotGenerateFor("NonExistingProhibited")
     }
 
     @Nested
@@ -211,44 +181,25 @@ internal class AddComparatorSpec {
     `not generate comparator for a message with nested` {
 
         @Test
-        fun `non-comparable field`() {
-            val message = "NestedNonComparablesProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `non-comparable field`() = testNotGenerateFor("NestedNonComparablesProhibited")
 
         @Test
-        fun `bytes field`() {
-            val message = "NestedBytesProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `bytes field`() = testNotGenerateFor("NestedBytesProhibited")
 
         @Test
-        fun `repeated field`() {
-            val message = "NestedRepeatedProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `repeated field`() = testNotGenerateFor("NestedRepeatedProhibited")
 
         @Test
-        fun `map field`() {
-            val message = "NestedMapsProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `map field`() = testNotGenerateFor("NestedMapsProhibited")
 
         @Test
-        fun `non-existing field`() {
-            val message = "NestedNonExistingProhibited"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            field.shouldBeNull()
-        }
+        fun `non-existing field`() = testNotGenerateFor("NestedNonExistingProhibited")
+    }
+
+    private fun testNotGenerateFor(message: String) {
+        val psiClass = generatedCodeOf(message)
+        val field = psiClass.findComparatorField()
+        field.shouldBeNull()
     }
 }
 
