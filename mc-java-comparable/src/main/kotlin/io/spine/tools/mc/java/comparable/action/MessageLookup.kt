@@ -33,16 +33,16 @@ import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.TypeName
 
 /**
- * Looks for [MessageType] by [TypeName] in [CodegenContext].
+ * Looks for [MessageType] by [TypeName] in the given codegen [context].
  */
 internal class MessageLookup(private val context: CodegenContext) {
 
     /**
-     * Queries [MessageType] for the given [typeName] in [CodegenContext].
+     * Queries [MessageType] by the given [typeName] in [CodegenContext].
      *
      * Firstly, the method attempts to find it within the generated Proto files,
-     * then in the dependencies. It throws ISE if the message is not found.
-     * In this case, we would not be able to know if the message can participate
+     * then in their dependencies. It throws ISE if the message is not found.
+     * In this case, we would not be able to know whether the message can participate
      * in comparison (has `compare_by` option or the default comparator like `Timestamps`).
      */
     fun query(typeName: TypeName): MessageType {

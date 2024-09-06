@@ -58,7 +58,7 @@ internal object WellKnown {
     private val all = values + messages.keys
 
     /**
-     * Returns a custom comparator for the given well-known [type].
+     * Returns a comparator for the given well-known [type].
      */
     fun comparatorFor(type: Type): String {
         require(type.isWellKnownMessage)
@@ -66,7 +66,7 @@ internal object WellKnown {
     }
 
     /**
-     * Tells if this [MessageType] is a well-known type.
+     * Tells if this [MessageType] is a well-known type eligible to participate in comparison.
      */
     val MessageType.isWellKnownComparable
         get() = all.contains(qualifiedName)

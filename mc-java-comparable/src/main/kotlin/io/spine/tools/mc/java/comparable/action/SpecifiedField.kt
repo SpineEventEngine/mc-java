@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.comparable.action
 
 /**
- * A field path originally passed to `compare_by` option.
+ * A field path as passed to `compare_by` option.
  *
  * This string may contain the following:
  *
@@ -37,7 +37,7 @@ package io.spine.tools.mc.java.comparable.action
 internal typealias FieldPath = String
 
 /**
- * Tells if this [FieldPath] denotes a nested field.
+ * Tells if this [FieldPath] doesn't denote a nested field.
  */
 internal val FieldPath.isNotNested
     get() = contains(".").not()

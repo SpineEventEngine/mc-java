@@ -32,12 +32,13 @@ import io.spine.protodata.MessageType
 /**
  * Looks for [MessageType] denoted by [FieldPath].
  *
- * @param [messages] Lookup of our own messages and their dependencies.
+ * @param [messages] Lookup of all messages participating in codegen.
  */
 internal class FieldLookup(private val messages: MessageLookup) {
 
     /**
-     * Resolves [Field] denoted by the given field [path], relatively to the given [message].
+     * Resolves [Field] denoted by the given field [path], relatively to
+     * the given [rootMessage].
      *
      * For example, given the following message:
      *
@@ -54,13 +55,13 @@ internal class FieldLookup(private val messages: MessageLookup) {
      * will describe `Passport.first_name`.
      *
      * @param path The field path. Can be nested.
-     * @param message The messages, in respect to which the path will be resolved.
+     * @param rootMessage The message, in respect to which the path will be resolved.
      */
-    fun resolve(path: FieldPath, message: MessageType): Field =
+    fun resolve(path: FieldPath, rootMessage: MessageType): Field =
         if (path.isNotNested) {
-            message.getField(path)
+            rootMessage.getField(path)
         } else {
-            searchRecursively(path, message)
+            searchRecursively(path, rootMessage)
         }
 
     private fun searchRecursively(path: FieldPath, message: MessageType): Field {
