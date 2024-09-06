@@ -26,10 +26,12 @@
 
 package io.spine.tools.mc.java.gradle.settings
 
-import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import io.spine.tools.kotlin.reference
+import io.spine.tools.mc.java.comparable.action.AddComparator
 import io.spine.tools.mc.java.comparable.action.AddCompareTo
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
+import io.spine.tools.mc.java.settings.noParameter
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.DisplayName
@@ -37,11 +39,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 /**
- * This is a test suite for [ComparableSettings] class which belongs
+ * This is a test suite for [ComparableSettings] class, which belongs
  * to `mc-java-base` module.
  *
- * We have this test suite in another module to check the correctness
- * of default settings specified as strings against classes of this module.
+ * We test it here to check the correctness of default settings specified
+ * as strings against classes of this module.
  */
 @DisplayName("`ComparableSettings` should")
 internal class ComparableSettingsSpec {
@@ -51,12 +53,13 @@ internal class ComparableSettingsSpec {
         val project = ProjectBuilder.builder().withProjectDir(projectDir).build()
         val settings = ComparableSettings(project)
 
-        val expected = listOf(
-            ImplementComparable::class.reference,
-            AddCompareTo::class.reference,
+        val expected = mapOf(
+            ImplementComparable::class.reference to noParameter,
+            AddComparator::class.reference to noParameter,
+            AddCompareTo::class.reference to noParameter,
         )
 
-        settings.actions().toList() shouldContainExactly expected
-        settings.toProto().actionList shouldContainExactly expected
+        settings.actions().actionMap shouldBe expected
+        settings.toProto().actions.actionMap shouldBe expected
     }
 }
