@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.comparable.action
 import com.intellij.psi.PsiClass
 
 /**
- * Builds a `comparator` for the given message.
+ * Builds a Java field containing the [Comparator] for the given message class.
  *
  * @param psiCls The message class to be used as comparator's generic parameter.
  */
@@ -41,7 +41,7 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
     private var reversed = false
 
     /**
-     * Builds a `comparator` field in a text form.
+     * Builds a Java field in a text form.
      */
     fun build(): String {
         var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
@@ -55,13 +55,16 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
     }
 
     /**
-     * Adds a field to participate in comparison.
+     * Adds the next comparing closure for the given field [path].
      *
-     * For example, `event.emittedAt` field, may need
+     * For example, consider `event.emittedAt` field and an optional
      * `com.google.protobuf.util.Timestamps.comparator()` comparator.
      *
+     * The comparator should be passed when the field value is neither primitive
+     * nor comparable. It is a responsibility of the caller to check it in advance.
+     *
      * @param path The path to the field.
-     * @param comparator The optional comparator to be used for the field's value.
+     * @param comparator The optional comparator to be used for the field values.
      */
     fun comparingBy(path: FieldPath, comparator: String? = null) {
         val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
@@ -74,7 +77,7 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
     }
 
     /**
-     * Returns a reference to the getter for the given [fieldName] in the [message].
+     * Returns a method reference to the getter for the given [fieldName] in the [message].
      */
     private fun extractField(fieldName: String): String = "$message::${javaName(fieldName)}"
 

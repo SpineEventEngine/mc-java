@@ -98,9 +98,9 @@ public class AddComparator(
     }
 
     /**
-     * Checks if the given [field] can be used in the comparison.
+     * Checks if the given [field] can participate in the comparison.
      *
-     * The requirements to the passed field are described in docs to `compare_by`
+     * The requirements to the passed fields are described in docs to `compare_by`
      * option in detail. This method enforces those requirements.
      *
      * In short, the following types are allowed:
@@ -108,6 +108,7 @@ public class AddComparator(
      * 1. All primitives except for byte array.
      * 2. Enumerations (Java enums are implicitly comparable).
      * 3. Messages with `compare_by` option.
+     * 4. [WellKnown] messages.
      */
     private fun validate(field: Field, lookup: MessageLookup) {
         check(field.hasSingle()) {
