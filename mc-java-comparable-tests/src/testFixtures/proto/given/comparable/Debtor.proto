@@ -40,10 +40,8 @@ message Debtor {
         descending: true
         field: "sum"
         field: "name"
-        field: "tax_number"
     };
 
-    string name = 1;
-    int32 tax_number = 2;
-    double sum = 3;
+    double sum = 1;
+    string name = 2;
 }

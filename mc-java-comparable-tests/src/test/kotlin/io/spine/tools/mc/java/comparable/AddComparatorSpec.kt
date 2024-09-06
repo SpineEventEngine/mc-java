@@ -108,7 +108,6 @@ internal class AddComparatorSpec {
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getSum)" +
                     ".thenComparing($message::getName)" +
-                    ".thenComparing($message::getTaxNumber)" +
                     ".reversed();"
             field.shouldNotBeNull()
             field.text shouldContain expected
