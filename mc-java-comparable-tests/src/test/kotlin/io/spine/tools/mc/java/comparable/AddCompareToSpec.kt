@@ -24,8 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.comparable
 
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddCompareTo
@@ -39,17 +40,25 @@ internal class AddCompareToSpec {
     companion object : ComparablePluginTestSetup(AddCompareTo::class)
 
     @Test
-    fun `with primitives and enums`() {
-        val (cls, _) = generateCode("Account")
-        val method = cls.method("compareTo")
+    fun `add the method to a message with the option`() {
+        val message = "Account"
+        val psiClass = generatedCodeOf(message)
+        val method = psiClass.method("compareTo")
         val expected =
-        """
+            """
         |    @Override
-        |    public int compareTo(Account other) {
+        |    public int compareTo($message other) {
         |        return comparator.compare(this, other);
         |    }
         """.trimMargin()
         method.shouldNotBeNull()
         method.text shouldContain expected
+    }
+
+    @Test
+    fun `ignore messages without the option`() {
+        val cls = generatedCodeOf("AccountId")
+        val method = cls.findMethodsByName("compareTo")
+        method.shouldBeEmpty()
     }
 }
