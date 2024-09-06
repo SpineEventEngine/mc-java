@@ -49,7 +49,7 @@ import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
- * Inserts a `comparator` field into the messages that qualifies as comparable.
+ * Inserts a `comparator` field into the messages that qualify as comparable.
  *
  * This action also validates that the passed fields are eligible to participate
  * in the comparison. See [validate] method for details.
