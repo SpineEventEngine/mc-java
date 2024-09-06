@@ -32,6 +32,15 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+/**
+ * Provides {@link Student} instances for
+ * {@link io.spine.tools.mc.java.comparable.ComparablePluginTest ComparablePluginTest}.
+ *
+ * <p>Field names reflect the expected position of the corresponding message
+ * when they all are sorted. The test case is supposed to sort them, so we don't provide
+ * a sorted collection on our own. Otherwise, it would break the test essence, in which
+ * we would compare two collections sorted by {@link java.util.Collections#sort(List)}.
+ */
 public class Students {
 
     public static final Student firstStudent = student(2022, "Jack");
@@ -40,9 +49,15 @@ public class Students {
     public static final Student fourthStudent = student(2018, "Richard");
     public static final Student fifthStudent = student(2015, "Jessica");
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private Students() {
     }
 
+    /**
+     * Returns a non-sorted collection of the five students.
+     */
     public static List<Student> notSorted() {
         return newArrayList(fourthStudent, secondStudent, fifthStudent, firstStudent, thirdStudent);
     }

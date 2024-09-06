@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.test.tools.mc.java.comparable";
 option java_multiple_files = true;
 
+// Comparable by three `int` fields.
 message LocalDate {
     option (compare_by) = {
         field: "year"
@@ -45,6 +46,7 @@ message LocalDate {
     int32 day = 3;
 }
 
+// Comparable by three `int` fields.
 message LocalTime {
     option (compare_by) = {
         field: "hours"
@@ -57,6 +59,7 @@ message LocalTime {
     int32 seconds = 3;
 }
 
+// Comparable by two comparable messages and an enum.
 message LocalDateTime {
     option (compare_by) = {
         field: "date"

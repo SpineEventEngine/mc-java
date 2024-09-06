@@ -35,6 +35,15 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+/**
+ * Provides {@link LocalDateTime} instances for
+ * {@link io.spine.tools.mc.java.comparable.ComparablePluginTest ComparablePluginTest}.
+ *
+ * <p>Field names reflect the expected position of the corresponding message
+ * when they all are sorted. The test case is supposed to sort them, so we don't provide
+ * a sorted collection on our own. Otherwise, it would break the test essence, in which
+ * we would compare two collections sorted by {@link java.util.Collections#sort(List)}.
+ */
 public class LocalDateTimes {
 
     public static final LocalDateTime firstStamp = dateTime(
@@ -57,9 +66,15 @@ public class LocalDateTimes {
             .setZone(Zone.ZONE_KYIV)
             .build();
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private LocalDateTimes() {
     }
 
+    /**
+     * Returns a non-sorted collection of the five timestamps.
+     */
     public static List<LocalDateTime> notSorted() {
         return newArrayList(fourthStamp, thirdStamp, fifthStamp, firstStamp, secondStamp);
     }
