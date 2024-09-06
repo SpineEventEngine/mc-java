@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.uuid
 
-import com.google.protobuf.Empty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddCompareTo
@@ -37,10 +36,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("`AddCompareTo` should")
 internal class AddCompareToSpec {
 
-    companion object : ComparablePluginTestSetup(
-        actionClass = AddCompareTo::class.java,
-        parameter = Empty.getDefaultInstance()
-    )
+    companion object : ComparablePluginTestSetup(AddCompareTo::class)
 
     @Test
     fun `with primitives and enums`() {

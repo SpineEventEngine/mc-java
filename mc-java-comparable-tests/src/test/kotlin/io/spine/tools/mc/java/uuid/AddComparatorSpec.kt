@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.uuid
 
-import com.google.protobuf.Empty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
@@ -38,10 +37,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
 
-    companion object : ComparablePluginTestSetup(
-        actionClass = AddComparator::class.java,
-        parameter = Empty.getDefaultInstance()
-    )
+    companion object : ComparablePluginTestSetup(AddComparator::class)
 
     @Nested
     inner class

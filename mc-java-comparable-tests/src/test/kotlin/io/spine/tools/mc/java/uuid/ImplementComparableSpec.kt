@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.uuid
 
-import com.google.protobuf.Empty
 import io.kotest.matchers.shouldBe
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import io.spine.tools.mc.java.implementsInterface
@@ -36,10 +35,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("`ImplementComparable` should")
 internal class ImplementComparableSpec {
 
-    companion object : ComparablePluginTestSetup(
-        actionClass = ImplementComparable::class.java,
-        parameter = Empty.getDefaultInstance()
-    )
+    companion object : ComparablePluginTestSetup(ImplementComparable::class)
 
     @Test
     fun `make a message with the option implement 'Comparable'`() {

@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.uuid
 
-import com.google.protobuf.Message
+import com.google.protobuf.Empty
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.protobuf.pack
@@ -41,14 +41,14 @@ import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.Path
+import kotlin.reflect.KClass
 
 /**
  * The base class for companion objects of test suites that test codegen
  * actions of [ComparablePlugin].
  */
 abstract class ComparablePluginTestSetup(
-    private val actionClass: Class<out MessageAction<*>>,
-    private val parameter: Message,
+    private val actionClass: KClass<out MessageAction<*>>
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
     /**
@@ -56,7 +56,7 @@ abstract class ComparablePluginTestSetup(
      */
     override fun createSettings(projectDir: Path): Comparables = comparables {
         actions = actions {
-            action.put(actionClass.name, parameter.pack())
+            action.put(actionClass.java.name, Empty.getDefaultInstance().pack())
         }
     }
 
