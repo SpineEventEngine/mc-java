@@ -24,21 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.comparable
 
 import com.google.protobuf.Empty
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.protobuf.pack
+import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.actions
 import io.spine.tools.mc.java.MessageAction
 import io.spine.tools.mc.java.PluginTestSetup
-import io.spine.tools.mc.java.comparable.ComparablePlugin
 import io.spine.tools.mc.java.settings.Comparables
-import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.psi.java.topLevelClass
-import java.nio.file.Files
+import java.nio.file.Files.createTempDirectory
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.reflect.KClass
@@ -51,8 +50,10 @@ abstract class ComparablePluginTestSetup(
     private val actionClass: KClass<out MessageAction<*>>
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 
+    private val generated: SourceFileSet by lazy { generateCode() }
+
     /**
-     * Creates an instance of [Uuids] with only one action under the test.
+     * Creates an instance of [Comparables] with only one action under the test.
      */
     override fun createSettings(projectDir: Path): Comparables = comparables {
         actions = actions {
@@ -61,24 +62,24 @@ abstract class ComparablePluginTestSetup(
     }
 
     /**
-     * Generates code for the given [message] simple name and returns the resulting
-     * [PsiClass] along with the generated code (as plain text).
+     * Returns the generated code for the given [message] name in a form of [PsiClass].
+     *
+     * The message name should be in a simple form like "Account" or "AccountId".
      */
-    fun generateCode(message: String): Pair<PsiClass, String> {
-        val projectDir = tempDir("projectDit")
-        val outputDir = tempDir("outputDir")
-        val settingsDir = tempDir("settingsDir")
-
-        val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-        val sourceFile = sourceFileSet.file(
-            Path("io/spine/tools/mc/java/comparable/given/$message.java")
-        )
-
-        val file = sourceFile.psi() as PsiJavaFile
-        val cls = file.topLevelClass
-        val generatedCode = sourceFile.code()
-        return cls to generatedCode
+    fun generatedCodeOf(message: String): PsiClass {
+        val sourcePath = Path("io/spine/tools/mc/java/comparable/given/$message.java")
+        val sourceFile = generated.file(sourcePath)
+        val psiFile = sourceFile.psi() as PsiJavaFile
+        return psiFile.topLevelClass
     }
 
-    private fun tempDir(prefix: String): Path = Files.createTempDirectory(prefix)
+    /**
+     * Runs a pipeline to generate code all Proto messages declared in `textFixture` source set.
+     */
+    private fun generateCode(): SourceFileSet {
+        val projectDir = createTempDirectory("projectDit")
+        val outputDir = createTempDirectory("outputDir")
+        val settingsDir = createTempDirectory("settingsDir")
+        return runPipeline(projectDir, outputDir, settingsDir)
+    }
 }
