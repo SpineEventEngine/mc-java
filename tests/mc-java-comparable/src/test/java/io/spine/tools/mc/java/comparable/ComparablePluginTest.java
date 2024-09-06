@@ -61,7 +61,7 @@ class ComparablePluginTest {
     }
 
     @Test
-    @DisplayName("make messages reversed comparable")
+    @DisplayName("make messages reversed-comparable")
     void makeMessagesReversedComparable() {
         var localDateTimes = Students.notSorted();
         var expected = newArrayList(firstStudent, secondStudent, thirdStudent,
