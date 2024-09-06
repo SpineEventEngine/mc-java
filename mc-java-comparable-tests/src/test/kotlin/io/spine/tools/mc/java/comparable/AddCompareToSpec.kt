@@ -44,8 +44,7 @@ internal class AddCompareToSpec {
         val message = "Account"
         val psiClass = generatedCodeOf(message)
         val method = psiClass.method("compareTo")
-        val expected =
-            """
+        val expected = """
         |    @Override
         |    public int compareTo($message other) {
         |        return comparator.compare(this, other);
