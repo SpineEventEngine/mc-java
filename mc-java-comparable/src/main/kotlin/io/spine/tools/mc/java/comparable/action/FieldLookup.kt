@@ -37,8 +37,7 @@ import io.spine.protodata.MessageType
 internal class FieldLookup(private val messages: MessageLookup) {
 
     /**
-     * Returns [Field] denoted by the given field path, respectively
-     * to the given [message].
+     * Resolves [Field] denoted by the given field [path], relatively to the given [message].
      *
      * For example, given the following message:
      *
@@ -57,7 +56,7 @@ internal class FieldLookup(private val messages: MessageLookup) {
      * @param path The field path. Can be nested.
      * @param message The messages, in respect to which the path will be resolved.
      */
-    fun find(path: FieldPath, message: MessageType): Field =
+    fun resolve(path: FieldPath, message: MessageType): Field =
         if (path.isNotNested) {
             message.getField(path)
         } else {
@@ -73,7 +72,7 @@ internal class FieldLookup(private val messages: MessageLookup) {
         val currentField = message.getField(currentFieldName)
 
         val remainingFields = path.substringAfter(".")
-        val nextMessage = messages.find(currentField.type.message)
+        val nextMessage = messages.query(currentField.type.message)
         return searchRecursively(remainingFields, nextMessage)
     }
 }

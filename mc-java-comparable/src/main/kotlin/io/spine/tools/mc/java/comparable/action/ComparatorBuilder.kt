@@ -38,6 +38,7 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
     private val message = psiCls.name!!
     private val instance = message.lowerCased
     private val closures = mutableListOf<String>()
+    private var reversed = false
 
     /**
      * Builds a `comparator` field in a text form.
@@ -46,6 +47,9 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
         var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
         for (i in 1 until closures.size) {
             joinedClosures += ".thenComparing(${closures[i]})"
+        }
+        if (reversed) {
+            joinedClosures += ".reversed()"
         }
         return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
     }
@@ -63,6 +67,10 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
         val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
         val closure = if (comparator == null) extractor else "$extractor, $comparator"
         closures.add(closure)
+    }
+
+    fun reversed() {
+        reversed = true
     }
 
     /**

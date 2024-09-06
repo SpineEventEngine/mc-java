@@ -38,14 +38,14 @@ import io.spine.protodata.TypeName
 internal class MessageLookup(private val context: CodegenContext) {
 
     /**
-     * Finds [MessageType] for the given [typeName] in [CodegenContext].
+     * Queries [MessageType] for the given [typeName] in [CodegenContext].
      *
      * Firstly, the method attempts to find it within the generated Proto files,
      * then in the dependencies. It throws ISE if the message is not found.
      * In this case, we would not be able to know if the message can participate
      * in comparison (has `compare_by` option or the default comparator like `Timestamps`).
      */
-    fun find(typeName: TypeName): MessageType {
+    fun query(typeName: TypeName): MessageType {
         val typeUrl = typeName.typeUrl
         return fromOurProtos(typeUrl)
             ?: fromDependencies(typeUrl)

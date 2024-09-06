@@ -64,10 +64,6 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    private val messages = MessageLookup(context)
-    private val fields = FieldLookup(messages)
-    private val comparator = ComparatorBuilder(cls)
-
     // TODO:2024-09-01:yevhenii.nadtochii: `TypeRenderer` has this view when creates the action.
     private val option = select(ComparableMessage::class.java)
         .findById(type)!!
@@ -79,13 +75,21 @@ public class AddComparator(
             "`compare_by` option should have at least one field specified in `$messageClass`."
         }
 
-        val targetMessage = type
+        val messageLookup = MessageLookup(context!!)
+        val fieldsLookup = FieldLookup(messageLookup)
+        val comparator = ComparatorBuilder(cls)
+
+        val rootMessage = type
         optionFields
-            .associateWith { fields.find(it, targetMessage) }
-            .forEach { (path, field) ->
-                validate(field)
-                comparingBy(path, field)
+            .associateWith { fieldPath -> fieldsLookup.resolve(fieldPath, rootMessage) }
+            .forEach { (fieldPath, field) ->
+                validate(field, messageLookup)
+                comparator.comparingBy(fieldPath, field)
             }
+
+        if (option.descending) {
+            comparator.reversed()
+        }
 
         val messageField = elementFactory.createFieldFromText(comparator.build(), cls)
             .apply { addFirst(GeneratedAnnotation.create()) }
@@ -105,7 +109,7 @@ public class AddComparator(
      * 2. Enumerations (Java enums are implicitly comparable).
      * 3. Messages with `compare_by` option.
      */
-    private fun validate(field: Field) {
+    private fun validate(field: Field, lookup: MessageLookup) {
         check(field.hasSingle()) {
             "`${field.name}` is not a single-value field and can not participate in comparison."
         }
@@ -116,7 +120,7 @@ public class AddComparator(
             }
 
             type.isMessage -> {
-                val message = messages.find(type.message)
+                val message = lookup.query(type.message)
                 check(message.isComparable || message.isWellKnownComparable) {
                     "The passed field has a non-comparable message type: `${type.message}`."
                 }
@@ -128,17 +132,17 @@ public class AddComparator(
         }
     }
 
-    private fun comparingBy(path: FieldPath, field: Field) {
+    private fun ComparatorBuilder.comparingBy(path: FieldPath, field: Field) {
         val type = field.type
         when {
             type.isWellKnownMessage -> {
                 val fieldComparator = WellKnown.comparatorFor(type)
-                comparator.comparingBy(path, fieldComparator)
+                comparingBy(path, fieldComparator)
             }
 
-            type.isWellKnownValue -> comparator.comparingBy("$path.value")
+            type.isWellKnownValue -> comparingBy("$path.value")
 
-            else -> comparator.comparingBy(path)
+            else -> comparingBy(path)
         }
     }
 }

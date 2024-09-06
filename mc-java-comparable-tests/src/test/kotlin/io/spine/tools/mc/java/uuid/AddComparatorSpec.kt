@@ -134,6 +134,20 @@ internal class AddComparatorSpec {
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
+
+        @Test
+        fun `with reversed comparison`() {
+            val (cls, _) = generateCode("Debtor")
+            val checkSuper = false
+            val field = cls.findFieldByName("comparator", checkSuper)
+            val expected = "private static final java.util.Comparator<Debtor> comparator = " +
+                    "java.util.Comparator.comparing(Debtor::getSum)" +
+                    ".thenComparing(Debtor::getName)" +
+                    ".thenComparing(Debtor::getTaxNumber)" +
+                    ".reversed();"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
     }
 
     @Nested
