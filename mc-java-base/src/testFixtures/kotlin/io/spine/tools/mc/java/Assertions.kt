@@ -32,23 +32,7 @@ import kotlin.text.RegexOption.DOT_MATCHES_ALL
 /**
  * Tells if [javaCode] contains a class which implements the given [superInterface].
  */
-fun implementsInterface(javaCode: String, superInterface: Class<*>): Boolean =
-    implementsInterface(javaCode, superInterface.reference)
-
-/**
- * Tells if [javaCode] contains a clas which implement the given [superInterface]
- * with generic parameters.
- */
-fun implementsInterface(
-    javaCode: String,
-    superInterface: Class<*>,
-    genericParameters: List<String>
-): Boolean  {
-    val parameters = genericParameters.joinToString(", ") { it }
-    return implementsInterface(javaCode, "${superInterface.reference}<$parameters>")
-}
-
-private fun implementsInterface(javaCode: String, superInterface: String): Boolean {
-    val regex = Regex("implements[^{}]*${superInterface}[^{}]*\\{", DOT_MATCHES_ALL)
+fun implementsInterface(javaCode: String, superInterface: Class<*>): Boolean {
+    val regex = Regex("implements[^{}]*${superInterface.reference}[^{}]*\\{", DOT_MATCHES_ALL)
     return regex.containsMatchIn(javaCode)
 }
