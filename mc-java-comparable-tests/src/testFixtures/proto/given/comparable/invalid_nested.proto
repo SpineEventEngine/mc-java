@@ -39,42 +39,47 @@ import "given/comparable/invalid.proto";
 // This file declares messages that contradict the `compare_by` contract.
 
 message NestedStub {
-    bytes data = 1 [(required) = true];
-    NoCompareByOption id = 2 [(required) = true];
-    repeated string gender = 3 [(required) = true];
-    map<string, int32> results = 4 [(required) = true];
+    bytes data = 1;
+    NoCompareByOption id = 2;
+    repeated string gender = 3;
+    map<string, int32> results = 4;
+    string name = 5;
 }
 
 message NestedNonComparablesProhibited {
     option (compare_by) = {
         field: "nested.id"
     };
-    NestedStub nested = 1 [(required) = true];
+    NestedStub nested = 1;
 }
 
 message NestedBytesProhibited {
     option (compare_by) = {
         field: "nested.data"
     };
-    NestedStub nested = 1 [(required) = true];
+    NestedStub nested = 1;
 }
 
 message NestedRepeatedProhibited {
     option (compare_by) = {
         field: "nested.gender"
     };
-    NestedStub nested = 1 [(required) = true];
+    NestedStub nested = 1;
 }
 
 message NestedMapsProhibited {
     option (compare_by) = {
         field: "nested.results"
     };
-    NestedStub nested = 1 [(required) = true];
+    NestedStub nested = 1;
 }
 
 message NestedNonExistingProhibited {
     option (compare_by) = {
         field: "non_existing_field"
     };
+}
+
+message InvalidIntermediatesProhibited {
+
 }
