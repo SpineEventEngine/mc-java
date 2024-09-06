@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.gradle.settings
 
 import io.kotest.matchers.collections.shouldContainExactly
 import io.spine.tools.kotlin.reference
-import io.spine.tools.mc.java.comparable.action.AddCompareToMethod
+import io.spine.tools.mc.java.comparable.action.AddCompareTo
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder
@@ -53,7 +53,7 @@ internal class ComparableSettingsSpec {
 
         val expected = listOf(
             ImplementComparable::class.reference,
-            AddCompareToMethod::class.reference,
+            AddCompareTo::class.reference,
         )
 
         settings.actions().toList() shouldContainExactly expected

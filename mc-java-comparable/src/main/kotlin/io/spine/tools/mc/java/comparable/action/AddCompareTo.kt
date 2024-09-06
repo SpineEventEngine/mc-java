@@ -46,7 +46,7 @@ import org.intellij.lang.annotations.Language
  * @param file The source code to which the action is applied.
  * @param context The code generation context in which this action runs.
  */
-public class AddCompareToMethod(
+public class AddCompareTo(
     type: MessageType,
     file: SourceFile<Java>,
     context: CodegenContext
@@ -55,17 +55,16 @@ public class AddCompareToMethod(
     @Language("JAVA") @Suppress("EmptyClass")
     override fun doRender() {
         val message = cls.name!!
-        val instance = message.lowerCased
         val method = elementFactory.createMethodFromText(
             """
-            public int compareTo($message $instance) {
-                return comparator.compare(this, $instance);                          
+            public int compareTo($message other) {
+                return comparator.compare(this, other);                          
             }            
             """.trimIndent(), cls
         )
         method.run {
-            addFirst(GeneratedAnnotation.create())
             addFirst(OverrideAnnotation.create())
+            addFirst(GeneratedAnnotation.create())
         }
         cls.addLast(method)
     }

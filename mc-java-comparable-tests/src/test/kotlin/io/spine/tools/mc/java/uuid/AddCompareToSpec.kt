@@ -24,31 +24,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.settings
+package io.spine.tools.mc.java.uuid
 
-import io.spine.tools.mc.java.settings.Comparables
-import io.spine.tools.mc.java.settings.comparables
-import io.spine.tools.mc.java.settings.noParameter
-import io.spine.tools.mc.java.settings.superInterface
-import org.gradle.api.Project
+import com.google.protobuf.Empty
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.string.shouldContain
+import io.spine.tools.mc.java.comparable.action.AddCompareTo
+import io.spine.tools.psi.java.method
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
-/**
- * Code generation settings for messages that qualify as [Comparable].
- */
-public class ComparableSettings(project: Project) :
-    SettingsWithActions<Comparables>(project, DEFAULT_ACTIONS) {
+@DisplayName("`AddCompareTo` should")
+internal class AddCompareToSpec {
 
-    override fun toProto(): Comparables = comparables {
-        actions = actions()
+    companion object : ComparablePluginTestSetup(
+        actionClass = AddCompareTo::class.java,
+        parameter = Empty.getDefaultInstance()
+    )
+
+    @Test
+    fun `with primitives and enums`() {
+        val (cls, _) = generateCode("Account")
+        val method = cls.method("compareTo")
+        val expected =
+        """
+        |    @Override
+        |    public int compareTo(Account other) {
+        |        return comparator.compare(this, other);
+        |    }
+        """.trimMargin()
+        method.shouldNotBeNull()
+        method.text shouldContain expected
     }
 }
-
-/**
- * The actions applied by default to comparable messages.
- */
-// TODO:2024-09-02:yevhenii.nadtochii: Hidden dependency on `mc-java-comparables`.
-private val DEFAULT_ACTIONS = mapOf(
-    "io.spine.tools.mc.java.comparable.action.AddComparator" to noParameter,
-    "io.spine.tools.mc.java.comparable.action.AddCompareTo" to noParameter,
-    "io.spine.tools.mc.java.comparable.action.ImplementComparable" to noParameter,
-)
