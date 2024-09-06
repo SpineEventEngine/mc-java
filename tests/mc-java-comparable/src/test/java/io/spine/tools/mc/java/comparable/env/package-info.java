@@ -24,40 +24,4 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include(
-    "annotator",
-    "custom-annotations",
-    "factories",
-    "entity-queries",
-    "known-types",
-    "model-compiler",
-    "rejection",
-    "mc-java-comparable"
-)
-
-/*
- * Dependency links established with the Gradle included build.
- *
- * See the `includeBuild(...)` block below for more info.
- */
-val links = mapOf(
-    "io.spine.tools:spine-mc-java" to ":mc-java",
-    "io.spine.tools:spine-mc-java-checks" to ":mc-java-checks",
-)
-
-/*
- * Include the `mc-java` build into the `tests` project build.
- *
- * Integration tests are built separately in order to be able to test the current
- * version of the Gradle plugins.
- *
- * See the Gradle manual for more info:
- * https://docs.gradle.org/current/userguide/composite_builds.html
- */
-includeBuild("$rootDir/../") {
-    dependencySubstitution {
-        links.forEach { (id, projectPath) ->
-            substitute(module(id)).using(project(projectPath))
-        }
-    }
-}
+package io.spine.tools.mc.java.comparable.env;

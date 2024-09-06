@@ -24,40 +24,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include(
-    "annotator",
-    "custom-annotations",
-    "factories",
-    "entity-queries",
-    "known-types",
-    "model-compiler",
-    "rejection",
-    "mc-java-comparable"
-)
+package io.spine.tools.mc.java.comparable.env;
 
-/*
- * Dependency links established with the Gradle included build.
- *
- * See the `includeBuild(...)` block below for more info.
- */
-val links = mapOf(
-    "io.spine.tools:spine-mc-java" to ":mc-java",
-    "io.spine.tools:spine-mc-java-checks" to ":mc-java-checks",
-)
+import io.spine.test.tools.mc.java.comparable.Student;
 
-/*
- * Include the `mc-java` build into the `tests` project build.
- *
- * Integration tests are built separately in order to be able to test the current
- * version of the Gradle plugins.
- *
- * See the Gradle manual for more info:
- * https://docs.gradle.org/current/userguide/composite_builds.html
- */
-includeBuild("$rootDir/../") {
-    dependencySubstitution {
-        links.forEach { (id, projectPath) ->
-            substitute(module(id)).using(project(projectPath))
-        }
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+
+public class Students {
+
+    public static final Student firstStudent = student(2022, "Jack");
+    public static final Student secondStudent = student(2022, "Danial");
+    public static final Student thirdStudent = student(2022, "Alex");
+    public static final Student fourthStudent = student(2018, "Richard");
+    public static final Student fifthStudent = student(2015, "Jessica");
+
+    private Students() {
+    }
+
+    public static List<Student> notSorted() {
+        return newArrayList(fourthStudent, secondStudent, fifthStudent, firstStudent, thirdStudent);
+    }
+
+    private static Student student(int year, String name) {
+        return Student.newBuilder()
+                .setYear(year)
+                .setName(name)
+                .build();
     }
 }
