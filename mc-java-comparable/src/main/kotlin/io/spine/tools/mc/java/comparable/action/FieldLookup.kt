@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
-import io.spine.protodata.isMessage
 
 /**
  * Looks for [MessageType] denoted by [FieldPath].
@@ -72,23 +71,11 @@ internal class FieldLookup(private val messages: MessageLookup) {
 
         val currentFieldName = path.substringBefore(".")
         val currentField = message.getField(currentFieldName)
-        checkIntermediate(currentField)
 
         val remainingFields = path.substringAfter(".")
         val nextMessage = messages.find(currentField.type.message)
         return searchRecursively(remainingFields, nextMessage)
     }
-}
-
-/**
- * Checks that the intermediate [field] in the path is a message.
- *
- * So that, the `query()` is always sure the passed type denotes exactly a message.
- * Lists, maps, one-of, primitives are prohibited.
- */
-private fun checkIntermediate(field: Field) {
-    check(field.hasSingle())
-    check(field.isMessage)
 }
 
 /**

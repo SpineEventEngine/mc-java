@@ -43,7 +43,6 @@ message NestedStub {
     NoCompareByOption id = 2;
     repeated string gender = 3;
     map<string, int32> results = 4;
-    string name = 5;
 }
 
 message NestedNonComparablesProhibited {
@@ -78,8 +77,4 @@ message NestedNonExistingProhibited {
     option (compare_by) = {
         field: "non_existing_field"
     };
-}
-
-message InvalidIntermediatesProhibited {
-
 }
