@@ -34,42 +34,7 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This file declares messages that contradict the `compare_by` contract.
-
-message NoCompareByOption {
+// This message doesn't have `compare_by` option.
+message AccountId {
     string uuid = 1;
-}
-
-message NonComparableProhibited {
-    option (compare_by) = {
-        field: "id"
-    };
-    NoCompareByOption id = 1;
-}
-
-message BytesProhibited {
-    option (compare_by) = {
-        field: "data"
-    };
-    bytes data = 1;
-}
-
-message RepeatedProhibited {
-    option (compare_by) = {
-        field: "gender"
-    };
-    repeated string gender = 1;
-}
-
-message MapsProhibited {
-    option (compare_by) = {
-        field: "results"
-    };
-    map<string, int32> results = 1;
-}
-
-message NonExistingProhibited {
-    option (compare_by) = {
-        field: "non_existing_field"
-    };
 }

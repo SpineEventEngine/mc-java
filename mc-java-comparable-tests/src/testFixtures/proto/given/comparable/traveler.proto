@@ -34,42 +34,46 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This file declares messages that contradict the `compare_by` contract.
+// This message tests that nested fields can be passed to `compare_by` option.
+message Traveler {
+    option (compare_by) = {
+        field: "residence.region" // string
+        field: "residence.address.is_actual" // bool
+        field: "residence.address.city" // string
+        field: "residence.name.structure" // enum
+        field: "residence.name" // comparable message
+    };
 
-message NoCompareByOption {
-    string uuid = 1;
+    Residence residence = 1;
 }
 
-message NonComparableProhibited {
-    option (compare_by) = {
-        field: "id"
-    };
-    NoCompareByOption id = 1;
+message Residence {
+    string region = 1;
+    Address address = 2;
+    Name name = 3;
 }
 
-message BytesProhibited {
-    option (compare_by) = {
-        field: "data"
-    };
-    bytes data = 1;
+message Address {
+    string city = 1;
+    string street = 2;
+    string building = 3;
+    bool is_actual = 4;
 }
 
-message RepeatedProhibited {
+message Name {
     option (compare_by) = {
-        field: "gender"
+        field: "first_name"
+        field: "second_name"
     };
-    repeated string gender = 1;
+
+    NameStructure structure = 1;
+    string first_name = 2;
+    string last_name = 3;
 }
 
-message MapsProhibited {
-    option (compare_by) = {
-        field: "results"
-    };
-    map<string, int32> results = 1;
-}
-
-message NonExistingProhibited {
-    option (compare_by) = {
-        field: "non_existing_field"
-    };
+enum NameStructure {
+    NAME_UNSPECIFIED = 0;
+    ONE_WORD = 1;
+    TWO_WORDS = 2;
+    THREE_WORDS = 3;
 }

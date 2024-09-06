@@ -38,39 +38,39 @@ import "given/comparable/invalid.proto";
 
 // This file declares messages that contradict the `compare_by` contract.
 
-message NestedStub {
+message NestedMessage {
     bytes data = 1;
     NoCompareByOption id = 2;
     repeated string gender = 3;
     map<string, int32> results = 4;
 }
 
-message NestedNonComparablesProhibited {
+message NestedNonComparableProhibited {
     option (compare_by) = {
         field: "nested.id"
     };
-    NestedStub nested = 1;
+    NestedMessage nested = 1;
 }
 
 message NestedBytesProhibited {
     option (compare_by) = {
         field: "nested.data"
     };
-    NestedStub nested = 1;
+    NestedMessage nested = 1;
 }
 
 message NestedRepeatedProhibited {
     option (compare_by) = {
         field: "nested.gender"
     };
-    NestedStub nested = 1;
+    NestedMessage nested = 1;
 }
 
 message NestedMapsProhibited {
     option (compare_by) = {
         field: "nested.results"
     };
-    NestedStub nested = 1;
+    NestedMessage nested = 1;
 }
 
 message NestedNonExistingProhibited {

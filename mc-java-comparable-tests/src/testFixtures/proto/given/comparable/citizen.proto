@@ -34,18 +34,13 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that comparable messages and nested fields can be passed
-// to `compare_by` option.
+// This message tests that comparable messages can be passed to `compare_by` option.
 message Citizen {
     option (compare_by) = {
-        field: "residence.region"
-        field: "residence.address.is_actual"
-        field: "residence.address.city"
         field: "passport"
     };
 
-    Residence residence = 1;
-    Passport passport = 2;
+    Passport passport = 1;
 }
 
 message Passport {
@@ -56,16 +51,4 @@ message Passport {
 
     string first_name = 1;
     string last_name = 2;
-}
-
-message Address {
-    string city = 1;
-    string street = 2;
-    string building = 3;
-    bool is_actual = 4;
-}
-
-message Residence {
-    string region = 1;
-    Address address = 2;
 }

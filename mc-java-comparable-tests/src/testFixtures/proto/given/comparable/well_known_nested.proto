@@ -37,21 +37,21 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This file tests messages with some well-known Protobuf types, which are not required
-// to have `compare_by` option to be comparable.
+// This file contains messages with some nested well-known Protobuf types,
+// which are not required to have `compare_by` option to participate in comparison.
 
-message WellKnownNested {
-    google.protobuf.BoolValue bool = 1;
-    google.protobuf.DoubleValue double = 2;
-    google.protobuf.FloatValue float = 3;
-    google.protobuf.Int32Value int32 = 4;
-    google.protobuf.Int64Value int64 = 5;
-    google.protobuf.UInt32Value uint32 = 6;
-    google.protobuf.UInt64Value uint64 = 7;
-    google.protobuf.StringValue string = 8;
+message NestedWellKnown {
+    google.protobuf.Timestamp timestamp = 1;
+    google.protobuf.Duration duration = 2;
 
-    google.protobuf.Timestamp timestamp = 9;
-    google.protobuf.Duration duration = 10;
+    google.protobuf.BoolValue bool = 3;
+    google.protobuf.DoubleValue double = 4;
+    google.protobuf.FloatValue float = 5;
+    google.protobuf.Int32Value int32 = 6;
+    google.protobuf.Int64Value int64 = 7;
+    google.protobuf.UInt32Value uint32 = 8;
+    google.protobuf.UInt64Value uint64 = 9;
+    google.protobuf.StringValue string = 10;
 }
 
 message NestedTimestampAndDuration {
@@ -59,7 +59,7 @@ message NestedTimestampAndDuration {
         field: "nested.timestamp"
         field: "nested.duration"
     };
-    WellKnownNested nested = 1;
+    NestedWellKnown nested = 1;
 }
 
 message NestedValues {
@@ -73,5 +73,5 @@ message NestedValues {
         field: "nested.uint64"
         field: "nested.string"
     };
-    WellKnownNested nested = 1;
+    NestedWellKnown nested = 1;
 }

@@ -41,12 +41,11 @@ internal class AddComparatorSpec {
 
     companion object : ComparablePluginTestSetup(AddComparator::class)
 
-    @Nested
-    inner class
-    `generate comparator` {
+    @Nested inner class
+    `generate comparator with` {
 
         @Test
-        fun `with primitives and enums`() {
+        fun `primitives and enums`() {
             val message = "Account"
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
@@ -60,22 +59,18 @@ internal class AddComparatorSpec {
         }
 
         @Test
-        fun `with comparable messages and nested fields`() {
+        fun `comparable messages and nested fields`() {
             val message = "Citizen"
-            val instance = message.lowerCased
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
-                    "java.util.Comparator.comparing(($message $instance) -> $instance.getResidence().getRegion())" +
-                    ".thenComparing(($message $instance) -> $instance.getResidence().getAddress().getIsActual())" +
-                    ".thenComparing(($message $instance) -> $instance.getResidence().getAddress().getCity())" +
-                    ".thenComparing($message::getPassport);"
+                    "java.util.Comparator.comparing($message::getPassport);"
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
 
         @Test
-        fun `with well-known 'Timestamp' and 'Duration'`() {
+        fun `well-known 'Timestamp' and 'Duration'`() {
             val message = "WithTimestampAndDuration"
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
@@ -87,21 +82,7 @@ internal class AddComparatorSpec {
         }
 
         @Test
-        fun `with nested well-known 'Timestamp' and 'Duration'`() {
-            val message = "NestedTimestampAndDuration"
-            val instance = message.lowerCased
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            val expected =
-                "private static final java.util.Comparator<$message> comparator = " +
-                        "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getTimestamp(), com.google.protobuf.util.Timestamps.comparator())" +
-                        ".thenComparing(($message $instance) -> $instance.getNested().getDuration(), com.google.protobuf.util.Durations.comparator());"
-            field.shouldNotBeNull()
-            field.text shouldContain expected
-        }
-
-        @Test
-        fun `with well-known value messages`() {
+        fun `well-known value messages`() {
             val message = "WithValues"
             val instance = message.lowerCased
             val psiClass = generatedCodeOf(message)
@@ -120,7 +101,55 @@ internal class AddComparatorSpec {
         }
 
         @Test
-        fun `with nested well-known value messages`() {
+        fun `reversed comparison`() {
+            val message = "Debtor"
+            val psiClass = generatedCodeOf(message)
+            val field = psiClass.findComparatorField()
+            val expected = "private static final java.util.Comparator<$message> comparator = " +
+                    "java.util.Comparator.comparing($message::getSum)" +
+                    ".thenComparing($message::getName)" +
+                    ".thenComparing($message::getTaxNumber)" +
+                    ".reversed();"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+    }
+
+    @Nested inner class
+    `generate comparator with nested` {
+
+        @Test
+        fun `primitives, enums and comparable messages`() {
+            val message = "Traveler"
+            val instance = message.lowerCased
+            val psiClass = generatedCodeOf(message)
+            val field = psiClass.findComparatorField()
+            val expected = "private static final java.util.Comparator<$message> comparator = " +
+                    "java.util.Comparator.comparing(($message $instance) -> $instance.getResidence().getRegion())" +
+                    ".thenComparing(($message $instance) -> $instance.getResidence().getAddress().getIsActual())" +
+                    ".thenComparing(($message $instance) -> $instance.getResidence().getAddress().getCity())" +
+                    ".thenComparing(($message $instance) -> $instance.getResidence().getName().getStructure())" +
+                    ".thenComparing(($message $instance) -> $instance.getResidence().getName());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
+        fun `well-known 'Timestamp' and 'Duration'`() {
+            val message = "NestedTimestampAndDuration"
+            val instance = message.lowerCased
+            val psiClass = generatedCodeOf(message)
+            val field = psiClass.findComparatorField()
+            val expected =
+                "private static final java.util.Comparator<$message> comparator = " +
+                        "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getTimestamp(), com.google.protobuf.util.Timestamps.comparator())" +
+                        ".thenComparing(($message $instance) -> $instance.getNested().getDuration(), com.google.protobuf.util.Durations.comparator());"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
+
+        @Test
+        fun `well-known value messages`() {
             val message = "NestedValues"
             val instance = message.lowerCased
             val psiClass = generatedCodeOf(message)
@@ -137,66 +166,50 @@ internal class AddComparatorSpec {
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
-
-        @Test
-        fun `with reversed comparison`() {
-            val message = "Debtor"
-            val psiClass = generatedCodeOf(message)
-            val field = psiClass.findComparatorField()
-            val expected = "private static final java.util.Comparator<$message> comparator = " +
-                    "java.util.Comparator.comparing($message::getSum)" +
-                    ".thenComparing($message::getName)" +
-                    ".thenComparing($message::getTaxNumber)" +
-                    ".reversed();"
-            field.shouldNotBeNull()
-            field.text shouldContain expected
-        }
     }
 
-    @Nested
-    inner class
-    `not generate comparator for a message` {
+    @Nested inner class
+    `not generate comparator` {
 
         @Test
-        fun `without the corresponding option`() = testNotGenerateFor("NoCompareByOption")
+        fun `without the corresponding option`() = testNotGeneratesFor("NoCompareByOption")
 
         @Test
-        fun `with a non-comparable field`() = testNotGenerateFor("NonComparablesProhibited")
+        fun `with a non-comparable field`() = testNotGeneratesFor("NonComparableProhibited")
 
         @Test
-        fun `with a bytes field`() = testNotGenerateFor("BytesProhibited")
+        fun `with a bytes field`() = testNotGeneratesFor("BytesProhibited")
 
         @Test
-        fun `with a repeated field`() = testNotGenerateFor("RepeatedProhibited")
+        fun `with a repeated field`() = testNotGeneratesFor("RepeatedProhibited")
 
         @Test
-        fun `with a map field`() = testNotGenerateFor("MapsProhibited")
+        fun `with a map field`() = testNotGeneratesFor("MapsProhibited")
 
         @Test
-        fun `with a non-existing field`() = testNotGenerateFor("NonExistingProhibited")
+        fun `with a non-existing field`() = testNotGeneratesFor("NonExistingProhibited")
     }
 
-    @Nested
-    inner class
-    `not generate comparator for a message with nested` {
+    @Nested inner class
+    `not generate comparator with nested` {
 
         @Test
-        fun `non-comparable field`() = testNotGenerateFor("NestedNonComparablesProhibited")
+        fun `non-comparable field`() = testNotGeneratesFor("NestedNonComparableProhibited")
 
         @Test
-        fun `bytes field`() = testNotGenerateFor("NestedBytesProhibited")
+        fun `bytes field`() = testNotGeneratesFor("NestedBytesProhibited")
 
         @Test
-        fun `repeated field`() = testNotGenerateFor("NestedRepeatedProhibited")
+        fun `repeated field`() = testNotGeneratesFor("NestedRepeatedProhibited")
 
         @Test
-        fun `map field`() = testNotGenerateFor("NestedMapsProhibited")
+        fun `map field`() = testNotGeneratesFor("NestedMapsProhibited")
 
         @Test
-        fun `non-existing field`() = testNotGenerateFor("NestedNonExistingProhibited")
+        fun `non-existing field`() = testNotGeneratesFor("NestedNonExistingProhibited")
     }
 
-    private fun testNotGenerateFor(message: String) {
+    private fun testNotGeneratesFor(message: String) {
         val psiClass = generatedCodeOf(message)
         val field = psiClass.findComparatorField()
         field.shouldBeNull()

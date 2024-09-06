@@ -43,30 +43,10 @@ message Account {
         field: "name"
     };
 
-    AccountId id = 1;
     string name = 2;
     int32 tax_number = 3;
     AccountStatus status = 4;
     bool actual_data = 5;
-}
-
-// This message test the reversed comparison.
-message Debtor {
-    option (compare_by) = {
-        descending: true
-        field: "sum"
-        field: "name"
-        field: "tax_number"
-    };
-
-    AccountId id = 1;
-    string name = 2;
-    int32 tax_number = 3;
-    double sum = 4;
-}
-
-message AccountId {
-    string uuid = 1;
 }
 
 enum AccountStatus {
