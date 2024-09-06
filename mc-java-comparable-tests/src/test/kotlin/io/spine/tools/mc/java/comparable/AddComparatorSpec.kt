@@ -59,7 +59,7 @@ internal class AddComparatorSpec {
         }
 
         @Test
-        fun `comparable messages and nested fields`() {
+        fun `comparable messages`() {
             val message = "Citizen"
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
