@@ -33,7 +33,7 @@ import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 
 /**
- * Code generation settings for messages that qualify as [Comparable].
+ * Code generation settings for messages that have `compare_by` option.
  */
 public class ComparableSettings(project: Project) :
     SettingsWithActions<Comparables>(project, DEFAULT_ACTIONS) {
@@ -46,7 +46,6 @@ public class ComparableSettings(project: Project) :
 /**
  * The actions applied by default to comparable messages.
  */
-// TODO:2024-09-02:yevhenii.nadtochii: Hidden dependency on `mc-java-comparables`.
 private val DEFAULT_ACTIONS = mapOf(
     "io.spine.tools.mc.java.comparable.action.AddComparator" to noParameter,
     "io.spine.tools.mc.java.comparable.action.AddCompareTo" to noParameter,
