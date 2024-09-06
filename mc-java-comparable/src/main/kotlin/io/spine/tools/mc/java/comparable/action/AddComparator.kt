@@ -89,6 +89,7 @@ public class AddComparator(
 
         val messageField = elementFactory.createFieldFromText(comparator.build(), cls)
             .apply { addFirst(GeneratedAnnotation.create()) }
+        // `cls.addFirst()` puts it right BEFORE the class definition, but we need it inside.
         cls.addAfter(messageField, cls.lBrace)
     }
 
