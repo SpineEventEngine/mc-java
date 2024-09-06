@@ -53,7 +53,7 @@ abstract class ComparablePluginTestSetup(
     private val generated: SourceFileSet by lazy { generateCode() }
 
     /**
-     * Creates an instance of [Comparables] with only one action under the test.
+     * Creates an instance of [Comparables] with a single action under the test.
      */
     override fun createSettings(projectDir: Path): Comparables = comparables {
         actions = actions {
@@ -74,7 +74,7 @@ abstract class ComparablePluginTestSetup(
     }
 
     /**
-     * Runs a pipeline to generate code all Proto messages declared in `textFixture` source set.
+     * Generates code for all present Proto messages.
      */
     private fun generateCode(): SourceFileSet {
         val projectDir = createTempDirectory("projectDit")
