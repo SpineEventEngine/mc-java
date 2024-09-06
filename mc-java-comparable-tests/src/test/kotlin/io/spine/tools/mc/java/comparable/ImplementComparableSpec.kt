@@ -24,11 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.uuid
+package io.spine.tools.mc.java.comparable
 
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
-import io.spine.tools.mc.java.implementsInterface
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -40,16 +41,18 @@ internal class ImplementComparableSpec {
     @Test
     fun `make a message with the option implement 'Comparable'`() {
         val message = "Account"
-        val (_, generatedCode) = generateCode(message)
-        val generics = listOf(message)
-        implementsInterface(generatedCode, Comparable::class.java, generics) shouldBe true
+        val psiClass = generatedCodeOf(message)
+        val implementList = psiClass.implementsList
+        implementList.shouldNotBeNull()
+        implementList.text shouldContain "java.lang.Comparable<$message>"
     }
 
     @Test
     fun `ignore messages without the corresponding option`() {
         val message = "AccountId"
-        val (_, generatedCode) = generateCode(message)
-        val generics = listOf(message)
-        implementsInterface(generatedCode, Comparable::class.java, generics) shouldBe false
+        val psiClass = generatedCodeOf(message)
+        val implementList = psiClass.implementsList
+        implementList.shouldNotBeNull()
+        implementList.text shouldNotContain "java.lang.Comparable<$message>"
     }
 }
