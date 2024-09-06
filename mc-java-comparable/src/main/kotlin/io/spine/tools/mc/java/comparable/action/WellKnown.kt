@@ -40,8 +40,8 @@ import io.spine.protodata.typeName
 internal object WellKnown {
 
     private val messages = mapOf(
-        "google.protobuf.Duration" to "com.google.protobuf.util.Timestamps.comparator()",
-        "google.protobuf.Timestamp" to "com.google.protobuf.util.Durations.comparator()",
+        "google.protobuf.Duration" to "com.google.protobuf.util.Durations.comparator()",
+        "google.protobuf.Timestamp" to "com.google.protobuf.util.Timestamps.comparator()",
     )
 
     private val values = listOf(
@@ -55,7 +55,7 @@ internal object WellKnown {
         "google.protobuf.StringValue",
     )
 
-    private val all = values + messages
+    private val all = values + messages.keys
 
     /**
      * Returns a custom comparator for the given well-known [type].
@@ -68,7 +68,7 @@ internal object WellKnown {
     /**
      * Tells if this [MessageType] is a well-known type.
      */
-    val MessageType.isWellKnown
+    val MessageType.isWellKnownComparable
         get() = all.contains(qualifiedName)
 
     /**

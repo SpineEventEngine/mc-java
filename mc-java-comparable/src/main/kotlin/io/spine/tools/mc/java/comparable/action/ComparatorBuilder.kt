@@ -43,11 +43,11 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
      * Builds a `comparator` field in a text form.
      */
     fun build(): String {
-        var joinedClosures = "Comparator.comparing(${closures[0]})"
+        var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
         for (i in 1 until closures.size) {
             joinedClosures += ".thenComparing(${closures[i]})"
         }
-        return "private static final Comparator<$message> comparator = $joinedClosures;"
+        return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
     }
 
     /**

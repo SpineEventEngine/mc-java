@@ -52,8 +52,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("Account")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<Account> comparator = " +
-                    "Comparator.comparing(Account::getActualData)" +
+            val expected = "private static final java.util.Comparator<Account> comparator = " +
+                    "java.util.Comparator.comparing(Account::getActualData)" +
                     ".thenComparing(Account::getStatus)" +
                     ".thenComparing(Account::getTaxNumber)" +
                     ".thenComparing(Account::getName);"
@@ -66,8 +66,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("Citizen")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<Citizen> comparator = " +
-                    "Comparator.comparing((Citizen citizen) -> citizen.getResidence().getRegion())" +
+            val expected = "private static final java.util.Comparator<Citizen> comparator = " +
+                    "java.util.Comparator.comparing((Citizen citizen) -> citizen.getResidence().getRegion())" +
                     ".thenComparing((Citizen citizen) -> citizen.getResidence().getAddress().getIsActual())" +
                     ".thenComparing((Citizen citizen) -> citizen.getResidence().getAddress().getCity())" +
                     ".thenComparing(Citizen::getPassport);"
@@ -80,8 +80,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("WithTimestampAndDuration")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<WithTimestampAndDuration> comparator = " +
-                    "Comparator.comparing(WithTimestampAndDuration::getTimestamp, com.google.protobuf.util.Timestamps.comparator())" +
+            val expected = "private static final java.util.Comparator<WithTimestampAndDuration> comparator = " +
+                    "java.util.Comparator.comparing(WithTimestampAndDuration::getTimestamp, com.google.protobuf.util.Timestamps.comparator())" +
                     ".thenComparing(WithTimestampAndDuration::getDuration, com.google.protobuf.util.Durations.comparator());"
             field.shouldNotBeNull()
             field.text shouldContain expected
@@ -92,8 +92,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("NestedTimestampAndDuration")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<NestedTimestampAndDuration> comparator = " +
-                    "Comparator.comparing((NestedTimestampAndDuration nestedTimestampAndDuration) -> nestedTimestampAndDuration.getNested().getTimestamp(), com.google.protobuf.util.Timestamps.comparator())" +
+            val expected = "private static final java.util.Comparator<NestedTimestampAndDuration> comparator = " +
+                    "java.util.Comparator.comparing((NestedTimestampAndDuration nestedTimestampAndDuration) -> nestedTimestampAndDuration.getNested().getTimestamp(), com.google.protobuf.util.Timestamps.comparator())" +
                     ".thenComparing((NestedTimestampAndDuration nestedTimestampAndDuration) -> nestedTimestampAndDuration.getNested().getDuration(), com.google.protobuf.util.Durations.comparator());"
             field.shouldNotBeNull()
             field.text shouldContain expected
@@ -104,8 +104,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("WithValues")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<WithValues> comparator = " +
-                    "Comparator.comparing((WithValues withValues) -> withValues.getBool().getValue())" +
+            val expected = "private static final java.util.Comparator<WithValues> comparator = " +
+                    "java.util.Comparator.comparing((WithValues withValues) -> withValues.getBool().getValue())" +
                     ".thenComparing((WithValues withValues) -> withValues.getDouble().getValue())" +
                     ".thenComparing((WithValues withValues) -> withValues.getFloat().getValue())" +
                     ".thenComparing((WithValues withValues) -> withValues.getInt32().getValue())" +
@@ -122,8 +122,8 @@ internal class AddComparatorSpec {
             val (cls, _) = generateCode("NestedValues")
             val checkSuper = false
             val field = cls.findFieldByName("comparator", checkSuper)
-            val expected = "private static final Comparator<NestedValues> comparator = " +
-                    "Comparator.comparing((NestedValues nestedValues) -> nestedValues.getNested().getBool().getValue())" +
+            val expected = "private static final java.util.Comparator<NestedValues> comparator = " +
+                    "java.util.Comparator.comparing((NestedValues nestedValues) -> nestedValues.getNested().getBool().getValue())" +
                     ".thenComparing((NestedValues nestedValues) -> nestedValues.getNested().getDouble().getValue())" +
                     ".thenComparing((NestedValues nestedValues) -> nestedValues.getNested().getFloat().getValue())" +
                     ".thenComparing((NestedValues nestedValues) -> nestedValues.getNested().getInt32().getValue())" +

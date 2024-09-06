@@ -41,7 +41,7 @@ import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
-import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnown
+import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownMessage
 import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownValue
 import io.spine.tools.mc.java.comparable.isComparable
@@ -116,7 +116,7 @@ public class AddComparator(
 
             type.isMessage -> {
                 val message = messages.find(type.message)
-                check(message.isComparable || message.isWellKnown) {
+                check(message.isComparable || message.isWellKnownComparable) {
                     "The passed field has a non-comparable message type: `${type.message}`."
                 }
             }
