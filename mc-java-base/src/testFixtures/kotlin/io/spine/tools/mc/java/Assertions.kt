@@ -48,9 +48,6 @@ fun implementsInterface(
     return implementsInterface(javaCode, "${superInterface.reference}<$parameters>")
 }
 
-/**
- * Tells if [javaCode] contains a class which implements the given [superInterface].
- */
 private fun implementsInterface(javaCode: String, superInterface: String): Boolean {
     val regex = Regex("implements[^{}]*${superInterface}[^{}]*\\{", DOT_MATCHES_ALL)
     return regex.containsMatchIn(javaCode)
