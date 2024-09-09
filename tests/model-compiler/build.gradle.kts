@@ -44,12 +44,12 @@ modelCompiler {
             val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"
 
             forMessages(by().suffix("documents.proto")) {
-                markAs("io.spine.tools.mc.java.protoc.DocumentMessage")
+                useAction("io.spine.tools.mc.java.mgroup.given.ImplementDocumentMessage")
             }
 
             forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
-                markAs("io.spine.tools.mc.java.protoc.PrefixedMessage")
-                useAction(methodAction)
+                generateMethodsWith(methodFactory)
+                useAction("io.spine.tools.mc.java.mgroup.given.ImplementPrefixedMessage")
                 useAction(nestedClassAction)
             }
 
