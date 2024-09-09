@@ -72,6 +72,9 @@ internal class ComparatorBuilder(psiCls: PsiClass) {
         closures.add(closure)
     }
 
+    /**
+     * Reverses ordering of this comparator.
+     */
     fun reversed() {
         reversed = true
     }
