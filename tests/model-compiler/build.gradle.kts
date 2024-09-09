@@ -48,7 +48,6 @@ modelCompiler {
             }
 
             forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
-                generateMethodsWith(methodFactory)
                 useAction("io.spine.tools.mc.java.mgroup.given.ImplementPrefixedMessage")
                 useAction(nestedClassAction)
             }
