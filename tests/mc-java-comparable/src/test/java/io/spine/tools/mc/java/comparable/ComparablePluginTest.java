@@ -28,6 +28,8 @@ package io.spine.tools.mc.java.comparable;
 
 import io.spine.tools.mc.java.comparable.env.LocalDateTimes;
 import io.spine.tools.mc.java.comparable.env.Students;
+import io.spine.tools.mc.java.comparable.env.Travelers;
+import io.spine.tools.mc.java.comparable.given.Traveler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,11 @@ import static io.spine.tools.mc.java.comparable.env.Students.firstStudent;
 import static io.spine.tools.mc.java.comparable.env.Students.fourthStudent;
 import static io.spine.tools.mc.java.comparable.env.Students.secondStudent;
 import static io.spine.tools.mc.java.comparable.env.Students.thirdStudent;
+import static io.spine.tools.mc.java.comparable.env.Travelers.fifthTraveler;
+import static io.spine.tools.mc.java.comparable.env.Travelers.firstTraveler;
+import static io.spine.tools.mc.java.comparable.env.Travelers.fourthTraveler;
+import static io.spine.tools.mc.java.comparable.env.Travelers.secondTraveler;
+import static io.spine.tools.mc.java.comparable.env.Travelers.thirdTraveler;
 import static java.util.Collections.sort;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -63,11 +70,22 @@ class ComparablePluginTest {
     @Test
     @DisplayName("make messages reversed-comparable")
     void makeMessagesReversedComparable() {
-        var localDateTimes = Students.notSorted();
+        var students = Students.notSorted();
         var expected = newArrayList(firstStudent, secondStudent, thirdStudent,
                                     fourthStudent, fifthStudent);
-        assertNotEquals(localDateTimes, expected);
-        sort(localDateTimes);
-        assertEquals(localDateTimes, expected);
+        assertNotEquals(students, expected);
+        sort(students);
+        assertEquals(students, expected);
+    }
+
+    @Test
+    @DisplayName("support comparison by nested fields")
+    void supportComparisonByNestedFields() {
+        var travelers = Travelers.notSorted();
+        var expected = newArrayList(firstTraveler, secondTraveler, thirdTraveler,
+                                    fourthTraveler, fifthTraveler);
+        assertNotEquals(travelers, expected);
+        sort(travelers);
+        assertEquals(travelers, expected);
     }
 }
