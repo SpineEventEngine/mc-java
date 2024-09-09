@@ -26,10 +26,9 @@
 
 package io.spine.tools.mc.java.comparable
 
-import com.google.protobuf.Empty
+import com.google.protobuf.Any
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
-import io.spine.protobuf.pack
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.protodata.settings.actions
 import io.spine.tools.mc.java.MessageAction
@@ -57,7 +56,7 @@ abstract class ComparablePluginTestSetup(
      */
     override fun createSettings(projectDir: Path): Comparables = comparables {
         actions = actions {
-            action.put(actionClass.java.name, Empty.getDefaultInstance().pack())
+            action.put(actionClass.java.name, Any.getDefaultInstance())
         }
     }
 
