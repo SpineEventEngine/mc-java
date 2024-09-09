@@ -24,12 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("UNUSED_PARAMETER", "UnusedParameter", "UnusedPrivateProperty")
+
 package io.spine.tools.mc.java.marker
 
 import io.spine.protodata.renderer.SourceFileSet
 import java.lang.reflect.Type
 
-public class CreateInterface(name: String, superInterface: Type) {
+public class CreateInterface( name: String, superInterface: Type) {
 
     public fun render(sources: SourceFileSet) {
 
