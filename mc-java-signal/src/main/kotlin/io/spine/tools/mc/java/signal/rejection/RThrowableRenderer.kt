@@ -32,6 +32,7 @@ import io.spine.logging.WithLogging
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.find
+import io.spine.protodata.isTopLevel
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.java.javaOuterClassName
@@ -97,7 +98,7 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
             """.ti()
         }
         protoFile.typeMap.values
-            .filter { it.isTopLevel() }
+            .filter { it.isTopLevel }
             .forEach {
                 generateRejection(protoFile, it)
             }
@@ -143,10 +144,6 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
 
 private fun ProtobufSourceFile.isRejections(): Boolean =
     file.path.endsWith("rejections.proto")
-
-//TODO:2024-08-06:alexander.yevsyukov: Migrate to `isTopLevel` from ProtoData.
-private fun MessageType.isTopLevel(): Boolean =
-    !hasDeclaredIn()
 
 internal typealias RejectionFile = ProtobufSourceFile
 
