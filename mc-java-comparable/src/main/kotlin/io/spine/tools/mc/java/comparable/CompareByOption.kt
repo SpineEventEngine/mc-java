@@ -37,10 +37,10 @@ private const val COMPARE_BY_OPTION_NAME = "compare_by"
 /**
  * Tells whether the given option is a [CompareByOption][io.spine.option.CompareByOption].
  */
-internal fun isComparable(option: Option): Boolean = option.name == COMPARE_BY_OPTION_NAME
+internal fun isCompareBy(option: Option): Boolean = option.name == COMPARE_BY_OPTION_NAME
 
 /**
  * Tells whether this [MessageType] has a [CompareByOption][io.spine.option.CompareByOption].
  */
 internal val MessageType.isComparable: Boolean
-    get() = optionList.any(::isComparable)
+    get() = optionList.any(::isCompareBy)

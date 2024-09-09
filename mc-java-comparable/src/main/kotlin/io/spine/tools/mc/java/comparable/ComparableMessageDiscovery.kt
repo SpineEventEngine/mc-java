@@ -53,7 +53,7 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
         @External event: TypeDiscovered
     ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
         val options = event.type.optionList
-        val compareBy = options.find(::isComparable)
+        val compareBy = options.find(::isCompareBy)
         return compareBy?.let {
             withA(
                 comparableMessageDiscovered {
