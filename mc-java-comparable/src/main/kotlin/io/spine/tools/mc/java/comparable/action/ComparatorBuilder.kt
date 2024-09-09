@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.comparable.action
 
 import com.intellij.psi.PsiClass
 import io.spine.string.camelCase
+import io.spine.string.lowerCamelCase
 
 /**
  * Builds a Java field containing the [Comparator] for the given message class.
@@ -37,7 +38,7 @@ import io.spine.string.camelCase
 internal class ComparatorBuilder(cls: PsiClass) {
 
     private val message = cls.name!!
-    private val instance = message.replaceFirstChar { it.lowercase() }
+    private val instance = message.lowerCamelCase()
     private val closures = mutableListOf<String>()
     private var reversed = false
 
