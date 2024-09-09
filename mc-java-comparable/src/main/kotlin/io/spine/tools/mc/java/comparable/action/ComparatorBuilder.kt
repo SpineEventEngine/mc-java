@@ -37,7 +37,7 @@ import io.spine.string.camelCase
 internal class ComparatorBuilder(cls: PsiClass) {
 
     private val message = cls.name!!
-    private val instance = message.lowerCased
+    private val instance = message.replaceFirstChar { it.lowercase() }
     private val closures = mutableListOf<String>()
     private var reversed = false
 
