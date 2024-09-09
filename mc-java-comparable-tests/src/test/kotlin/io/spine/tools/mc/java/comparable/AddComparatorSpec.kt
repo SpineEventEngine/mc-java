@@ -40,7 +40,11 @@ import org.junit.jupiter.api.Test
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
 
-    companion object : ComparablePluginTestSetup(AddComparator::class)
+    companion object : ComparablePluginTestSetup(AddComparator::class) {
+
+        const val TIMESTAMP_COMPARATOR = "com.google.protobuf.util.Timestamps.comparator()"
+        const val DURATION_COMPARATOR = "com.google.protobuf.util.Durations.comparator()"
+    }
 
     @Nested inner class
     `generate comparator with` {
@@ -76,8 +80,8 @@ internal class AddComparatorSpec {
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
-                    "java.util.Comparator.comparing($message::getTimestamp, com.google.protobuf.util.Timestamps.comparator())" +
-                    ".thenComparing($message::getDuration, com.google.protobuf.util.Durations.comparator());"
+                    "java.util.Comparator.comparing($message::getTimestamp, $TIMESTAMP_COMPARATOR)" +
+                    ".thenComparing($message::getDuration, $DURATION_COMPARATOR);"
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
@@ -142,8 +146,8 @@ internal class AddComparatorSpec {
             val field = psiClass.findComparatorField()
             val expected =
                 "private static final java.util.Comparator<$message> comparator = " +
-                        "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getTimestamp(), com.google.protobuf.util.Timestamps.comparator())" +
-                        ".thenComparing(($message $instance) -> $instance.getNested().getDuration(), com.google.protobuf.util.Durations.comparator());"
+                        "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getTimestamp(), $TIMESTAMP_COMPARATOR)" +
+                        ".thenComparing(($message $instance) -> $instance.getNested().getDuration(), $DURATION_COMPARATOR);"
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
