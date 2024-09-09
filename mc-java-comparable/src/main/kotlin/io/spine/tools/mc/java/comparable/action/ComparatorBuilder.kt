@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.intellij.psi.PsiClass
+import io.spine.string.camelCase
 
 /**
  * Builds a Java field containing the [Comparator] for the given message class.
@@ -82,7 +83,7 @@ internal class ComparatorBuilder(cls: PsiClass) {
     /**
      * Returns a method reference to the getter for the given [fieldName] in the [message].
      */
-    private fun extractField(fieldName: String): String = "$message::${javaName(fieldName)}"
+    private fun extractField(fieldName: String): String = "$message::${fieldName.toJavaGetter()}"
 
     /**
      * Builds a lambda key extractor for a nested field in the [message],
@@ -90,18 +91,19 @@ internal class ComparatorBuilder(cls: PsiClass) {
      */
     private fun extractNestedField(path: FieldPath): String {
         val parts = path.split(".")
-        val joined = parts.joinToString(".") { "${javaName(it)}()" }
+        val joined = parts.joinToString(".") { "${it.toJavaGetter()}()" }
         return "($message $instance) -> $instance.$joined"
     }
 }
 
 /**
- * Converts the given [protoFieldName] to Java field name.
+ * Converts this [String] with a Proto field name to a Java getter.
  *
- * For example, `my_best_field` will be converted to `myBestField`.
+ * For example, `my_best_field` will be converted to `getMyBestField`.
+ *
+ * The round brackets are omitted to allow this getter name to be used for composing
+ * both a direct invocation and a method reference.
+ *
+ * For example, `getMyBestField()` and `::getMyBestField`.
  */
-private fun javaName(protoFieldName: String): String {
-    val parts = protoFieldName.split("_")
-    val joined = parts.joinToString("") { it.upperCased }
-    return "get$joined"
-}
+private fun String.toJavaGetter() = "get${camelCase()}"

@@ -27,15 +27,6 @@
 package io.spine.tools.mc.java.comparable.action
 
 /**
- * Returns this [String] with the uppercased first letter.
- *
- * This extension is much more primitive compared to the deprecated [capitalize],
- * buf is enough for our needs.
- */
-internal val String.upperCased
-    get() = replaceFirstChar { it.uppercase() }
-
-/**
  * Returns this [String] with the lowercased first letter.
  *
  * This extension is much more primitive compared to the deprecated [decapitalize],
