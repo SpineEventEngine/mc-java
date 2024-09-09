@@ -31,11 +31,11 @@ import com.intellij.psi.PsiClass
 /**
  * Builds a Java field containing the [Comparator] for the given message class.
  *
- * @param psiCls The message class to be used as comparator's generic parameter.
+ * @param cls The message class to be used as comparator's generic parameter.
  */
-internal class ComparatorBuilder(psiCls: PsiClass) {
+internal class ComparatorBuilder(cls: PsiClass) {
 
-    private val message = psiCls.name!!
+    private val message = cls.name!!
     private val instance = message.lowerCased
     private val closures = mutableListOf<String>()
     private var reversed = false
