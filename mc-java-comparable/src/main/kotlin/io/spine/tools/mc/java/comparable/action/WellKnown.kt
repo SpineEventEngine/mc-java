@@ -26,6 +26,10 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import com.google.protobuf.Duration
+import com.google.protobuf.Timestamp
+import com.google.protobuf.util.Durations
+import com.google.protobuf.util.Timestamps
 import io.spine.protodata.MessageType
 import io.spine.protodata.Type
 import io.spine.protodata.isMessage
@@ -40,8 +44,8 @@ import io.spine.protodata.typeName
 internal object WellKnown {
 
     private val messages = mapOf(
-        "google.protobuf.Duration" to "com.google.protobuf.util.Durations.comparator()",
-        "google.protobuf.Timestamp" to "com.google.protobuf.util.Timestamps.comparator()",
+        Duration::class.qualifiedName to "${Durations::class.qualifiedName}.comparator()",
+        Timestamp::class.qualifiedName to "${Timestamps::class.qualifiedName}.comparator()",
     )
 
     private val values = listOf(
