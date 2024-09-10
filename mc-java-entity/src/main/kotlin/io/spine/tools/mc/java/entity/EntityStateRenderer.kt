@@ -40,7 +40,7 @@ import io.spine.tools.psi.java.execute
  * The renderer modifies the code if the [generateQueries][Entities.getGenerateQueries] flag is
  * set to `true` in the code generation settings.
  *
- * The actual code generation is performed by actions [defined][Entities.getActionList] in
+ * The actual code generation is performed by actions [defined][Entities.getActions] in
  * the code generation settings.
  */
 public class EntityStateRenderer :
