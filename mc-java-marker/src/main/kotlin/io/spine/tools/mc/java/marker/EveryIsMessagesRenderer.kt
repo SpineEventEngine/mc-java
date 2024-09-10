@@ -27,20 +27,38 @@
 package io.spine.tools.mc.java.marker
 
 import com.google.protobuf.Message
+import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.java.qualifiedJavaType
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.mc.java.CreateInterface
+import io.spine.tools.mc.java.ImplementInterface
+import io.spine.tools.mc.java.settings.SuperInterface
+import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.psi.java.execute
+import org.checkerframework.checker.signature.qual.FullyQualifiedName
 
 internal class EveryIsMessagesRenderer : JavaRenderer() {
+
+    /**
+     * The super base interface for all generated interfaces.
+     */
+    private val superBase = ClassName(Message::class.java)
+
+    private lateinit var sources: SourceFileSet
 
     override fun render(sources: SourceFileSet) {
         if (!sources.hasJavaRoot) {
             return
         }
+        this.sources = sources
         val views = findViews()
         views.forEach {
-            it.doRender(sources)
+            execute {
+                it.doRender()
+            }
         }
     }
 
@@ -49,11 +67,31 @@ internal class EveryIsMessagesRenderer : JavaRenderer() {
         return found
     }
 
-    private fun EveryIsMessages.doRender(sources: SourceFileSet) {
+    private fun EveryIsMessages.doRender() {
+        val interfaceName = option.qualifiedJavaType(header)
+        createInterface(interfaceName)
+        implementInTypes(interfaceName)
+    }
+
+    private fun EveryIsMessages.createInterface(interfaceName: @FullyQualifiedName String) {
         if (option.generate) {
-            val interfaceName = option.qualifiedJavaType(header)
-            CreateInterface(interfaceName, Message::class.java).render(sources)
+            val iface = ClassName.guess(interfaceName)
+            CreateInterface(iface, superBase).render(sources)
         }
-        //TODO:2024-08-06:alexander.yevsyukov: Implement.
+    }
+
+    private fun EveryIsMessages.implementInTypes(interfaceName: @FullyQualifiedName String) {
+        val interfaceProto = superInterface {
+            name = interfaceName
+        }
+        typeList.forEach {
+            it.implementInterface(interfaceProto)
+        }
+    }
+
+    private fun MessageType.implementInterface(superInterface: SuperInterface) {
+        val file = sources.javaFileOf(this)
+        val action = ImplementInterface(this, file, superInterface, context!!)
+        action.render()
     }
 }
