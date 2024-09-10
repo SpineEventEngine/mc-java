@@ -26,14 +26,16 @@
 
 @file:Suppress("UNUSED_PARAMETER", "UnusedParameter", "UnusedPrivateProperty")
 
-package io.spine.tools.mc.java.marker
+package io.spine.tools.mc.java
 
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
-import java.lang.reflect.Type
+import io.spine.tools.code.Java
 
-public class CreateInterface( name: String, superInterface: Type) {
+public class CreateInterface(name: ClassName, superInterface: ClassName? = null) {
 
-    public fun render(sources: SourceFileSet) {
+    public fun render(sources: SourceFileSet): SourceFile<Java> {
 
         TODO("Not yet implemented")
     }
