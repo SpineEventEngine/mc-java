@@ -40,10 +40,10 @@ internal class MessageLookup(private val context: CodegenContext) {
     /**
      * Queries [MessageType] by the given [typeName] in [CodegenContext].
      *
-     * Firstly, the method attempts to find it within the generated Proto files,
-     * then in their dependencies. It throws ISE if the message is not found.
-     * In this case, we would not be able to know whether the message can participate
-     * in comparison (has `compare_by` option or the default comparator like `Timestamps`).
+     * The method attempts to locate the message within the generated Proto files,
+     * then searches for it within their dependencies.
+     *
+     * @throws IllegalStateException if the message with the given type name is not found.
      */
     fun query(typeName: TypeName): MessageType {
         val typeUrl = typeName.typeUrl
