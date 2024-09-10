@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.signal.rejection
 
 import com.squareup.javapoet.FieldSpec
@@ -52,10 +53,8 @@ import com.squareup.javapoet.ClassName as PoClassName
  * The generated type extends [RejectionThrowable] and encloses an instance of the
  * corresponding [rejection message][io.spine.base.RejectionMessage].
  *
- * @param javaPackage
- *         a name of the Java package where the rejection type should be generated.
- * @param rejection
- *         a rejection declaration.
+ * @param javaPackage The name of the Java package where the rejection type should be generated.
+ * @param rejection The declaration of the rejection.
  */
 internal class RThrowableCode(
     val javaPackage: String,

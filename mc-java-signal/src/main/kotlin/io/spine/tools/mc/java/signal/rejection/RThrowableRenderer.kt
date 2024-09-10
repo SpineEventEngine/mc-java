@@ -120,8 +120,8 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
     /**
      * Obtains a name of the Java file corresponding to this [rejection message][MessageType] type.
      *
-     * @param protoFile
-     *         the file which declares this rejection type. Serves for calculating the Java package.
+     * @param protoFile The file which declares this rejection type. Serves for calculating
+     *   the Java package.
      */
     private fun MessageType.throwableJavaFile(protoFile: ProtobufSourceFile): Path {
         val javaPackage = protoFile.javaPackage()
