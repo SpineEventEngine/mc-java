@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
+import io.spine.protodata.field
 
 /**
  * Looks for [MessageType] denoted by [FieldPath].
@@ -59,27 +60,21 @@ internal class FieldLookup(private val messages: MessageLookup) {
      */
     fun resolve(path: FieldPath, rootMessage: MessageType): Field =
         if (path.isNotNested) {
-            rootMessage.getField(path)
+            rootMessage.field(path)
         } else {
             searchRecursively(path, rootMessage)
         }
 
     private fun searchRecursively(path: FieldPath, message: MessageType): Field {
         if (path.isNotNested) {
-            return message.getField(path)
+            return message.field(path)
         }
 
         val currentFieldName = path.substringBefore(".")
-        val currentField = message.getField(currentFieldName)
+        val currentField = message.field(currentFieldName)
 
         val remainingFields = path.substringAfter(".")
         val nextMessage = messages.query(currentField.type.message)
         return searchRecursively(remainingFields, nextMessage)
     }
 }
-
-/**
- * Finds a field in this [MessageType] by the given [name].
- */
-private fun MessageType.getField(name: String): Field =
-    fieldList.find { it.name.value == name } ?: error("Field `$name` not found in `$this`.")
