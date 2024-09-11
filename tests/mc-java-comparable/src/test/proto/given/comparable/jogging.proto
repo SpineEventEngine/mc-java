@@ -28,55 +28,21 @@ syntax = "proto3";
 package given.comparable;
 
 import "spine/options.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.test.tools.mc.java.comparable";
 option java_multiple_files = true;
 
-// Comparable by three `int` fields.
-message LocalDate {
+// Comparable by `Timestamp` and `Duration` fields, for which the `ComparatorRegistry`
+// should provide comparators.
+message Jogging {
     option (compare_by) = {
-        field: "year"
-        field: "month"
-        field: "day"
+        field: "start"
+        field: "duration"
     };
 
-    int32 year = 1;
-    int32 month = 2;
-    int32 day = 3;
-}
-
-// Comparable by three `int` fields.
-message LocalTime {
-    option (compare_by) = {
-        field: "hours"
-        field: "minutes"
-        field: "seconds"
-    };
-
-    int32 hours = 1;
-    int32 minutes = 2;
-    int32 seconds = 3;
-}
-
-// Comparable by two comparable messages and an enum.
-message LocalDateTime {
-    option (compare_by) = {
-        field: "date"
-        field: "time"
-        field: "zone"
-    };
-
-    LocalDate date = 1;
-    LocalTime time = 2;
-    Zone zone = 3;
-}
-
-enum Zone {
-    option allow_alias = true;
-    ZONE_UNDEFINED = 0;
-    ZONE_LONDON = 1;
-    ZONE_LISBON = 1;
-    ZONE_WARSAW = 2;
-    ZONE_KYIV = 3;
+    google.protobuf.Timestamp start = 1;
+    google.protobuf.Duration duration = 2;
 }

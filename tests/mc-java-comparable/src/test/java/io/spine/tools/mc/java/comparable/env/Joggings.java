@@ -26,16 +26,20 @@
 
 package io.spine.tools.mc.java.comparable.env;
 
-import io.spine.test.tools.mc.java.comparable.Address;
-import io.spine.test.tools.mc.java.comparable.Destination;
-import io.spine.test.tools.mc.java.comparable.Traveler;
+import com.google.protobuf.Duration;
+import com.google.protobuf.Timestamp;
+import com.google.protobuf.util.Timestamps;
+import io.spine.test.tools.mc.java.comparable.Jogging;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Provides {@link Traveler} instances for
+ * Provides {@link Jogging} instances for
  * {@link io.spine.tools.mc.java.comparable.ComparablePluginTest ComparablePluginTest}.
  *
  * <p>Field names reflect the expected position of the corresponding message
@@ -43,40 +47,45 @@ import static com.google.common.collect.Lists.newArrayList;
  * a sorted collection on our own. Otherwise, it would break the test essence, in which
  * we would compare two collections sorted by {@link java.util.Collections#sort(List)}.
  */
-public class Travelers {
+public class Joggings {
 
-    public static final Traveler firstTraveler = traveler("America", "Washington", "Pennsylvania Avenue 5", true);
-    public static final Traveler secondTraveler = traveler("America", "Washington", "U Street", false);
-    public static final Traveler thirdTraveler = traveler("Germany", "Berlin", "Potsdamer Platz", false);
-    public static final Traveler fourthTraveler = traveler("Germany", "Munich", "Sendlinger Strasse", false);
-    public static final Traveler fifthTraveler = traveler("Germany", "Munich", "Sendlinger Strasse", true);
+    public static final Jogging firstJogging = jogging(start(12, 15), duration(30));
+    public static final Jogging secondJogging = jogging(start(12, 15), duration(40));
+    public static final Jogging thirdJogging = jogging(start(13, 15), duration(20));
+    public static final Jogging fourthJogging = jogging(start(17, 30), duration(20));
+    public static final Jogging fifthJogging = jogging(start(18, 0), duration(20));
 
     /**
      * Prevents instantiation of this utility class.
      */
-    private Travelers() {
+    private Joggings() {
     }
 
     /**
-     * Returns a non-sorted collection of the five travelers.
+     * Returns a non-sorted collection of the five joggings.
      */
-    public static List<Traveler> notSorted() {
-        return newArrayList(fourthTraveler, secondTraveler, fifthTraveler, firstTraveler,
-                            thirdTraveler);
+    public static List<Jogging> notSorted() {
+        return newArrayList(fourthJogging, secondJogging, fifthJogging, firstJogging, thirdJogging);
     }
 
-    private static Traveler traveler(String country, String city, String street, boolean fool) {
-        var address = Address.newBuilder()
-                .setStreet(street)
-                .setFull(fool)
+    private static Jogging jogging(Timestamp start, Duration duration) {
+        return Jogging.newBuilder()
+                .setStart(start)
+                .setDuration(duration)
                 .build();
-        var destination = Destination.newBuilder()
-                .setCountry(country)
-                .setCity(city)
-                .setAddress(address)
-                .build();
-        return Traveler.newBuilder()
-                .setDestination(destination)
+    }
+
+    private static Timestamp start(long hours, long minutes) {
+        var instant = Instant.EPOCH
+                .plus(hours, ChronoUnit.HOURS)
+                .plus(minutes, ChronoUnit.MINUTES);
+        var date = Date.from(instant);
+        return Timestamps.fromDate(date);
+    }
+
+    private static Duration duration(long minutes) {
+        return Duration.newBuilder()
+                .setSeconds(minutes * 60)
                 .build();
     }
 }

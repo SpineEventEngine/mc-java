@@ -26,14 +26,19 @@
 
 package io.spine.tools.mc.java.comparable;
 
+simport io.spine.tools.mc.java.comparable.env.Joggings;
 import io.spine.tools.mc.java.comparable.env.LocalDateTimes;
 import io.spine.tools.mc.java.comparable.env.Students;
 import io.spine.tools.mc.java.comparable.env.Travelers;
-import io.spine.tools.mc.java.comparable.given.Traveler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static io.spine.tools.mc.java.comparable.env.Joggings.fifthJogging;
+import static io.spine.tools.mc.java.comparable.env.Joggings.firstJogging;
+import static io.spine.tools.mc.java.comparable.env.Joggings.fourthJogging;
+import static io.spine.tools.mc.java.comparable.env.Joggings.secondJogging;
+import static io.spine.tools.mc.java.comparable.env.Joggings.thirdJogging;
 import static io.spine.tools.mc.java.comparable.env.LocalDateTimes.fifthStamp;
 import static io.spine.tools.mc.java.comparable.env.LocalDateTimes.firstStamp;
 import static io.spine.tools.mc.java.comparable.env.LocalDateTimes.fourthStamp;
@@ -62,9 +67,9 @@ class ComparablePluginTest {
         var localDateTimes = LocalDateTimes.notSorted();
         var expected = newArrayList(firstStamp, secondStamp, thirdStamp,
                                     fourthStamp, fifthStamp);
-        assertNotEquals(localDateTimes, expected);
+        assertNotEquals(expected, localDateTimes);
         sort(localDateTimes);
-        assertEquals(localDateTimes, expected);
+        assertEquals(expected, localDateTimes);
     }
 
     @Test
@@ -73,9 +78,9 @@ class ComparablePluginTest {
         var students = Students.notSorted();
         var expected = newArrayList(firstStudent, secondStudent, thirdStudent,
                                     fourthStudent, fifthStudent);
-        assertNotEquals(students, expected);
+        assertNotEquals(expected, students);
         sort(students);
-        assertEquals(students, expected);
+        assertEquals(expected, students);
     }
 
     @Test
@@ -84,8 +89,19 @@ class ComparablePluginTest {
         var travelers = Travelers.notSorted();
         var expected = newArrayList(firstTraveler, secondTraveler, thirdTraveler,
                                     fourthTraveler, fifthTraveler);
-        assertNotEquals(travelers, expected);
+        assertNotEquals(expected, travelers);
         sort(travelers);
-        assertEquals(travelers, expected);
+        assertEquals(expected, travelers);
+    }
+
+    @Test
+    @DisplayName("support comparators from the 'ComparatorRegistry'")
+    void supportComparatorsFromTheComparatorRegistry() {
+        var joggings = Joggings.notSorted();
+        var expected = newArrayList(firstJogging, secondJogging, thirdJogging,
+                                    fourthJogging, fifthJogging);
+        assertNotEquals(expected, joggings);
+        sort(joggings);
+        assertEquals(expected, joggings);
     }
 }
