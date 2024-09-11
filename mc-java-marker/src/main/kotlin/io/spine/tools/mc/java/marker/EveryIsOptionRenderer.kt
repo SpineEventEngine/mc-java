@@ -94,6 +94,8 @@ internal class EveryIsOptionRenderer : JavaRenderer() {
         val psiFile = file.psi() as PsiJavaFile
         val annotation = GeneratedAnnotation.create()
         psiFile.topLevelClass.addFirst(annotation)
+        val updatedCode = psiFile.text
+        file.overwrite(updatedCode)
     }
 
     private fun EveryIsMessages.implementInTypes(interfaceName: @FullyQualifiedName String) {
