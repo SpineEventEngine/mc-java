@@ -52,12 +52,8 @@ public open class ImplementInterface(
 ) : DirectMessageAction<SuperInterface>(type, file, superInterface, context) {
 
     override fun doRender() {
-        val interfaceReference = interfaceReference()
-        val si = elementFactory.createClassReference(
-            interfaceReference,
-            parameter.genericArgumentList,
-            cls
-        )
+        val ref = interfaceReference()
+        val si = elementFactory.createClassReference(ref, parameter.genericArgumentList, cls)
         cls.implement(si)
     }
 
