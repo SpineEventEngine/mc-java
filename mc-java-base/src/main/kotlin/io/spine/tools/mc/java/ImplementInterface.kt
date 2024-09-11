@@ -28,6 +28,7 @@ package io.spine.tools.mc.java
 
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.MessageType
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -51,11 +52,27 @@ public open class ImplementInterface(
 ) : DirectMessageAction<SuperInterface>(type, file, superInterface, context) {
 
     override fun doRender() {
+        val interfaceReference = interfaceReference()
         val si = elementFactory.createClassReference(
-            parameter.name,
+            interfaceReference,
             parameter.genericArgumentList,
             cls
         )
         cls.implement(si)
+    }
+
+    /**
+     * Calculates the reference to the interface to be used in the code.
+     *
+     * If the interface is in the same package with the class, use simple name(s).
+     * Otherwise, use the canonical name.
+     */
+    private fun interfaceReference(): String {
+        val iface = ClassName.guess(parameter.name)
+        val theClass = ClassName.guess(cls.qualifiedName ?: cls.name!!)
+        return if (theClass.packageName == iface.packageName)
+            iface.simpleNames.joinToString(".")
+        else
+            iface.canonical
     }
 }

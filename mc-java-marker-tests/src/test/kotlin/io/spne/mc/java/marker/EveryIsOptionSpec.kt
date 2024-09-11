@@ -40,6 +40,8 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`EveryIsOptionRenderer` should")
 internal class EveryIsOptionSpec {
 
+    private val fruitPackage = Path("io/spine/tools/mc/java/marker/given/fruit")
+
     companion object : MarkerPluginTestSetup() {
 
         @BeforeAll
@@ -56,9 +58,7 @@ internal class EveryIsOptionSpec {
     @Nested inner class
     `generate specified interface` {
 
-        private val file = sourceFileSet.find(
-            Path("io/spine/tools/mc/java/marker/given/fruit/Fruit.java")
-        )
+        private val file = sourceFileSet.find(fruitPackage.resolve("Fruit.java"))
 
         @Test
         fun `in the same package`() {
