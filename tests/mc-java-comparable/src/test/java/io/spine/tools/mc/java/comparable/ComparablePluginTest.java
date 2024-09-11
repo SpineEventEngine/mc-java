@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.comparable;
 
-simport io.spine.tools.mc.java.comparable.env.Joggings;
+import io.spine.tools.mc.java.comparable.env.Joggings;
 import io.spine.tools.mc.java.comparable.env.LocalDateTimes;
 import io.spine.tools.mc.java.comparable.env.Students;
 import io.spine.tools.mc.java.comparable.env.Travelers;
