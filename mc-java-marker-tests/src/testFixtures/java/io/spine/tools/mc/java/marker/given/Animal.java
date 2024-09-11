@@ -24,36 +24,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.marker
+package io.spine.tools.mc.java.marker.given;
 
-import io.spine.core.External
-import io.spine.option.IsOption
-import io.spine.protodata.event.FileEntered
-import io.spine.protodata.find
-import io.spine.protodata.plugin.Policy
-import io.spine.server.event.React
-import io.spine.server.model.NoReaction
-import io.spine.server.tuple.EitherOf2
-import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
-import io.spine.tools.mc.java.marker.event.everyIsOptionDiscovered
+import com.google.protobuf.Message;
+import io.spine.annotation.GeneratedMixin;
+import io.spine.protobuf.Messages;
 
-internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
+/**
+ * The grouping interface for all types declared in {@code animals.proto}.
+ */
+@GeneratedMixin
+public interface Animal extends Message {
 
-    @React
-    override fun whenever(
-        @External event: FileEntered
-    ): EitherOf2<EveryIsOptionDiscovered, NoReaction> {
-        val found = event.header.optionList.find<IsOption>()
-        return if (found != null) {
-            EitherOf2.withA(
-                everyIsOptionDiscovered {
-                    file = event.file
-                    option = found
-                    header = event.header
-                }
-            )
-        } else {
-            EitherOf2.withB(nothing())
-        }
+    /**
+     * A stub method which simply obtains a default instance of the same class as this.
+     */
+    @SuppressWarnings("unused")
+    default <A extends Animal> A empty() {
+        @SuppressWarnings("unchecked")
+        var cls = (Class<A>) this.getClass();
+        return Messages.getDefaultInstance(cls);
     }
 }

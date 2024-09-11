@@ -27,21 +27,27 @@
 package io.spine.tools.mc.java.marker
 
 import com.google.protobuf.Message
+import com.intellij.psi.PsiJavaFile
 import io.spine.protodata.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.java.qualifiedJavaType
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.CreateInterface
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.SuperInterface
 import io.spine.tools.mc.java.superInterface
+import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.execute
+import io.spine.tools.psi.java.topLevelClass
 import org.checkerframework.checker.signature.qual.FullyQualifiedName
 
-internal class EveryIsMessagesRenderer : JavaRenderer() {
+internal class EveryIsOptionRenderer : JavaRenderer() {
 
     /**
      * The super base interface for all generated interfaces.
@@ -79,8 +85,15 @@ internal class EveryIsMessagesRenderer : JavaRenderer() {
     private fun EveryIsMessages.createInterface(interfaceName: @FullyQualifiedName String) {
         if (option.generate) {
             val iface = ClassName.guess(interfaceName)
-            CreateInterface(iface, superBase).render(sources)
+            val createdFile = CreateInterface(iface, superBase, context!!).render(sources)
+            annotate(createdFile)
         }
+    }
+
+    private fun annotate(file: SourceFile<Java>) {
+        val psiFile = file.psi() as PsiJavaFile
+        val annotation = GeneratedAnnotation.create()
+        psiFile.topLevelClass.addFirst(annotation)
     }
 
     private fun EveryIsMessages.implementInTypes(interfaceName: @FullyQualifiedName String) {

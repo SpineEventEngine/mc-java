@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.marker
 
+import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.File
 import io.spine.protodata.event.TypeDiscovered
@@ -45,7 +46,7 @@ internal class EveryIsMessagesView : View<File, EveryIsMessages, EveryIsMessages
     }
 
     @Subscribe
-    fun on(e: TypeDiscovered) {
+    fun on(@External e: TypeDiscovered) {
         if (state().hasOption()) {
             alter {
                 addType(e.type)

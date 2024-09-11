@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import io.spine.protodata.CodegenContext
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
@@ -39,18 +40,61 @@ import kotlin.io.path.exists
  *
  * @param name The name of the interface to be created.
  * @param superInterface Optional base type for the new interface to extend.
+ * @param context The code generation context in which this action runs.
+ * @throws IllegalArgumentException If the given interface name is nested.
  */
 public class CreateInterface(
     private val name: ClassName,
-    private val superInterface: SuperInterface? = null
+    private val superInterface: SuperInterface? = null,
+    private val context: CodegenContext
 ) {
-
-    public fun render(sources: SourceFileSet): SourceFile<Java> {
-        val sourceFile = sources.file(name.javaFile)
-        check(sourceFile.outputPath.exists().not()) {
-            "The source file `${sourceFile.outputPath}` already exists."
+    init {
+        require(name.isNested.not()) {
+            "The interface `$name` must not be nested."
         }
-        TODO("Not yet implemented")
     }
 
+    /**
+     * Creates a new Java file for the interface using its qualified [name] for calculating
+     * the path in the given [source file set][sources].
+     *
+     * @param sources The source file set in which to add the new file.
+     * @throws IllegalStateException If the file already exists.
+     */
+    public fun render(sources: SourceFileSet): SourceFile<Java> {
+        val targetFile = sources.outputRoot.resolve(name.javaFile)
+        check(targetFile.exists().not()) {
+            "The source file `$targetFile` already exists."
+        }
+        val code = compose()
+        @Suppress("UNCHECKED_CAST") /* The type is ensured by the file extension. */
+        val file = sources.createFile(name.javaFile, code) as SourceFile<Java>
+        return file
+    }
+
+    private fun compose(): String {
+        val packageBlock =
+            if (name.packageName.isEmpty()) ""
+            else "package ${name.packageName};\n\n"
+
+        val extendsBlock =
+            if (superInterface == null) ""
+            else "extends ${superInterface.reference} "
+
+        val fullCode = """
+            $packageBlock
+            public interface ${name.simpleName} $extendsBlock{
+            }
+            """.trimIndent()
+        return fullCode
+    }
 }
+
+private val SuperInterface.reference: String
+    get() {
+        val genericArgs = genericArgumentList.run {
+            if (isEmpty()) ""
+            else "<${joinToString(", ")}>"
+        }
+        return "${name}$genericArgs"
+    }

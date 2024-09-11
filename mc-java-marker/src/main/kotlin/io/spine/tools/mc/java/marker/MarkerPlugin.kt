@@ -47,6 +47,6 @@ public class MarkerPlugin : Plugin {
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(
-        EveryIsMessagesRenderer()
+        EveryIsOptionRenderer()
     )
 }

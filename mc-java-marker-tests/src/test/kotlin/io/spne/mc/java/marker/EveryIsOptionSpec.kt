@@ -24,36 +24,46 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.marker
+package io.spne.mc.java.marker
 
-import io.spine.core.External
-import io.spine.option.IsOption
-import io.spine.protodata.event.FileEntered
-import io.spine.protodata.find
-import io.spine.protodata.plugin.Policy
-import io.spine.server.event.React
-import io.spine.server.model.NoReaction
-import io.spine.server.tuple.EitherOf2
-import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
-import io.spine.tools.mc.java.marker.event.everyIsOptionDiscovered
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import java.nio.file.Path
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
+@DisplayName("`EveryIsOptionRenderer` should")
+internal class EveryIsOptionSpec {
 
-    @React
-    override fun whenever(
-        @External event: FileEntered
-    ): EitherOf2<EveryIsOptionDiscovered, NoReaction> {
-        val found = event.header.optionList.find<IsOption>()
-        return if (found != null) {
-            EitherOf2.withA(
-                everyIsOptionDiscovered {
-                    file = event.file
-                    option = found
-                    header = event.header
-                }
-            )
-        } else {
-            EitherOf2.withB(nothing())
+    companion object : MarkerPluginTestSetup() {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) {
+            generateCode(projectDir, outputDir, settingsDir)
+        }
+    }
+
+    @Nested inner class
+    `generate specified interface` {
+
+        private val file = sourceFileSet.find(
+            Path("io/spine/tools/mc/java/marker/given/fruit/Fruit.java")
+        )
+
+        @Test
+        fun `in the same package`() {
+            file shouldNotBe null
+            file!!.outputPath.exists() shouldBe true
         }
     }
 }
