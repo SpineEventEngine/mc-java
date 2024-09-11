@@ -81,8 +81,9 @@ public class CreateInterface(
             if (superInterface == null) ""
             else "extends ${superInterface.reference} "
 
-        val fullCode = """
-            $packageBlock
+        val fullCode =
+            packageBlock +
+            """
             public interface ${name.simpleName} $extendsBlock{
             }
             """.trimIndent()
