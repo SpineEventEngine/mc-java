@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
+import io.spine.compare.ComparatorRegistry
 import io.spine.protodata.CodegenContext
 import io.spine.protodata.Field
 import io.spine.protodata.MessageType
@@ -41,9 +42,7 @@ import io.spine.tools.code.Java
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
-import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownComparable
-import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownMessage
-import io.spine.tools.mc.java.comparable.action.WellKnown.isWellKnownValue
+import io.spine.tools.mc.java.comparable.action.ProtoValueMessages.isProtoValueMessage
 import io.spine.tools.mc.java.comparable.isComparable
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -75,16 +74,18 @@ public class AddComparator(
             "`compare_by` option should have at least one field specified in `$messageClass`."
         }
 
-        val messageLookup = MessageLookup(context!!)
+        val context = context!!
+        val messageLookup = MessageLookup(context)
         val fieldsLookup = FieldLookup(messageLookup)
+        val classLookup = ClassLookup(context)
         val comparator = ComparatorBuilder(cls)
 
         val rootMessage = type
         optionFields
             .associateWith { fieldPath -> fieldsLookup.resolve(fieldPath, rootMessage) }
             .forEach { (fieldPath, field) ->
-                validate(field, messageLookup)
-                comparator.comparingBy(fieldPath, field)
+                validate(field, messageLookup,classLookup)
+                comparator.comparingBy(fieldPath, field, messageLookup, classLookup)
             }
 
         if (option.descending) {
@@ -108,9 +109,10 @@ public class AddComparator(
      * 1. All primitives except for byte array.
      * 2. Enumerations (Java enums are implicitly comparable).
      * 3. Messages with `compare_by` option.
-     * 4. [WellKnown] messages.
+     * 4. [ProtoValueMessages] messages.
+     * 5. Messages, for which [ComparatorRegistry] has a comparator.
      */
-    private fun validate(field: Field, lookup: MessageLookup) {
+    private fun validate(field: Field, messageLookup: MessageLookup, classLookup: ClassLookup) {
         check(field.hasSingle()) {
             "`${field.name}` is not a single-value field and can not participate in comparison."
         }
@@ -121,9 +123,12 @@ public class AddComparator(
             }
 
             type.isMessage -> {
-                val message = lookup.query(type.message)
-                check(message.isComparable || message.isWellKnownComparable) {
-                    "The passed field has a non-comparable message type: `${type.message}`."
+                val message = messageLookup.query(type.message)
+                if (!message.isComparable) {
+                    val clazz = classLookup.query(message)
+                    check(clazz.isProtoValueMessage || ComparatorRegistry.contains(clazz)) {
+                        "The passed field has a non-comparable message type: `${type.message}`, ${clazz}."
+                    }
                 }
             }
 
@@ -133,17 +138,28 @@ public class AddComparator(
         }
     }
 
-    private fun ComparatorBuilder.comparingBy(path: FieldPath, field: Field) {
+    private fun ComparatorBuilder.comparingBy(
+        path: FieldPath,
+        field: Field,
+        messageLookup: MessageLookup,
+        classLookup: ClassLookup
+    ) {
         val type = field.type
-        when {
-            type.isWellKnownMessage -> {
-                val fieldComparator = WellKnown.comparatorFor(type)
-                comparingBy(path, fieldComparator)
+        if (type.isMessage) {
+            val message = messageLookup.query(type.message)
+            if (message.isComparable) {
+                comparingBy(path)
+            } else {
+                val clazz = classLookup.query(message)
+                if (clazz.isProtoValueMessage) {
+                    comparingBy("$path.value")
+                } else if (ComparatorRegistry.contains(clazz)) {
+                    val comparator = "io.spine.compare.ComparatorRegistry.get(${clazz.canonicalName}.class)"
+                    comparingBy(path, comparator)
+                }
             }
-
-            type.isWellKnownValue -> comparingBy("$path.value")
-
-            else -> comparingBy(path)
+        } else {
+            comparingBy(path)
         }
     }
 }

@@ -27,40 +27,32 @@
 package io.spine.tools.mc.java.comparable.action
 
 import io.spine.protodata.CodegenContext
+import io.spine.protodata.File
 import io.spine.protodata.MessageType
 import io.spine.protodata.ProtobufDependency
 import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.TypeName
+import io.spine.protodata.java.javaClassName
 
 /**
- * Looks for [MessageType] by [TypeName] in the given codegen [context].
+ * Looks for [Class] by [MessageType] in the given codegen [context].
  */
-internal class MessageLookup(private val context: CodegenContext) {
+internal class ClassLookup(private val context: CodegenContext) {
 
-    /**
-     * Queries [MessageType] by the given [typeName] in [CodegenContext].
-     *
-     * The method attempts to locate the message within the generated Proto files,
-     * then searches for it within their dependencies.
-     *
-     * @throws IllegalStateException if the message with the given type name is not found.
-     */
-    fun query(typeName: TypeName): MessageType {
-        val typeUrl = typeName.typeUrl
-        return fromOurProtos(typeUrl)
-            ?: fromDependencies(typeUrl)
-            ?: error("`$typeUrl` not found in the passed Proto files and their dependencies.")
+    fun query(type: MessageType): Class<*> {
+        val file = type.file
+        val protoFile = fromOurProtos(file)
+            ?: fromDependencies(file)
+            ?: error("The requested `$file` not found.")
+        val className = type.javaClassName(protoFile.header)
+        return Class.forName(className.canonical)
     }
 
-    private fun fromOurProtos(typeUrl: String): MessageType? =
+    private fun fromOurProtos(file: File): ProtobufSourceFile? =
         context.select(ProtobufSourceFile::class.java)
-            .all()
-            .firstOrNull { it.containsType(typeUrl) }
-            ?.typeMap?.get(typeUrl)
+            .findById(file)
 
-    private fun fromDependencies(typeUrl: String): MessageType? =
+    private fun fromDependencies(file: File): ProtobufSourceFile? =
         context.select(ProtobufDependency::class.java)
-            .all()
-            .firstOrNull { it.source.containsType(typeUrl) }
-            ?.source?.typeMap?.get(typeUrl)
+            .findById(file)
+            ?.source
 }

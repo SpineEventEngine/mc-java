@@ -26,11 +26,14 @@
 
 package io.spine.tools.mc.java.comparable
 
+import com.google.protobuf.Duration
+import com.google.protobuf.Timestamp
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiField
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
+import io.spine.string.lowerCamelCase
 import io.spine.tools.mc.java.comparable.action.AddComparator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -41,9 +44,8 @@ import org.junit.jupiter.api.Test
 internal class AddComparatorSpec {
 
     companion object : ComparablePluginTestSetup(AddComparator::class) {
-
-        const val TIMESTAMP_COMPARATOR = "com.google.protobuf.util.Timestamps.comparator()"
-        const val DURATION_COMPARATOR = "com.google.protobuf.util.Durations.comparator()"
+        val TIMESTAMP_COMPARATOR = fromRegistry<Timestamp>()
+        val DURATION_COMPARATOR = fromRegistry<Duration>()
     }
 
     @Nested inner class
@@ -89,7 +91,7 @@ internal class AddComparatorSpec {
         @Test
         fun `well-known value messages`() {
             val message = "WithValues"
-            val instance = message.lowerCased
+            val instance = message.lowerCamelCase()
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
@@ -125,7 +127,7 @@ internal class AddComparatorSpec {
         @Test
         fun `primitives, enums and comparable messages`() {
             val message = "Traveler"
-            val instance = message.lowerCased
+            val instance = message.lowerCamelCase()
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
@@ -141,7 +143,7 @@ internal class AddComparatorSpec {
         @Test
         fun `well-known 'Timestamp' and 'Duration'`() {
             val message = "NestedTimestampAndDuration"
-            val instance = message.lowerCased
+            val instance = message.lowerCamelCase()
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected =
@@ -155,7 +157,7 @@ internal class AddComparatorSpec {
         @Test
         fun `well-known value messages`() {
             val message = "NestedValues"
-            val instance = message.lowerCased
+            val instance = message.lowerCamelCase()
             val psiClass = generatedCodeOf(message)
             val field = psiClass.findComparatorField()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
@@ -223,5 +225,5 @@ internal class AddComparatorSpec {
 private fun PsiClass.findComparatorField(): PsiField? =
     fields.firstOrNull { it.name == "comparator" }
 
-private val String.lowerCased
-    get() = replaceFirstChar { it.lowercase() }
+private inline fun <reified T> fromRegistry() =
+    "io.spine.compare.ComparatorRegistry.get(${T::class.java.canonicalName}.class)"
