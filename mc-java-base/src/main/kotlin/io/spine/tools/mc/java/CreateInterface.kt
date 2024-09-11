@@ -24,19 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "UnusedParameter", "UnusedPrivateProperty")
-
 package io.spine.tools.mc.java
 
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
+import kotlin.io.path.exists
 
-public class CreateInterface(name: ClassName, superInterface: ClassName? = null) {
+/**
+ * Creates a new Java file with the interface with the given [name].
+ *
+ * The created interface will extend the [superInterface] if it is passed to the constructor.
+ *
+ * @param name The name of the interface to be created.
+ * @param superInterface Optional base type for the new interface to extend.
+ */
+public class CreateInterface(
+    private val name: ClassName,
+    private val superInterface: SuperInterface? = null
+) {
 
     public fun render(sources: SourceFileSet): SourceFile<Java> {
-
+        val sourceFile = sources.file(name.javaFile)
+        check(sourceFile.outputPath.exists().not()) {
+            "The source file `${sourceFile.outputPath}` already exists."
+        }
         TODO("Not yet implemented")
     }
 

@@ -32,8 +32,8 @@ import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.noParameter
-import io.spine.tools.mc.java.settings.superInterface
 import io.spine.tools.mc.java.settings.uuids
+import io.spine.tools.mc.java.superInterface
 import org.gradle.api.Project
 
 /**

@@ -23,39 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+syntax = "proto3";
 
-package io.spine.tools.mc.java
+package spine.tools.mc.java;
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
-import io.spine.tools.psi.java.Environment.elementFactory
-import io.spine.tools.psi.java.createClassReference
-import io.spine.tools.psi.java.implement
+import "spine/options.proto";
 
-/**
- * An abstract base for code generation actions that make a message class
- * implement the given superinterface.
- *
- * @param type The type of the message.
- * @param file The source code to which the action is applied.
- * @param superInterface The interface to implement.
- * @param context The code generation context in which this action runs.
- */
-public open class ImplementInterface(
-    type: MessageType,
-    file: SourceFile<Java>,
-    superInterface: SuperInterface,
-    context: CodegenContext
-) : DirectMessageAction<SuperInterface>(type, file, superInterface, context) {
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.java";
+option java_outer_classname = "SuperTypesProto";
+option java_multiple_files = true;
 
-    override fun doRender() {
-        val si = elementFactory.createClassReference(
-            parameter.name,
-            parameter.genericArgumentList,
-            cls
-        )
-        cls.implement(si)
-    }
+option (internal_all) = true;
+
+// Specification of an existing super interface a generated Java type should implement.
+message SuperInterface {
+
+    // The name of the interface.
+    //
+    // It could be a simple name if the generated types are in the same Java package.
+    // Otherwise, this value must contain a fully qualified canonical name.
+    //
+    string name = 1 [(required) = true];
+
+    // Optional arguments for generic parameters, if the interface has them.
+    //
+    // As for the interface name, the arguments could be simple names if corresponding
+    // types reside in the same package with the generated code.
+    // Otherwise, fully qualified canonical names must be provided.
+    //
+    repeated string generic_argument = 2;
 }

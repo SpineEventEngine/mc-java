@@ -39,7 +39,7 @@ import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.mc.java.settings.signals
-import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.superInterface
 import org.gradle.api.Project
 
 /**
