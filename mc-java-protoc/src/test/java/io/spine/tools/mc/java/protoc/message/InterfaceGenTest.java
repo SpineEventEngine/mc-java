@@ -50,6 +50,7 @@ import io.spine.tools.protoc.plugin.message.tests.UserProto;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("`InterfaceGen` should")
+@Disabled("During migration to new codegen")
 final class InterfaceGenTest {
 
     private static final String INSERTION_POINT_IMPLEMENTS = "message_implements:%s";

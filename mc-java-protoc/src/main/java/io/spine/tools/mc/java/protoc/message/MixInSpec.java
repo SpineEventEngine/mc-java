@@ -63,10 +63,10 @@ final class MixInSpec {
      * @see InterfaceGen#generate(Type)
      */
     static ImmutableList<CompilerOutput> scanOptionsFor(MessageType type) {
-        var fromFileOption = scanEveryIsOption(type);
+//        var fromFileOption = scanEveryIsOption(type);
         var fromTypeOption = scanIsOption(type);
         var deduplicated = ImmutableSet.<CompilerOutput>builder()
-                .addAll(fromFileOption)
+//                .addAll(fromFileOption)
                 .addAll(fromTypeOption)
                 .build();
         return deduplicated.asList();
