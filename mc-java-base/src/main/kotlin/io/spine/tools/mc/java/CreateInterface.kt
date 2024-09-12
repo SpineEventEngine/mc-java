@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java
 
-import io.spine.protodata.CodegenContext
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
@@ -40,13 +39,11 @@ import kotlin.io.path.exists
  *
  * @param name The name of the interface to be created.
  * @param superInterface Optional base type for the new interface to extend.
- * @param context The code generation context in which this action runs.
  * @throws IllegalArgumentException If the given interface name is nested.
  */
 public class CreateInterface(
     private val name: ClassName,
-    private val superInterface: SuperInterface? = null,
-    private val context: CodegenContext
+    private val superInterface: SuperInterface? = null
 ) {
     init {
         require(name.isNested.not()) {
