@@ -85,7 +85,7 @@ internal class EveryIsOptionRenderer : JavaRenderer() {
     private fun EveryIsMessages.createInterface(interfaceName: @FullyQualifiedName String) {
         if (option.generate) {
             val iface = ClassName.guess(interfaceName)
-            val createdFile = CreateInterface(iface, superBase, context!!).render(sources)
+            val createdFile = CreateInterface(iface, superBase).render(sources)
             annotate(createdFile)
         }
     }
