@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -34,24 +34,19 @@ option java_multiple_files = true;
 option java_outer_classname = "MixedTestProto";
 option java_package = "io.spine.test.tools.mc.java.protoc";
 
-option (every_is).java_type = "io.spine.test.tools.mc.java.protoc.PIUserEvent";
-option (every_is).generate = true;
+option (every_is) = {
+    java_type: "io.spine.test.tools.mc.java.protoc.PIUserEvent",
+    generate: true
+};
+
+import "spine/tools/mc/java/protoc/user_name.proto";
 
 message PIUserCreated {
     string uid = 1;
 }
 
 message PIUserNameUpdated {
-
     string uid = 1;
-
     UserName new_name = 2;
 }
 
-message UserName {
-    option (is).java_type = "io.spine.test.tools.mc.java.protoc.UserInfo";
-    option (is).generate = true;
-
-    string first_name = 1;
-    string last_name = 2;
-}

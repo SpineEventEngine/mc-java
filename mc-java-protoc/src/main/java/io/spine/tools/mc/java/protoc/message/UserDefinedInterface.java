@@ -56,8 +56,7 @@ final class UserDefinedInterface
     }
 
     /**
-     * Creates a new compiler output for implementing an interfaces specified in
-     * the passed option.
+     * Creates a new compiler output for implementing an interface specified in the given option.
      *
      * @param type
      *         the type which is going to implement the custom interface
@@ -67,7 +66,13 @@ final class UserDefinedInterface
     static UserDefinedInterface declaredFor(MessageType type, IsOption isOption) {
         checkNotNull(type);
         checkNotNull(isOption);
-        checkNotEmptyOrBlank(isOption.getJavaType());
+        checkNotEmptyOrBlank(
+                isOption.getJavaType(),
+                "Unexpected value of `java_type` encountered (`%s`) for the `(is)` option" +
+                        " defined in the type `%s`.",
+                isOption.getJavaType(),
+                type.name().value()
+        );
         var spec = createFor(type, isOption);
         var javaCode = spec.toJavaCode();
         var file = spec.toSourceFile();
