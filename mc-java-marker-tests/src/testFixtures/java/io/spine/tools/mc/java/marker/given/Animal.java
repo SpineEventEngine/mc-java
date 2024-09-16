@@ -39,7 +39,7 @@ public interface Animal extends Message {
     /**
      * A stub method which simply obtains a default instance of the same class as this.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "TypeParameterUnusedInFormals"})
     default <A extends Animal> A empty() {
         @SuppressWarnings("unchecked")
         var cls = (Class<A>) this.getClass();
