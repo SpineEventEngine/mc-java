@@ -24,12 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.tools.mc.java.marker
 
-/**
- * The interface to be mixed into the generated code.
- *
- * @see {@code is_test.proto} for details.
- */
-public interface PICustomerEvent {
-}
+import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.plugin.Policy
+
+//internal class IsOptionDiscovery : Policy<TypeDiscovered> {
+//}

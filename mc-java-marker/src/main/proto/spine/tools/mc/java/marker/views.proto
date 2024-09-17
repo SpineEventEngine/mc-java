@@ -57,3 +57,18 @@ message EveryIsMessages {
     // Message types declared in the file.
     repeated protodata.MessageType type = 4;
 }
+
+// A message type with `is` option.
+message MessageIs {
+
+    option (entity).kind = VIEW;
+
+    // The file in which the message type is declared.
+    protodata.File file = 1 [(required) = true];
+
+    // The message type with the declared option.
+    protodata.MessageType type = 2;
+
+    // The discovered option value.
+    IsOption option = 3 [(required) = true];
+}

@@ -24,14 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.test.tools.mc.java.protoc;
 
-import io.spine.base.EventMessage;
+import com.google.protobuf.Message;
 
 /**
  * The interface to be mixed into the generated code.
  *
- * @see {@code test_events.proto} for details.
+ * @see {@code is_nested.proto} for details.
  */
-public interface FirstEvent extends EventMessage {
+public interface Wrapped extends Message {
 }

@@ -24,30 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.marker
+package io.spine.test.tools.mc.java.protoc;
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import com.google.protobuf.Message;
 
 /**
- * The ProtoData plugin which performs code generation in response to discovering
- * [every_is][io.spine.option.IsOption] file option and [is][io.spine.option.IsOption]
- * message type option.
+ * The interface to be mixed into the code generated for {@code mixed_test.proto}.
  */
-public class MarkerPlugin : Plugin {
+public interface WithUserId extends Message {
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        EveryIsOptionDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        EveryIsMessagesView::class.java,
-        MessageIsView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        EveryIsOptionRenderer()
-    )
+    /**
+     * The accessor for {@code uid} proto fields on the generated code.
+     */
+    String getUid();
 }

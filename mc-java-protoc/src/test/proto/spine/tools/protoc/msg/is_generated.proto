@@ -37,7 +37,6 @@ option java_package = "io.spine.tools.protoc.plugin.message.tests";
 message ProtocSurnameUpdated {
     option (is) = {
         java_type: "io.spine.tools.protoc.plugin.message.tests.ProtocCustomerEvent"
-        generate: true
     };
 
     string uid = 1;
@@ -47,7 +46,6 @@ message ProtocSurnameUpdated {
 message ProtocUpdateSurname {
     option (is) = {
         java_type: "io.spine.tools.protoc.plugin.message.tests.ProtocCustomerCommand"
-        generate: true
     };
 
     string uid = 1;

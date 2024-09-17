@@ -28,11 +28,14 @@ package io.spine.tools.mc.java.marker
 
 import com.google.protobuf.Message
 import com.intellij.psi.PsiJavaFile
+import io.spine.option.IsOption
 import io.spine.protodata.MessageType
+import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.java.JavaTypeName.Companion.PACKAGE_SEPARATOR
 import io.spine.protodata.java.file.hasJavaRoot
-import io.spine.protodata.java.qualifiedJavaType
+import io.spine.protodata.java.javaPackage
 import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
@@ -113,3 +116,18 @@ internal class EveryIsOptionRenderer : JavaRenderer() {
         action.render()
     }
 }
+
+public fun IsOption.qualifiedJavaType(header: ProtoFileHeader): @FullyQualifiedName String {
+    check(javaType.isNotEmpty() && javaType.isNotBlank()) {
+        "The value of `java_type` must not be empty or blank. Got: `\"$javaType\"`."
+    }
+    return if (javaType.isQualified) {
+        javaType
+    } else {
+        "${header.javaPackage()}.$javaType"
+    }
+}
+
+private val String.isQualified: Boolean
+    get() = contains(PACKAGE_SEPARATOR)
+

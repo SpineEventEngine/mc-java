@@ -24,12 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.tools.mc.java.protoc.message.tests;
 
-/**
- * The interface to be mixed into the generated code.
- *
- * @see {@code is_test.proto} for details.
- */
-public interface PICustomerCommand {
+import io.spine.annotation.GeneratedMixin;
+
+@GeneratedMixin
+public interface LawSubject {
+    UserName getName();
 }

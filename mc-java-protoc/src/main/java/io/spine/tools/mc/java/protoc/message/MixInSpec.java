@@ -75,10 +75,10 @@ final class MixInSpec {
     /**
      * Scans the given {@linkplain FileDescriptorProto file} for the {@code (every_is)} option.
      */
-    private static ImmutableList<CompilerOutput> scanEveryIsOption(MessageType type) {
-        @Nullable IsOption option = EveryIs.of(type).orElse(null);
-        return process(type, option);
-    }
+//    private static ImmutableList<CompilerOutput> scanEveryIsOption(MessageType type) {
+//        @Nullable EveryIsOption option = EveryIs.of(type).orElse(null);
+//        return process(type, option);
+//    }
 
     private static ImmutableList<CompilerOutput> scanIsOption(MessageType type) {
         @Nullable IsOption option = Is.of(type).orElse(null);
@@ -97,11 +97,7 @@ final class MixInSpec {
     private static MixInSpec mixFor(MessageType type, IsOption isOption) {
         var fromOption = UserDefinedInterface.declaredFor(type, isOption);
         var standard = interfaceFor(type, fromOption);
-        @Nullable UserDefinedInterface custom =
-                isOption.getGenerate()
-                ? fromOption
-                : null;
-        var result = new MixInSpec(standard, custom);
+        var result = new MixInSpec(standard, null);
         return result;
     }
 

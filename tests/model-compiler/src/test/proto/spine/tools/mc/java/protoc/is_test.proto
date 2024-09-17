@@ -35,12 +35,14 @@ option java_outer_classname = "IsTestProto";
 option java_package = "io.spine.test.tools.mc.java.protoc";
 
 message PICustomerCreated {
+    // We rely that the type already exists in response to `(every_is).generate = true` from `every_is_test.proto`.
     option (is) = { java_type: "io.spine.test.tools.mc.java.protoc.PICustomerEvent" };
 
     string uid = 1;
 }
 
 message PICreateCustomer {
+    // We rely that the type already exists in response to `(every_is).generate = true` from `every_is_test.proto`.
     option (is) = { java_type: "io.spine.test.tools.mc.java.protoc.PICustomerCommand" };
 
     string uid = 1;

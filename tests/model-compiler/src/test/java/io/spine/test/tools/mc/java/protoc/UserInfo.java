@@ -24,13 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.test.tools.mc.java.protoc;
 
 /**
- * The interface to be mixed into the generated code.
+ * The interface to be mixed into the {@code UserName} message type.
  *
- * @see {@code is_nested.proto} for details.
+ * @see {@code user_name.proto} file for details
  */
-public interface Wrapper {
-
+public interface UserInfo {
+    String getFirstName();
+    String getLastName();
 }

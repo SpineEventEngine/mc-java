@@ -24,12 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.tools.mc.java.protoc.message.tests;
 
-/**
- * The interface to be mixed into the generated code.
- *
- * @see {@code is_nested.proto} for details.
- */
-public interface Wrapped {
+import io.spine.base.CommandMessage;
+
+@SuppressWarnings({"unused", "InterfaceNeverImplemented"}) // Use by the generated code.
+public interface ProtocCustomerCommand extends CommandMessage {
 }

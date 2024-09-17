@@ -24,14 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.test.tools.mc.java.protoc;
 
-/**
- * The interface to be mixed into the {@code UserName} message type.
- *
- * @see {@code user_name.proto} file for details
- */
-public interface UserInfo {
-    String getFirstName();
-    String getLastName();
+import com.google.errorprone.annotations.Immutable;
+import io.spine.type.SerializableMessage;
+
+@Immutable
+public interface SuffixedMessage extends SerializableMessage {
 }

@@ -42,10 +42,14 @@ option (every_is) = {
 import "spine/tools/mc/java/protoc/user_name.proto";
 
 message PIUserCreated {
+    option (is).java_type = "WithUserId";
+
     string uid = 1;
 }
 
 message PIUserNameUpdated {
+    option (is).java_type = "WithUserId";
+
     string uid = 1;
     UserName new_name = 2;
 }

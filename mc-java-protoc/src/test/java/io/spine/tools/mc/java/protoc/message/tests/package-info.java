@@ -24,30 +24,4 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.marker
-
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
-
-/**
- * The ProtoData plugin which performs code generation in response to discovering
- * [every_is][io.spine.option.IsOption] file option and [is][io.spine.option.IsOption]
- * message type option.
- */
-public class MarkerPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        EveryIsOptionDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        EveryIsMessagesView::class.java,
-        MessageIsView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        EveryIsOptionRenderer()
-    )
-}
+package io.spine.tools.mc.java.protoc.message.tests;

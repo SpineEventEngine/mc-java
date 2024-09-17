@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,11 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.protoc;
+package io.spine.test.tools.mc.java.protoc;
 
-import com.google.errorprone.annotations.Immutable;
-import io.spine.type.KnownMessage;
+import com.google.protobuf.Message;
 
-@Immutable
-public interface DocumentMessage extends KnownMessage {
+/**
+ * The interface to be mixed into the generated code.
+ *
+ * @see {@code is_nested.proto} for details.
+ */
+public interface Wrapper extends Message {
 }
