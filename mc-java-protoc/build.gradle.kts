@@ -32,15 +32,21 @@ dependencies {
     compileOnly(gradleApi())
     compileOnly(gradleKotlinDsl())
 
-    implementation(Spine.toolBase)
-    implementation(project(":mc-java-base"))
+    implementation(project(":mc-java-base")) {
+        excludeSpineBase()
+    }
+    implementation(Spine.base)
+
     implementation(JavaPoet.lib)
     implementation(JavaX.annotations)
 
     testImplementation(gradleTestKit())
-    testImplementation(Spine.base)
-    testImplementation(Spine.pluginTestlib)
+    testImplementation(Spine.pluginTestlib) {
+        excludeSpineBase()
+    }
 }
+
+forceSpineBase()
 
 tasks.jar {
     //TODO:2021-08-01:alexander.yevsyukov: Replace the below dependencies with output of `jar` tasks

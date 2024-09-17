@@ -35,7 +35,7 @@ dependencies {
     arrayOf(
         Spine.reflect,
         Spine.Logging.lib,
-        Spine.server,
+        Spine.base,
         Spine.psiJavaBundle,
         project(":mc-java-base")
     ).forEach {
@@ -50,3 +50,5 @@ dependencies {
         testImplementation(it)
     }
 }
+
+forceSpineBase()

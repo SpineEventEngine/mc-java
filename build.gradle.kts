@@ -58,7 +58,7 @@ buildscript {
                 force(
                     io.spine.internal.dependency.Grpc.api,
                     spine.reflect,
-                    spine.base,
+                    "io.spine:spine-base:2.0.0-SNAPSHOT.204",
                     spine.toolBase,
                     spine.server,
                     protoData.pluginLib(protoData.dogfoodingVersion),
@@ -71,6 +71,7 @@ buildscript {
     }
     dependencies {
         classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath("io.spine:spine-base:2.0.0-SNAPSHOT.204")
     }
 }
 

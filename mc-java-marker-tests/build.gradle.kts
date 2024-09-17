@@ -38,3 +38,5 @@ dependencies {
         testImplementation(it)
     }
 }
+
+forceSpineBase()
