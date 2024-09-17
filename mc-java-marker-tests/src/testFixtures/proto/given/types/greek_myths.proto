@@ -31,26 +31,15 @@ package given.types;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.java.marker.given.animal";
-option java_outer_classname = "AnimalsProto";
+option java_package = "io.spine.tools.mc.java.marker.given.animal.fiction.greek";
+option java_outer_classname = "GreekMythsProto";
 option java_multiple_files = true;
 
-// A simple interface name for the types of this file to implement.
-option (every_is).java_type = "Animal";
-
-message Elephant {
+message Pegasus {
+    option (is).java_type = "io.spine.tools.mc.java.marker.given.animal.Fictional";
 }
 
-message Zebra {
-}
-
-message Giraffe {
-}
-
-message Unicorn {
-    option (is).java_type = "Fictional";
-}
-
-message Dragon {
-    option (is).java_type = "Fictional";
+// https://en.wikipedia.org/wiki/Hippalectryon
+message Hippalektryon {
+    option (is).java_type = "io.spine.tools.mc.java.marker.given.animal.Fictional";
 }

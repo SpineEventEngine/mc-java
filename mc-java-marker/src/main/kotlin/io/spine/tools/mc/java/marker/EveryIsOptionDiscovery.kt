@@ -37,12 +37,16 @@ import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
 import io.spine.tools.mc.java.marker.event.everyIsOptionDiscovered
 
+/**
+ * Finds files with `(every_is)` option emitting [EveryIsOptionDiscovered], if found.
+ */
 internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
 
     @React
     override fun whenever(
         @External event: FileEntered
     ): EitherOf2<EveryIsOptionDiscovered, NoReaction> {
+        //TODO:2024-09-17:alexander.yevsyukov: Use EveryIsOption below.
         val found = event.header.optionList.find<IsOption>()
         return if (found != null) {
             EitherOf2.withA(

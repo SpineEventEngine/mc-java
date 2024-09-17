@@ -45,6 +45,7 @@ message EveryIsOptionDiscovered {
     // The file in which the option was discovered.
     protodata.File file = 1 [(required) = true];
 
+    //TODO:2024-09-17:alexander.yevsyukov: Use EveryIsOption below.
     // The discovered option value.
     IsOption option = 2 [(required) = true];
 

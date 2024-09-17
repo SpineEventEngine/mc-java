@@ -105,7 +105,7 @@ internal class EveryIsOptionSpec {
 
         private val javaFiles = files(
             Path(animalDir),
-            "Elephant", "Zebra", "Giraffe"
+            "Elephant", "Zebra", "Giraffe", "Unicorn"
         )
 
         @Test

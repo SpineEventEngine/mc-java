@@ -26,21 +26,32 @@
 
 package io.spine.tools.mc.java.marker
 
+import com.google.protobuf.Empty
 import io.spine.core.Subscribe
-import io.spine.protodata.File
 import io.spine.protodata.plugin.View
+import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
+import io.spine.server.route.EventRouting
 import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
 
 /**
  * Matches a message type to the value of [(is)][io.spine.option.IsOption] option
  * declared in the type.
  */
-internal class MessageIsView : View<File, MessageIs, MessageIs.Builder>() {
+internal class MessagesWithIsView : View<Empty, MessagesWithIs, MessagesWithIs.Builder>() {
 
     @Subscribe
     fun on(e: IsOptionDiscovered) = alter {
-        type = e.type
-        option = e.option
+        addType(e.type)
+    }
+
+    object Repository : ViewRepository<Empty, MessagesWithIsView, MessagesWithIs>() {
+
+        override fun setupEventRouting(routing: EventRouting<Empty>) {
+            super.setupEventRouting(routing)
+            routing.unicast<IsOptionDiscovered> { e, _ ->
+                Empty.getDefaultInstance()
+            }
+        }
     }
 }

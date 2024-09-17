@@ -24,48 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-syntax = "proto3";
+package io.spine.tools.mc.java.marker.given;
 
-package spine.tools.mc.java.mgroup;
+import com.google.protobuf.Message;
+import io.spine.annotation.GeneratedMixin;
+import io.spine.protobuf.Messages;
 
-import "spine/options.proto";
-
-option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.java.marker";
-option java_outer_classname = "ViewsProto";
-option java_multiple_files = true;
-
-import "google/protobuf/empty.proto";
-import "spine/protodata/ast.proto";
-import "spine/protodata/file.proto";
-import "spine/protodata/source.proto";
-
-
-// Messages discovered in a file with `(every_is)` option declared.
-message EveryIsMessages {
-
-    option (entity).kind = VIEW;
-
-    // The file in which the option was discovered.
-    protodata.File file = 1 [(required) = true];
-
-    //TODO:2024-09-17:alexander.yevsyukov: Use EveryIsOption below.
-    // The discovered option value.
-    IsOption option = 2 [(required) = true];
-
-    // The header of the file.
-    protodata.ProtoFileHeader header = 3 [(required) = true];
-
-    // Message types declared in the file.
-    repeated protodata.MessageType type = 4;
-}
-
-// Message types with `(is)` option.
-message MessagesWithIs {
-    option (entity).kind = VIEW;
-
-    google.protobuf.Empty singleton_id = 1;
-
-    // The discovered message types.
-    repeated protodata.MessageType type = 2;
+/**
+ * A stub interface for testing {@code (is)} option.
+ */
+@SuppressWarnings({"unused", "InterfaceNeverImplemented"}) // impl. in generated code.
+public interface Fictional extends Message {
 }

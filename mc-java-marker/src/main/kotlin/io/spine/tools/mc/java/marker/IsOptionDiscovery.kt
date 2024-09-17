@@ -26,8 +26,37 @@
 
 package io.spine.tools.mc.java.marker
 
+import io.spine.core.External
+import io.spine.option.IsOption
 import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.find
 import io.spine.protodata.plugin.Policy
+import io.spine.server.event.React
+import io.spine.server.model.NoReaction
+import io.spine.server.tuple.EitherOf2
+import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
+import io.spine.tools.mc.java.marker.event.isOptionDiscovered
 
-//internal class IsOptionDiscovery : Policy<TypeDiscovered> {
-//}
+/**
+ * Finds message types with `(is)` option emitting [IsOptionDiscovered], if found.
+ */
+internal class IsOptionDiscovery : Policy<TypeDiscovered>() {
+
+    @React
+    override fun whenever(
+        @External event: TypeDiscovered
+    ): EitherOf2<IsOptionDiscovered, NoReaction> {
+        val found = event.type.optionList.find<IsOption>()
+        return if (found != null) {
+            EitherOf2.withA(
+                isOptionDiscovered {
+                    file = event.file
+                    type = event.type
+                    option = found
+                }
+            )
+        } else {
+            EitherOf2.withB(nothing())
+        }
+    }
+}
