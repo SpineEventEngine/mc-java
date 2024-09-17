@@ -31,18 +31,15 @@ package given.types;
 import "spine/options.proto";
 
 option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.tools.mc.java.marker.given.animal";
-option java_outer_classname = "AnimalsProto";
+option java_package = "io.spine.tools.mc.java.marker.given.animal.lease";
+option java_outer_classname = "PandaProto";
 option java_multiple_files = true;
 
-// A simple interface name for the types of this file to implement.
-option (every_is).java_type = "Animal";
+// A fully qualified interface name to be implemented by the types of this file.
+option (every_is).java_type = "io.spine.tools.mc.java.marker.given.animal.Animal";
 
-message Elephant {
+message Panda {
 }
 
-message Zebra {
-}
-
-message Giraffe {
+message Pangolin {
 }

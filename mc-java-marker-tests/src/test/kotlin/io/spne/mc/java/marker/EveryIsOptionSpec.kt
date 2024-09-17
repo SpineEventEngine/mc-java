@@ -46,6 +46,8 @@ internal class EveryIsOptionSpec {
 
     companion object : MarkerPluginTestSetup() {
 
+        private const val animalDir = "io/spine/tools/mc/java/marker/given/animal"
+
         @BeforeAll
         @JvmStatic
         fun setup(
@@ -99,15 +101,15 @@ internal class EveryIsOptionSpec {
      * See `given/types/animals.proto`.
      */
     @Nested inner class
-    `use existing interface` {
+    `use existing interface in the same package` {
 
-        private val animalDir = Path("io/spine/tools/mc/java/marker/given/animal")
+        private val javaFiles = files(
+            Path(animalDir),
+            "Elephant", "Zebra", "Giraffe"
+        )
 
         @Test
         fun `in the same package`() {
-            val javaFiles = arrayOf("Elephant", "Zebra", "Giraffe")
-                .map { animalDir.resolve("$it.java") }
-
             javaFiles.forEach {
                 val file = sourceFileSet.find(it)
                 file shouldNotBe null
@@ -116,5 +118,34 @@ internal class EveryIsOptionSpec {
                 code shouldContain ", Animal {"
             }
         }
+    }
+
+    /**
+     * See `given/types/leased_animals.proto`.
+     */
+    @Nested inner class
+    `use existing interface from another package`() {
+        
+        private val javaFiles = files(
+            Path("io/spine/tools/mc/java/marker/given/animal/lease"),
+            "Panda", "Pangolin"
+        )
+
+        @Test
+        fun `from another package`() {
+            val qualifiedInterface = animalDir.replace('/', '.') + ".Animal"
+
+            javaFiles.forEach {
+                val file = sourceFileSet.find(it)
+                file shouldNotBe null
+                file!!.outputPath.exists() shouldBe true
+                val code = file.code()
+                code shouldContain ", $qualifiedInterface {"
+            }
+        }
+    }
+    
+    private fun files(packageDir: Path, vararg files: String): List<Path> {
+        return files.map { packageDir.resolve("$it.java") }
     }
 }
