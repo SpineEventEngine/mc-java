@@ -44,8 +44,6 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`EveryIsOptionRenderer` should")
 internal class EveryIsOptionSpec {
 
-    private val fruitDir = Path("io/spine/tools/mc/java/marker/given/fruit")
-
     companion object : MarkerPluginTestSetup() {
 
         @BeforeAll
@@ -59,9 +57,13 @@ internal class EveryIsOptionSpec {
         }
     }
 
+    /**
+     * See `given/types/fruits.proto`.
+     */
     @Nested inner class
     `generate an interface given as a simple name` {
 
+        private val fruitDir = Path("io/spine/tools/mc/java/marker/given/fruit")
         private val file = sourceFileSet.find(fruitDir.resolve("Fruit.java"))
 
         private val code: String
@@ -90,6 +92,29 @@ internal class EveryIsOptionSpec {
         @Test
         fun `making it extend the 'Message' interface`() {
             code shouldContain "extends ${Message::class.java.reference}"
+        }
+    }
+
+    /**
+     * See `given/types/animals.proto`.
+     */
+    @Nested inner class
+    `use existing interface` {
+
+        private val animalDir = Path("io/spine/tools/mc/java/marker/given/animal")
+
+        @Test
+        fun `in the same package`() {
+            val javaFiles = arrayOf("Elephant", "Zebra", "Giraffe")
+                .map { animalDir.resolve("$it.java") }
+
+            javaFiles.forEach {
+                val file = sourceFileSet.find(it)
+                file shouldNotBe null
+                file!!.outputPath.exists() shouldBe true
+                val code = file.code()
+                code shouldContain ", Animal {"
+            }
         }
     }
 }
