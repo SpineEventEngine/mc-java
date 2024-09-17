@@ -124,7 +124,7 @@ internal class EveryIsOptionSpec {
      * See `given/types/leased_animals.proto`.
      */
     @Nested inner class
-    `use existing interface from another package`() {
+    `use existing interface from another package` {
         
         private val javaFiles = files(
             Path("io/spine/tools/mc/java/marker/given/animal/lease"),
