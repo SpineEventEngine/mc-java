@@ -32,33 +32,18 @@ import io.spine.code.proto.DescriptorReference;
 import io.spine.tools.code.SourceSetName;
 import io.spine.tools.gradle.ProtocConfigurationPlugin;
 import io.spine.tools.gradle.task.GradleTask;
-import io.spine.tools.mc.java.gradle.McJava;
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static io.spine.io.Ensure.ensureFile;
-import static io.spine.io.Paths.toBase64Encoded;
 import static io.spine.tools.gradle.ProtocPluginName.grpc;
-import static io.spine.tools.gradle.ProtocPluginName.spineProtoc;
-import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.gradle.task.JavaTaskName.processResources;
 import static io.spine.tools.gradle.task.Tasks.getSourceSetName;
-import static io.spine.tools.mc.java.gradle.Artifacts.SPINE_MC_JAVA_ALL_PLUGINS_NAME;
 import static io.spine.tools.mc.java.gradle.Artifacts.gRpcProtocPlugin;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.writeDescriptorReference;
-import static io.spine.tools.mc.java.gradle.McJavaTaskName.writePluginConfiguration;
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
-import static io.spine.util.Exceptions.newIllegalStateException;
 
 /**
  * A Gradle plugin that performs additional {@code protoc} configurations relevant
@@ -72,9 +57,6 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
         plugins.create(grpc.name(),
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
-//        plugins.create(spineProtoc.name(),
-//                       locator -> locator.setArtifact(McJava.protocExe().notation())
-//        );
     }
 
     @Override
@@ -90,14 +72,6 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
      */
     private static class Helper {
 
-        /**
-         * The suffix for the names of {@linkplain #spineProtocConfigFile() configuration files}
-         * passed to {@code io.spine.tools.mc.java.protoc.Plugin}.
-         *
-         * @see #spineProtocConfigFile()
-         */
-        private static final String CONFIG_PB = "config.pb";
-
         private final Project project;
         private final GenerateProtoTask protocTask;
         private final SourceSetName sourceSetName;
@@ -112,7 +86,6 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
 
         private void configure() {
             customizeDescriptorSetGeneration();
-            addTaskDependency();
             addPlugins();
         }
 
@@ -149,89 +122,9 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
             };
         }
 
-        private void addTaskDependency() {
-            var writeConfig = writePluginConfigTask();
-            protocTask.dependsOn(writeConfig);
-        }
-
         private void addPlugins() {
             var plugins = protocTask.getPlugins();
             plugins.create(grpc.name());
-//            plugins.create(spineProtoc.name(),
-//                            options -> {
-//                                options.setOutputSubDir("java");
-//                                var filePath = spineProtocConfigFile();
-//                                var encodedPath = toBase64Encoded(filePath);
-//                                options.option(encodedPath);
-//                            });
-        }
-
-        /**
-         * Obtains a name of a configuration file which would be
-         * passed to {@code io.spine.tools.mc.java.protoc.Plugin} taking into account
-         * the name of the source set.
-         *
-         * <p>The name of the file does not really matter because it is passed
-         * as a single parameter of {@code com.google.protobuf.compiler.CodeGenerationRequest}.
-         * So, any valid file name would suffice. We add the name of the source set for clarity.
-         */
-        private Path spineProtocConfigFile() {
-            var prefix = sourceSetName.toPrefix();
-            var fileName = prefix.isEmpty()
-                           ? CONFIG_PB
-                           : prefix + '-' + CONFIG_PB;
-            var configFile = pluginTempDir().resolve(fileName);
-            return configFile;
-        }
-
-        private Path pluginTempDir() {
-            var buildDir = project.getBuildDir();
-            var result =
-                    Paths.get(buildDir.getAbsolutePath(), "tmp", SPINE_MC_JAVA_ALL_PLUGINS_NAME);
-            return result;
-        }
-
-        /**
-         * Creates a new {@code writePluginConfiguration} task
-         * that is expected to run after the {@code clean} task.
-         */
-        private Task writePluginConfigTask() {
-            var taskName = writePluginConfiguration(sourceSetName);
-            return GradleTask.newBuilder(taskName, writePluginConfig())
-                    .allowNoDependencies()
-                    .applyNowTo(project)
-                    .getTask()
-                    .mustRunAfter(clean.name());
-        }
-
-        private Action<Task> writePluginConfig() {
-            return task -> {
-                var configFile = spineProtocConfigFile();
-                var options = getMcJava(project);
-                checkNotNull(
-                        options.codegen,
-                        "Code generation options for message types are not set."
-                );
-                var codegenOptions = options.codegen.toProto();
-
-                ensureFile(configFile);
-                try (var fos = new FileOutputStream(configFile.toFile())) {
-                    codegenOptions.writeTo(fos);
-                } catch (FileNotFoundException e) {
-                    throw errorOn("create", e, configFile);
-                } catch (IOException e) {
-                    throw errorOn("store", e, configFile);
-                }
-            };
-        }
-
-        private static
-        IllegalStateException errorOn(String action, IOException cause, Path configFile) {
-            return newIllegalStateException(
-                    cause,
-                    "Unable to %s Spine Protoc Plugin configuration file at: `%s`.",
-                    action,
-                    configFile);
         }
     }
 }
