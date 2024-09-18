@@ -29,8 +29,7 @@ package io.spine.tools.mc.java.annotation
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.base.EntityState
 import io.spine.protodata.ProtoFileHeader
-import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.findHeader
 import io.spine.tools.mc.annotation.ApiOption
 import io.spine.tools.mc.annotation.WithOptions
 import io.spine.tools.mc.annotation.file
@@ -48,7 +47,7 @@ internal abstract class TypeAnnotator<T>(
         view.optionList
             .mapNotNull { ApiOption.findMatching(it) }
             .filter {
-                val header = findHeaderFor(view)
+                val header = findHeader(view.file)!!
                 needsAnnotation(it, header)
             }
             .map { annotationClass(it) }
@@ -58,7 +57,7 @@ internal abstract class TypeAnnotator<T>(
     }
 
     /**
-     * Tells if the given message type, enum or a service needs to be annotated
+     * Tells if the given message type, enum, or a service needs to be annotated
      * assuming the file header.
      *
      * If the file header tells having an outer Java class, options applied
@@ -76,16 +75,4 @@ internal abstract class TypeAnnotator<T>(
      * Adds the annotation to the type.
      */
     abstract fun annotateType(view: T, annotationClass: Class<out Annotation>)
-}
-
-private fun <T> Renderer<*>.findHeaderFor(view: T): ProtoFileHeader
-        where T : EntityState<*>, T : WithOptions {
-    val protoFile = view.file
-    val fileHeader = select<ProtobufSourceFile>().findById(protoFile)?.header
-    check(fileHeader != null) {
-        "Unable to find `${ProtobufSourceFile::class.java.simpleName}`" +
-                " file: `${protoFile.path}`, " +
-                " view: `${view}`."
-    }
-    return fileHeader
 }

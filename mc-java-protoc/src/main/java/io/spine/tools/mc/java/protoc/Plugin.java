@@ -68,7 +68,7 @@ public final class Plugin {
      */
     public static void main(String[] args) {
         var request = readRequest();
-        var settings = readSettings(request);
+//        var settings = readSettings(request);
         var generator = CompositeGenerator.of(
                 //InterfaceGen.instance(settings)//,
                 //MethodGen.instance(settings),

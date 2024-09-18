@@ -91,4 +91,3 @@ private fun annotate(file: SourceFile<Java>) {
     val updatedCode = psiFile.text
     file.overwrite(updatedCode)
 }
-

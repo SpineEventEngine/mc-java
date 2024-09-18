@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.marker
 
 import io.spine.option.IsOption
 import io.spine.protodata.MessageType
-import io.spine.protodata.ProtobufSourceFile
 import io.spine.protodata.find
+import io.spine.protodata.findHeader
 import io.spine.protodata.qualifiedName
 import io.spine.tools.mc.java.superInterface
 import io.spine.tools.psi.java.execute
@@ -52,9 +52,7 @@ internal class IsOptionRenderer : MarkerRenderer<MessagesWithIs>() {
         check(isOption != null) {
             "Unable to find `(is)` option for the type `${type.name.qualifiedName}`."
         }
-
-        //TODO:2024-09-18:alexander.yevsyukov: Obtain the header using ProtoData JavaRenderer API.
-        val header = select(ProtobufSourceFile::class.java).findById(type.file)!!.header
+        val header = findHeader(type.file)!!
         val interfaceName = isOption.qualifiedJavaType(header)
         val interfaceProto = superInterface {
             name = interfaceName
