@@ -27,14 +27,12 @@
 package io.spine.tools.mc.java
 
 import com.google.protobuf.Message
-import io.spine.annotation.GeneratedMixin
 import io.spine.protodata.MessageType
 
 /**
  * An interface common to view states that contain a list of render actions
  * to be applied to a message type.
  */
-@GeneratedMixin
 public interface TypeActions : Message, WithActions {
 
     /**
