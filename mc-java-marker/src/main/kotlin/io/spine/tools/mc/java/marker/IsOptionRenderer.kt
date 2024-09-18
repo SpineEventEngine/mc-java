@@ -26,32 +26,42 @@
 
 package io.spine.tools.mc.java.marker
 
-import com.google.protobuf.Empty
-import io.spine.core.Subscribe
-import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
-import io.spine.server.entity.alter
-import io.spine.server.route.EventRouting
-import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
+import io.spine.option.IsOption
+import io.spine.protodata.MessageType
+import io.spine.protodata.ProtobufSourceFile
+import io.spine.protodata.find
+import io.spine.protodata.qualifiedName
+import io.spine.tools.mc.java.superInterface
+import io.spine.tools.psi.java.execute
 
 /**
- * Matches a message type to the value of [(is)][io.spine.option.IsOption] option
- * declared in the type.
+ * Makes message classes implement an interface specified in the option `(is).java_type`.
+ *
+ * @see EveryIsOptionRenderer
  */
-internal class MessagesWithIsView : View<Empty, MessagesWithIs, MessagesWithIs.Builder>() {
+internal class IsOptionRenderer : MarkerRenderer<MessagesWithIs>() {
 
-    @Subscribe
-    fun on(e: IsOptionDiscovered) = alter {
-        addType(e.type)
+    override fun doRender(view: MessagesWithIs) {
+        view.typeList.forEach {
+            doRender(it)
+        }
     }
 
-    object Repository : ViewRepository<Empty, MessagesWithIsView, MessagesWithIs>() {
+    private fun doRender(type: MessageType) {
+        val isOption = type.optionList.find<IsOption>()
+        check(isOption != null) {
+            "Unable to find `(is)` option for the type `${type.name.qualifiedName}`."
+        }
 
-        override fun setupEventRouting(routing: EventRouting<Empty>) {
-            super.setupEventRouting(routing)
-            routing.unicast<IsOptionDiscovered> { e, _ ->
-                Empty.getDefaultInstance()
-            }
+        //TODO:2024-09-18:alexander.yevsyukov: Obtain the header using ProtoData JavaRenderer API.
+        val header = select(ProtobufSourceFile::class.java).findById(type.file)!!.header
+        val interfaceName = isOption.qualifiedJavaType(header)
+        val interfaceProto = superInterface {
+            name = interfaceName
+        }
+
+        execute {
+            type.implementInterface(interfaceProto)
         }
     }
 }

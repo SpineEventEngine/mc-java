@@ -26,34 +26,32 @@
 
 package io.spine.tools.mc.java.marker
 
-import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
+import com.google.protobuf.Empty
+import io.spine.core.Subscribe
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
-import io.spine.protodata.renderer.Renderer
+import io.spine.server.entity.alter
+import io.spine.server.route.EventRouting
+import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
 
 /**
- * The ProtoData plugin which performs code generation in response to discovering
- * [every_is][io.spine.option.IsOption] file option and [is][io.spine.option.IsOption]
- * message type option.
+ * Matches a message type to the value of [(is)][io.spine.option.IsOption] option
+ * declared in the type.
  */
-public class MarkerPlugin : Plugin {
+internal class MessagesWithIsView : View<Empty, MessagesWithIs, MessagesWithIs.Builder>() {
 
-    override fun policies(): Set<Policy<*>> = setOf(
-        EveryIsOptionDiscovery(),
-        IsOptionDiscovery(),
-    )
+    @Subscribe
+    fun on(e: IsOptionDiscovered) = alter {
+        addType(e.type)
+    }
 
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        EveryIsMessagesView::class.java
-    )
+    object Repository : ViewRepository<Empty, MessagesWithIsView, MessagesWithIs>() {
 
-    override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
-        MessagesWithIsView.Repository
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        EveryIsOptionRenderer(),
-        IsOptionRenderer(),
-    )
+        override fun setupEventRouting(routing: EventRouting<Empty>) {
+            super.setupEventRouting(routing)
+            routing.unicast<IsOptionDiscovered> { _, _ ->
+                Empty.getDefaultInstance()
+            }
+        }
+    }
 }

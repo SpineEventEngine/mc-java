@@ -28,29 +28,36 @@ package io.spine.tools.mc.java.marker
 
 import com.google.protobuf.Message
 import com.intellij.psi.PsiJavaFile
-import io.spine.option.IsOption
-import io.spine.protodata.MessageType
-import io.spine.protodata.ProtoFileHeader
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.JavaTypeName.Companion.PACKAGE_SEPARATOR
-import io.spine.protodata.java.file.hasJavaRoot
-import io.spine.protodata.java.javaPackage
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.CreateInterface
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.SuperInterface
 import io.spine.tools.mc.java.superInterface
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.execute
 import io.spine.tools.psi.java.topLevelClass
-import org.checkerframework.checker.signature.qual.FullyQualifiedName
 
-internal class EveryIsOptionRenderer : JavaRenderer() {
+/**
+ * Makes message classes implement an interface specified by the option `(every_is).java_type`.
+ *
+ * If the value of `(every_is).generated` is set to `true`, the interface is generated.
+ * Otherwise, the generated code assumes that the interface already exists.
+ *
+ * @see IsOptionRenderer
+ */
+internal class EveryIsOptionRenderer : MarkerRenderer<EveryIsMessages>() {
+
+    override fun doRender(view: EveryIsMessages) {
+        execute {
+            view.run {
+                val interfaceName = option.qualifiedJavaType(header)
+                createInterface(interfaceName)
+                implementInTypes(interfaceName)
+            }
+        }
+    }
 
     /**
      * The super base interface for all generated interfaces.
@@ -59,75 +66,29 @@ internal class EveryIsOptionRenderer : JavaRenderer() {
         name = Message::class.java.reference
     }
 
-    private lateinit var sources: SourceFileSet
-
-    override fun render(sources: SourceFileSet) {
-        if (!sources.hasJavaRoot) {
-            return
-        }
-        this.sources = sources
-        val views = findViews()
-        views.forEach {
-            execute {
-                it.doRender()
-            }
-        }
-    }
-
-    private fun findViews(): Set<EveryIsMessages> {
-        val found = select(EveryIsMessages::class.java).all()
-        return found
-    }
-
-    private fun EveryIsMessages.doRender() {
-        val interfaceName = option.qualifiedJavaType(header)
-        createInterface(interfaceName)
-        implementInTypes(interfaceName)
-    }
-
-    private fun EveryIsMessages.createInterface(interfaceName: @FullyQualifiedName String) {
+    private fun EveryIsMessages.createInterface(name: InterfaceName) {
         if (option.generate) {
-            val iface = ClassName.guess(interfaceName)
+            val iface = ClassName.guess(name)
             val createdFile = CreateInterface(iface, superBase).render(sources)
             annotate(createdFile)
         }
     }
 
-    private fun annotate(file: SourceFile<Java>) {
-        val psiFile = file.psi() as PsiJavaFile
-        val annotation = GeneratedAnnotation.create()
-        psiFile.topLevelClass.addFirst(annotation)
-        val updatedCode = psiFile.text
-        file.overwrite(updatedCode)
-    }
-
-    private fun EveryIsMessages.implementInTypes(interfaceName: @FullyQualifiedName String) {
+    private fun EveryIsMessages.implementInTypes(name: InterfaceName) {
         val interfaceProto = superInterface {
-            name = interfaceName
+            this.name = name
         }
         typeList.forEach {
             it.implementInterface(interfaceProto)
         }
     }
-
-    private fun MessageType.implementInterface(superInterface: SuperInterface) {
-        val file = sources.javaFileOf(this)
-        val action = ImplementInterface(this, file, superInterface, context!!)
-        action.render()
-    }
 }
 
-public fun IsOption.qualifiedJavaType(header: ProtoFileHeader): @FullyQualifiedName String {
-    check(javaType.isNotEmpty() && javaType.isNotBlank()) {
-        "The value of `java_type` must not be empty or blank. Got: `\"$javaType\"`."
-    }
-    return if (javaType.isQualified) {
-        javaType
-    } else {
-        "${header.javaPackage()}.$javaType"
-    }
+private fun annotate(file: SourceFile<Java>) {
+    val psiFile = file.psi() as PsiJavaFile
+    val annotation = GeneratedAnnotation.create()
+    psiFile.topLevelClass.addFirst(annotation)
+    val updatedCode = psiFile.text
+    file.overwrite(updatedCode)
 }
-
-private val String.isQualified: Boolean
-    get() = contains(PACKAGE_SEPARATOR)
 

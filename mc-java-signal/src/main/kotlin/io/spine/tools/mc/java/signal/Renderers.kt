@@ -54,8 +54,9 @@ internal abstract class SignalRenderer<V> :
      */
     protected abstract val typeSettings: Signals
 
-    override val enabledBySettings: Boolean
-        get() = typeSettings.actions.actionMap.isNotEmpty()
+    override fun isEnabled(settings: SignalSettings): Boolean {
+        return typeSettings.actions.actionMap.isNotEmpty()
+    }
 
     @OverridingMethodsMustInvokeSuper
     override fun doRender(type: MessageType, file: SourceFile<Java>) {

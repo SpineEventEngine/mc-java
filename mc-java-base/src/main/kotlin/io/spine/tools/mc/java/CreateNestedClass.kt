@@ -123,7 +123,7 @@ public abstract class CreateNestedClass(
      *
      * The default implementation returns the result of [GeneratedAnnotation.create].
      *
-     * Overriding methods may return custom annotation or `null`, if no annotation is needed.
+     * Overriding methods may return custom annotation or `null`, if no annotation is necessary.
      */
     protected open fun createAnnotation(): PsiAnnotation? = GeneratedAnnotation.create()
 

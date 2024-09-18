@@ -47,8 +47,7 @@ public class EntityStateRenderer :
     TypeListRenderer<DiscoveredEntities, Entities>(),
     EntityPluginComponent {
 
-    override val enabledBySettings: Boolean
-        get() = settings.generateQueries
+    override fun isEnabled(settings: Entities): Boolean = settings.generateQueries
 
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {

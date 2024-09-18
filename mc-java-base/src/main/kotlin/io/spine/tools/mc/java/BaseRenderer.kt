@@ -26,40 +26,17 @@
 
 package io.spine.tools.mc.java
 
-import com.google.protobuf.Message
+import com.google.protobuf.Empty
 import io.spine.base.EntityState
-import io.spine.protodata.File
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
-import io.spine.tools.code.Java
 
 /**
- * An abstract base for Java renders handling message types.
+ * An abstract base for renders that do not have settings.
  *
- * This class applies multiple render actions to multiple types.
- * For applying rendering actions to one type, please see [TypeRenderer].
+ * @param V the type of the view state which the renderer uses for code generation.
  *
- * @param V the type of the view state which gathers messages types served by this renderer.
- *  The type is an [EntityState] that has [File] as its identifier and
- *  implements the [io.spine.tools.mc.java.TypeListActions] interface.
- * @param S the type of the settings used by the renderer.
- *
- * @see TypeRenderer
+ * @see AbstractRenderer
  */
-public abstract class TypeListRenderer<V, S : Message> : AbstractRenderer<V, S>()
-        where V : EntityState<File>, V : TypeListActions {
+public abstract class BaseRenderer<V : EntityState<*>> : AbstractRenderer<V, Empty>() {
 
-    /**
-     * Implement this method to render the code for the given entity state [type]
-     * the source code of which present in the given [file].
-     */
-    protected abstract fun doRender(type: MessageType, file: SourceFile<Java>)
-
-    final override fun doRender(view: V) {
-        val types = view.getTypeList()
-        types.forEach {
-            val sourceFile = sources.javaFileOf(it)
-            doRender(it, sourceFile)
-        }
-    }
+    final override fun isEnabled(settings: Empty): Boolean = true
 }
