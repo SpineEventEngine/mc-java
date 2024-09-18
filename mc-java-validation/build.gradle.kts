@@ -52,7 +52,7 @@ dependencies {
     // historical reference, until we remove it completely along with the rest of
     // the outdated validation code.
     //
-    implementation(project(":mc-java-protoc"))
+//    implementation(project(":mc-java-protoc"))
     implementation(project(":mc-java-base"))
 
     testImplementation(Spine.testlib)

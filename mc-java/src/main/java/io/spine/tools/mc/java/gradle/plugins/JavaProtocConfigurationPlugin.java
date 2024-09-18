@@ -72,9 +72,9 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
         plugins.create(grpc.name(),
                        locator -> locator.setArtifact(gRpcProtocPlugin().notation())
         );
-        plugins.create(spineProtoc.name(),
-                       locator -> locator.setArtifact(McJava.protocExe().notation())
-        );
+//        plugins.create(spineProtoc.name(),
+//                       locator -> locator.setArtifact(McJava.protocExe().notation())
+//        );
     }
 
     @Override
@@ -157,13 +157,13 @@ public final class JavaProtocConfigurationPlugin extends ProtocConfigurationPlug
         private void addPlugins() {
             var plugins = protocTask.getPlugins();
             plugins.create(grpc.name());
-            plugins.create(spineProtoc.name(),
-                            options -> {
-                                options.setOutputSubDir("java");
-                                var filePath = spineProtocConfigFile();
-                                var encodedPath = toBase64Encoded(filePath);
-                                options.option(encodedPath);
-                            });
+//            plugins.create(spineProtoc.name(),
+//                            options -> {
+//                                options.setOutputSubDir("java");
+//                                var filePath = spineProtocConfigFile();
+//                                var encodedPath = toBase64Encoded(filePath);
+//                                options.option(encodedPath);
+//                            });
         }
 
         /**
