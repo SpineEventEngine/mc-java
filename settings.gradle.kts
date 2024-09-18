@@ -35,7 +35,6 @@ include(
     "mc-java-entity-tests",
     "mc-java-signal",
     "mc-java-signal-tests",
-//    "mc-java-protoc",
     "mc-java-marker",
     "mc-java-marker-tests",
     "mc-java-message-group",
