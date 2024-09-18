@@ -38,5 +38,8 @@ import io.spine.base.EntityState
  */
 public abstract class BaseRenderer<V : EntityState<*>> : AbstractRenderer<V, Empty>() {
 
+    /**
+     * Always returns `true`.
+     */
     final override fun isEnabled(settings: Empty): Boolean = true
 }

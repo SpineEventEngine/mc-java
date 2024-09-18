@@ -37,6 +37,9 @@ import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.SuperInterface
 import org.checkerframework.checker.signature.qual.FullyQualifiedName
 
+/**
+ * The base interface for renderers that make a message type to implement an interface.
+ */
 internal abstract class MarkerRenderer<V : EntityState<*>> : BaseRenderer<V>() {
 
     /**
@@ -49,6 +52,9 @@ internal abstract class MarkerRenderer<V : EntityState<*>> : BaseRenderer<V>() {
     }
 }
 
+/**
+ * A fully qualified name of a Java interface.
+ */
 internal typealias InterfaceName = @FullyQualifiedName String
 
 //TODO:2024-09-18:alexander.yevsyukov: Use ext. ProtoData when new options are available.
