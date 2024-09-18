@@ -49,7 +49,7 @@ public class MarkerPlugin : Plugin {
     )
 
     override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
-        MessagesWithIsView.Repository
+        MessagesWithIsView.Repository()
     )
 
     override fun renderers(): List<Renderer<*>> = listOf(

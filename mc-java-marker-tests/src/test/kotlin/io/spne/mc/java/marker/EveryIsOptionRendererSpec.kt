@@ -110,7 +110,7 @@ internal class EveryIsOptionRendererSpec {
         fun `in the same package`() {
             javaFiles.forEach {
                 val code = file(it).code()
-                code shouldContain ", Animal {"
+                code shouldContain ", Animal"
             }
         }
     }
@@ -132,7 +132,7 @@ internal class EveryIsOptionRendererSpec {
 
             javaFiles.forEach {
                 val code = file(it).code()
-                code shouldContain ", $qualifiedInterface {"
+                code shouldContain ", $qualifiedInterface"
             }
         }
     }

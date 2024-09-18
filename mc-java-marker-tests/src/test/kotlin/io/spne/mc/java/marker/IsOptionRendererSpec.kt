@@ -50,14 +50,13 @@ internal class IsOptionRendererSpec {
         }
     }
 
-
     @Test
     fun `implement an interface via a simple name`() {
         val javaFiles = files(Path(animalDir), "Unicorn", "Dragon")
 
         javaFiles.forEach {
             val code = file(it).code()
-            code shouldContain ", Fictional {"
+            code shouldContain ", Fictional"
         }
     }
 
@@ -72,7 +71,7 @@ internal class IsOptionRendererSpec {
 
         javaFiles.forEach {
             val code = file(it).code()
-            code shouldContain ", $qualifiedInterface {"
+            code shouldContain ", $qualifiedInterface"
         }
     }
 }

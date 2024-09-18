@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.marker
 
-import com.google.protobuf.Empty
 import io.spine.core.Subscribe
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
@@ -46,7 +45,7 @@ internal class MessagesWithIsView : View<String, MessagesWithIs, MessagesWithIs.
         addType(e.type)
     }
 
-    object Repository : ViewRepository<String, MessagesWithIsView, MessagesWithIs>() {
+    internal class Repository : ViewRepository<String, MessagesWithIsView, MessagesWithIs>() {
 
         override fun setupEventRouting(routing: EventRouting<String>) {
             super.setupEventRouting(routing)
