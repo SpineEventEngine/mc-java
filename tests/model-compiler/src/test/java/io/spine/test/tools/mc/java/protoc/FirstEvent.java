@@ -31,7 +31,7 @@ import io.spine.base.EventMessage;
 /**
  * The interface to be mixed into the generated code.
  *
- * @see {@code test_events.proto} for details.
+ * @see <code>test_events.proto</code> for details.
  */
 public interface FirstEvent extends EventMessage {
 }

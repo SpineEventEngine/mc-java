@@ -31,7 +31,7 @@ import com.google.protobuf.Message;
 /**
  * The interface to be mixed into the generated code.
  *
- * @see {@code is_test.proto} for details.
+ * @see <code>is_test.proto</code> for details.
  */
 public interface PICustomerCommand extends Message {
 }
