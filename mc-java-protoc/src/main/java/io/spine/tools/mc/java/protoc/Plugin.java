@@ -70,7 +70,7 @@ public final class Plugin {
         var request = readRequest();
         var settings = readSettings(request);
         var generator = CompositeGenerator.of(
-                InterfaceGen.instance(settings)//,
+                //InterfaceGen.instance(settings)//,
                 //MethodGen.instance(settings),
                 //new BuilderGen()
                 //NestedClassGen.instance(settings)

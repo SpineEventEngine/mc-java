@@ -32,25 +32,26 @@ import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
 import io.spine.server.route.EventRouting
+import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
 
 /**
  * Matches a message type to the value of [(is)][io.spine.option.IsOption] option
  * declared in the type.
  */
-internal class MessagesWithIsView : View<Empty, MessagesWithIs, MessagesWithIs.Builder>() {
+internal class MessagesWithIsView : View<String, MessagesWithIs, MessagesWithIs.Builder>() {
 
     @Subscribe
     fun on(e: IsOptionDiscovered) = alter {
         addType(e.type)
     }
 
-    object Repository : ViewRepository<Empty, MessagesWithIsView, MessagesWithIs>() {
+    object Repository : ViewRepository<String, MessagesWithIsView, MessagesWithIs>() {
 
-        override fun setupEventRouting(routing: EventRouting<Empty>) {
+        override fun setupEventRouting(routing: EventRouting<String>) {
             super.setupEventRouting(routing)
             routing.unicast<IsOptionDiscovered> { _, _ ->
-                Empty.getDefaultInstance()
+                MessagesWithIsView::class.reference
             }
         }
     }

@@ -64,7 +64,8 @@ message EveryIsMessages {
 message MessagesWithIs {
     option (entity).kind = VIEW;
 
-    google.protobuf.Empty singleton_id = 1;
+    // Provided by routing of the repository.
+    string singleton_id = 1;
 
     // The discovered message types.
     repeated protodata.MessageType type = 2;

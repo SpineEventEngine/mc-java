@@ -42,11 +42,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`EveryIsOptionRenderer` should")
-internal class EveryIsOptionSpec {
+internal class EveryIsOptionRendererSpec {
 
     companion object : MarkerPluginTestSetup() {
-
-        private const val animalDir = "io/spine/tools/mc/java/marker/given/animal"
 
         @BeforeAll
         @JvmStatic
@@ -111,10 +109,7 @@ internal class EveryIsOptionSpec {
         @Test
         fun `in the same package`() {
             javaFiles.forEach {
-                val file = sourceFileSet.find(it)
-                file shouldNotBe null
-                file!!.outputPath.exists() shouldBe true
-                val code = file.code()
+                val code = file(it).code()
                 code shouldContain ", Animal {"
             }
         }
@@ -133,19 +128,12 @@ internal class EveryIsOptionSpec {
 
         @Test
         fun `from another package`() {
-            val qualifiedInterface = animalDir.replace('/', '.') + ".Animal"
+            val qualifiedInterface = "$animalPackage.Animal"
 
             javaFiles.forEach {
-                val file = sourceFileSet.find(it)
-                file shouldNotBe null
-                file!!.outputPath.exists() shouldBe true
-                val code = file.code()
+                val code = file(it).code()
                 code shouldContain ", $qualifiedInterface {"
             }
         }
-    }
-    
-    private fun files(packageDir: Path, vararg files: String): List<Path> {
-        return files.map { packageDir.resolve("$it.java") }
     }
 }

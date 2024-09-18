@@ -27,18 +27,37 @@
 package io.spne.mc.java.marker
 
 import com.google.protobuf.Empty
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.spine.protodata.renderer.SourceFile
 import io.spine.protodata.renderer.SourceFileSet
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.marker.MarkerPlugin
 import java.nio.file.Path
+import kotlin.io.path.exists
 import org.junit.jupiter.api.io.TempDir
 
 /**
  * Abstract base for [MarkerPlugin] tests.
  *
  * The plugin does not have settings.
+ *
+ * The class exposes properties common for tests based on proto types
+ * generated in response to files under `testFixtures/proto/given/types`.
  */
 internal abstract class MarkerPluginTestSetup : PluginTestSetup<Empty>(MarkerPlugin(), "") {
+
+    /**
+     * The directory of the Java package generated for proto types in `animals.proto` and
+     * their siblings of the same "domain".
+     */
+    internal val animalDir = "io/spine/tools/mc/java/marker/given/animal"
+
+    /**
+     * The package corresponding to [animalDir].
+     */
+    internal val animalPackage = animalDir.replace('/', '.')
 
     lateinit var sourceFileSet: SourceFileSet
 
@@ -50,5 +69,20 @@ internal abstract class MarkerPluginTestSetup : PluginTestSetup<Empty>(MarkerPlu
         @TempDir settingsDir: Path
     ) {
         sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
+    }
+
+    internal fun files(packageDir: Path, vararg files: String): List<Path> {
+        return files.map { packageDir.resolve("$it.java") }
+    }
+
+    /**
+     * Locates the file with the given [path], asserting its existence.
+     */
+    internal fun file(path: Path): SourceFile<Java> {
+        val file = sourceFileSet.find(path)
+        file shouldNotBe null
+        file!!.outputPath.exists() shouldBe true
+        @Suppress("UNCHECKED_CAST")
+        return file as SourceFile<Java>
     }
 }
