@@ -62,7 +62,4 @@ message IsOptionDiscovered {
 
     // The message type in which the option was discovered.
     protodata.MessageType type = 2 [(required) = true];
-
-    // The discovered option value.
-    IsOption option = 3 [(required) = true];
 }

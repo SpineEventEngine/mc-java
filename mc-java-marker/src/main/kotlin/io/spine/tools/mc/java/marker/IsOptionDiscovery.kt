@@ -52,7 +52,6 @@ internal class IsOptionDiscovery : Policy<TypeDiscovered>() {
                 isOptionDiscovered {
                     file = event.file
                     type = event.type
-                    option = found
                 }
             )
         } else {
