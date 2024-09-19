@@ -25,25 +25,13 @@
  */
 
 import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.WriteVersions
 
 dependencies {
-
-    // Dependencies related to code generation
-    implementation(JavaPoet.lib)
-    implementation(Roaster.api) {
-        exclude(group = "com.google.guava")
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = "com.google.guava")
-    }
-
     implementation(ProtoData.pluginLib)
 
     // We access the Protobuf Gradle Plugin extension, so we need it as a dependency.
