@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.mgroup
 
 import io.spine.core.External
-import io.spine.protodata.MessageType
 import io.spine.protodata.event.TypeDiscovered
 import io.spine.protodata.isTopLevel
 import io.spine.protodata.plugin.Policy
@@ -71,7 +70,3 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
         }
     }
 }
-
-//TODO:2024-08-06:alexander.yevsyukov: Migrate to `isTopLevel` from ProtoData.
-private val MessageType.isTopLevel: Boolean
-    get() = !hasDeclaredIn()
