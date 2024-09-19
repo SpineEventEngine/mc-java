@@ -1,11 +1,11 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -33,20 +33,14 @@ plugins {
 }
 
 dependencies {
-    val guavaGroup = "com.google.guava"
-    implementation(Roaster.api) {
-        exclude(group = guavaGroup)
-    }
-    implementation(Roaster.jdt) {
-        exclude(group = guavaGroup)
-    }
-
     implementation(project(":mc-java-base"))
     implementation(Spine.server)
     implementation(Spine.Logging.lib)
 
     testFixturesImplementation(Spine.toolBase)
     testFixturesImplementation(Spine.testlib)
+
+    val guavaGroup = "com.google.guava"
     testFixturesImplementation(Roaster.api) {
         exclude(group = guavaGroup)
     }
@@ -63,31 +57,6 @@ dependencies {
  */
 tasks.test {
     dependsOn(rootProject.tasks.named("localPublish"))
-
-    // Notify the developer to run remote debugging in the build script of
-    // integration tests expects it.
-    doFirst {
-        val integrationTestBuild = file(
-            "src/test/resources/annotator-plugin-test/build.gradle.kts"
-        ).readText()
-
-        // Here we check a line in the build script that enables remote debugging.
-        // Notice the comment at the end, to avoid false positives, if/when
-        // another `enabled` flag is introduced.
-        // Make sure that the comment is not removed in the build script.
-        val remoteDebug = integrationTestBuild.contains("enabled.set(true) // Set this option")
-        if (remoteDebug) {
-            val pattern = "port.set\\((\\d+)\\)".toRegex()
-            val port = pattern.find(integrationTestBuild)?.groupValues?.get(1)
-            System.err.run {
-                println("""
-                ProtoData CLI is launching in remote debug mode. 
-                Waiting for the remote debugger to attach to the port $port...                
-                """.trimIndent())
-                flush()
-            }
-        }
-    }
 }
 
 tasks.withType<ProcessResources>().configureEach {
