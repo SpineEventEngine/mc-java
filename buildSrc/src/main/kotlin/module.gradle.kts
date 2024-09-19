@@ -77,11 +77,6 @@ LicenseReporter.generateReportIn(project)
 JavadocConfig.applyTo(project)
 CheckStyleConfig.applyTo(project)
 
-private object BuildSettings {
-    private const val JAVA_VERSION = 11
-    val javaVersion: JavaLanguageVersion = JavaLanguageVersion.of(JAVA_VERSION)
-}
-
 project.run {
     addDependencies()
     forceConfigurations()
