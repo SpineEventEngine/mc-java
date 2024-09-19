@@ -29,7 +29,7 @@ package io.spine.test.tools.mc.java.protoc;
 /**
  * The interface to be mixed into the {@code UserName} message type.
  *
- * @see <code>user_name.proto</code> file for details
+ * @see <code>user_name.proto</code> file for details.
  */
 public interface UserInfo {
     String getFirstName();

@@ -60,8 +60,8 @@ public open class ImplementInterface(
     /**
      * Calculates the reference to the interface to be used in the code.
      *
-     * If the interface is in the same package with the class, use simple name(s).
-     * Otherwise, use the canonical name.
+     * If the interface is in the same package with the class, uses simple name(s).
+     * Otherwise, uses the canonical name.
      */
     private fun interfaceReference(): String {
         val iface = ClassName.guess(parameter.name)

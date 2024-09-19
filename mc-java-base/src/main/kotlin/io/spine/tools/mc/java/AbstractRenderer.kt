@@ -35,7 +35,7 @@ import io.spine.protodata.renderer.SourceFileSet
 import io.spine.reflect.argumentIn
 
 /**
- * An abstract base for Java renders that takes previously accumulated views as the input.
+ * An abstract base for Java renderers that takes previously accumulated views as the input.
  *
  * The renderer generates the code by traversing all the view states specified by the generic
  * parameter [V].
@@ -43,8 +43,8 @@ import io.spine.reflect.argumentIn
  * The code generation process may be tuned by the settings which should be stored
  * before the rendering process starts.
  *
- * @param V the type of the view state which the renderer uses for code generation.
- * @param S the type of the settings used by the renderer. Use [Empty] if settings are not used.
+ * @param V The type of the view state which the renderer uses for code generation.
+ * @param S The type of the settings used by the renderer. Use [Empty] if settings are not used.
  *
  * @see io.spine.protodata.settings.LoadsSettings
  */
