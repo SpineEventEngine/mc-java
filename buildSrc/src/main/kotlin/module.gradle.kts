@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.internal.dependency.Caffeine
 import io.spine.internal.dependency.CheckerFramework
@@ -76,11 +75,6 @@ apply<VersionWriter>()
 LicenseReporter.generateReportIn(project)
 JavadocConfig.applyTo(project)
 CheckStyleConfig.applyTo(project)
-
-private object BuildSettings {
-    private const val JAVA_VERSION = 11
-    val javaVersion: JavaLanguageVersion = JavaLanguageVersion.of(JAVA_VERSION)
-}
 
 project.run {
     addDependencies()

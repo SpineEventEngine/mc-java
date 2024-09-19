@@ -37,7 +37,7 @@ import io.spine.tools.code.Java
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.superInterface
 
 /**
  * Updates the Java code of a message type which qualifies as [EntityState] by

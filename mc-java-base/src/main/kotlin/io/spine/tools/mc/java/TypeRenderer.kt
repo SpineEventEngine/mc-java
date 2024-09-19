@@ -28,11 +28,7 @@ package io.spine.tools.mc.java
 
 import io.spine.base.EntityState
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.reflect.argumentIn
 import io.spine.tools.code.Java
 import io.spine.tools.psi.java.execute
 
@@ -42,38 +38,23 @@ import io.spine.tools.psi.java.execute
  * The type and actions are obtained from a view implementing [TypeActions].
  * The renderer acts on all the views queried by their [viewClass].
  *
+ * @param V The type of the view state which the renderer uses for code generation.
+ *
  * @see TypeListRenderer
  */
-public abstract class TypeRenderer<V>  : JavaRenderer()
+public abstract class TypeRenderer<V>  : BaseRenderer<V>()
         where V : EntityState<*>, V : TypeActions {
 
-    private val viewClass: Class<V> by lazy {
-        @Suppress("UNCHECKED_CAST")
-        this::class.java.argumentIn<TypeRenderer<V>>(0) as Class<V>
-    }
-
-    override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaRoot
-        if (!relevant) {
-            return
-        }
-        val views = findViews()
-        views.forEach { view ->
-            val type = view.getType()
-            val sourceFile = sources.javaFileOf(type)
-            execute {
-                doRender(view, type, sourceFile)
-            }
+    override fun doRender(view: V) {
+        val type = view.getType()
+        val sourceFile = sources.javaFileOf(type)
+        execute {
+            doRender(view, type, sourceFile)
         }
     }
 
     private fun doRender(view: V, type: MessageType, sourceFile: SourceFile<Java>) {
         val actions = RenderActions(type, sourceFile, view.getActions(), context!!)
         actions.apply()
-    }
-
-    private fun findViews(): Set<V> {
-        val found = select(viewClass).all()
-        return found
     }
 }

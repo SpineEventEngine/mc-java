@@ -29,7 +29,6 @@ import io.spine.internal.dependency.ProtoData
 import io.spine.internal.gradle.publish.SpinePublishing
 
 plugins {
-    application
     `maven-publish`
     id("com.github.johnrengelman.shadow")
 }
@@ -48,11 +47,6 @@ val protoDataVersion: String by extra
 
 dependencies {
     implementation(project(":mc-java"))
-    implementation(project(":mc-java-protoc"))
-}
-
-application {
-    mainClass.set("io.spine.tools.mc.java.protoc.Plugin")
 }
 
 publishing {
@@ -203,12 +197,6 @@ tasks.shadowJar {
     mergeServiceFiles("desc.ref")
     mergeServiceFiles("META-INF/services/io.spine.option.OptionsProvider")
 }
-
-// See https://github.com/johnrengelman/shadow/issues/153.
-tasks.shadowDistTar.get().enabled = false
-tasks.shadowDistZip.get().enabled = false
-tasks.distTar.get().enabled = false
-tasks.distZip.get().enabled = false
 
 fun excludeGroupId(exclusions: Node, groupId: String) {
     val exclusion = Node(exclusions, "exclusion")

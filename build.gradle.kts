@@ -26,7 +26,6 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import Build_gradle.Module
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -57,8 +56,8 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
-                    spine.reflect,
                     spine.base,
+                    spine.reflect,
                     spine.toolBase,
                     spine.server,
                     protoData.pluginLib(protoData.dogfoodingVersion),
@@ -89,12 +88,11 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = subprojects.map { it.name }
+    modules = productionModules.map { it.name }
         // Do not publish the validation codegen module as it is deprecated in favor of
         // ProtoData-based code generation of the Validation library.
         // The module is still kept for the sake of historical reference.
-        // Also, do not publish test-only modules.
-        .filter { !(it.contains("mc-java-validation") || it.endsWith("-tests")) }
+        .filter { !it.contains("mc-java-validation") }
         .toSet()
     destinations = PublishingRepos.run {
         setOf(

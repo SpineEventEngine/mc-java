@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -42,13 +42,13 @@ import io.spine.protodata.Field
 import io.spine.protodata.MessageType
 import io.spine.protodata.PrimitiveType
 import io.spine.protodata.Type
-import io.spine.protodata.java.javaCase
-import io.spine.protodata.java.javaType
-import io.spine.protodata.java.RejectionThrowableConvention
-import io.spine.protodata.java.primarySetterName
-import io.spine.protodata.java.toPrimitiveName
 import io.spine.protodata.isMap
 import io.spine.protodata.isRepeated
+import io.spine.protodata.java.RejectionThrowableConvention
+import io.spine.protodata.java.javaCase
+import io.spine.protodata.java.javaType
+import io.spine.protodata.java.primarySetterName
+import io.spine.protodata.java.toPrimitiveName
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
 import io.spine.tools.java.code.BuilderSpec

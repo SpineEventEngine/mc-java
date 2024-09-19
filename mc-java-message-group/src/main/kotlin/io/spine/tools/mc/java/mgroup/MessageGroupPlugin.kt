@@ -32,8 +32,8 @@ import io.spine.protodata.plugin.View
 import io.spine.protodata.renderer.Renderer
 
 /**
- * A ProtoData plugin responsible for code generation for groups of messages specified by
- * a file or type name patterns.
+ * The ProtoData plugin responsible for code generation for groups of messages
+ * specified by a file or type name patterns.
  *
  * @see io.spine.tools.mc.java.settings.GroupSettings
  */

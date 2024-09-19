@@ -37,6 +37,7 @@ import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
 import io.spine.protodata.settings.actions
 import io.spine.protodata.settings.add
+import io.spine.testing.SlowTest
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.NoOpMessageAction
@@ -61,6 +62,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.CleanupMode
 import org.junit.jupiter.api.io.TempDir
 
+@SlowTest
 @DisplayName("`codegen { }` block should`")
 class CodegenBlockSpec {
 

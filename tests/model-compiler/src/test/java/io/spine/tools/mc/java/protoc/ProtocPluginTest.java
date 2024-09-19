@@ -49,6 +49,11 @@ import io.spine.test.tools.mc.java.protoc.Movie;
 import io.spine.test.tools.mc.java.protoc.MovieTitleChanged;
 import io.spine.test.tools.mc.java.protoc.NotifyUser;
 import io.spine.test.tools.mc.java.protoc.Outer;
+import io.spine.test.tools.mc.java.protoc.UserRejection;
+import io.spine.test.tools.mc.java.protoc.DocumentMessage;
+import io.spine.test.tools.mc.java.protoc.PrefixedMessage;
+import io.spine.test.tools.mc.java.protoc.SuffixedMessage;
+import io.spine.test.tools.mc.java.protoc.RegexedMessage;
 import io.spine.test.tools.mc.java.protoc.PICreateCustomer;
 import io.spine.test.tools.mc.java.protoc.PICreateUser;
 import io.spine.test.tools.mc.java.protoc.PICustomerCommand;
@@ -66,6 +71,7 @@ import io.spine.test.tools.mc.java.protoc.University;
 import io.spine.test.tools.mc.java.protoc.UserCreated;
 import io.spine.test.tools.mc.java.protoc.UserInfo;
 import io.spine.test.tools.mc.java.protoc.UserName;
+import io.spine.test.tools.mc.java.protoc.WithUserId;
 import io.spine.test.tools.mc.java.protoc.UserNotified;
 import io.spine.test.tools.mc.java.protoc.WeatherForecast;
 import io.spine.test.tools.mc.java.protoc.Wrapped;
@@ -109,12 +115,6 @@ final class ProtocPluginTest {
     }
 
     @Test
-    @DisplayName("generate marker interfaces for the separate messages")
-    void generateMarkerInterfacesForSeparateMessages() throws ClassNotFoundException {
-        checkMarkerInterface(COMMAND_INTERFACE_FQN);
-    }
-
-    @Test
     @DisplayName("implement interface in the generated messages with `IS` option")
     void implementInterfaceInGeneratedMessagesWithIsOption() {
         var event = PICustomerCreated.getDefaultInstance();
@@ -127,28 +127,15 @@ final class ProtocPluginTest {
     @Test
     @DisplayName("use `IS` and `EVERY IS` together")
     void isAndEveryIsTogether() {
-        assertThat(PIUserCreated.getDefaultInstance())
-             .isInstanceOf(PIUserEvent.class);
-        assertThat(PIUserNameUpdated.getDefaultInstance())
-             .isInstanceOf(PIUserEvent.class);
+        var event1 = PIUserCreated.getDefaultInstance();
+        assertThat(event1).isInstanceOf(PIUserEvent.class);
+        assertThat(event1).isInstanceOf(WithUserId.class);
 
-        assertThat(UserName.getDefaultInstance())
-             /*
-                   This assertion verifies if the `UserName` implements a custom
-                   event interface. It happens because `UserName` is declared in the same file with
-                   events (see `mixed_test.proto`) and the following option is applied:
-
-                   option (every_is).java_type = "io.spine.test.tools.mc.java.protoc.test.PIUserEvent";
-
-                   This test should be updated to avoid the confusion on why a value object
-                   becomes an event. Although, it serves for the purposes of the test, it
-                   is misleading because a normal production code shouldn't have
-                   such an arrangement.
-                */
-             .isInstanceOf(PIUserEvent.class);
-
-        assertThat(UserName.getDefaultInstance())
-                .isInstanceOf(UserInfo.class);
+        var event2 = PIUserNameUpdated.getDefaultInstance();
+        assertThat(event2)
+                .isInstanceOf(PIUserEvent.class);
+        assertThat(event2)
+                .isInstanceOf(WithUserId.class);
     }
 
     @Test
@@ -249,6 +236,8 @@ final class ProtocPluginTest {
         @DisplayName("top-level message declarations as specified in `modelCompiler` settings")
         void markMessagesByFilePattern() {
             assertThat(WeatherForecast.class).isAssignableTo(DocumentMessage.class);
+
+            // Only top-level message types should be marked.
             assertThat(WeatherForecast.Temperature.getDefaultInstance())
                     .isNotInstanceOf(DocumentMessage.class);
         }

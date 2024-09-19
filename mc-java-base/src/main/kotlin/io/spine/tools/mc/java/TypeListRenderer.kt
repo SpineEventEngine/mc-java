@@ -30,11 +30,7 @@ import com.google.protobuf.Message
 import io.spine.base.EntityState
 import io.spine.protodata.File
 import io.spine.protodata.MessageType
-import io.spine.protodata.java.JavaRenderer
-import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.reflect.argumentIn
 import io.spine.tools.code.Java
 
 /**
@@ -50,31 +46,8 @@ import io.spine.tools.code.Java
  *
  * @see TypeRenderer
  */
-public abstract class TypeListRenderer<V, S : Message> : JavaRenderer()
+public abstract class TypeListRenderer<V, S : Message> : AbstractRenderer<V, S>()
         where V : EntityState<File>, V : TypeListActions {
-
-    /**
-     * The class matching by the generic parameter [V].
-     */
-    private val viewClass: Class<V> by lazy {
-        genericArgument(0)
-    }
-
-    /**
-     * The class matching the generic parameter [S].
-     */
-    private val settingsClass: Class<S> by lazy {
-        genericArgument(1)
-    }
-
-    protected val settings: S by lazy {
-        loadSettings(settingsClass)
-    }
-
-    /**
-     * Tells if the [settings] allow this renderer to work.
-     */
-    protected abstract val enabledBySettings: Boolean
 
     /**
      * Implement this method to render the code for the given entity state [type]
@@ -82,35 +55,11 @@ public abstract class TypeListRenderer<V, S : Message> : JavaRenderer()
      */
     protected abstract fun doRender(type: MessageType, file: SourceFile<Java>)
 
-    final override fun render(sources: SourceFileSet) {
-        val relevant = sources.hasJavaRoot && enabledBySettings
-        if (!relevant) {
-            return
-        }
-        val types = findTypes()
+    final override fun doRender(view: V) {
+        val types = view.getTypeList()
         types.forEach {
             val sourceFile = sources.javaFileOf(it)
             doRender(it, sourceFile)
         }
-    }
-
-    /**
-     * Finds message types declared in all proto files captured by the views.
-     */
-    private fun findTypes(): List<MessageType> {
-        val found = select(viewClass).all()
-        val result = found.flatMap { it.getTypeList() }
-        return result
-    }
-
-    /**
-     * Obtains a generic argument of a leaf class extending [TypeListRenderer].
-     *
-     * This way we don't have to pass information about the classes twice: as
-     * generic type arguments and as classes passed to constructors.
-     */
-    private fun <T : Any> genericArgument(index: Int): Class<T> {
-        @Suppress("UNCHECKED_CAST")
-        return this::class.java.argumentIn<TypeListRenderer<V, S>>(index) as Class<T>
     }
 }

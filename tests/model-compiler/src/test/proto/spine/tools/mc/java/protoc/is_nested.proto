@@ -35,9 +35,9 @@ option java_outer_classname = "IsNestedProto";
 option java_multiple_files = true;
 
 message Outer {
-    option (is) = {java_type: "Wrapper" generate: true};
+    option (is) = {java_type: "Wrapper"};
 
     message Inner {
-        option (is) = {java_type: "Wrapped" generate: true};
+        option (is) = {java_type: "Wrapped"};
     }
 }

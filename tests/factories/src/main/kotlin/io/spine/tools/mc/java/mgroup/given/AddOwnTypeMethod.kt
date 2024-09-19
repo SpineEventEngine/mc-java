@@ -71,7 +71,6 @@ class AddOwnTypeMethod(
     }
 
     private val method: PsiMethod by lazy {
-        val messageClassName = type.javaClassName(typeSystem!!)
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
             public static $returnType ownType() {

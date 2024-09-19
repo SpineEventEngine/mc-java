@@ -37,9 +37,11 @@ import io.spine.internal.dependency.Truth
 import io.spine.internal.dependency.Validation
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
+import io.spine.internal.gradle.kotlin.setFreeCompilerArgs
 import io.spine.internal.gradle.publish.PublishingRepos.gitHub
 import io.spine.internal.gradle.standardToSpineSdk
 import io.spine.internal.gradle.testing.configureLogging
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 
@@ -160,6 +162,11 @@ subprojects {
             configureJavac()
             configureErrorProne()
         }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+        setFreeCompilerArgs()
     }
 
     dependencies {

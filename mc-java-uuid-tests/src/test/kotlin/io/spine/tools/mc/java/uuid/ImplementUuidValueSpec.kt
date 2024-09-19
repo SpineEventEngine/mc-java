@@ -31,7 +31,7 @@ import io.spine.base.UuidValue
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.implementsInterface
-import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.superInterface
 import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName

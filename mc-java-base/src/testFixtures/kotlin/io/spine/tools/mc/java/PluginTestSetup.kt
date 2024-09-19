@@ -42,8 +42,8 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 /**
- * An abstract base for companion objects for the suites testing ProtoData plugins
- * provided by other modules.
+ * An abstract base for companion objects of test suites testing
+ * a ProtoData plugin provided by a module of McJava.
  *
  * @param S the type of the plugin settings in the form of a Protobuf message.
  */

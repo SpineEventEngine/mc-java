@@ -36,7 +36,7 @@ import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.BinaryClassName
 import io.spine.tools.mc.java.settings.noParameter
 import io.spine.tools.mc.java.settings.pack
-import io.spine.tools.mc.java.settings.superInterface
+import io.spine.tools.mc.java.superInterface
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
 
