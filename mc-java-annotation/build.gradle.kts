@@ -34,7 +34,6 @@ plugins {
 
 dependencies {
     implementation(project(":mc-java-base"))
-    implementation(Spine.server)
     implementation(Spine.Logging.lib)
 
     testFixturesImplementation(Spine.toolBase)
