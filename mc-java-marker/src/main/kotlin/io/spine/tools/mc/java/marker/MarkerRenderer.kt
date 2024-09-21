@@ -28,13 +28,13 @@ package io.spine.tools.mc.java.marker
 
 import io.spine.base.EntityState
 import io.spine.option.IsOption
-import io.spine.protodata.MessageType
-import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.ProtoFileHeader
 import io.spine.protodata.java.JavaTypeName.Companion.PACKAGE_SEPARATOR
 import io.spine.protodata.java.javaPackage
-import io.spine.tools.mc.java.BaseRenderer
-import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.SuperInterface
+import io.spine.protodata.java.render.BaseRenderer
+import io.spine.protodata.java.render.ImplementInterface
+import io.spine.protodata.java.render.SuperInterface
 import org.checkerframework.checker.signature.qual.FullyQualifiedName
 
 /**

@@ -24,35 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.annotation
+package io.spine.tools.mc.java.signal.rejection
 
-import io.spine.protodata.ast.ProtoFileHeader
+import io.spine.protobuf.isNotDefault
+import io.spine.protodata.ast.TypeName
+import io.spine.protodata.java.BaseJavaConvention
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaOuterClassName
 import io.spine.protodata.java.javaPackage
-import io.spine.tools.mc.annotation.ApiOption
+import io.spine.protodata.type.Declaration
+import io.spine.protodata.type.TypeSystem
+import io.spine.tools.code.Java
 
 /**
- * Annotates the outer class of a `.proto` file IFF `java_multiple_files` option is set to `true`.
+ * A convention which governs Java Rejection-Throwable class declarations.
  *
- * @see OuterClassAnnotationDiscovery
+ * The convention only defines a declaration for rejection message types. Any other types are
+ * undefined and thus result in the [declarationFor] method returning `null`.
  */
-internal class OuterClassAnnotator :
-    TypeAnnotator<OuterClassAnnotations>(OuterClassAnnotations::class.java) {
+public class RejectionThrowableConvention(
+    typeSystem: TypeSystem
+) : BaseJavaConvention<TypeName, ClassName>(typeSystem) {
 
-    override fun annotateType(view: OuterClassAnnotations, annotationClass: Class<out Annotation>) {
-        val outerClassName = view.header.javaOuterClassName()
-        val packageName = view.header.javaPackage()
-        val className = ClassName(packageName, outerClassName)
-        ApiAnnotation(className, annotationClass).let {
-            it.registerWith(context!!)
-            it.renderSources(sources)
+    @Suppress("ReturnCount")
+    override fun declarationFor(name: TypeName): Declaration<Java, ClassName>? {
+        val declaration = typeSystem.findMessage(name) ?: return null
+        val (msg, header) = declaration
+        val fileName = header.file.path
+        if (!fileName.endsWith("rejections.proto") // Not a rejection message.
+            || msg.declaredIn.isNotDefault()       // Not a top-level message.
+        ) {
+            return null
         }
+        val packageName = header.javaPackage()
+        val simpleName = name.simpleName
+        val cls = ClassName(packageName, simpleName)
+        return Declaration(cls, cls.javaFile)
     }
-
-    /**
-     * Always returns `true` assuming that if this renderer is invoked, the outer class
-     * to be annotated was discovered by the [OuterClassAnnotationDiscovery] process.
-     */
-    override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean = true
 }

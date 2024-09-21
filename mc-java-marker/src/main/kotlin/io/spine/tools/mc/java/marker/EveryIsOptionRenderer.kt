@@ -29,12 +29,12 @@ package io.spine.tools.mc.java.marker
 import com.google.protobuf.Message
 import com.intellij.psi.PsiJavaFile
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.java.render.CreateInterface
+import io.spine.protodata.java.render.superInterface
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.CreateInterface
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.superInterface
 import io.spine.tools.psi.java.addFirst
 import io.spine.tools.psi.java.execute
 import io.spine.tools.psi.java.topLevelClass

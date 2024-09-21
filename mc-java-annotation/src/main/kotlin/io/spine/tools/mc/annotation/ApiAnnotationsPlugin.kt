@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,7 +28,7 @@ package io.spine.tools.mc.annotation
 
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.ViewRepository
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.render.Renderer
 import io.spine.server.BoundedContextBuilder
 import io.spine.tools.mc.java.annotation.ClassPatternAnnotator
 import io.spine.tools.mc.java.annotation.EnumAnnotator

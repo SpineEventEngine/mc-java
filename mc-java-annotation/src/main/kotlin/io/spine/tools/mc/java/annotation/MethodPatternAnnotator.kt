@@ -29,9 +29,9 @@ package io.spine.tools.mc.java.annotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
-import io.spine.protodata.renderer.forEachOfLanguage
+import io.spine.protodata.render.SourceFile
+import io.spine.protodata.render.SourceFileSet
+import io.spine.protodata.render.forEachOfLanguage
 import io.spine.tools.code.Java
 import io.spine.tools.java.isRepeatable
 import io.spine.tools.java.reference

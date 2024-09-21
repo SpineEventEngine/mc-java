@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.entity.column
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
-import io.spine.protodata.Field
+import io.spine.protodata.ast.Field
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.getterName
 import io.spine.protodata.java.javaCase

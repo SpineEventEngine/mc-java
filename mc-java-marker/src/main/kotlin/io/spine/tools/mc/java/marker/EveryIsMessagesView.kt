@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.marker
 
 import io.spine.core.External
 import io.spine.core.Subscribe
-import io.spine.protodata.File
-import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.ast.File
+import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered

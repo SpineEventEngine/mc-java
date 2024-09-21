@@ -28,9 +28,9 @@ package io.spine.tools.mc.java.mgroup.given
 
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.CodegenContext
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.render.SourceFile
 import io.spine.protodata.java.javaClassName
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.CreateNestedClass

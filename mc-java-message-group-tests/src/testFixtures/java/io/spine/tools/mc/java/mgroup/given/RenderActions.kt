@@ -26,9 +26,9 @@
 
 package io.spine.tools.mc.java.mgroup.given
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.CodegenContext
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.CreateNestedClass
 import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME

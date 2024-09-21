@@ -37,11 +37,11 @@ option java_multiple_files = true;
 
 import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
-import "spine/protodata/settings.proto";
+import "spine/protodata/render_actions.proto";
 
 // Provides entity state types declared in a proto file.
 message DiscoveredEntities {
-    option (is).java_type = "io.spine.tools.mc.java.TypeListActions";
+    option (is).java_type = "io.spine.protodata.java.render.TypeListActions";
     option (.entity).kind = PROJECTION;
 
     // The file which declares entity state types.

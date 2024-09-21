@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.uuid
 
-import io.spine.tools.mc.java.TypeRenderer
+import io.spine.protodata.java.render.TypeRenderer
 
 /**
  * Renders code by applying actions specified in

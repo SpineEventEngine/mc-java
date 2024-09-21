@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.annotation
 
 import io.spine.base.EntityState
-import io.spine.protodata.ProtoFileHeader
+import io.spine.protodata.ast.ProtoFileHeader
 import io.spine.protodata.java.MessageOrEnumConvention
 import io.spine.protodata.java.javaMultipleFiles
 import io.spine.tools.mc.annotation.ApiOption

@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.uuid
 
 import io.spine.core.Subscribe
-import io.spine.protodata.MessageType
+import io.spine.protodata.ast.MessageType
 import io.spine.protodata.plugin.View
 import io.spine.server.entity.alter
 import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered

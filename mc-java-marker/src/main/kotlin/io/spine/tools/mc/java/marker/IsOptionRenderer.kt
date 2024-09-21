@@ -27,11 +27,11 @@
 package io.spine.tools.mc.java.marker
 
 import io.spine.option.IsOption
-import io.spine.protodata.MessageType
-import io.spine.protodata.find
-import io.spine.protodata.findHeader
-import io.spine.protodata.qualifiedName
-import io.spine.tools.mc.java.superInterface
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.find
+import io.spine.protodata.ast.qualifiedName
+import io.spine.protodata.context.findHeader
+import io.spine.protodata.java.render.superInterface
 import io.spine.tools.psi.java.execute
 
 /**

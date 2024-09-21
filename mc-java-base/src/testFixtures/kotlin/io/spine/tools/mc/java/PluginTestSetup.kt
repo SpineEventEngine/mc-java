@@ -29,8 +29,8 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.render.SourceFile
+import io.spine.protodata.render.SourceFileSet
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup

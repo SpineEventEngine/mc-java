@@ -26,11 +26,11 @@
 
 package io.spine.tools.mc.java.entity
 
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.java.render.RenderActions
+import io.spine.protodata.java.render.TypeListRenderer
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.RenderActions
-import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.execute
 

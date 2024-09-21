@@ -28,11 +28,11 @@ package io.spine.tools.mc.java.entity.query
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.columns
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.columns
+import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.render.SourceFile
 import io.spine.query.EntityQueryBuilder
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference

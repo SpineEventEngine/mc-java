@@ -40,8 +40,8 @@ import "google/protobuf/empty.proto";
 
 import "spine/tools/java/java.proto";
 import "spine/tools/proto/proto.proto";
-import "spine/protodata/file.proto";
-import "spine/protodata/settings.proto";
+import "spine/protodata/file_pattern.proto";
+import "spine/protodata/render_actions.proto";
 
 // Code generation settings passed to Spine Protoc Plugin.
 //
@@ -170,10 +170,8 @@ message MessageGroup {
     // The pattern defining the group.
     Pattern pattern = 1;
 
-    // Java interfaces to be added to all the messages in this group.
-    repeated AddInterface add_interface = 2 [deprecated = true];
-
-    reserved 3 to 5;
+    reserved 2 to 5;
+    reserved "add_interface";
     reserved "generate_methods";
     reserved "generate_nested_classes";
     reserved "generate_fields";
@@ -233,8 +231,8 @@ message Uuids {
 
 
 // Configuration for adding a Java interface to a generated class.
-message AddInterface {
-
-    tools.java.JavaClassName name = 1;
-}
+//message AddInterface {
+//
+//    tools.java.JavaClassName name = 1;
+//}
 

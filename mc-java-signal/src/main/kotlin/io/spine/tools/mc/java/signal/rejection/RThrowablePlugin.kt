@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.signal.rejection
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.render.Renderer
 
 /**
  * A ProtoData plugin for generating [RejectionThrowable][io.spine.base.RejectionThrowable]

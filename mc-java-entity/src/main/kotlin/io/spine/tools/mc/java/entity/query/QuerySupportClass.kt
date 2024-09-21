@@ -26,14 +26,16 @@
 
 package io.spine.tools.mc.java.entity.query
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
+import com.intellij.psi.PsiAnnotation
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.render.CreateNestedClass
 import io.spine.protodata.java.typeReference
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.CreateNestedClass
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.entity.idField
 import io.spine.tools.mc.java.settings.Entities
 
@@ -48,6 +50,8 @@ internal abstract class QuerySupportClass(
     protected val settings: Entities,
     context: CodegenContext
 ) : CreateNestedClass(type, file, className, context) {
+
+    override fun createAnnotation(): PsiAnnotation = GeneratedAnnotation.create()
 
     /**
      * The class of the entity state, same as [messageClass].
