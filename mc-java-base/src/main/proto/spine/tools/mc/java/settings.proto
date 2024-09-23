@@ -229,10 +229,3 @@ message Uuids {
     protodata.Actions actions = 3;
 }
 
-
-// Configuration for adding a Java interface to a generated class.
-//message AddInterface {
-//
-//    tools.java.JavaClassName name = 1;
-//}
-
