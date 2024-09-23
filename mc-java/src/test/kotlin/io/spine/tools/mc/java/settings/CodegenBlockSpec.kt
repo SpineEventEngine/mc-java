@@ -36,8 +36,8 @@ import io.spine.base.MessageFile.COMMANDS
 import io.spine.base.MessageFile.EVENTS
 import io.spine.option.OptionsProto
 import io.spine.protodata.java.render.ImplementInterface
-import io.spine.protodata.settings.actions
-import io.spine.protodata.settings.add
+import io.spine.protodata.render.actions
+import io.spine.protodata.render.add
 import io.spine.testing.SlowTest
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.NoOpMessageAction

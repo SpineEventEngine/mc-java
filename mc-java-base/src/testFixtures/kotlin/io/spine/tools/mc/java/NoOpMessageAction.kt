@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java
 
 import com.google.protobuf.Empty
-import io.spine.protodata.ast.CodegenContext
 import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.render.MessageAction
 import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
