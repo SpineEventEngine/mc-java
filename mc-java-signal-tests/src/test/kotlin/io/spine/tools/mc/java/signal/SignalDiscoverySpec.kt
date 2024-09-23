@@ -35,10 +35,10 @@ import io.spine.base.MessageFile.EVENTS
 import io.spine.base.MessageFile.REJECTIONS
 import io.spine.code.proto.FileSet
 import io.spine.protodata.ast.File
-import io.spine.protodata.file
-import io.spine.protodata.matches
-import io.spine.protodata.toMessageType
-import io.spine.tools.mc.java.TypeListActions
+import io.spine.protodata.ast.matches
+import io.spine.protodata.protobuf.file
+import io.spine.protodata.protobuf.toMessageType
+import io.spine.protodata.render.TypeListActions
 import java.nio.file.Path
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -63,11 +63,9 @@ internal class SignalDiscoverySpec : SignalPluginTest() {
          * Asserts that the view state specified by [viewStateClass] contains all
          * the message types declared in this proto file.
          *
-         * @param fileType
-         *         the type of the file such as `COMMANDS`, `EVENTS`, or `REJECTIONS`.
-         * @param viewStateClass
-         *         the class of an entity state such as [DiscoveredCommands],
-         *         [DiscoveredEvents], or [DiscoveredRejections].
+         * @param fileType The type of the file such as `COMMANDS`, `EVENTS`, or `REJECTIONS`.
+         * @param viewStateClass The class of an entity state such as [CommandActions],
+         *   [EventActions], or [RejectionActions].
          */
         fun FileDescriptor.assertIfMatches(
             fileType: MessageFile,

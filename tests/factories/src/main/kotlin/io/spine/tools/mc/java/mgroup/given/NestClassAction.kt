@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.mgroup.given
 
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.context.CodegenContext
@@ -33,7 +34,7 @@ import io.spine.protodata.ast.MessageType
 import io.spine.protodata.render.SourceFile
 import io.spine.protodata.java.javaClassName
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.CreateNestedClass
+import io.spine.protodata.java.render.CreateNestedClass
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.addLast
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -75,6 +76,8 @@ class NestClassAction(type: MessageType, file: SourceFile<Java>, context: Codege
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = ""
+
+    override fun createAnnotation(): PsiAnnotation? = null
 
     companion object {
         const val CLASS_NAME = "SomeNestedClass"
