@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.FieldName
-import io.spine.protodata.MessageType
+import io.spine.protodata.ast.FieldName
+import io.spine.protodata.ast.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MessageOrBuilderConvention
 import io.spine.protodata.java.MessageOrEnumConvention

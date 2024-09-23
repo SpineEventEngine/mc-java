@@ -26,12 +26,12 @@
 
 package io.spine.tools.mc.java.mgroup
 
-import io.spine.protodata.java.JavaRenderer
 import io.spine.protodata.java.file.hasJavaRoot
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.java.render.JavaRenderer
+import io.spine.protodata.java.render.RenderActions
+import io.spine.protodata.render.SourceFile
+import io.spine.protodata.render.SourceFileSet
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.RenderActions
 import io.spine.tools.mc.java.settings.GroupSettings
 import io.spine.tools.psi.java.execute
 

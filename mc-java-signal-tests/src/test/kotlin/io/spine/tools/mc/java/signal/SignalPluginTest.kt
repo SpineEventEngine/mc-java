@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.signal
 
 import io.spine.base.MessageFile
-import io.spine.protodata.FilePattern
-import io.spine.protodata.FilePatternFactory.suffix
+import io.spine.protodata.ast.FilePattern
+import io.spine.protodata.ast.FilePatternFactory.suffix
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.SignalSettings
 import java.nio.file.Path

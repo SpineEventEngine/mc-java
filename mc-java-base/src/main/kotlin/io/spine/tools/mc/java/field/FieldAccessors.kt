@@ -28,12 +28,12 @@ package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
-import io.spine.protodata.Field
-import io.spine.protodata.Field.CardinalityCase.SINGLE
-import io.spine.protodata.isMessage
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.Field.CardinalityCase.SINGLE
+import io.spine.protodata.ast.isMessage
+import io.spine.protodata.ast.toMessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaCase
-import io.spine.protodata.toMessageType
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.reference
 import io.spine.tools.psi.addFirst

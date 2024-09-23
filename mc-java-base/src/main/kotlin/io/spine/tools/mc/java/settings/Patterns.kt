@@ -28,9 +28,9 @@
 
 package io.spine.tools.mc.java.settings
 
-import io.spine.protodata.MessageType
-import io.spine.protodata.matches
-import io.spine.protodata.qualifiedName
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.matches
+import io.spine.protodata.ast.qualifiedName
 import io.spine.tools.mc.java.settings.Pattern.KindCase.FILE
 import io.spine.tools.mc.java.settings.Pattern.KindCase.TYPE
 import io.spine.tools.mc.java.settings.TypePattern.ValueCase.EXPECTED_TYPE
@@ -39,7 +39,7 @@ import io.spine.tools.mc.java.settings.TypePattern.ValueCase.REGEX
 /**
  * Tells if this pattern matches the given [type].
  *
- * @see io.spine.protodata.FilePattern.matches
+ * @see io.spine.protodata.ast.FilePattern.matches
  * @see TypePattern.matches
  */
 public fun Pattern.matches(type: MessageType): Boolean {
@@ -54,7 +54,7 @@ public fun Pattern.matches(type: MessageType): Boolean {
  * Tells if this type pattern matches the given type.
  *
  * @see Pattern.matches
- * @see io.spine.protodata.FilePattern.matches
+ * @see io.spine.protodata.ast.FilePattern.matches
  */
 public fun TypePattern.matches(type: MessageType): Boolean {
     val qualifiedName = type.qualifiedName

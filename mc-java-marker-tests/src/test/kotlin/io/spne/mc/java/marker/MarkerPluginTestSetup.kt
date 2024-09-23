@@ -29,8 +29,8 @@ package io.spne.mc.java.marker
 import com.google.protobuf.Empty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.render.SourceFile
+import io.spine.protodata.render.SourceFileSet
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.marker.MarkerPlugin

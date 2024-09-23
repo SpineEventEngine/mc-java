@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -30,12 +30,12 @@ package io.spine.tools.mc.annotation
 
 import io.spine.base.EventMessage
 import io.spine.core.External
-import io.spine.protodata.File
-import io.spine.protodata.Option
-import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.event.FileEntered
-import io.spine.protodata.event.FileExited
-import io.spine.protodata.event.FileOptionDiscovered
+import io.spine.protodata.ast.File
+import io.spine.protodata.ast.Option
+import io.spine.protodata.ast.ProtobufSourceFile
+import io.spine.protodata.ast.event.FileEntered
+import io.spine.protodata.ast.event.FileExited
+import io.spine.protodata.ast.event.FileOptionDiscovered
 import io.spine.server.entity.alter
 import io.spine.server.entity.state
 import io.spine.server.event.React

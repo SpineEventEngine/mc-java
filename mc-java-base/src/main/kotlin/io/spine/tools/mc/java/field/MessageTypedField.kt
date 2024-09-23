@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaCodeReferenceElement
-import io.spine.protodata.MessageType
+import io.spine.protodata.ast.MessageType
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 import io.spine.protodata.type.TypeSystem

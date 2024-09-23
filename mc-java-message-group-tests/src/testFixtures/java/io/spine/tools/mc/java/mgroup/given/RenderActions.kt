@@ -26,11 +26,12 @@
 
 package io.spine.tools.mc.java.mgroup.given
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import com.intellij.psi.PsiAnnotation
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.CreateNestedClass
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.CreateNestedClass
 import io.spine.tools.mc.java.mgroup.given.StudentIdClass.Companion.CLASS_NAME
 import org.intellij.lang.annotations.Language
 
@@ -46,6 +47,8 @@ class StudentIdClass(type: MessageType, file: SourceFile<Java>, context: Codegen
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = "/** The class of student ID. */"
+
+    override fun createAnnotation(): PsiAnnotation? = null
 
     companion object {
         const val CLASS_NAME = "StudentId"

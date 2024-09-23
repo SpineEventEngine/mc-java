@@ -27,15 +27,17 @@
 package io.spine.tools.mc.java.entity.column
 
 import com.google.common.collect.ImmutableSet
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
-import io.spine.protodata.columns
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.columns
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.CreateNestedClass
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.CreateNestedClass
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -67,6 +69,8 @@ public class AddColumnClass(type: MessageType, file: SourceFile<Java>, context: 
     CreateNestedClass(type, file, COLUMN_CLASS_NAME, context) {
 
     private val columns: List<Field> = type.columns
+
+    override fun createAnnotation(): PsiAnnotation = GeneratedAnnotation.create()
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """
