@@ -41,7 +41,7 @@ import "spine/protodata/render_actions.proto";
 
 // Provides entity state types declared in a proto file.
 message DiscoveredEntities {
-    option (is).java_type = "io.spine.protodata.java.render.TypeListActions";
+    option (is).java_type = "io.spine.protodata.render.TypeListActions";
     option (.entity).kind = PROJECTION;
 
     // The file which declares entity state types.

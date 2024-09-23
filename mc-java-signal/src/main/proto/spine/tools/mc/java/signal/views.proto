@@ -39,7 +39,7 @@ import "spine/protodata/ast.proto";
 import "spine/protodata/file.proto";
 import "spine/protodata/render_actions.proto";
 
-option (every_is).java_type = "io.spine.protodata.java.render.TypeListActions";
+option (every_is).java_type = "io.spine.protodata.render.TypeListActions";
 
 // Provides commands declared in a proto file.
 message CommandActions {
