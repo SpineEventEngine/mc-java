@@ -23,6 +23,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+@file:Suppress("TooManyFunctions") /*  The over-the-limit extension function
+  `FilePattern.toLegacy()` would go away after migrating Validation to newer ProtoData. */
+
 package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.protobuf.Message
