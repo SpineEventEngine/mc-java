@@ -27,7 +27,7 @@
 import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Spine.McJava
+import io.spine.internal.dependency.McJava
 
 // Turn off validation codegen during the transition to the new ProtoData API.
 modelCompiler {
