@@ -174,6 +174,7 @@ fun NamedDomainObjectContainer<Configuration>.excludeProtobufLite() {
 /**
  * Excludes `spine-base` from the dependencies.
  */
+@Suppress("unused")
 fun ModuleDependency.excludeSpineBase() {
     exclude(group = Spine.group, module = "spine-base")
 }
@@ -181,6 +182,7 @@ fun ModuleDependency.excludeSpineBase() {
 /**
  * Forces the version of [Spine.base] in the given project.
  */
+@Suppress("unused")
 fun Project.forceSpineBase() {
     configurations.all {
         resolutionStrategy {
