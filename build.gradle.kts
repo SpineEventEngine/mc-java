@@ -26,6 +26,7 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
+import io.spine.internal.dependency.Dokka
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -40,6 +41,7 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
 import java.time.Duration
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 buildscript {
     standardSpineSdkRepositories()
@@ -101,6 +103,7 @@ spinePublishing {
 }
 
 allprojects {
+    apply(plugin = Dokka.GradlePlugin.id)
     apply(from = "$rootDir/version.gradle.kts")
     group = "io.spine.tools"
     version = extra["versionToPublish"]!!
@@ -200,4 +203,8 @@ tasks.register<RunGradle>("checkPerformance") {
     // Uncomment the below line, and remove `task()`
     // task("clean", "build")
     task("tasks")
+}
+
+val dokkaHtmlMultiModule by tasks.getting(DokkaMultiModuleTask::class) {
+    configureStyle()
 }

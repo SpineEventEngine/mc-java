@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2022, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,31 +24,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.dependency
+plugins {
+    java
+}
+
+val versionDir = "$buildDir/version"
 
 /**
- * Dependencies on Spine Validation SDK.
+ * This file, containing the version of ProtoData, is generated at build time and included into
+ * the project's resources.
  *
- * See [`SpineEventEngine/validation`](https://github.com/SpineEventEngine/validation/).
+ * Please search for the usages of "version.txt" when making changes.
  */
-@Suppress("unused", "ConstPropertyName")
-object Validation {
-    /**
-     * The version of the Validation library artifacts.
-     */
-    const val version = "2.0.0-SNAPSHOT.160"
+val versionFile = "$versionDir/version.txt"
 
-    const val group = "io.spine.validation"
-    private const val prefix = "spine-validation"
+sourceSets {
+    main {
+        resources.srcDir(versionDir)
+    }
+}
 
-    const val runtime = "$group:$prefix-java-runtime:$version"
-    const val java = "$group:$prefix-java:$version"
+val createVersionFile by tasks.registering {
 
-    /** Obtains the artifact for the `java-bundle` artifact of the given version. */
-    fun javaBundle(version: String) = "$group:$prefix-java-bundle:$version"
+    inputs.property("version", project.version)
+    outputs.file(versionFile)
 
-    val javaBundle = javaBundle(version)
+    doLast {
+        file(versionFile).writeText(project.version.toString())
+    }
+}
 
-    const val model = "$group:$prefix-model:$version"
-    const val config = "$group:$prefix-configuration:$version"
+tasks.processResources {
+    dependsOn(createVersionFile)
 }
