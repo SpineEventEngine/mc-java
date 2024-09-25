@@ -46,7 +46,6 @@ buildscript {
 
     val spine = io.spine.internal.dependency.Spine
     val validation = io.spine.internal.dependency.Validation
-    val protoData = io.spine.internal.dependency.ProtoData
     val logging = io.spine.internal.dependency.Spine.Logging
     doForceVersions(configurations)
     configurations {
@@ -60,7 +59,6 @@ buildscript {
                     spine.reflect,
                     spine.toolBase,
                     spine.server,
-                    protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,
                     validation.runtime,
                     validation.javaBundle
@@ -69,7 +67,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath(mcJava.pluginLib)
     }
 }
 

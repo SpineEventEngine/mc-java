@@ -24,14 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("TooManyFunctions") /*  The over-the-limit extension function
-  `FilePattern.toLegacy()` would go away after migrating Validation to newer ProtoData. */
-
 package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.protobuf.Message
-import io.spine.protodata.ast.FilePattern
-import io.spine.protodata.ast.FilePattern.KindCase
 import io.spine.protodata.java.style.JavaCodeStyle
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
@@ -131,9 +126,9 @@ private fun WriteProtoDataSettings.forValidationPlugin(dir: SettingsDirectory) {
     val signalSettings = codegen.signalSettings
     val markers = messageMarkers {
         signalSettings.let {
-            commandPattern.addAll(it.commands.patternList.toLegacy())
-            eventPattern.addAll(it.events.patternList.toLegacy())
-            rejectionPattern.addAll(it.rejections.patternList.toLegacy())
+            commandPattern.addAll(it.commands.patternList)
+            eventPattern.addAll(it.events.patternList)
+            rejectionPattern.addAll(it.rejections.patternList)
         }
         entityOptionName.addAll(codegen.entityOptionsNames())
     }
@@ -143,21 +138,6 @@ private fun WriteProtoDataSettings.forValidationPlugin(dir: SettingsDirectory) {
 
     dir.write(VALIDATION_SETTINGS_ID, settings)
 }
-
-private typealias LegacyFilePattern = io.spine.protodata.FilePattern
-
-private fun FilePattern.toLegacy(): LegacyFilePattern {
-    val builder = LegacyFilePattern.newBuilder()
-    when (kindCase) {
-        KindCase.SUFFIX -> builder.setSuffix(suffix)
-        KindCase.PREFIX -> builder.setPrefix(prefix)
-        KindCase.REGEX -> builder.setRegex(regex)
-        else -> error("Unknown kind case: `$kindCase`.")
-    }
-    return builder.build()
-}
-
-private fun List<FilePattern>.toLegacy(): List<LegacyFilePattern> = map { it.toLegacy() }
 
 private fun Combined.entityOptionsNames(): Iterable<String> =
     entities.optionList.map { it.name }
