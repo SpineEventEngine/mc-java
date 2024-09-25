@@ -53,6 +53,8 @@ import io.spine.internal.gradle.testing.configureLogging
 import io.spine.internal.gradle.testing.registerTestTasks
 import java.util.*
 import org.gradle.kotlin.dsl.invoke
+import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -91,6 +93,8 @@ project.run {
     setupSourceSets(generatedResources)
 
     configureTaskDependencies()
+
+    configureDocTasks()
 }
 
 typealias Module = Project
@@ -225,5 +229,18 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
 fun Module.setupSourceSets(generatedResources: String) {
     sourceSets.main {
         resources.srcDir(generatedResources)
+    }
+}
+
+fun Module.configureDocTasks() {
+    val dokkaJavadoc by tasks.getting(DokkaTask::class)
+    tasks.register("javadocJar", Jar::class) {
+        from(dokkaJavadoc.outputDirectory)
+        archiveClassifier.set("javadoc")
+        dependsOn(dokkaJavadoc)
+    }
+
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        configureForKotlin()
     }
 }

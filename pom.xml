@@ -10,7 +10,7 @@ all modules and does not describe the project structure per-subproject.
  -->
 <groupId>io.spine.tools</groupId>
 <artifactId>mc-java</artifactId>
-<version>2.0.0-SNAPSHOT.240</version>
+<version>2.0.0-SNAPSHOT.241</version>
 
 <inceptionYear>2015</inceptionYear>
 
@@ -326,6 +326,41 @@ all modules and does not describe the project structure per-subproject.
     <groupId>org.jacoco</groupId>
     <artifactId>org.jacoco.ant</artifactId>
     <version>0.8.12</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>all-modules-page-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>analysis-kotlin-descriptors</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>dokka-base</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>dokka-core</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>gfm-template-processing-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>javadoc-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>jekyll-template-processing-plugin</artifactId>
+    <version>1.9.10</version>
   </dependency>
   <dependency>
     <groupId>org.jetbrains.kotlin</groupId>
