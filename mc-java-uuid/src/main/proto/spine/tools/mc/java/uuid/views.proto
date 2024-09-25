@@ -38,8 +38,6 @@ option java_multiple_files = true;
 import "spine/protodata/ast.proto";
 import "spine/protodata/render_actions.proto";
 
-import "spine/tools/mc/java/settings.proto";
-
 // Matches a UUID value message to corresponding code generation settings.
 message UuidActions {
     option (is).java_type = "io.spine.protodata.render.TypeActions";
