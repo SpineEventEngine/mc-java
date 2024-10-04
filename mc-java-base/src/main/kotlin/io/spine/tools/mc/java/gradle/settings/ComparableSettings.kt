@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.gradle.settings
 import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.mc.java.settings.noParameter
-import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 
 /**
