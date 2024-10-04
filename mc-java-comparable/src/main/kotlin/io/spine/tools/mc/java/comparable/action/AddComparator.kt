@@ -53,9 +53,9 @@ import io.spine.tools.psi.java.Environment.elementFactory
  * This action also validates that the passed fields are eligible to participate
  * in the comparison. See [validate] method for details.
  *
- * @type type The type of the message.
- * @type file The source code to which the action is applied.
- * @type context The code generation context in which this action runs.
+ * @param type The type of the message.
+ * @param file The source code to which the action is applied.
+ * @param context The code generation context in which this action runs.
  */
 public class AddComparator(
     type: MessageType,
