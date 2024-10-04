@@ -26,11 +26,11 @@
 
 package io.spine.tools.mc.java.entity
 
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.java.render.RenderActions
+import io.spine.protodata.java.render.TypeListRenderer
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.RenderActions
-import io.spine.tools.mc.java.TypeListRenderer
 import io.spine.tools.mc.java.settings.Entities
 import io.spine.tools.psi.java.execute
 
@@ -40,15 +40,14 @@ import io.spine.tools.psi.java.execute
  * The renderer modifies the code if the [generateQueries][Entities.getGenerateQueries] flag is
  * set to `true` in the code generation settings.
  *
- * The actual code generation is performed by actions [defined][Entities.getActionList] in
+ * The actual code generation is performed by actions [defined][Entities.getActions] in
  * the code generation settings.
  */
 public class EntityStateRenderer :
     TypeListRenderer<DiscoveredEntities, Entities>(),
     EntityPluginComponent {
 
-    override val enabledBySettings: Boolean
-        get() = settings.generateQueries
+    override fun isEnabled(settings: Entities): Boolean = settings.generateQueries
 
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {

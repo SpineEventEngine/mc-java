@@ -30,12 +30,12 @@ import com.google.protobuf.Empty
 import com.intellij.psi.PsiClass
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.base.UuidValue
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.DirectMessageAction
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory

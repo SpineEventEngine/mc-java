@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.entity
 
 import io.spine.core.External
-import io.spine.protodata.event.TypeDiscovered
+import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React

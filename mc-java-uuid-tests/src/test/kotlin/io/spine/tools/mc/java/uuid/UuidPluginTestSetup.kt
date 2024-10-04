@@ -30,8 +30,8 @@ import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.protobuf.pack
-import io.spine.protodata.settings.actions
-import io.spine.tools.mc.java.MessageAction
+import io.spine.protodata.java.render.MessageAction
+import io.spine.protodata.render.actions
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.settings.copy

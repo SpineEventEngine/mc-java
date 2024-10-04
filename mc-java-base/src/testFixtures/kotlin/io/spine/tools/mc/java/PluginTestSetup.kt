@@ -29,8 +29,8 @@ package io.spine.tools.mc.java
 import com.google.protobuf.Message
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.renderer.SourceFile
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.render.SourceFile
+import io.spine.protodata.render.SourceFileSet
 import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
@@ -42,8 +42,8 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 /**
- * An abstract base for companion objects for the suites testing ProtoData plugins
- * provided by other modules.
+ * An abstract base for companion objects of test suites testing
+ * a ProtoData plugin provided by a module of McJava.
  *
  * @param S the type of the plugin settings in the form of a Protobuf message.
  */

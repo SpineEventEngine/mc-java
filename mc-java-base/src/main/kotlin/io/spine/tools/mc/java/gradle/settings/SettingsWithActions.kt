@@ -29,28 +29,29 @@ package io.spine.tools.mc.java.gradle.settings
 import com.google.common.annotations.VisibleForTesting
 import com.google.protobuf.Message
 import com.google.protobuf.stringValue
-import io.spine.protodata.settings.Actions
-import io.spine.protodata.settings.actions
-import io.spine.tools.mc.java.ImplementInterface
+import io.spine.protodata.java.render.ImplementInterface
+import io.spine.protodata.java.render.superInterface
+import io.spine.protodata.render.Actions
+import io.spine.protodata.render.actions
 import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.BinaryClassName
 import io.spine.tools.mc.java.settings.noParameter
 import io.spine.tools.mc.java.settings.pack
-import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
 
 /**
- * Code generation settings that cover applying code generation actions specified as
- * fully qualified binary names of classes that extend [io.spine.tools.mc.java.MessageAction].
+ * Code generation settings that cover applying code generation
+ * actions specified as fully qualified binary names of classes that
+ * extend [io.spine.protodata.java.render.MessageAction].
  *
  * @param S Protobuf type reflecting a snapshot of these settings.
  *
  * @param project The project for which settings are created.
  * @param defaultActions Code generation actions applied by default.
  *
- * @constructor Creates an instance of settings for the specified project, configuring
- *  the convention using the passed default values.
+ * @constructor Creates an instance of settings for the specified project,
+ *   configuring the convention using the passed default values.
  */
 public abstract class SettingsWithActions<S : Message>(
     project: Project,
@@ -104,7 +105,7 @@ public abstract class SettingsWithActions<S : Message>(
 
     /**
      * Instructs Model Compiler to use
-     * the [code generation action][io.spine.protodata.renderer.RenderAction]
+     * the [code generation action][io.spine.protodata.render.RenderAction]
      * specified by the binary name of the class.
      *
      * @param className The binary name of the action class.

@@ -31,8 +31,8 @@ package io.spine.tools.mc.java.gradle.settings
 import com.google.common.collect.ImmutableList
 import io.spine.annotation.Internal
 import io.spine.base.MessageFile
-import io.spine.protodata.FilePattern
-import io.spine.protodata.FilePatternFactory
+import io.spine.protodata.ast.FilePattern
+import io.spine.protodata.ast.FilePatternFactory
 import io.spine.tools.java.code.Classpath
 import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_COMMAND_ACTIONS
 import io.spine.tools.mc.java.gradle.settings.SignalSettings.Companion.DEFAULT_EVENT_ACTIONS

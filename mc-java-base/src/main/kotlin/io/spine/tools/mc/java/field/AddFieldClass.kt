@@ -27,15 +27,17 @@
 package io.spine.tools.mc.java.field
 
 import com.google.protobuf.StringValue
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.Field.CardinalityCase.SINGLE
-import io.spine.protodata.MessageType
-import io.spine.protodata.MessageTypeDependencies
+import io.spine.protodata.ast.Field.CardinalityCase.SINGLE
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.MessageTypeDependencies
+import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.java.render.CreateNestedClass
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.CreateNestedClass
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
 import io.spine.tools.psi.java.addLast
 import org.intellij.lang.annotations.Language
@@ -66,6 +68,8 @@ public open class AddFieldClass(
          */
         public const val NAME: String = "Field"
     }
+
+    override fun createAnnotation(): PsiAnnotation = GeneratedAnnotation.create()
 
     @Language("JAVA") @Suppress("EmptyClass")
     override fun classJavadoc(): String = """

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -27,8 +27,8 @@
 package io.spine.tools.mc.annotation
 
 import io.spine.annotation.GeneratedMixin
-import io.spine.protodata.File
-import io.spine.protodata.Option
+import io.spine.protodata.ast.File
+import io.spine.protodata.ast.Option
 
 /**
  * Common interface for views that deal with API options.

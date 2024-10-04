@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.uuid
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.render.Renderer
 
 /**
  * Discovers [UuidValue][io.spine.base.UuidValue] message types and renders the code

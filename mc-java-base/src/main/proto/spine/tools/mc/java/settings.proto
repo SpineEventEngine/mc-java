@@ -36,12 +36,10 @@ option java_multiple_files = true;
 
 option (internal_all) = true;
 
-import "google/protobuf/empty.proto";
-
 import "spine/tools/java/java.proto";
 import "spine/tools/proto/proto.proto";
-import "spine/protodata/file.proto";
-import "spine/protodata/settings.proto";
+import "spine/protodata/file_pattern.proto";
+import "spine/protodata/render_actions.proto";
 
 // Code generation settings passed to Spine Protoc Plugin.
 //
@@ -173,10 +171,8 @@ message MessageGroup {
     // The pattern defining the group.
     Pattern pattern = 1;
 
-    // Java interfaces to be added to all the messages in this group.
-    repeated AddInterface add_interface = 2 [deprecated = true];
-
-    reserved 3 to 5;
+    reserved 2 to 5;
+    reserved "add_interface";
     reserved "generate_methods";
     reserved "generate_nested_classes";
     reserved "generate_fields";
@@ -234,25 +230,6 @@ message Uuids {
     protodata.Actions actions = 3;
 }
 
-// Specification of an existing super interface a generated Java type should implement.
-message SuperInterface {
-
-    // The name of the interface.
-    //
-    // It could be a simple name if the generated types are in the same Java package.
-    // Otherwise, this value must contain a fully qualified canonical name.
-    //
-    string name = 1 [(required) = true];
-
-    // Optional arguments for generic parameters, if the interface has them.
-    //
-    // As for the interface name, the arguments could be simple names if corresponding
-    // types reside in the same package with the generated code.
-    // Otherwise, fully qualified canonical names must be provided.
-    //
-    repeated string generic_argument = 2;
-}
-
 // Code generation settings for comparable messages.
 //
 // A message is comparable when it has `compare_by` option.
@@ -262,10 +239,3 @@ message Comparables {
     // A collection of code generation actions associated with their parameters.
     protodata.Actions actions = 1;
 }
-
-// Configuration for adding a Java interface to a generated class.
-message AddInterface {
-
-    tools.java.JavaClassName name = 1;
-}
-

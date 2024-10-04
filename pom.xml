@@ -10,7 +10,7 @@ all modules and does not describe the project structure per-subproject.
  -->
 <groupId>io.spine.tools</groupId>
 <artifactId>mc-java</artifactId>
-<version>2.0.0-SNAPSHOT.220</version>
+<version>2.0.0-SNAPSHOT.241</version>
 
 <inceptionYear>2015</inceptionYear>
 
@@ -44,7 +44,13 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine</groupId>
     <artifactId>protodata</artifactId>
-    <version>0.60.0</version>
+    <version>0.61.2</version>
+    <scope>compile</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.spine</groupId>
+    <artifactId>spine-base</artifactId>
+    <version>2.0.0-SNAPSHOT.208</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -68,7 +74,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-java</artifactId>
-    <version>0.60.0</version>
+    <version>0.61.2</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -80,25 +86,25 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-plugin-base</artifactId>
-    <version>2.0.0-SNAPSHOT.222</version>
+    <version>2.0.0-SNAPSHOT.224</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-psi-java-bundle</artifactId>
-    <version>2.0.0-SNAPSHOT.222</version>
+    <version>2.0.0-SNAPSHOT.224</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-configuration</artifactId>
-    <version>2.0.0-SNAPSHOT.152</version>
+    <version>2.0.0-SNAPSHOT.160</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-java-runtime</artifactId>
-    <version>2.0.0-SNAPSHOT.152</version>
+    <version>2.0.0-SNAPSHOT.160</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -111,18 +117,6 @@ all modules and does not describe the project structure per-subproject.
     <groupId>net.ltgt.gradle</groupId>
     <artifactId>gradle-errorprone-plugin</artifactId>
     <version>3.1.0</version>
-    <scope>compile</scope>
-  </dependency>
-  <dependency>
-    <groupId>org.jboss.forge.roaster</groupId>
-    <artifactId>roaster-api</artifactId>
-    <version>2.28.0.Final</version>
-    <scope>compile</scope>
-  </dependency>
-  <dependency>
-    <groupId>org.jboss.forge.roaster</groupId>
-    <artifactId>roaster-jdt</artifactId>
-    <version>2.28.0.Final</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -162,21 +156,15 @@ all modules and does not describe the project structure per-subproject.
     <scope>test</scope>
   </dependency>
   <dependency>
-    <groupId>io.spine</groupId>
-    <artifactId>spine-base</artifactId>
-    <version>2.0.0-SNAPSHOT.204</version>
-    <scope>test</scope>
-  </dependency>
-  <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-testlib</artifactId>
-    <version>0.60.0</version>
+    <version>0.61.2</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-plugin-testlib</artifactId>
-    <version>2.0.0-SNAPSHOT.222</version>
+    <version>2.0.0-SNAPSHOT.224</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -188,13 +176,25 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-tool-base</artifactId>
-    <version>2.0.0-SNAPSHOT.222</version>
+    <version>2.0.0-SNAPSHOT.224</version>
     <scope>test</scope>
   </dependency>
   <dependency>
     <groupId>org.apiguardian</groupId>
     <artifactId>apiguardian-api</artifactId>
     <version>1.1.2</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>org.jboss.forge.roaster</groupId>
+    <artifactId>roaster-api</artifactId>
+    <version>2.28.0.Final</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>org.jboss.forge.roaster</groupId>
+    <artifactId>roaster-jdt</artifactId>
+    <version>2.28.0.Final</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -278,12 +278,12 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-fat-cli</artifactId>
-    <version>0.52.0</version>
+    <version>0.61.1</version>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-protoc</artifactId>
-    <version>0.52.0</version>
+    <version>0.61.1</version>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
@@ -293,23 +293,18 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-mc-java-checks</artifactId>
-    <version>2.0.0-SNAPSHOT.214</version>
+    <version>2.0.0-SNAPSHOT.230</version>
     <scope>provided</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-mc-java-plugins</artifactId>
-    <version>2.0.0-SNAPSHOT.214</version>
-  </dependency>
-  <dependency>
-    <groupId>io.spine.tools</groupId>
-    <artifactId>spine-mc-java-protoc</artifactId>
-    <version>2.0.0-SNAPSHOT.214</version>
+    <version>2.0.0-SNAPSHOT.230</version>
   </dependency>
   <dependency>
     <groupId>io.spine.validation</groupId>
     <artifactId>spine-validation-java-bundle</artifactId>
-    <version>2.0.0-SNAPSHOT.152</version>
+    <version>2.0.0-SNAPSHOT.160</version>
   </dependency>
   <dependency>
     <groupId>net.sourceforge.pmd</groupId>
@@ -331,6 +326,41 @@ all modules and does not describe the project structure per-subproject.
     <groupId>org.jacoco</groupId>
     <artifactId>org.jacoco.ant</artifactId>
     <version>0.8.12</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>all-modules-page-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>analysis-kotlin-descriptors</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>dokka-base</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>dokka-core</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>gfm-template-processing-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>javadoc-plugin</artifactId>
+    <version>1.9.10</version>
+  </dependency>
+  <dependency>
+    <groupId>org.jetbrains.dokka</groupId>
+    <artifactId>jekyll-template-processing-plugin</artifactId>
+    <version>1.9.10</version>
   </dependency>
   <dependency>
     <groupId>org.jetbrains.kotlin</groupId>

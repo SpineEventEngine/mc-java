@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,13 +28,12 @@ package io.spine.tools.mc.annotation
 
 import io.spine.core.External
 import io.spine.core.Subscribe
-import io.spine.protodata.ServiceName
-import io.spine.protodata.event.ServiceOptionDiscovered
-import io.spine.protodata.event.TypeOptionDiscovered
+import io.spine.protodata.ast.ServiceName
+import io.spine.protodata.ast.event.ServiceOptionDiscovered
+import io.spine.protodata.ast.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
-import io.spine.server.entity.state
 import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 

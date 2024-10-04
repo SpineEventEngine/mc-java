@@ -29,17 +29,17 @@ package io.spine.tools.mc.java.mgroup.given
 import com.google.protobuf.Empty
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.render.SourceFile
 import io.spine.protodata.java.javaClassName
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.CreateNestedClass
+import io.spine.protodata.java.render.CreateNestedClass
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.addLast
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
-import io.spine.tools.mc.java.DirectMessageAction
+import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.tools.java.reference
 import io.spine.type.MessageType as MType
 
@@ -71,7 +71,6 @@ class AddOwnTypeMethod(
     }
 
     private val method: PsiMethod by lazy {
-        val messageClassName = type.javaClassName(typeSystem!!)
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
             public static $returnType ownType() {

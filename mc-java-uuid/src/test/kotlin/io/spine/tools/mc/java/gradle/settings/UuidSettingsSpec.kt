@@ -27,8 +27,8 @@
 package io.spine.tools.mc.java.gradle.settings
 
 import io.kotest.matchers.collections.shouldContainExactly
+import io.spine.protodata.java.render.ImplementInterface
 import io.spine.tools.kotlin.reference
-import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.uuid.AddFactoryMethods
 import java.io.File
 import org.gradle.testfixtures.ProjectBuilder

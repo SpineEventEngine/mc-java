@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -36,7 +36,7 @@ object Validation {
     /**
      * The version of the Validation library artifacts.
      */
-    const val version = "2.0.0-SNAPSHOT.152"
+    const val version = "2.0.0-SNAPSHOT.160"
 
     const val group = "io.spine.validation"
     private const val prefix = "spine-validation"
@@ -44,7 +44,10 @@ object Validation {
     const val runtime = "$group:$prefix-java-runtime:$version"
     const val java = "$group:$prefix-java:$version"
 
-    const val javaBundle = "$group:$prefix-java-bundle:$version"
+    /** Obtains the artifact for the `java-bundle` artifact of the given version. */
+    fun javaBundle(version: String) = "$group:$prefix-java-bundle:$version"
+
+    val javaBundle = javaBundle(version)
 
     const val model = "$group:$prefix-model:$version"
     const val config = "$group:$prefix-configuration:$version"

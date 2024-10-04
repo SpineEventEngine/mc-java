@@ -37,11 +37,19 @@ dependencies {
     compileOnlyApi(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
 
-    api(Spine.Logging.lib)
-    api(Spine.modelCompiler)
-    api(ProtoData.java)
-    api(Validation.config)
-    api(Spine.pluginBase)
+    val apiDeps = arrayOf(
+        Spine.Logging.lib,
+        Spine.modelCompiler,
+        ProtoData.java,
+        Validation.config,
+        Spine.pluginBase
+    )
+    apiDeps.forEach {
+        api(it) {
+            excludeSpineBase()
+        }
+    }
+    api(Spine.base)
 
     arrayOf(
         Spine.base,
@@ -57,6 +65,8 @@ dependencies {
     testImplementation(gradleTestKit())
     testImplementation(Spine.pluginTestlib)
 }
+
+forceSpineBase()
 
 project.afterEvaluate {
     (tasks.getByName("sourcesJar") as Jar).apply {

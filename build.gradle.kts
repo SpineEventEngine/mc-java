@@ -26,7 +26,7 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import Build_gradle.Module
+import io.spine.internal.dependency.Dokka
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
 import io.spine.internal.dependency.Spine
@@ -41,13 +41,13 @@ import io.spine.internal.gradle.report.license.LicenseReporter
 import io.spine.internal.gradle.report.pom.PomGenerator
 import io.spine.internal.gradle.standardToSpineSdk
 import java.time.Duration
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 buildscript {
     standardSpineSdkRepositories()
 
     val spine = io.spine.internal.dependency.Spine
     val validation = io.spine.internal.dependency.Validation
-    val protoData = io.spine.internal.dependency.ProtoData
     val logging = io.spine.internal.dependency.Spine.Logging
     doForceVersions(configurations)
     configurations {
@@ -57,11 +57,10 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.internal.dependency.Grpc.api,
-                    spine.reflect,
                     spine.base,
+                    spine.reflect,
                     spine.toolBase,
                     spine.server,
-                    protoData.pluginLib(protoData.dogfoodingVersion),
                     logging.lib,
                     validation.runtime,
                     validation.javaBundle
@@ -70,7 +69,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib)
+        classpath(mcJava.pluginLib)
     }
 }
 
@@ -89,12 +88,11 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = subprojects.map { it.name }
+    modules = productionModules.map { it.name }
         // Do not publish the validation codegen module as it is deprecated in favor of
         // ProtoData-based code generation of the Validation library.
         // The module is still kept for the sake of historical reference.
-        // Also, do not publish test-only modules.
-        .filter { !(it.contains("mc-java-validation") || it.endsWith("-tests")) }
+        .filter { !it.contains("mc-java-validation") }
         .toSet()
     destinations = PublishingRepos.run {
         setOf(
@@ -105,6 +103,7 @@ spinePublishing {
 }
 
 allprojects {
+    apply(plugin = Dokka.GradlePlugin.id)
     apply(from = "$rootDir/version.gradle.kts")
     group = "io.spine.tools"
     version = extra["versionToPublish"]!!
@@ -204,4 +203,8 @@ tasks.register<RunGradle>("checkPerformance") {
     // Uncomment the below line, and remove `task()`
     // task("clean", "build")
     task("tasks")
+}
+
+val dokkaHtmlMultiModule by tasks.getting(DokkaMultiModuleTask::class) {
+    configureStyle()
 }

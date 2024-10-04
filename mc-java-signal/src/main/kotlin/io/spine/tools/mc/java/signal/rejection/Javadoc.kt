@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.signal.rejection
 import com.google.common.annotations.VisibleForTesting
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.ParameterSpec
-import io.spine.protodata.MessageType
+import io.spine.protodata.ast.MessageType
 import io.spine.tools.java.codeBlock
 import io.spine.tools.java.javadoc.JavadocText.fromEscaped
 import io.spine.tools.java.javadoc.JavadocText.fromUnescaped

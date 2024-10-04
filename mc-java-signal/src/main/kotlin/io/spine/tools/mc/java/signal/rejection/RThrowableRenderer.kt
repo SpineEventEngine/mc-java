@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -29,15 +29,16 @@ package io.spine.tools.mc.java.signal.rejection
 import com.google.protobuf.BoolValue
 import com.squareup.javapoet.JavaFile
 import io.spine.logging.WithLogging
-import io.spine.protodata.MessageType
-import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.find
-import io.spine.protodata.java.JavaRenderer
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.ProtobufSourceFile
+import io.spine.protodata.ast.find
+import io.spine.protodata.ast.isTopLevel
+import io.spine.protodata.ast.qualifiedName
 import io.spine.protodata.java.file.hasJavaRoot
 import io.spine.protodata.java.javaOuterClassName
 import io.spine.protodata.java.javaPackage
-import io.spine.protodata.qualifiedName
-import io.spine.protodata.renderer.SourceFileSet
+import io.spine.protodata.java.render.JavaRenderer
+import io.spine.protodata.render.SourceFileSet
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.ti
 import java.nio.file.Path
@@ -97,7 +98,7 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
             """.ti()
         }
         protoFile.typeMap.values
-            .filter { it.isTopLevel() }
+            .filter { it.isTopLevel }
             .forEach {
                 generateRejection(protoFile, it)
             }
@@ -119,8 +120,8 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
     /**
      * Obtains a name of the Java file corresponding to this [rejection message][MessageType] type.
      *
-     * @param protoFile
-     *         the file which declares this rejection type. Serves for calculating the Java package.
+     * @param protoFile The file which declares this rejection type. Serves for calculating
+     *   the Java package.
      */
     private fun MessageType.throwableJavaFile(protoFile: ProtobufSourceFile): Path {
         val javaPackage = protoFile.javaPackage()
@@ -143,9 +144,6 @@ internal class RThrowableRenderer: JavaRenderer(), WithLogging {
 
 private fun ProtobufSourceFile.isRejections(): Boolean =
     file.path.endsWith("rejections.proto")
-
-private fun MessageType.isTopLevel(): Boolean =
-    !hasDeclaredIn()
 
 internal typealias RejectionFile = ProtobufSourceFile
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -58,11 +58,12 @@ fun CompileOptions.exportsJavacPackage(packageName: String) {
 /**
  * Adds the `--add-exports` compiler arguments for all the given `com.sun.tools.javac` subpackages.
  *
- * We need to expose internal Java compiler API in order to find potential bugs in code.
+ * We need to expose the internal Java compiler API to find potential bugs in code.
  * These compiler arguments are only required at compile time of the `mc-java-checks` module.
  *
  * Users of Error Prone, regardless of using `mc-java-checks`, might need to add compiler and
- * runtime flags of their own. The full list if available in the [Error Prone docs](https://errorprone.info/docs/installation).
+ * runtime flags of their own.
+ * The full list is available from [Error Prone docs](https://errorprone.info/docs/installation).
  */
 fun CompileOptions.exportsSunJavacPackages(vararg subpackages: String) {
     subpackages.forEach {

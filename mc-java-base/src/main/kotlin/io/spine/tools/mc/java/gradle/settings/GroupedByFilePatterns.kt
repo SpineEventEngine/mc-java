@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.gradle.settings
 import com.google.common.collect.ImmutableSet
 import com.google.protobuf.Message
 import io.spine.protobuf.isDefault
-import io.spine.protodata.FilePattern
-import io.spine.protodata.FilePatternFactory
+import io.spine.protodata.ast.FilePattern
+import io.spine.protodata.ast.FilePatternFactory
 import io.spine.tools.gradle.Multiple
 import io.spine.tools.mc.java.settings.ActionMap
 import org.gradle.api.Project

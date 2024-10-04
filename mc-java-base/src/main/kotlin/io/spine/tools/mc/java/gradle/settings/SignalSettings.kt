@@ -32,14 +32,14 @@ import io.spine.base.CommandMessage
 import io.spine.base.EventMessage
 import io.spine.base.EventMessageField
 import io.spine.base.RejectionMessage
-import io.spine.protodata.filePattern
+import io.spine.protodata.ast.filePattern
+import io.spine.protodata.java.render.ImplementInterface
+import io.spine.protodata.java.render.superInterface
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.ImplementInterface
 import io.spine.tools.mc.java.field.AddFieldClass
 import io.spine.tools.mc.java.settings.ActionMap
 import io.spine.tools.mc.java.settings.Signals
 import io.spine.tools.mc.java.settings.signals
-import io.spine.tools.mc.java.settings.superInterface
 import org.gradle.api.Project
 
 /**

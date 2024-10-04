@@ -28,9 +28,9 @@ package io.spine.tools.mc.java.signal
 
 import com.google.common.annotations.VisibleForTesting
 import io.spine.core.External
-import io.spine.protodata.MessageType
-import io.spine.protodata.event.TypeDiscovered
-import io.spine.protodata.matches
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.event.TypeDiscovered
+import io.spine.protodata.ast.matches
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.React

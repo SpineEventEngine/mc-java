@@ -26,9 +26,9 @@
 
 package io.spine.tools.mc.java.entity
 
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
-import io.spine.protodata.qualifiedName
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.qualifiedName
 import io.spine.tools.mc.java.settings.Entities
 
 /**

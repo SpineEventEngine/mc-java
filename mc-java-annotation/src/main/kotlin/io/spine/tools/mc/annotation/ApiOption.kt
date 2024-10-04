@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -30,9 +30,9 @@ import com.google.protobuf.BoolValue
 import com.google.protobuf.kotlin.isA
 import com.google.protobuf.kotlin.unpack
 import io.spine.protobuf.pack
-import io.spine.protodata.Option
-import io.spine.protodata.TypeInstances
-import io.spine.protodata.option
+import io.spine.protodata.ast.Option
+import io.spine.protodata.ast.TypeInstances
+import io.spine.protodata.ast.option
 import com.google.protobuf.Any as ProtoAny
 
 /**

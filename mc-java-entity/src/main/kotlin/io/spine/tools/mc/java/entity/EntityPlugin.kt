@@ -30,7 +30,7 @@ import com.google.common.annotations.VisibleForTesting
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.render.Renderer
 
 /**
  * A ProtoData plugin responsible for handling code generation aspects related to

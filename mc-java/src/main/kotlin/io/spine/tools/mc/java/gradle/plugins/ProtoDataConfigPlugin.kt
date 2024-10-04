@@ -46,6 +46,7 @@ import io.spine.tools.mc.java.gradle.mcJava
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.WRITE_PROTODATA_SETTINGS
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
+import io.spine.tools.mc.java.marker.MarkerPlugin
 import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
@@ -138,6 +139,7 @@ private fun Project.configureProtoDataPlugins() {
     configureSignals(protodata)
 
     protodata.run {
+        addPlugin<MarkerPlugin>()
         addPlugin<MessageGroupPlugin>()
         addPlugin<UuidPlugin>()
         addPlugin<ComparablePlugin>()
