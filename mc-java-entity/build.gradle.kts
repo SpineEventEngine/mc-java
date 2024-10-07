@@ -25,6 +25,7 @@
  */
 
 import io.spine.internal.dependency.Spine
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 plugins {
     id("io.spine.mc-java")
@@ -41,4 +42,12 @@ dependencies {
     }
 
     testImplementation(Spine.testlib)
+}
+
+configurations.configureEach {
+    if (name.toLowerCaseAsciiOnly().contains("proto")) {
+        resolutionStrategy {
+            force(Spine.baseForBuildScript)
+        }
+    }
 }

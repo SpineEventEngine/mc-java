@@ -26,6 +26,16 @@
 
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
+
+buildscript {
+    configurations.all {
+        resolutionStrategy {
+            @Suppress("RemoveRedundantQualifierName")
+            force(io.spine.internal.dependency.Spine.baseForBuildScript)
+        }
+    }
+}
 
 plugins {
     `java-test-fixtures`
@@ -49,6 +59,14 @@ dependencies {
 
     testImplementation(Spine.pluginTestlib)
     testImplementation(gradleTestKit())
+}
+
+configurations.configureEach {
+    if (name.toLowerCaseAsciiOnly().contains("proto")) {
+        resolutionStrategy {
+            force(Spine.baseForBuildScript)
+        }
+    }
 }
 
 /**
