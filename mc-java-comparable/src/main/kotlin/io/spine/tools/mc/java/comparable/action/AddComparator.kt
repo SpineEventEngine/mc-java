@@ -155,7 +155,7 @@ public class AddComparator(
                     comparingBy("$path.value")
                 } else if (ComparatorRegistry.contains(clazz)) {
                     val canonical = clazz.canonicalName
-                    val comparator = "io.spine.compare.ComparatorRegistry.get($canonical.class)"
+                    val comparator = "io.spine.compare.ComparatorRegistry.INSTANCE.get($canonical.class)"
                     comparingBy(path, comparator)
                 }
             }

@@ -42,7 +42,7 @@ object McJava {
     const val dogfoodingVersion = "2.0.0-SNAPSHOT.230"
 
     /** The version to be used for integration tests. */
-    const val version = "2.0.0-SNAPSHOT.241"
+    const val version = "2.0.0-SNAPSHOT.242"
 
     const val pluginId = "io.spine.mc-java"
 
