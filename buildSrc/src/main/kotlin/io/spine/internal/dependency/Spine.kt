@@ -45,7 +45,8 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/base">spine-base</a>
          */
-        const val base = "2.0.0-SNAPSHOT.208"
+        const val base = "2.0.0-SNAPSHOT.212"
+        const val baseForBuildScript = "2.0.0-SNAPSHOT.208"
 
         /**
          * The version of [Spine.reflect].
@@ -128,6 +129,7 @@ object Spine {
     }
 
     const val base = "$group:spine-base:${ArtifactVersion.base}"
+    const val baseForBuildScript = "$group:spine-base:${ArtifactVersion.baseForBuildScript}"
 
     const val reflect = "$group:spine-reflect:${ArtifactVersion.reflect}"
     const val baseTypes = "$group:spine-base-types:${ArtifactVersion.baseTypes}"
