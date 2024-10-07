@@ -26,7 +26,6 @@
 
 import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 plugins {
     id("io.spine.mc-java")
@@ -53,10 +52,4 @@ dependencies {
     }
 }
 
-configurations.configureEach {
-    if (name.toLowerCaseAsciiOnly().contains("proto")) {
-        resolutionStrategy {
-            force(Spine.baseForBuildScript)
-        }
-    }
-}
+forceBaseInProtoTasks()

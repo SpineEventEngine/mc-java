@@ -26,7 +26,6 @@
 
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 buildscript {
     configurations.all {
@@ -61,13 +60,7 @@ dependencies {
     testImplementation(gradleTestKit())
 }
 
-configurations.configureEach {
-    if (name.toLowerCaseAsciiOnly().contains("proto")) {
-        resolutionStrategy {
-            force(Spine.baseForBuildScript)
-        }
-    }
-}
+forceBaseInProtoTasks()
 
 /**
  * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
@@ -93,3 +86,5 @@ modelCompiler {
         }
     }
 }
+
+protoDataRemoteDebug(enabled = false)
