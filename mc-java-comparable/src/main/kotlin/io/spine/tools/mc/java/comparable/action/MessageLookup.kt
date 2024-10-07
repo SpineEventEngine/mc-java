@@ -26,11 +26,11 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.ProtobufDependency
-import io.spine.protodata.ProtobufSourceFile
-import io.spine.protodata.TypeName
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.ProtobufDependency
+import io.spine.protodata.ast.ProtobufSourceFile
+import io.spine.protodata.ast.TypeName
+import io.spine.protodata.context.CodegenContext
 
 /**
  * Looks for [MessageType] by [TypeName] in the given codegen [context].

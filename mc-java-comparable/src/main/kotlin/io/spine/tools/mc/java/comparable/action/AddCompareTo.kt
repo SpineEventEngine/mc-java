@@ -27,11 +27,11 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.DirectMessageAction
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.OverrideAnnotation
 import io.spine.tools.psi.addFirst

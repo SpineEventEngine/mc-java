@@ -26,12 +26,12 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.MessageType
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.ImplementInterface
+import io.spine.protodata.java.render.superInterface
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.ImplementInterface
-import io.spine.tools.mc.java.settings.superInterface
 
 /**
  * Updates the code of the message which qualifies as [Comparable] by

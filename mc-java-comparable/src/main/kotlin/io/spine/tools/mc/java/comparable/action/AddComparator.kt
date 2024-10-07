@@ -28,18 +28,18 @@ package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
 import io.spine.compare.ComparatorRegistry
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
-import io.spine.protodata.PrimitiveType
-import io.spine.protodata.PrimitiveType.PT_UNKNOWN
-import io.spine.protodata.PrimitiveType.TYPE_BYTES
-import io.spine.protodata.isEnum
-import io.spine.protodata.isMessage
-import io.spine.protodata.isPrimitive
-import io.spine.protodata.renderer.SourceFile
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.PrimitiveType
+import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
+import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
+import io.spine.protodata.ast.isEnum
+import io.spine.protodata.ast.isMessage
+import io.spine.protodata.ast.isPrimitive
+import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.render.DirectMessageAction
+import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.mc.java.DirectMessageAction
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.action.ProtoValueMessages.isProtoValueMessage
@@ -127,7 +127,7 @@ public class AddComparator(
                 if (!message.isComparable) {
                     val clazz = classLookup.query(message)
                     check(clazz.isProtoValueMessage || ComparatorRegistry.contains(clazz)) {
-                        "The passed field has a non-comparable message type: `${type.message}`, ${clazz}."
+                        "The field has a non-comparable message type: `${type.message}`, ${clazz}."
                     }
                 }
             }
@@ -154,7 +154,8 @@ public class AddComparator(
                 if (clazz.isProtoValueMessage) {
                     comparingBy("$path.value")
                 } else if (ComparatorRegistry.contains(clazz)) {
-                    val comparator = "io.spine.compare.ComparatorRegistry.get(${clazz.canonicalName}.class)"
+                    val canonical = clazz.canonicalName
+                    val comparator = "io.spine.compare.ComparatorRegistry.get($canonical.class)"
                     comparingBy(path, comparator)
                 }
             }

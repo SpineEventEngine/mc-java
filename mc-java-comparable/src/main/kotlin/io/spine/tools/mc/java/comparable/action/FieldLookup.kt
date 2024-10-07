@@ -26,9 +26,9 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-import io.spine.protodata.Field
-import io.spine.protodata.MessageType
-import io.spine.protodata.field
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.field
 
 /**
  * Looks for [MessageType] denoted by [FieldPath].

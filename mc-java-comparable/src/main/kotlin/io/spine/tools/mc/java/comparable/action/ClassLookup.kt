@@ -26,11 +26,11 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-import io.spine.protodata.CodegenContext
-import io.spine.protodata.File
-import io.spine.protodata.MessageType
-import io.spine.protodata.ProtobufDependency
-import io.spine.protodata.ProtobufSourceFile
+import io.spine.protodata.ast.File
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.ProtobufDependency
+import io.spine.protodata.ast.ProtobufSourceFile
+import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.javaClassName
 
 /**

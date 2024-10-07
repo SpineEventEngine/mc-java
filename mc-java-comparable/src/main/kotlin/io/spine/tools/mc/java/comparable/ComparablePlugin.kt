@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.comparable
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.plugin.View
-import io.spine.protodata.renderer.Renderer
+import io.spine.protodata.render.Renderer
 
 /**
  * Looks for messages with `compare_by` option and applies render actions specified in

@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.comparable
 
-import io.spine.protodata.MessageType
-import io.spine.protodata.Option
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.Option
 
 /**
  * The name of [CompareByOption][io.spine.option.CompareByOption].
