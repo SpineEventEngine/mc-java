@@ -27,11 +27,7 @@
 package io.spine.tools.mc.java.marker
 
 import io.spine.base.EntityState
-import io.spine.option.IsOption
 import io.spine.protodata.ast.MessageType
-import io.spine.protodata.ast.ProtoFileHeader
-import io.spine.protodata.java.JavaTypeName.Companion.PACKAGE_SEPARATOR
-import io.spine.protodata.java.javaPackage
 import io.spine.protodata.java.render.BaseRenderer
 import io.spine.protodata.java.render.ImplementInterface
 import io.spine.protodata.java.render.SuperInterface
@@ -56,18 +52,3 @@ internal abstract class MarkerRenderer<V : EntityState<*>> : BaseRenderer<V>() {
  * A fully qualified name of a Java interface.
  */
 internal typealias InterfaceName = @FullyQualifiedName String
-
-//TODO:2024-09-18:alexander.yevsyukov: Use ext. ProtoData when new options are available.
-internal fun IsOption.qualifiedJavaType(header: ProtoFileHeader): InterfaceName {
-    check(javaType.isNotEmpty() && javaType.isNotBlank()) {
-        "The value of `java_type` must not be empty or blank. Got: `\"$javaType\"`."
-    }
-    return if (javaType.isQualified) {
-        javaType
-    } else {
-        "${header.javaPackage()}.$javaType"
-    }
-}
-
-private val String.isQualified: Boolean
-    get() = contains(PACKAGE_SEPARATOR)
