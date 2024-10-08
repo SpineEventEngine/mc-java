@@ -80,7 +80,7 @@ internal abstract class FieldAccessor(
      * Creates a [PsiMethod] with the code for accessing the field.
      */
     internal fun method(): PsiMethod {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val method = elementFactory.createMethodFromText("""
             $modifiers $returnType $methodName() {
                 $methodBody
@@ -142,7 +142,7 @@ internal class TopLevelFieldAccessor(
 
     override val methodBody: String by lazy {
         val fieldClass = io.spine.base.Field::class.java.reference
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val result = """
             return new $returnType($fieldClass.named("$fieldName"));            
             """.trimIndent()
@@ -163,7 +163,7 @@ internal class NestedFieldAccessor(
     override val modifiers: String = "public"
 
     override val methodBody: String by lazy {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val result = """
             return new $returnType(getField().nested("$fieldName"));                
             """.trimIndent()
