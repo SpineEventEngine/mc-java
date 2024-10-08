@@ -35,6 +35,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
 import io.spine.tools.mc.java.comparable.action.AddComparator
+import io.spine.tools.mc.java.comparable.given.TableTop
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -119,6 +120,17 @@ internal class AddComparatorSpec {
             field.shouldNotBeNull()
             field.text shouldContain expected
         }
+
+        @Test
+        fun `registry-provided comparator`() {
+            val message = "Table"
+            val psiClass = generatedCodeOf(message)
+            val field = psiClass.findComparatorField()
+            val expected = "private static final java.util.Comparator<$message> comparator = " +
+                    "java.util.Comparator.comparing($message::getTop, ${fromRegistry<TableTop>()});"
+            field.shouldNotBeNull()
+            field.text shouldContain expected
+        }
     }
 
     @Nested inner class
@@ -194,6 +206,9 @@ internal class AddComparatorSpec {
 
         @Test
         fun `with a non-existing field`() = testNotGeneratesFor("NonExistingProhibited")
+
+        @Test
+        fun `with the option and registry-provided comparator`() = testNotGeneratesFor("Student")
     }
 
     @Nested inner class

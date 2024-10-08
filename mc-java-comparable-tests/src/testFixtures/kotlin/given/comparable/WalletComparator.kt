@@ -24,23 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.AutoService
-import io.spine.internal.dependency.AutoServiceKsp
+package given.comparable
 
-plugins {
-    prototap
-    `test-module`
-    ksp
-}
+import com.google.auto.service.AutoService
+import io.spine.compare.ComparatorProvider
+import io.spine.compare.ComparatorRegistry
+import io.spine.compare.register
+import io.spine.tools.mc.java.comparable.given.Wallet
 
-dependencies {
-    arrayOf(
-        project(":mc-java-base"),
-        project(":mc-java-comparable"),
-        testFixtures(project(":mc-java-base")),
-    ).forEach {
-        testImplementation(it)
+@AutoService(ComparatorProvider::class)
+class WalletComparator : ComparatorProvider {
+
+    override fun registerIn(registry: ComparatorRegistry) {
+        val comparator = compareBy(Wallet::getAmount)
+        registry.register(comparator)
     }
-    testFixturesCompileOnly(AutoService.annotations)
-    ksp(AutoServiceKsp.processor)
 }
