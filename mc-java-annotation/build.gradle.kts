@@ -27,15 +27,6 @@
 import io.spine.internal.dependency.Roaster
 import io.spine.internal.dependency.Spine
 
-buildscript {
-    configurations.all {
-        resolutionStrategy {
-            @Suppress("RemoveRedundantQualifierName")
-            force(io.spine.internal.dependency.Spine.baseForBuildScript)
-        }
-    }
-}
-
 plugins {
     `java-test-fixtures`
     id("io.spine.mc-java")
