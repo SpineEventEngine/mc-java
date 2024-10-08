@@ -51,6 +51,8 @@ dependencies {
     testImplementation(gradleTestKit())
 }
 
+forceBaseInProtoTasks()
+
 /**
  * Tests use the artifacts published to `mavenLocal`, so we need to publish them all first.
  */
@@ -75,3 +77,5 @@ modelCompiler {
         }
     }
 }
+
+protoDataRemoteDebug(enabled = false)

@@ -31,6 +31,7 @@ import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.find
 import io.spine.protodata.ast.qualifiedName
 import io.spine.protodata.context.findHeader
+import io.spine.protodata.java.qualifiedJavaType
 import io.spine.protodata.java.render.superInterface
 import io.spine.tools.psi.java.execute
 
