@@ -154,8 +154,8 @@ public class AddComparator(
                 if (clazz.isProtoValueMessage) {
                     comparingBy("$path.value")
                 } else if (ComparatorRegistry.contains(clazz)) {
-                    val canonical = clazz.canonicalName
-                    val comparator = "io.spine.compare.ComparatorRegistry.INSTANCE.get($canonical.class)"
+                    val className = "${clazz.canonicalName}.class"
+                    val comparator = "io.spine.compare.ComparatorRegistry.INSTANCE.get($className)"
                     comparingBy(path, comparator)
                 }
             }
