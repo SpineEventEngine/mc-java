@@ -105,7 +105,7 @@ internal class ColumnAccessor(
     }
 
     private val method: PsiMethod by lazy {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val newMethod = elementFactory.createMethodFromText("""
             public static $columnType $methodName() {
               return new $container<>("$fieldName", $fieldType.class, $getterRef);    
@@ -131,17 +131,14 @@ internal fun columnMethodName(field: Field): String =
     field.name.javaCase()
 
 /**
- * Obtains a string with the of an entity column parameterized by
+ * Obtains a string with the name of an entity column parameterized by
  * the type of the field, if specified.
  *
- * @param entityState
- *         the name of the entity state class.
- * @param typeSystem
- *         the instance of the [TypeSystem] to resolve the type of the given [field].
- *         Can be `null`, if [field] is `null`.
- * @param field
- *         the field of the column for composing the type.
- *         It is `null`, if the method is called for obtaining wildcard generic type name.
+ * @param entityState The name of the entity state class.
+ * @param typeSystem The instance of the [TypeSystem] to resolve the type of the given [field].
+ *   Can be `null`, if [field] is `null`.
+ * @param field The field of the column for composing the type.
+ *   It is `null`, if the method is called for obtaining wildcard generic type name.
  */
 internal fun columnType(
     entityState: ClassName,
