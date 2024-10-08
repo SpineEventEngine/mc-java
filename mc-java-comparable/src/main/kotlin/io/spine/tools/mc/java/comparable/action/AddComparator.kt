@@ -124,11 +124,15 @@ public class AddComparator(
 
             type.isMessage -> {
                 val message = messageLookup.query(type.message)
-                if (!message.isComparable) {
-                    val clazz = classLookup.query(message)
-                    check(clazz.isProtoValueMessage || ComparatorRegistry.contains(clazz)) {
-                        "The field has a non-comparable message type: `${type.message}`, ${clazz}."
-                    }
+                val clazz = classLookup.query(message)
+                val isComparable = message.isComparable || clazz.isProtoValueMessage
+                val hasRegistryComparator = ComparatorRegistry.contains(clazz)
+                check(isComparable || hasRegistryComparator) {
+                    "The field has a non-comparable message type: `${type.message}`, ${clazz}."
+                }
+                check(!(isComparable && hasRegistryComparator)) {
+                    "The field type is comparable itself and has a comparator in " +
+                            "the registry simultaneously: `${type.message}`, ${clazz}."
                 }
             }
 
