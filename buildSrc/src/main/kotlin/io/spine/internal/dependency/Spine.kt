@@ -118,7 +118,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
          */
-        const val toolBase = "2.0.0-SNAPSHOT.224"
+        const val toolBase = "2.0.0-SNAPSHOT.226"
 
         /**
          * The version of [Spine.javadocFilter].
