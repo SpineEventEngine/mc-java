@@ -69,7 +69,7 @@ internal class QueryMethod(private val file: SourceFile<Java>) : WithLogging {
     private val methodName = QUERY_METHOD_NAME
 
     private val method by lazy {
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "NewClassNamingConvention")
         val newMethod = elementFactory.createMethodFromText("""
             public static $queryBuilder $methodName() {
                 return new $queryBuilder();
