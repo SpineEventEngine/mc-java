@@ -34,6 +34,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
+import io.spine.testing.logging.mute.MuteLogging
 import io.spine.tools.mc.java.comparable.action.AddComparator
 import io.spine.tools.mc.java.comparable.given.TableTop
 import org.junit.jupiter.api.DisplayName
@@ -41,6 +42,8 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @Suppress("MaxLineLength") // Long `.thenComparing()` closures.
+@MuteLogging // Negative test cases pollute logging, but we can't suppress only them because codegen
+             // starts once for all messages during the execution of the first test case.
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
 
