@@ -42,3 +42,5 @@ dependencies {
 
     testImplementation(Spine.testlib)
 }
+
+forceBaseInProtoTasks()

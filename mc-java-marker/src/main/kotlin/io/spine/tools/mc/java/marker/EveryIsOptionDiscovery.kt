@@ -27,7 +27,7 @@
 package io.spine.tools.mc.java.marker
 
 import io.spine.core.External
-import io.spine.option.IsOption
+import io.spine.option.EveryIsOption
 import io.spine.protodata.ast.event.FileEntered
 import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
@@ -46,8 +46,7 @@ internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
     override fun whenever(
         @External event: FileEntered
     ): EitherOf2<EveryIsOptionDiscovered, NoReaction> {
-        //TODO:2024-09-17:alexander.yevsyukov: Use EveryIsOption below.
-        val found = event.header.optionList.find<IsOption>()
+        val found = event.header.optionList.find<EveryIsOption>()
         return if (found != null) {
             EitherOf2.withA(
                 everyIsOptionDiscovered {
