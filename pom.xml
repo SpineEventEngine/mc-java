@@ -156,6 +156,18 @@ all modules and does not describe the project structure per-subproject.
     <scope>test</scope>
   </dependency>
   <dependency>
+    <groupId>io.spine</groupId>
+    <artifactId>spine-base-types</artifactId>
+    <version>2.0.0-SNAPSHOT.126</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.spine</groupId>
+    <artifactId>spine-time</artifactId>
+    <version>2.0.0-SNAPSHOT.135</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-testlib</artifactId>
     <version>0.61.4</version>
