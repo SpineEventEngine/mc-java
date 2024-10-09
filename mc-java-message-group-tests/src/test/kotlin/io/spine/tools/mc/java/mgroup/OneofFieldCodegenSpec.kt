@@ -24,27 +24,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.signal
+package io.spine.tools.mc.java.mgroup
 
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.base.EventMessage
-import io.spine.string.count
-import io.spine.tools.java.reference
+import io.spine.tools.mc.java.PluginTestSetup
+import io.spine.tools.mc.java.settings.GroupSettings
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-@DisplayName("`EventRenderer` should")
-internal class EventRendererSpec : SignalPluginTest() {
+/**
+ * This test suite supplements [GroupedMessageRendererSpec] suite to test code generation
+ * of the type similar to [io.spine.core.EventContext] from the `core-java` module.
+ *
+ * Please see the `given.core` proto package for details.
+ */
+@DisplayName("Code generation of `oneof` should")
+internal class OneofFieldCodegenSpec {
 
-    companion object {
-
-        lateinit var eventCode: String
+    companion object : PluginTestSetup<GroupSettings>(
+        MessageGroupPlugin(),
+        MessageGroupPlugin.SETTINGS_ID
+    ) {
+        lateinit var code: String
 
         @BeforeAll
         @JvmStatic
@@ -54,20 +59,32 @@ internal class EventRendererSpec : SignalPluginTest() {
             @TempDir settingsDir: Path
         ) {
             runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = file(Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java"))
-            eventCode = sourceFile.code()
+            val file = file(Path("io/spine/given/core/EventContext.java"))
+            code = file.code()
+        }
+
+        /**
+         * Mimics codegen settings declared in `core-java/code/build.gradle.kts`.
+         */
+        override fun createSettings(projectDir: Path): GroupSettings {
+            val codegenConfig = createCodegenConfig(projectDir)
+            codegenConfig.forMessage("given.core.EventContext") {
+                it.markFieldsAs("io.spine.core.EventContextField")
+            }
+            return codegenConfig.toProto().groupSettings
         }
     }
 
+    /**
+     * Tests that a top-level field and a field under `oneof` which has the same type
+     * also has the field accessor returning the same type.
+     */
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
-    fun `add 'EventMessage' interface`() {
-        eventCode shouldContain "${EventMessage::class.java.reference},"
-    }
+    fun `expose accessors for nested message fields`() {
+        // Check the accessor for the top-level field.
+        code shouldContain "public static CommandIdField rootCommandId() {"
 
-    @Test
-    fun `render the 'Field' class`() {
-        // See that we add the `Field` class only once.
-        eventCode.count(FIELD_CLASS_SIGNATURE) shouldBe 1
+        // Check the accessor for the field under `oneof`.
+        code shouldContain "public static CommandIdField commandId() {"
     }
 }

@@ -27,6 +27,8 @@
 package io.spine.tools.mc.java
 
 import com.google.protobuf.Message
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.render.SourceFile
@@ -35,9 +37,11 @@ import io.spine.protodata.settings.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
+import io.spine.tools.code.Java
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import io.spine.type.toJson
 import java.nio.file.Path
+import kotlin.io.path.exists
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
@@ -45,12 +49,17 @@ import org.gradle.testfixtures.ProjectBuilder
  * An abstract base for companion objects of test suites testing
  * a ProtoData plugin provided by a module of McJava.
  *
- * @param S the type of the plugin settings in the form of a Protobuf message.
+ * @param S The type of the plugin settings in the form of a Protobuf message.
  */
 abstract class PluginTestSetup<S: Message>(
     protected val plugin: Plugin,
     protected val settingsId: String
 ) {
+
+    /**
+     * The source file set generated as the result of [running a pipeline][runPipeline].
+     */
+    protected lateinit var sourceFileSet: SourceFileSet
 
     /**
      * Creates a Gradle project to be used in the tests.
@@ -110,17 +119,31 @@ abstract class PluginTestSetup<S: Message>(
      *
      * @see createSettings
      */
-    fun runPipeline(
-        projectDir: Path,
-        outputDir: Path,
-        settingsDir: Path
-    ): SourceFileSet {
+    fun runPipeline(projectDir: Path, outputDir: Path, settingsDir: Path) {
         // Clear the cache of previously parsed files to avoid repeated code generation.
         SourceFile.clearCache()
         val settings = createSettings(projectDir)
         val setup = setup(outputDir, settingsDir, settings)
         val pipeline = setup.createPipeline()
         pipeline()
-        return setup.sourceFileSet
+        this.sourceFileSet = setup.sourceFileSet
+    }
+
+    /**
+     * Obtains paths to source files taking the [packageDir] and simple names of the classes.
+     */
+    fun files(packageDir: Path, vararg classNames: String): List<Path> {
+        return classNames.map { packageDir.resolve("$it.java") }
+    }
+
+    /**
+     * Locates the file with the given [path], asserting its existence.
+     */
+    fun file(path: Path): SourceFile<Java> {
+        val file = sourceFileSet.find(path)
+        file shouldNotBe null
+        file!!.outputPath.exists() shouldBe true
+        @Suppress("UNCHECKED_CAST")
+        return file as SourceFile<Java>
     }
 }

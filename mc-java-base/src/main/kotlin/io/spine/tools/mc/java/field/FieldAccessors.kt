@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.field
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.Field.CardinalityCase.ONEOF_NAME
 import io.spine.protodata.ast.Field.CardinalityCase.SINGLE
 import io.spine.protodata.ast.isMessage
 import io.spine.protodata.ast.toMessageType
@@ -52,7 +53,7 @@ internal abstract class FieldAccessor(
     private val field: Field,
 
     /**
-     * The type of the returned field object for a simple field types, and a superclass
+     * The type of the returned field object for a simple field type, and a superclass
      * for accessing nested fields for a message field type.
      *
      * @see io.spine.base.EventMessageField
@@ -108,7 +109,7 @@ internal abstract class FieldAccessor(
     }
 
     private val shouldExposeNestedFields: Boolean =
-        field.isMessage && field.cardinalityCase == SINGLE
+        field.isMessage && (field.cardinalityCase in arrayOf(SINGLE, ONEOF_NAME))
 
     private val simpleFieldType: String by lazy {
         fieldSupertype.canonical

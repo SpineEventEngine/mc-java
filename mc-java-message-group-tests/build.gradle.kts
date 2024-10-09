@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.Spine
+
 plugins {
     prototap
     `test-module`
@@ -37,7 +39,9 @@ dependencies {
     arrayOf(
         project(":mc-java-base"),
         project(":mc-java-message-group"),
-        testFixtures(project(":mc-java-base"))
+        testFixtures(project(":mc-java-base")),
+        Spine.baseTypes, // for stub proto types.
+        Spine.time,
     ).forEach {
         testImplementation(it)
     }

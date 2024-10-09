@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.signal
 
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.spine.base.RejectionMessage
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.count
@@ -60,12 +59,9 @@ internal class RejectionRendererSpec : SignalPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/signal/given/rejection/Rejections.java")
-            )
-            sourceFile shouldNotBe null
-            rejectionCode = sourceFile!!.code()
+            runPipeline(projectDir, outputDir, settingsDir)
+            val sourceFile = file(Path("io/spine/tools/mc/signal/given/rejection/Rejections.java"))
+            rejectionCode = sourceFile.code()
         }
     }
 

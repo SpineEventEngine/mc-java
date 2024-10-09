@@ -56,8 +56,8 @@ internal class QueryMethodSpec : EntityPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
+            runPipeline(projectDir, outputDir, settingsDir)
+            val sourceFile = file(Path(DEPARTMENT_JAVA))
             psiFile = sourceFile.psi() as PsiJavaFile
         }
     }
