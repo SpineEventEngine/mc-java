@@ -87,4 +87,12 @@ internal class OneofFieldCodegenSpec {
         // Check the accessor for the field under `oneof`.
         code shouldContain "public static CommandIdField commandId() {"
     }
+
+    @Test
+    fun `generate field classes for nested message fields`() {
+        code shouldContain
+                "public static final class CommandIdField extends io.spine.core.EventContextField {"
+        code shouldContain
+                "public static final class EventIdField extends io.spine.core.EventContextField {"
+    }
 }
