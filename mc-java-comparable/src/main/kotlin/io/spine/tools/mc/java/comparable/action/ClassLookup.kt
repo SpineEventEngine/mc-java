@@ -31,6 +31,7 @@ import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.ProtobufDependency
 import io.spine.protodata.ast.ProtobufSourceFile
 import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 
 /**
@@ -38,13 +39,21 @@ import io.spine.protodata.java.javaClassName
  */
 internal class ClassLookup(private val context: CodegenContext) {
 
-    fun query(type: MessageType): Class<*> {
+    fun query(type: MessageType): Class<*>? {
         val file = type.file
         val protoFile = fromOurProtos(file)
             ?: fromDependencies(file)
             ?: error("The requested `$file` not found.")
         val className = type.javaClassName(protoFile.header)
-        return Class.forName(className.canonical)
+        return findClass(className)
+    }
+
+    // Anyway, it makes little sense to have a custom comparator for messages
+    // that are now being generated. It is just impossible.
+    private fun findClass(name: ClassName) = try {
+        Class.forName(name.canonical)
+    } catch (e: ClassNotFoundException) {
+        null
     }
 
     private fun fromOurProtos(file: File): ProtobufSourceFile? =

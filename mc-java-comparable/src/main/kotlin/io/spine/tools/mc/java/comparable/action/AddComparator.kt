@@ -125,8 +125,10 @@ public class AddComparator(
             type.isMessage -> {
                 val message = messageLookup.query(type.message)
                 val clazz = classLookup.query(message)
-                val isComparable = message.isComparable || clazz.isProtoValueMessage
-                val hasRegistryComparator = ComparatorRegistry.contains(clazz)
+                val isExternal = clazz != null // The message is not a subject of the current codegen session.
+                val isComparable = message.isComparable || (isExternal && clazz!!.isProtoValueMessage)
+                val hasRegistryComparator = isExternal && ComparatorRegistry.contains(clazz!!)
+
                 check(isComparable || hasRegistryComparator) {
                     "The field has a non-comparable message type: `${type.message}`, ${clazz}."
                 }
@@ -155,9 +157,9 @@ public class AddComparator(
                 comparingBy(path)
             } else {
                 val clazz = classLookup.query(message)
-                if (clazz.isProtoValueMessage) {
+                if (clazz != null && clazz.isProtoValueMessage) {
                     comparingBy("$path.value")
-                } else if (ComparatorRegistry.contains(clazz)) {
+                } else if (clazz != null && ComparatorRegistry.contains(clazz)) {
                     val className = "${clazz.canonicalName}.class"
                     val comparator = "io.spine.compare.ComparatorRegistry.INSTANCE.get($className)"
                     comparingBy(path, comparator)

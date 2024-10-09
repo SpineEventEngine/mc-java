@@ -24,9 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.AutoService
-import io.spine.internal.dependency.AutoServiceKsp
-
 plugins {
     prototap
     `test-module`
@@ -41,6 +38,4 @@ dependencies {
     ).forEach {
         testImplementation(it)
     }
-    testFixturesCompileOnly(AutoService.annotations)
-    ksp(AutoServiceKsp.processor)
 }
