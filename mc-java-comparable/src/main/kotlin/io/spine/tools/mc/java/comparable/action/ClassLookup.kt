@@ -52,7 +52,7 @@ internal class ClassLookup(private val context: CodegenContext) {
     // that are now being generated. It is just impossible.
     private fun findClass(name: ClassName) = try {
         Class.forName(name.canonical)
-    } catch (e: ClassNotFoundException) {
+    } catch (ignored: ClassNotFoundException) {
         null
     }
 
