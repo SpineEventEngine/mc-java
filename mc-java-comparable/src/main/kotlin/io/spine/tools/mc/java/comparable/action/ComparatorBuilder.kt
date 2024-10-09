@@ -34,13 +34,13 @@ import io.spine.string.lowerCamelCase
  * Builds a Java field containing the [Comparator] for the given message class.
  *
  * @param cls The message class to be used as comparator's generic parameter.
+ * @param descending If true, the default order is reversed.
  */
-internal class ComparatorBuilder(cls: PsiClass) {
+internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean = false) {
 
     private val message = cls.name!!
     private val instance = message.lowerCamelCase()
     private val closures = mutableListOf<String>()
-    private var reversed = false
 
     /**
      * Builds a Java field in a text form.
@@ -50,7 +50,7 @@ internal class ComparatorBuilder(cls: PsiClass) {
         for (i in 1 until closures.size) {
             joinedClosures += ".thenComparing(${closures[i]})"
         }
-        if (reversed) {
+        if (descending) {
             joinedClosures += ".reversed()"
         }
         return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
@@ -72,13 +72,6 @@ internal class ComparatorBuilder(cls: PsiClass) {
         val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
         val closure = if (comparator == null) extractor else "$extractor, $comparator"
         closures.add(closure)
-    }
-
-    /**
-     * Reverses ordering of this comparator.
-     */
-    fun reversed() {
-        reversed = true
     }
 
     /**
