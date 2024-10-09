@@ -99,10 +99,8 @@ public open class AddFieldClass(
 
     private fun PsiClass.addFieldClasses() {
         val typeSystem = typeSystem!!
-        val singleDependencies = MessageTypeDependencies(type, cardinality = SINGLE, typeSystem)
-        val oneofDependencies = MessageTypeDependencies(type, cardinality = ONEOF_NAME, typeSystem)
-        val nestedFieldTypes = singleDependencies.asSet().union(oneofDependencies.asSet())
-        nestedFieldTypes.forEach {
+        val deps = MessageTypeDependencies(type, setOf(SINGLE, ONEOF_NAME), typeSystem).asSet()
+        deps.forEach {
             val fld = MessageTypedField(it, fieldSupertype, typeSystem)
             val messageTypeField = fld.createClass()
             addLast(messageTypeField)
