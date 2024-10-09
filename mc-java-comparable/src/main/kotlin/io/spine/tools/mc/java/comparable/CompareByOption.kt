@@ -42,5 +42,5 @@ internal fun isCompareBy(option: Option): Boolean = option.name == COMPARE_BY_OP
 /**
  * Tells whether this [MessageType] has a [CompareByOption][io.spine.option.CompareByOption].
  */
-internal val MessageType.isComparable: Boolean
+internal val MessageType.hasCompareByOption: Boolean
     get() = optionList.any(::isCompareBy)

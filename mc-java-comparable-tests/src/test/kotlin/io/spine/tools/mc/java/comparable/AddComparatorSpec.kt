@@ -229,4 +229,4 @@ private fun PsiClass.findComparatorField(): PsiField? =
     fields.firstOrNull { it.name == "comparator" }
 
 private inline fun <reified T> fromRegistry() =
-    "io.spine.compare.ComparatorRegistry.INSTANCE.get(${T::class.java.canonicalName}.class)"
+    "io.spine.compare.ComparatorRegistry.get(${T::class.java.canonicalName}.class)"

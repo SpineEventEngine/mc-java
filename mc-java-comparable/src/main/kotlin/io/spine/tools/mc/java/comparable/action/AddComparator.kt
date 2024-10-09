@@ -43,15 +43,12 @@ import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.action.ProtoValueMessages.isProtoValueMessage
-import io.spine.tools.mc.java.comparable.isComparable
+import io.spine.tools.mc.java.comparable.hasCompareByOption
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
- * Inserts a `comparator` field into the messages that qualify as comparable.
- *
- * This action also validates that the passed fields are eligible to participate
- * in the comparison. See [validate] method for details.
+ * Builds and inserts a static `comparator` field into the messages that qualify as comparable.
  *
  * @param type The type of the message.
  * @param file The source code to which the action is applied.
@@ -71,20 +68,17 @@ public class AddComparator(
     override fun doRender() {
         val optionFields = option.fieldList
         require(optionFields.isNotEmpty()) {
-            "`compare_by` option should have at least one field specified in `$messageClass`."
+            "`compare_by` option should have at least one field specified."
         }
 
-        val context = context!!
-        val messageLookup = MessageLookup(context)
+        val classLookup = ClassLookup(context!!)
+        val messageLookup = MessageLookup(context!!)
         val fieldsLookup = FieldLookup(messageLookup)
-        val classLookup = ClassLookup(context)
         val comparator = ComparatorBuilder(cls)
 
-        val rootMessage = type
         optionFields
-            .associateWith { fieldPath -> fieldsLookup.resolve(fieldPath, rootMessage) }
+            .associateWith { fieldPath -> fieldsLookup.resolve(fieldPath, type) }
             .forEach { (fieldPath, field) ->
-                validate(field, messageLookup,classLookup)
                 comparator.comparingBy(fieldPath, field, messageLookup, classLookup)
             }
 
@@ -94,6 +88,7 @@ public class AddComparator(
 
         val messageField = elementFactory.createFieldFromText(comparator.build(), cls)
             .apply { addFirst(GeneratedAnnotation.create()) }
+
         // `cls.addFirst()` puts it right BEFORE the class definition, but we need it inside.
         cls.addAfter(messageField, cls.lBrace)
     }
@@ -110,63 +105,69 @@ public class AddComparator(
      * 2. Enumerations (Java enums are implicitly comparable).
      * 3. Messages with `compare_by` option.
      * 4. [ProtoValueMessages] messages.
-     * 5. Messages, for which [ComparatorRegistry] has a comparator.
+     * 5. External messages (which are not subject of the ongoing codegen session),
+     * for which [ComparatorRegistry] has a comparator.
      */
-    private fun validate(field: Field, messageLookup: MessageLookup, classLookup: ClassLookup) {
-        check(field.hasSingle()) {
-            "`${field.name}` is not a single-value field and can not participate in comparison."
-        }
-        val type = field.type
-        when {
-            type.isPrimitive -> check(type.primitive.isComparable) {
-                "The passed field has a non-comparable primitive type: `${type.primitive}`"
-            }
-
-            type.isMessage -> {
-                val message = messageLookup.query(type.message)
-                val clazz = classLookup.query(message)
-                val isExternal = clazz != null // The message is not a subject of the current codegen session.
-                val isComparable = message.isComparable || (isExternal && clazz!!.isProtoValueMessage)
-                val hasRegistryComparator = isExternal && ComparatorRegistry.contains(clazz!!)
-
-                check(isComparable || hasRegistryComparator) {
-                    "The field has a non-comparable message type: `${type.message}`, ${clazz}."
-                }
-                check(!(isComparable && hasRegistryComparator)) {
-                    "The field type is comparable itself and has a comparator in " +
-                            "the registry simultaneously: `${type.message}`, ${clazz}."
-                }
-            }
-
-            else -> check(type.isEnum) {
-                "The passed field has an unrecognized type: `$type`."
-            }
-        }
-    }
-
     private fun ComparatorBuilder.comparingBy(
         path: FieldPath,
         field: Field,
         messageLookup: MessageLookup,
         classLookup: ClassLookup
     ) {
-        val type = field.type
-        if (type.isMessage) {
-            val message = messageLookup.query(type.message)
-            if (message.isComparable) {
+        check(field.hasSingle()) {
+            "The repeated fields can't participate in comparison: `${field.name}`."
+        }
+
+        val fieldType = field.type
+        when {
+            fieldType.isPrimitive -> {
+                check(fieldType.primitive.isComparable) {
+                    "The field has a non-comparable type: `${fieldType.primitive}`."
+                }
                 comparingBy(path)
-            } else {
+            }
+
+            fieldType.isMessage -> {
+                val message = messageLookup.query(fieldType.message)
+                val hasCompareByOption = message.hasCompareByOption
                 val clazz = classLookup.query(message)
-                if (clazz != null && clazz.isProtoValueMessage) {
+
+                // If the field type is not external, it should have the option.
+                // We don't handle providing comparators for messages that are being generated now.
+                if (clazz == null) {
+                    check(hasCompareByOption) {
+                        "The field has a non-comparable type: `${fieldType.message}`."
+                    }
+                    comparingBy(path)
+                    return
+                }
+
+                if (clazz.isProtoValueMessage) {
                     comparingBy("$path.value")
-                } else if (clazz != null && ComparatorRegistry.contains(clazz)) {
+                    return
+                }
+
+                val hasRegistryComparator = ComparatorRegistry.contains(clazz)
+                check(hasRegistryComparator xor hasCompareByOption) {
+                    "The field type should either be comparable or have a comparator provided " +
+                            "in the `ComparatorRegistry`: `${fieldType.message}`."
+                }
+
+                if (hasCompareByOption) {
+                    comparingBy(path)
+                } else {
                     val className = "${clazz.canonicalName}.class"
-                    val comparator = "io.spine.compare.ComparatorRegistry.INSTANCE.get($className)"
+                    val comparator = "io.spine.compare.ComparatorRegistry.get($className)"
                     comparingBy(path, comparator)
                 }
             }
-        } else {
-            comparingBy(path)
+
+            else -> {
+                check(fieldType.isEnum) {
+                    "The field has an unrecognized type: `$fieldType`."
+                }
+                comparingBy(path)
+            }
         }
     }
 }
