@@ -49,6 +49,8 @@ internal class OneofFieldCodegenSpec {
         MessageGroupPlugin(),
         MessageGroupPlugin.SETTINGS_ID
     ) {
+        const val FIELD_SUPERTYPE = "io.spine.core.EventContextField"
+
         lateinit var code: String
 
         @BeforeAll
@@ -69,7 +71,7 @@ internal class OneofFieldCodegenSpec {
         override fun createSettings(projectDir: Path): GroupSettings {
             val codegenConfig = createCodegenConfig(projectDir)
             codegenConfig.forMessage("given.core.EventContext") {
-                it.markFieldsAs("io.spine.core.EventContextField")
+                it.markFieldsAs(FIELD_SUPERTYPE)
             }
             return codegenConfig.toProto().groupSettings
         }
@@ -91,8 +93,8 @@ internal class OneofFieldCodegenSpec {
     @Test
     fun `generate field classes for nested message fields`() {
         code shouldContain
-                "public static final class CommandIdField extends io.spine.core.EventContextField {"
+                "public static final class CommandIdField extends $FIELD_SUPERTYPE {"
         code shouldContain
-                "public static final class EventIdField extends io.spine.core.EventContextField {"
+                "public static final class EventIdField extends $FIELD_SUPERTYPE {"
     }
 }
