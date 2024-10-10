@@ -63,16 +63,12 @@ public class AddComparator(
 
     private val classLookup = ClassLookup(context)
     private val messageLookup = MessageLookup(context)
-
-    // TODO:2024-09-01:yevhenii.nadtochii: `TypeRenderer` has this view when creates the action.
-    private val option = select(ComparableMessage::class.java)
-        .findById(type)!!
-        .option
+    private val option = compareByOption(type)
 
     override fun doRender() {
         val comparisonFields = option.fields()
         require(comparisonFields.isNotEmpty()) {
-            "`compare_by` option should have at least one field specified."
+            "The `compare_by` option should have at least one field specified."
         }
 
         val comparator = ComparatorBuilder(cls, option.descending)
@@ -84,9 +80,9 @@ public class AddComparator(
     }
 
     /**
-     * Adds the [field] to this [ComparatorBuilder].
+     * Adds the comparison [field] to this [ComparatorBuilder].
      *
-     * The requirements to the passed fields are described in docs to [CompareByOption]
+     * The requirements to the comparison fields are described in docs to [CompareByOption]
      * option in detail.
      *
      * In short, the following fields are accepted:
@@ -127,7 +123,7 @@ public class AddComparator(
      * This method enforces the following rules:
      *
      * 1. Only external messages (Java code for which is NOT being generated now) are eligible for
-     * having a comparator in the registry.
+     * having a comparator in [ComparatorRegistry].
      * 2. If the message has a [CompareByOption], then the registry should NOT have a comparator
      * for this type. Otherwise, it is unclear what to use.
      * 3. [ProtoValueMessages] are allowed to participate in comparison by default.
@@ -137,28 +133,39 @@ public class AddComparator(
      */
     private fun ComparatorBuilder.comparingByMessage(path: FieldPath, type: Type) {
         val message = messageLookup.query(type.message)
-        val clazz = classLookup.query(message)
         val hasCompareByOption = message.hasCompareByOption
+        val clazz = classLookup.query(message)
+        val fromRegistry = clazz?.let { ComparatorRegistry.find(clazz) }
         when {
             hasCompareByOption -> {
-                check(clazz == null || !ComparatorRegistry.contains(clazz)) {
+                check(fromRegistry == null) {
                     "The field `$path` is both comparable and has a comparator provided " +
                             "in the `ComparatorRegistry` simultaneously."
                 }
                 comparingBy(path)
             }
 
-            clazz != null && clazz.isProtoValueMessage -> comparingBy("$path.value")
-
-            clazz != null && ComparatorRegistry.contains(clazz) -> {
+            fromRegistry != null -> {
                 val className = "${clazz.canonicalName}.class"
                 val comparator = "io.spine.compare.ComparatorRegistry.get($className)"
                 comparingBy(path, comparator)
             }
 
-            else -> error("The field `$path` has a non-comparable message type: `$type`.")
+            else -> {
+                check( clazz != null && clazz.isProtoValueMessage) {
+                    "The field `$path` has an unexpected message type: `$type`."
+                }
+                comparingBy("$path.value")
+            }
         }
     }
+
+    /**
+     * Queries the [CompareByOption] option for the given message [type].
+     */
+    private fun compareByOption(type: MessageType) = select(ComparableMessage::class.java)
+        .findById(type)!!
+        .option
 
     /**
      * Extracts a list of [ComparisonField]s specified in this [CompareByOption].

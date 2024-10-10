@@ -39,7 +39,7 @@ internal class ImplementComparableSpec {
     companion object : ComparablePluginTestSetup(ImplementComparable::class)
 
     @Test
-    fun `make a message with the option implement 'Comparable'`() {
+    fun `mark messages with the option as 'Comparable'`() {
         val message = "Account"
         val psiClass = generatedCodeOf(message)
         val implementList = psiClass.implementsList

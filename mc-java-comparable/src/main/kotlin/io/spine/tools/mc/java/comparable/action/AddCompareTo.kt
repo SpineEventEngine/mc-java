@@ -52,7 +52,8 @@ public class AddCompareTo(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
-    @Language("JAVA") @Suppress("EmptyClass")
+    @Language("JAVA")
+    @Suppress("EmptyClass")
     override fun doRender() {
         val message = cls.name!!
         val method = elementFactory.createMethodFromText(

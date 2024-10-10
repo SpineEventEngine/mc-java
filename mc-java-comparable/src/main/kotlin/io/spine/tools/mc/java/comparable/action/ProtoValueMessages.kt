@@ -37,10 +37,10 @@ import com.google.protobuf.UInt64Value
 
 /**
  * Enumerates well-known Protobuf value messages, which are allowed to be used
- * in `compare_by` option.
+ * in `compare_by` option without the registry-provided comparator.
  *
  * These messages don't require a specific comparator as they consist of a single
- * primitive `value` field. This field should be used for comparisons.
+ * primitive `value` field. This field should be used for comparisons directly.
  *
  * See also: [Protobuf Docs | Well-Known Types](https://protobuf.dev/reference/protobuf/google.protobuf/).
  */

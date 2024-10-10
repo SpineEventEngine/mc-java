@@ -68,11 +68,11 @@ message Combined {
     // The configuration related to UUID messages.
     Uuids uuids = 7;
 
-    // The code generation settings for comparable messages.
-    Comparables comparables = 11;
-
     // The classpath used to lookup types by their fully-qualified names.
     tools.java.Classpath classpath = 8;
+
+    // The code generation settings for comparable messages.
+    Comparables comparables = 11;
 }
 
 // Configuration related to validation code.
@@ -236,6 +236,6 @@ message Uuids {
 //
 message Comparables {
 
-    // A collection of code generation actions associated with their parameters.
+    // A collection of code generation actions.
     protodata.Actions actions = 1;
 }

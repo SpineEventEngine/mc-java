@@ -34,7 +34,7 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that primitives and enums can be passed to `compare_by` option.
+// This message tests that primitives and enums can be passed as fields to `compare_by` option.
 message Account {
     option (compare_by) = {
         field: "actual_data"

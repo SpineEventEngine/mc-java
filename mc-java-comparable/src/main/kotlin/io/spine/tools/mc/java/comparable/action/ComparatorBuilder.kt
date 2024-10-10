@@ -31,7 +31,19 @@ import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
 
 /**
- * Builds a Java field containing the [Comparator] for the given message class.
+ * Builds a static Java field containing the [Comparator] for the given message.
+ *
+ * An example of the built comparator:
+ *
+ * ```java
+ * private static final java.util.Comparator<Jogging> comparator =
+ *     java.util.Comparator.comparing(Jogging::getStarted)
+ *                         .thenComparing(Jogging::getFinished)
+ *                         .thenComparing(Jogging::getDuration);
+ * ```
+ *
+ * Please note the line breaks were added manually for reader's convenience. The builder
+ * doesn't add them. It will be a single line of text.
  *
  * @param cls The message class to be used as comparator's generic parameter.
  * @param descending If true, the default order is reversed.
@@ -43,7 +55,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean 
     private val closures = mutableListOf<String>()
 
     /**
-     * Builds a Java field in a text form.
+     * Builds a static `comparator` Java field in a text form.
      */
     fun build(): String {
         var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
@@ -59,11 +71,13 @@ internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean 
     /**
      * Adds the next comparing closure for the given field [path].
      *
-     * For example, consider `event.emittedAt` field and an optional
-     * `com.google.protobuf.util.Timestamps.comparator()` comparator.
+     * For example, `joggingStartedEvent.emittedAt` field and the optional
+     * `com.google.protobuf.util.Timestamps.comparator()` comparator for it.
      *
-     * The comparator should be passed when the field value is neither primitive
+     * The comparator should be passed when the field type is neither primitive
      * nor comparable. It is a responsibility of the caller to check it in advance.
+     * This builder is responsible only for building a string representation of
+     * the comparator.
      *
      * @param path The path to the field.
      * @param comparator The optional comparator to be used for the field values.

@@ -34,7 +34,8 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This message tests that comparable messages can be passed to `compare_by` option.
+// This message tests that comparable messages can be passed as fields to `compare_by` option.
+// Note that `Passport` has this option and is therefore comparable.
 message Citizen {
     option (compare_by) = {
         field: "passport"

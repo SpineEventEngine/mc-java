@@ -32,6 +32,4 @@ import io.spine.protodata.java.render.TypeRenderer
  * Renders codegen [actions][ComparableMessage.getActions] for each [ComparableMessage]
  * in [ComparableMessageView].
  */
-// TODO:2024-09-05:yevhenii.nadtochii: Consider storing actions in one place. As long as
-//  they are the same for every message, why to have them in every message?  It may confuse.
 internal class ComparableActionsRenderer : TypeRenderer<ComparableMessage>()

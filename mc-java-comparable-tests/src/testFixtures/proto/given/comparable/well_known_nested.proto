@@ -37,8 +37,9 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-// This file contains messages with some nested well-known Protobuf types,
-// which are not required to have `compare_by` option to participate in comparison.
+// This file contains messages with nested well-known Protobuf types, which are not required
+// to have `compare_by` option to participate in comparison. Comparators for them are taken
+// from `io.spine.compare.ComparatorRegistry` object.
 
 message NestedWellKnown {
     google.protobuf.Timestamp timestamp = 1;

@@ -33,7 +33,7 @@ import io.spine.protodata.ast.field
 /**
  * Looks for [MessageType] denoted by [FieldPath].
  *
- * @param [messages] Lookup of all messages participating in codegen.
+ * @param [messages] Lookup of messages participating in the codegen.
  */
 internal class FieldLookup(private val messages: MessageLookup) {
 
@@ -52,8 +52,8 @@ internal class FieldLookup(private val messages: MessageLookup) {
      * ```
      *
      * `passport.first_name` is a field path. `Citizen` is the root message,
-     * in respect to which the path will be resolved. The resulting `Field`
-     * will describe `Passport.first_name`.
+     * in respect to which the path will be resolved. The result will describe
+     * `Passport.first_name` field.
      *
      * @param path The field path. Can be nested.
      * @param rootMessage The message, in respect to which the path will be resolved.

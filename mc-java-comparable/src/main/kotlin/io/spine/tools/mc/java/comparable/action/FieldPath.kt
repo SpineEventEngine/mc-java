@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.comparable.action
 /**
  * A field path as passed to `compare_by` option.
  *
- * This string may contain the following:
+ * This string is expected to contain one of the following:
  *
  * 1. A single field: `first_name`.
  * 2. A nested one: `citizen.passport.first_name`.

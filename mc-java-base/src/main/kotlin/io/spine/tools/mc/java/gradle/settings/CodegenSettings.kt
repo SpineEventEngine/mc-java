@@ -94,7 +94,7 @@ public class CodegenSettings @Internal public constructor(private val project: P
     public val uuids: UuidSettings = UuidSettings(project)
 
     /**
-     * Settings for the generated code of [Comparable] messages.
+     * Settings for the generated code of comparable messages.
      */
     public val comparables: ComparableSettings = ComparableSettings(project)
 

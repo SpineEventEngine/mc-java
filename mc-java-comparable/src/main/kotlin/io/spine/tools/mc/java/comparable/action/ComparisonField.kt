@@ -30,7 +30,7 @@ import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.Type
 
 /**
- * The field that participates in comparison.
+ * The message field that participates in comparison.
  *
  * @param field The field metadata.
  * @param path The field path as was specified in the option.

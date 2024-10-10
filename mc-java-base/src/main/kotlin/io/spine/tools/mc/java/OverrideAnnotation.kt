@@ -32,12 +32,11 @@ import io.spine.tools.mc.java.OverrideAnnotation.create
 import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
- * Creates [PsiAnnotation] for marking overridden methods.
+ * Creates a [PsiAnnotation] for marking overridden methods.
  *
  * ## Implementation note
  * We do not cache the created instance of [PsiAnnotation] because PSI elements are mutable.
- * We would like to avoid unwanted propagation of a modification which could be made by
- * one renderer to others.
+ * We want to avoid unwanted propagation of modifications made by one renderer to others.
  *
  * @see create
  */

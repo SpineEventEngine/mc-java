@@ -36,7 +36,7 @@ option java_package = "io.spine.test.tools.mc.java.comparable";
 option java_multiple_files = true;
 
 // Comparable by `Timestamp` and `Duration` fields, for which the `ComparatorRegistry`
-// should provide comparators.
+// provide comparators by default.
 message Jogging {
     option (compare_by) = {
         field: "start"

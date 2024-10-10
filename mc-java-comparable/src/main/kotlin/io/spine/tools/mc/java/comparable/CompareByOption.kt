@@ -35,7 +35,7 @@ import io.spine.protodata.ast.Option
 private const val COMPARE_BY_OPTION_NAME = "compare_by"
 
 /**
- * Tells whether the given option is a [CompareByOption][io.spine.option.CompareByOption].
+ * Tells whether the given option is [CompareByOption][io.spine.option.CompareByOption].
  */
 internal fun isCompareBy(option: Option): Boolean = option.name == COMPARE_BY_OPTION_NAME
 

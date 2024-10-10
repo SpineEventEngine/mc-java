@@ -35,10 +35,18 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 
 /**
- * Looks for [Class] by [MessageType] in the given codegen [context].
+ * Looks for [Class] by [MessageType] in the codegen classpath.
  */
 internal class ClassLookup(private val context: CodegenContext) {
 
+    /**
+     * Returns [Class] for the given message [type], if any.
+     *
+     * [Class] instance of a message is present on the classpath of codegen only
+     * if the message is external. It means that the given [MessageType] describes
+     * a message, which was generated previously. Messages that are being generated
+     * now don't have [Class] instances.
+     */
     fun query(type: MessageType): Class<*>? {
         val file = type.file
         val protoFile = fromOurProtos(file)
@@ -48,8 +56,6 @@ internal class ClassLookup(private val context: CodegenContext) {
         return findClass(className)
     }
 
-    // Anyway, it makes little sense to have a custom comparator for messages
-    // that are now being generated. It is just impossible.
     private fun findClass(name: ClassName) = try {
         Class.forName(name.canonical)
     } catch (ignored: ClassNotFoundException) {
