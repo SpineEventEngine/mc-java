@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Spine
 
 plugins {
@@ -32,22 +31,7 @@ plugins {
 }
 
 dependencies {
-    arrayOf(
-        Spine.base,
-        Spine.reflect,
-        Spine.Logging.lib,
-        Spine.server,
-        ProtoData.java,
-        project(":mc-java-base")
-    ).forEach {
-        implementation(it)
-    }
-
-    arrayOf(
-        gradleTestKit(),
-        Spine.testlib,
-        ProtoData.testlib
-    ).forEach {
-        testImplementation(it)
-    }
+    implementation(project(":mc-java-base"))
+    testImplementation(gradleTestKit())
+    testImplementation(Spine.testlib)
 }

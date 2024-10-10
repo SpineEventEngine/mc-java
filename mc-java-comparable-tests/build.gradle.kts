@@ -27,15 +27,9 @@
 plugins {
     prototap
     `test-module`
-    ksp
 }
 
 dependencies {
-    arrayOf(
-        project(":mc-java-base"),
-        project(":mc-java-comparable"),
-        testFixtures(project(":mc-java-base")),
-    ).forEach {
-        testImplementation(it)
-    }
+    testImplementation(project(":mc-java-comparable"))
+    testImplementation(testFixtures(project(":mc-java-base")))
 }
