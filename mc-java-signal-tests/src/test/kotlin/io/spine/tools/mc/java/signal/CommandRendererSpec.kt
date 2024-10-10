@@ -26,7 +26,6 @@
 
 package io.spine.tools.mc.java.signal
 
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import io.spine.base.CommandMessage
@@ -53,12 +52,9 @@ internal class CommandRendererSpec : SignalPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/signal/given/command/StartScanning.java")
-            )
-            sourceFile shouldNotBe null
-            commandCode = sourceFile!!.code()
+            runPipeline(projectDir, outputDir, settingsDir)
+            val sourceFile = file(Path("io/spine/tools/mc/signal/given/command/StartScanning.java"))
+            commandCode = sourceFile.code()
         }
     }
 

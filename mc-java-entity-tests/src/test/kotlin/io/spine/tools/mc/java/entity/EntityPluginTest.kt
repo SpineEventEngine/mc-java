@@ -84,8 +84,7 @@ internal fun PsiClass.assertDoesNotHaveMethod(name: String) {
  * The class is immediately inner to this one.
  * Base classes for this one are not searched.
  *
- * @throws IllegalStateException
- *          if the inner class was not found.
+ * @throws IllegalStateException If the inner class was not found.
  * @see PsiClass.findInnerClassByName
  */
 internal fun PsiClass.innerClass(name: String): PsiClass {

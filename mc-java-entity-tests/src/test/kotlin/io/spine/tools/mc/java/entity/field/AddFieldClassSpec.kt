@@ -46,7 +46,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddFieldClass` should")
-internal class AddAddFieldClassSpec : EntityPluginTest() {
+internal class AddFieldClassSpec : EntityPluginTest() {
 
     companion object {
 
@@ -62,8 +62,8 @@ internal class AddAddFieldClassSpec : EntityPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.file(Path(DEPARTMENT_JAVA))
+            runPipeline(projectDir, outputDir, settingsDir)
+            val sourceFile = file(Path(DEPARTMENT_JAVA))
             entityStateCode = sourceFile.code()
             psiFile = sourceFile.psi() as PsiJavaFile
         }

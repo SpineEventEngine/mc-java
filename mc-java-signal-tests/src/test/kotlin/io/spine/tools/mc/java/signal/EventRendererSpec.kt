@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.signal
 
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.base.EventMessage
 import io.spine.string.count
@@ -54,12 +53,9 @@ internal class EventRendererSpec : SignalPluginTest() {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            val sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-            val sourceFile = sourceFileSet.find(
-                Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java")
-            )
-            sourceFile shouldNotBe null
-            eventCode = sourceFile!!.code()
+            runPipeline(projectDir, outputDir, settingsDir)
+            val sourceFile = file(Path("io/spine/tools/mc/signal/given/event/ScanningStarted.java"))
+            eventCode = sourceFile.code()
         }
     }
 

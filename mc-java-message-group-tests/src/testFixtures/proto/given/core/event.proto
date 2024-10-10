@@ -1,0 +1,106 @@
+/*
+* Copyright 2024, TeamDev. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* https://www.apache.org/licenses/LICENSE-2.0
+*
+* Redistribution and use in source and/or binary forms, with or without
+* modification, must retain the above copyright notice and the following
+* disclaimer.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+syntax = "proto3";
+
+package given.core;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.given.core";
+option java_multiple_files = true;
+option java_outer_classname = "EventProto";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "spine/core/enrichment.proto";
+
+//
+// This file declares trimmed version of types declared in `spine.core` package.
+// The main stub type here is `EventContext` which is used for testing code generation of
+// field classes for fields under `oneof`.
+//
+// Please see `io.spine.tools.mc.java.mgroup.OneofFieldCodegenSpec` test suite for details.
+//
+
+// Command identifier.
+message CommandId {
+    option (SPI_type) = true;
+
+    string uuid = 1;
+}
+
+// Event identifier.
+message EventId {
+    option (SPI_type) = true;
+
+    // A value of the event identifier.
+    //
+    // In most cases it would be a generated UUID-based string.
+    //
+    string value = 1;
+}
+
+// The cut-down version of `spine.core.EventContext` which declares some fields at the top
+// level of the message and some under `oneof`.
+//
+// Field indexes and deprecation options are kept as they are in `spine.core.EventContext`.
+//
+message EventContext {
+    option (SPI_type) = true;
+
+    // When the event occurred.
+    google.protobuf.Timestamp timestamp = 1 [(required) = true];
+
+    // Optional enrichment of the event.
+    spine.core.Enrichment enrichment = 5;
+
+    // An ID of the origin message.
+    //
+    // The case of this `oneof` is always the same as the case of `origin` (except for
+    // the `import_context`, which does not have a corresponding field in `origin_id`).
+    //
+    // The `origin` and `origin_id` groups are not merged for the reasons of binary compatibility.
+    //
+    oneof origin_id {
+
+        // The ID of the origin command.
+        CommandId command_id = 12 [deprecated = true];
+
+        // The ID of the origin event.
+        EventId event_id = 13 [deprecated = true];
+    }
+
+    // An ID of the root command, which lead to this event.
+    //
+    // If the event is a reaction to another event, then this attribute holds the identifier
+    // of the very first command in this chain.
+    //
+    // This field is not populated if the event was imported.
+    //
+    CommandId root_command_id = 9 [deprecated = true];
+}
