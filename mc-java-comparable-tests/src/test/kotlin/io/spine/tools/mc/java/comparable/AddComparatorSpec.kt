@@ -36,12 +36,9 @@ import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
 import io.spine.testing.logging.mute.MuteLogging
 import io.spine.tools.mc.java.comparable.action.AddComparator
-import java.nio.file.Path
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 
 @Suppress("MaxLineLength") // To keep long `.thenComparing()` closures "as is".
 @MuteLogging // Negative test cases pollute logging, but we can't suppress selectively because
@@ -49,17 +46,10 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
 
+    @MuteLogging
     companion object : ComparablePluginTestSetup(AddComparator::class) {
         val TIMESTAMP_COMPARATOR = fromRegistry<Timestamp>()
         val DURATION_COMPARATOR = fromRegistry<Duration>()
-
-        @BeforeAll
-        @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) = runPipeline(projectDir, outputDir, settingsDir)
     }
 
     @Nested
