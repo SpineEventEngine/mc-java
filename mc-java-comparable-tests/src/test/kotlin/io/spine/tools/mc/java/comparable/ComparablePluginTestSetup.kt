@@ -30,13 +30,11 @@ import com.google.protobuf.Any
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.spine.protodata.java.render.MessageAction
-import io.spine.protodata.render.SourceFileSet
 import io.spine.protodata.render.actions
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.psi.java.topLevelClass
-import java.nio.file.Files.createTempDirectory
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.reflect.KClass
@@ -48,8 +46,6 @@ import kotlin.reflect.KClass
 abstract class ComparablePluginTestSetup(
     private val actionClass: KClass<out MessageAction<*>>
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
-
-    private val generated: SourceFileSet by lazy { generateCode() }
 
     /**
      * Creates an instance of [Comparables] with a single action under the test.
@@ -67,18 +63,8 @@ abstract class ComparablePluginTestSetup(
      */
     fun generatedCodeOf(message: String): PsiClass {
         val sourcePath = Path("io/spine/tools/mc/java/comparable/given/$message.java")
-        val sourceFile = generated.file(sourcePath)
+        val sourceFile = file(sourcePath)
         val psiFile = sourceFile.psi() as PsiJavaFile
         return psiFile.topLevelClass
-    }
-
-    /**
-     * Generates code for all present Proto messages.
-     */
-    private fun generateCode(): SourceFileSet {
-        val projectDir = createTempDirectory("projectDit")
-        val outputDir = createTempDirectory("outputDir")
-        val settingsDir = createTempDirectory("settingsDir")
-        return runPipeline(projectDir, outputDir, settingsDir)
     }
 }

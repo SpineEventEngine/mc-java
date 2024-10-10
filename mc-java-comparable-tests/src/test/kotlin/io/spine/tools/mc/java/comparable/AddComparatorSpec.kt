@@ -36,22 +36,34 @@ import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
 import io.spine.testing.logging.mute.MuteLogging
 import io.spine.tools.mc.java.comparable.action.AddComparator
+import java.nio.file.Path
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
-@Suppress("MaxLineLength") // To keep long `.thenComparing()` closures intact.
-@MuteLogging // Negative test cases pollute logging, but we can't suppress only for them because
-             // codegen runs once for all messages during the execution of the first test case.
+@Suppress("MaxLineLength") // To keep long `.thenComparing()` closures "as is".
+@MuteLogging // Negative test cases pollute logging, but we can't suppress selectively because
+             // the codegen runs once for all messages in `setup` method.
 @DisplayName("`AddComparator` should")
 internal class AddComparatorSpec {
 
     companion object : ComparablePluginTestSetup(AddComparator::class) {
         val TIMESTAMP_COMPARATOR = fromRegistry<Timestamp>()
         val DURATION_COMPARATOR = fromRegistry<Duration>()
+
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) = runPipeline(projectDir, outputDir, settingsDir)
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `generate comparator with` {
 
         @Test
@@ -109,7 +121,8 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `generate comparator with nested` {
 
         @Test
@@ -153,7 +166,8 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `not generate comparator` {
 
         @Test
@@ -175,7 +189,8 @@ internal class AddComparatorSpec {
         fun `with a non-existing field`() = assertNoComparator("NonExistingProhibited")
     }
 
-    @Nested inner class
+    @Nested
+    inner class
     `not generate comparator with nested` {
 
         @Test
