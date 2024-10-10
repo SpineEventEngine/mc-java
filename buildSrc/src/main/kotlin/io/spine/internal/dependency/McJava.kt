@@ -39,7 +39,7 @@ object McJava {
     const val group = Spine.toolsGroup
 
     /** The version used to in the build classpath. */
-    const val dogfoodingVersion = "2.0.0-SNAPSHOT.242"
+    const val dogfoodingVersion = "2.0.0-SNAPSHOT.243"
 
     /** The version to be used for integration tests. */
     const val version = "2.0.0-SNAPSHOT.243"

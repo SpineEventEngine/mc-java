@@ -27,15 +27,9 @@
 package io.spne.mc.java.marker
 
 import com.google.protobuf.Empty
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
-import io.spine.protodata.render.SourceFile
-import io.spine.protodata.render.SourceFileSet
-import io.spine.tools.code.Java
 import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.marker.MarkerPlugin
 import java.nio.file.Path
-import kotlin.io.path.exists
 import org.junit.jupiter.api.io.TempDir
 
 /**
@@ -59,8 +53,6 @@ internal abstract class MarkerPluginTestSetup : PluginTestSetup<Empty>(MarkerPlu
      */
     internal val animalPackage = animalDir.replace('/', '.')
 
-    lateinit var sourceFileSet: SourceFileSet
-
     override fun createSettings(projectDir: Path): Empty = Empty.getDefaultInstance()
 
     fun generateCode(
@@ -68,21 +60,6 @@ internal abstract class MarkerPluginTestSetup : PluginTestSetup<Empty>(MarkerPlu
         @TempDir outputDir: Path,
         @TempDir settingsDir: Path
     ) {
-        sourceFileSet = runPipeline(projectDir, outputDir, settingsDir)
-    }
-
-    internal fun files(packageDir: Path, vararg files: String): List<Path> {
-        return files.map { packageDir.resolve("$it.java") }
-    }
-
-    /**
-     * Locates the file with the given [path], asserting its existence.
-     */
-    internal fun file(path: Path): SourceFile<Java> {
-        val file = sourceFileSet.find(path)
-        file shouldNotBe null
-        file!!.outputPath.exists() shouldBe true
-        @Suppress("UNCHECKED_CAST")
-        return file as SourceFile<Java>
+        runPipeline(projectDir, outputDir, settingsDir)
     }
 }
