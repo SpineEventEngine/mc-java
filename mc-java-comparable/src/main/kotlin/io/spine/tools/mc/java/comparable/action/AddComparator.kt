@@ -43,7 +43,7 @@ import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
-import io.spine.tools.mc.java.comparable.action.ProtoValueMessages.isProtoValueMessage
+import io.spine.tools.mc.java.comparable.action.ProtobufWrapperTypes.isProtobufWrapper
 import io.spine.tools.mc.java.comparable.hasCompareByOption
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -91,7 +91,7 @@ public class AddComparator(
      * 2. Enumerations (Java enums are implicitly comparable).
      * 3. Messages with [CompareByOption] option.
      * 4. External messages for which [ComparatorRegistry] has a comparator.
-     * 5. [ProtoValueMessages].
+     * 5. [ProtobufWrapperTypes].
      *
      * @see comparingByMessage
      */
@@ -127,7 +127,7 @@ public class AddComparator(
      * having a comparator in [ComparatorRegistry].
      * 2. If the message has a [CompareByOption], then the registry should NOT have a comparator
      * for this type. Otherwise, it is unclear what to use.
-     * 3. [ProtoValueMessages] are allowed to participate in comparison by default.
+     * 3. [ProtobufWrapperTypes] are allowed to participate in comparison by default.
      *
      * @param path The field path.
      * @param type The field type.
@@ -153,7 +153,7 @@ public class AddComparator(
             }
 
             else -> {
-                check( clazz != null && clazz.isProtoValueMessage) {
+                check( clazz != null && clazz.isProtobufWrapper) {
                     "The field `$path` has an unrecognized message type: `$type`. " +
                             "Check out the supported types in docs to `compare_by` option."
                 }

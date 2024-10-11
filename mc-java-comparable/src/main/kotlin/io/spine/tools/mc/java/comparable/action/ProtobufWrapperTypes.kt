@@ -36,17 +36,17 @@ import com.google.protobuf.UInt32Value
 import com.google.protobuf.UInt64Value
 
 /**
- * Enumerates well-known Protobuf value messages, which are allowed to be used
- * in `compare_by` option without the registry-provided comparator.
+ * Enumerates well-known Protobuf wrappers for primitive data types.
  *
- * These messages don't require a specific comparator as they consist of a single
- * primitive `value` field. This field should be used for comparisons directly.
+ * These messages are allowed to be used in `compare_by` option without
+ * the registry-provided comparator. They consist of a single `value`
+ * field of a primitive type, by which they should be compared.
  *
  * See also: [Protobuf Docs | Well-Known Types](https://protobuf.dev/reference/protobuf/google.protobuf/).
  */
-internal object ProtoValueMessages {
+internal object ProtobufWrapperTypes {
 
-    private val valueClasses = setOf(
+    private val list = listOf(
         BoolValue::class,
         DoubleValue::class,
         FloatValue::class,
@@ -58,8 +58,8 @@ internal object ProtoValueMessages {
     ).map { it.java }
 
     /**
-     * Tells if this [Class] denotes a well-known Protobuf value message.
+     * Tells if this [Class] denotes a well-known Protobuf wrapper.
      */
-    val Class<*>.isProtoValueMessage
-        get() = valueClasses.contains(this)
+    val Class<*>.isProtobufWrapper
+        get() = list.contains(this)
 }
