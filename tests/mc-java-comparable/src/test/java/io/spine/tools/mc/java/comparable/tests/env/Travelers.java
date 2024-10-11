@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,11 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.env;
+package io.spine.tools.mc.java.comparable.tests.env;
 
-import io.spine.test.tools.mc.java.comparable.Address;
-import io.spine.test.tools.mc.java.comparable.Destination;
-import io.spine.test.tools.mc.java.comparable.Traveler;
+import io.spine.test.tools.mc.java.comparable.tests.Address;
+import io.spine.test.tools.mc.java.comparable.tests.Destination;
+import io.spine.test.tools.mc.java.comparable.tests.Traveler;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,22 +24,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.env;
+package io.spine.tools.mc.java.comparable.tests.env;
 
-import com.google.protobuf.Duration;
-import com.google.protobuf.Timestamp;
-import com.google.protobuf.util.Timestamps;
-import io.spine.test.tools.mc.java.comparable.Jogging;
+import io.spine.test.tools.mc.java.comparable.tests.Student;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Provides {@link Jogging} instances for
+ * Provides {@link Student} instances for
  * {@link io.spine.tools.mc.java.comparable.ComparablePluginTest ComparablePluginTest}.
  *
  * <p>Field names reflect the expected position of the corresponding message
@@ -47,45 +41,31 @@ import static com.google.common.collect.Lists.newArrayList;
  * a sorted collection on our own. Otherwise, it would break the test essence, in which
  * we would compare two collections sorted by {@link java.util.Collections#sort(List)}.
  */
-public class Joggings {
+public class Students {
 
-    public static final Jogging firstJogging = jogging(start(12, 15), duration(30));
-    public static final Jogging secondJogging = jogging(start(12, 15), duration(40));
-    public static final Jogging thirdJogging = jogging(start(13, 15), duration(20));
-    public static final Jogging fourthJogging = jogging(start(17, 30), duration(20));
-    public static final Jogging fifthJogging = jogging(start(18, 0), duration(20));
+    public static final Student firstStudent = student(2022, "Jack");
+    public static final Student secondStudent = student(2022, "Danial");
+    public static final Student thirdStudent = student(2022, "Alex");
+    public static final Student fourthStudent = student(2018, "Richard");
+    public static final Student fifthStudent = student(2015, "Jessica");
 
     /**
      * Prevents instantiation of this utility class.
      */
-    private Joggings() {
+    private Students() {
     }
 
     /**
-     * Returns an unsorted collection of the five joggings.
+     * Returns an unsorted collection of the five students.
      */
-    public static List<Jogging> unsorted() {
-        return newArrayList(fourthJogging, secondJogging, fifthJogging, firstJogging, thirdJogging);
+    public static List<Student> unsorted() {
+        return newArrayList(fourthStudent, secondStudent, fifthStudent, firstStudent, thirdStudent);
     }
 
-    private static Jogging jogging(Timestamp start, Duration duration) {
-        return Jogging.newBuilder()
-                .setStart(start)
-                .setDuration(duration)
-                .build();
-    }
-
-    private static Timestamp start(long hours, long minutes) {
-        var instant = Instant.EPOCH
-                .plus(hours, ChronoUnit.HOURS)
-                .plus(minutes, ChronoUnit.MINUTES);
-        var date = Date.from(instant);
-        return Timestamps.fromDate(date);
-    }
-
-    private static Duration duration(long minutes) {
-        return Duration.newBuilder()
-                .setSeconds(minutes * 60)
+    private static Student student(int year, String name) {
+        return Student.newBuilder()
+                .setYear(year)
+                .setName(name)
                 .build();
     }
 }

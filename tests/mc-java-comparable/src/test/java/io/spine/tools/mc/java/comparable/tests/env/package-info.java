@@ -23,24 +23,5 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-syntax = "proto3";
 
-package given.comparable;
-
-import "spine/options.proto";
-
-option (type_url_prefix) = "type.spine.io";
-option java_package = "io.spine.test.tools.mc.java.comparable";
-option java_multiple_files = true;
-
-// Comparable by `int` and `string` fields, has the reverse ordering.
-message Student {
-    option (compare_by) = {
-        descending: true
-        field: "year"
-        field: "name"
-    };
-
-    int32 year = 1;
-    string name = 2;
-}
+package io.spine.tools.mc.java.comparable.tests.env;

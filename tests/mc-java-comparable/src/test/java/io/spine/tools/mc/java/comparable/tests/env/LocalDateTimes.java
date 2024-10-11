@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,12 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.env;
+package io.spine.tools.mc.java.comparable.tests.env;
 
-import io.spine.test.tools.mc.java.comparable.LocalDate;
-import io.spine.test.tools.mc.java.comparable.LocalDateTime;
-import io.spine.test.tools.mc.java.comparable.LocalTime;
-import io.spine.test.tools.mc.java.comparable.Zone;
+import io.spine.test.tools.mc.java.comparable.tests.LocalDate;
+import io.spine.test.tools.mc.java.comparable.tests.LocalDateTime;
+import io.spine.test.tools.mc.java.comparable.tests.LocalTime;
+import io.spine.test.tools.mc.java.comparable.tests.Zone;
 
 import java.util.List;
 
