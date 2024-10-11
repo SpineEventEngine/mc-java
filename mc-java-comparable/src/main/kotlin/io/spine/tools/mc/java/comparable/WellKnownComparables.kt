@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.action
+package io.spine.tools.mc.java.comparable
 
 import com.google.protobuf.BoolValue
 import com.google.protobuf.DoubleValue
@@ -44,7 +44,7 @@ import com.google.protobuf.UInt64Value
  *
  * See also: [Protobuf Docs | Well-Known Types](https://protobuf.dev/reference/protobuf/google.protobuf/).
  */
-internal object ProtobufWrapperTypes {
+internal object WellKnownComparables {
 
     private val list = listOf(
         BoolValue::class,
@@ -58,8 +58,8 @@ internal object ProtobufWrapperTypes {
     ).map { it.java }
 
     /**
-     * Tells if this [Class] denotes a well-known Protobuf wrapper.
+     * Tells if this [Class] denotes a well-known comparable.
      */
-    val Class<*>.isProtobufWrapper
+    val Class<*>.isWellKnownComparable
         get() = list.contains(this)
 }
