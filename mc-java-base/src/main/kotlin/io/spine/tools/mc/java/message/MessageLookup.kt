@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,50 +24,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.action
+package io.spine.tools.mc.java.message
 
-import io.spine.protodata.ast.File
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.ProtobufDependency
 import io.spine.protodata.ast.ProtobufSourceFile
+import io.spine.protodata.ast.TypeName
 import io.spine.protodata.context.CodegenContext
-import io.spine.protodata.java.ClassName
-import io.spine.protodata.java.javaClassName
 
 /**
- * Looks for [Class] by [MessageType] in the codegen classpath.
+ * Looks for [MessageType] by [TypeName] in the given codegen [context].
  */
-internal class ClassLookup(private val context: CodegenContext) {
+public class MessageLookup(private val context: CodegenContext) {
 
     /**
-     * Returns [Class] for the given message [type], if any.
+     * Queries [MessageType] by the given [typeName] in [CodegenContext].
      *
-     * [Class] instance of a message is present on the classpath of codegen only
-     * if the message is external. It means that the given [MessageType] describes
-     * a message, which was generated previously. Messages that are being generated
-     * now don't have [Class] instances.
+     * The method attempts to locate the message within the generated Proto files,
+     * then searches for it within their dependencies.
+     *
+     * @throws IllegalStateException if the message with the given type name is not found.
      */
-    fun query(type: MessageType): Class<*>? {
-        val file = type.file
-        val protoFile = fromOurProtos(file)
-            ?: fromDependencies(file)
-            ?: error("The requested `$file` not found.")
-        val className = type.javaClassName(protoFile.header)
-        return findClass(className)
+    public fun query(typeName: TypeName): MessageType {
+        val typeUrl = typeName.typeUrl
+        return fromOurProtos(typeUrl)
+            ?: fromDependencies(typeUrl)
+            ?: error("`$typeUrl` not found in the passed Proto files or their dependencies.")
     }
 
-    private fun findClass(name: ClassName) = try {
-        Class.forName(name.canonical)
-    } catch (ignored: ClassNotFoundException) {
-        null
-    }
-
-    private fun fromOurProtos(file: File): ProtobufSourceFile? =
+    private fun fromOurProtos(typeUrl: String): MessageType? =
         context.select(ProtobufSourceFile::class.java)
-            .findById(file)
+            .all()
+            .firstOrNull { it.containsType(typeUrl) }
+            ?.typeMap?.get(typeUrl)
 
-    private fun fromDependencies(file: File): ProtobufSourceFile? =
+    private fun fromDependencies(typeUrl: String): MessageType? =
         context.select(ProtobufDependency::class.java)
-            .findById(file)
-            ?.source
+            .all()
+            .firstOrNull { it.source.containsType(typeUrl) }
+            ?.source?.typeMap?.get(typeUrl)
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,14 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.action
+package io.spine.tools.mc.java.field
 
 import io.spine.base.FieldPath
 
 /**
  * Tells if this [FieldPath] doesn't denote a nested field.
  */
-internal val FieldPath.isNotNested
+public val FieldPath.isNotNested: Boolean
     get() = fieldNameList.size == 1
 
 /**
@@ -40,13 +40,13 @@ internal val FieldPath.isNotNested
  *
  * For example, `citizen.passport.firstName`.
  */
-internal val FieldPath.joined
+public val FieldPath.joined: String
     get() = fieldNameList.joinToString(".")
 
 /**
  * Returns the root field's name of this [FieldPath].
  *
- * Throws [NoSuchElementException] if the path is empty.
+ * @throws [NoSuchElementException] if the path is empty.
  */
-internal val FieldPath.root
+public val FieldPath.root: String
     get() = fieldNameList.first()

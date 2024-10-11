@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,20 +24,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.comparable.action
+package io.spine.tools.mc.java.field
 
 import io.spine.base.FieldPath
 import io.spine.base.fieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.field
+import io.spine.tools.mc.java.message.MessageLookup
 
 /**
  * Looks for [MessageType] denoted by [FieldPath].
  *
  * @param [messages] Lookup of messages participating in the codegen.
  */
-internal class FieldLookup(private val messages: MessageLookup) {
+public class FieldLookup(private val messages: MessageLookup) {
 
     /**
      * Resolves [Field] denoted by the given field [path], relatively to
@@ -60,7 +61,7 @@ internal class FieldLookup(private val messages: MessageLookup) {
      * @param path The field path. Can be nested.
      * @param rootMessage The message, in respect to which the path will be resolved.
      */
-    fun resolve(path: FieldPath, rootMessage: MessageType): Field =
+    public fun resolve(path: FieldPath, rootMessage: MessageType): Field =
         if (path.isNotNested) {
             rootMessage.field(path.root)
         } else {

@@ -48,6 +48,10 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.hasCompareByOption
+import io.spine.tools.mc.java.field.FieldLookup
+import io.spine.tools.mc.java.field.joined
+import io.spine.tools.mc.java.message.ClassLookup
+import io.spine.tools.mc.java.message.MessageLookup
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
