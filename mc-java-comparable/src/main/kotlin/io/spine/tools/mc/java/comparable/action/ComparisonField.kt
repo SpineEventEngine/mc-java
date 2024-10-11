@@ -43,7 +43,8 @@ internal class ComparisonField(
 ) {
     init {
         check(field.hasSingle()) {
-            "The repeated fields can't participate in comparison: `$field`."
+            "The repeated fields and maps can't participate in comparison. " +
+                    "Please check the field type of `$field`."
         }
     }
 }
