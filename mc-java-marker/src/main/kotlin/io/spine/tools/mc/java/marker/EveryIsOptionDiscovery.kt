@@ -31,8 +31,8 @@ import io.spine.option.EveryIsOption
 import io.spine.protodata.ast.event.FileEntered
 import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
 import io.spine.tools.mc.java.marker.event.everyIsOptionDiscovered
@@ -56,7 +56,7 @@ internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
                 }
             )
         } else {
-            EitherOf2.withB(nothing())
+            EitherOf2.withB(noReaction())
         }
     }
 }

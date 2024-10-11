@@ -32,8 +32,8 @@ import io.spine.protobuf.AnyPacker.unpack
 import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.server.tuple.EitherOf2.withA
 import io.spine.server.tuple.EitherOf2.withB
@@ -62,6 +62,6 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
                     actions = settings.actions
                 }
             )
-        } ?: withB(nothing())
+        } ?: withB(noReaction())
     }
 }

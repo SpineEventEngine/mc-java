@@ -38,12 +38,12 @@ import io.spine.protodata.ast.event.FileExited
 import io.spine.protodata.ast.event.FileOptionDiscovered
 import io.spine.server.entity.alter
 import io.spine.server.entity.state
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 import io.spine.server.query.select
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
 import io.spine.tools.mc.annotation.event.fileOptionMatched
-import io.spine.server.model.Nothing as NoEvents
 
 /**
  * Transforms options defined in a Protobuf file into events that match
@@ -59,15 +59,15 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
      * values are set to `true`.
      */
     @React
-    fun on(@External e: FileEntered): NoEvents {
+    fun on(@External e: FileEntered): NoReaction {
         alter {
             file = e.file
         }
-        return nothing()
+        return noReaction()
     }
 
     @React
-    fun on(@External e: FileOptionDiscovered): NoEvents {
+    fun on(@External e: FileOptionDiscovered): NoReaction {
         val isApiLevelOption = findMatching(e.option) != null
         val optionValue = e.option.value
         if (isApiLevelOption && optionValue.isTrue()) {
@@ -75,7 +75,7 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
                 addOption(e.option)
             }
         }
-        return nothing()
+        return noReaction()
     }
 
     @React

@@ -32,8 +32,8 @@ import io.spine.protodata.ast.PrimitiveType
 import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
@@ -61,7 +61,7 @@ internal class UuidValueDiscovery : Policy<TypeDiscovered>(), UuidPluginComponen
                 }
             )
         } else {
-            EitherOf2.withB(nothing())
+            EitherOf2.withB(noReaction())
         }
     }
 }

@@ -31,8 +31,8 @@ import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.ast.isTopLevel
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.mgroup.event.GroupedMessageDiscovered
 import io.spine.tools.mc.java.mgroup.event.groupedMessageDiscovered
@@ -66,7 +66,7 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
                 }
             )
         } else {
-            EitherOf2.withB(nothing())
+            EitherOf2.withB(noReaction())
         }
     }
 }
