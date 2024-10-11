@@ -32,13 +32,25 @@ import io.kotest.matchers.string.shouldNotContain
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
 import io.spine.tools.mc.java.comparable.given.Account
 import io.spine.tools.mc.java.comparable.given.AccountId
+import java.nio.file.Path
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`ImplementComparable` should")
 internal class ImplementComparableSpec {
 
-    companion object : ComparablePluginTestSetup(ImplementComparable::class)
+    companion object : ComparablePluginTestSetup(ImplementComparable::class) {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) = runPipeline(projectDir, outputDir, settingsDir)
+    }
 
     @Test
     fun `mark messages with the option as 'Comparable'`() {

@@ -35,7 +35,6 @@ import io.spine.tools.mc.java.PluginTestSetup
 import io.spine.tools.mc.java.settings.Comparables
 import io.spine.tools.mc.java.settings.comparables
 import io.spine.tools.psi.java.topLevelClass
-import java.nio.file.Files.createTempDirectory
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.reflect.KClass
@@ -47,11 +46,6 @@ import kotlin.reflect.KClass
 abstract class ComparablePluginTestSetup(
     private val actionClass: KClass<out MessageAction<*>>
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
-
-    private val givenPackage: String by lazy {
-        runPipeline() // Allows muting logging. Read method's docs.
-        "io/spine/tools/mc/java/comparable/given"
-    }
 
     /**
      * Creates an instance of [Comparables] with a single action under the test.
@@ -68,24 +62,9 @@ abstract class ComparablePluginTestSetup(
      * The message name should be in a simple form like "Account" or "AccountId".
      */
     fun generatedCodeOf(message: String): PsiClass {
-        val sourcePath = Path("$givenPackage/$message.java")
+        val sourcePath = Path("io/spine/tools/mc/java/comparable/given/$message.java")
         val sourceFile = file(sourcePath)
         val psiFile = sourceFile.psi() as PsiJavaFile
         return psiFile.topLevelClass
     }
-
-    /**
-     * Runs the pipeline.
-     *
-     * Ideally, this method should be called in `init` block. Though, going this way,
-     * we can't use `@MuteLogging` annotation, which exists for JUnit tests. Negative test
-     * cases pollute logging, and we want to hide it as long as tests pass. For this,
-     * we need to call `runPipeline` within the test. [generatedCodeOf] is invoked
-     * by every test case, so [runPipeline] is lazily invoked once during the first test case.
-     */
-    private fun runPipeline() = runPipeline(
-        createTempDirectory("projectDit"),
-        createTempDirectory("outputDir"),
-        createTempDirectory("settingsDir")
-    )
 }

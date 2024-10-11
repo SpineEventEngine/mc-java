@@ -33,13 +33,25 @@ import io.spine.tools.mc.java.comparable.action.AddCompareTo
 import io.spine.tools.mc.java.comparable.given.Account
 import io.spine.tools.mc.java.comparable.given.AccountId
 import io.spine.tools.psi.java.method
+import java.nio.file.Path
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddCompareTo` should")
 internal class AddCompareToSpec {
 
-    companion object : ComparablePluginTestSetup(AddCompareTo::class)
+    companion object : ComparablePluginTestSetup(AddCompareTo::class) {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) = runPipeline(projectDir, outputDir, settingsDir)
+    }
 
     @Test
     fun `add the method to a message with the option`() {
