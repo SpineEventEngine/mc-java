@@ -42,8 +42,8 @@ import io.spine.string.lowerCamelCase
  *                         .thenComparing(Jogging::getDuration);
  * ```
  *
- * Please note the line breaks were added manually for reader's convenience. The builder
- * doesn't add them. It will be a single line of text.
+ * Please note the line breaks were added manually for reader's convenience.
+ * The builder doesn't add them. It will be a single line of text.
  *
  * @param cls The message class to be used as comparator's generic parameter.
  * @param descending If true, the default order is reversed.
