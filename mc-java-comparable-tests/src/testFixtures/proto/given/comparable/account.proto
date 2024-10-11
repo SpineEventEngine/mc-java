@@ -51,7 +51,7 @@ message Account {
 
 enum AccountStatus {
     option allow_alias = true;
-    UNDEFINED = 0;
+    AS_UNDEFINED = 0;
     ACTIVE = 1;
     SUSPENDED = 2;
     FROZEN = 2;
