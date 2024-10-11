@@ -30,6 +30,8 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.tools.mc.java.comparable.action.AddCompareTo
+import io.spine.tools.mc.java.comparable.given.Account
+import io.spine.tools.mc.java.comparable.given.AccountId
 import io.spine.tools.psi.java.method
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -41,7 +43,7 @@ internal class AddCompareToSpec {
 
     @Test
     fun `add the method to a message with the option`() {
-        val message = "Account"
+        val message = Account.getDescriptor().name
         val psiClass = generatedCodeOf(message)
         val method = psiClass.method("compareTo")
         val expected = """
@@ -56,7 +58,8 @@ internal class AddCompareToSpec {
 
     @Test
     fun `ignore messages without the option`() {
-        val cls = generatedCodeOf("AccountId")
+        val message = AccountId.getDescriptor().name
+        val cls = generatedCodeOf(message)
         val method = cls.findMethodsByName("compareTo")
         method.shouldBeEmpty()
     }

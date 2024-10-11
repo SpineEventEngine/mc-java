@@ -36,6 +36,25 @@ import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
 import io.spine.testing.logging.mute.MuteLogging
 import io.spine.tools.mc.java.comparable.action.AddComparator
+import io.spine.tools.mc.java.comparable.given.Account
+import io.spine.tools.mc.java.comparable.given.BytesProhibited
+import io.spine.tools.mc.java.comparable.given.Citizen
+import io.spine.tools.mc.java.comparable.given.Debtor
+import io.spine.tools.mc.java.comparable.given.MapsProhibited
+import io.spine.tools.mc.java.comparable.given.NestedBytesProhibited
+import io.spine.tools.mc.java.comparable.given.NestedMapsProhibited
+import io.spine.tools.mc.java.comparable.given.NestedNonComparableProhibited
+import io.spine.tools.mc.java.comparable.given.NestedNonExistingProhibited
+import io.spine.tools.mc.java.comparable.given.NestedRepeatedProhibited
+import io.spine.tools.mc.java.comparable.given.NestedTimestampAndDuration
+import io.spine.tools.mc.java.comparable.given.NestedValues
+import io.spine.tools.mc.java.comparable.given.NoCompareByOption
+import io.spine.tools.mc.java.comparable.given.NonComparableProhibited
+import io.spine.tools.mc.java.comparable.given.NonExistingProhibited
+import io.spine.tools.mc.java.comparable.given.RepeatedProhibited
+import io.spine.tools.mc.java.comparable.given.Traveler
+import io.spine.tools.mc.java.comparable.given.WithTimestampAndDuration
+import io.spine.tools.mc.java.comparable.given.WithValues
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -58,7 +77,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `primitives and enums`() {
-            val message = "Account"
+            val message = Account.getDescriptor().name
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getActualData)" +
                     ".thenComparing($message::getStatus)" +
@@ -69,7 +88,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `comparable messages`() {
-            val message = "Citizen"
+            val message = Citizen.getDescriptor().name
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getPassport);"
             assertComparator(message, expected)
@@ -77,7 +96,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known 'Timestamp' and 'Duration'`() {
-            val message = "WithTimestampAndDuration"
+            val message = WithTimestampAndDuration.getDescriptor().name
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getTimestamp, $TIMESTAMP_COMPARATOR)" +
                     ".thenComparing($message::getDuration, $DURATION_COMPARATOR);"
@@ -86,7 +105,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known value messages`() {
-            val message = "WithValues"
+            val message = WithValues.getDescriptor().name
             val instance = message.lowerCamelCase()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getBool().getValue())" +
@@ -102,7 +121,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `reversed comparison`() {
-            val message = "Debtor"
+            val message = Debtor.getDescriptor().name
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getSum)" +
                     ".thenComparing($message::getName)" +
@@ -117,7 +136,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `primitives, enums and comparable messages`() {
-            val message = "Traveler"
+            val message = Traveler.getDescriptor().name
             val instance = message.lowerCamelCase()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getResidence().getRegion())" +
@@ -130,7 +149,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known 'Timestamp' and 'Duration'`() {
-            val message = "NestedTimestampAndDuration"
+            val message = NestedTimestampAndDuration.getDescriptor().name
             val instance = message.lowerCamelCase()
             val expected =
                 "private static final java.util.Comparator<$message> comparator = " +
@@ -141,7 +160,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known value messages`() {
-            val message = "NestedValues"
+            val message = NestedValues.getDescriptor().name
             val instance = message.lowerCamelCase()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getBool().getValue())" +
@@ -161,22 +180,28 @@ internal class AddComparatorSpec {
     `not generate comparator` {
 
         @Test
-        fun `without the corresponding option`() = assertNoComparator("NoCompareByOption")
+        fun `without the corresponding option`() =
+            assertNoComparator(NoCompareByOption.getDescriptor().name)
 
         @Test
-        fun `with a non-comparable field`() = assertNoComparator("NonComparableProhibited")
+        fun `with a non-comparable field`() =
+            assertNoComparator(NonComparableProhibited.getDescriptor().name)
 
         @Test
-        fun `with a bytes field`() = assertNoComparator("BytesProhibited")
+        fun `with a bytes field`() =
+            assertNoComparator(BytesProhibited.getDescriptor().name)
 
         @Test
-        fun `with a repeated field`() = assertNoComparator("RepeatedProhibited")
+        fun `with a repeated field`() =
+            assertNoComparator(RepeatedProhibited.getDescriptor().name)
 
         @Test
-        fun `with a map field`() = assertNoComparator("MapsProhibited")
+        fun `with a map field`() =
+            assertNoComparator(MapsProhibited.getDescriptor().name)
 
         @Test
-        fun `with a non-existing field`() = assertNoComparator("NonExistingProhibited")
+        fun `with a non-existing field`() =
+            assertNoComparator(NonExistingProhibited.getDescriptor().name)
     }
 
     @Nested
@@ -184,19 +209,24 @@ internal class AddComparatorSpec {
     `not generate comparator with nested` {
 
         @Test
-        fun `non-comparable field`() = assertNoComparator("NestedNonComparableProhibited")
+        fun `non-comparable field`() =
+            assertNoComparator(NestedNonComparableProhibited.getDescriptor().name)
 
         @Test
-        fun `bytes field`() = assertNoComparator("NestedBytesProhibited")
+        fun `bytes field`() =
+            assertNoComparator(NestedBytesProhibited.getDescriptor().name)
 
         @Test
-        fun `repeated field`() = assertNoComparator("NestedRepeatedProhibited")
+        fun `repeated field`() =
+            assertNoComparator(NestedRepeatedProhibited.getDescriptor().name)
 
         @Test
-        fun `map field`() = assertNoComparator("NestedMapsProhibited")
+        fun `map field`() =
+            assertNoComparator(NestedMapsProhibited.getDescriptor().name)
 
         @Test
-        fun `non-existing field`() = assertNoComparator("NestedNonExistingProhibited")
+        fun `non-existing field`() =
+            assertNoComparator(NestedNonExistingProhibited.getDescriptor().name)
     }
 
     /**

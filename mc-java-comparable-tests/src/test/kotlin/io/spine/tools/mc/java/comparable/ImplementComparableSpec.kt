@@ -30,6 +30,8 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import io.spine.tools.mc.java.comparable.action.ImplementComparable
+import io.spine.tools.mc.java.comparable.given.Account
+import io.spine.tools.mc.java.comparable.given.AccountId
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -40,7 +42,7 @@ internal class ImplementComparableSpec {
 
     @Test
     fun `mark messages with the option as 'Comparable'`() {
-        val message = "Account"
+        val message = Account.getDescriptor().name
         val psiClass = generatedCodeOf(message)
         val implementList = psiClass.implementsList
         implementList.shouldNotBeNull()
@@ -49,7 +51,7 @@ internal class ImplementComparableSpec {
 
     @Test
     fun `ignore messages without the corresponding option`() {
-        val message = "AccountId"
+        val message = AccountId.getDescriptor().name
         val psiClass = generatedCodeOf(message)
         val implementList = psiClass.implementsList
         implementList.shouldNotBeNull()
