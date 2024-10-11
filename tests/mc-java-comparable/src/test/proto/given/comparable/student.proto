@@ -33,7 +33,7 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.test.tools.mc.java.comparable";
 option java_multiple_files = true;
 
-// Comparable by `int` and `string` fields, has the reversed ordering.
+// Comparable by `int` and `string` fields, has the reverse ordering.
 message Student {
     option (compare_by) = {
         descending: true

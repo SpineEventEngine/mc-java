@@ -56,9 +56,9 @@ public class Students {
     }
 
     /**
-     * Returns a non-sorted collection of the five students.
+     * Returns an unsorted collection of the five students.
      */
-    public static List<Student> notSorted() {
+    public static List<Student> unsorted() {
         return newArrayList(fourthStudent, secondStudent, fifthStudent, firstStudent, thirdStudent);
     }
 

@@ -62,9 +62,9 @@ public class Joggings {
     }
 
     /**
-     * Returns a non-sorted collection of the five joggings.
+     * Returns an unsorted collection of the five joggings.
      */
-    public static List<Jogging> notSorted() {
+    public static List<Jogging> unsorted() {
         return newArrayList(fourthJogging, secondJogging, fifthJogging, firstJogging, thirdJogging);
     }
 

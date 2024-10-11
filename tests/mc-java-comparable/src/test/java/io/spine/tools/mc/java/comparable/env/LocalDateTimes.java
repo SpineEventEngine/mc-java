@@ -73,9 +73,9 @@ public class LocalDateTimes {
     }
 
     /**
-     * Returns a non-sorted collection of the five timestamps.
+     * Returns an unsorted collection of the five timestamps.
      */
-    public static List<LocalDateTime> notSorted() {
+    public static List<LocalDateTime> unsorted() {
         return newArrayList(fourthStamp, thirdStamp, fifthStamp, firstStamp, secondStamp);
     }
 

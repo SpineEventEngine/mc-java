@@ -58,9 +58,9 @@ public class Travelers {
     }
 
     /**
-     * Returns a non-sorted collection of the five travelers.
+     * Returns an unsorted collection of the five travelers.
      */
-    public static List<Traveler> notSorted() {
+    public static List<Traveler> unsorted() {
         return newArrayList(fourthTraveler, secondTraveler, fifthTraveler, firstTraveler,
                             thirdTraveler);
     }

@@ -26,8 +26,6 @@
 
 package io.spine.tools.mc.java.comparable;
 
-import com.google.common.truth.Truth;
-import com.google.common.truth.Truth8;
 import io.spine.tools.mc.java.comparable.env.Joggings;
 import io.spine.tools.mc.java.comparable.env.LocalDateTimes;
 import io.spine.tools.mc.java.comparable.env.Students;
@@ -58,8 +56,6 @@ import static io.spine.tools.mc.java.comparable.env.Travelers.fourthTraveler;
 import static io.spine.tools.mc.java.comparable.env.Travelers.secondTraveler;
 import static io.spine.tools.mc.java.comparable.env.Travelers.thirdTraveler;
 import static java.util.Collections.sort;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisplayName("`ComparablePlugin` should")
 class ComparablePluginTest {
@@ -67,7 +63,7 @@ class ComparablePluginTest {
     @Test
     @DisplayName("make messages comparable")
     void makeMessagesComparable() {
-        var localDateTimes = LocalDateTimes.notSorted();
+        var localDateTimes = LocalDateTimes.unsorted();
         var expected = newArrayList(firstStamp, secondStamp, thirdStamp,
                                     fourthStamp, fifthStamp);
         assertThat(localDateTimes).isNotEqualTo(expected);
@@ -78,7 +74,7 @@ class ComparablePluginTest {
     @Test
     @DisplayName("make messages reversed-comparable")
     void makeMessagesReversedComparable() {
-        var students = Students.notSorted();
+        var students = Students.unsorted();
         var expected = newArrayList(firstStudent, secondStudent, thirdStudent,
                                     fourthStudent, fifthStudent);
         assertThat(students).isNotEqualTo(expected);
@@ -89,7 +85,7 @@ class ComparablePluginTest {
     @Test
     @DisplayName("support comparison by nested fields")
     void supportComparisonByNestedFields() {
-        var travelers = Travelers.notSorted();
+        var travelers = Travelers.unsorted();
         var expected = newArrayList(firstTraveler, secondTraveler, thirdTraveler,
                                     fourthTraveler, fifthTraveler);
         assertThat(travelers).isNotEqualTo(expected);
@@ -100,7 +96,7 @@ class ComparablePluginTest {
     @Test
     @DisplayName("support comparators from the 'ComparatorRegistry'")
     void supportComparatorsFromTheComparatorRegistry() {
-        var joggings = Joggings.notSorted();
+        var joggings = Joggings.unsorted();
         var expected = newArrayList(firstJogging, secondJogging, thirdJogging,
                                     fourthJogging, fifthJogging);
         assertThat(joggings).isNotEqualTo(expected);
