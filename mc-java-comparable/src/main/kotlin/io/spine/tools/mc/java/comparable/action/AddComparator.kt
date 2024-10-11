@@ -110,7 +110,8 @@ public class AddComparator(
 
             else -> {
                 check(type.isEnum) {
-                    "The field `$path` has an unrecognized type: `$type`."
+                    "The field `$path` has an unrecognized type: `$type`. " +
+                            "Check out the supported types in docs to `compare_by` option."
                 }
                 comparingBy(path)
             }
@@ -139,8 +140,8 @@ public class AddComparator(
         when {
             hasCompareByOption -> {
                 check(fromRegistry == null) {
-                    "The field `$path` is both comparable and has a comparator provided " +
-                            "in the `ComparatorRegistry` simultaneously."
+                    "The field `$path` must either implement `Comparable` OR have a `Comparator` " +
+                            "registered in the `ComparatorRegistry`, but not both simultaneously."
                 }
                 comparingBy(path)
             }
@@ -153,7 +154,8 @@ public class AddComparator(
 
             else -> {
                 check( clazz != null && clazz.isProtoValueMessage) {
-                    "The field `$path` has an unexpected message type: `$type`."
+                    "The field `$path` has an unrecognized message type: `$type`. " +
+                            "Check out the supported types in docs to `compare_by` option."
                 }
                 comparingBy("$path.value")
             }
@@ -179,7 +181,6 @@ public class AddComparator(
             .map { (path, field) -> ComparisonField(field, path) }
     }
 }
-
 
 /**
  * Tells if this [PrimitiveType] is comparable.

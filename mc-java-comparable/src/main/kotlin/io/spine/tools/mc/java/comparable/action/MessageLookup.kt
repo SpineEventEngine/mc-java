@@ -49,7 +49,7 @@ internal class MessageLookup(private val context: CodegenContext) {
         val typeUrl = typeName.typeUrl
         return fromOurProtos(typeUrl)
             ?: fromDependencies(typeUrl)
-            ?: error("`$typeUrl` not found in the passed Proto files and their dependencies.")
+            ?: error("`$typeUrl` not found in the passed Proto files or their dependencies.")
     }
 
     private fun fromOurProtos(typeUrl: String): MessageType? =
