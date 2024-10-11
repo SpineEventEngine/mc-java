@@ -148,8 +148,9 @@ public class AddComparator(
         when {
             hasCompareByOption -> {
                 check(fromRegistry == null) {
-                    "The field `${path.joined}` must either implement `Comparable` OR have a `Comparator` " +
-                            "registered in the `ComparatorRegistry`, but not both simultaneously."
+                    "The field `${path.joined}` must either implement `Comparable` OR have " +
+                            "a `Comparator` registered in the `ComparatorRegistry`, " +
+                            "but not both simultaneously."
                 }
                 comparingBy(path)
             }
