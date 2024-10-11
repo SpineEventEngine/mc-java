@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import io.spine.base.FieldPath
+import io.spine.base.fieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.field
@@ -60,21 +62,20 @@ internal class FieldLookup(private val messages: MessageLookup) {
      */
     fun resolve(path: FieldPath, rootMessage: MessageType): Field =
         if (path.isNotNested) {
-            rootMessage.field(path)
+            rootMessage.field(path.root)
         } else {
             searchRecursively(path, rootMessage)
         }
 
     private fun searchRecursively(path: FieldPath, message: MessageType): Field {
         if (path.isNotNested) {
-            return message.field(path)
+            return message.field(path.root)
         }
-
-        val currentFieldName = path.substringBefore(".")
+        val currentFieldName = path.root
         val currentField = message.field(currentFieldName)
-
-        val remainingFields = path.substringAfter(".")
+        val remainingFields = path.fieldNameList.drop(1)
+        val remainingPath = fieldPath { fieldName.addAll(remainingFields) }
         val nextMessage = messages.query(currentField.type.message)
-        return searchRecursively(remainingFields, nextMessage)
+        return searchRecursively(remainingPath, nextMessage)
     }
 }

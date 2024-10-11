@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import io.spine.base.FieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.Type
 
@@ -33,7 +34,7 @@ import io.spine.protodata.ast.Type
  * The message field that participates in comparison.
  *
  * @param field The field metadata.
- * @param path The field path as was specified in the option.
+ * @param path The field path.
  * @param type The field type.
  */
 internal class ComparisonField(

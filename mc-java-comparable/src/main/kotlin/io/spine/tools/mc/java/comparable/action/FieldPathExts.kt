@@ -26,18 +26,27 @@
 
 package io.spine.tools.mc.java.comparable.action
 
-/**
- * A field path as passed to `compare_by` option.
- *
- * This string is expected to contain one of the following:
- *
- * 1. A single field: `first_name`.
- * 2. A nested one: `citizen.passport.first_name`.
- */
-internal typealias FieldPath = String
+import io.spine.base.FieldPath
 
 /**
  * Tells if this [FieldPath] doesn't denote a nested field.
  */
 internal val FieldPath.isNotNested
-    get() = contains(".").not()
+    get() = fieldNameList.size == 1
+
+/**
+ * Returns this [FieldPath] as a single [String], where the field names
+ * are separated with a dot.
+ *
+ * For example, `citizen.passport.firstName`.
+ */
+internal val FieldPath.joined
+    get() = fieldNameList.joinToString(".")
+
+/**
+ * Returns the root field's name of this [FieldPath].
+ *
+ * Throws [NoSuchElementException] if the path is empty.
+ */
+internal val FieldPath.root
+    get() = fieldNameList.first()

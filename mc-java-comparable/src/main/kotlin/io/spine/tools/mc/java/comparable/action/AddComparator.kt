@@ -27,6 +27,9 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
+import io.spine.base.FieldPath
+import io.spine.base.copy
+import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
 import io.spine.option.CompareByOption
 import io.spine.protodata.ast.MessageType
@@ -101,7 +104,7 @@ public class AddComparator(
         when {
             type.isPrimitive -> {
                 check(type.primitive.isComparable) {
-                    "The field `$path` has a non-comparable primitive type: `$type`."
+                    "The field `${path.joined}` has a non-comparable primitive type: `$type`."
                 }
                 comparingBy(path)
             }
@@ -110,7 +113,7 @@ public class AddComparator(
 
             else -> {
                 check(type.isEnum) {
-                    "The field `$path` has an unrecognized type: `$type`. " +
+                    "The field `${path.joined}` has an unrecognized type: `$type`. " +
                             "Check out the supported types in docs to `compare_by` option."
                 }
                 comparingBy(path)
@@ -140,7 +143,7 @@ public class AddComparator(
         when {
             hasCompareByOption -> {
                 check(fromRegistry == null) {
-                    "The field `$path` must either implement `Comparable` OR have a `Comparator` " +
+                    "The field `${path.joined}` must either implement `Comparable` OR have a `Comparator` " +
                             "registered in the `ComparatorRegistry`, but not both simultaneously."
                 }
                 comparingBy(path)
@@ -157,7 +160,7 @@ public class AddComparator(
                     "The field `$path` has an unrecognized message type: `$type`. " +
                             "Check out the supported types in docs to `compare_by` option."
                 }
-                comparingBy("$path.value")
+                comparingBy(path.copy { fieldName.add("value") })
             }
         }
     }
@@ -177,6 +180,7 @@ public class AddComparator(
     private fun CompareByOption.fields(): List<ComparisonField> {
         val fieldsLookup = FieldLookup(messageLookup)
         return fieldList
+            .map { path -> fieldPath { fieldName.addAll(path.split(".")) } }
             .associateWith { path -> fieldsLookup.resolve(path, type) }
             .map { (path, field) -> ComparisonField(field, path) }
     }

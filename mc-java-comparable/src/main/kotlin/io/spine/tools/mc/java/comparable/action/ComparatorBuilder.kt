@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.intellij.psi.PsiClass
+import io.spine.base.FieldPath
 import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
 
@@ -83,7 +84,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean 
      * @param comparator The optional comparator to be used for the field values.
      */
     fun comparingBy(path: FieldPath, comparator: String? = null) {
-        val extractor = if (path.isNotNested) extractField(path) else extractNestedField(path)
+        val extractor = if (path.isNotNested) extractField(path.root) else extractNestedField(path)
         val closure = if (comparator == null) extractor else "$extractor, $comparator"
         closures.add(closure)
     }
@@ -98,7 +99,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean 
      * denoted by the given [path].
      */
     private fun extractNestedField(path: FieldPath): String {
-        val parts = path.split(".")
+        val parts = path.fieldNameList
         val joined = parts.joinToString(".") { "${it.toJavaGetter()}()" }
         return "($message $instance) -> $instance.$joined"
     }
