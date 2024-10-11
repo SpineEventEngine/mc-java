@@ -33,18 +33,9 @@ modelCompiler {
     java {
         codegen {
             // Turn off validation codegen during the transition to the new ProtoData API.
-            validation().enabled.set(false)
+            validation.enabled.set(false)
         }
     }
 }
 
-tasks {
-    named<JavaExec>("launchTestProtoData") {
-        debugOptions {
-            enabled.set(false) // Set this option to `true` to enable remote debugging.
-            port.set(5566)
-            server.set(true)
-            suspend.set(true)
-        }
-    }
-}
+protoDataRemoteDebug()
