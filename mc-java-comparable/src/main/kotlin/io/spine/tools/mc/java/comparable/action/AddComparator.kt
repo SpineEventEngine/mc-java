@@ -37,6 +37,7 @@ import io.spine.protodata.ast.PrimitiveType
 import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.Type
+import io.spine.protodata.ast.TypeName
 import io.spine.protodata.ast.isEnum
 import io.spine.protodata.ast.isMessage
 import io.spine.protodata.ast.isPrimitive
@@ -51,7 +52,6 @@ import io.spine.tools.mc.java.comparable.hasCompareByOption
 import io.spine.tools.mc.java.base.FieldLookup
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.message.ClassLookup
-import io.spine.tools.mc.java.message.MessageLookup
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
@@ -69,7 +69,6 @@ public class AddComparator(
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     private val classLookup = ClassLookup(context)
-    private val messageLookup = MessageLookup(context)
     private val option = compareByOption(type)
 
     override fun doRender() {
@@ -141,7 +140,7 @@ public class AddComparator(
      * @param type The field type.
      */
     private fun ComparatorBuilder.comparingByMessage(path: FieldPath, type: Type) {
-        val message = messageLookup.query(type.message)
+        val message = messageType(type.message)
         val hasCompareByOption = message.hasCompareByOption
         val clazz = classLookup.query(message)
         val fromRegistry = clazz?.let { ComparatorRegistry.find(clazz) }
@@ -184,11 +183,20 @@ public class AddComparator(
      * For nested fields, a deep search of the field metadata is performed.
      */
     private fun CompareByOption.fields(): List<ComparisonField> {
-        val fieldsLookup = FieldLookup(messageLookup)
+        val fieldsLookup = FieldLookup(::messageType)
         return fieldList
             .map { path -> fieldPath { fieldName.addAll(path.split(".")) } }
             .associateWith { path -> fieldsLookup.resolve(path, type) }
             .map { (path, field) -> ComparisonField(field, path) }
+    }
+
+    /**
+     * Returns [MessageType] for the given type [name].
+     */
+    private fun messageType(name: TypeName): MessageType {
+        val metadata = typeSystem!!.findMessage(name)
+            ?: error("`$this` not found in the passed Proto files or their dependencies.")
+        return metadata.first
     }
 }
 

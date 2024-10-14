@@ -30,15 +30,15 @@ import io.spine.base.FieldPath
 import io.spine.base.fieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.TypeName
 import io.spine.protodata.ast.field
-import io.spine.tools.mc.java.message.MessageLookup
 
 /**
  * Looks for [MessageType] denoted by [FieldPath].
  *
  * @param [messages] Lookup of messages participating in the codegen.
  */
-public class FieldLookup(private val messages: MessageLookup) {
+public class FieldLookup(private val messages: (TypeName) -> MessageType) {
 
     /**
      * Resolves [Field] denoted by the given field [path], relatively to
@@ -76,7 +76,7 @@ public class FieldLookup(private val messages: MessageLookup) {
         val currentField = message.field(currentFieldName)
         val remainingFields = path.fieldNameList.drop(1)
         val remainingPath = fieldPath { fieldName.addAll(remainingFields) }
-        val nextMessage = messages.query(currentField.type.message)
+        val nextMessage = messages(currentField.type.message)
         return searchRecursively(remainingPath, nextMessage)
     }
 }
