@@ -34,6 +34,7 @@ import io.spine.option.CompareByOption
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
+import io.spine.protodata.ast.find
 import io.spine.protodata.ast.isEnum
 import io.spine.protodata.ast.isMessage
 import io.spine.protodata.ast.isPrimitive
@@ -46,7 +47,6 @@ import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
-import io.spine.tools.mc.java.comparable.hasCompareByOption
 import io.spine.tools.mc.java.base.javaClass
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -206,3 +206,6 @@ public class AddComparator(
         }
     }
 }
+
+private val MessageType.hasCompareByOption: Boolean
+    get() = optionList.find<CompareByOption>() != null

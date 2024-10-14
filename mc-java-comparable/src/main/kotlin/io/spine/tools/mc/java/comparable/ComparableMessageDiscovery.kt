@@ -28,8 +28,8 @@ package io.spine.tools.mc.java.comparable
 
 import io.spine.core.External
 import io.spine.option.CompareByOption
-import io.spine.protobuf.AnyPacker.unpack
 import io.spine.protodata.ast.event.TypeDiscovered
+import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.NoReaction
@@ -53,12 +53,12 @@ internal class ComparableMessageDiscovery : Policy<TypeDiscovered>(), Comparable
         @External event: TypeDiscovered
     ): EitherOf2<ComparableMessageDiscovered, NoReaction> {
         val options = event.type.optionList
-        val compareBy = options.find(::isCompareBy)
+        val compareBy = options.find<CompareByOption>()
         return compareBy?.let {
             withA(
                 comparableMessageDiscovered {
                     type = event.type
-                    option = unpack(compareBy.value, CompareByOption::class.java)
+                    option = compareBy
                     actions = settings.actions
                 }
             )
