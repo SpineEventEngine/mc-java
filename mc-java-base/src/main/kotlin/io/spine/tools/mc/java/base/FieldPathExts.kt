@@ -27,6 +27,11 @@
 package io.spine.tools.mc.java.base
 
 import io.spine.base.FieldPath
+import io.spine.base.fieldPath
+import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.field
+import io.spine.protodata.type.TypeSystem
 
 /**
  * Tells if this [FieldPath] doesn't denote a nested field.
@@ -50,3 +55,20 @@ public val FieldPath.joined: String
  */
 public val FieldPath.root: String
     get() = fieldNameList.first()
+
+/**
+ * Resolves this [FieldPath] against the given [message].
+ *
+ * @param message The message that contains the root field of this [FieldPath].
+ * @param typeSystem The known Protobuf types used for metadata querying.
+ */
+public fun FieldPath.resolve(message: MessageType, typeSystem: TypeSystem): Field {
+    if (this.isNotNested) {
+        return message.field(root)
+    }
+    val currentField = message.field(root)
+    val remainingFields = fieldNameList.drop(1)
+    val remainingPath = fieldPath { fieldName.addAll(remainingFields) }
+    val nextMessage = typeSystem.findMessage(currentField.type.message)!!.first
+    return remainingPath.resolve(nextMessage, typeSystem)
+}

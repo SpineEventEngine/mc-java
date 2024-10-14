@@ -43,8 +43,8 @@ import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.base.FieldLookup
 import io.spine.tools.mc.java.base.joined
+import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.hasCompareByOption
@@ -65,8 +65,6 @@ public class AddComparator(
     file: SourceFile<Java>,
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
-
-    private val fieldsLookup = FieldLookup(typeSystem!!)
 
     override fun doRender() {
         val option = compareByOption(type)
@@ -95,7 +93,7 @@ public class AddComparator(
      */
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
-        val field = fieldsLookup.resolve(fieldPath, rootMessage = type)
+        val field = fieldPath.resolve(type, typeSystem!!)
         val fieldType = field.type
 
         check(field.hasSingle()) {
