@@ -58,10 +58,10 @@ public val FieldPath.root: String
 
 /**
  * Resolves the given [FieldPath] against the given [MessageType] within
- * the context of this [TypeSystem].
+ * this [TypeSystem].
  *
- * This method navigates through nested messages and fields as specified by the
- * [fieldPath], returning the final [Field] instance that the path points to.
+ * This method navigates through the nested messages and fields as specified by
+ * the [fieldPath], returning the final [Field] that the path points to.
  *
  * @param fieldPath The field path to resolve.
  * @param message The message where the root of the [fieldPath] is declared.

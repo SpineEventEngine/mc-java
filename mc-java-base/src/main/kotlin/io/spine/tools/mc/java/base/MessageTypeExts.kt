@@ -32,7 +32,7 @@ import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.javaClassName
 
 /**
- * Returns the [Class] instances for this [MessageType], if any.
+ * Returns the [Class] instance for this [MessageType], if any.
  *
  * The function returns a non-`null` result if a class denoted by this [ClassName]
  * is present on the classpath.
