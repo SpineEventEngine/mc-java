@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.field
+package io.spine.tools.mc.java.base
 
 import io.spine.base.FieldPath
 import io.spine.base.fieldPath

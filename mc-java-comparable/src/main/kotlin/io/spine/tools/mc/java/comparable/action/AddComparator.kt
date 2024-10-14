@@ -48,15 +48,15 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.hasCompareByOption
-import io.spine.tools.mc.java.field.FieldLookup
-import io.spine.tools.mc.java.field.joined
+import io.spine.tools.mc.java.base.FieldLookup
+import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.message.ClassLookup
 import io.spine.tools.mc.java.message.MessageLookup
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
- * Builds and inserts a static `comparator` field into the message that qualify as comparable.
+ * Builds and inserts a static `comparator` field into the messages that qualify as comparable.
  *
  * @param type The type of the message.
  * @param file The source code to which the action is applied.

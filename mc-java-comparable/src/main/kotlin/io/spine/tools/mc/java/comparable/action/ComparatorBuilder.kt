@@ -30,8 +30,8 @@ import com.intellij.psi.PsiClass
 import io.spine.base.FieldPath
 import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
-import io.spine.tools.mc.java.field.isNotNested
-import io.spine.tools.mc.java.field.root
+import io.spine.tools.mc.java.base.isNotNested
+import io.spine.tools.mc.java.base.root
 
 /**
  * Builds a static Java field containing the [Comparator] for the given message.
