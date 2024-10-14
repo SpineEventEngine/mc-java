@@ -27,25 +27,56 @@
 package io.spine.tools.mc.java.comparable.action
 
 import io.spine.base.FieldPath
-import io.spine.protodata.ast.Field
-import io.spine.protodata.ast.Type
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.PrimitiveType
 
 /**
- * The message field that participates in comparison.
+ * A field that participates in comparison.
  *
- * @param field The field metadata.
- * @param path The field path.
+ * @property path The field path as was passed to the option.
+ */
+internal sealed class ComparisonField(val path: FieldPath)
+
+/**
+ * An enum field, which participates in comparison.
+ */
+internal class EnumComparisonField(path: FieldPath) : ComparisonField(path)
+
+/**
+ * A primitive field, which participates in comparison.
+ *
+ * @param path The field path as was passed to the option.
  * @param type The field type.
  */
-internal class ComparisonField(
-    field: Field,
-    val path: FieldPath,
-    val type: Type = field.type,
-) {
-    init {
-        check(field.hasSingle()) {
-            "The repeated fields and maps can't participate in comparison. " +
-                    "Please check the field type of `$field`."
-        }
-    }
-}
+internal class PrimitiveComparisonField(
+    path: FieldPath,
+    val type: PrimitiveType
+) : ComparisonField(path)
+
+/**
+ * A message field, which participates in comparison.
+ *
+ * @param path The field path as was passed to the option.
+ * @param type The field type.
+ */
+internal class MessageComparisonField(
+    path: FieldPath,
+    val type: MessageType,
+) : ComparisonField(path)
+
+/**
+ * An external message field, which participates in comparison.
+ *
+ * An external message is a message, Java code for which is NOT being generated
+ * by the ongoing generation request. Usually, it is a dependency that is present
+ * on the classpath of code generation and thus, has the [clazz] instance.
+ *
+ * @param path The field path as was passed to the option.
+ * @param type The field type.
+ * @param clazz The field type class.
+ */
+internal class ExternalMessageComparisonField(
+    path: FieldPath,
+    val type: MessageType,
+    val clazz: Class<*>
+) : ComparisonField(path)
