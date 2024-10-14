@@ -47,7 +47,7 @@ import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.hasCompareByOption
-import io.spine.tools.mc.java.javaClass
+import io.spine.tools.mc.java.base.javaClass
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
@@ -93,7 +93,7 @@ public class AddComparator(
      */
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
-        val field = fieldPath.resolve(type, typeSystem!!)
+        val field = typeSystem!!.resolve(fieldPath, type)
         val fieldType = field.type
 
         check(field.hasSingle()) {

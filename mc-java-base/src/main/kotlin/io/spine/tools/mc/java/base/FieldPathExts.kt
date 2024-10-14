@@ -57,18 +57,22 @@ public val FieldPath.root: String
     get() = fieldNameList.first()
 
 /**
- * Resolves this [FieldPath] against the given [message].
+ * Resolves the given [FieldPath] against the given [MessageType] within
+ * the context of this [TypeSystem].
  *
- * @param message The message that contains the root field of this [FieldPath].
- * @param typeSystem The known Protobuf types used for metadata querying.
+ * This method navigates through nested messages and fields as specified by the
+ * [fieldPath], returning the final [Field] instance that the path points to.
+ *
+ * @param fieldPath The field path to resolve.
+ * @param message The message where the root of the [fieldPath] is declared.
  */
-public fun FieldPath.resolve(message: MessageType, typeSystem: TypeSystem): Field {
-    if (this.isNotNested) {
-        return message.field(root)
+public fun TypeSystem.resolve(fieldPath: FieldPath, message: MessageType): Field {
+    if (fieldPath.isNotNested) {
+        return message.field(fieldPath.root)
     }
-    val currentField = message.field(root)
-    val remainingFields = fieldNameList.drop(1)
+    val currentField = message.field(fieldPath.root)
+    val remainingFields = fieldPath.fieldNameList.drop(1)
     val remainingPath = fieldPath { fieldName.addAll(remainingFields) }
-    val nextMessage = typeSystem.findMessage(currentField.type.message)!!.first
-    return remainingPath.resolve(nextMessage, typeSystem)
+    val nextMessage = findMessage(currentField.type.message)!!.first
+    return resolve(remainingPath, nextMessage)
 }

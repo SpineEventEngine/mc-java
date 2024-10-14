@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java
+package io.spine.tools.mc.java.base
 
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.ProtoFileHeader
