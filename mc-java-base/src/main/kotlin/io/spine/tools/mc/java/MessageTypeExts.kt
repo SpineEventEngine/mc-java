@@ -26,17 +26,22 @@
 
 package io.spine.tools.mc.java
 
+import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.ProtoFileHeader
 import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.javaClassName
 
 /**
- * Returns the [Class] instances for the given [ClassName], if any.
+ * Returns the [Class] instances for this [MessageType], if any.
  *
- * The method returns a non-`null` result if a class denoted by this [ClassName]
- * was loaded into the classpath.
+ * The function returns a non-`null` result if a class denoted by this [ClassName]
+ * is present on the classpath.
  */
-public fun ClassName.findJavaClass(): Class<*>? =
-    try {
-        Class.forName(this.canonical)
+public fun MessageType.javaClass(accordingTo: ProtoFileHeader): Class<*>? {
+    val name = name.javaClassName(accordingTo)
+    return try {
+        Class.forName(name.canonical)
     } catch (ignored: ClassNotFoundException) {
         null
     }
+}

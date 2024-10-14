@@ -39,6 +39,8 @@ internal sealed class ComparisonField(val path: FieldPath)
 
 /**
  * An enum field, which participates in comparison.
+ *
+ * @param path The field path as was passed to the option.
  */
 internal class EnumComparisonField(path: FieldPath) : ComparisonField(path)
 
@@ -68,12 +70,12 @@ internal class MessageComparisonField(
  * An external message field, which participates in comparison.
  *
  * An external message is a message, Java code for which is NOT being generated
- * by the ongoing generation request. Usually, it is a dependency that is present
- * on the classpath of code generation and thus, has the [clazz] instance.
+ * by the ongoing generation request. It is a dependency that is present on
+ * the classpath of code generation and thus, has the [clazz] instance.
  *
  * @param path The field path as was passed to the option.
  * @param type The field type.
- * @param clazz The field type class.
+ * @param clazz The Java class of the field type.
  */
 internal class ExternalMessageComparisonField(
     path: FieldPath,

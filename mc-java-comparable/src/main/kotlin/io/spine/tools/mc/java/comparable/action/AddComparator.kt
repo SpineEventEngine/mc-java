@@ -38,7 +38,6 @@ import io.spine.protodata.ast.isEnum
 import io.spine.protodata.ast.isMessage
 import io.spine.protodata.ast.isPrimitive
 import io.spine.protodata.context.CodegenContext
-import io.spine.protodata.java.javaClassName
 import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
@@ -48,7 +47,7 @@ import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.mc.java.comparable.hasCompareByOption
-import io.spine.tools.mc.java.findJavaClass
+import io.spine.tools.mc.java.javaClass
 import io.spine.tools.psi.addFirst
 import io.spine.tools.psi.java.Environment.elementFactory
 
@@ -89,7 +88,8 @@ public class AddComparator(
         .option
 
     /**
-     * Maps the field [path] to an appropriate instance of [ComparisonField].
+     * Maps the field [path] to an appropriate instance of [ComparisonField],
+     * depending on the field type.
      */
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
@@ -109,8 +109,7 @@ public class AddComparator(
             fieldType.isMessage -> {
                 val typeName = fieldType.message
                 val (type, header) = typeSystem!!.findMessage(typeName)!!
-                val javaClassName = type.javaClassName(header)
-                val javaClass = javaClassName.findJavaClass()
+                val javaClass = type.javaClass(header)
                 if (javaClass == null) {
                     MessageComparisonField(fieldPath, type)
                 } else {
@@ -119,7 +118,7 @@ public class AddComparator(
             }
 
             else -> error(
-                "The field `$path` has an unrecognized Proto field type: `${this.type}`. " +
+                "The field `$path` has an unrecognized Proto field type: `$type`. " +
                         "The supported Proto fields: primitives, enums and messages."
             )
         }
@@ -134,7 +133,7 @@ public class AddComparator(
      * In short, the following fields are accepted:
      *
      * 1. All primitives except for byte arrays.
-     * 2. Enumerations (Java enums are implicitly comparable).
+     * 2. All enumerations (Java enums are implicitly comparable).
      * 3. Messages with [CompareByOption] option.
      * 4. External messages for which [ComparatorRegistry] has a comparator.
      * 5. [WellKnownComparables][io.spine.tools.mc.java.comparable.WellKnownComparables].
@@ -167,16 +166,15 @@ public class AddComparator(
     }
 
     /**
-     * Adds the message field to this [ComparatorBuilder].
+     * Adds the external message field to this [ComparatorBuilder].
      *
-     * This method enforces the following rules:
+     * This method expects the given [field] to be one of the following:
      *
-     * 1. Only external messages (Java code for which is NOT being generated now)
-     * are eligible for having a comparator in [ComparatorRegistry].
-     * 2. If the message has a [CompareByOption], then the registry should NOT
-     * have a comparator for this type. Otherwise, it is unclear what to use.
-     * 3. [WellKnownComparables][io.spine.tools.mc.java.comparable.WellKnownComparables]
-     * are allowed to participate in comparison by default.
+     * 1. An external message with [CompareByOption] and without
+     * a comparator in [ComparatorRegistry].
+     * 2. An external message without the option, but with a comparator
+     * in the registry.
+     * 3. [Well-known comparable][io.spine.tools.mc.java.comparable.WellKnownComparables].
      */
     private fun ComparatorBuilder.comparingBy(field: ExternalMessageComparisonField) {
         val path = field.path
