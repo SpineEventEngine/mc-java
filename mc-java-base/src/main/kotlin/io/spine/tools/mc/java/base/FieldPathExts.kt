@@ -31,6 +31,7 @@ import io.spine.base.fieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.field
+import io.spine.protodata.ast.isMessage
 import io.spine.protodata.type.TypeSystem
 
 /**
@@ -67,12 +68,26 @@ public val FieldPath.root: String
  * @param message The message where the root of the [fieldPath] is declared.
  */
 public fun TypeSystem.resolve(fieldPath: FieldPath, message: MessageType): Field {
-    if (fieldPath.isNotNested) {
-        return message.field(fieldPath.root)
-    }
     val currentField = message.field(fieldPath.root)
+    if (fieldPath.isNotNested) {
+        return currentField
+    }
+
+    check(currentField.type.isMessage) {
+        "Can't resolve the field path `$fieldPath` because `${currentField.name}` segment " +
+                "doesn't denote a message. The type of this field is `${currentField.type}`. " +
+                "Only messages can have nested field."
+    }
+
+    val currentFieldMessage = currentField.type.message
     val remainingFields = fieldPath.fieldNameList.drop(1)
     val remainingPath = fieldPath { fieldName.addAll(remainingFields) }
-    val nextMessage = findMessage(currentField.type.message)!!.first
+    val nextMessageInfo = findMessage(currentFieldMessage)
+
+    check(nextMessageInfo != null) {
+        "`$currentFieldMessage` was not found in the passed Proto files or their dependencies."
+    }
+
+    val nextMessage = nextMessageInfo.first
     return resolve(remainingPath, nextMessage)
 }
