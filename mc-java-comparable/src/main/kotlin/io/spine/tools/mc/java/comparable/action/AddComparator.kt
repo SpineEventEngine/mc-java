@@ -118,7 +118,7 @@ public class AddComparator(
             }
 
             else -> error(
-                "The field `$path` has an unrecognized Proto field type: `$type`. " +
+                "The field `$path` has an unrecognized Protobuf field type: `$type`. " +
                         "The supported Proto fields: primitives, enums and messages."
             )
         }

@@ -110,7 +110,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
 }
 
 /**
- * Converts this [String] with a Proto field name to a Java getter.
+ * Converts this [String] with a Protobuf field name to a Java getter.
  *
  * For example, `my_best_field` will be converted to `getMyBestField`.
  *
