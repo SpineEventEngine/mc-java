@@ -39,6 +39,10 @@ import static com.google.common.collect.Lists.newArrayList;
  * Provides {@link LocalDateTime} instances for
  * {@link io.spine.tools.mc.java.comparable.ComparablePluginTest ComparablePluginTest}.
  *
+ * <p>Please note, the used {@link LocalDateTime} is not a message from Spine Time library.
+ * It is a locally-declared Protobuf message. See {@code local_date_time.proto}
+ * file in the Protobyf sources of this module.
+ *
  * <p>Field names reflect the expected position of the corresponding message
  * when they all are sorted. The test case is supposed to sort them, so we don't provide
  * a sorted collection on our own. Otherwise, it would break the test essence, in which
