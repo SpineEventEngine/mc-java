@@ -42,6 +42,7 @@ import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
+import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
@@ -193,7 +194,7 @@ public class AddComparator(
 
             fromRegistry != null -> {
                 val className = "${clazz.canonicalName}.class"
-                val comparator = "io.spine.compare.ComparatorRegistry.get($className)"
+                val comparator = "${ComparatorRegistry::class.reference}.get($className)"
                 comparingBy(path, comparator)
             }
 
