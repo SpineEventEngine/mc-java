@@ -49,7 +49,9 @@ import io.spine.tools.mc.java.base.root
  * The builder doesn't add them. It will be a single line of text.
  *
  * @param cls The message class to be used as comparator's generic parameter.
- * @param reversed If true, the default order is reversed.
+ * @param reversed If `true`, imposes the reverse of the natural ordering.
+ *  If a comparator sorts objects in ascending order, reversed will sort them
+ *  in descending order.
  */
 internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = false) {
 
