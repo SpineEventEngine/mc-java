@@ -49,9 +49,9 @@ import io.spine.tools.mc.java.base.root
  * The builder doesn't add them. It will be a single line of text.
  *
  * @param cls The message class to be used as comparator's generic parameter.
- * @param descending If true, the default order is reversed.
+ * @param reversed If true, the default order is reversed.
  */
-internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean = false) {
+internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = false) {
 
     private val message = cls.name!!
     private val instance = message.lowerCamelCase()
@@ -65,7 +65,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val descending: Boolean 
         for (i in 1 until closures.size) {
             joinedClosures += ".thenComparing(${closures[i]})"
         }
-        if (descending) {
+        if (reversed) {
             joinedClosures += ".reversed()"
         }
         return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
