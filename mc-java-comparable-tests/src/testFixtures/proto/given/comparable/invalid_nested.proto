@@ -44,6 +44,11 @@ message NestedMessage {
     NoCompareByOption id = 2;
     repeated string gender = 3;
     map<string, int32> results = 4;
+    oneof drink {
+        string milk = 5;
+        string juice = 6;
+        string water = 7;
+    }
 }
 
 message NestedNonComparableProhibited {
@@ -77,5 +82,11 @@ message NestedMapsProhibited {
 message NestedNonExistingProhibited {
     option (compare_by) = {
         field: "non_existing_field"
+    };
+}
+
+message NestedOneOfProhibited {
+    option (compare_by) = {
+        field: "drink"
     };
 }

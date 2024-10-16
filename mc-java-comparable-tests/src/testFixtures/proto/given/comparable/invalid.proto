@@ -74,3 +74,14 @@ message NonExistingProhibited {
         field: "non_existing_field"
     };
 }
+
+message OneOfProhibited {
+    option (compare_by) = {
+        field: "drink"
+    };
+    oneof drink {
+        string milk = 1;
+        string juice = 2;
+        string water = 3;
+    }
+}

@@ -44,12 +44,14 @@ import io.spine.tools.mc.java.comparable.given.NestedBytesProhibited
 import io.spine.tools.mc.java.comparable.given.NestedMapsProhibited
 import io.spine.tools.mc.java.comparable.given.NestedNonComparableProhibited
 import io.spine.tools.mc.java.comparable.given.NestedNonExistingProhibited
+import io.spine.tools.mc.java.comparable.given.NestedOneOfProhibited
 import io.spine.tools.mc.java.comparable.given.NestedRepeatedProhibited
 import io.spine.tools.mc.java.comparable.given.NestedTimestampAndDuration
 import io.spine.tools.mc.java.comparable.given.NestedValues
 import io.spine.tools.mc.java.comparable.given.NoCompareByOption
 import io.spine.tools.mc.java.comparable.given.NonComparableProhibited
 import io.spine.tools.mc.java.comparable.given.NonExistingProhibited
+import io.spine.tools.mc.java.comparable.given.OneOfProhibited
 import io.spine.tools.mc.java.comparable.given.RepeatedProhibited
 import io.spine.tools.mc.java.comparable.given.Traveler
 import io.spine.tools.mc.java.comparable.given.WithTimestampAndDuration
@@ -209,6 +211,10 @@ internal class AddComparatorSpec {
         @Test
         fun `with a non-existing field`() =
             assertNoComparator(NonExistingProhibited.getDescriptor().name)
+
+        @Test
+        fun `with a oneof field`() =
+            assertNoComparator(OneOfProhibited.getDescriptor().name)
     }
 
     @Nested
@@ -234,6 +240,10 @@ internal class AddComparatorSpec {
         @Test
         fun `non-existing field`() =
             assertNoComparator(NestedNonExistingProhibited.getDescriptor().name)
+
+        @Test
+        fun `oneof field`() =
+            assertNoComparator(NestedOneOfProhibited.getDescriptor().name)
     }
 
     /**
