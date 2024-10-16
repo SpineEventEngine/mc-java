@@ -71,7 +71,7 @@ public class AddComparator(
         val option = compareByOption(type)
         val comparisonFields = option.fieldList.map(::toComparisonField)
         require(comparisonFields.isNotEmpty()) {
-            "The `compare_by` option should have at least one field specified."
+            "The `(compare_by)` option should have at least one field specified."
         }
 
         val comparator = ComparatorBuilder(cls, option.descending)
@@ -102,7 +102,7 @@ public class AddComparator(
             "The repeated fields and maps can't participate in comparison. " +
                     "The invalid field: `$field`, its type: `$fieldType`. " +
                     "Please, make sure the type of the passed field is compatible with " +
-                    "`compare_by` option."
+                    "the `(compare_by)` option."
         }
 
         return when {
@@ -154,8 +154,8 @@ public class AddComparator(
 
             is MessageComparisonField -> {
                 check(field.type.hasCompareByOption) {
-                    "The type of `${path.joined}` field should have `compare_by` option itself " +
-                            "to participate in comparison."
+                    "The type of the `${path.joined}` field should have the `(compare_by)` " +
+                            "option itself to participate in comparison."
                 }
                 comparingBy(path)
             }
@@ -183,9 +183,9 @@ public class AddComparator(
         when {
             hasCompareByOption -> {
                 check(fromRegistry == null) {
-                    "The type of `${path.joined}` field must either have `compare_by` options OR " +
-                            "have a `Comparator` registered in the `ComparatorRegistry`, " +
-                            "but not both simultaneously."
+                    "The type of the `${path.joined}` field must either have the `(compare_by)` " +
+                            "option specified OR have a `Comparator` registered in " +
+                            "the `ComparatorRegistry`, but not both simultaneously."
                 }
                 comparingBy(path)
             }
@@ -217,8 +217,8 @@ public class AddComparator(
     private fun unsupportedFieldType(fieldPath: FieldPath, fieldType: Any?): Nothing = error(
         "The field `$fieldPath` declared in the message `$type` is not of the supported type " +
                 " (`$fieldType`) for the comparison. Supported field types are: " +
-                "primitives, enums, and comparable messages. Checks out docs to `compare_by` " +
-                "option for details."
+                "primitives, enums, and comparable messages. Checks out docs to " +
+                "the `(compare_by)` option for details."
     )
 }
 
