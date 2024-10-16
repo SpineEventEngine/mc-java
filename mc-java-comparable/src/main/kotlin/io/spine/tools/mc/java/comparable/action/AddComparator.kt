@@ -94,7 +94,7 @@ public class AddComparator(
      */
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
-        val field = typeSystem!!.resolve(fieldPath, type)
+        val field = typeSystem.resolve(fieldPath, type)
         val fieldType = field.type
 
         check(field.hasSingle()) {
@@ -109,7 +109,7 @@ public class AddComparator(
             fieldType.isEnum -> EnumComparisonField(fieldPath)
             fieldType.isMessage -> {
                 val typeName = fieldType.message
-                val (type, header) = typeSystem!!.findMessage(typeName)!!
+                val (type, header) = typeSystem.findMessage(typeName)!!
                 val javaClass = type.javaClass(header)
                 if (javaClass == null) {
                     MessageComparisonField(fieldPath, type)

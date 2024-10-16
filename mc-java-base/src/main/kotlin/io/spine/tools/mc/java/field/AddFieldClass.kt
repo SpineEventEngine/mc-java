@@ -92,13 +92,12 @@ public open class AddFieldClass(
 
     private fun PsiClass.addTopLevelFieldMethods() {
         type.fieldList.forEach {
-            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem!!)
+            val accessor = TopLevelFieldAccessor(it, fieldSupertype, typeSystem)
             addLast(accessor.method())
         }
     }
 
     private fun PsiClass.addFieldClasses() {
-        val typeSystem = typeSystem!!
         val deps = MessageTypeDependencies(type, setOf(SINGLE, ONEOF_NAME), typeSystem).asSet()
         deps.forEach {
             val fld = MessageTypedField(it, fieldSupertype, typeSystem)

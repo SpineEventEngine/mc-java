@@ -89,7 +89,7 @@ public class AddColumnClass(type: MessageType, file: SourceFile<Java>, context: 
 
     private fun addColumnMethods() {
         columns.forEach { column ->
-            ColumnAccessor(messageClass, column, cls, typeSystem!!).run {
+            ColumnAccessor(messageClass, column, cls, typeSystem).run {
                 render()
             }
         }

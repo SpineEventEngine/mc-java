@@ -75,6 +75,6 @@ internal abstract class QuerySupportClass(
      * The type of the [first][idField] entity state type field.
      */
     val idType: String by lazy {
-        idField.typeReference(entityStateClass, typeSystem!!)
+        idField.typeReference(entityStateClass, typeSystem)
     }
 }
