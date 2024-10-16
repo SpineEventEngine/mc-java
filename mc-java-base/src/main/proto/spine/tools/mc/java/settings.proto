@@ -70,6 +70,9 @@ message Combined {
 
     // The classpath used to lookup types by their fully-qualified names.
     tools.java.Classpath classpath = 8;
+
+    // The code generation settings for comparable messages.
+    Comparables comparables = 11;
 }
 
 // Configuration related to validation code.
@@ -227,3 +230,12 @@ message Uuids {
     protodata.Actions actions = 3;
 }
 
+// Code generation settings for comparable messages.
+//
+// A message is comparable when it has `compare_by` option.
+//
+message Comparables {
+
+    // A collection of code generation actions.
+    protodata.Actions actions = 1;
+}

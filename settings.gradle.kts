@@ -31,6 +31,8 @@ include(
     "mc-java-annotation",
     "mc-java-base",
     "mc-java-checks",
+    "mc-java-comparable",
+    "mc-java-comparable-tests",
     "mc-java-entity",
     "mc-java-entity-tests",
     "mc-java-signal",

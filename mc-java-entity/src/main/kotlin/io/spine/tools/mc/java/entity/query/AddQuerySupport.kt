@@ -63,11 +63,11 @@ public class AddQuerySupport(
                 render()
             }
             // The `QueryBuilder` class is added at the bottom, before the `Query` class.
-            QueryBuilderClass(type, file, settings, context!!).run {
+            QueryBuilderClass(type, file, settings, context).run {
                 render()
             }
             // The `Query` class comes last.
-            QueryClass(type, file, settings, context!!).run {
+            QueryClass(type, file, settings, context).run {
                 render()
             }
         }

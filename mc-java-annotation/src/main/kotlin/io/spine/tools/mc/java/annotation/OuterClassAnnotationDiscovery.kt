@@ -31,12 +31,12 @@ import io.spine.protodata.ast.File
 import io.spine.protodata.ast.event.FileEntered
 import io.spine.protodata.java.javaMultipleFiles
 import io.spine.server.entity.alter
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 import io.spine.server.procman.ProcessManagerRepository
 import io.spine.server.route.EventRouting
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
-import io.spine.server.model.Nothing as NoEvents
 
 /**
  * A process manager which discovers the API annotation options set on the outer
@@ -48,7 +48,7 @@ internal class OuterClassAnnotationDiscovery:
     ProcessManager<File, OuterClassAnnotations, OuterClassAnnotations.Builder>() {
 
     @React
-    fun on(@External e: FileEntered): NoEvents {
+    fun on(@External e: FileEntered): NoReaction {
         // The check here is a safety net. We should get only events for
         // proto files with `java_multiple_files` set to `true`. See `Repository.setEventRouting`.
         if (!e.header.javaMultipleFiles()) {
@@ -67,7 +67,7 @@ internal class OuterClassAnnotationDiscovery:
                 }
             }
         }
-        return nothing()
+        return noReaction()
     }
 
     class Repository :

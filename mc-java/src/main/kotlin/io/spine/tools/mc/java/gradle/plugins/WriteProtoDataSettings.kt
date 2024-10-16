@@ -24,6 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+@file:Suppress("TooManyFunctions")
+
 package io.spine.tools.mc.java.gradle.plugins
 
 import com.google.protobuf.Message
@@ -33,6 +36,7 @@ import io.spine.protodata.settings.SettingsDirectory
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
 import io.spine.tools.mc.java.annotation.SettingsKt.annotationTypes
 import io.spine.tools.mc.java.annotation.settings
+import io.spine.tools.mc.java.comparable.ComparablePlugin
 import io.spine.tools.mc.java.entity.EntityPlugin
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.mcJava
@@ -87,6 +91,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
         forSignalPlugin(dir)
         forMessageGroupPlugin(dir)
         forUuidPlugin(dir)
+        forComparablePlugin(dir)
         forStyleFormattingPlugin(dir)
     }
 
@@ -181,6 +186,11 @@ private fun WriteProtoDataSettings.forMessageGroupPlugin(dir: SettingsDirectory)
 private fun WriteProtoDataSettings.forUuidPlugin(dir: SettingsDirectory) {
     val uuidSettings = codegenSettings.uuids
     dir.write(UuidPlugin.SETTINGS_ID, uuidSettings)
+}
+
+private fun WriteProtoDataSettings.forComparablePlugin(dir: SettingsDirectory) {
+    val settings = codegenSettings.comparables
+    dir.write(ComparablePlugin.SETTINGS_ID, settings)
 }
 
 private fun WriteProtoDataSettings.forStyleFormattingPlugin(dir: SettingsDirectory) {

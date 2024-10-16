@@ -1,0 +1,79 @@
+/*
+* Copyright 2024, TeamDev. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* https://www.apache.org/licenses/LICENSE-2.0
+*
+* Redistribution and use in source and/or binary forms, with or without
+* modification, must retain the above copyright notice and the following
+* disclaimer.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+syntax = "proto3";
+
+package given.comparable;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.java.comparable.given";
+option java_multiple_files = true;
+
+// This message tests that nested fields can be passed to `compare_by` option.
+message Traveler {
+    option (compare_by) = {
+        field: "residence.region" // string
+        field: "residence.address.is_actual" // bool
+        field: "residence.address.city" // string
+        field: "residence.name.structure" // enum
+        field: "residence.name" // comparable message
+    };
+
+    Residence residence = 1;
+}
+
+message Residence {
+    string region = 1;
+    Address address = 2;
+    Name name = 3;
+}
+
+message Address {
+    string city = 1;
+    string street = 2;
+    string building = 3;
+    bool is_actual = 4;
+}
+
+message Name {
+    option (compare_by) = {
+        field: "first_name"
+        field: "second_name"
+    };
+
+    NameStructure structure = 1;
+    string first_name = 2;
+    string last_name = 3;
+}
+
+enum NameStructure {
+    NAME_UNSPECIFIED = 0;
+    ONE_WORD = 1;
+    TWO_WORDS = 2;
+    THREE_WORDS = 3;
+}

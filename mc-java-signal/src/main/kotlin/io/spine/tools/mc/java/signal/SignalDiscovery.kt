@@ -33,8 +33,8 @@ import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.ast.matches
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf4
 import io.spine.tools.mc.java.settings.SignalSettings
 import io.spine.tools.mc.java.settings.Signals
@@ -72,7 +72,7 @@ internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent
         val msg = event.type
         if (msg.isNested) {
             // Signals are only top level messages. Ignore nested types.
-            return EitherOf4.withD(nothing())
+            return EitherOf4.withD(noReaction())
         }
         return if (commands.match(msg)) {
             EitherOf4.withA(commandDiscovered {
@@ -90,7 +90,7 @@ internal class SignalDiscovery : Policy<TypeDiscovered>(), SignalPluginComponent
                 type = msg
             })
         } else {
-            EitherOf4.withD(nothing())
+            EitherOf4.withD(noReaction())
         }
     }
 }

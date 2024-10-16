@@ -31,8 +31,8 @@ import io.spine.option.IsOption
 import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
 import io.spine.tools.mc.java.marker.event.isOptionDiscovered
@@ -55,7 +55,7 @@ internal class IsOptionDiscovery : Policy<TypeDiscovered>() {
                 }
             )
         } else {
-            EitherOf2.withB(nothing())
+            EitherOf2.withB(noReaction())
         }
     }
 }
