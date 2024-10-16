@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
+import io.spine.base.FieldPath
 import io.spine.base.copy
 import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
@@ -118,10 +119,7 @@ public class AddComparator(
                 }
             }
 
-            else -> error(
-                "The field `$path` has an unrecognized Protobuf field type: `$type`. " +
-                        "The supported Proto fields: primitives, enums and messages."
-            )
+            else -> unsupportedFieldType(fieldPath, fieldType)
         }
     }
 
@@ -200,12 +198,28 @@ public class AddComparator(
 
             clazz.isWellKnownComparable -> comparingBy(path.copy { fieldName.add("value") })
 
-            else -> error(
-                "The field `$path` has an unrecognized message type: `$type`. " +
-                        "Check out the supported types in docs to `compare_by` option."
-            )
+            else -> unsupportedFieldType(path, field.type)
         }
     }
+
+    /**
+     * Throws [IllegalStateException] to indicate that the passed [fieldPath]
+     * denotes a field with an unsupported type.
+     *
+     * This error is meant to serve as a safe net for cases when the passed field
+     * type is unexpected for the plugin. For example, Protobuf may introduce a new field
+     * type or cardinality. If this happens, we should add the support of such a type
+     * to this plugin. Otherwise, "safe net" errors are thrown.
+     *
+     * Note: the names of method arguments are prefixed with "field" intentionally.
+     * So not to clash with [type] class member.
+     */
+    private fun unsupportedFieldType(fieldPath: FieldPath, fieldType: Any?): Nothing = error(
+        "The field `$fieldPath` declared in the message `$type` is not of the supported type " +
+                " (`$fieldType`) for the comparison. Supported field types are: " +
+                "primitives, enums, and comparable messages. Checks out docs to `compare_by` " +
+                "option for details."
+    )
 }
 
 private val MessageType.hasCompareByOption: Boolean
