@@ -27,9 +27,6 @@
 package io.spine.tools.mc.java.comparable
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.render.Renderer
 
 /**
  * Looks for messages with `compare_by` option and applies render actions specified in
@@ -38,20 +35,11 @@ import io.spine.protodata.render.Renderer
  * The default list of actions is configured in
  * [ComparableSettings][io.spine.tools.mc.java.gradle.settings.ComparableSettings].
  */
-public class ComparablePlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        ComparableMessageDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        ComparableMessageView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        ComparableActionsRenderer()
-    )
-
+public class ComparablePlugin : Plugin(
+    policies = setOf(ComparableMessageDiscovery()),
+    views = setOf(ComparableMessageView::class.java),
+    renderers = listOf(ComparableActionsRenderer())
+) {
     public companion object {
 
         /**
