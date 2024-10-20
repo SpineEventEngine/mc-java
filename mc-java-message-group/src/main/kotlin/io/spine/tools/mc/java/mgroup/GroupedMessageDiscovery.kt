@@ -31,8 +31,10 @@ import io.spine.protodata.ast.event.TypeDiscovered
 import io.spine.protodata.ast.isTopLevel
 import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
+import io.spine.server.event.asA
+import io.spine.server.event.asB
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.mgroup.event.GroupedMessageDiscovered
 import io.spine.tools.mc.java.mgroup.event.groupedMessageDiscovered
@@ -59,14 +61,12 @@ internal class GroupedMessageDiscovery : Policy<TypeDiscovered>(), MessageGroupP
             it.pattern.matches(type) && type.isTopLevel
         }
         return if (matchingGroups.isNotEmpty()) {
-            EitherOf2.withA(
-                groupedMessageDiscovered {
-                    this@groupedMessageDiscovered.type = type
-                    group.addAll(matchingGroups)
-                }
-            )
+            groupedMessageDiscovered {
+                this@groupedMessageDiscovered.type = type
+                group.addAll(matchingGroups)
+            }.asA()
         } else {
-            EitherOf2.withB(nothing())
+            noReaction().asB()
         }
     }
 }

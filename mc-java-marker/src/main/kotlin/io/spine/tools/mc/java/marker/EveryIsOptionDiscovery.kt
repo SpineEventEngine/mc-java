@@ -31,8 +31,10 @@ import io.spine.option.EveryIsOption
 import io.spine.protodata.ast.event.FileEntered
 import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
+import io.spine.server.event.NoReaction
 import io.spine.server.event.React
-import io.spine.server.model.NoReaction
+import io.spine.server.event.asA
+import io.spine.server.event.asB
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.marker.event.EveryIsOptionDiscovered
 import io.spine.tools.mc.java.marker.event.everyIsOptionDiscovered
@@ -48,15 +50,13 @@ internal class EveryIsOptionDiscovery : Policy<FileEntered>() {
     ): EitherOf2<EveryIsOptionDiscovered, NoReaction> {
         val found = event.header.optionList.find<EveryIsOption>()
         return if (found != null) {
-            EitherOf2.withA(
-                everyIsOptionDiscovered {
-                    file = event.file
-                    option = found
-                    header = event.header
-                }
-            )
+            everyIsOptionDiscovered {
+                file = event.file
+                option = found
+                header = event.header
+            }.asA()
         } else {
-            EitherOf2.withB(nothing())
+            noReaction().asB()
         }
     }
 }
