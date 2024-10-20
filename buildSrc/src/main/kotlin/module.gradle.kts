@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.internal.dependency.Caffeine
 import io.spine.internal.dependency.CheckerFramework
@@ -144,6 +145,7 @@ fun Module.forceConfigurations() {
                     Spine.reflect,
                     Spine.base,
                     Spine.time,
+                    Spine.client,
                     Spine.server,
                     Spine.testlib,
                     Spine.toolBase,
