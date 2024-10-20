@@ -30,6 +30,7 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import io.spine.base.CommandMessage
 import io.spine.tools.java.reference
+import io.spine.tools.mc.java.signal.SignalPluginTestSetup.Companion.FIELD_CLASS_SIGNATURE
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
@@ -39,9 +40,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`CommandRenderer` should")
-internal class CommandRendererSpec : SignalPluginTest() {
+internal class CommandRendererSpec {
 
-    companion object {
+    companion object : SignalPluginTestSetup() {
 
         lateinit var commandCode: String
 
