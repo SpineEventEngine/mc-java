@@ -38,7 +38,7 @@ class ApiAnnotationsPluginSpec {
     fun `provide views and renderers`() {
         val plugin = ApiAnnotationsPlugin()
         plugin shouldNotBe null
-        plugin.viewRepositories().size shouldNotBe 0
-        plugin.renderers().size shouldNotBe 0
+        plugin.viewRepositories.size shouldNotBe 0
+        plugin.renderers.size shouldNotBe 0
     }
 }

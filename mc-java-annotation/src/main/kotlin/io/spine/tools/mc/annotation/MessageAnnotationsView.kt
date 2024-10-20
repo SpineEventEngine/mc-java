@@ -83,7 +83,7 @@ internal class MessageAnnotationsView :
             }.unicast<TypeOptionDiscovered> { e, _ ->
                 e.type
             }.unicast<FieldOptionDiscovered> { e, _ ->
-                e.type
+                e.subject.declaringType
             }
         }
     }

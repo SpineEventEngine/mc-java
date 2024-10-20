@@ -27,9 +27,6 @@
 package io.spine.tools.mc.java.signal
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.render.Renderer
 
 /**
  * A ProtoData plugin responsible for code generation of signal messages.
@@ -41,24 +38,19 @@ import io.spine.protodata.render.Renderer
  * @see io.spine.tools.mc.java.settings.SignalSettings
  * @see io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
  */
-public class SignalPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        SignalDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
+public class SignalPlugin : Plugin(
+    policies = setOf(SignalDiscovery()),
+    views = setOf(
         CommandsPerFile::class.java,
         EventsPerFile::class.java,
         RejectionsPerFile::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
+    ),
+    renderers = listOf(
         CommandRenderer(),
         EventRenderer(),
         RejectionRenderer(),
     )
-
+) {
     public companion object {
 
         /**

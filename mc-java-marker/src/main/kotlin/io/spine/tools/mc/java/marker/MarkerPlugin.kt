@@ -27,33 +27,15 @@
 package io.spine.tools.mc.java.marker
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
-import io.spine.protodata.render.Renderer
 
 /**
  * The ProtoData plugin which performs code generation in response to discovering
  * [every_is][io.spine.option.IsOption] file option and [is][io.spine.option.IsOption]
  * message type option.
  */
-public class MarkerPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        EveryIsOptionDiscovery(),
-        IsOptionDiscovery(),
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        EveryIsMessagesView::class.java
-    )
-
-    override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
-        MessagesWithIsView.Repository()
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        EveryIsOptionRenderer(),
-        IsOptionRenderer(),
-    )
-}
+public class MarkerPlugin : Plugin(
+    policies = setOf(EveryIsOptionDiscovery(), IsOptionDiscovery()),
+    views = setOf(EveryIsMessagesView::class.java),
+    viewRepositories = setOf(MessagesWithIsView.Repository()),
+    renderers = listOf(EveryIsOptionRenderer(), IsOptionRenderer())
+)

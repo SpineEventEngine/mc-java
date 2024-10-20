@@ -27,9 +27,6 @@
 package io.spine.tools.mc.java.mgroup
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.render.Renderer
 
 /**
  * The ProtoData plugin responsible for code generation for groups of messages
@@ -37,20 +34,11 @@ import io.spine.protodata.render.Renderer
  *
  * @see io.spine.tools.mc.java.settings.GroupSettings
  */
-public class MessageGroupPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        GroupedMessageDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        GroupedMessageView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        GroupedMessageRenderer()
-    )
-
+public class MessageGroupPlugin : Plugin(
+    policies = setOf(GroupedMessageDiscovery()),
+    views = setOf(GroupedMessageView::class.java),
+    renderers = listOf(GroupedMessageRenderer())
+) {
     public companion object {
 
         /**

@@ -68,7 +68,7 @@ public class ImplementEntityState(
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
-        val idFieldType = type.firstField.javaType(typeSystem!!)
+        val idFieldType = type.firstField.javaType(typeSystem)
         val action = ImplementInterface(
             type,
             file,
@@ -76,7 +76,7 @@ public class ImplementEntityState(
                 name = EntityState::class.java.reference
                 genericArgument.add(idFieldType)
             },
-            context!!
+            context
         )
         action.render()
     }

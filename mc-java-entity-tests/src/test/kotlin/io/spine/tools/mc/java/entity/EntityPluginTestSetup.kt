@@ -39,26 +39,22 @@ import org.junit.jupiter.api.assertThrows
  * Abstract base for suites testing [EntityPlugin] parts.
  */
 @Suppress("UtilityClassWithPublicConstructor")
-abstract class EntityPluginTest {
+abstract class EntityPluginTestSetup : PluginTestSetup<Entities>(
+    EntityPlugin(),
+    EntityPlugin.SETTINGS_ID
+) {
+    /**
+     * The path to the Java file generated for the `Department` entity state.
+     */
+    val DEPARTMENT_JAVA = "io/spine/tools/mc/java/entity/given/Department.java"
 
-    companion object : PluginTestSetup<Entities>(
-        EntityPlugin(),
-        EntityPlugin.SETTINGS_ID
-    ) {
-
-        /**
-         * The path to the Java file generated for the `Department` entity state.
-         */
-        const val DEPARTMENT_JAVA = "io/spine/tools/mc/java/entity/given/Department.java"
-
-        @JvmStatic
-        override fun createSettings(projectDir: Path): Entities {
-            val project = createProject(projectDir)
-            val entityConfig = EntitySettings(project)
-            return entityConfig.toProto()
-        }
+    override fun createSettings(projectDir: Path): Entities {
+        val project = createProject(projectDir)
+        val entityConfig = EntitySettings(project)
+        return entityConfig.toProto()
     }
 }
+
 
 /**
  * Asserts that this class has a method with the given name.

@@ -32,7 +32,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
 import javax.annotation.Generated
@@ -43,9 +43,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`QueryClass` should")
-internal class QueryClassSpec : EntityPluginTest() {
+internal class QueryClassSpec {
 
-    companion object {
+    companion object : EntityPluginTestSetup() {
 
         private lateinit var entityStateClass: PsiClass
 
