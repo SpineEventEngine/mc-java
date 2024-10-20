@@ -1,0 +1,87 @@
+/*
+* Copyright 2024, TeamDev. All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* https://www.apache.org/licenses/LICENSE-2.0
+*
+* Redistribution and use in source and/or binary forms, with or without
+* modification, must retain the above copyright notice and the following
+* disclaimer.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+syntax = "proto3";
+
+package given.comparable;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.spine.io";
+option java_package = "io.spine.tools.mc.java.comparable.given";
+option java_multiple_files = true;
+
+// This file declares messages that contradict the `compare_by` contract.
+// Message names describe in which way a message is incompatible with the option.
+
+message NoCompareByOption {
+    string uuid = 1;
+}
+
+message NonComparableProhibited {
+    option (compare_by) = {
+        field: "id"
+    };
+    NoCompareByOption id = 1;
+}
+
+message BytesProhibited {
+    option (compare_by) = {
+        field: "data"
+    };
+    bytes data = 1;
+}
+
+message RepeatedProhibited {
+    option (compare_by) = {
+        field: "gender"
+    };
+    repeated string gender = 1;
+}
+
+message MapsProhibited {
+    option (compare_by) = {
+        field: "results"
+    };
+    map<string, int32> results = 1;
+}
+
+message NonExistingProhibited {
+    option (compare_by) = {
+        field: "non_existing_field"
+    };
+}
+
+message OneOfProhibited {
+    option (compare_by) = {
+        field: "drink"
+    };
+    oneof drink {
+        string milk = 1;
+        string juice = 2;
+        string water = 3;
+    }
+}

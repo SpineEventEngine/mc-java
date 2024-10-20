@@ -53,18 +53,6 @@ import io.spine.tools.mc.annotation.event.fileOptionMatched
  */
 internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 
-    /**
-     * Adds the API options from the file to the state of this process IFF their
-     * values are set to `true`.
-     */
-//    @React
-//    fun on(@External e: FileEntered): NoReaction {
-//        alter {
-//            file = e.file
-//        }
-//        return noReaction()
-//    }
-
     @React
     fun on(@External e: FileOptionDiscovered): NoReaction {
         val isApiLevelOption = findMatching(e.option) != null

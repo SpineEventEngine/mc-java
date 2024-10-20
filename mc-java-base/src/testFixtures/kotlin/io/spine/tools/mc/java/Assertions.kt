@@ -33,6 +33,6 @@ import kotlin.text.RegexOption.DOT_MATCHES_ALL
  * Tells if [javaCode] contains a class which implements the given [superInterface].
  */
 fun implementsInterface(javaCode: String, superInterface: Class<*>): Boolean {
-    val regex = Regex("""implements.*${superInterface.reference}""", DOT_MATCHES_ALL)
+    val regex = Regex("implements[^{}]*${superInterface.reference}[^{}]*\\{", DOT_MATCHES_ALL)
     return regex.containsMatchIn(javaCode)
 }

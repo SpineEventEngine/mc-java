@@ -47,6 +47,7 @@ dependencies {
         ":mc-java-marker",
         ":mc-java-message-group",
         ":mc-java-uuid",
+        ":mc-java-comparable",
     ).forEach {
         implementation(project(it))
     }
