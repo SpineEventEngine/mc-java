@@ -58,7 +58,6 @@ abstract class EntityPluginTestSetup : PluginTestSetup<Entities>(
     }
 }
 
-
 /**
  * Asserts that this class has a method with the given name.
  */
