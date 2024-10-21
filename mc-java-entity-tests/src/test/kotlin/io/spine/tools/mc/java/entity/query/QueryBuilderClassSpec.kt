@@ -35,9 +35,7 @@ import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.THIS_REF_METHOD_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.DEPARTMENT_JAVA
-import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.file
-import io.spine.tools.mc.java.entity.EntityPluginTest.Companion.runPipeline
+import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.psi.java.isPublic
@@ -55,7 +53,7 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`QueryBuilderClass` should")
 internal class QueryBuilderClassSpec {
 
-    companion object {
+    companion object : EntityPluginTestSetup() {
 
         private lateinit var entityStateClass: PsiClass
 

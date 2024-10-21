@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.signal.rejection
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.render.Renderer
 
 /**
  * A ProtoData plugin for generating [RejectionThrowable][io.spine.base.RejectionThrowable]
@@ -35,9 +34,4 @@ import io.spine.protodata.render.Renderer
  *
  * @see [io.spine.tools.mc.java.signal.SignalPlugin]
  */
-public class RThrowablePlugin: Plugin {
-
-    override fun renderers(): List<Renderer<*>> {
-        return listOf(RThrowableRenderer())
-    }
-}
+public class RThrowablePlugin: Plugin(renderers = listOf(RThrowableRenderer()))

@@ -34,7 +34,7 @@ import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.COLUMN_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.DEFINITIONS_METHOD_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.mc.java.entity.assertDoesNotHaveMethod
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.psi.java.locate
@@ -47,9 +47,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddColumnClass` should")
-internal class AddColumnClassSpec : EntityPluginTest() {
+internal class AddColumnClassSpec {
 
-    companion object {
+    companion object : EntityPluginTestSetup() {
 
         private const val ENTITY_STATE = "Department"
 

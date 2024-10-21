@@ -27,29 +27,17 @@
 package io.spine.tools.mc.java.uuid
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.render.Renderer
 
 /**
  * Discovers [UuidValue][io.spine.base.UuidValue] message types and renders the code
  * according to the settings specified in
  * [io.spine.tools.mc.java.gradle.settings.CodegenSettings.forUuids] clause.
  */
-public class UuidPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> = setOf(
-        UuidValueDiscovery()
-    )
-
-    override fun views(): Set<Class<out View<*, *, *>>> = setOf(
-        UuidMessageView::class.java
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        UuidActionRenderer()
-    )
-
+public class UuidPlugin : Plugin(
+    policies = setOf(UuidValueDiscovery()),
+    views = setOf(UuidMessageView::class.java),
+    renderers = listOf(UuidActionRenderer())
+) {
     public companion object {
 
         /**

@@ -28,9 +28,6 @@ package io.spine.tools.mc.java.entity
 
 import com.google.common.annotations.VisibleForTesting
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.Policy
-import io.spine.protodata.plugin.View
-import io.spine.protodata.render.Renderer
 
 /**
  * A ProtoData plugin responsible for handling code generation aspects related to
@@ -38,18 +35,11 @@ import io.spine.protodata.render.Renderer
  *
  * @see EntityPluginComponent
  */
-public class EntityPlugin : Plugin {
-
-    override fun policies(): Set<Policy<*>> =
-        setOf(EntityDiscovery())
-
-    override fun views(): Set<Class<out View<*, *, *>>> =
-        setOf(DiscoveredEntitiesView::class.java)
-
-    override fun renderers(): List<Renderer<*>> = listOf(
-        EntityStateRenderer()
-    )
-
+public class EntityPlugin : Plugin(
+    policies = setOf(EntityDiscovery()),
+    views = setOf(DiscoveredEntitiesView::class.java),
+    renderers = listOf(EntityStateRenderer())
+) {
     public companion object {
 
         /**

@@ -144,6 +144,7 @@ fun Module.forceConfigurations() {
                     Spine.reflect,
                     Spine.base,
                     Spine.time,
+                    Spine.client,
                     Spine.server,
                     Spine.testlib,
                     Spine.toolBase,

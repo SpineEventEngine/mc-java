@@ -32,7 +32,7 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.java.reference
-import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.mc.java.entity.assertHasMethod
 import io.spine.tools.mc.java.entity.innerClass
 import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
@@ -46,9 +46,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`AddFieldClass` should")
-internal class AddFieldClassSpec : EntityPluginTest() {
+internal class AddFieldClassSpec {
 
-    companion object {
+    companion object : EntityPluginTestSetup() {
 
         private const val ENTITY_STATE = "Department"
 

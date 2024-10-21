@@ -28,12 +28,10 @@
 
 package io.spine.tools.mc.annotation
 
-import io.spine.base.EventMessage
 import io.spine.core.External
 import io.spine.protodata.ast.File
 import io.spine.protodata.ast.Option
 import io.spine.protodata.ast.ProtobufSourceFile
-import io.spine.protodata.ast.event.FileEntered
 import io.spine.protodata.ast.event.FileExited
 import io.spine.protodata.ast.event.FileOptionDiscovered
 import io.spine.server.entity.alter
@@ -43,10 +41,11 @@ import io.spine.server.event.React
 import io.spine.server.procman.ProcessManager
 import io.spine.server.query.select
 import io.spine.tools.mc.annotation.ApiOption.Companion.findMatching
+import io.spine.tools.mc.annotation.event.FileOptionMatched
 import io.spine.tools.mc.annotation.event.fileOptionMatched
 
 /**
- * Transforms options defined in a Protobuf file into events that match
+ * Transforms options defined in a Protobuf file into [FileOptionMatched] events that match
  * a file-level option with an option for a corresponding Protobuf type such as
  * a message or a service defined in the file.
  *
@@ -54,24 +53,13 @@ import io.spine.tools.mc.annotation.event.fileOptionMatched
  */
 internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOptions.Builder>() {
 
-    /**
-     * Adds the API options from the file to the state of this process IFF their
-     * values are set to `true`.
-     */
-    @React
-    fun on(@External e: FileEntered): NoReaction {
-        alter {
-            file = e.file
-        }
-        return noReaction()
-    }
-
     @React
     fun on(@External e: FileOptionDiscovered): NoReaction {
         val isApiLevelOption = findMatching(e.option) != null
         val optionValue = e.option.value
         if (isApiLevelOption && optionValue.isTrue()) {
             alter {
+                file = e.file
                 addOption(e.option)
             }
         }
@@ -79,7 +67,7 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
     }
 
     @React
-    fun on(@External e: FileExited): Iterable<EventMessage> {
+    fun on(@External e: FileExited): Iterable<FileOptionMatched> {
         if (state.optionList.isEmpty()) {
             // There are no API-related options in this file.
             return emptyList()
@@ -87,13 +75,13 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
         return emitEvents()
     }
 
-    private fun emitEvents(): Iterable<EventMessage> {
+    private fun emitEvents(): Iterable<FileOptionMatched> {
         val currentFile = state().file
         val protoSrc = select<ProtobufSourceFile>().findById(currentFile)
         check(protoSrc != null) {
             "Unable to load type data of the Protobuf source file with path `$currentFile`."
         }
-        val events = mutableListOf<EventMessage>()
+        val events = mutableListOf<FileOptionMatched>()
 
         state.optionList.forEach { fileOption ->
             val apiOption = findMatching(fileOption)
@@ -106,7 +94,7 @@ internal class FileOptionsProcess : ProcessManager<File, FileOptions, FileOption
 }
 
 private fun ProtobufSourceFile.addEvents(
-    events: MutableList<EventMessage>,
+    events: MutableList<FileOptionMatched>,
     fileOption: Option,
     apiOption: ApiOption
 ) {
@@ -117,7 +105,7 @@ private fun ProtobufSourceFile.addEvents(
 }
 
 private fun ProtobufSourceFile.addMessageEvents(
-    events: MutableList<EventMessage>,
+    events: MutableList<FileOptionMatched>,
     fileOption: Option,
     typeOption: Option
 ) {
@@ -133,7 +121,7 @@ private fun ProtobufSourceFile.addMessageEvents(
 }
 
 private fun ProtobufSourceFile.addServiceEvents(
-    events: MutableList<EventMessage>,
+    events: MutableList<FileOptionMatched>,
     fileOption: Option,
     serviceOption: Option
 ) {

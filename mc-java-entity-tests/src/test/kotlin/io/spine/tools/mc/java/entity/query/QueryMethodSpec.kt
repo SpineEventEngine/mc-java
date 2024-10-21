@@ -31,7 +31,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_METHOD_NAME
-import io.spine.tools.mc.java.entity.EntityPluginTest
+import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.psi.java.method
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
@@ -43,9 +43,9 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`QueryMethod` should")
-internal class QueryMethodSpec : EntityPluginTest() {
+internal class QueryMethodSpec {
 
-    companion object {
+    companion object : EntityPluginTestSetup() {
 
         lateinit var psiFile: PsiJavaFile
 

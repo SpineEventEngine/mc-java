@@ -27,8 +27,6 @@
 package io.spine.tools.mc.annotation
 
 import io.spine.protodata.plugin.Plugin
-import io.spine.protodata.plugin.ViewRepository
-import io.spine.protodata.render.Renderer
 import io.spine.server.BoundedContextBuilder
 import io.spine.tools.mc.java.annotation.ClassPatternAnnotator
 import io.spine.tools.mc.java.annotation.EnumAnnotator
@@ -63,16 +61,8 @@ import io.spine.tools.mc.java.annotation.ServiceAnnotationRenderer
  *
  * @see ApiOption
  */
-public class ApiAnnotationsPlugin : Plugin {
-
-    override fun viewRepositories(): Set<ViewRepository<*, *, *>> = setOf(
-        MessageAnnotationsView.Repository(),
-        EnumAnnotationsView.Repository(),
-        ServiceAnnotationsView.Repository(),
-        MessageFieldAnnotationsView.Repository()
-    )
-
-    override fun renderers(): List<Renderer<*>> = listOf(
+public class ApiAnnotationsPlugin : Plugin(
+    renderers = listOf(
         MessageAnnotator(),
         EnumAnnotator(),
         ServiceAnnotationRenderer(),
@@ -80,8 +70,14 @@ public class ApiAnnotationsPlugin : Plugin {
         FieldAnnotator(),
         ClassPatternAnnotator(),
         MethodPatternAnnotator()
+    ),
+    viewRepositories = setOf(
+        MessageAnnotationsView.Repository(),
+        EnumAnnotationsView.Repository(),
+        ServiceAnnotationsView.Repository(),
+        MessageFieldAnnotationsView.Repository()
     )
-
+) {
     override fun extend(context: BoundedContextBuilder) {
         context.add(FileOptionsProcess::class.java)
         context.add(OuterClassAnnotationDiscovery.Repository())

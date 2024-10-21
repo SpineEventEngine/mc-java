@@ -37,23 +37,21 @@ import java.nio.file.Path
  * The abstract base for test suites of the Signal Plugin.
  */
 @Suppress("UtilityClassWithPublicConstructor")
-internal abstract class SignalPluginTest {
-
-    companion object : PluginTestSetup<SignalSettings>(
-        SignalPlugin(),
-        SignalPlugin.SETTINGS_ID
-    ) {
+internal abstract class SignalPluginTestSetup : PluginTestSetup<SignalSettings>(
+    SignalPlugin(),
+    SignalPlugin.SETTINGS_ID
+) {
+    companion object {
         const val FIELD_CLASS_SIGNATURE = "public static final class Field"
+    }
 
-        /**
-         * Creates an instance of [SignalSettings] as if it was created by McJava added to
-         * a Gradle project.
-         */
-        @JvmStatic
-        override fun createSettings(projectDir: Path): SignalSettings {
-            val codegenConfig = createCodegenConfig(projectDir)
-            return codegenConfig.toProto().signalSettings
-        }
+    /**
+     * Creates an instance of [SignalSettings] as if it was created by McJava added to
+     * a Gradle project.
+     */
+    override fun createSettings(projectDir: Path): SignalSettings {
+        val codegenConfig = createCodegenConfig(projectDir)
+        return codegenConfig.toProto().signalSettings
     }
 }
 

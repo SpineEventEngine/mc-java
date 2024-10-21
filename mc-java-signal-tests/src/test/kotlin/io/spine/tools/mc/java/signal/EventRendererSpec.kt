@@ -31,6 +31,7 @@ import io.kotest.matchers.string.shouldContain
 import io.spine.base.EventMessage
 import io.spine.string.count
 import io.spine.tools.java.reference
+import io.spine.tools.mc.java.signal.SignalPluginTestSetup.Companion.FIELD_CLASS_SIGNATURE
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
@@ -40,9 +41,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`EventRenderer` should")
-internal class EventRendererSpec : SignalPluginTest() {
+internal class EventRendererSpec {
 
-    companion object {
+    companion object : SignalPluginTestSetup() {
 
         lateinit var eventCode: String
 

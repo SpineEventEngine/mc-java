@@ -32,6 +32,7 @@ import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.string.count
 import io.spine.string.repeat
 import io.spine.tools.java.reference
+import io.spine.tools.mc.java.signal.SignalPluginTestSetup.Companion.FIELD_CLASS_SIGNATURE
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
@@ -41,9 +42,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`RejectionRenderer` should")
-internal class RejectionRendererSpec : SignalPluginTest() {
+internal class RejectionRendererSpec {
 
-    companion object {
+    companion object : SignalPluginTestSetup() {
 
         /**
          * The number of rejections declared in `given/signals/rejections.proto`.

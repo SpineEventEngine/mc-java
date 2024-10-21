@@ -33,6 +33,8 @@ import io.spine.protodata.ast.find
 import io.spine.protodata.plugin.Policy
 import io.spine.server.event.NoReaction
 import io.spine.server.event.React
+import io.spine.server.event.asA
+import io.spine.server.event.asB
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.marker.event.IsOptionDiscovered
 import io.spine.tools.mc.java.marker.event.isOptionDiscovered
@@ -48,14 +50,12 @@ internal class IsOptionDiscovery : Policy<TypeDiscovered>() {
     ): EitherOf2<IsOptionDiscovered, NoReaction> {
         val found = event.type.optionList.find<IsOption>()
         return if (found != null) {
-            EitherOf2.withA(
-                isOptionDiscovered {
-                    file = event.file
-                    type = event.type
-                }
-            )
+            isOptionDiscovered {
+                file = event.file
+                type = event.type
+            }.asA()
         } else {
-            EitherOf2.withB(noReaction())
+            noReaction().asB()
         }
     }
 }

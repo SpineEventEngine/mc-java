@@ -36,29 +36,45 @@ import io.spine.base.MessageFile.REJECTIONS
 import io.spine.code.proto.FileSet
 import io.spine.protodata.ast.File
 import io.spine.protodata.ast.matches
+import io.spine.protodata.backend.Pipeline
 import io.spine.protodata.protobuf.file
 import io.spine.protodata.protobuf.toMessageType
 import io.spine.protodata.render.TypeListActions
+import io.spine.protodata.testing.PipelineSetup
+import io.spine.testing.server.blackbox.BlackBox
 import java.nio.file.Path
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @DisplayName("`SignalDiscovery` should")
-internal class SignalDiscoverySpec : SignalPluginTest() {
+internal class SignalDiscoverySpec {
+
+    companion object : SignalPluginTestSetup() {
+
+        lateinit var setup: PipelineSetup
+        lateinit var pipeline: Pipeline
+        lateinit var blackbox: BlackBox
+
+        @BeforeAll
+        @JvmStatic
+        fun run(
+            @TempDir projectDir: Path,
+            @TempDir outputDir: Path,
+            @TempDir settingsDir: Path
+        ) {
+            val signalSettings = createSettings(projectDir)
+            setup = setup(outputDir, settingsDir, signalSettings)
+            val (p, b) = setup.createPipelineWithBlackBox()
+            pipeline = p
+            blackbox = b
+            pipeline()
+        }
+    }
 
     @Test
-    fun `discover all signals`(
-        @TempDir projectDir: Path,
-        @TempDir outputDir: Path,
-        @TempDir settingsDir: Path
-    ) {
-        val signalSettings = createSettings(projectDir)
-        val setup = setup(outputDir, settingsDir, signalSettings)
-        val (pipeline, blackbox) = setup.createPipelineWithBlackBox()
-
-        pipeline()
-
+    fun `discover all signals`() {
         /**
          * Asserts that the view state specified by [viewStateClass] contains all
          * the message types declared in this proto file.

@@ -34,6 +34,8 @@ import io.spine.protodata.plugin.Policy
 import io.spine.protodata.settings.loadSettings
 import io.spine.server.event.NoReaction
 import io.spine.server.event.React
+import io.spine.server.event.asA
+import io.spine.server.event.asB
 import io.spine.server.tuple.EitherOf2
 import io.spine.tools.mc.java.settings.Uuids
 import io.spine.tools.mc.java.uuid.event.UuidValueDiscovered
@@ -54,14 +56,12 @@ internal class UuidValueDiscovery : Policy<TypeDiscovered>(), UuidPluginComponen
     ): EitherOf2<UuidValueDiscovered, NoReaction> {
         val type = event.type
         return if (type.isUuidValue()) {
-            EitherOf2.withA(
-                uuidValueDiscovered {
-                    this@uuidValueDiscovered.type = type
-                    settings = this@UuidValueDiscovery.settings
-                }
-            )
+            uuidValueDiscovered {
+                this@uuidValueDiscovered.type = type
+                settings = this@UuidValueDiscovery.settings
+            }.asA()
         } else {
-            EitherOf2.withB(noReaction())
+            noReaction().asB()
         }
     }
 }

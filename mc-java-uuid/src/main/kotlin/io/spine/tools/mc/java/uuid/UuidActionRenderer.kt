@@ -30,6 +30,6 @@ import io.spine.protodata.java.render.TypeRenderer
 
 /**
  * Renders code by applying actions specified in
- * [settings][io.spine.tools.mc.java.settings.Uuids.getActionList].
+ * [settings][io.spine.tools.mc.java.settings.Uuids.getActions].
  */
 internal class UuidActionRenderer : TypeRenderer<UuidActions>()

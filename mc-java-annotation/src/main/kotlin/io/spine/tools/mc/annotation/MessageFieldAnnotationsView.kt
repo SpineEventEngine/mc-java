@@ -46,14 +46,15 @@ internal class MessageFieldAnnotationsView:
     @Subscribe
     fun on(@External e: FieldOptionDiscovered) = alter {
         file = e.file
-        val fieldOptions = fieldOptionsBuilderList.find { it.field == e.field }
+        val fieldName = e.subject.name
+        val fieldOptions = fieldOptionsBuilderList.find { it.field == fieldName }
         fieldOptions?.let {
             it.addOption(e.option)
             return@alter
         }
         addFieldOptions(
             fieldOptions {
-                field = e.field
+                field = fieldName
                 option.add(e.option)
             }
         )
@@ -69,7 +70,7 @@ internal class MessageFieldAnnotationsView:
             super.setupEventRouting(routing)
             routing.route<FieldOptionDiscovered> { e, _ ->
                 if (ApiOption.findMatching(e.option) != null) {
-                    setOf(e.type)
+                    setOf(e.subject.declaringType)
                 } else {
                     emptySet()
                 }
