@@ -31,7 +31,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.spine.server.ServerEnvironment
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.BUILD_METHOD_NAME
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_BUILDER_CLASS_NAME
@@ -65,7 +64,6 @@ internal class QueryBuilderClassSpec {
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
         ) {
-            ServerEnvironment.instance().reset()
             runPipeline(projectDir, outputDir, settingsDir)
             val sourceFile = file(Path(DEPARTMENT_JAVA))
             val psiFile = sourceFile.psi() as PsiJavaFile
