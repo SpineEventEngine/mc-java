@@ -62,6 +62,7 @@ buildscript {
                     spine.toolBase,
                     spine.server,
                     logging.lib,
+                    logging.middleware,
                     validation.runtime,
                     validation.javaBundle
                 )
