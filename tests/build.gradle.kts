@@ -81,6 +81,7 @@ buildscript {
                     spine.toolBase,
                     spine.pluginBase,
                     logging.lib,
+                    logging.libJvm,
                     logging.middleware,
                     io.spine.internal.dependency.Validation.runtime,
                 )
@@ -131,6 +132,7 @@ allprojects {
                     Spine.toolBase,
                     Spine.pluginBase,
                     Spine.Logging.lib,
+                    Spine.Logging.libJvm,
                     Spine.Logging.middleware,
                     Spine.psiJavaBundle,
                     ProtoData.api,

@@ -152,6 +152,7 @@ fun Module.forceConfigurations() {
                     Spine.psiJava,
                     Spine.psiJavaBundle,
                     Logging.lib,
+                    Logging.libJvm,
                     Logging.middleware,
                     Logging.grpcContext,
 

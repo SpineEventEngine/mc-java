@@ -60,7 +60,7 @@ object Spine {
          *
          * @see <a href="https://github.com/SpineEventEngine/logging">spine-logging</a>
          */
-        const val logging = "2.0.0-SNAPSHOT.237"
+        const val logging = "2.0.0-SNAPSHOT.240"
 
         /**
          * The version of [Spine.testlib].
@@ -157,6 +157,7 @@ object Spine {
     object Logging {
         const val version = ArtifactVersion.logging
         const val lib = "$group:spine-logging:$version"
+        const val libJvm = "$group:spine-logging-jvm:$version"
 
         const val log4j2Backend = "$group:spine-logging-log4j2-backend:$version"
         const val stdContext = "$group:spine-logging-std-context:$version"
