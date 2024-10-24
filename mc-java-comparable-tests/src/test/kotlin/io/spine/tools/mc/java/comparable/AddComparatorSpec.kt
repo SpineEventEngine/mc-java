@@ -34,6 +34,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
+import io.spine.testing.logging.mute.withLoggingMutedIn
 import io.spine.tools.mc.java.comparable.action.AddComparator
 import io.spine.tools.mc.java.comparable.given.Account
 import io.spine.tools.mc.java.comparable.given.BytesProhibited
@@ -77,7 +78,11 @@ internal class AddComparatorSpec {
             @TempDir projectDir: Path,
             @TempDir outputDir: Path,
             @TempDir settingsDir: Path
-        ) = runPipeline(projectDir, outputDir, settingsDir)
+        ) {
+            withLoggingMutedIn(AddComparator::class.java.packageName) {
+                runPipeline(projectDir, outputDir, settingsDir)
+            }
+        }
     }
 
     @Nested

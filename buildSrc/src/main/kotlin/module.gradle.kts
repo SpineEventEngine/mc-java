@@ -152,6 +152,9 @@ fun Module.forceConfigurations() {
                     Spine.psiJava,
                     Spine.psiJavaBundle,
                     Logging.lib,
+                    Logging.libJvm,
+                    Logging.middleware,
+                    Logging.grpcContext,
 
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
