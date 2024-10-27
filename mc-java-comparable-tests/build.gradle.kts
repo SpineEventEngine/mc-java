@@ -24,12 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.internal.dependency.spine.Spine
+
 plugins {
     prototap
     `test-module`
 }
 
 dependencies {
+    testImplementation(Spine.testlib)
     testImplementation(project(":mc-java-comparable"))
     testImplementation(testFixtures(project(":mc-java-base")))
 }

@@ -25,7 +25,9 @@
  */
 
 import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.Logging
+import io.spine.internal.dependency.spine.ToolBase
 
 plugins {
     `java-test-fixtures`
@@ -34,9 +36,9 @@ plugins {
 
 dependencies {
     implementation(project(":mc-java-base"))
-    implementation(Spine.Logging.lib)
+    implementation(Logging.lib)
 
-    testFixturesImplementation(Spine.toolBase)
+    testFixturesImplementation(ToolBase.lib)
     testFixturesImplementation(Spine.testlib)
 
     val guavaGroup = "com.google.guava"

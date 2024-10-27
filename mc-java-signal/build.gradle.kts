@@ -24,8 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.spine.CoreJava
+import io.spine.internal.dependency.spine.Logging
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
 
 plugins {
     id("io.spine.mc-java")
@@ -33,9 +36,9 @@ plugins {
 
 dependencies {
     arrayOf(
-        Spine.Logging.lib,
-        Spine.server,
-        Spine.psiJavaBundle,
+        Logging.lib,
+        CoreJava.server,
+        ToolBase.psiJava,
         project(":mc-java-base")
     ).forEach {
         implementation(it)
@@ -44,7 +47,7 @@ dependencies {
     arrayOf(
         gradleTestKit(),
         Spine.testlib,
-        Spine.pluginTestlib,
+        ToolBase.pluginTestlib,
         ProtoData.testlib
     ).forEach {
         testImplementation(it)

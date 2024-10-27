@@ -24,31 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.dependency
+package io.spine.internal.dependency.spine
 
 /**
- * Dependencies on Spine Validation SDK.
+ * Artifacts of the `tool-base` module.
  *
- * See [`SpineEventEngine/validation`](https://github.com/SpineEventEngine/validation/).
+ * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
  */
-@Suppress("unused", "ConstPropertyName")
-object Validation {
-    /**
-     * The version of the Validation library artifacts.
-     */
-    const val version = "2.0.0-SNAPSHOT.161"
+@Suppress("ConstPropertyName", "unused")
+object ToolBase {
+    const val group = Spine.toolsGroup
+    const val version = "2.0.0-SNAPSHOT.233"
 
-    const val group = "io.spine.validation"
-    private const val prefix = "spine-validation"
+    const val lib = "$group:spine-tool-base:$version"
+    const val pluginBase = "$group:spine-plugin-base:$version"
+    const val pluginTestlib = "$group:spine-plugin-testlib:$version"
 
-    const val runtime = "$group:$prefix-java-runtime:$version"
-    const val java = "$group:$prefix-java:$version"
+    const val intellijPlatformJava = "$group:intellij-platform-java:$version"
 
-    /** Obtains the artifact for the `java-bundle` artifact of the given version. */
-    fun javaBundle(version: String) = "$group:$prefix-java-bundle:$version"
-
-    val javaBundle = javaBundle(version)
-
-    const val model = "$group:$prefix-model:$version"
-    const val config = "$group:$prefix-configuration:$version"
+    const val psiJava = "$group:spine-psi-java:$version"
 }

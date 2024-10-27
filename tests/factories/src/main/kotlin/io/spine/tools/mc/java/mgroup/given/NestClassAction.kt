@@ -62,7 +62,7 @@ class NestClassAction(type: MessageType, file: SourceFile<Java>, context: Codege
     }
 
     private val method: PsiMethod by lazy {
-        val messageClassName = type.javaClassName(typeSystem!!)
+        val messageClassName = type.javaClassName(typeSystem)
         @Language("JAVA") @Suppress("EmptyClass")
         val newMethod = elementFactory.createMethodFromText("""
             public static Class messageClass() {

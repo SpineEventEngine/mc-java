@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -25,6 +25,7 @@
  */
 
 import io.spine.internal.gradle.standardToSpineSdk
+import io.spine.internal.dependency.spine.Spine
 
 buildscript {
 
@@ -34,7 +35,7 @@ buildscript {
 
     standardSpineSdkRepositories()
 
-    val protoData = io.spine.internal.dependency.ProtoData
+    val protoData = io.spine.internal.dependency.spine.ProtoData
     val mcJavaVersion: String by extra
     dependencies {
         io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
@@ -72,6 +73,6 @@ subprojects {
     repositories.standardToSpineSdk()
 
     dependencies {
-        implementation(io.spine.internal.dependency.Spine.base)
+        implementation(Spine.base)
     }
 }

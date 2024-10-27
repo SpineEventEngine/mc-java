@@ -26,7 +26,8 @@
 
 import io.spine.internal.dependency.AutoService
 import io.spine.internal.dependency.ErrorProne
-import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
 
 dependencies {
     annotationProcessor(AutoService.processor)
@@ -38,7 +39,7 @@ dependencies {
     implementation(ErrorProne.GradlePlugin.lib)
 
     implementation(Spine.base)
-    implementation(Spine.pluginBase)
+    implementation(ToolBase.pluginBase)
     implementation(Spine.modelCompiler)
 
     testImplementation(ErrorProne.testHelpers)

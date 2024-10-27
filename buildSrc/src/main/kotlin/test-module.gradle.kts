@@ -24,8 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.Validation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.`java-test-fixtures`
 

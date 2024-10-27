@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -25,7 +25,7 @@
  */
 
 import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.spine.Spine
 import io.spine.internal.gradle.standardToSpineSdk
 import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.all
@@ -48,7 +48,7 @@ buildscript {
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
+        classpath(io.spine.internal.dependency.spine.McJava.pluginLib(mcJavaVersion))
     }
 }
 
