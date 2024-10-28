@@ -24,35 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.internal.dependency
+package io.spine.internal.dependency.spine
 
 /**
- * Dependencies on Spine Model Compiler for Java.
+ * Dependencies on ProtoTap plugins.
  *
- * See [mc-java](https://github.com/SpineEventEngine/mc-java).
+ * See [`SpineEventEngine/ProtoTap`](https://github.com/SpineEventEngine/ProtoTap/).
  */
 @Suppress(
-    "MemberVisibilityCanBePrivate" /* `pluginLib()` is used by subprojects. */,
-    "ConstPropertyName"
+    "unused" /* Some subprojects do not use ProtoData directly. */,
+    "ConstPropertyName" /* We use custom convention for artifact properties. */,
+    "MemberVisibilityCanBePrivate" /* The properties are used directly by other subprojects. */,
 )
-object McJava {
-    const val group = Spine.toolsGroup
-
-    /** The version used to in the build classpath. */
-    const val dogfoodingVersion = "2.0.0-SNAPSHOT.243"
-
-    /** The version to be used for integration tests. */
-    const val version = "2.0.0-SNAPSHOT.243"
-
-    const val pluginId = "io.spine.mc-java"
-
-    val pluginLib = pluginLib(dogfoodingVersion)
-    fun pluginLib(version: String): String = "$group:spine-mc-java-plugins:$version:all"
-
-    /** The artifact reference for forcing in configurations. */
-    @Suppress("unused")
-    const val pluginsArtifact: String = "$group:spine-mc-java-plugins:$version"
-
-    val base = base(version)
-    fun base(version: String): String = "$group:spine-mc-java-base:$version"
+object ProtoTap {
+    const val group = "io.spine.tools"
+    const val version = "0.8.7"
+    const val gradlePluginId = "io.spine.prototap"
+    const val api = "$group:prototap-api:$version"
+    const val gradlePlugin = "$group:prototap-gradle-plugin:$version"
+    const val protocPlugin = "$group:prototap-protoc-plugin:$version"
 }

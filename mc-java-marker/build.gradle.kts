@@ -24,8 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
+import io.spine.internal.dependency.spine.Logging
 
 plugins {
     id("io.spine.mc-java")
@@ -34,9 +36,9 @@ plugins {
 dependencies {
     arrayOf(
         Spine.reflect,
-        Spine.Logging.lib,
+        Logging.lib,
         Spine.base,
-        Spine.psiJavaBundle,
+        ToolBase.psiJava,
         project(":mc-java-base")
     ).forEach {
         implementation(it)

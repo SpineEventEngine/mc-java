@@ -26,8 +26,9 @@
 
 import io.spine.internal.dependency.JavaPoet
 import io.spine.internal.dependency.JavaX
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
+import io.spine.internal.dependency.spine.Validation
 
 // IMPORTANT: This module is deprecated and will be removed in the future.
 // It is no longer used in the production code and is kept for historical purposes
@@ -40,7 +41,7 @@ import io.spine.internal.dependency.Validation
 dependencies {
     api(JavaPoet.lib)
     api(Validation.runtime)
-    implementation(Spine.toolBase)
+    implementation(ToolBase.lib)
     implementation(JavaX.annotations)
 
     implementation(project(":mc-java-base"))
@@ -48,6 +49,6 @@ dependencies {
     testImplementation(Spine.testlib)
 
     testImplementation(gradleTestKit())
-    testImplementation(Spine.pluginBase)
-    testImplementation(Spine.pluginTestlib)
+    testImplementation(ToolBase.pluginBase)
+    testImplementation(ToolBase.pluginTestlib)
 }

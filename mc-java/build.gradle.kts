@@ -25,10 +25,10 @@
  */
 
 import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.Validation
 import io.spine.internal.gradle.WriteVersions
 
 dependencies {

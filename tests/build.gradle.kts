@@ -31,10 +31,12 @@ import io.spine.internal.dependency.Grpc
 import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.KotlinX
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
 import io.spine.internal.dependency.Truth
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Logging
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
+import io.spine.internal.dependency.spine.Validation
 import io.spine.internal.gradle.javac.configureErrorProne
 import io.spine.internal.gradle.javac.configureJavac
 import io.spine.internal.gradle.kotlin.setFreeCompilerArgs
@@ -52,7 +54,7 @@ buildscript {
     standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
-
+    val protoData = io.spine.internal.dependency.spine.ProtoData
     dependencies {
         classpath(io.spine.internal.dependency.Guava.lib)
         classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
@@ -61,29 +63,30 @@ buildscript {
         classpath(io.spine.internal.dependency.ErrorProne.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath(io.spine.internal.dependency.ProtoData.pluginLib)
-        classpath(io.spine.internal.dependency.Spine.McJava.pluginLib(mcJavaVersion))
+        classpath(protoData.pluginLib)
+        classpath(io.spine.internal.dependency.spine.McJava.pluginLib(mcJavaVersion))
     }
 
     with(configurations) {
         doForceVersions(this)
-        val spine = io.spine.internal.dependency.Spine
-        val logging = io.spine.internal.dependency.Spine.Logging
+        val spine = io.spine.internal.dependency.spine.Spine
+        val toolBase = io.spine.internal.dependency.spine.ToolBase
+        val logging = io.spine.internal.dependency.spine.Logging
         val grpc = io.spine.internal.dependency.Grpc
         all {
             resolutionStrategy {
                 force(
                     grpc.api,
-                    "io.spine:protodata:${io.spine.internal.dependency.ProtoData.version}",
+                    "io.spine:protodata:${protoData.version}",
                     spine.reflect,
                     spine.base,
                     spine.time,
-                    spine.toolBase,
-                    spine.pluginBase,
+                    toolBase.lib,
+                    toolBase.pluginBase,
                     logging.lib,
                     logging.libJvm,
                     logging.middleware,
-                    io.spine.internal.dependency.Validation.runtime,
+                    io.spine.internal.dependency.spine.Validation.runtime,
                 )
             }
         }
@@ -131,10 +134,10 @@ allprojects {
                     Spine.testlib,
                     Spine.toolBase,
                     Spine.pluginBase,
-                    Spine.Logging.lib,
-                    Spine.Logging.libJvm,
-                    Spine.Logging.middleware,
-                    Spine.psiJavaBundle,
+                    Logging.lib,
+                    Logging.libJvm,
+                    Logging.middleware,
+                    ToolBase.psiJava,
                     ProtoData.api,
                     Validation.config,
                     Validation.runtime,
@@ -178,7 +181,7 @@ subprojects {
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
         implementation(Spine.base)
-        implementation(Spine.Logging.lib)
+        implementation(Logging.lib)
         testImplementation(Spine.testlib)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)

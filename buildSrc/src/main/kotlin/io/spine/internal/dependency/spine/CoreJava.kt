@@ -24,23 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    id("io.spine.mc-java")
-}
+package io.spine.internal.dependency.spine
 
-tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-// Turn off validation codegen during the transition to new ProtoData API.
-modelCompiler {
-    java {
-        codegen {
-            validation.enabled.set(false)
-        }
-    }
-}
-
-// Add Validation Java Runtime because the generated code reference
-// the `ValidatingBuilder` interface even if validation codegen is turned off.
-dependencies {
-    implementation(io.spine.internal.dependency.spine.Validation.runtime)
+/**
+ * Dependencies on `core-java` modules.
+ *
+ * See [`SpineEventEngine/core-java`](https://github.com/SpineEventEngine/core-java/).
+ */
+@Suppress("ConstPropertyName", "unused")
+object CoreJava {
+    const val group = Spine.group
+    const val version = "2.0.0-SNAPSHOT.177"
+    const val core = "$group:spine-core:$version"
+    const val client = "$group:spine-client:$version"
+    const val server = "$group:spine-server:$version"
+    const val testUtilServer = "${Spine.toolsGroup}:spine-testutil-server:$version"
 }

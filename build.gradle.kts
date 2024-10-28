@@ -27,10 +27,10 @@
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
 import io.spine.internal.dependency.Dokka
-import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.CoreJava
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Validation
 import io.spine.internal.gradle.RunBuild
 import io.spine.internal.gradle.RunGradle
 import io.spine.internal.gradle.publish.PublishingRepos
@@ -46,9 +46,11 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.internal.dependency.Spine
-    val validation = io.spine.internal.dependency.Validation
-    val logging = io.spine.internal.dependency.Spine.Logging
+    val spine = io.spine.internal.dependency.spine.Spine
+    val toolBase = io.spine.internal.dependency.spine.ToolBase
+    val coreJava = io.spine.internal.dependency.spine.CoreJava
+    val validation = io.spine.internal.dependency.spine.Validation
+    val logging = io.spine.internal.dependency.spine.Logging
     doForceVersions(configurations)
     configurations {
         all {
@@ -59,8 +61,8 @@ buildscript {
                     io.spine.internal.dependency.Grpc.api,
                     spine.baseForBuildScript,
                     spine.reflect,
-                    spine.toolBase,
-                    spine.server,
+                    toolBase.lib,
+                    coreJava.server,
                     logging.lib,
                     logging.libJvm,
                     logging.middleware,
@@ -186,7 +188,7 @@ val mcJavaVersion: String by extra
 val prepareBuildPerformanceSettings by tasks.registering(Exec::class) {
     environment(
         "MC_JAVA_VERSION" to mcJavaVersion,
-        "CORE_VERSION" to Spine.ArtifactVersion.core,
+        "CORE_VERSION" to CoreJava.version,
         "PROTO_DATA_VERSION" to ProtoData.version,
         "VALIDATION_VERSION" to Validation.version
     )

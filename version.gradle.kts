@@ -29,7 +29,7 @@
  *
  * Do not rename this property, as it is also used in the integration tests via its name.
  *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.Spine].
+ * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.247")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.248")
 val versionToPublish by extra(mcJavaVersion)

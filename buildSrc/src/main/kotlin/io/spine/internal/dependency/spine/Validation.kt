@@ -24,23 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    id("io.spine.mc-java")
-}
+package io.spine.internal.dependency.spine
 
-tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
+/**
+ * Dependencies on Spine Validation SDK.
+ *
+ * See [`SpineEventEngine/validation`](https://github.com/SpineEventEngine/validation/).
+ */
+@Suppress("unused", "ConstPropertyName")
+object Validation {
+    /**
+     * The version of the Validation library artifacts.
+     */
+    const val version = "2.0.0-SNAPSHOT.163"
 
-// Turn off validation codegen during the transition to new ProtoData API.
-modelCompiler {
-    java {
-        codegen {
-            validation.enabled.set(false)
-        }
-    }
-}
+    const val group = "io.spine.validation"
+    private const val prefix = "spine-validation"
 
-// Add Validation Java Runtime because the generated code reference
-// the `ValidatingBuilder` interface even if validation codegen is turned off.
-dependencies {
-    implementation(io.spine.internal.dependency.spine.Validation.runtime)
+    const val runtime = "$group:$prefix-java-runtime:$version"
+    const val java = "$group:$prefix-java:$version"
+
+    /** Obtains the artifact for the `java-bundle` artifact of the given version. */
+    fun javaBundle(version: String) = "$group:$prefix-java-bundle:$version"
+
+    val javaBundle = javaBundle(version)
+
+    const val model = "$group:$prefix-model:$version"
+    const val config = "$group:$prefix-configuration:$version"
 }

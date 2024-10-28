@@ -24,9 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.ProtoData
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.Logging
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.ToolBase
+import io.spine.internal.dependency.spine.Validation
 
 plugins {
     id("io.spine.mc-java")
@@ -38,11 +40,11 @@ dependencies {
     compileOnlyApi(gradleKotlinDsl())
 
     val apiDeps = arrayOf(
-        Spine.Logging.lib,
+        Logging.lib,
         Spine.modelCompiler,
         ProtoData.java,
         Validation.config,
-        Spine.pluginBase
+        ToolBase.pluginBase
     )
     apiDeps.forEach {
         api(it) {
@@ -63,7 +65,7 @@ dependencies {
 
     testImplementation(Spine.testlib)
     testImplementation(gradleTestKit())
-    testImplementation(Spine.pluginTestlib)
+    testImplementation(ToolBase.pluginTestlib)
 }
 
 forceSpineBase()

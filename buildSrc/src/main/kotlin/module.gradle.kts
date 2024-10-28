@@ -35,12 +35,13 @@ import io.spine.internal.dependency.JUnit
 import io.spine.internal.dependency.Jackson
 import io.spine.internal.dependency.Kotlin
 import io.spine.internal.dependency.KotlinX
-import io.spine.internal.dependency.ProtoData
 import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Spine.Logging
 import io.spine.internal.dependency.Truth
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.ArtifactVersion
+import io.spine.internal.dependency.spine.Logging
+import io.spine.internal.dependency.spine.ProtoData
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.Validation
 import io.spine.internal.gradle.VersionWriter
 import io.spine.internal.gradle.checkstyle.CheckStyleConfig
 import io.spine.internal.gradle.javac.configureErrorProne
@@ -206,7 +207,7 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
         outputs.file(propertiesFile)
 
         val versions = Properties().apply {
-            setProperty("baseVersion", Spine.ArtifactVersion.base)
+            setProperty("baseVersion", ArtifactVersion.base)
             setProperty("protobufVersion", Protobuf.version)
             setProperty("gRPCVersion", Grpc.version)
         }

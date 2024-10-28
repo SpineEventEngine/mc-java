@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -25,8 +25,8 @@
  */
 
 import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.Spine
-import io.spine.internal.dependency.Validation
+import io.spine.internal.dependency.spine.Spine
+import io.spine.internal.dependency.spine.Validation
 import org.gradle.api.tasks.JavaExec
 
 plugins {
@@ -48,7 +48,7 @@ modelCompiler {
 dependencies {
     // Add Validation Java Runtime because the generated code reference
     // the `ValidatingBuilder` interface even if validation codegen is turned off.
-    implementation(io.spine.internal.dependency.Validation.runtime)
+    implementation(Validation.runtime)
 
     Protobuf.libs.forEach {
         testFixturesImplementation(it)

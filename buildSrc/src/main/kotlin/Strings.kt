@@ -24,23 +24,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    id("io.spine.mc-java")
+import org.gradle.configurationcache.extensions.capitalized
+
+/**
+ * This file provides extensions to `String` and `CharSequence` that wrap
+ * analogues from standard Kotlin runtime.
+ *
+ * It helps in switching between versions of Gradle which have different versions of
+ * the Kotlin runtime. Please see the bodies of the extension functions for details on
+ * switching the implementations depending on the Kotlin version at hand.
+ *
+ * Once we migrate to newer Gradle, these wrappers should be inlined with
+ * the subsequent removal of this source file.
+ */
+@Suppress("unused")
+private const val ABOUT = ""
+
+/**
+ * Makes the first character come in the title case.
+ */
+fun String.titleCaseFirstChar(): String {
+    // return replaceFirstChar { it.titlecase() }
+    // OR for earlier Kotlin versions:
+    //   1. add import of `org.gradle.configurationcache.extensions.capitalized`
+    //   2. call `capitalized()` instead of `replaceFirstChar` above.
+    return capitalized()
 }
 
-tasks.processResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-// Turn off validation codegen during the transition to new ProtoData API.
-modelCompiler {
-    java {
-        codegen {
-            validation.enabled.set(false)
-        }
-    }
-}
-
-// Add Validation Java Runtime because the generated code reference
-// the `ValidatingBuilder` interface even if validation codegen is turned off.
-dependencies {
-    implementation(io.spine.internal.dependency.spine.Validation.runtime)
+/**
+ * Converts this string to lowercase.
+ */
+fun String.lowercased(): String {
+    //    return lowercase()
+    // OR for earlier Kotlin versions call:
+    return toLowerCase()
 }
