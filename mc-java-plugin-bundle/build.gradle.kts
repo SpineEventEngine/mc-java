@@ -25,8 +25,8 @@
  */
 
 import groovy.util.Node
-import io.spine.internal.dependency.spine.ProtoData
-import io.spine.internal.gradle.publish.SpinePublishing
+import io.spine.dependency.local.ProtoData
+import io.spine.gradle.publish.SpinePublishing
 
 plugins {
     `maven-publish`

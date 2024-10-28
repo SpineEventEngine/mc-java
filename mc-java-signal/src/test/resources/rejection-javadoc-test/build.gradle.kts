@@ -24,11 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.gradle.api.file.SourceDirectorySet
-import java.net.URI
-
-import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.internal.dependency.spine.Spine
+import io.spine.dependency.local.Spine
+import io.spine.gradle.standardToSpineSdk
 
 // Common build file for the tests with same configuration
 
@@ -42,10 +39,10 @@ buildscript {
 
     val mcJavaVersion: String by extra
     dependencies {
-        io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
+        io.spine.dependency.lib.Protobuf.libs.forEach { classpath(it) }
 
         // Exclude `guava:18.0` as a transitive dependency by Protobuf Gradle plugin.
-        classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
+        classpath(io.spine.dependency.lib.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
