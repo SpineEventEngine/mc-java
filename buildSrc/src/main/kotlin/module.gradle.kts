@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module_gradle.Module
 import com.google.common.io.Files
 import io.spine.dependency.build.CheckerFramework
 import io.spine.dependency.build.ErrorProne
