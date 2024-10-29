@@ -26,31 +26,32 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import io.spine.internal.dependency.Dokka
-import io.spine.internal.dependency.Protobuf
-import io.spine.internal.dependency.spine.CoreJava
-import io.spine.internal.dependency.spine.ProtoData
-import io.spine.internal.dependency.spine.Validation
-import io.spine.internal.gradle.RunBuild
-import io.spine.internal.gradle.RunGradle
-import io.spine.internal.gradle.publish.PublishingRepos
-import io.spine.internal.gradle.publish.SpinePublishing
-import io.spine.internal.gradle.publish.spinePublishing
-import io.spine.internal.gradle.report.coverage.JacocoConfig
-import io.spine.internal.gradle.report.license.LicenseReporter
-import io.spine.internal.gradle.report.pom.PomGenerator
-import io.spine.internal.gradle.standardToSpineSdk
+import Build_gradle.Module
+import io.spine.dependency.build.Dokka
+import io.spine.dependency.lib.Protobuf
+import io.spine.dependency.local.CoreJava
+import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Validation
+import io.spine.gradle.RunBuild
+import io.spine.gradle.RunGradle
+import io.spine.gradle.publish.PublishingRepos
+import io.spine.gradle.publish.SpinePublishing
+import io.spine.gradle.publish.spinePublishing
+import io.spine.gradle.report.coverage.JacocoConfig
+import io.spine.gradle.report.license.LicenseReporter
+import io.spine.gradle.report.pom.PomGenerator
+import io.spine.gradle.standardToSpineSdk
 import java.time.Duration
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.internal.dependency.spine.Spine
-    val toolBase = io.spine.internal.dependency.spine.ToolBase
-    val coreJava = io.spine.internal.dependency.spine.CoreJava
-    val validation = io.spine.internal.dependency.spine.Validation
-    val logging = io.spine.internal.dependency.spine.Logging
+    val spine = io.spine.dependency.local.Spine
+    val toolBase = io.spine.dependency.local.ToolBase
+    val coreJava = io.spine.dependency.local.CoreJava
+    val validation = io.spine.dependency.local.Validation
+    val logging = io.spine.dependency.local.Logging
     doForceVersions(configurations)
     configurations {
         all {
@@ -58,7 +59,7 @@ buildscript {
 
             resolutionStrategy {
                 force(
-                    io.spine.internal.dependency.Grpc.api,
+                    io.spine.dependency.lib.Grpc.api,
                     spine.baseForBuildScript,
                     spine.reflect,
                     toolBase.lib,

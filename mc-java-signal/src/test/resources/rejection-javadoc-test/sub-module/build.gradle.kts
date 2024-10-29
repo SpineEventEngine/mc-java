@@ -24,8 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.internal.dependency.spine.Validation
+import io.spine.dependency.local.Validation
+import io.spine.gradle.standardToSpineSdk
 
 plugins {
     // To allow `modelCompiler` syntax below.

@@ -26,23 +26,23 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import io.spine.internal.dependency.ErrorProne
-import io.spine.internal.dependency.Grpc
-import io.spine.internal.dependency.JUnit
-import io.spine.internal.dependency.Kotlin
-import io.spine.internal.dependency.KotlinX
-import io.spine.internal.dependency.Truth
-import io.spine.internal.dependency.spine.ProtoData
-import io.spine.internal.dependency.spine.Logging
-import io.spine.internal.dependency.spine.Spine
-import io.spine.internal.dependency.spine.ToolBase
-import io.spine.internal.dependency.spine.Validation
-import io.spine.internal.gradle.javac.configureErrorProne
-import io.spine.internal.gradle.javac.configureJavac
-import io.spine.internal.gradle.kotlin.setFreeCompilerArgs
-import io.spine.internal.gradle.publish.PublishingRepos.gitHub
-import io.spine.internal.gradle.standardToSpineSdk
-import io.spine.internal.gradle.testing.configureLogging
+import io.spine.dependency.build.ErrorProne
+import io.spine.dependency.lib.Grpc
+import io.spine.dependency.lib.Kotlin
+import io.spine.dependency.lib.KotlinX
+import io.spine.dependency.local.Logging
+import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Spine
+import io.spine.dependency.local.ToolBase
+import io.spine.dependency.local.Validation
+import io.spine.dependency.test.JUnit
+import io.spine.dependency.test.Truth
+import io.spine.gradle.javac.configureErrorProne
+import io.spine.gradle.javac.configureJavac
+import io.spine.gradle.kotlin.setFreeCompilerArgs
+import io.spine.gradle.publish.PublishingRepos.gitHub
+import io.spine.gradle.standardToSpineSdk
+import io.spine.gradle.testing.configureLogging
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -54,25 +54,25 @@ buildscript {
     standardSpineSdkRepositories()
 
     val mcJavaVersion: String by extra
-    val protoData = io.spine.internal.dependency.spine.ProtoData
+    val protoData = io.spine.dependency.local.ProtoData
     dependencies {
-        classpath(io.spine.internal.dependency.Guava.lib)
-        classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
+        classpath(io.spine.dependency.lib.Guava.lib)
+        classpath(io.spine.dependency.lib.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
-        classpath(io.spine.internal.dependency.ErrorProne.GradlePlugin.lib) {
+        classpath(io.spine.dependency.build.ErrorProne.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
         classpath(protoData.pluginLib)
-        classpath(io.spine.internal.dependency.spine.McJava.pluginLib(mcJavaVersion))
+        classpath(io.spine.dependency.local.McJava.pluginLib(mcJavaVersion))
     }
 
     with(configurations) {
         doForceVersions(this)
-        val spine = io.spine.internal.dependency.spine.Spine
-        val toolBase = io.spine.internal.dependency.spine.ToolBase
-        val logging = io.spine.internal.dependency.spine.Logging
-        val grpc = io.spine.internal.dependency.Grpc
+        val spine = io.spine.dependency.local.Spine
+        val toolBase = io.spine.dependency.local.ToolBase
+        val logging = io.spine.dependency.local.Logging
+        val grpc = io.spine.dependency.lib.Grpc
         all {
             resolutionStrategy {
                 force(
@@ -86,7 +86,7 @@ buildscript {
                     logging.lib,
                     logging.libJvm,
                     logging.middleware,
-                    io.spine.internal.dependency.spine.Validation.runtime,
+                    io.spine.dependency.local.Validation.runtime,
                 )
             }
         }

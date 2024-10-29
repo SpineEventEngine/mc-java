@@ -24,11 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.JavaPoet
-import io.spine.internal.dependency.JavaX
-import io.spine.internal.dependency.spine.Spine
-import io.spine.internal.dependency.spine.ToolBase
-import io.spine.internal.dependency.spine.Validation
+import io.spine.dependency.lib.JavaPoet
+import io.spine.dependency.lib.JavaX
+import io.spine.dependency.local.Spine
+import io.spine.dependency.local.ToolBase
+import io.spine.dependency.local.Validation
 
 // IMPORTANT: This module is deprecated and will be removed in the future.
 // It is no longer used in the production code and is kept for historical purposes

@@ -42,5 +42,5 @@ modelCompiler {
 // Add Validation Java Runtime because the generated code reference
 // the `ValidatingBuilder` interface even if validation codegen is turned off.
 dependencies {
-    implementation(io.spine.internal.dependency.spine.Validation.runtime)
+    implementation(io.spine.dependency.local.Validation.runtime)
 }

@@ -24,10 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Roaster
-import io.spine.internal.dependency.spine.Spine
-import io.spine.internal.dependency.spine.Logging
-import io.spine.internal.dependency.spine.ToolBase
+import io.spine.dependency.lib.Roaster
+import io.spine.dependency.local.Logging
+import io.spine.dependency.local.Spine
+import io.spine.dependency.local.ToolBase
 
 plugins {
     `java-test-fixtures`

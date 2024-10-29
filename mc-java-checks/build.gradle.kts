@@ -24,10 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.AutoService
-import io.spine.internal.dependency.ErrorProne
-import io.spine.internal.dependency.spine.Spine
-import io.spine.internal.dependency.spine.ToolBase
+import io.spine.dependency.build.ErrorProne
+import io.spine.dependency.lib.AutoService
+import io.spine.dependency.local.Spine
+import io.spine.dependency.local.ToolBase
 
 dependencies {
     annotationProcessor(AutoService.processor)

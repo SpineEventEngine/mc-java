@@ -1,11 +1,11 @@
 /*
- * Copyright 2022, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,15 +24,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.internal.dependency.Spine
-import io.spine.internal.gradle.applyStandardWithGitHub
-import java.io.File
-import org.gradle.api.file.ConfigurableFileCollection
+import io.spine.dependency.local.Spine
+import io.spine.gradle.applyStandardWithGitHub
 import org.gradle.api.file.SourceDirectorySet
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 
 // Common build file for the tests with same configuration
 
@@ -42,17 +36,17 @@ buildscript {
     apply(from = "$rootDir/test-env.gradle")
     apply(from = "${extra["enclosingRootDir"]}/version.gradle.kts")
 
-    io.spine.internal.gradle.applyWithStandard(this, rootProject,
+    io.spine.gradle.applyWithStandard(this, rootProject,
         "base", "time", "change", "base-types", "core-java",
         "tool-base", "ProtoData", "validation",
     )
 
     val mcJavaVersion: String by extra
     dependencies {
-        io.spine.internal.dependency.Protobuf.libs.forEach { classpath(it) }
+        io.spine.dependency.lib.Protobuf.libs.forEach { classpath(it) }
 
         // Exclude `guava:18.0` as a transitive dependency by Protobuf Gradle plugin.
-        classpath(io.spine.internal.dependency.Protobuf.GradlePlugin.lib) {
+        classpath(io.spine.dependency.lib.Protobuf.GradlePlugin.lib) {
             exclude(group = "com.google.guava")
         }
         classpath("io.spine.tools:spine-mc-java-plugins:${mcJavaVersion}:all")
