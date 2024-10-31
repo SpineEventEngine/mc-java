@@ -29,7 +29,7 @@ package io.spine.tools.mc.java.field
 import com.google.protobuf.StringValue
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
-import io.spine.protodata.ast.Cardinality
+import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.MessageTypeDependencies
 import io.spine.protodata.context.CodegenContext
@@ -97,7 +97,7 @@ public open class AddFieldClass(
     }
 
     private fun PsiClass.addFieldClasses() {
-        val deps = MessageTypeDependencies(type, Cardinality.SINGLE, typeSystem).asSet()
+        val deps = MessageTypeDependencies(type, CARDINALITY_SINGLE, typeSystem).asSet()
         deps.forEach {
             val fld = MessageTypedField(it, fieldSupertype, typeSystem)
             val messageTypeField = fld.createClass()
