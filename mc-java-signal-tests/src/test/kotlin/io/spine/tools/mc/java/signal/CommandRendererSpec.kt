@@ -60,7 +60,6 @@ internal class CommandRendererSpec {
     }
 
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
     fun `add 'CommandMessage' interface`() {
         commandCode shouldContain "${CommandMessage::class.java.reference},"
     }

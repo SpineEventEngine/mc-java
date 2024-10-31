@@ -61,7 +61,6 @@ internal class EventRendererSpec {
     }
 
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
     fun `add 'EventMessage' interface`() {
         eventCode shouldContain "${EventMessage::class.java.reference},"
     }
