@@ -28,7 +28,7 @@ package io.spine.tools.mc.java.field
 
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.javadoc.PsiDocComment
-import io.spine.protodata.ast.Cardinality
+import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.isMessage
@@ -110,7 +110,7 @@ internal abstract class FieldAccessor(
     }
 
     private val shouldExposeNestedFields: Boolean =
-        field.isMessage && field.type.cardinality == Cardinality.CARDINALITY_SINGLE
+        field.isMessage && field.type.cardinality == CARDINALITY_SINGLE
 
     private val simpleFieldType: String by lazy {
         fieldSupertype.canonical
