@@ -48,6 +48,7 @@
 
 # Gradle interim configs
 **/.gradle/**
+!**/src/**/build/**
 
 # Generated source code
 **/generated/**

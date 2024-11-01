@@ -42,8 +42,9 @@ import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.PrimitiveType
 import io.spine.protodata.ast.Type
+import io.spine.protodata.ast.isList
 import io.spine.protodata.ast.isMap
-import io.spine.protodata.ast.isRepeated
+import io.spine.protodata.ast.toType
 import io.spine.protodata.java.javaCase
 import io.spine.protodata.java.javaType
 import io.spine.protodata.java.primarySetterName
@@ -159,9 +160,9 @@ internal class RThrowableBuilderCode internal constructor(
 
     private fun Field.poetTypeName(): PoTypeName {
         return when {
-            isMap -> mapTypeOf(map.keyType, type)
-            isRepeated -> repeatedTypeOf(type)
-            else -> type.toPoet()
+            isMap -> mapTypeOf(type.map.keyType, type.map.valueType)
+            isList -> repeatedTypeOf(type.list)
+            else -> type.toType().toPoet()
         }
     }
 

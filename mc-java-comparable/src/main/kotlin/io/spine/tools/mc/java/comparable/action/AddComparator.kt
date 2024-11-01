@@ -32,9 +32,11 @@ import io.spine.base.copy
 import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
 import io.spine.option.CompareByOption
+import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
+import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
 import io.spine.protodata.ast.isEnum
 import io.spine.protodata.ast.isMessage
@@ -98,8 +100,8 @@ public class AddComparator(
         val field = typeSystem.resolve(fieldPath, type)
         val fieldType = field.type
 
-        check(field.hasSingle()) {
-            "The repeated fields and maps can't participate in comparison. " +
+        check(field.type.cardinality == CARDINALITY_SINGLE) {
+            "Repeated fields or maps can't participate in comparison. " +
                     "The invalid field: `$field`, its type: `$fieldType`. " +
                     "Please, make sure the type of the passed field is compatible with " +
                     "the `(compare_by)` option."

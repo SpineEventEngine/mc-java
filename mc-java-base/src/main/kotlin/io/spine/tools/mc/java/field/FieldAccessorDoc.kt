@@ -29,8 +29,8 @@ package io.spine.tools.mc.java.field
 
 import com.intellij.psi.javadoc.PsiDocComment
 import io.spine.protodata.ast.Field
+import io.spine.protodata.ast.isList
 import io.spine.protodata.ast.isMap
-import io.spine.protodata.ast.isRepeated
 import io.spine.protodata.java.javaType
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.psi.java.Environment.elementFactory
@@ -54,13 +54,13 @@ internal class FieldAccessorDoc(
      * Is empty if the field is neither a map, nor repeated.
      */
     private val kind: String = when {
-        field.isRepeated -> "{@code repeated} "
+        field.isList -> "{@code repeated} "
         field.isMap -> "{@code map} "
         else -> ""
     }
 
     private val element: String = when {
-        field.isRepeated -> "element"
+        field.isList -> "element"
         field.isMap -> "value"
         else -> "field"
     }

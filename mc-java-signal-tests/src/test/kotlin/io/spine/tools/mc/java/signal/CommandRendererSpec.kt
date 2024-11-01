@@ -34,7 +34,6 @@ import io.spine.tools.mc.java.signal.SignalPluginTestSetup.Companion.FIELD_CLASS
 import java.nio.file.Path
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -60,9 +59,8 @@ internal class CommandRendererSpec {
     }
 
     @Test
-    @Disabled("Until migration to interface generation based on ProtoData")
     fun `add 'CommandMessage' interface`() {
-        commandCode shouldContain "${CommandMessage::class.java.reference},"
+        commandCode shouldContain ", ${CommandMessage::class.java.reference} {"
     }
 
     @Test
