@@ -161,7 +161,7 @@ internal class RThrowableBuilderCode internal constructor(
     private fun Field.poetTypeName(): PoTypeName {
         return when {
             isMap -> mapTypeOf(type.map.keyType, type.map.valueType)
-            isList -> repeatedTypeOf(type.toType())
+            isList -> repeatedTypeOf(type.list)
             else -> type.toType().toPoet()
         }
     }
