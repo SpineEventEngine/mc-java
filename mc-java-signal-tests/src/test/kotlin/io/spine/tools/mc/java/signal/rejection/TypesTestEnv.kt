@@ -114,12 +114,12 @@ object TypesTestEnv {
         typeUrlPrefix = "type.spine.io"
     }
     private val stringField: Field = newField {
-        fieldType = fieldType { primitive = TYPE_STRING }
+        type = fieldType { primitive = TYPE_STRING }
         name = fieldName { value = "bar" }
         declaringType = messageTypeName
     }
     private val idField: Field = newField {
-        fieldType = fieldType { primitive = TYPE_STRING }
+        type = fieldType { primitive = TYPE_STRING }
         name = fieldName { value = "uuid" }
         declaringType = messageTypeName
     }
