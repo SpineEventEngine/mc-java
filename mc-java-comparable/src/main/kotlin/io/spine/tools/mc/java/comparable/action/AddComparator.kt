@@ -38,7 +38,6 @@ import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
-import io.spine.protodata.ast.isMessage
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.javaClass
 import io.spine.protodata.java.render.DirectMessageAction
