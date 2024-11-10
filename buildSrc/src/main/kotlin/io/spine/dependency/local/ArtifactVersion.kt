@@ -106,6 +106,7 @@ object ArtifactVersion {
      *
      * @see <a href="https://github.com/SpineEventEngine/tool-base">spine-tool-base</a>
      */
+    @Deprecated(message = "Please use `ToolBase.version`.", ReplaceWith("ToolBase.version"))
     const val toolBase = ToolBase.version
 
     /**

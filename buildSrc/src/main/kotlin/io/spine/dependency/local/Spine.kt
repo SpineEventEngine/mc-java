@@ -48,15 +48,15 @@ object Spine {
     const val testUtilTime = "$toolsGroup:spine-testutil-time:${ArtifactVersion.time}"
 
     @Deprecated(message = "Please use `ToolBase.psiJava` instead`.")
-    const val psiJava = "$toolsGroup:spine-psi-java:${ArtifactVersion.toolBase}"
+    const val psiJava = "$toolsGroup:spine-psi-java:${ToolBase.version}"
     @Deprecated(message = "Please use `ToolBase.psiJava` instead`.")
-    const val psiJavaBundle = "$toolsGroup:spine-psi-java-bundle:${ArtifactVersion.toolBase}"
+    const val psiJavaBundle = "$toolsGroup:spine-psi-java-bundle:${ToolBase.version}"
     @Deprecated(message = "Please use `ToolBase.lib` instead`.")
-    const val toolBase = "$toolsGroup:spine-tool-base:${ArtifactVersion.toolBase}"
+    const val toolBase = "$toolsGroup:spine-tool-base:${ToolBase.version}"
     @Deprecated(message = "Please use `ToolBase.pluginBase` instead`.")
-    const val pluginBase = "$toolsGroup:spine-plugin-base:${ArtifactVersion.toolBase}"
+    const val pluginBase = "$toolsGroup:spine-plugin-base:${ToolBase.version}"
     @Deprecated(message = "Please use `ToolBase.pluginTestlib` instead`.")
-    const val pluginTestlib = "$toolsGroup:spine-plugin-testlib:${ArtifactVersion.toolBase}"
+    const val pluginTestlib = "$toolsGroup:spine-plugin-testlib:${ToolBase.version}"
 
     const val modelCompiler = "$toolsGroup:spine-model-compiler:${ArtifactVersion.mc}"
 
