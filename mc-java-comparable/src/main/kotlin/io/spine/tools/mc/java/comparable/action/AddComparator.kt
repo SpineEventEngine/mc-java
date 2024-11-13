@@ -39,18 +39,19 @@ import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
 import io.spine.protodata.context.CodegenContext
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.MethodCall
 import io.spine.protodata.java.javaClass
 import io.spine.protodata.java.render.DirectMessageAction
+import io.spine.protodata.java.toPsi
 import io.spine.protodata.render.SourceFile
 import io.spine.tools.code.Java
-import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.psi.addFirst
-import io.spine.tools.psi.java.Environment.elementFactory
 
 /**
  * Builds and inserts a static `comparator` field into the messages that qualify
@@ -67,18 +68,22 @@ public class AddComparator(
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
-        val option = compareByOption(type)
-        val comparisonFields = option.fieldList.map(::toComparisonField)
-        require(comparisonFields.isNotEmpty()) {
-            "The `(compare_by)` option should have at least one field specified."
+        try {
+            val option = compareByOption(type)
+            val comparisonFields = option.fieldList.map(::toComparisonField)
+            require(comparisonFields.isNotEmpty()) {
+                "The `(compare_by)` option should have at least one field specified."
+            }
+
+            val comparator = ComparatorBuilder(cls, option.descending)
+            comparisonFields.forEach { comparator.comparingBy(it) }
+
+            val javaField = comparator.build().toPsi()
+                .apply { addFirst(GeneratedAnnotation.create()) }
+            cls.addAfter(javaField, cls.lBrace)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        val comparator = ComparatorBuilder(cls, option.descending)
-        comparisonFields.forEach { comparator.comparingBy(it) }
-
-        val javaField = elementFactory.createFieldFromText(comparator.build(), cls)
-            .apply { addFirst(GeneratedAnnotation.create()) }
-        cls.addAfter(javaField, cls.lBrace)
     }
 
     /**
@@ -190,8 +195,12 @@ public class AddComparator(
             }
 
             fromRegistry != null -> {
-                val className = "${clazz.canonicalName}.class"
-                val comparator = "${ComparatorRegistry::class.reference}.get($className)"
+                val message = ClassName(clazz)
+                val comparator = MethodCall<Comparator<*>>(
+                    ClassName(ComparatorRegistry::class),
+                    "get",
+                    message.clazz
+                )
                 comparingBy(path, comparator)
             }
 

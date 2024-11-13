@@ -26,12 +26,22 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import io.spine.base.FieldPath
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.Expression
+import io.spine.protodata.java.InitField
+import io.spine.protodata.java.JavaTypeName
+import io.spine.protodata.java.MethodCall
 import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
 import io.spine.tools.mc.java.base.isNotNested
 import io.spine.tools.mc.java.base.root
+import io.spine.tools.psi.java.packageName
+
+private typealias FieldExtractor = Expression<(Message) -> Any>
+private typealias FieldComparator = Expression<Comparator<*>>
 
 /**
  * Builds a static Java field containing the [Comparator] for the given message.
@@ -55,22 +65,33 @@ import io.spine.tools.mc.java.base.root
  */
 internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = false) {
 
-    private val message = cls.name!!
-    private val instance = message.lowerCamelCase()
-    private val closures = mutableListOf<String>()
+    private val message = ClassName(cls.packageName, cls.name!!)
+    private val instance = message.simpleName.lowerCamelCase()
+    private val fields = mutableListOf<Pair<FieldExtractor, FieldComparator?>>()
 
     /**
      * Builds a static `comparator` Java field in a text form.
      */
-    fun build(): String {
-        var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
-        for (i in 1 until closures.size) {
-            joinedClosures += ".thenComparing(${closures[i]})"
+    fun build(): InitField<Comparator<Message>> {
+        var comparator = MethodCall<Comparator<Message>>(
+            ClassName("java.util", "Comparator"),
+            "comparing",
+            fields[0].asArgs()
+        )
+
+        for (i in 1 until fields.size) {
+            comparator = comparator.chain("thenComparing", fields[i].asArgs())
         }
         if (reversed) {
-            joinedClosures += ".reversed()"
+            comparator = comparator.chain("reserved")
         }
-        return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
+
+        return InitField(
+            modifiers = "private static final",
+            type = JavaTypeName("java.util.Comparator<$message>"),
+            "comparator",
+            comparator
+        )
     }
 
     /**
@@ -87,25 +108,25 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
      * @param path The path to the field.
      * @param comparator The optional comparator to be used for the field values.
      */
-    fun comparingBy(path: FieldPath, comparator: String? = null) {
+    fun comparingBy(path: FieldPath, comparator: Expression<Comparator<*>>? = null) {
         val extractor = if (path.isNotNested) extractField(path.root) else extractNestedField(path)
-        val closure = if (comparator == null) extractor else "$extractor, $comparator"
-        closures.add(closure)
+        fields.add(extractor to comparator)
     }
 
     /**
      * Returns a method reference to the getter for the given [fieldName] in the [message].
      */
-    private fun extractField(fieldName: String): String = "$message::${fieldName.toJavaGetter()}"
+    private fun extractField(fieldName: String): Expression<(Message) -> Any> =
+        Expression("$message::${fieldName.toJavaGetter()}")
 
     /**
      * Builds a lambda key extractor for a nested field in the [message],
      * denoted by the given [path].
      */
-    private fun extractNestedField(path: FieldPath): String {
+    private fun extractNestedField(path: FieldPath): Expression<(Message) -> Any> {
         val parts = path.fieldNameList
         val joined = parts.joinToString(".") { "${it.toJavaGetter()}()" }
-        return "($message $instance) -> $instance.$joined"
+        return Expression("($message $instance) -> $instance.$joined")
     }
 }
 
@@ -120,3 +141,5 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
  * For example, `getMyBestField()` and `::getMyBestField`.
  */
 private fun String.toJavaGetter() = "get${camelCase()}"
+
+private fun Pair<FieldExtractor, FieldComparator?>.asArgs() = toList().filterNotNull()
