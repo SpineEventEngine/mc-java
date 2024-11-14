@@ -38,10 +38,10 @@ import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
 import io.spine.tools.mc.java.base.isNotNested
 import io.spine.tools.mc.java.base.root
-import io.spine.tools.psi.java.packageName
+import java.util.function.Function
 
-private typealias FieldExtractor = Expression<(Message) -> Any>
-private typealias FieldComparator = Expression<Comparator<*>>
+private typealias FieldExtractor = Expression<Function<Message, Any>>
+private typealias FieldComparator = Expression<Comparator<Any>>
 
 /**
  * Builds a static Java field containing the [Comparator] for the given message.
@@ -65,8 +65,8 @@ private typealias FieldComparator = Expression<Comparator<*>>
  */
 internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = false) {
 
-    private val message = ClassName(cls.packageName, cls.name!!)
-    private val instance = message.simpleName.lowerCamelCase()
+    private val message = cls.name!!
+    private val instance = message.lowerCamelCase()
     private val fields = mutableListOf<Pair<FieldExtractor, FieldComparator?>>()
 
     /**
@@ -78,14 +78,12 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
             "comparing",
             fields[0].asArgs()
         )
-
         for (i in 1 until fields.size) {
             comparator = comparator.chain("thenComparing", fields[i].asArgs())
         }
         if (reversed) {
-            comparator = comparator.chain("reserved")
+            comparator = comparator.chain("reversed")
         }
-
         return InitField(
             modifiers = "private static final",
             type = JavaTypeName("java.util.Comparator<$message>"),
@@ -108,7 +106,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
      * @param path The path to the field.
      * @param comparator The optional comparator to be used for the field values.
      */
-    fun comparingBy(path: FieldPath, comparator: Expression<Comparator<*>>? = null) {
+    fun comparingBy(path: FieldPath, comparator: Expression<Comparator<Any>>? = null) {
         val extractor = if (path.isNotNested) extractField(path.root) else extractNestedField(path)
         fields.add(extractor to comparator)
     }
@@ -116,14 +114,14 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
     /**
      * Returns a method reference to the getter for the given [fieldName] in the [message].
      */
-    private fun extractField(fieldName: String): Expression<(Message) -> Any> =
+    private fun extractField(fieldName: String): Expression<Function<Message, Any>> =
         Expression("$message::${fieldName.toJavaGetter()}")
 
     /**
      * Builds a lambda key extractor for a nested field in the [message],
      * denoted by the given [path].
      */
-    private fun extractNestedField(path: FieldPath): Expression<(Message) -> Any> {
+    private fun extractNestedField(path: FieldPath): Expression<Function<Message, Any>> {
         val parts = path.fieldNameList
         val joined = parts.joinToString(".") { "${it.toJavaGetter()}()" }
         return Expression("($message $instance) -> $instance.$joined")

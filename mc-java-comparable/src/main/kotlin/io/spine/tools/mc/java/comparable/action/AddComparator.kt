@@ -68,22 +68,18 @@ public class AddComparator(
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
     override fun doRender() {
-        try {
-            val option = compareByOption(type)
-            val comparisonFields = option.fieldList.map(::toComparisonField)
-            require(comparisonFields.isNotEmpty()) {
-                "The `(compare_by)` option should have at least one field specified."
-            }
-
-            val comparator = ComparatorBuilder(cls, option.descending)
-            comparisonFields.forEach { comparator.comparingBy(it) }
-
-            val javaField = comparator.build().toPsi()
-                .apply { addFirst(GeneratedAnnotation.create()) }
-            cls.addAfter(javaField, cls.lBrace)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        val option = compareByOption(type)
+        val comparisonFields = option.fieldList.map(::toComparisonField)
+        require(comparisonFields.isNotEmpty()) {
+            "The `(compare_by)` option should have at least one field specified."
         }
+
+        val comparator = ComparatorBuilder(cls, option.descending)
+        comparisonFields.forEach { comparator.comparingBy(it) }
+
+        val javaField = comparator.build().toPsi()
+            .apply { addFirst(GeneratedAnnotation.create()) }
+        cls.addAfter(javaField, cls.lBrace)
     }
 
     /**
@@ -196,7 +192,7 @@ public class AddComparator(
 
             fromRegistry != null -> {
                 val message = ClassName(clazz)
-                val comparator = MethodCall<Comparator<*>>(
+                val comparator = MethodCall<Comparator<Any>>(
                     ClassName(ComparatorRegistry::class),
                     "get",
                     message.clazz
