@@ -47,14 +47,12 @@ import java.util.function.Function
  * An example of the built comparator:
  *
  * ```java
- * private static final java.util.Comparator<Jogging> comparator =
- *     java.util.Comparator.comparing(Jogging::getStarted)
- *                         .thenComparing(Jogging::getFinished)
- *                         .thenComparing(Jogging::getDuration);
- * ```
+ * private static final java.util.Comparator<com.example.Jogging> comparator =
+ *     java.util.Comparator.comparing((com.example.Jogging jogging) -> jogging.getDuration().getHours())
+ *                         .thenComparing(com.example.Jogging::getStarted)
+ *                         .thenComparing(com.example.Jogging::getFinished);
  *
- * Please note the line breaks were added manually for reader's convenience.
- * The builder doesn't add them. It will be a single line of text.
+ * ```
  *
  * @param cls The message class to be used as comparator's generic parameter.
  * @param reversed If `true`, imposes the reverse of the natural ordering.
@@ -90,9 +88,6 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
     /**
      * Adds the next comparing closure for the given field [path].
      *
-     * For example, `joggingStartedEvent.emittedAt` field and the optional
-     * `com.google.protobuf.util.Timestamps.comparator()` comparator for it.
-     *
      * The comparator should be passed when the field type is neither primitive
      * nor comparable. It is a responsibility of the caller to check it in advance.
      * This builder is responsible only for building a string representation of
@@ -108,7 +103,8 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
     }
 
     /**
-     * Returns a method reference to the getter for the given [fieldName] in the [message].
+     * Returns a method reference to the getter for the given [fieldName]
+     * in the [message].
      */
     private fun extractField(fieldName: String): FieldExtractor =
         Expression("$message::${fieldName.toJavaGetter()}")
@@ -125,18 +121,18 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
 }
 
 /**
- * A lambda expression or getter reference, which extracts the message
- * field value to compare.
+ * A lambda expression or a getter reference, which extracts the field value
+ * for comparison.
  *
- * For example: `Jogging::getStarted`, `(Jogger jogger) -> jogger.getStarted()`.
+ * For example: `Jogging::getStarted` OR `(Jogger jogger) -> jogger.getStarted()`.
  */
 private typealias FieldExtractor = Expression<Function<Message, Any>>
 
 /**
- * A comparator to be used for a field value.
+ * A comparator to be used for the extracted field value.
  *
- * The comparator is not mandatory. It should be passed only for the custom
- * comparison logic, or for messages that are not comparable themselves.
+ * The comparator is not mandatory. It is passed either for the custom
+ * comparison logic or for messages that are not comparable themselves.
  */
 private typealias FieldComparator = Expression<Comparator<Any>>
 
