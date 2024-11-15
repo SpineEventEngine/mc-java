@@ -191,11 +191,10 @@ public class AddComparator(
             }
 
             fromRegistry != null -> {
-                val message = ClassName(clazz)
                 val comparator = MethodCall<Comparator<Any>>(
                     ClassName(ComparatorRegistry::class),
                     "get",
-                    message.clazz
+                    ClassName(clazz).clazz
                 )
                 comparingBy(path, comparator)
             }
