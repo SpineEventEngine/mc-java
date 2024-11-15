@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.comparable
 
 import com.google.protobuf.Duration
+import com.google.protobuf.Message
 import com.google.protobuf.Timestamp
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiField
@@ -91,7 +92,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `primitives and enums`() {
-            val message = Account.getDescriptor().name
+            val message = fqnName<Account>()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getActualData)" +
                     ".thenComparing($message::getStatus)" +
@@ -102,7 +103,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `comparable messages`() {
-            val message = Citizen.getDescriptor().name
+            val message = fqnName<Citizen>()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getPassport);"
             assertComparator(message, expected)
@@ -110,7 +111,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known 'Timestamp' and 'Duration'`() {
-            val message = WithTimestampAndDuration.getDescriptor().name
+            val message = fqnName<WithTimestampAndDuration>()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getTimestamp, $TIMESTAMP_COMPARATOR)" +
                     ".thenComparing($message::getDuration, $DURATION_COMPARATOR);"
@@ -119,8 +120,8 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known value messages`() {
-            val message = WithValues.getDescriptor().name
-            val instance = message.lowerCamelCase()
+            val message = fqnName<WithValues>()
+            val instance = instanceName(message)
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getBool().getValue())" +
                     ".thenComparing(($message $instance) -> $instance.getDouble().getValue())" +
@@ -135,7 +136,7 @@ internal class AddComparatorSpec {
 
         @Test
         fun `reversed comparison`() {
-            val message = Debtor.getDescriptor().name
+            val message = fqnName<Debtor>()
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing($message::getSum)" +
                     ".thenComparing($message::getName)" +
@@ -150,8 +151,8 @@ internal class AddComparatorSpec {
 
         @Test
         fun `primitives, enums and comparable messages`() {
-            val message = Traveler.getDescriptor().name
-            val instance = message.lowerCamelCase()
+            val message = fqnName<Traveler>()
+            val instance = instanceName(message)
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getResidence().getRegion())" +
                     ".thenComparing(($message $instance) -> $instance.getResidence().getAddress().getIsActual())" +
@@ -163,8 +164,8 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known 'Timestamp' and 'Duration'`() {
-            val message = NestedTimestampAndDuration.getDescriptor().name
-            val instance = message.lowerCamelCase()
+            val message = fqnName<NestedTimestampAndDuration>()
+            val instance = instanceName(message)
             val expected =
                 "private static final java.util.Comparator<$message> comparator = " +
                         "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getTimestamp(), $TIMESTAMP_COMPARATOR)" +
@@ -174,8 +175,8 @@ internal class AddComparatorSpec {
 
         @Test
         fun `well-known value messages`() {
-            val message = NestedValues.getDescriptor().name
-            val instance = message.lowerCamelCase()
+            val message = fqnName<NestedValues>()
+            val instance = instanceName(message)
             val expected = "private static final java.util.Comparator<$message> comparator = " +
                     "java.util.Comparator.comparing(($message $instance) -> $instance.getNested().getBool().getValue())" +
                     ".thenComparing(($message $instance) -> $instance.getNested().getDouble().getValue())" +
@@ -194,32 +195,25 @@ internal class AddComparatorSpec {
     `not generate comparator` {
 
         @Test
-        fun `without the corresponding option`() =
-            assertNoComparator(NoCompareByOption.getDescriptor().name)
+        fun `without the corresponding option`() = assertNoComparator<NoCompareByOption>()
 
         @Test
-        fun `with a non-comparable field`() =
-            assertNoComparator(NonComparableProhibited.getDescriptor().name)
+        fun `with a non-comparable field`() = assertNoComparator<NonComparableProhibited>()
 
         @Test
-        fun `with a bytes field`() =
-            assertNoComparator(BytesProhibited.getDescriptor().name)
+        fun `with a bytes field`() = assertNoComparator<BytesProhibited>()
 
         @Test
-        fun `with a repeated field`() =
-            assertNoComparator(RepeatedProhibited.getDescriptor().name)
+        fun `with a repeated field`() = assertNoComparator<RepeatedProhibited>()
 
         @Test
-        fun `with a map field`() =
-            assertNoComparator(MapsProhibited.getDescriptor().name)
+        fun `with a map field`() = assertNoComparator<MapsProhibited>()
 
         @Test
-        fun `with a non-existing field`() =
-            assertNoComparator(NonExistingProhibited.getDescriptor().name)
+        fun `with a non-existing field`() = assertNoComparator<NonExistingProhibited>()
 
         @Test
-        fun `with a oneof field`() =
-            assertNoComparator(OneOfProhibited.getDescriptor().name)
+        fun `with a oneof field`() = assertNoComparator<OneOfProhibited>()
     }
 
     @Nested
@@ -227,45 +221,42 @@ internal class AddComparatorSpec {
     `not generate comparator with nested` {
 
         @Test
-        fun `non-comparable field`() =
-            assertNoComparator(NestedNonComparableProhibited.getDescriptor().name)
+        fun `non-comparable field`() = assertNoComparator<NestedNonComparableProhibited>()
 
         @Test
-        fun `bytes field`() =
-            assertNoComparator(NestedBytesProhibited.getDescriptor().name)
+        fun `bytes field`() = assertNoComparator<NestedBytesProhibited>()
 
         @Test
-        fun `repeated field`() =
-            assertNoComparator(NestedRepeatedProhibited.getDescriptor().name)
+        fun `repeated field`() = assertNoComparator<NestedRepeatedProhibited>()
 
         @Test
-        fun `map field`() =
-            assertNoComparator(NestedMapsProhibited.getDescriptor().name)
+        fun `map field`() = assertNoComparator<NestedMapsProhibited>()
 
         @Test
-        fun `non-existing field`() =
-            assertNoComparator(NestedNonExistingProhibited.getDescriptor().name)
+        fun `non-existing field`() = assertNoComparator<NestedNonExistingProhibited>()
 
         @Test
-        fun `oneof field`() =
-            assertNoComparator(NestedOneOfProhibited.getDescriptor().name)
+        fun `oneof field`() = assertNoComparator<NestedOneOfProhibited>()
     }
 
     /**
      * Asserts that the given [message] has the [expected] comparator.
+     *
+     * @param message The fully qualified message class name.
+     * @param expected The expected Java field.
      */
     private fun assertComparator(message: String, expected: String) {
-        val psiClass = generatedCodeOf(message)
+        val psiClass = generatedCodeOf(message.substringAfterLast("."))
         val field = psiClass.findComparatorField()
         field.shouldNotBeNull()
         field.text shouldContain expected
     }
 
     /**
-     * Asserts that the given [message] doesn't have a comparator.
+     * Asserts that the given message doesn't have a comparator.
      */
-    private fun assertNoComparator(message: String) {
-        val psiClass = generatedCodeOf(message)
+    private inline fun <reified T : Message> assertNoComparator() {
+        val psiClass = generatedCodeOf(T::class.simpleName!!)
         val field = psiClass.findComparatorField()
         field.shouldBeNull()
     }
@@ -276,3 +267,9 @@ private fun PsiClass.findComparatorField(): PsiField? =
 
 private inline fun <reified T> fromRegistry() =
     "io.spine.compare.ComparatorRegistry.get(${T::class.java.canonicalName}.class)"
+
+private inline fun <reified T : Message> fqnName() = T::class.qualifiedName!!
+
+private fun instanceName(fqnName: String) = fqnName
+    .substringAfterLast(".")
+    .lowerCamelCase()
