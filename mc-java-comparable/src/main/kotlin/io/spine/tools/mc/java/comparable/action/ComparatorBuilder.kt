@@ -51,7 +51,6 @@ import java.util.function.Function
  *     java.util.Comparator.comparing((com.example.Jogging jogging) -> jogging.getDuration().getHours())
  *                         .thenComparing(com.example.Jogging::getStarted)
  *                         .thenComparing(com.example.Jogging::getFinished);
- *
  * ```
  *
  * @param cls The message class to be used as comparator's generic parameter.
