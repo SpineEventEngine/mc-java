@@ -102,14 +102,13 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
     }
 
     /**
-     * Returns a method reference to the getter for the given [fieldName]
-     * in the [message].
+     * Returns a key extractor as a method reference to the getter of the given [fieldName].
      */
     private fun extractField(fieldName: String): FieldExtractor =
         Expression("$message::${fieldName.toJavaGetter()}")
 
     /**
-     * Builds a lambda key extractor for a nested field in the [message],
+     * Returns a key extractor as a lambda expression for a nested field
      * denoted by the given [path].
      */
     private fun extractNestedField(path: FieldPath): FieldExtractor {
@@ -136,10 +135,10 @@ private typealias FieldExtractor = Expression<Function<Message, Any>>
 private typealias FieldComparator = Expression<Comparator<Any>>
 
 /**
- * A field comparison closure.
+ * The expressions required to perform a comparison by a specific message field.
  *
  * The field [extractor] and its optional [comparator] are going to be passed
- * as arguments to Java `Comparator.comparing()` / `thenComparing()` methods.
+ * as arguments to Java `Comparator.comparing()` OR `thenComparing()` methods.
  */
 private class FieldComparison(val extractor: FieldExtractor, val comparator: FieldComparator?) :
     List<Expression<*>> by listOfNotNull(extractor, comparator)
