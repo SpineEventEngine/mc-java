@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.java.ClassOrEnumName
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MessageOrBuilderConvention
 import io.spine.tools.mc.annotation.MessageAnnotations
 
@@ -52,7 +52,7 @@ internal class MessageAnnotator :
         }
     }
 
-    private fun Class<out Annotation>.annotate(cls: ClassOrEnumName) {
+    private fun Class<out Annotation>.annotate(cls: ClassName) {
         ApiAnnotation(cls, this).let {
             it.registerWith(context!!)
             it.doRender(sources)
