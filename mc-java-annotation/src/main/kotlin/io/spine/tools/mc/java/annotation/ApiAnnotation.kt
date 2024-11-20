@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.annotation
 
-import io.spine.protodata.java.ClassOrEnumName
+import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.annotation.TypeAnnotation
 import io.spine.protodata.render.SourceFile
 import io.spine.protodata.render.SourceFileSet
@@ -36,7 +36,7 @@ import io.spine.tools.code.Java
  * Annotates a type with an annotation of the given class.
  */
 internal class ApiAnnotation<T : Annotation>(
-    subject: ClassOrEnumName,
+    subject: ClassName,
     annotationClass: Class<T>
 ) :
     TypeAnnotation<T>(annotationClass, subject) {

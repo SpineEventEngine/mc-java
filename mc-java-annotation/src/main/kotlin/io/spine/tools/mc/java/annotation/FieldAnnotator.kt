@@ -87,7 +87,7 @@ internal class FieldAnnotator :
             messageOrBuilderConvention.declarationFor(messageType.name)
 
         val messageFile = sources.file(messageDeclaration.path)
-        val messageClass = messageDeclaration.name as ClassName
+        val messageClass = messageDeclaration.name
 
         val annotationLine = "@${annotationClass.reference}"
 

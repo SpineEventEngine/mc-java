@@ -26,12 +26,20 @@
 
 package io.spine.tools.mc.java.comparable.action
 
+import com.google.protobuf.Message
 import com.intellij.psi.PsiClass
 import io.spine.base.FieldPath
+import io.spine.protodata.java.ClassName
+import io.spine.protodata.java.Expression
+import io.spine.protodata.java.InitField
+import io.spine.protodata.java.ParameterizedClassName
+import io.spine.protodata.java.call
 import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
 import io.spine.tools.mc.java.base.isNotNested
 import io.spine.tools.mc.java.base.root
+import io.spine.tools.psi.java.packageName
+import java.util.function.Function
 
 /**
  * Builds a static Java field containing the [Comparator] for the given message.
@@ -39,14 +47,11 @@ import io.spine.tools.mc.java.base.root
  * An example of the built comparator:
  *
  * ```java
- * private static final java.util.Comparator<Jogging> comparator =
- *     java.util.Comparator.comparing(Jogging::getStarted)
- *                         .thenComparing(Jogging::getFinished)
- *                         .thenComparing(Jogging::getDuration);
+ * private static final java.util.Comparator<com.example.Jogging> comparator =
+ *     java.util.Comparator.comparing((com.example.Jogging jogging) -> jogging.getDuration().getHours())
+ *                         .thenComparing(com.example.Jogging::getStarted)
+ *                         .thenComparing(com.example.Jogging::getFinished);
  * ```
- *
- * Please note the line breaks were added manually for reader's convenience.
- * The builder doesn't add them. It will be a single line of text.
  *
  * @param cls The message class to be used as comparator's generic parameter.
  * @param reversed If `true`, imposes the reverse of the natural ordering.
@@ -55,29 +60,32 @@ import io.spine.tools.mc.java.base.root
  */
 internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = false) {
 
-    private val message = cls.name!!
-    private val instance = message.lowerCamelCase()
-    private val closures = mutableListOf<String>()
+    private val message = ClassName(cls.packageName, cls.name!!)
+    private val instance = message.simpleName.lowerCamelCase()
+    private val fields = mutableListOf<FieldComparison>()
 
     /**
-     * Builds a static `comparator` Java field in a text form.
+     * Builds a private static `comparator` Java field.
      */
-    fun build(): String {
-        var joinedClosures = "java.util.Comparator.comparing(${closures[0]})"
-        for (i in 1 until closures.size) {
-            joinedClosures += ".thenComparing(${closures[i]})"
+    fun build(): InitField<Comparator<Message>> {
+        val comparator = ClassName(Comparator::class)
+        var comparisons = comparator.call<Comparator<Message>>("comparing", fields.first())
+        for (i in 1 until fields.size) {
+            comparisons = comparisons.chain("thenComparing", fields[i])
         }
         if (reversed) {
-            joinedClosures += ".reversed()"
+            comparisons = comparisons.chain("reversed")
         }
-        return "private static final java.util.Comparator<$message> comparator = $joinedClosures;"
+        return InitField(
+            modifiers = "private static final",
+            type = ParameterizedClassName(comparator, message),
+            name = "comparator",
+            value = comparisons
+        )
     }
 
     /**
      * Adds the next comparing closure for the given field [path].
-     *
-     * For example, `joggingStartedEvent.emittedAt` field and the optional
-     * `com.google.protobuf.util.Timestamps.comparator()` comparator for it.
      *
      * The comparator should be passed when the field type is neither primitive
      * nor comparable. It is a responsibility of the caller to check it in advance.
@@ -87,27 +95,54 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
      * @param path The path to the field.
      * @param comparator The optional comparator to be used for the field values.
      */
-    fun comparingBy(path: FieldPath, comparator: String? = null) {
+    fun comparingBy(path: FieldPath, comparator: Expression<Comparator<Any>>? = null) {
         val extractor = if (path.isNotNested) extractField(path.root) else extractNestedField(path)
-        val closure = if (comparator == null) extractor else "$extractor, $comparator"
-        closures.add(closure)
+        val comparison = FieldComparison(extractor, comparator)
+        fields.add(comparison)
     }
 
     /**
-     * Returns a method reference to the getter for the given [fieldName] in the [message].
+     * Returns a key extractor as a method reference to the getter of the given [fieldName].
      */
-    private fun extractField(fieldName: String): String = "$message::${fieldName.toJavaGetter()}"
+    private fun extractField(fieldName: String): FieldExtractor =
+        Expression("$message::${fieldName.toJavaGetter()}")
 
     /**
-     * Builds a lambda key extractor for a nested field in the [message],
+     * Returns a key extractor as a lambda expression for a nested field
      * denoted by the given [path].
      */
-    private fun extractNestedField(path: FieldPath): String {
+    private fun extractNestedField(path: FieldPath): FieldExtractor {
         val parts = path.fieldNameList
         val joined = parts.joinToString(".") { "${it.toJavaGetter()}()" }
-        return "($message $instance) -> $instance.$joined"
+        return Expression("($message $instance) -> $instance.$joined")
     }
 }
+
+/**
+ * A lambda expression or a getter reference, which extracts the field value
+ * for comparison.
+ *
+ * For example: `Jogging::getStarted` OR `(Jogger jogger) -> jogger.getStarted()`.
+ */
+private typealias FieldExtractor = Expression<Function<Message, Any>>
+
+/**
+ * A comparator to be used for the extracted field value.
+ *
+ * The comparator is not mandatory. It is passed either for the custom
+ * comparison logic or for messages that are not comparable themselves.
+ */
+private typealias FieldComparator = Expression<Comparator<Any>>
+
+/**
+ * The expressions required to perform a comparison by a specific message field.
+ *
+ * The field [extractor] and its optional [comparator] are going to be passed
+ * as arguments to Java `Comparator.comparing()` OR `thenComparing()` methods.
+ */
+private class FieldComparison(val extractor: FieldExtractor, val comparator: FieldComparator?) :
+    List<Expression<*>> by listOfNotNull(extractor, comparator)
+
 
 /**
  * Converts this [String] with a Protobuf field name to a Java getter.

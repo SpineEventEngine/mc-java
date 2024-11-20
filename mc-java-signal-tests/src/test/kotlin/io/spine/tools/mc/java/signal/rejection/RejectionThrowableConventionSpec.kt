@@ -51,7 +51,7 @@ internal class RejectionThrowableConventionSpec {
         throwable shouldNotBe null
 
         val (messageClass, messagePath) = message
-        (messageClass as ClassName).binary shouldBe
+        messageClass.binary shouldBe
                 "dev.acme.example.CartoonRejections\$CannotDrawCartoon"
         messagePath shouldBe Path("dev/acme/example/CartoonRejections.java")
 
