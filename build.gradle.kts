@@ -52,6 +52,7 @@ buildscript {
     val coreJava = io.spine.dependency.local.CoreJava
     val validation = io.spine.dependency.local.Validation
     val logging = io.spine.dependency.local.Logging
+    val protoData = io.spine.dependency.local.ProtoData
     doForceVersions(configurations)
     configurations {
         all {
@@ -67,6 +68,7 @@ buildscript {
                     logging.lib,
                     logging.libJvm,
                     logging.middleware,
+                    "${protoData.module}:${protoData.dogfoodingVersion}",
                     validation.runtime,
                     validation.javaBundle
                 )
