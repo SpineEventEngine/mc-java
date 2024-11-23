@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.spine.tools.gradle.task.BaseTaskName.clean;
 import static io.spine.tools.gradle.testing.GradleTruth.assertThat;
+import static io.spine.tools.mc.java.gradle.GradleProjects.evaluate;
 import static io.spine.tools.mc.java.gradle.McJavaTaskName.preClean;
 import static io.spine.tools.mc.java.gradle.given.ModelCompilerTestEnv.MC_JAVA_GRADLE_PLUGIN_ID;
 
@@ -55,8 +56,7 @@ class McJavaPluginSpec {
         plugins.apply("com.google.protobuf");
         plugins.apply(MC_JAVA_GRADLE_PLUGIN_ID);
 
-        // Evaluate the project.
-        project.getTasksByName("fooBar", false);
+        evaluate(project);
 
         tasks = project.getTasks();
     }

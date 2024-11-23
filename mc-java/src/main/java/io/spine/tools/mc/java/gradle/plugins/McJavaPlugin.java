@@ -58,9 +58,7 @@ public class McJavaPlugin extends LanguagePlugin {
     public void apply(Project project) {
         super.apply(project);
         var manager = project.getPluginManager();
-        manager.withPlugin(ProtobufDependencies.gradlePlugin.id, (plugin) -> {
-            doApply(project);
-        });
+        manager.withPlugin(ProtobufDependencies.gradlePlugin.id, plugin -> doApply(project));
     }
 
     private void doApply(Project project) {
@@ -99,7 +97,7 @@ public class McJavaPlugin extends LanguagePlugin {
     private static void createAndApplyPluginsIn(Project project) {
         Stream.of(new CleaningPlugin(),
                   new DescriptorSetMergerPlugin(),
-                  new JavaProtocConfigurationPlugin(),
+                  new EnableGrpcPlugin(),
                   new McJavaChecksPlugin(),
                   new ProtoDataConfigPlugin())
               .forEach(plugin -> apply(plugin, project));
