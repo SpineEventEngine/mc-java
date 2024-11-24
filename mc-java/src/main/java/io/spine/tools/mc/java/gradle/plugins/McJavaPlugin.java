@@ -96,7 +96,7 @@ public class McJavaPlugin extends LanguagePlugin {
      */
     private static void createAndApplyPluginsIn(Project project) {
         Stream.of(new CleaningPlugin(),
-                  new DescriptorSetMergerPlugin(),
+                  //new DescriptorSetMergerPlugin(),
                   new EnableGrpcPlugin(),
                   new McJavaChecksPlugin(),
                   new ProtoDataConfigPlugin())
