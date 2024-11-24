@@ -24,12 +24,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package io.spine.tools.mc.java.gradle;
+
+import org.gradle.api.Project;
+import org.gradle.api.internal.project.ProjectInternal;
+
 /**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
+ * Utilities for working with Gradle projects.
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.256")
-val versionToPublish by extra(mcJavaVersion)
+public final class GradleProjects {
+
+    /** Prevents instantiation of this utility class. */
+    private GradleProjects() {
+        // No-op.
+    }
+
+    /**
+     * Forces evaluation of the given project by repeating
+     * the call to {@link ProjectInternal#evaluate()} if an exception was thrown during
+     * the first invocation.
+     *
+     * @see <a href="https://github.com/gradle/gradle/issues/20301">Gradle issue</a>
+     */
+    public static void evaluate(Project p) {
+        var project = (ProjectInternal) p;
+        try {
+            project.evaluate();
+        } catch (Throwable ignored) {
+            project.evaluate();
+        }
+    }
+}

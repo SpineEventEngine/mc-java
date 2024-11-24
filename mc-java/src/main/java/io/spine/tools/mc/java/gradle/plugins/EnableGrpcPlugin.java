@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2023, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,12 +24,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package io.spine.tools.mc.java.gradle.plugins;
+
+import com.google.protobuf.gradle.ExecutableLocator;
+import com.google.protobuf.gradle.GenerateProtoTask;
+import io.spine.tools.gradle.ProtocConfigurationPlugin;
+import org.gradle.api.NamedDomainObjectContainer;
+import org.gradle.api.Project;
+
+import static io.spine.tools.gradle.ProtocPluginName.grpc;
+import static io.spine.tools.mc.java.gradle.Artifacts.gRpcProtocPlugin;
+
 /**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
+ * A Gradle plugin that enablers gRPC in a project.
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.256")
-val versionToPublish by extra(mcJavaVersion)
+public final class EnableGrpcPlugin extends ProtocConfigurationPlugin {
+
+    @Override
+    protected void
+    configureProtocPlugins(NamedDomainObjectContainer<ExecutableLocator> plugins, Project project) {
+        plugins.create(grpc.name(),
+                       locator -> locator.setArtifact(gRpcProtocPlugin().notation())
+        );
+    }
+
+    @Override
+    protected void customizeTask(GenerateProtoTask protocTask) {
+        var plugins = protocTask.getPlugins();
+        plugins.create(grpc.name());
+    }
+}

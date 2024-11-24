@@ -28,6 +28,7 @@ import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.ToolBase
 import io.spine.dependency.local.Validation
 import io.spine.gradle.WriteVersions
 
@@ -58,7 +59,7 @@ dependencies {
         gradleKotlinDsl(),
         gradleTestKit(),
         Spine.testlib,
-        Spine.pluginTestlib,
+        ToolBase.pluginTestlib,
         testFixtures(project(":mc-java-base"))
     ).forEach {
         testImplementation(it)
@@ -87,6 +88,6 @@ tasks {
         // Store the version of `tool-base` so that we can add the dependency for
         // the `protoData` configuration when configuring rejection codegen.
         // See `io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigurationPlugin` for details.
-        version(Spine.toolBase)
+        version(ToolBase.lib)
     }
 }

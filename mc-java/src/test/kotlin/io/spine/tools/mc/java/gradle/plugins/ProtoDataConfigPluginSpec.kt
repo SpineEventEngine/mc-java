@@ -1,11 +1,11 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -34,15 +34,16 @@ import io.spine.protodata.gradle.plugin.Extension
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.tools.gradle.testing.GradleProject
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
+import io.spine.tools.mc.java.gradle.GradleProjects.evaluate
 import io.spine.tools.mc.java.gradle.given.StubProject
 import io.spine.tools.mc.java.gradle.plugins.ProtoDataConfigPlugin.Companion.VALIDATION_PLUGIN_CLASS
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.withType
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.gradle.kotlin.dsl.findByType
-import org.gradle.kotlin.dsl.withType
 
 @DisplayName("`ProtoDataConfigPlugin` should")
 internal class ProtoDataConfigPluginSpec {
@@ -64,8 +65,7 @@ internal class ProtoDataConfigPluginSpec {
             plugins.apply("com.google.protobuf")
             plugins.apply(McJavaPlugin::class.java)
 
-            // Evaluate the project so that `project.afterEvaluate` is called.
-            project.getTasksByName("fooBar", false)
+            evaluate(project)
 
             codegenSettings = project.extensions.findByType<CodegenSettings>() as Extension
         }
