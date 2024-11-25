@@ -33,6 +33,7 @@ import io.spine.tools.gradle.DependencyVersions
 import io.spine.tools.gradle.protobuf.ProtobufDependencies.gradlePlugin
 import io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler
 import io.spine.tools.mc.gradle.LanguagePlugin
+import io.spine.tools.mc.java.VersionHolder
 import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.McJavaOptions.Companion.name
@@ -64,6 +65,7 @@ private fun Project.applyMcJava() {
 }
 
 private fun Project.logApplying() {
+    val version = VersionHolder.version
     logger.warn("Applying `${simply<McJavaPlugin>()}` (version: $version) to `$name`.")
 }
 
