@@ -30,6 +30,7 @@ import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
+import io.spine.annotation.Generated
 import io.spine.string.Indent.Companion.defaultJavaIndent
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.entity.EntityPluginTestSetup
@@ -38,7 +39,6 @@ import io.spine.tools.mc.java.entity.innerClass
 import io.spine.tools.mc.java.field.AddFieldClass.Companion.NAME
 import io.spine.tools.psi.java.locate
 import java.nio.file.Path
-import javax.annotation.Generated
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName

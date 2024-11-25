@@ -30,12 +30,12 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiJavaFile
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.spine.annotation.Generated
 import io.spine.tools.kotlin.reference
 import io.spine.tools.mc.java.entity.EntityPlugin.Companion.QUERY_CLASS_NAME
 import io.spine.tools.mc.java.entity.EntityPluginTestSetup
 import io.spine.tools.psi.java.topLevelClass
 import java.nio.file.Path
-import javax.annotation.Generated
 import kotlin.io.path.Path
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
