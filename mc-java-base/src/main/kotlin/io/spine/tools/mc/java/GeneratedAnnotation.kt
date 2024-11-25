@@ -27,11 +27,11 @@
 package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiAnnotation
+import io.spine.annotation.Generated
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.GeneratedAnnotation.create
 import io.spine.tools.mc.java.VersionHolder.version
 import io.spine.tools.psi.java.Environment.elementFactory
-import javax.annotation.Generated
 import org.intellij.lang.annotations.Language
 
 /**
@@ -42,20 +42,27 @@ import org.intellij.lang.annotations.Language
  * We would like to avoid unwanted propagation of a modification which could be made by
  * one renderer to others.
  *
+ * @see Generated
  * @see create
+ * @see VersionHolder
  */
 public object GeneratedAnnotation {
 
     /**
      * Creates a new [PsiAnnotation] with [javax.annotation.Generated] referencing the current
      * version of Spine Model Compiler.
+     *
+     * @param value The string to be put into the annotation `value` parameter.
+     *  The default value refers to the current version of Spine Model Compiler.
      */
-    public fun create(): PsiAnnotation {
+    public fun create(
+        value: String = "by Spine Model Compiler (version: ${version.value})"
+    ): PsiAnnotation {
         val reference = Generated::class.java.reference
-        @Language("JAVA") @Suppress("EmptyClass")
+        @Language("JAVA") @Suppress("EmptyClass", "DuplicateStringLiteralInspection")
         val annotation = elementFactory.createAnnotationFromText(
             """
-            @$reference("by Spine Model Compiler (version: ${version.value})")
+            @$reference("$value")
             """.trimIndent(), null
         )
         return annotation
