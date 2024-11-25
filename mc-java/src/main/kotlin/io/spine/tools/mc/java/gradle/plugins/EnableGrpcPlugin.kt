@@ -1,11 +1,11 @@
 /*
- * Copyright 2023, TeamDev. All rights reserved.
+ * Copyright 2024, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,33 +24,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.plugins;
+package io.spine.tools.mc.java.gradle.plugins
 
-import com.google.protobuf.gradle.ExecutableLocator;
-import com.google.protobuf.gradle.GenerateProtoTask;
-import io.spine.tools.gradle.ProtocConfigurationPlugin;
-import org.gradle.api.NamedDomainObjectContainer;
-import org.gradle.api.Project;
-
-import static io.spine.tools.gradle.ProtocPluginName.grpc;
-import static io.spine.tools.mc.java.gradle.Artifacts.gRpcProtocPlugin;
+import com.google.protobuf.gradle.ExecutableLocator
+import com.google.protobuf.gradle.GenerateProtoTask
+import io.spine.tools.gradle.ProtocConfigurationPlugin
+import io.spine.tools.gradle.ProtocPluginName.grpc
+import io.spine.tools.mc.java.gradle.gRpcProtocPlugin
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 
 /**
  * A Gradle plugin that enablers gRPC in a project.
  */
-public final class EnableGrpcPlugin extends ProtocConfigurationPlugin {
+public class EnableGrpcPlugin : ProtocConfigurationPlugin() {
 
-    @Override
-    protected void
-    configureProtocPlugins(NamedDomainObjectContainer<ExecutableLocator> plugins, Project project) {
-        plugins.create(grpc.name(),
-                       locator -> locator.setArtifact(gRpcProtocPlugin().notation())
-        );
+    override fun configureProtocPlugins(
+        plugins: NamedDomainObjectContainer<ExecutableLocator>,
+        project: Project
+    ) {
+        plugins.create(grpc.name) { locator ->
+            locator.artifact = gRpcProtocPlugin.notation()
+        }
     }
 
-    @Override
-    protected void customizeTask(GenerateProtoTask protocTask) {
-        var plugins = protocTask.getPlugins();
-        plugins.create(grpc.name());
+    override fun customizeTask(protocTask: GenerateProtoTask) {
+        protocTask.plugins.create(grpc.name)
     }
 }

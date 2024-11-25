@@ -24,91 +24,77 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.gradle.plugins;
+package io.spine.tools.mc.java.gradle.plugins
 
-import com.google.protobuf.gradle.ExecutableLocator;
-import com.google.protobuf.gradle.ProtobufExtension;
-import io.spine.tools.gradle.DependencyVersions;
-import io.spine.tools.gradle.protobuf.ProtobufDependencies;
-import io.spine.tools.mc.gradle.LanguagePlugin;
-import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin;
-import io.spine.tools.mc.java.gradle.McJava;
-import io.spine.tools.mc.java.gradle.McJavaOptions;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-
-import java.util.stream.Stream;
-
-import static io.spine.tools.gradle.Artifact.PLUGIN_BASE_ID;
-import static io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler;
-import static io.spine.tools.mc.java.gradle.Projects.getMcJava;
-import static kotlin.jvm.JvmClassMappingKt.getKotlinClass;
+import com.google.protobuf.gradle.ProtobufExtension
+import io.spine.string.simply
+import io.spine.tools.gradle.Artifact
+import io.spine.tools.gradle.DependencyVersions
+import io.spine.tools.gradle.protobuf.ProtobufDependencies.gradlePlugin
+import io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler
+import io.spine.tools.mc.gradle.LanguagePlugin
+import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin
+import io.spine.tools.mc.java.gradle.McJavaOptions
+import io.spine.tools.mc.java.gradle.McJavaOptions.Companion.name
+import io.spine.tools.mc.java.gradle.mcJava
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 /**
  * Spine Model Compiler for Java Gradle plugin.
  *
- * <p>Applies dependent plugins.
+ * Applies dependent plugins.
  */
-public class McJavaPlugin extends LanguagePlugin {
+public class McJavaPlugin : LanguagePlugin(name(), McJavaOptions::class.java.kotlin) {
 
-    public McJavaPlugin() {
-        super(McJavaOptions.name(), getKotlinClass(McJavaOptions.class));
+    public override fun apply(project: Project) {
+        super.apply(project)
+        project.pluginManager.withPlugin(gradlePlugin.id) { _ ->
+            project.applyMcJava()
+        }
     }
+}
 
-    @Override
-    public void apply(Project project) {
-        super.apply(project);
-        var manager = project.getPluginManager();
-        manager.withPlugin(ProtobufDependencies.gradlePlugin.id, plugin -> doApply(project));
-    }
+private fun Project.applyMcJava() {
+    logApplying()
+    setProtocArtifact()
+    val extension = project.mcJava
+    extension.injectProject(project)
+    createAndApplyPlugins()
+}
 
-    private void doApply(Project project) {
-        logApplyingTo(project);
-        setProtocArtifact(project);
-        var extension = getMcJava(project);
-        extension.injectProject(project);
-        createAndApplyPluginsIn(project);
-    }
+private fun Project.logApplying() {
+    logger.warn("Applying `${simply<McJavaPlugin>()}` (version: $version) to `$name`.")
+}
 
-    private void logApplyingTo(Project project) {
-        var version = McJava.version();
-        project.getLogger().warn(
-                "Applying `{}` (version: {}) to `{}`.",
-                getClass().getSimpleName(),
-                version,
-                project.getName()
-        );
-    }
+private val Project.protobuf: ProtobufExtension
+    get() = extensions.getByType(ProtobufExtension::class.java)
 
-    private static void setProtocArtifact(Project project) {
-        var protobuf = project.getExtensions().getByType(ProtobufExtension.class);
-        var ofPluginBase = DependencyVersions.loadFor(PLUGIN_BASE_ID);
-        var protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation();
-        protobuf.protoc((ExecutableLocator locator) -> locator.setArtifact(protocArtifact));
+private fun Project.setProtocArtifact() {
+    val ofPluginBase = DependencyVersions.loadFor(Artifact.PLUGIN_BASE_ID)
+    val protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation()
+    protobuf.protoc { locator ->
+        locator.artifact = protocArtifact
     }
+}
 
-    /**
-     * Creates all the plugins that are parts of {@code mc-java} and applies them to
-     * the given project.
-     *
-     * @implNote Plugins that deal with Protobuf types must depend on
-     *         {@code mergeDescriptorSet} and {@code mergeTestDescriptorSet} tasks to be able to
-     *         access every declared type in the project classpath.
-     */
-    private static void createAndApplyPluginsIn(Project project) {
-        Stream.of(new CleaningPlugin(),
-                  new EnableGrpcPlugin(),
-                  new McJavaChecksPlugin(),
-                  new ProtoDataConfigPlugin())
-              .forEach(plugin -> apply(plugin, project));
+/**
+ * Creates all the plugins that are parts of `mc-java` and applies them to this project.
+ */
+private fun Project.createAndApplyPlugins() {
+    listOf(
+        CleaningPlugin(),
+        EnableGrpcPlugin(),
+        McJavaChecksPlugin(),
+        ProtoDataConfigPlugin()
+    ).forEach {
+        apply(it)
     }
+}
 
-    private static void apply(Plugin<Project> plugin, Project project) {
-        project.getLogger()
-               .debug(
-                       "Applying plugin `{}` to project `{}`.",
-                       plugin.getClass().getName(), project.getName()
-               );
-        plugin.apply(project);
+private fun Project.apply(plugin: Plugin<Project>) {
+    if (logger.isDebugEnabled) {
+        logger.debug("Applying `${plugin.javaClass.name}` plugin.")
     }
+    plugin.apply(project)
 }
