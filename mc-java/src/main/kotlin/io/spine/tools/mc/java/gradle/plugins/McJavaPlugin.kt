@@ -65,7 +65,7 @@ private fun Project.applyMcJava() {
 }
 
 private fun Project.logApplying() {
-    val version = VersionHolder.version
+    val version = VersionHolder.version.value
     logger.warn("Applying `${simply<McJavaPlugin>()}` (version: $version) to `$name`.")
 }
 
