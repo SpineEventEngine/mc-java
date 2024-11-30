@@ -43,7 +43,6 @@ include(
     "mc-java-message-group-tests",
     "mc-java-uuid",
     "mc-java-uuid-tests",
-    "mc-java-validation",
     "mc-java-plugin-bundle"
 )
 
