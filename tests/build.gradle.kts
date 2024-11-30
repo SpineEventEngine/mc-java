@@ -198,35 +198,6 @@ subprojects {
         }
     }
 
-    idea.module {
-        generatedSourceDirs.addAll(files(
-                "$projectDir/generated/main/java",
-                "$projectDir/generated/main/spine",
-                "$projectDir/generated/test/java",
-                "$projectDir/generated/test/spine"
-        ))
-    }
-
-    sourceSets {
-        main {
-            proto.srcDir("$projectDir/src/main/proto")
-            java.srcDirs("$projectDir/generated/main/java",
-                         "$projectDir/generated/main/spine",
-                         "$projectDir/generated/main/grpc",
-                         "$projectDir/src/main/java")
-            resources.srcDir("$projectDir/generated/main/resources")
-        }
-
-        test {
-            proto.srcDir("$projectDir/src/test/proto")
-            java.srcDirs("$projectDir/generated/test/java",
-                         "$projectDir/generated/test/spine",
-                         "$projectDir/generated/test/grpc",
-                         "$projectDir/src/test/java")
-            resources.srcDir("$projectDir/generated/test/resources")
-        }
-    }
-
     tasks.test {
         useJUnitPlatform {
             includeEngines("junit-jupiter")
@@ -237,8 +208,4 @@ subprojects {
     }
 
     disableDocumentationTasks()
-
-    //TODO:2021-07-22:alexander.yevsyukov: Turn to WARN and investigate duplicates.
-    // see https://github.com/SpineEventEngine/base/issues/657
-    tasks.processTestResources.get().duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
