@@ -24,37 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("unused", "ConstPropertyName")
+package io.spine.dependency.local
 
-package io.spine.dependency.lib
-
-// https://github.com/google/auto
-object AutoCommon {
-    private const val version = "1.2.2"
-    const val lib = "com.google.auto:auto-common:$version"
-}
-
-// https://github.com/google/auto
-object AutoService {
-    private const val version = "1.1.1"
-    const val annotations = "com.google.auto.service:auto-service-annotations:$version"
-    @Suppress("unused")
-    const val processor   = "com.google.auto.service:auto-service:$version"
-}
-
-// https://github.com/google/auto
-object AutoValue {
-    private const val version = "1.10.2"
-    const val annotations = "com.google.auto.value:auto-value-annotations:$version"
-}
-
-// https://github.com/ZacSweers/auto-service-ksp
-object AutoServiceKsp {
-    /**
-     * The latest version compatible with Kotlin 1.8.22.
-     *
-     * @see io.spine.dependency.build.Ksp.version
-     */
-    private const val version = "1.1.0"
-    const val processor = "dev.zacsweers.autoservice:auto-service-ksp:$version"
+/**
+ * Spine Base module.
+ *
+ * @see <a href="https://github.com/SpineEventEngine/base-types">spine-base-types</a>
+ */
+@Suppress("ConstPropertyName")
+object BaseTypes {
+    const val version = "2.0.0-SNAPSHOT.130"
+    const val group = Spine.group
+    const val artifact = "spine-base-types"
+    const val lib = "$group:$artifact:$version"
 }

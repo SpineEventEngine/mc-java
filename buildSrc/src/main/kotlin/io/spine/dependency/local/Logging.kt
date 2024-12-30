@@ -33,15 +33,20 @@ package io.spine.dependency.local
  */
 @Suppress("ConstPropertyName", "unused")
 object Logging {
-    const val version = "2.0.0-SNAPSHOT.241"
+    const val version = "2.0.0-SNAPSHOT.242"
     const val group = Spine.group
-    const val lib = "$group:spine-logging:$version"
+
+    const val loggingArtifact = "spine-logging"
+
+    const val lib = "$group:$loggingArtifact:$version"
     const val libJvm = "$group:spine-logging-jvm:$version"
 
     const val log4j2Backend = "$group:spine-logging-log4j2-backend:$version"
     const val stdContext = "$group:spine-logging-std-context:$version"
     const val grpcContext = "$group:spine-logging-grpc-context:$version"
     const val smokeTest = "$group:spine-logging-smoke-test:$version"
+
+    const val testLib = "${Spine.toolsGroup}:spine-logging-testlib:$version"
 
     // Transitive dependencies.
     // Make `public` and use them to force a version in a particular repository, if needed.
