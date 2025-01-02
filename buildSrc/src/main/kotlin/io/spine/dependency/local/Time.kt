@@ -24,12 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package io.spine.dependency.local
+
 /**
- * The version of McJava to publish.
+ * Spine Time library.
  *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
+ * @see <a href="https://github.com/SpineEventEngine/time">spine-time</a>
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.260")
-val versionToPublish by extra(mcJavaVersion)
+@Suppress("ConstPropertyName")
+object Time {
+    const val version = "2.0.0-SNAPSHOT.135"
+    const val group = Spine.group
+    const val artifact = "spine-time"
+    const val lib = "$group:$artifact:$version"
+
+    //TODO:2024-11-29:alexander.yevsyukov: Change the artifact name to `spine-time-testlib`.
+    const val testLib = "${Spine.toolsGroup}:spine-testutil-time:$version"
+}

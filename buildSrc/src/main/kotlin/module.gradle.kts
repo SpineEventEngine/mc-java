@@ -36,6 +36,7 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ArtifactVersion
+import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.Spine
@@ -207,7 +208,7 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
         outputs.file(propertiesFile)
 
         val versions = Properties().apply {
-            setProperty("baseVersion", ArtifactVersion.base)
+            setProperty("baseVersion", Base.version)
             setProperty("protobufVersion", Protobuf.version)
             setProperty("gRPCVersion", Grpc.version)
         }
