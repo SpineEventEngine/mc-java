@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,17 @@
 import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ProtoData
-import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 import io.spine.dependency.local.Validation
 import io.spine.gradle.WriteVersions
 
 dependencies {
     implementation(ProtoData.pluginLib)
+    implementation(ProtoData.params)
 
-    // We access the Protobuf Gradle Plugin extension, so we need it as a dependency.
     implementation(Protobuf.GradlePlugin.lib)
+        ?.because("We access the Protobuf Gradle Plugin extension.")
 
     // Module dependencies
     listOf(
@@ -58,7 +59,7 @@ dependencies {
         gradleApi(),
         gradleKotlinDsl(),
         gradleTestKit(),
-        Spine.testlib,
+        TestLib.lib,
         ToolBase.pluginTestlib,
         testFixtures(project(":mc-java-base"))
     ).forEach {

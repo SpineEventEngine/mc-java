@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,20 @@ import com.google.protobuf.Message
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
+import io.spine.protodata.params.Directories
+import io.spine.protodata.params.WorkingDirectory
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.render.SourceFile
 import io.spine.protodata.render.SourceFileSet
-import io.spine.protodata.settings.Format
+import io.spine.protodata.util.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
+import io.spine.protodata.testing.pipelineParams
+import io.spine.protodata.testing.withRequestFile
+import io.spine.protodata.testing.withSettingsDir
 import io.spine.tools.code.Java
+import io.spine.tools.code.SourceSetName
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
 import io.spine.type.toJson
 import java.nio.file.Path
@@ -92,18 +98,27 @@ abstract class PluginTestSetup<S: Message>(
     /**
      * Creates an instance of [PipelineSetup] with the given parameters.
      *
-     * [settings] will be written to the [settingsDir] before creation of
-     * a [Pipeline][io.spine.protodata.backend.Pipeline].
+     * [settings] will be written to the [WorkingDirectory.settingsDirectory] before
+     * creation of a [Pipeline][io.spine.protodata.backend.Pipeline].
      */
-    fun setup(outputDir: Path, settingsDir: Path, settings: S): PipelineSetup {
+    fun setup(projectDir: Path, settings: S): PipelineSetup {
+        val workingDir = projectDir.resolve("build").resolve(Directories.PROTODATA_WORKING_DIR)
+        val workingDirectory = WorkingDirectory(workingDir)
+        val requestFile = workingDirectory.requestDirectory.file(SourceSetName("testFixtures"))
+        val params = pipelineParams {
+            withRequestFile(requestFile)
+            withSettingsDir(workingDirectory.settingsDirectory.path)
+        }
+        val outputDir = projectDir.resolve("output")
+        outputDir.toFile().mkdirs()
         val setup = byResources(
-            listOf(
+            params = params,
+            plugins = listOf(
                 plugin,
-                // We want to be able to see the code in debug with human eyes. Mercy!..
+                // We want to be able to see the code in debug formatted for easier reading.
                 JavaCodeStyleFormatterPlugin()
             ),
-            outputDir,
-            settingsDir
+            outputRoot = outputDir,
         ) {
             writeSettings(it, settings)
         }
@@ -119,14 +134,14 @@ abstract class PluginTestSetup<S: Message>(
      *
      * @see createSettings
      */
-    fun runPipeline(projectDir: Path, outputDir: Path, settingsDir: Path) {
+    fun runPipeline(projectDir: Path) {
         // Clear the cache of previously parsed files to avoid repeated code generation.
         SourceFile.clearCache()
         val settings = createSettings(projectDir)
-        val setup = setup(outputDir, settingsDir, settings)
+        val setup = setup(projectDir, settings)
         val pipeline = setup.createPipeline()
         pipeline()
-        this.sourceFileSet = setup.sourceFileSet
+        this.sourceFileSet = pipeline.sources[0]
     }
 
     /**

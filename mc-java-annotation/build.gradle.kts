@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@
 import io.spine.dependency.lib.Roaster
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
 plugins {
@@ -39,7 +40,7 @@ dependencies {
     implementation(Logging.lib)
 
     testFixturesImplementation(ToolBase.lib)
-    testFixturesImplementation(Spine.testlib)
+    testFixturesImplementation(TestLib.lib)
 
     val guavaGroup = "com.google.guava"
     testFixturesImplementation(Roaster.api) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ object ProtoData {
      * The version of ProtoData dependencies.
      */
     val version: String
-    private const val fallbackVersion = "0.80.1"
+    private const val fallbackVersion = "0.90.0"
 
     /**
      * The distinct version of ProtoData used by other build tools.
@@ -105,6 +105,9 @@ object ProtoData {
 
     val backend
         get() = "$group:protodata-backend:$version"
+
+    val params
+        get() = "$group:protodata-params:$version"
 
     val protocPlugin
         get() = "$group:protodata-protoc:$version"

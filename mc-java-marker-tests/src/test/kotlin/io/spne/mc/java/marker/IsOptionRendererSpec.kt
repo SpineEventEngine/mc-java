@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,12 +41,8 @@ internal class IsOptionRendererSpec {
 
         @BeforeAll
         @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) {
-            generateCode(projectDir, outputDir, settingsDir)
+        fun setup(@TempDir projectDir: Path) {
+            generateCode(projectDir)
         }
     }
 

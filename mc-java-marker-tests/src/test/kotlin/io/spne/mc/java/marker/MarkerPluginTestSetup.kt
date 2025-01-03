@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,11 +55,7 @@ internal abstract class MarkerPluginTestSetup : PluginTestSetup<Empty>(MarkerPlu
 
     override fun createSettings(projectDir: Path): Empty = Empty.getDefaultInstance()
 
-    fun generateCode(
-        @TempDir projectDir: Path,
-        @TempDir outputDir: Path,
-        @TempDir settingsDir: Path
-    ) {
-        runPipeline(projectDir, outputDir, settingsDir)
+    fun generateCode(@TempDir projectDir: Path) {
+        runPipeline(projectDir)
     }
 }

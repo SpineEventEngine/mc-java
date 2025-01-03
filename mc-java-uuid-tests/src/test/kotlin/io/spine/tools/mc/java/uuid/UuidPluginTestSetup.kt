@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,12 +66,8 @@ abstract class UuidPluginTestSetup(
         }
     }
 
-    fun generateCode(
-        @TempDir projectDir: Path,
-        @TempDir outputDir: Path,
-        @TempDir settingsDir: Path
-    ) {
-        runPipeline(projectDir, outputDir, settingsDir)
+    fun generateCode(@TempDir projectDir: Path) {
+        runPipeline(projectDir)
         val sourceFile = file(Path("io/spine/tools/mc/java/uuid/given/$uuidType.java"))
         generatedCode = sourceFile.code()
         val file = sourceFile.psi() as PsiJavaFile
