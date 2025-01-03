@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,13 +59,9 @@ internal class SignalDiscoverySpec {
 
         @BeforeAll
         @JvmStatic
-        fun run(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) {
+        fun run(@TempDir projectDir: Path) {
             val signalSettings = createSettings(projectDir)
-            setup = setup(outputDir, settingsDir, signalSettings)
+            setup = setup(projectDir, signalSettings)
             val (p, b) = setup.createPipelineWithBlackBox()
             pipeline = p
             blackbox = b
@@ -102,7 +98,7 @@ internal class SignalDiscoverySpec {
         }
 
         // Create a file set with the descriptors for the proto files.
-        val fileSet = FileSet.of(setup.request.sourceFileDescriptorsList)
+        val fileSet = FileSet.of(pipeline.request.sourceFileDescriptorsList)
 
         fileSet.files().forEach {
             it.assertIfMatches(COMMANDS, CommandActions::class.java)
