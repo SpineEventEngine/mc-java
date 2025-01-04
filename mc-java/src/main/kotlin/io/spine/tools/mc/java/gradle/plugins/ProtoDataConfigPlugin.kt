@@ -32,7 +32,7 @@ import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.params.Directories.PROTODATA_WORKING_DIR
+import io.spine.protodata.gradle.plugin.protoDataWorkingDir
 import io.spine.protodata.params.WorkingDirectory
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
@@ -117,14 +117,11 @@ private fun Project.configureProtoData() {
 }
 
 private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
-    //TODO:2025-01-03:alexander.yevsyukov: Migrate to project extensions from ProtoData.
-    // See `io.spine.protodata.gradle.plugin.ProjectExts.kt`.
     val result = tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java) {
-        val wd = layout.buildDirectory.dir(PROTODATA_WORKING_DIR).get()
-        val workingDir = WorkingDirectory(wd.asFile.toPath())
-        it.settingsDir.set(project.layout.dir(
-            provider { workingDir.settingsDirectory.path.toFile() }
-        ))
+        val workingDir = WorkingDirectory(protoDataWorkingDir.asFile.toPath())
+        val settingsDir = workingDir.settingsDirectory.path.toFile()
+        val settingsDirProvider = project.layout.dir(provider { settingsDir })
+        it.settingsDir.set(settingsDirProvider)
     }
     return result
 }
