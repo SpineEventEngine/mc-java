@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,10 @@ package io.spine.tools.mc.java.gradle.plugins
 
 import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
-import io.spine.protodata.gradle.plugin.CreateSettingsDirectory
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
+import io.spine.protodata.params.Directories.PROTODATA_WORKING_DIR
+import io.spine.protodata.params.WorkingDirectory
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.mc.annotation.ApiAnnotationsPlugin
@@ -51,7 +52,6 @@ import io.spine.tools.mc.java.mgroup.MessageGroupPlugin
 import io.spine.tools.mc.java.signal.SignalPlugin
 import io.spine.tools.mc.java.signal.rejection.RThrowablePlugin
 import io.spine.tools.mc.java.uuid.UuidPlugin
-import io.spine.util.theOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
@@ -117,16 +117,20 @@ private fun Project.configureProtoData() {
 }
 
 private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
-    val settingsDirTask = tasks.withType(CreateSettingsDirectory::class.java).theOnly()
+    //TODO:2025-01-03:alexander.yevsyukov: Migrate to project extensions from ProtoData.
+    // See `io.spine.protodata.gradle.plugin.ProjectExts.kt`.
     val result = tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java) {
-        it.settingsDir.set(settingsDirTask.settingsDir.get())
-        it.dependsOn(settingsDirTask)
+        val wd = layout.buildDirectory.dir(PROTODATA_WORKING_DIR).get()
+        val workingDir = WorkingDirectory(wd.asFile.toPath())
+        it.settingsDir.set(project.layout.dir(
+            provider { workingDir.settingsDirectory.path.toFile() }
+        ))
     }
     return result
 }
 
 /**
- * Configures ProtoData with plugins, for the given Gradle project.
+ * Configures ProtoData with plugins for the given Gradle project.
  */
 private fun Project.configureProtoDataPlugins() {
     // Pass the uber JAR of McJava so that plugins from all the submodules are available.

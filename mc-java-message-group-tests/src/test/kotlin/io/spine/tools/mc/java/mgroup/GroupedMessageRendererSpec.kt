@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,16 +49,12 @@ internal class GroupedMessageRendererSpec {
 
         @BeforeAll
         @JvmStatic
-        fun setup(
-            @TempDir projectDir: Path,
-            @TempDir outputDir: Path,
-            @TempDir settingsDir: Path
-        ) {
+        fun setup(@TempDir projectDir: Path) {
             val settings = createSettings(projectDir)
-            val setup = setup(outputDir, settingsDir, settings)
+            val setup = setup(projectDir, settings)
             val pipeline = setup.createPipeline()
             pipeline()
-            val sourceFileSet = setup.sourceFileSet
+            val sourceFileSet = pipeline.sources[0]
             code = sourceFileSet.find(
                 Path("io/spine/tools/mc/mgroup/given/Student.java")
             )!!.code()

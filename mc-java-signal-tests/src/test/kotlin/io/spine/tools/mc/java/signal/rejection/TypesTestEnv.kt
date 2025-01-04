@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,10 @@ import io.spine.protodata.ast.protoFileHeader
 import io.spine.protodata.ast.protobufSourceFile
 import io.spine.protodata.ast.service
 import io.spine.protodata.ast.serviceName
+import io.spine.protodata.ast.toPath
 import io.spine.protodata.ast.type
 import io.spine.protodata.ast.typeName
+import io.spine.protodata.protobuf.ProtoFileList
 import io.spine.protodata.type.TypeSystem
 import io.spine.protodata.value.pack
 import io.spine.protodata.ast.enumType as newEnumType
@@ -190,10 +192,16 @@ object TypesTestEnv {
             header = rejectionsProtoHeader
             type.put(rejectionTypeName.typeUrl, rejectionType)
         }
-        TypeSystem(setOf(
+        val compiledProtoFiles = ProtoFileList(
+            listOf(protoSourceMultiple, protoSourceSingle, rejectionsFile).map {
+                it.toPath().toFile()
+            }
+        )
+        val definitions = setOf(
             multipleFilesProto,
             singleFileProto,
             rejections
-        ))
+        )
+        TypeSystem(compiledProtoFiles, definitions)
     }
 }
