@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,34 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+import io.spine.dependency.build.Ksp
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-comparable",
-    "mc-java-comparable-tests",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-marker",
-    "mc-java-marker-tests",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-routing",
-    "mc-java-routing-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-plugin-bundle"
-)
+plugins {
+    kotlin("jvm")
+}
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
-    }
+dependencies {
+    implementation(kotlin("stdlib"))
+    implementation(Ksp.symbolProcessingApi)
 }
