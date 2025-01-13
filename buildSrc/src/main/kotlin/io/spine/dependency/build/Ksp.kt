@@ -33,7 +33,9 @@ package io.spine.dependency.build
  */
 object Ksp {
     /**
-     * https://github.com/google/ksp/releases/tag/1.9.23-1.0.20
+     * This is the latest version for the Kotlin compiler of the 1.x family.
+     *
+     * @see <a href="https://github.com/google/ksp/releases/tag/1.9.24-1.0.20">The release info</a>.
      */
     const val version = "1.9.24-1.0.20"
     const val id = "com.google.devtools.ksp"
