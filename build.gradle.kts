@@ -95,12 +95,7 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = productionModules.map { it.name }
-        // Do not publish the validation codegen module as it is deprecated in favor of
-        // ProtoData-based code generation of the Validation library.
-        // The module is still kept for the sake of historical reference.
-        .filter { !it.contains("mc-java-validation") }
-        .toSet()
+    modules = productionModules.map { it.name }.toSet()
     destinations = PublishingRepos.run {
         setOf(
             cloudArtifactRegistry,
