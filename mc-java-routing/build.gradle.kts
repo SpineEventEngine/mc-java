@@ -25,6 +25,7 @@
  */
 
 import io.spine.dependency.build.Ksp
+import io.spine.dependency.lib.KotlinPoet
 
 plugins {
     kotlin("jvm")
@@ -33,4 +34,5 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
+    implementation(KotlinPoet.lib)
 }
