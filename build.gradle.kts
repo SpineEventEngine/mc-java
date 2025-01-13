@@ -47,7 +47,6 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.dependency.local.Spine
     val toolBase = io.spine.dependency.local.ToolBase
     val coreJava = io.spine.dependency.local.CoreJava
     val validation = io.spine.dependency.local.Validation
@@ -61,8 +60,8 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.dependency.lib.Grpc.api,
-                    spine.baseForBuildScript,
-                    spine.reflect,
+                    io.spine.dependency.local.Base.libForBuildScript,
+                    io.spine.dependency.local.Reflect.lib,
                     toolBase.lib,
                     coreJava.server,
                     logging.lib,
