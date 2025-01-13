@@ -33,8 +33,9 @@ package io.spine.dependency.build
  */
 object Ksp {
     /**
-     * The latest version compatible with Kotlin v1.8.22, which is bundled with Gradle 7.6.4.
+     * https://github.com/google/ksp/releases/tag/1.9.23-1.0.20
      */
-    const val version = "1.8.22-1.0.11"
+    const val version = "1.9.24-1.0.20"
     const val id = "com.google.devtools.ksp"
+    const val symbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:$version"
 }
