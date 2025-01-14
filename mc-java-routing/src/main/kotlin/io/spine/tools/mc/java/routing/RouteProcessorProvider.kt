@@ -24,29 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.local.CoreJava
+package io.spine.tools.mc.java.routing
 
-plugins {
-    kotlin("jvm")
-    ksp
-    `java-test-fixtures`
-}
+import com.google.auto.service.AutoService
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
-dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(CoreJava.server)
-    kspTest(project(":mc-java-routing"))
-    kspTestFixtures(project(":mc-java-routing"))
-}
-
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-    }
+/**
+ * Creates a symbol processor for the [Route][io.spine.server.route.Route] annotation.
+ *
+ * @see RouteProcessor
+ */
+@AutoService(SymbolProcessorProvider::class)
+public class RouteProcessorProvider : SymbolProcessorProvider {
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
+        RouteProcessor(environment.codeGenerator, environment.logger)
 }

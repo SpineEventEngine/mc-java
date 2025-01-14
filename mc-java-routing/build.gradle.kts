@@ -25,14 +25,22 @@
  */
 
 import io.spine.dependency.build.Ksp
+import io.spine.dependency.lib.AutoService
+import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.lib.KotlinPoet
+import io.spine.dependency.local.CoreJava
 
 plugins {
     kotlin("jvm")
+    ksp
 }
 
 dependencies {
+    ksp(AutoServiceKsp.processor)
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
     implementation(KotlinPoet.lib)
+    implementation(KotlinPoet.ksp)
+    implementation(CoreJava.server)
+    implementation(AutoService.annotations)
 }
