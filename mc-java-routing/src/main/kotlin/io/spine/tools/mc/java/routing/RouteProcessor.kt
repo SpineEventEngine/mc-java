@@ -31,6 +31,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
@@ -49,12 +50,12 @@ internal class RouteProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val unprocessed = symbols.filterNot { !it.validate() }.toList()
+        val unprocessed = symbols.filterNot { it.validate() }.toList()
         val routingFunctions = symbols
             .filter { it is KSFunctionDeclaration && it.validate() }
             .map { it as KSFunctionDeclaration }
 
-        validate(routingFunctions)
+        checkUsage(routingFunctions, logger)
 
         val declaringClasses = routingFunctions.declaringClasses()
         declaringClasses.forEach { (declaringClass, functions) ->
@@ -97,8 +98,20 @@ internal class RouteProcessor(
 }
 
 @Suppress("UnusedReceiverParameter", "UNUSED_PARAMETER")
-private fun RouteProcessor.validate(routingFunctions: Sequence<KSFunctionDeclaration>) {
-    //TODO:2025-01-14:alexander.yevsyukov:
+private fun RouteProcessor.checkUsage(
+    routingFunctions: Sequence<KSFunctionDeclaration>,
+    logger: KSPLogger
+) = routingFunctions.forEach { it.checkUsage(logger) }
+
+private fun KSFunctionDeclaration.checkUsage(logger: KSPLogger) {
+    val annotation = "`@Route`"
+    if (functionKind != FunctionKind.STATIC) {
+        val methodName = simpleName.getShortName()
+        logger.error(
+            "The method `$methodName()` annotated with $annotation must be `static`.",
+            this
+        )
+    }
 }
 
 private fun Sequence<KSFunctionDeclaration>.declaringClasses():
