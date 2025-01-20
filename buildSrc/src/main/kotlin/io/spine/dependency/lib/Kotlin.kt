@@ -63,4 +63,9 @@ object Kotlin {
     const val gradlePluginLib = "$group:kotlin-gradle-plugin:$version"
 
     const val jetbrainsAnnotations = "org.jetbrains:annotations:$annotationsVersion"
+
+    object Compiler {
+        const val version = "1.8.22"
+        const val embeddable = "$group:kotlin-compiler-embeddable:$version"
+    }
 }

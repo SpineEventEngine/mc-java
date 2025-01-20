@@ -47,5 +47,7 @@ object Ksp {
      */
     const val version = "1.8.22-1.0.11"
     const val id = "com.google.devtools.ksp"
-    const val symbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:$version"
+    const val group = "com.google.devtools.ksp"
+    const val symbolProcessingApi = "$group:symbol-processing-api:$version"
+    const val symbolProcessing = "$group:symbol-processing:$version"
 }

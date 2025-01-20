@@ -24,42 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.build.Ksp
-import io.spine.dependency.lib.AutoService
-import io.spine.dependency.lib.AutoServiceKsp
-import io.spine.dependency.lib.Kotlin
-import io.spine.dependency.lib.KotlinPoet
-import io.spine.dependency.local.CoreJava
-import io.spine.dependency.test.Kotest
-import io.spine.dependency.test.KotlinCompileTesting
+package io.spine.dependency.test
 
-plugins {
-    kotlin("jvm")
-    ksp
-}
-
-dependencies {
-    ksp(AutoServiceKsp.processor)
-    implementation(kotlin("stdlib"))
-    implementation(Ksp.symbolProcessingApi)
-    implementation(KotlinPoet.lib)
-    implementation(KotlinPoet.ksp)
-    implementation(CoreJava.server)
-    implementation(AutoService.annotations)
-
-    testImplementation(Kotest.assertions)
-    testImplementation(KotlinCompileTesting.libKsp)
-}
-
-configurations
-    // https://detekt.dev/docs/gettingstarted/gradle/#dependencies
-    .matching { it.name != "detekt" }
-    .all {
-    resolutionStrategy {
-        force(
-            Ksp.symbolProcessingApi,
-            Ksp.symbolProcessing,
-            Kotlin.Compiler.embeddable,
-        )
-    }
+/**
+ * A library for in-process compilation of Kotlin and Java code compilation.
+ *
+ * @see <a href="https://github.com/tschuchortdev/kotlin-compile-testing">GitHub repo</a>
+ */
+@Suppress("unused", "ConstPropertyName")
+object KotlinCompileTesting {
+    private const val version = "1.5.0" // Compatible with Kotlin Compiler 1.8.22.
+    private const val group = "com.github.tschuchortdev"
+    const val lib = "$group:kotlin-compile-testing:$version"
+    const val libKsp = "$group:kotlin-compile-testing-ksp:$version"
 }
