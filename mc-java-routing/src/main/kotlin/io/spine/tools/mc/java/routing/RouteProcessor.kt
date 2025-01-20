@@ -65,8 +65,9 @@ internal class RouteProcessor(
         return unprocessed
     }
 
-    private inner class RouteVisitor(private val functions: List<KSFunctionDeclaration>) :
-        KSVisitorVoid() {
+    private inner class RouteVisitor(
+        private val functions: List<KSFunctionDeclaration>
+    ) : KSVisitorVoid() {
 
         private lateinit var packageName: String
         private lateinit var originalFile: KSFile
