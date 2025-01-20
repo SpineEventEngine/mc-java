@@ -36,6 +36,7 @@ import io.spine.dependency.test.KotlinCompileTesting
 plugins {
     kotlin("jvm")
     ksp
+    id("io.spine.mc-java")
 }
 
 dependencies {
@@ -62,4 +63,11 @@ configurations
             Kotlin.Compiler.embeddable,
         )
     }
+}
+
+// Avoid the missing file error for generated code when running tests out of IDE.
+afterEvaluate {
+    val kspTestKotlin by tasks.getting
+    val launchTestProtoData by tasks.getting
+    kspTestKotlin.dependsOn(launchTestProtoData)
 }
