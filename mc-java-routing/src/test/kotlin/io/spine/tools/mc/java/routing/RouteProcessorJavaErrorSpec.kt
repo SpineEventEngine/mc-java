@@ -50,8 +50,8 @@ internal class RouteProcessorJavaErrorSpec {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
-        val serverJar = File(Route::class.java.protectionDomain.codeSource.location.path)
-        val compiledProtos = File(Device::class.java.protectionDomain.codeSource.location.path)
+        val serverJar = Route::class.java.classpathFile()
+        val compiledProtos = Device::class.java.classpathFile()
 
         compilation.apply {
             javaPackagePrefix = "io.spine.routing.given"
@@ -100,3 +100,8 @@ private val annotatedNonStatic = SourceFile.java(
     }
     """.trimIndent()
 )
+
+/**
+ * Obtains the path to the classpath element which contains the receiver class.
+ */
+private fun Class<*>.classpathFile(): File = File(protectionDomain.codeSource.location.path)

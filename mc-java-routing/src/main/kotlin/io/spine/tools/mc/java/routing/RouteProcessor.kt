@@ -31,7 +31,6 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
@@ -49,21 +48,22 @@ internal class RouteProcessor(
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val symbols = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val unprocessed = symbols.filterNot { it.validate() }.toList()
-        val routingFunctions = symbols
-            .filter { it is KSFunctionDeclaration && it.validate() }
-            .map { it as KSFunctionDeclaration }
+        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
+        val routingFunctions = filterAndGroup(allAnnotated)
+        routingFunctions.run {
+            checkUsage(logger)
+            generateCode()
+        }
+        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
+        return unprocessed
+    }
 
-        checkUsage(routingFunctions, logger)
-
-        val declaringClasses = routingFunctions.declaringClasses()
-        declaringClasses.forEach { (declaringClass, functions) ->
+    private fun RoutingFunctions.generateCode() {
+        forEach { (declaringClass, functions) ->
             val visitor = RouteVisitor(functions)
             declaringClass.accept(visitor, Unit)
             visitor.writeFile()
         }
-        return unprocessed
     }
 
     private inner class RouteVisitor(
@@ -97,24 +97,37 @@ internal class RouteProcessor(
     }
 }
 
-@Suppress("UnusedReceiverParameter", "UNUSED_PARAMETER")
-private fun RouteProcessor.checkUsage(
-    routingFunctions: Sequence<KSFunctionDeclaration>,
-    logger: KSPLogger
-) = routingFunctions.forEach { it.checkUsage(logger) }
+/**
+ * Maps a class to the list of routing functions it declares.  
+ */
+internal typealias RoutingFunctions = Map<KSClassDeclaration, List<KSFunctionDeclaration>>
 
-private fun KSFunctionDeclaration.checkUsage(logger: KSPLogger) {
-    val annotation = "`@Route`"
-    if (functionKind != FunctionKind.STATIC) {
-        val methodName = simpleName.getShortName()
-        logger.error(
-            "The method `$methodName()` annotated with $annotation must be `static`.",
-            this
-        )
-    }
+/**
+ * Filters all found annotated symbols to be valid instances of [KSFunctionDeclaration] and
+ * groups them by declaring classes.
+ */
+private fun filterAndGroup(allAnnotated: Sequence<KSAnnotated>): RoutingFunctions {
+    val declarations = allAnnotated
+        .filter { it is KSFunctionDeclaration && it.validate() }
+        .map { it as KSFunctionDeclaration }
+    val routingFunctions = declarations.groupByClasses()
+    return routingFunctions
 }
 
-private fun Sequence<KSFunctionDeclaration>.declaringClasses():
-        Map<KSClassDeclaration, List<KSFunctionDeclaration>> =
+/**
+ * Groups function declarations by declaring classes.
+ */
+private fun Sequence<KSFunctionDeclaration>.groupByClasses(): RoutingFunctions =
     filter { it.parentDeclaration!! is KSClassDeclaration }
         .groupBy { it.parentDeclaration!! as KSClassDeclaration }
+
+/**
+ * Validates routing function declarations.
+ *
+ * @see SignatureCheck
+ */
+private fun RoutingFunctions.checkUsage(logger: KSPLogger) {
+    forEach { (declaringClass, functions) ->
+        SignatureCheck(declaringClass, functions, logger).apply()
+    }
+}
