@@ -97,6 +97,6 @@ private val annotatedNonStatic = SourceFile.java(
         DeviceId route(StatusReported event) {
             return event.getDevice();
         }
-    }    
+    }
     """.trimIndent()
 )
