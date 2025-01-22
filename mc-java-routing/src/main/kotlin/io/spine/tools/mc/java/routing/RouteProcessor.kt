@@ -43,17 +43,37 @@ internal class RouteProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val routingFunctions = filterAndGroup(allAnnotated)
-        routingFunctions.applyVisitors(resolver)
+        val allValid = allAnnotated.filter { it.validate() }
+            .map { it as KSFunctionDeclaration }
+
+        val qualified = RouteSignature.qualify(allValid, resolver, logger)
+        processCommands(qualified, resolver)
+        processEvents(qualified, resolver)
+
         val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
         return unprocessed
     }
 
-    private fun RoutingFunctions.applyVisitors(resolver: Resolver) {
-        forEach { (declaringClass, functions) ->
+    private fun processCommands(
+        qualified: Sequence<RouteFun>,
+        resolver: Resolver
+    ) {
+        val commandRouting = qualified.filterIsInstance<CommandRouteFun>()
+        val commandRoutingGrouped = commandRouting.groupByClasses()
+        commandRoutingGrouped.forEach { (declaringClass, functions) ->
             val crv = CommandRouteVisitor(functions, codeGenerator, resolver, logger)
             declaringClass.accept(crv, Unit)
             crv.writeFile()
+        }
+    }
+
+    private fun processEvents(
+        qualified: Sequence<RouteFun>,
+        resolver: Resolver
+    ) {
+        val eventRouting = qualified.filterIsInstance<EventRouteFun>()
+        val eventRoutingGrouped = eventRouting.groupByClasses()
+        eventRoutingGrouped.forEach { (declaringClass, functions) ->
             val erv = EventRouteVisitor(functions, codeGenerator, resolver, logger)
             declaringClass.accept(erv, Unit)
             erv.writeFile()
@@ -61,26 +81,5 @@ internal class RouteProcessor(
     }
 }
 
-/**
- * Maps a class to the list of routing functions it declares.  
- */
-internal typealias RoutingFunctions = Map<KSClassDeclaration, List<KSFunctionDeclaration>>
-
-/**
- * Filters all found annotated symbols to be valid instances of [KSFunctionDeclaration] and
- * groups them by declaring classes.
- */
-private fun filterAndGroup(allAnnotated: Sequence<KSAnnotated>): RoutingFunctions {
-    val declarations = allAnnotated
-        .filter { it is KSFunctionDeclaration && it.validate() }
-        .map { it as KSFunctionDeclaration }
-    val routingFunctions = declarations.groupByClasses()
-    return routingFunctions
-}
-
-/**
- * Groups function declarations by declaring classes.
- */
-private fun Sequence<KSFunctionDeclaration>.groupByClasses(): RoutingFunctions =
-    filter { it.parentDeclaration!! is KSClassDeclaration }
-        .groupBy { it.parentDeclaration!! as KSClassDeclaration }
+private fun <F : RouteFun> Sequence<F>.groupByClasses(): Map<KSClassDeclaration, List<F>> =
+    groupBy { it.fn.parentDeclaration!! as KSClassDeclaration }

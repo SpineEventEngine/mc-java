@@ -26,46 +26,10 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSName
 import com.google.devtools.ksp.symbol.KSType
-import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
-import io.spine.tools.mc.java.routing.SignatureCheck.Companion.annotationRef
-
-/**
- * Verifies that a function satisfies the contract
- * of the [@Route][io.spine.server.route.Route] annotation.
- */
-internal sealed class SignatureCheck(
-    protected val resolver: Resolver,
-    protected val logger: KSPLogger
-) {
-
-    @OverridingMethodsMustInvokeSuper
-    fun apply(function: KSFunctionDeclaration) {
-        function.checkIsStatic(logger)
-    }
-
-    @Suppress("ConstPropertyName") // https://bit.ly/kotlin-prop-names
-    internal companion object {
-
-        const val annotationRef = "`@Route`"
-    }
-}
-
-private fun KSFunctionDeclaration.checkIsStatic(logger: KSPLogger) {
-    if (functionKind != FunctionKind.STATIC) {
-        val methodName = simpleName.getShortName()
-        logger.error(
-            "The method `$methodName()` annotated with $annotationRef must be `static`.",
-            this
-        )
-    }
-}
 
 @Suppress("unused")
 internal class TypeCheck(
@@ -88,8 +52,3 @@ internal class TypeCheck(
         return cls.qualifiedName?.asString() == name.asString()
     }
 }
-
-internal class EventRouteSignatureCheck(
-    resolver: Resolver,
-    logger: KSPLogger
-) : SignatureCheck(resolver, logger)

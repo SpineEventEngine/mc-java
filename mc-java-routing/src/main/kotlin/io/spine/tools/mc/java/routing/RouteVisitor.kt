@@ -38,8 +38,8 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 
-internal sealed class RouteVisitor(
-    private val functions: List<KSFunctionDeclaration>,
+internal sealed class RouteVisitor<F : RouteFun>(
+    private val functions: List<F>,
     protected val codeGenerator: CodeGenerator,
     protected val resolver: Resolver,
     protected val logger: KSPLogger
@@ -56,14 +56,12 @@ internal sealed class RouteVisitor(
         packageName = originalFile.packageName.asString()
         val className = classDeclaration.simpleName.asString() + classNameSuffix
         routingClass = TypeSpec.Companion.classBuilder(className)
-        functions.forEach { it.accept(this, Unit) }
+        functions.forEach { it.fn.accept(this, Unit) }
     }
 
-    protected abstract fun checkSignature(function: KSFunctionDeclaration)
     protected abstract fun generateCode(function: KSFunctionDeclaration)
 
     override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-        checkSignature(function)
         generateCode(function)
     }
 
@@ -78,17 +76,13 @@ internal sealed class RouteVisitor(
 }
 
 internal class CommandRouteVisitor(
-    functions: List<KSFunctionDeclaration>,
+    functions: List<CommandRouteFun>,
     codeGenerator: CodeGenerator,
     resolver: Resolver,
     logger: KSPLogger
-) : RouteVisitor(functions, codeGenerator, resolver, logger)  {
+) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, resolver, logger)  {
 
     override val classNameSuffix: String = "$\$CommandRouting"
-
-    override fun checkSignature(function: KSFunctionDeclaration) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-    }
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
@@ -96,21 +90,13 @@ internal class CommandRouteVisitor(
 }
 
 internal class EventRouteVisitor(
-    functions: List<KSFunctionDeclaration>,
+    functions: List<EventRouteFun>,
     codeGenerator: CodeGenerator,
     resolver: Resolver,
     logger: KSPLogger
-) : RouteVisitor(functions, codeGenerator, resolver, logger) {
+) : RouteVisitor<EventRouteFun>(functions, codeGenerator, resolver, logger) {
 
     override val classNameSuffix: String = "$\$EventRouting"
-
-    private val signatureCheck: EventRouteSignatureCheck by lazy {
-        EventRouteSignatureCheck(resolver, logger)
-    }
-
-    override fun checkSignature(function: KSFunctionDeclaration) {
-        signatureCheck.apply(function)
-    }
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.

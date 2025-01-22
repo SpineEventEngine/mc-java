@@ -41,8 +41,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @ExperimentalCompilerApi
-@DisplayName("`RouteProcessor` should detect Java code errors")
-internal class RouteProcessorJavaErrorSpec {
+@DisplayName("`RouteProcessor` should detect Kotlin code errors")
+internal class RouteProcessorKotlinErrorSpec {
 
     private lateinit var compilation: KotlinCompilation
 
@@ -63,37 +63,31 @@ internal class RouteProcessorJavaErrorSpec {
     }
 
     @Test
-    fun `when a non-static method is annotated`() {
+    fun `when a function is defined on a file level`() {
         compilation.apply {
-            sources = listOf(annotatedNonStatic)
+            sources = listOf(fileLevelFunction)
         }
+
         val result = compilation.compile()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
-            it shouldContain "`route()`" // The name of the method in error.
+            it shouldContain "`route()`" // The name of the function in error.
             it shouldContain annotationRef
-            it shouldContain "must be `static`." // The nature of the error.
+            it shouldContain "must be a `static` member of an entity class." // The nature of the error.
         }
     }
 }
 
-@Suppress("ClassNameDiffersFromFileName", "MissingPackageInfo")
-private val annotatedNonStatic = SourceFile.java(
-    javaFile("AnnotatedNonStatic"), """
-    package io.spine.given.devices;
+private val fileLevelFunction = SourceFile.kotlin(
+    kotlinFile("FileLevelFunction"), """
+    package io.spine.given.devices
     
-    import io.spine.given.devices.events.StatusReported;    
-    import io.spine.server.projection.Projection;
-    import io.spine.server.route.Route;
-        
-    class AnnotatedNonStatic extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
-                
-        // Error: The method must be static.
-        @Route
-        DeviceId route(StatusReported event) {
-            return event.getDevice();
-        }
-    }
+    import io.spine.base.EventMessage
+    import io.spine.server.route.Route
+    
+    // Error: The function must be a static method of a class.
+    @Route
+    private fun route(e: EventMessage): String = "Hello" 
     """.trimIndent()
 )
