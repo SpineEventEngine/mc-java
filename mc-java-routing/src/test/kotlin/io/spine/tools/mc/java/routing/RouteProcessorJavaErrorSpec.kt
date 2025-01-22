@@ -73,7 +73,7 @@ internal class RouteProcessorJavaErrorSpec {
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "`route()`" // The name of the method in error.
-            it shouldContain "`@Route`"  // The reference to the annotation.
+            it shouldContain SignatureCheck.annotationRef
             it shouldContain "must be `static`." // The nature of the error.
         }
     }

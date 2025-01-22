@@ -27,19 +27,13 @@
 package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.route.Route
 
 internal class RouteProcessor(
@@ -50,49 +44,19 @@ internal class RouteProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val routingFunctions = filterAndGroup(allAnnotated)
-        routingFunctions.run {
-            checkUsage(logger)
-            generateCode()
-        }
+        routingFunctions.applyVisitors(resolver)
         val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
         return unprocessed
     }
 
-    private fun RoutingFunctions.generateCode() {
+    private fun RoutingFunctions.applyVisitors(resolver: Resolver) {
         forEach { (declaringClass, functions) ->
-            val visitor = RouteVisitor(functions)
-            declaringClass.accept(visitor, Unit)
-            visitor.writeFile()
-        }
-    }
-
-    private inner class RouteVisitor(
-        private val functions: List<KSFunctionDeclaration>
-    ) : KSVisitorVoid() {
-
-        private lateinit var packageName: String
-        private lateinit var originalFile: KSFile
-        private lateinit var routingClass: TypeSpec.Builder
-
-        override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-            originalFile = classDeclaration.containingFile!!
-            packageName = originalFile.packageName.asString()
-            val className = classDeclaration.simpleName.asString() + "\$\$Routing"
-            routingClass = TypeSpec.classBuilder(className)
-            functions.forEach { it.accept(this, Unit) }
-        }
-
-        override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-            //TODO:2025-01-14:alexander.yevsyukov: Implement
-        }
-
-        fun writeFile() {
-            val cls = routingClass.build()
-            val code = FileSpec.builder(packageName, cls.name!!)
-                .addType(cls)
-                .build()
-            val deps = Dependencies(true, originalFile)
-            code.writeTo(codeGenerator, deps)
+            val crv = CommandRouteVisitor(functions, codeGenerator, resolver, logger)
+            declaringClass.accept(crv, Unit)
+            crv.writeFile()
+            val erv = EventRouteVisitor(functions, codeGenerator, resolver, logger)
+            declaringClass.accept(erv, Unit)
+            erv.writeFile()
         }
     }
 }
@@ -120,14 +84,3 @@ private fun filterAndGroup(allAnnotated: Sequence<KSAnnotated>): RoutingFunction
 private fun Sequence<KSFunctionDeclaration>.groupByClasses(): RoutingFunctions =
     filter { it.parentDeclaration!! is KSClassDeclaration }
         .groupBy { it.parentDeclaration!! as KSClassDeclaration }
-
-/**
- * Validates routing function declarations.
- *
- * @see SignatureCheck
- */
-private fun RoutingFunctions.checkUsage(logger: KSPLogger) {
-    forEach { (declaringClass, functions) ->
-        SignatureCheck(declaringClass, functions, logger).apply()
-    }
-}

@@ -27,23 +27,27 @@
 package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSName
+import com.google.devtools.ksp.symbol.KSType
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.tools.mc.java.routing.SignatureCheck.Companion.annotationRef
 
 /**
- * Verifies that all [functions] of the [declaringClass] satisfy the contract
+ * Verifies that a function satisfies the contract
  * of the [@Route][io.spine.server.route.Route] annotation.
  */
-internal class SignatureCheck(
-    @Suppress("unused") private val declaringClass: KSClassDeclaration,
-    private val functions: List<KSFunctionDeclaration>,
-    private val logger: KSPLogger
+internal sealed class SignatureCheck(
+    protected val resolver: Resolver,
+    protected val logger: KSPLogger
 ) {
 
-    fun apply() {
-        functions.forEach { it.checkUsage(logger) }
+    @OverridingMethodsMustInvokeSuper
+    fun apply(function: KSFunctionDeclaration) {
+        function.checkIsStatic(logger)
     }
 
     @Suppress("ConstPropertyName") // https://bit.ly/kotlin-prop-names
@@ -53,7 +57,7 @@ internal class SignatureCheck(
     }
 }
 
-private fun KSFunctionDeclaration.checkUsage(logger: KSPLogger) {
+private fun KSFunctionDeclaration.checkIsStatic(logger: KSPLogger) {
     if (functionKind != FunctionKind.STATIC) {
         val methodName = simpleName.getShortName()
         logger.error(
@@ -62,3 +66,30 @@ private fun KSFunctionDeclaration.checkUsage(logger: KSPLogger) {
         )
     }
 }
+
+@Suppress("unused")
+internal class TypeCheck(
+    private val cls: Class<*>,
+    private val resolver: Resolver
+) {
+    private val name: KSName by lazy {
+        resolver.getKSNameFromString(cls.canonicalName)
+    }
+
+    private val type: KSType by lazy {
+        resolver.getClassDeclarationByName(name)!!.asStarProjectedType()
+    }
+
+    fun isAssignableFrom(cls: KSClassDeclaration): Boolean {
+        return type.isAssignableFrom(cls.asStarProjectedType())
+    }
+
+    fun matches(cls: KSClassDeclaration): Boolean {
+        return cls.qualifiedName?.asString() == name.asString()
+    }
+}
+
+internal class EventRouteSignatureCheck(
+    resolver: Resolver,
+    logger: KSPLogger
+) : SignatureCheck(resolver, logger)
