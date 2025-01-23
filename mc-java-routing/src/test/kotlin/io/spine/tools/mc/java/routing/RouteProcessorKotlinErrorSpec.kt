@@ -24,6 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress(
+    "ClassNameDiffersFromFileName" /* false positive in IDEA */,
+    "MissingPackageInfo" /* don't need them for these tests. */
+)
+
 package io.spine.tools.mc.java.routing
 
 import com.tschuchort.compiletesting.KotlinCompilation
@@ -119,6 +124,9 @@ internal class RouteProcessorKotlinErrorSpec {
     }
 }
 
+/**
+ * Error: The function must be a static method of a class.
+ */
 private val fileLevelFunction = SourceFile.kotlin(
     kotlinFile("FileLevelFunction"), """
     package io.spine.given.devices
@@ -126,26 +134,25 @@ private val fileLevelFunction = SourceFile.kotlin(
     import io.spine.base.EventMessage
     import io.spine.server.route.Route
     
-    // Error: The function must be a static method of a class.
     @Route
     private fun route(e: EventMessage): String = "Hello" 
     """.trimIndent()
 )
 
-@Suppress("ClassNameDiffersFromFileName", "MissingPackageInfo")
+/**
+ * Error: The method must be annotated as `JvmStatic`.
+ */
 private val notJvmStatic = SourceFile.kotlin(
     kotlinFile("NotJvmStatic"), """
     package io.spine.given.devices
     
-    import io.spine.given.devices.events.StatusReported    
+    import io.spine.given.devices.events.StatusReported
     import io.spine.server.projection.Projection
     import io.spine.server.route.Route
         
     class NotJvmStatic : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
                     
         companion object {
-        
-            // Error: The method must be annotated as `JvmStatic`.
             @Route
             fun route(e: StatusReported): DeviceId {
                 return event.getDevice()
@@ -155,18 +162,18 @@ private val notJvmStatic = SourceFile.kotlin(
     """.trimIndent()
 )
 
-@Suppress("ClassNameDiffersFromFileName", "MissingPackageInfo")
+/**
+ * Error: The method must belong to a companion object.
+ */
 private val notCompanionMember = SourceFile.kotlin(
     kotlinFile("NotCompanionMember"), """
     package io.spine.given.devices
     
-    import io.spine.given.devices.events.StatusReported    
+    import io.spine.given.devices.events.StatusReported
     import io.spine.server.projection.Projection
     import io.spine.server.route.Route
         
     class NotCompanionMember : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
-                    
-        // Error: The method must belong to a companion object.
         @Route
         fun route(e: StatusReported): DeviceId {
             return event.getDevice()
