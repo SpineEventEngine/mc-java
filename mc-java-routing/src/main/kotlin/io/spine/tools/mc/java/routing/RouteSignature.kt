@@ -31,14 +31,18 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
+import msg
+import funRef
 
+/**
+ * The base class for classes checking the contract of the functions with the [Route] annotation.
+ */
 internal sealed class RouteSignature<F : RouteFun>(
     protected val signalClass: Class<out SignalMessage>,
     protected val contextClass: Class<out SignalContext>,
@@ -79,6 +83,13 @@ internal sealed class RouteSignature<F : RouteFun>(
     }
 }
 
+/**
+ * The helper class which transforms the incoming sequence with [functions] into
+ * a list containing [CommandRouteFun] or [EventRouteFun].
+ *
+ * If a function is not recognized to be one of these types,
+ * the compilation terminates with an error.
+ */
 private class Qualifier(
     private val functions: Sequence<KSFunctionDeclaration>,
     resolver: Resolver,
@@ -111,7 +122,7 @@ private class Qualifier(
             return it
         } ?: run {
             logger.error(
-                "The function `${fn.qualifiedName}`" +
+                "The function `${fn.qualifiedName?.asString()}`" +
                         " does not match the $routeRef contract."
             )
             errors = true
@@ -126,14 +137,12 @@ private fun KSFunctionDeclaration.commonChecks(logger: KSPLogger): Boolean =
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     val isStatic = functionKind == FunctionKind.STATIC
     if (!isStatic) {
-        val methodName = simpleName.getShortName()
-        logger.error(
-            if (origin == KOTLIN) {
-                "The function `$methodName()` annotated with $routeRef must be" +
-                        " a member of a companion object and annotated with $jvmStaticRef."
-            } else {
-                "The method `$methodName()` annotated with $routeRef must be `static`."
-            },
+        logger.error(msg(
+                "The $funRef annotated with $routeRef must be" +
+                        " a member of a companion object and annotated with $jvmStaticRef.",
+
+                "The $funRef annotated with $routeRef must be `static`."
+            ),
             this
         )
     }
@@ -144,6 +153,7 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
     val inClass = parentDeclaration is KSClassDeclaration
     if (!inClass) {
         val name = simpleName.getShortName()
+        // This case is Kotlin-only because in Java a function would belong to a class.
         logger.error(
             "The function `$name()` annotated with $routeRef must be" +
                     " a member of a companion object of an entity class" +
