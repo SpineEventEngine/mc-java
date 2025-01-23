@@ -28,17 +28,13 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.FunctionKind
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import funRef
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
-import msg
-import funRef
 
 /**
  * The base class for classes checking the contract of the functions with the [Route] annotation.
@@ -95,22 +91,28 @@ private class Qualifier(
     resolver: Resolver,
     private val logger: KSPLogger
 ) {
-    private var errors = false
+    private var errorCount = 0
     private val cmd = CommandRouteSignature(resolver, logger)
     private val evt = EventRouteSignature(resolver, logger)
 
     fun run(): List<RouteFun> {
-        val result = buildList<RouteFun> {
-            functions.forEach { fn ->
-                if (fn.commonChecks(logger)) {
-                    qualify(fn)?.let {
-                        add(it)
-                    }
-                }
+        val result = mutableListOf<RouteFun>()
+        functions.forEach { fn ->
+            val commonChecksPass = fn.commonChecks(logger)
+            if (!commonChecksPass) {
+                errorCount += 1
+                return@forEach
+            }
+            val qualified = qualify(fn)
+            if (qualified != null) {
+                result.add(qualified)
+            } else {
+                logger.error("The ${fn.funRef} does not match the $routeRef contract.", fn)
+                errorCount += 1
             }
         }
-        if (errors) {
-            error("Errors using $routeRef.")
+        if (errorCount > 0) {
+            error("${"Error".pluralize(errorCount)} using $routeRef.")
         }
         return result
     }
@@ -120,58 +122,10 @@ private class Qualifier(
             return it
         } ?: evt.match(fn)?.let {
             return it
-        } ?: run {
-            logger.error(
-                "The ${fn.funRef} does not match the $routeRef contract.", fn
-            )
-            errors = true
-            return null
-        }
+        } ?: return null
     }
 }
 
-private fun KSFunctionDeclaration.commonChecks(logger: KSPLogger): Boolean =
-    declaredInAClass(logger)
-            && isStatic(logger)
-            && acceptsOneOrTwoParameters(logger)
-
-private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
-    val isStatic = functionKind == FunctionKind.STATIC
-    if (!isStatic) {
-        logger.error(msg(
-                "The $funRef annotated with $routeRef must be" +
-                        " a member of a companion object and annotated with $jvmStaticRef.",
-
-                "The $funRef annotated with $routeRef must be `static`."
-            ),
-            this
-        )
-    }
-    return isStatic
-}
-
-private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
-    val inClass = parentDeclaration is KSClassDeclaration
-    if (!inClass) {
-        // This case is Kotlin-only because in Java a function would belong to a class.
-        logger.error(
-            "The $funRef annotated with $routeRef must be" +
-                    " a member of a companion object of an entity class" +
-                    " annotated with $jvmStaticRef.",
-            this
-        )
-    }
-    return inClass
-}
-
-private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Boolean {
-    val wrongNumber = parameters.isEmpty() || parameters.size > 2
-    if (wrongNumber) {
-        logger.error(
-            "The $funRef annotated with $routeRef must accept one or two parameters. " +
-                    "Encountered: ${parameters.size}.",
-            this
-        )
-    }
-    return !wrongNumber
+private fun String.pluralize(count: Int, pluralForm: String? = null): String {
+    return if (count == 1) this else pluralForm ?: "${this}s"
 }
