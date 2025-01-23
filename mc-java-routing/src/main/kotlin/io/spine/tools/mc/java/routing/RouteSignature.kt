@@ -146,7 +146,7 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
         val name = simpleName.getShortName()
         logger.error(
             "The function `$name()` annotated with $routeRef must be" +
-                    " a method of a companion object of an entity class" +
+                    " a member of a companion object of an entity class" +
                     " annotated with $jvmStaticRef.",
             this
         )

@@ -78,7 +78,7 @@ internal class RouteProcessorKotlinErrorSpec {
         result.messages.let {
             it shouldContain "`route()`" // The name of the function in error.
             it shouldContain routeRef
-            it shouldContain "a method of a companion object of an entity class"
+            it shouldContain "a member of a companion object of an entity class"
             it shouldContain jvmStaticRef
         }
     }
