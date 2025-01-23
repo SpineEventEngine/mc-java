@@ -31,13 +31,13 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
-import kotlin.sequences.forEach
 
 internal sealed class RouteSignature<F : RouteFun>(
     protected val signalClass: Class<out SignalMessage>,
@@ -128,7 +128,12 @@ private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     if (!isStatic) {
         val methodName = simpleName.getShortName()
         logger.error(
-            "The method `$methodName()` annotated with $routeRef must be `static`.",
+            if (origin == KOTLIN) {
+                "The function `$methodName()` annotated with $routeRef must be" +
+                        " a member of a companion object and annotated with $jvmStaticRef."
+            } else {
+                "The method `$methodName()` annotated with $routeRef must be `static`."
+            },
             this
         )
     }
