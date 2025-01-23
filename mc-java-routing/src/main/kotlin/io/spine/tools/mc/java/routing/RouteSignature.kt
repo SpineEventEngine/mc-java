@@ -47,7 +47,6 @@ internal sealed class RouteSignature<F : RouteFun>(
     protected val resolver: Resolver,
     protected val logger: KSPLogger
 ) {
-
     private val signalType by lazy { signalClass.toType(resolver) }
     private val contextType by lazy { contextClass.toType(resolver) }
 
@@ -55,6 +54,7 @@ internal sealed class RouteSignature<F : RouteFun>(
     protected abstract fun declarationSiteMatches(fn: KSFunctionDeclaration): Boolean
     protected abstract fun create(fn: KSFunctionDeclaration): F
 
+    @Suppress("ReturnCount")
     fun match(fn: KSFunctionDeclaration): F? {
         if (!parametersMatch(fn)) {
             return null
@@ -100,7 +100,7 @@ internal sealed class RouteSignature<F : RouteFun>(
     /**
      * A safety net to accept functions with the proper number of parameters.
      *
-     * We formally for this to be true in [KSFunctionDeclaration.acceptsOneOrTwoParameters].
+     * We formally check for this to be true in [KSFunctionDeclaration.acceptsOneOrTwoParameters].
      */
     private fun checkParamSize(fn: KSFunctionDeclaration) =
         require(fn.parameters.size == 1 || fn.parameters.size == 2)
@@ -121,10 +121,13 @@ internal sealed class RouteSignature<F : RouteFun>(
     }
 }
 
+/**
+ * Converts this class into [KSType] using the given resolver.
+ */
 private fun Class<*>.toType(resolver: Resolver): KSType {
     val name = resolver.getKSNameFromString(canonicalName)
     val classDecl = resolver.getClassDeclarationByName(name)
-    // This is a reminder to add a proper JAR for `KotlinCompilation` in tests.
+    // This is a reminder to add corresponding JAR to `KotlinCompilation` in tests.
     check(classDecl != null) {
         "Unable to find the declaration of `$canonicalName`." +
                 " Make sure the class is in the compilation classpath."
