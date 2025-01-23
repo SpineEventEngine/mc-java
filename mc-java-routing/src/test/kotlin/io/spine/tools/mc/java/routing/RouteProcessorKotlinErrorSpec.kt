@@ -32,9 +32,11 @@ import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.spine.base.EventMessage
 import io.spine.given.devices.Device
 import io.spine.server.route.Route
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.annotationRef
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -49,6 +51,7 @@ internal class RouteProcessorKotlinErrorSpec {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
+        val baseJar = EventMessage::class.java.classpathFile()
         val serverJar = Route::class.java.classpathFile()
         val compiledProtos = Device::class.java.classpathFile()
 
@@ -56,6 +59,7 @@ internal class RouteProcessorKotlinErrorSpec {
             javaPackagePrefix = "io.spine.routing.given"
             symbolProcessorProviders = listOf(RouteProcessorProvider())
             classpaths = classpaths + listOf(
+                baseJar,
                 serverJar,
                 compiledProtos
             )
@@ -73,8 +77,9 @@ internal class RouteProcessorKotlinErrorSpec {
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "`route()`" // The name of the function in error.
-            it shouldContain annotationRef
-            it shouldContain "must be a `static` member of an entity class." // The nature of the error.
+            it shouldContain routeRef
+            it shouldContain "a method of a companion object of an entity class" // The nature of the error.
+            it shouldContain jvmStaticRef
         }
     }
 }

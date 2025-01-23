@@ -34,7 +34,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.spine.given.devices.Device
 import io.spine.server.route.Route
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.annotationRef
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -72,7 +72,7 @@ internal class RouteProcessorJavaErrorSpec {
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "`route()`" // The name of the method in error.
-            it shouldContain annotationRef
+            it shouldContain routeRef
             it shouldContain "must be `static`." // The nature of the error.
         }
     }

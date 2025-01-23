@@ -38,26 +38,26 @@ import io.spine.server.route.Route
 
 internal class RouteProcessor(
     private val codeGenerator: CodeGenerator,
-    @Suppress("unused") internal val logger: KSPLogger
+    internal val logger: KSPLogger
 ) : SymbolProcessor {
 
+    private lateinit var resolver: Resolver
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        this.resolver = resolver
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val allValid = allAnnotated.filter { it.validate() }
             .map { it as KSFunctionDeclaration }
 
         val qualified = RouteSignature.qualify(allValid, resolver, logger)
-        processCommands(qualified, resolver)
-        processEvents(qualified, resolver)
+        processCommands(qualified)
+        processEvents(qualified)
 
         val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
         return unprocessed
     }
 
-    private fun processCommands(
-        qualified: Sequence<RouteFun>,
-        resolver: Resolver
-    ) {
+    private fun processCommands(qualified: List<RouteFun>) {
         val commandRouting = qualified.filterIsInstance<CommandRouteFun>()
         val commandRoutingGrouped = commandRouting.groupByClasses()
         commandRoutingGrouped.forEach { (declaringClass, functions) ->
@@ -67,10 +67,7 @@ internal class RouteProcessor(
         }
     }
 
-    private fun processEvents(
-        qualified: Sequence<RouteFun>,
-        resolver: Resolver
-    ) {
+    private fun processEvents(qualified: List<RouteFun>) {
         val eventRouting = qualified.filterIsInstance<EventRouteFun>()
         val eventRoutingGrouped = eventRouting.groupByClasses()
         eventRoutingGrouped.forEach { (declaringClass, functions) ->
@@ -81,5 +78,5 @@ internal class RouteProcessor(
     }
 }
 
-private fun <F : RouteFun> Sequence<F>.groupByClasses(): Map<KSClassDeclaration, List<F>> =
+private fun <F : RouteFun> List<F>.groupByClasses(): Map<KSClassDeclaration, List<F>> =
     groupBy { it.fn.parentDeclaration!! as KSClassDeclaration }

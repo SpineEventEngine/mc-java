@@ -33,7 +33,10 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.annotationRef
+import io.spine.server.route.Route
+import io.spine.string.simply
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import kotlin.sequences.forEach
 
 internal sealed class RouteSignature<F : RouteFun>(
@@ -60,16 +63,16 @@ internal sealed class RouteSignature<F : RouteFun>(
         return create(fn)
     }
 
-    @Suppress("ConstPropertyName") // https://bit.ly/kotlin-prop-names
     companion object {
 
-        const val annotationRef = "`@Route`"
+        val routeRef by lazy { "`@${simply<Route>()}`" }
+        val jvmStaticRef by lazy { "`@${simply<JvmStatic>()}`" }
 
         fun qualify(
             functions: Sequence<KSFunctionDeclaration>,
             resolver: Resolver,
             logger: KSPLogger
-        ): Sequence<RouteFun> {
+        ): List<RouteFun> {
             val qualifier = Qualifier(functions, resolver, logger)
             return qualifier.run()
         }
@@ -85,46 +88,47 @@ private class Qualifier(
     private val cmd = CommandRouteSignature(resolver, logger)
     private val evt = EventRouteSignature(resolver, logger)
 
-    fun run(): Sequence<RouteFun> {
-        val result = sequence {
+    fun run(): List<RouteFun> {
+        val result = buildList<RouteFun> {
             functions.forEach { fn ->
                 if (fn.commonChecks(logger)) {
-                    qualify(fn)
-                } else {
-                    errors = true
+                    qualify(fn)?.let {
+                        add(it)
+                    }
                 }
             }
         }
         if (errors) {
-            error("Errors using $annotationRef.")
+            error("Errors using $routeRef.")
         }
         return result
     }
 
-    private suspend fun SequenceScope<RouteFun>.qualify(fn: KSFunctionDeclaration) {
+    private fun qualify(fn: KSFunctionDeclaration): RouteFun? {
         cmd.match(fn)?.let {
-            yield(it)
+            return it
         } ?: evt.match(fn)?.let {
-            yield(it)
+            return it
         } ?: run {
             logger.error(
                 "The function `${fn.qualifiedName}`" +
-                        " does not match the $annotationRef contract."
+                        " does not match the $routeRef contract."
             )
             errors = true
+            return null
         }
     }
 }
 
 private fun KSFunctionDeclaration.commonChecks(logger: KSPLogger): Boolean =
-    isStatic(logger) && declaredInAClass(logger)
+    declaredInAClass(logger) && isStatic(logger)
 
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     val isStatic = functionKind == FunctionKind.STATIC
     if (!isStatic) {
         val methodName = simpleName.getShortName()
         logger.error(
-            "The method `$methodName()` annotated with $annotationRef must be `static`.",
+            "The method `$methodName()` annotated with $routeRef must be `static`.",
             this
         )
     }
@@ -136,8 +140,9 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
     if (!inClass) {
         val name = simpleName.getShortName()
         logger.error(
-            "The function `$name()` annotated with $annotationRef must be " +
-                    "a method of a companion object of an entity class.",
+            "The function `$name()` annotated with $routeRef must be" +
+                    " a method of a companion object of an entity class" +
+                    " annotated with $jvmStaticRef.",
             this
         )
     }
