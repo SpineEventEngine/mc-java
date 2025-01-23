@@ -26,7 +26,10 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.tschuchort.compiletesting.SourceFile
+import com.tschuchort.compiletesting.SourceFile.Companion.java
 import java.io.File
+import org.intellij.lang.annotations.Language
 
 /**
  * Obtains the path to the classpath element which contains the receiver class.
@@ -42,9 +45,20 @@ private val packageDir = "io/spine/given/devices"
 /**
  * Obtains a file name with the package directories for a Java class with the given simple name.
  */
-internal fun javaFile(simpleName: String): String = "$packageDir/${simpleName}.java"
+private fun javaFn(simpleName: String): String = "$packageDir/${simpleName}.java"
 
 /**
  * Obtains a file name with the package directories for a Kotlin file with the given name.
  */
 internal fun kotlinFile(simpleName: String): String = "$packageDir/${simpleName}.kt"
+
+/**
+ * Creates an instance of [SourceFile] with the Java file containing the class
+ * with the specified name.
+ */
+internal fun javaFile(
+    simpleClassName: String,
+    @Language("java") contents: String
+): SourceFile {
+    return java(name = javaFn(simpleClassName), contents = contents, trimIndent = true)
+}

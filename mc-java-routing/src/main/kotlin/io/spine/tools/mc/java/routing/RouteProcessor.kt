@@ -58,9 +58,9 @@ internal class RouteProcessor(
     }
 
     private fun processCommands(qualified: List<RouteFun>) {
-        val commandRouting = qualified.filterIsInstance<CommandRouteFun>()
-        val commandRoutingGrouped = commandRouting.groupByClasses()
-        commandRoutingGrouped.forEach { (declaringClass, functions) ->
+        val routing = qualified.filterIsInstance<CommandRouteFun>()
+        val grouped = routing.groupByClasses()
+        grouped.forEach { (declaringClass, functions) ->
             val crv = CommandRouteVisitor(functions, codeGenerator, resolver, logger)
             declaringClass.accept(crv, Unit)
             crv.writeFile()
@@ -68,9 +68,9 @@ internal class RouteProcessor(
     }
 
     private fun processEvents(qualified: List<RouteFun>) {
-        val eventRouting = qualified.filterIsInstance<EventRouteFun>()
-        val eventRoutingGrouped = eventRouting.groupByClasses()
-        eventRoutingGrouped.forEach { (declaringClass, functions) ->
+        val routing = qualified.filterIsInstance<EventRouteFun>()
+        val grouped = routing.groupByClasses()
+        grouped.forEach { (declaringClass, functions) ->
             val erv = EventRouteVisitor(functions, codeGenerator, resolver, logger)
             declaringClass.accept(erv, Unit)
             erv.writeFile()

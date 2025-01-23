@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.routing
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import funRef
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
@@ -45,7 +47,10 @@ internal sealed class RouteSignature<F : RouteFun>(
     protected val resolver: Resolver,
     protected val logger: KSPLogger
 ) {
-    protected abstract fun parametersMatch(fn: KSFunctionDeclaration): Boolean
+
+    private val signalType by lazy { signalClass.toType(resolver) }
+    private val contextType by lazy { contextClass.toType(resolver) }
+
     protected abstract fun returnTypeMatches(fn: KSFunctionDeclaration): Boolean
     protected abstract fun declarationSiteMatches(fn: KSFunctionDeclaration): Boolean
     protected abstract fun create(fn: KSFunctionDeclaration): F
@@ -63,6 +68,43 @@ internal sealed class RouteSignature<F : RouteFun>(
         return create(fn)
     }
 
+    @OverridingMethodsMustInvokeSuper
+    protected open fun parametersMatch(fn: KSFunctionDeclaration): Boolean  {
+        checkParamSize(fn)
+
+        val firstParamType = fn.parameters[0].type.resolve()
+        if (!signalType.isAssignableFrom(firstParamType)) {
+            // Even if the parameter does not match, it could be another kind of
+            // routing function, so we simply return `false`.
+            return false
+        }
+        if (fn.parameters.size == 2) {
+            val secondParamType = fn.parameters[1].type.resolve()
+            val match = contextType.isAssignableFrom(secondParamType)
+            if (!match) {
+                // Here, knowing that the first parameter type is correct, we can complain
+                // about the type of the second parameter.
+                val actualSecondParamName = secondParamType.declaration.simpleName.getShortName()
+                logger.error(
+                    "The second parameter of the ${fn.funRef} annotated with $routeRef" +
+                            " must be `${contextClass.simpleName}`." +
+                            " Encountered: `$actualSecondParamName`.",
+                    fn
+                )
+            }
+            return match
+        }
+        return true
+    }
+
+    /**
+     * A safety net to accept functions with the proper number of parameters.
+     *
+     * We formally for this to be true in [KSFunctionDeclaration.acceptsOneOrTwoParameters].
+     */
+    private fun checkParamSize(fn: KSFunctionDeclaration) =
+        require(fn.parameters.size == 1 || fn.parameters.size == 2)
+
     companion object {
 
         val routeRef by lazy { "`@${simply<Route>()}`" }
@@ -77,6 +119,18 @@ internal sealed class RouteSignature<F : RouteFun>(
             return qualifier.run()
         }
     }
+}
+
+private fun Class<*>.toType(resolver: Resolver): KSType {
+    val name = resolver.getKSNameFromString(canonicalName)
+    val classDecl = resolver.getClassDeclarationByName(name)
+    // This is a reminder to add a proper JAR for `KotlinCompilation` in tests.
+    check(classDecl != null) {
+        "Unable to find the declaration of `$canonicalName`." +
+                " Make sure the class is in the compilation classpath."
+    }
+    val type = classDecl.asStarProjectedType()
+    return type
 }
 
 /**
@@ -107,7 +161,6 @@ private class Qualifier(
             if (qualified != null) {
                 result.add(qualified)
             } else {
-                logger.error("The ${fn.funRef} does not match the $routeRef contract.", fn)
                 errorCount += 1
             }
         }

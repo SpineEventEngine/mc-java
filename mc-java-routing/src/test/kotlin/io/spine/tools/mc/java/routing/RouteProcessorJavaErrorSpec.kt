@@ -33,13 +33,15 @@ package io.spine.tools.mc.java.routing
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
-import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.spine.base.CommandMessage
+import io.spine.core.CommandContext
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.server.route.Route
+import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.BeforeEach
@@ -55,6 +57,7 @@ internal class RouteProcessorJavaErrorSpec {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
+        val baseJar = CommandMessage::class.java.classpathFile()
         val coreJar = EventContext::class.java.classpathFile()
         val serverJar = Route::class.java.classpathFile()
         val compiledProtos = Device::class.java.classpathFile()
@@ -63,6 +66,7 @@ internal class RouteProcessorJavaErrorSpec {
             javaPackagePrefix = "io.spine.routing.given"
             symbolProcessorProviders = listOf(RouteProcessorProvider())
             classpaths = classpaths + listOf(
+                baseJar,
                 coreJar,
                 serverJar,
                 compiledProtos
@@ -70,55 +74,11 @@ internal class RouteProcessorJavaErrorSpec {
         }
     }
 
-    @Test
-    fun `when a non-static method is annotated`() {
-        compilation.apply {
-            sources = listOf(nonStatic)
-        }
-        val result = compilation.compile()
-
-        result.exitCode shouldBe COMPILATION_ERROR
-        result.messages.let {
-            it shouldContain "The method `route()`" // The name of the method in error.
-            it shouldContain routeRef
-            it shouldContain "must be `static`." // The nature of the error.
-        }
-    }
-
-    @Test
-    fun `when no parameters are specified`() {
-        compilation.apply {
-            sources = listOf(noParameters)
-        }
-        val result = compilation.compile()
-        result.exitCode shouldBe COMPILATION_ERROR
-        result.messages.let {
-            it shouldContain "The method `route()`" // The name of the method in error.
-            it shouldContain routeRef
-            it shouldContain "one or two parameters. Encountered: 0."
-        }
-    }
-
-    @Test
-    fun `when too many parameters are specified`() {
-        compilation.apply {
-            sources = listOf(tooManyParameters)
-        }
-        val result = compilation.compile()
-        result.exitCode shouldBe COMPILATION_ERROR
-        result.messages.let {
-            it shouldContain "The method `route()`" // The name of the method in error.
-            it shouldContain routeRef
-            it shouldContain "one or two parameters. Encountered: 3."
-        }
-    }
-}
-
-/**
- * Error: non-static method.
- */
-private val nonStatic = SourceFile.java(
-    javaFile("NonStatic"), """
+    /*
+     * Error: non-static method.
+     */
+    private val nonStatic = javaFile("NonStatic", """
+        
     package io.spine.given.devices;
     
     import io.spine.given.devices.events.StatusReported;    
@@ -131,14 +91,28 @@ private val nonStatic = SourceFile.java(
             return event.getDevice();
         }
     }
-    """.trimIndent()
-)
+    """.trimIndent())
 
-/**
- * Error: no parameters.
- */
-private val noParameters = SourceFile.java(
-    javaFile("NoParameters"), """
+    @Test
+    fun `when a non-static method is annotated`() {
+        compilation.apply {
+            sources = listOf(nonStatic)
+        }
+        val result = compilation.compile()
+
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The method `route()`"
+            it shouldContain routeRef
+            it shouldContain "must be `static`."
+        }
+    }
+
+    /*
+     * Error: no parameters.
+     */
+    private val noParameters = javaFile("NoParameters", """
+        
     package io.spine.given.devices;
     
     import io.spine.given.devices.events.StatusReported;    
@@ -151,14 +125,27 @@ private val noParameters = SourceFile.java(
             return DeviceId.generate();
         }
     }
-    """.trimIndent()
-)
+    """.trimIndent())
 
-/**
- * Error: too many parameters.
- */
-private val tooManyParameters = SourceFile.java(
-    javaFile("TooManyParameters"), """
+    @Test
+    fun `when no parameters are specified`() {
+        compilation.apply {
+            sources = listOf(noParameters)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The method `route()`"
+            it shouldContain routeRef
+            it shouldContain "one or two parameters. Encountered: 0."
+        }
+    }
+
+    /*
+     * Error: too many parameters.
+     */
+    private val tooManyParameters = javaFile("TooManyParameters", """
+        
     package io.spine.given.devices;
         
     import io.spine.core.EventContext;
@@ -172,5 +159,56 @@ private val tooManyParameters = SourceFile.java(
             return event.getDevice();
         }
     }
+    """.trimIndent())
+
+    @Test
+    fun `when too many parameters are specified`() {
+        compilation.apply {
+            sources = listOf(tooManyParameters)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The method `route()`"
+            it shouldContain routeRef
+            it shouldContain "one or two parameters. Encountered: 3."
+        }
+    }
+
+    /**
+     * Error: the second parameter is [io.spine.core.CommandContext] instead of [EventContext].
+     */
+    private val wrongSecondParameter = javaFile("WrongSecondParameter", """
+    
+    package io.spine.given.devices;
+        
+    import io.spine.core.CommandContext;
+    import io.spine.given.devices.events.StatusReported;
+    import io.spine.server.projection.Projection;
+    import io.spine.server.route.Route;
+        
+    class WrongSecondParameter extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
+        @Route
+        static DeviceId route(StatusReported event, CommandContext context) {
+            return event.getDevice();
+        }
+    }
     """.trimIndent()
-)
+    )
+
+    @Test
+    fun `when the second parameters is of incorrect type`() {
+        compilation.apply {
+            sources = listOf(wrongSecondParameter)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The second parameter of the method `route()`"
+            it shouldContain routeRef
+            it shouldContain "must be `${simply<EventContext>()}`."
+            it shouldContain "Encountered: `${simply<CommandContext>()}`."
+        }
+    }
+}
+

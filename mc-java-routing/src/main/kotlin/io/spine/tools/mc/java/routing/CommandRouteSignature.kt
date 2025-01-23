@@ -41,11 +41,6 @@ internal class CommandRouteSignature(
     resolver,
     logger
 ) {
-    override fun parametersMatch(fn: KSFunctionDeclaration): Boolean {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement
-        return false
-    }
-
     override fun returnTypeMatches(fn: KSFunctionDeclaration): Boolean {
         //TODO:2025-01-22:alexander.yevsyukov: Implement
         return false
