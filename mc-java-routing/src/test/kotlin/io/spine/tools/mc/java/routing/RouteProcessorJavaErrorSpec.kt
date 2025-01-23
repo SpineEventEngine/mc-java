@@ -24,6 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress(
+    "ClassNameDiffersFromFileName" /* false positive in IDEA */,
+    "MissingPackageInfo" /* don't need them for these tests. */
+)
+
 package io.spine.tools.mc.java.routing
 
 import com.tschuchort.compiletesting.KotlinCompilation
@@ -32,6 +37,7 @@ import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.server.route.Route
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
@@ -49,6 +55,7 @@ internal class RouteProcessorJavaErrorSpec {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
+        val coreJar = EventContext::class.java.classpathFile()
         val serverJar = Route::class.java.classpathFile()
         val compiledProtos = Device::class.java.classpathFile()
 
@@ -56,6 +63,7 @@ internal class RouteProcessorJavaErrorSpec {
             javaPackagePrefix = "io.spine.routing.given"
             symbolProcessorProviders = listOf(RouteProcessorProvider())
             classpaths = classpaths + listOf(
+                coreJar,
                 serverJar,
                 compiledProtos
             )
@@ -65,33 +73,102 @@ internal class RouteProcessorJavaErrorSpec {
     @Test
     fun `when a non-static method is annotated`() {
         compilation.apply {
-            sources = listOf(annotatedNonStatic)
+            sources = listOf(nonStatic)
         }
         val result = compilation.compile()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
-            it shouldContain "`route()`" // The name of the method in error.
+            it shouldContain "The method `route()`" // The name of the method in error.
             it shouldContain routeRef
             it shouldContain "must be `static`." // The nature of the error.
         }
     }
+
+    @Test
+    fun `when no parameters are specified`() {
+        compilation.apply {
+            sources = listOf(noParameters)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The method `route()`" // The name of the method in error.
+            it shouldContain routeRef
+            it shouldContain "one or two parameters. Encountered: 0."
+        }
+    }
+
+    @Test
+    fun `when too many parameters are specified`() {
+        compilation.apply {
+            sources = listOf(tooManyParameters)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The method `route()`" // The name of the method in error.
+            it shouldContain routeRef
+            it shouldContain "one or two parameters. Encountered: 3."
+        }
+    }
 }
 
-@Suppress("ClassNameDiffersFromFileName", "MissingPackageInfo")
-private val annotatedNonStatic = SourceFile.java(
-    javaFile("AnnotatedNonStatic"), """
+/**
+ * Error: non-static method.
+ */
+private val nonStatic = SourceFile.java(
+    javaFile("NonStatic"), """
     package io.spine.given.devices;
     
     import io.spine.given.devices.events.StatusReported;    
     import io.spine.server.projection.Projection;
     import io.spine.server.route.Route;
         
-    class AnnotatedNonStatic extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
-                
-        // Error: The method must be static.
+    class NonStatic extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
         @Route
         DeviceId route(StatusReported event) {
+            return event.getDevice();
+        }
+    }
+    """.trimIndent()
+)
+
+/**
+ * Error: no parameters.
+ */
+private val noParameters = SourceFile.java(
+    javaFile("NoParameters"), """
+    package io.spine.given.devices;
+    
+    import io.spine.given.devices.events.StatusReported;    
+    import io.spine.server.projection.Projection;
+    import io.spine.server.route.Route;
+        
+    class NoParameters extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
+        @Route
+        static DeviceId route() {
+            return DeviceId.generate();
+        }
+    }
+    """.trimIndent()
+)
+
+/**
+ * Error: too many parameters.
+ */
+private val tooManyParameters = SourceFile.java(
+    javaFile("TooManyParameters"), """
+    package io.spine.given.devices;
+        
+    import io.spine.core.EventContext;
+    import io.spine.given.devices.events.StatusReported;    
+    import io.spine.server.projection.Projection;
+    import io.spine.server.route.Route;
+        
+    class TooManyParameters extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
+        @Route
+        static DeviceId route(StatusReported event, EventContext context, Object other) {
             return event.getDevice();
         }
     }

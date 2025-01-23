@@ -122,8 +122,7 @@ private class Qualifier(
             return it
         } ?: run {
             logger.error(
-                "The function `${fn.qualifiedName?.asString()}`" +
-                        " does not match the $routeRef contract."
+                "The ${fn.funRef} does not match the $routeRef contract.", fn
             )
             errors = true
             return null
@@ -132,7 +131,9 @@ private class Qualifier(
 }
 
 private fun KSFunctionDeclaration.commonChecks(logger: KSPLogger): Boolean =
-    declaredInAClass(logger) && isStatic(logger)
+    declaredInAClass(logger)
+            && isStatic(logger)
+            && acceptsOneOrTwoParameters(logger)
 
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     val isStatic = functionKind == FunctionKind.STATIC
@@ -152,14 +153,25 @@ private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
 private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
     val inClass = parentDeclaration is KSClassDeclaration
     if (!inClass) {
-        val name = simpleName.getShortName()
         // This case is Kotlin-only because in Java a function would belong to a class.
         logger.error(
-            "The function `$name()` annotated with $routeRef must be" +
+            "The $funRef annotated with $routeRef must be" +
                     " a member of a companion object of an entity class" +
                     " annotated with $jvmStaticRef.",
             this
         )
     }
     return inClass
+}
+
+private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Boolean {
+    val wrongNumber = parameters.isEmpty() || parameters.size > 2
+    if (wrongNumber) {
+        logger.error(
+            "The $funRef annotated with $routeRef must accept one or two parameters. " +
+                    "Encountered: ${parameters.size}.",
+            this
+        )
+    }
+    return !wrongNumber
 }
