@@ -68,6 +68,15 @@ internal sealed class RouteSignature<F : RouteFun>(
         return create(fn)
     }
 
+    /**
+     * Verifies that the given function accepts one or two parameters with
+     * the types matching [signalClass] and [contextClass].
+     *
+     * The first parameter must be of [signalClass] or implement the interface specified
+     * by this property.
+     *
+     * The second parameter, if any, must be of the [contextClass] type.
+     */
     @OverridingMethodsMustInvokeSuper
     protected open fun parametersMatch(fn: KSFunctionDeclaration): Boolean  {
         checkParamSize(fn)
@@ -80,7 +89,7 @@ internal sealed class RouteSignature<F : RouteFun>(
         }
         if (fn.parameters.size == 2) {
             val secondParamType = fn.parameters[1].type.resolve()
-            val match = contextType.isAssignableFrom(secondParamType)
+            val match = contextType == secondParamType
             if (!match) {
                 // Here, knowing that the first parameter type is correct, we can complain
                 // about the type of the second parameter.
