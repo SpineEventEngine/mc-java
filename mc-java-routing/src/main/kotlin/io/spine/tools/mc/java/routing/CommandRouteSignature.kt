@@ -26,30 +26,40 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import io.spine.base.CommandMessage
 import io.spine.core.CommandContext
 
 internal class CommandRouteSignature(
-    resolver: Resolver,
-    logger: KSPLogger
+    context: Context
 ) : RouteSignature<CommandRouteFun>(
     CommandMessage::class.java,
     CommandContext::class.java,
-    resolver,
-    logger
+    context
 ) {
-    override fun returnTypeMatches(fn: KSFunctionDeclaration): Boolean {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement
-        return false
+    override fun matchDeclaringClass(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): Boolean = with(context) {
+        val isAggregate = aggregateClass.isAssignableFrom(declaringClass.type)
+        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
+        val match = isAggregate || isProcessManager
+        if (!match) {
+            val parent = declaringClass.superClass()
+            logger.error(
+                "A command routing function can be declared in a class derived" +
+                        " from ${processManagerClass.ref} or ${aggregateClass.ref}." +
+                        " Encountered: ${parent.qualifiedRef}.",
+            fn)
+        }
+        return match
     }
 
-    override fun declarationSiteMatches(fn: KSFunctionDeclaration): Boolean {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-        return false
-    }
-
-    override fun create(fn: KSFunctionDeclaration): CommandRouteFun = CommandRouteFun(fn)
+    override fun create(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass,
+        parameters: Pair<KSType, KSType?>,
+        returnType: KSType
+    ): CommandRouteFun = CommandRouteFun(fn, declaringClass, parameters, returnType)
 }

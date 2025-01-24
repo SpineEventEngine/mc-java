@@ -40,6 +40,7 @@ import io.spine.base.CommandMessage
 import io.spine.core.CommandContext
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
+import io.spine.server.entity.Entity
 import io.spine.server.route.Route
 import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
@@ -193,8 +194,7 @@ internal class RouteProcessorJavaErrorSpec {
             return event.getDevice();
         }
     }
-    """.trimIndent()
-    )
+    """.trimIndent())
 
     @Test
     fun `when the second parameters is of incorrect type`() {
@@ -208,6 +208,44 @@ internal class RouteProcessorJavaErrorSpec {
             it shouldContain routeRef
             it shouldContain "must be `${simply<EventContext>()}`."
             it shouldContain "Encountered: `${simply<CommandContext>()}`."
+        }
+    }
+
+    /**
+     * Error: a routing function declared in a non-entity class.
+     */
+    private val nonEntityClass = javaFile("NonEntityClass", """
+        
+    package io.spine.given.devices;
+        
+    import io.spine.given.devices.events.StatusReported;    
+    import io.spine.server.event.AbstractEventReactor;
+    import io.spine.server.route.Route;
+    
+    /**
+     * This inheritance does not make any sense. 
+     * 
+     * <p>We just want to have a class which extends another class explicitly.
+     */
+    class NonEntityClass extends AbstractEventReactor {
+        @Route
+        static DeviceId route(StatusReported event) {
+            return event.getDevice();
+        }
+    }
+    """.trimIndent())
+
+    @Test
+    fun `when a function declared in a non-entity class`() {
+        compilation.apply {
+            sources = listOf(nonEntityClass)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The declaring class of the method `route()`"
+            it shouldContain routeRef
+            it shouldContain " must implement the `${Entity::class.java.canonicalName}` interface."
         }
     }
 }

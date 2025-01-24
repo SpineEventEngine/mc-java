@@ -27,13 +27,25 @@
 package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
 
 internal sealed class RouteFun(
-    internal val fn: KSFunctionDeclaration
+    val fn: KSFunctionDeclaration,
+    val declaringClass: EntityClass,
+    protected val parameters: Pair<KSType, KSType?>,
+    protected val returnType: KSType
 )
 
-internal class CommandRouteFun(fn: KSFunctionDeclaration) : RouteFun(fn) {
-}
+internal class CommandRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)
 
-internal class EventRouteFun(fn: KSFunctionDeclaration) : RouteFun(fn) {
-}
+internal class EventRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)

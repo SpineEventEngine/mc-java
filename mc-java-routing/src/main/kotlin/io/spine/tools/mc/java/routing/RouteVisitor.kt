@@ -28,8 +28,6 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
@@ -41,8 +39,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 internal sealed class RouteVisitor<F : RouteFun>(
     private val functions: List<F>,
     protected val codeGenerator: CodeGenerator,
-    protected val resolver: Resolver,
-    protected val logger: KSPLogger
+    protected val context: Context,
 ) : KSVisitorVoid() {
 
     private lateinit var packageName: String
@@ -67,7 +64,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     fun writeFile() {
         val cls = routingClass.build()
-        val code = FileSpec.Companion.builder(packageName, cls.name!!)
+        val code = FileSpec.builder(packageName, cls.name!!)
             .addType(cls)
             .build()
         val deps = Dependencies(true, originalFile)
@@ -78,9 +75,8 @@ internal sealed class RouteVisitor<F : RouteFun>(
 internal class CommandRouteVisitor(
     functions: List<CommandRouteFun>,
     codeGenerator: CodeGenerator,
-    resolver: Resolver,
-    logger: KSPLogger
-) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, resolver, logger)  {
+    context: Context
+) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, context)  {
 
     override val classNameSuffix: String = "$\$CommandRouting"
 
@@ -92,9 +88,8 @@ internal class CommandRouteVisitor(
 internal class EventRouteVisitor(
     functions: List<EventRouteFun>,
     codeGenerator: CodeGenerator,
-    resolver: Resolver,
-    logger: KSPLogger
-) : RouteVisitor<EventRouteFun>(functions, codeGenerator, resolver, logger) {
+    context: Context
+) : RouteVisitor<EventRouteFun>(functions, codeGenerator, context) {
 
     override val classNameSuffix: String = "$\$EventRouting"
 

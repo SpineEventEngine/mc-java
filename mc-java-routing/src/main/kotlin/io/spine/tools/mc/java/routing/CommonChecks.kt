@@ -31,6 +31,7 @@ import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import funRef
+import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import msg
@@ -41,7 +42,8 @@ import msg
  * @param logger The logger to report errors or warnings, if any.
  * @return `true` if all the checks pass, `false` otherwise.
  */
-internal fun KSFunctionDeclaration.commonChecks(logger: KSPLogger): Boolean {
+internal fun KSFunctionDeclaration.commonChecks(context: Context): Boolean {
+    val logger = context.logger
     // Run all the checks assuming that compilation may terminate after more than one error.
     val declaredInAClass = declaredInAClass(logger)
     val isStatic = isStatic(logger)
@@ -90,4 +92,23 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
         )
     }
     return !wrongNumber
+}
+
+internal fun KSFunctionDeclaration.declaringClass(context: Context): EntityClass? {
+    val parent = parentDeclaration!!.qualifiedName!!
+    var declaringClass = context.resolver.getClassDeclarationByName(parent)!!
+    if (declaringClass.isCompanionObject) {
+        // In Kotlin routing functions are declared in a companion object.
+        // We need the enclosing entity class.
+        declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
+    }
+    if (!context.entityInterface.isAssignableFrom(declaringClass.asStarProjectedType())) {
+        context.logger.error(
+            "The declaring class of the ${funRef} annotated with $routeRef" +
+                    " must implement the `${Entity::class.java.canonicalName}` interface.",
+            this
+        )
+        return null
+    }
+    return EntityClass(declaringClass, context.entityInterface)
 }

@@ -26,31 +26,37 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.ClassKind.CLASS
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import io.spine.base.EventMessage
-import io.spine.core.EventContext
 
-internal class EventRouteSignature(
-    context: Context
-) : RouteSignature<EventRouteFun>(
-    EventMessage::class.java,
-    EventContext::class.java,
-    context
+internal class EntityClass(
+    private val decl: KSClassDeclaration,
+    entityInterface: KSType
 ) {
-    override fun matchDeclaringClass(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass
-    ): Boolean {
-        val isProjection = context.projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = context.processManagerClass.isAssignableFrom(declaringClass.type)
-        return isProjection || isProcessManager
+    fun accept(visitor: RouteVisitor<*>, data: Unit) {
+        decl.accept(visitor, data)
     }
 
-    override fun create(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass,
-        parameters: Pair<KSType, KSType?>,
-        returnType: KSType
-    ): EventRouteFun = EventRouteFun(fn, declaringClass, parameters, returnType)
+    val type: KSType by lazy { decl.asStarProjectedType() }
+
+    val idClass: KSType by lazy {
+        val asEntity = decl.superTypes.find {
+            entityInterface.isAssignableFrom(it.resolve())
+        }
+        check(asEntity != null) {
+            "The class `${decl.qualifiedName!!.asString()}`" +
+                    " must implement ${entityInterface.declaration.qualifiedName!!.asString()}`."
+        }
+        val firstTypeArgument = asEntity.element!!.typeArguments.first()
+        firstTypeArgument.type!!.resolve()
+    }
+
+    fun superClass(): KSType {
+        val found = decl.superTypes.find {
+            val superType = it.resolve().declaration
+            (superType is KSClassDeclaration) && (superType.classKind == CLASS)
+        }
+        return found!!.resolve()
+    }
 }

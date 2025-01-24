@@ -26,44 +26,72 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import funRef
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.qualify
 
 /**
  * The base class for classes checking the contract of the functions with the [Route] annotation.
+ *
+ * The [match] function checks the signature of the function and creates an instance of
+ * a class derived from [RouteFun], if the contract is satisfied.
+ *
+ * The [qualify] method of the companion object walks through the annotated functions
+ * detected by the [RouteProcessor] matching them to corresponding signature kind and thus
+ * producing proper [RouteFun] instances.
  */
 internal sealed class RouteSignature<F : RouteFun>(
     protected val signalClass: Class<out SignalMessage>,
     protected val contextClass: Class<out SignalContext>,
-    protected val resolver: Resolver,
-    protected val logger: KSPLogger
+    protected val context: Context
 ) {
-    private val signalType by lazy { signalClass.toType(resolver) }
-    private val contextType by lazy { contextClass.toType(resolver) }
+    private val signalType by lazy { signalClass.toType(context.resolver) }
+    private val contextType by lazy { contextClass.toType(context.resolver) }
 
-    protected abstract fun returnTypeMatches(fn: KSFunctionDeclaration): Boolean
-    protected abstract fun declarationSiteMatches(fn: KSFunctionDeclaration): Boolean
-    protected abstract fun create(fn: KSFunctionDeclaration): F
+    protected abstract fun matchDeclaringClass(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): Boolean
+
+    @OverridingMethodsMustInvokeSuper
+    protected open fun matchReturnType(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): KSType? {
+        val idClass = declaringClass.idClass
+        val returnType = fn.returnType!!.resolve()
+        if (idClass.isAssignableFrom(returnType)) {
+            return returnType
+        }
+        return null
+    }
+
+    /**
+     * Creates a [RouteFun] of the type [F] for the given function and resolved types.
+     */
+    protected abstract fun create(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass,
+        parameters: Pair<KSType, KSType?>,
+        returnType: KSType
+    ): F
 
     @Suppress("ReturnCount")
-    fun match(fn: KSFunctionDeclaration): F? {
-        if (!parametersMatch(fn)) {
+    fun match(fn: KSFunctionDeclaration, declaringClass: EntityClass): F? {
+        val params = matchParameters(fn)
+            ?: return null
+        if (!matchDeclaringClass(fn, declaringClass)) {
             return null
         }
-        if (!returnTypeMatches(fn)) {
-            return null
-        }
-        if (!declarationSiteMatches(fn)) {
-            return null
-        }
-        return create(fn)
+        val returnType = matchReturnType(fn, declaringClass)
+            ?: return null
+        return create(fn, declaringClass, params, returnType)
     }
 
     /**
@@ -76,32 +104,33 @@ internal sealed class RouteSignature<F : RouteFun>(
      * The second parameter, if any, must be of the [contextClass] type.
      */
     @OverridingMethodsMustInvokeSuper
-    protected open fun parametersMatch(fn: KSFunctionDeclaration): Boolean  {
+    protected open fun matchParameters(fn: KSFunctionDeclaration): Pair<KSType, KSType?>? {
         checkParamSize(fn)
 
         val firstParamType = fn.parameters[0].type.resolve()
         if (!signalType.isAssignableFrom(firstParamType)) {
             // Even if the parameter does not match, it could be another kind of
             // routing function, so we simply return `false`.
-            return false
+            return null
         }
+        var secondParamType: KSType? = null
         if (fn.parameters.size == 2) {
-            val secondParamType = fn.parameters[1].type.resolve()
+            secondParamType = fn.parameters[1].type.resolve()
             val match = contextType == secondParamType
             if (!match) {
                 // Here, knowing that the first parameter type is correct, we can complain
                 // about the type of the second parameter.
                 val actualSecondParamName = secondParamType.declaration.simpleName.getShortName()
-                logger.error(
+                context.logger.error(
                     "The second parameter of the ${fn.funRef} annotated with $routeRef" +
                             " must be `${contextClass.simpleName}`." +
                             " Encountered: `$actualSecondParamName`.",
                     fn
                 )
+                return null
             }
-            return match
         }
-        return true
+        return Pair(firstParamType, secondParamType)
     }
 
     /**
@@ -119,10 +148,9 @@ internal sealed class RouteSignature<F : RouteFun>(
 
         fun qualify(
             functions: Sequence<KSFunctionDeclaration>,
-            resolver: Resolver,
-            logger: KSPLogger
+            context: Context
         ): List<RouteFun> {
-            val qualifier = Qualifier(functions, resolver, logger)
+            val qualifier = Qualifier(functions, context)
             return qualifier.run()
         }
     }

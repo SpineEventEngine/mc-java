@@ -31,7 +31,6 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.validate
 import io.spine.server.route.Route
@@ -43,13 +42,16 @@ internal class RouteProcessor(
 
     private lateinit var resolver: Resolver
 
+    private lateinit var context: Context
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
         this.resolver = resolver
+        this.context = Context(resolver, logger)
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val allValid = allAnnotated.filter { it.validate() }
             .map { it as KSFunctionDeclaration }
 
-        val qualified = RouteSignature.qualify(allValid, resolver, logger)
+        val qualified = RouteSignature.qualify(allValid, context)
         processCommands(qualified)
         processEvents(qualified)
 
@@ -61,7 +63,7 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<CommandRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val crv = CommandRouteVisitor(functions, codeGenerator, resolver, logger)
+            val crv = CommandRouteVisitor(functions, codeGenerator, context)
             declaringClass.accept(crv, Unit)
             crv.writeFile()
         }
@@ -71,12 +73,12 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<EventRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val erv = EventRouteVisitor(functions, codeGenerator, resolver, logger)
+            val erv = EventRouteVisitor(functions, codeGenerator, context)
             declaringClass.accept(erv, Unit)
             erv.writeFile()
         }
     }
 }
 
-private fun <F : RouteFun> List<F>.groupByClasses(): Map<KSClassDeclaration, List<F>> =
-    groupBy { it.fn.parentDeclaration!! as KSClassDeclaration }
+private fun <F : RouteFun> List<F>.groupByClasses(): Map<EntityClass, List<F>> =
+    groupBy { it.declaringClass }

@@ -26,31 +26,16 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import io.spine.base.EventMessage
-import io.spine.core.EventContext
 
-internal class EventRouteSignature(
-    context: Context
-) : RouteSignature<EventRouteFun>(
-    EventMessage::class.java,
-    EventContext::class.java,
-    context
-) {
-    override fun matchDeclaringClass(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass
-    ): Boolean {
-        val isProjection = context.projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = context.processManagerClass.isAssignableFrom(declaringClass.type)
-        return isProjection || isProcessManager
-    }
+/**
+ * Obtains backticked simple name of the type.
+ */
+internal val KSType.ref: String
+    get() = "`${declaration.simpleName.asString()}`"
 
-    override fun create(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass,
-        parameters: Pair<KSType, KSType?>,
-        returnType: KSType
-    ): EventRouteFun = EventRouteFun(fn, declaringClass, parameters, returnType)
-}
+/**
+ * Obtains backticked qualified name of the type.
+ */
+internal val KSType.qualifiedRef: String
+    get() = "`${declaration.qualifiedName?.asString()}`"

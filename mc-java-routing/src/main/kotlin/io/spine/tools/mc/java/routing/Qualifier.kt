@@ -39,22 +39,26 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
  */
 internal class Qualifier(
     private val functions: Sequence<KSFunctionDeclaration>,
-    resolver: Resolver,
-    private val logger: KSPLogger
+    private val context: Context
 ) {
     private var errorCount = 0
-    private val cmd = CommandRouteSignature(resolver, logger)
-    private val evt = EventRouteSignature(resolver, logger)
+    private val cmd = CommandRouteSignature(context)
+    private val evt = EventRouteSignature(context)
 
     fun run(): List<RouteFun> {
         val result = mutableListOf<RouteFun>()
         functions.forEach { fn ->
-            val commonChecksPass = fn.commonChecks(logger)
+            val commonChecksPass = fn.commonChecks(context)
             if (!commonChecksPass) {
                 errorCount += 1
                 return@forEach
             }
-            val qualified = qualify(fn)
+            val declaringClass = fn.declaringClass(context)
+            if (declaringClass == null) {
+                errorCount += 1
+                return@forEach
+            }
+            val qualified = qualify(fn, declaringClass)
             if (qualified != null) {
                 result.add(qualified)
             } else {
@@ -67,10 +71,10 @@ internal class Qualifier(
         return result
     }
 
-    private fun qualify(fn: KSFunctionDeclaration): RouteFun? {
-        cmd.match(fn)?.let {
+    private fun qualify(fn: KSFunctionDeclaration, declaringClass: EntityClass): RouteFun? {
+        cmd.match(fn, declaringClass)?.let {
             return it
-        } ?: evt.match(fn)?.let {
+        } ?: evt.match(fn, declaringClass)?.let {
             return it
         } ?: return null
     }
