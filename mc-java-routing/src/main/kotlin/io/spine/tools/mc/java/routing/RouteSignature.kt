@@ -29,14 +29,12 @@ package io.spine.tools.mc.java.routing
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import funRef
 import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 
 /**
  * The base class for classes checking the contract of the functions with the [Route] annotation.
@@ -128,69 +126,4 @@ internal sealed class RouteSignature<F : RouteFun>(
             return qualifier.run()
         }
     }
-}
-
-/**
- * Converts this class into [KSType] using the given resolver.
- */
-private fun Class<*>.toType(resolver: Resolver): KSType {
-    val name = resolver.getKSNameFromString(canonicalName)
-    val classDecl = resolver.getClassDeclarationByName(name)
-    // This is a reminder to add corresponding JAR to `KotlinCompilation` in tests.
-    check(classDecl != null) {
-        "Unable to find the declaration of `$canonicalName`." +
-                " Make sure the class is in the compilation classpath."
-    }
-    val type = classDecl.asStarProjectedType()
-    return type
-}
-
-/**
- * The helper class which transforms the incoming sequence with [functions] into
- * a list containing [CommandRouteFun] or [EventRouteFun].
- *
- * If a function is not recognized to be one of these types,
- * the compilation terminates with an error.
- */
-private class Qualifier(
-    private val functions: Sequence<KSFunctionDeclaration>,
-    resolver: Resolver,
-    private val logger: KSPLogger
-) {
-    private var errorCount = 0
-    private val cmd = CommandRouteSignature(resolver, logger)
-    private val evt = EventRouteSignature(resolver, logger)
-
-    fun run(): List<RouteFun> {
-        val result = mutableListOf<RouteFun>()
-        functions.forEach { fn ->
-            val commonChecksPass = fn.commonChecks(logger)
-            if (!commonChecksPass) {
-                errorCount += 1
-                return@forEach
-            }
-            val qualified = qualify(fn)
-            if (qualified != null) {
-                result.add(qualified)
-            } else {
-                errorCount += 1
-            }
-        }
-        if (errorCount > 0) {
-            error("${"Error".pluralize(errorCount)} using $routeRef.")
-        }
-        return result
-    }
-
-    private fun qualify(fn: KSFunctionDeclaration): RouteFun? {
-        cmd.match(fn)?.let {
-            return it
-        } ?: evt.match(fn)?.let {
-            return it
-        } ?: return null
-    }
-}
-
-private fun String.pluralize(count: Int, pluralForm: String? = null): String {
-    return if (count == 1) this else pluralForm ?: "${this}s"
 }
