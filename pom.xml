@@ -26,7 +26,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>com.google.devtools.ksp</groupId>
     <artifactId>symbol-processing-api</artifactId>
-    <version>1.9.24-1.0.20</version>
+    <version>1.8.22-1.0.11</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -39,6 +39,18 @@ all modules and does not describe the project structure per-subproject.
     <groupId>com.google.protobuf</groupId>
     <artifactId>protobuf-gradle-plugin</artifactId>
     <version>0.9.4</version>
+    <scope>compile</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.squareup</groupId>
+    <artifactId>kotlinpoet</artifactId>
+    <version>2.0.0</version>
+    <scope>compile</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.squareup</groupId>
+    <artifactId>kotlinpoet-ksp</artifactId>
+    <version>2.0.0</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -132,6 +144,12 @@ all modules and does not describe the project structure per-subproject.
     <scope>compile</scope>
   </dependency>
   <dependency>
+    <groupId>com.github.tschuchortdev</groupId>
+    <artifactId>kotlin-compile-testing-ksp</artifactId>
+    <version>1.5.0</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
     <groupId>com.google.errorprone</groupId>
     <artifactId>error_prone_test_helpers</artifactId>
     <version>2.23.0</version>
@@ -159,6 +177,12 @@ all modules and does not describe the project structure per-subproject.
     <groupId>com.google.truth.extensions</groupId>
     <artifactId>truth-proto-extension</artifactId>
     <version>1.1.5</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.kotest</groupId>
+    <artifactId>kotest-assertions-core</artifactId>
+    <version>5.8.0</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -242,7 +266,12 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>com.google.devtools.ksp</groupId>
     <artifactId>symbol-processing</artifactId>
-    <version>1.9.24-1.0.20</version>
+    <version>1.8.22-1.0.11</version>
+  </dependency>
+  <dependency>
+    <groupId>com.google.devtools.ksp</groupId>
+    <artifactId>symbol-processing-cmdline</artifactId>
+    <version>1.8.22-1.0.11</version>
   </dependency>
   <dependency>
     <groupId>com.google.errorprone</groupId>
@@ -275,6 +304,11 @@ all modules and does not describe the project structure per-subproject.
     <groupId>com.puppycrawl.tools</groupId>
     <artifactId>checkstyle</artifactId>
     <version>10.12.1</version>
+  </dependency>
+  <dependency>
+    <groupId>dev.zacsweers.autoservice</groupId>
+    <artifactId>auto-service-ksp</artifactId>
+    <version>1.1.0</version>
   </dependency>
   <dependency>
     <groupId>io.gitlab.arturbosch.detekt</groupId>
