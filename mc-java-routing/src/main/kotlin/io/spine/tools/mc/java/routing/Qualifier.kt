@@ -26,8 +26,6 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 
 /**
@@ -39,21 +37,22 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
  */
 internal class Qualifier(
     private val functions: Sequence<KSFunctionDeclaration>,
-    private val context: Context
+    private val environment: Environment
 ) {
     private var errorCount = 0
-    private val cmd = CommandRouteSignature(context)
-    private val evt = EventRouteSignature(context)
+    private val cmd = CommandRouteSignature(environment)
+    private val evt = EventRouteSignature(environment)
+    private val state = StateUpdateRouteSignature(environment)
 
     fun run(): List<RouteFun> {
         val result = mutableListOf<RouteFun>()
         functions.forEach { fn ->
-            val commonChecksPass = fn.commonChecks(context)
-            if (!commonChecksPass) {
-                errorCount += 1
+            val commonChecksErrors = fn.commonChecks(environment)
+            if (commonChecksErrors != 0) {
+                errorCount += commonChecksErrors
                 return@forEach
             }
-            val declaringClass = fn.declaringClass(context)
+            val declaringClass = fn.declaringClass(environment)
             if (declaringClass == null) {
                 errorCount += 1
                 return@forEach
@@ -76,6 +75,9 @@ internal class Qualifier(
             return it
         } ?: evt.match(fn, declaringClass)?.let {
             return it
-        } ?: return null
+        } ?: state.match(fn, declaringClass)?.let {
+            return it
+        }
+        return null
     }
 }

@@ -26,31 +26,21 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import io.spine.base.EventMessage
-import io.spine.core.EventContext
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import io.spine.server.entity.Entity
+import io.spine.server.procman.ProcessManager
+import io.spine.server.projection.Projection
 
-internal class EventRouteSignature(
-    environment: Environment
-) : RouteSignature<EventRouteFun>(
-    EventMessage::class.java,
-    EventContext::class.java,
-    environment
+/**
+ * Provides instances required for resolving types or reporting errors or warnings.
+ */
+internal class Environment(
+    val resolver: Resolver,
+    val logger: KSPLogger
 ) {
-    override fun matchDeclaringClass(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass
-    ): Boolean {
-        val isProjection = environment.projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = environment.processManagerClass.isAssignableFrom(declaringClass.type)
-        return isProjection || isProcessManager
-    }
-
-    override fun create(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass,
-        parameters: Pair<KSType, KSType?>,
-        returnType: KSType
-    ): EventRouteFun = EventRouteFun(fn, declaringClass, parameters, returnType)
+    val entityInterface by lazy { Entity::class.java.toType(resolver) }
+    val aggregateClass by lazy { ProcessManager::class.java.toType(resolver) }
+    val projectionClass by lazy { Projection::class.java.toType(resolver) }
+    val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
 }

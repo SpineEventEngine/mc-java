@@ -32,16 +32,16 @@ import io.spine.base.CommandMessage
 import io.spine.core.CommandContext
 
 internal class CommandRouteSignature(
-    context: Context
+    environment: Environment
 ) : RouteSignature<CommandRouteFun>(
     CommandMessage::class.java,
     CommandContext::class.java,
-    context
+    environment
 ) {
     override fun matchDeclaringClass(
         fn: KSFunctionDeclaration,
         declaringClass: EntityClass
-    ): Boolean = with(context) {
+    ): Boolean = with(environment) {
         val isAggregate = aggregateClass.isAssignableFrom(declaringClass.type)
         val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
         val match = isAggregate || isProcessManager

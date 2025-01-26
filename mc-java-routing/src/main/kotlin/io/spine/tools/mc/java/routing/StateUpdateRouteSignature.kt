@@ -26,18 +26,31 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import io.spine.server.entity.Entity
-import io.spine.server.procman.ProcessManager
-import io.spine.server.projection.Projection
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
+import io.spine.base.EntityState
+import io.spine.core.EventContext
 
-internal class Context(
-    val resolver: Resolver,
-    val logger: KSPLogger
+internal class StateUpdateRouteSignature(
+    environment: Environment
+) : RouteSignature<StateUpdateRouteFun>(
+    EntityState::class.java,
+    EventContext::class.java,
+    environment
 ) {
-    val entityInterface by lazy { Entity::class.java.toType(resolver) }
-    val aggregateClass by lazy { ProcessManager::class.java.toType(resolver) }
-    val projectionClass by lazy { Projection::class.java.toType(resolver) }
-    val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
+    override fun matchDeclaringClass(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): Boolean {
+        val isProjection = environment.projectionClass.isAssignableFrom(declaringClass.type)
+        val isProcessManager = environment.processManagerClass.isAssignableFrom(declaringClass.type)
+        return isProjection || isProcessManager
+    }
+
+    override fun create(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass,
+        parameters: Pair<KSType, KSType?>,
+        returnType: KSType
+    ): StateUpdateRouteFun = StateUpdateRouteFun(fn, declaringClass, parameters, returnType)
 }

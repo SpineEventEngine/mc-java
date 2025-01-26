@@ -39,21 +39,25 @@ import msg
 /**
  * Runs general usage checks for this function declaration.
  *
- * @param logger The logger to report errors or warnings, if any.
- * @return `true` if all the checks pass, `false` otherwise.
+ * The function runs all the checks, assuming that compilation does not terminate after
+ * an error is reported via [KSPLogger.error].
+ *
+ * @param environment The environment for resolving types and reporting errors or warnings.
+ * @return The number of detected errors, or zero if no errors were found.
  */
-internal fun KSFunctionDeclaration.commonChecks(context: Context): Boolean {
-    val logger = context.logger
-    // Run all the checks assuming that compilation may terminate after more than one error.
+internal fun KSFunctionDeclaration.commonChecks(environment: Environment): Int {
+    val logger = environment.logger
     val declaredInAClass = declaredInAClass(logger)
     val isStatic = isStatic(logger)
     val acceptsOneOrTwoParameters = acceptsOneOrTwoParameters(logger)
     return (declaredInAClass
-            && isStatic
-            && acceptsOneOrTwoParameters)
+            + isStatic
+            + acceptsOneOrTwoParameters)
 }
 
-private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
+private fun Boolean.toErrorCount(): Int = if (this) 0 else 1
+
+private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
     val isStatic = functionKind == FunctionKind.STATIC
     if (!isStatic) {
         logger.error(msg(
@@ -65,10 +69,10 @@ private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
             this
         )
     }
-    return isStatic
+    return isStatic.toErrorCount()
 }
 
-private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
+private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Int {
     val inClass = parentDeclaration is KSClassDeclaration
     if (!inClass) {
         // This case is Kotlin-only because in Java a function would belong to a class.
@@ -79,10 +83,10 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
             this
         )
     }
-    return inClass
+    return inClass.toErrorCount()
 }
 
-private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Boolean {
+private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Int {
     val wrongNumber = parameters.isEmpty() || parameters.size > 2
     if (wrongNumber) {
         logger.error(
@@ -91,24 +95,24 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
             this
         )
     }
-    return !wrongNumber
+    return (!wrongNumber).toErrorCount()
 }
 
-internal fun KSFunctionDeclaration.declaringClass(context: Context): EntityClass? {
+internal fun KSFunctionDeclaration.declaringClass(environment: Environment): EntityClass? {
     val parent = parentDeclaration!!.qualifiedName!!
-    var declaringClass = context.resolver.getClassDeclarationByName(parent)!!
+    var declaringClass = environment.resolver.getClassDeclarationByName(parent)!!
     if (declaringClass.isCompanionObject) {
         // In Kotlin routing functions are declared in a companion object.
         // We need the enclosing entity class.
         declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
     }
-    if (!context.entityInterface.isAssignableFrom(declaringClass.asStarProjectedType())) {
-        context.logger.error(
-            "The declaring class of the ${funRef} annotated with $routeRef" +
+    if (!environment.entityInterface.isAssignableFrom(declaringClass.asStarProjectedType())) {
+        environment.logger.error(
+            "The declaring class of the $funRef annotated with $routeRef" +
                     " must implement the `${Entity::class.java.canonicalName}` interface.",
             this
         )
         return null
     }
-    return EntityClass(declaringClass, context.entityInterface)
+    return EntityClass(declaringClass, environment.entityInterface)
 }

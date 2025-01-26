@@ -40,20 +40,18 @@ internal class RouteProcessor(
     internal val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private lateinit var resolver: Resolver
-
-    private lateinit var context: Context
+    private lateinit var environment: Environment
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        this.resolver = resolver
-        this.context = Context(resolver, logger)
+        this.environment = Environment(resolver, logger)
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val allValid = allAnnotated.filter { it.validate() }
             .map { it as KSFunctionDeclaration }
 
-        val qualified = RouteSignature.qualify(allValid, context)
+        val qualified = RouteSignature.qualify(allValid, environment)
         processCommands(qualified)
         processEvents(qualified)
+        processStateUpdates(qualified)
 
         val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
         return unprocessed
@@ -63,7 +61,7 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<CommandRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val crv = CommandRouteVisitor(functions, codeGenerator, context)
+            val crv = CommandRouteVisitor(functions, codeGenerator, environment)
             declaringClass.accept(crv, Unit)
             crv.writeFile()
         }
@@ -73,7 +71,17 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<EventRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val erv = EventRouteVisitor(functions, codeGenerator, context)
+            val erv = EventRouteVisitor(functions, codeGenerator, environment)
+            declaringClass.accept(erv, Unit)
+            erv.writeFile()
+        }
+    }
+
+    private fun processStateUpdates(qualified: List<RouteFun>) {
+        val routing = qualified.filterIsInstance<StateUpdateRouteFun>()
+        val grouped = routing.groupByClasses()
+        grouped.forEach { (declaringClass, functions) ->
+            val erv = StateUpdateRouteVisitor(functions, codeGenerator, environment)
             declaringClass.accept(erv, Unit)
             erv.writeFile()
         }

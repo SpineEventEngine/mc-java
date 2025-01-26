@@ -49,3 +49,10 @@ internal class EventRouteFun(
     parameters: Pair<KSType, KSType?>,
     returnType: KSType
 ) : RouteFun(fn, declaringClass, parameters, returnType)
+
+internal class StateUpdateRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)

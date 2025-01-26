@@ -30,11 +30,11 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import funRef
-import io.spine.base.SignalMessage
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.qualify
+import io.spine.type.KnownMessage
 
 /**
  * The base class for classes checking the contract of the functions with the [Route] annotation.
@@ -45,14 +45,20 @@ import io.spine.tools.mc.java.routing.RouteSignature.Companion.qualify
  * The [qualify] method of the companion object walks through the annotated functions
  * detected by the [RouteProcessor] matching them to corresponding signature kind and thus
  * producing proper [RouteFun] instances.
+ *
+ * @property messageClass The class of the messages accepted as the first parameter of
+ *   a routing function.
+ * @property contextClass The class of message contexts accepted as an optional second parameter of
+ *   a routing function.
+ * @property environment The environment for resolving types and reporting errors and warnings.
  */
 internal sealed class RouteSignature<F : RouteFun>(
-    protected val signalClass: Class<out SignalMessage>,
+    protected val messageClass: Class<out KnownMessage>,
     protected val contextClass: Class<out SignalContext>,
-    protected val context: Context
+    protected val environment: Environment
 ) {
-    private val signalType by lazy { signalClass.toType(context.resolver) }
-    private val contextType by lazy { contextClass.toType(context.resolver) }
+    private val messageType by lazy { messageClass.toType(environment.resolver) }
+    private val contextType by lazy { contextClass.toType(environment.resolver) }
 
     protected abstract fun matchDeclaringClass(
         fn: KSFunctionDeclaration,
@@ -96,9 +102,9 @@ internal sealed class RouteSignature<F : RouteFun>(
 
     /**
      * Verifies that the given function accepts one or two parameters with
-     * the types matching [signalClass] and [contextClass].
+     * the types matching [messageClass] and [contextClass].
      *
-     * The first parameter must be of [signalClass] or implement the interface specified
+     * The first parameter must be of [messageClass] or implement the interface specified
      * by this property.
      *
      * The second parameter, if any, must be of the [contextClass] type.
@@ -108,7 +114,7 @@ internal sealed class RouteSignature<F : RouteFun>(
         checkParamSize(fn)
 
         val firstParamType = fn.parameters[0].type.resolve()
-        if (!signalType.isAssignableFrom(firstParamType)) {
+        if (!messageType.isAssignableFrom(firstParamType)) {
             // Even if the parameter does not match, it could be another kind of
             // routing function, so we simply return `false`.
             return null
@@ -121,7 +127,7 @@ internal sealed class RouteSignature<F : RouteFun>(
                 // Here, knowing that the first parameter type is correct, we can complain
                 // about the type of the second parameter.
                 val actualSecondParamName = secondParamType.declaration.simpleName.getShortName()
-                context.logger.error(
+                environment.logger.error(
                     "The second parameter of the ${fn.funRef} annotated with $routeRef" +
                             " must be `${contextClass.simpleName}`." +
                             " Encountered: `$actualSecondParamName`.",
@@ -148,9 +154,9 @@ internal sealed class RouteSignature<F : RouteFun>(
 
         fun qualify(
             functions: Sequence<KSFunctionDeclaration>,
-            context: Context
+            environment: Environment
         ): List<RouteFun> {
-            val qualifier = Qualifier(functions, context)
+            val qualifier = Qualifier(functions, environment)
             return qualifier.run()
         }
     }
