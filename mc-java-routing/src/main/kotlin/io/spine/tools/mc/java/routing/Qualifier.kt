@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 
 /**
  * The helper class which transforms the incoming sequence with [functions] into
@@ -40,9 +41,9 @@ internal class Qualifier(
     private val environment: Environment
 ) {
     private var errorCount = 0
-    private val cmd = CommandRouteSignature(environment)
-    private val evt = EventRouteSignature(environment)
-    private val state = StateUpdateRouteSignature(environment)
+    private val commandRoutes = CommandRouteSignature(environment)
+    private val eventRoutes = EventRouteSignature(environment)
+    private val stateRoutes = StateUpdateRouteSignature(environment)
 
     fun run(): List<RouteFun> {
         val result = mutableListOf<RouteFun>()
@@ -65,17 +66,17 @@ internal class Qualifier(
             }
         }
         if (errorCount > 0) {
-            error("${"Error".pluralize(errorCount)} using ${RouteSignature.Companion.routeRef}.")
+            error("${"Error".pluralize(errorCount)} using $routeRef.")
         }
         return result
     }
 
     private fun qualify(fn: KSFunctionDeclaration, declaringClass: EntityClass): RouteFun? {
-        cmd.match(fn, declaringClass)?.let {
+        commandRoutes.match(fn, declaringClass)?.let {
             return it
-        } ?: evt.match(fn, declaringClass)?.let {
+        } ?: eventRoutes.match(fn, declaringClass)?.let {
             return it
-        } ?: state.match(fn, declaringClass)?.let {
+        } ?: stateRoutes.match(fn, declaringClass)?.let {
             return it
         }
         return null

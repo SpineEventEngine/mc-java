@@ -49,27 +49,21 @@ import org.junit.jupiter.api.Test
 
 @ExperimentalCompilerApi
 @DisplayName("`RouteProcessor` should detect Kotlin code errors")
-internal class RouteProcessorKotlinErrorSpec {
+internal class KotlinErrorSpec : ErrorSpecTest() {
 
-    private lateinit var compilation: KotlinCompilation
-
-    @BeforeEach
-    fun prepareCompilation() {
-        compilation = KotlinCompilation()
-        val baseJar = EventMessage::class.java.classpathFile()
-        val serverJar = Route::class.java.classpathFile()
-        val compiledProtos = Device::class.java.classpathFile()
-
-        compilation.apply {
-            javaPackagePrefix = "io.spine.routing.given"
-            symbolProcessorProviders = listOf(RouteProcessorProvider())
-            classpaths = classpaths + listOf(
-                baseJar,
-                serverJar,
-                compiledProtos
-            )
-        }
-    }
+    /**
+     * Error: The function must be a static method of a class.
+     */
+    private val fileLevelFunction =  kotlinFile("FileLevelFunction", """
+        
+    package io.spine.given.devices
+    
+    import io.spine.base.EventMessage
+    import io.spine.server.route.Route
+    
+    @Route
+    private fun route(e: EventMessage): String = "Hello" 
+    """.trimIndent())
 
     @Test
     fun `when a function is defined on a file level`() {
@@ -88,6 +82,27 @@ internal class RouteProcessorKotlinErrorSpec {
         }
     }
 
+    /**
+     * Error: The method must be annotated as `JvmStatic`.
+     */
+    private val notJvmStatic = kotlinFile("NotJvmStatic", """
+    package io.spine.given.devices
+    
+    import io.spine.given.devices.events.StatusReported
+    import io.spine.server.projection.Projection
+    import io.spine.server.route.Route
+        
+    class NotJvmStatic : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
+                    
+        companion object {
+            @Route
+            fun route(e: StatusReported): DeviceId {
+                return event.getDevice()
+            }
+        }
+    }
+    """.trimIndent())
+
     @Test
     fun `when a function is not 'JvmStatic''`() {
         compilation.apply {
@@ -104,6 +119,24 @@ internal class RouteProcessorKotlinErrorSpec {
             it shouldContain jvmStaticRef
         }
     }
+
+    /**
+     * Error: The method must belong to a companion object.
+     */
+    private val notCompanionMember = kotlinFile("NotCompanionMember", """
+    package io.spine.given.devices
+    
+    import io.spine.given.devices.events.StatusReported
+    import io.spine.server.projection.Projection
+    import io.spine.server.route.Route
+        
+    class NotCompanionMember : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
+        @Route
+        fun route(e: StatusReported): DeviceId {
+            return event.getDevice()
+        }
+    }
+    """.trimIndent())
 
     @Test
     fun `when a function is not a member of a companion object`() {
@@ -123,61 +156,3 @@ internal class RouteProcessorKotlinErrorSpec {
         }
     }
 }
-
-/**
- * Error: The function must be a static method of a class.
- */
-private val fileLevelFunction = SourceFile.kotlin(
-    kotlinFile("FileLevelFunction"), """
-    package io.spine.given.devices
-    
-    import io.spine.base.EventMessage
-    import io.spine.server.route.Route
-    
-    @Route
-    private fun route(e: EventMessage): String = "Hello" 
-    """.trimIndent()
-)
-
-/**
- * Error: The method must be annotated as `JvmStatic`.
- */
-private val notJvmStatic = SourceFile.kotlin(
-    kotlinFile("NotJvmStatic"), """
-    package io.spine.given.devices
-    
-    import io.spine.given.devices.events.StatusReported
-    import io.spine.server.projection.Projection
-    import io.spine.server.route.Route
-        
-    class NotJvmStatic : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
-                    
-        companion object {
-            @Route
-            fun route(e: StatusReported): DeviceId {
-                return event.getDevice()
-            }
-        }
-    }
-    """.trimIndent()
-)
-
-/**
- * Error: The method must belong to a companion object.
- */
-private val notCompanionMember = SourceFile.kotlin(
-    kotlinFile("NotCompanionMember"), """
-    package io.spine.given.devices
-    
-    import io.spine.given.devices.events.StatusReported
-    import io.spine.server.projection.Projection
-    import io.spine.server.route.Route
-        
-    class NotCompanionMember : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
-        @Route
-        fun route(e: StatusReported): DeviceId {
-            return event.getDevice()
-        }
-    }
-    """.trimIndent()
-)

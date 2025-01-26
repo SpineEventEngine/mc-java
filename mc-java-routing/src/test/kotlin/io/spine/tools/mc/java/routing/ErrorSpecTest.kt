@@ -26,40 +26,41 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
+import com.tschuchort.compiletesting.KotlinCompilation
+import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.spine.base.CommandMessage
-import io.spine.core.CommandContext
+import io.spine.core.EventContext
+import io.spine.given.devices.Device
+import io.spine.server.route.Route
+import kotlin.collections.plus
+import org.junit.jupiter.api.BeforeEach
 
-internal class CommandRouteSignature(
-    environment: Environment
-) : RouteSignature<CommandRouteFun>(
-    CommandMessage::class.java,
-    CommandContext::class.java,
-    environment
-) {
-    override fun matchDeclaringClass(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass
-    ): Boolean = environment.run {
-        val isAggregate = aggregateClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
-        val match = isAggregate || isProcessManager
-        if (!match) {
-            val parent = declaringClass.superClass()
-            logger.error(
-                "A command routing function can be declared in a class derived" +
-                        " from ${processManagerClass.ref} or ${aggregateClass.ref}." +
-                        " Encountered: ${parent.qualifiedRef}.",
-            fn)
+/**
+ * Abstract base for tests checking handling errors using the [Route] annotation.
+ *
+ * The tests use types from the Protobuf code generated for the `given.devices` proto package.
+ */
+sealed class ErrorSpecTest {
+
+    protected lateinit var compilation: KotlinCompilation
+
+    @BeforeEach
+    fun prepareCompilation() {
+        compilation = KotlinCompilation()
+        val baseJar = CommandMessage::class.java.classpathFile()
+        val coreJar = EventContext::class.java.classpathFile()
+        val serverJar = Route::class.java.classpathFile()
+        val compiledProtos = Device::class.java.classpathFile()
+
+        compilation.apply {
+            javaPackagePrefix = "io.spine.routing.given"
+            symbolProcessorProviders = listOf(RouteProcessorProvider())
+            classpaths = classpaths + listOf(
+                baseJar,
+                coreJar,
+                serverJar,
+                compiledProtos
+            )
         }
-        return match
     }
-
-    override fun create(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass,
-        parameters: Pair<KSType, KSType?>,
-        returnType: KSType
-    ): CommandRouteFun = CommandRouteFun(fn, declaringClass, parameters, returnType)
 }

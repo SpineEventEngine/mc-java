@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.routing
 
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.java
+import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
 import java.io.File
 import org.intellij.lang.annotations.Language
 
@@ -43,22 +44,27 @@ internal fun Class<*>.classpathFile(): File = File(protectionDomain.codeSource.l
 private val packageDir = "io/spine/given/devices"
 
 /**
- * Obtains a file name with the package directories for a Java class with the given simple name.
- */
-private fun javaFn(simpleName: String): String = "$packageDir/${simpleName}.java"
-
-/**
- * Obtains a file name with the package directories for a Kotlin file with the given name.
- */
-internal fun kotlinFile(simpleName: String): String = "$packageDir/${simpleName}.kt"
-
-/**
  * Creates an instance of [SourceFile] with the Java file containing the class
- * with the specified name.
+ * with the specified name and contents.
  */
 internal fun javaFile(
     simpleClassName: String,
     @Language("java") contents: String
-): SourceFile {
-    return java(name = javaFn(simpleClassName), contents = contents, trimIndent = true)
-}
+): SourceFile = java(
+    name = "$packageDir/${simpleClassName}.java",
+    contents = contents,
+    trimIndent = true
+)
+
+/**
+ * Creates an instance of [SourceFile] with the Kotlin file containing the class
+ * with the specified name and contents.
+ */
+internal fun kotlinFile(
+    simpleClassName: String,
+    @Language("kotlin") contents: String
+): SourceFile = kotlin(
+    name = "$packageDir/${simpleClassName}.kt",
+    contents = contents,
+    trimIndent = true
+)

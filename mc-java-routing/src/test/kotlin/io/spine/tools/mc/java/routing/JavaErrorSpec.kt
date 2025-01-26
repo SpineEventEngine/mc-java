@@ -31,49 +31,24 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
-import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.base.CommandMessage
 import io.spine.core.CommandContext
 import io.spine.core.EventContext
-import io.spine.given.devices.Device
+import io.spine.server.aggregate.Aggregate
 import io.spine.server.entity.Entity
-import io.spine.server.route.Route
+import io.spine.server.procman.ProcessManager
+import io.spine.server.projection.Projection
 import io.spine.string.simply
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @ExperimentalCompilerApi
 @DisplayName("`RouteProcessor` should detect Java code errors")
-internal class RouteProcessorJavaErrorSpec {
-
-    private lateinit var compilation: KotlinCompilation
-
-    @BeforeEach
-    fun prepareCompilation() {
-        compilation = KotlinCompilation()
-        val baseJar = CommandMessage::class.java.classpathFile()
-        val coreJar = EventContext::class.java.classpathFile()
-        val serverJar = Route::class.java.classpathFile()
-        val compiledProtos = Device::class.java.classpathFile()
-
-        compilation.apply {
-            javaPackagePrefix = "io.spine.routing.given"
-            symbolProcessorProviders = listOf(RouteProcessorProvider())
-            classpaths = classpaths + listOf(
-                baseJar,
-                coreJar,
-                serverJar,
-                compiledProtos
-            )
-        }
-    }
+internal class JavaErrorSpec : ErrorSpecTest() {
 
     /*
      * Error: non-static method.
@@ -246,6 +221,45 @@ internal class RouteProcessorJavaErrorSpec {
             it shouldContain "The declaring class of the method `route()`"
             it shouldContain routeRef
             it shouldContain " must implement the `${Entity::class.java.canonicalName}` interface."
+        }
+    }
+
+    /**
+     * Error: Command route method declared in a projection class.
+     */
+    private val wrongSignalRouted = javaFile("WrongSignalRouted", """
+    
+    package io.spine.given.devices;
+        
+    import io.spine.core.CommandContext;
+    import io.spine.given.devices.commands.RegisterDevice;
+    import io.spine.server.projection.Projection;
+    import io.spine.server.route.Route;
+        
+    class WrongSignalRouted extends Projection<DeviceId, DeviceStatus, DeviceStatus.Builder> {
+        
+        @Route
+        static DeviceId route(RegisterDevice command, CommandContext context) {
+            // Commands are automatically routed by the first message field.
+            // We add this method with meaningless routing just to cause the error.
+            return command.getDevice();
+        }
+    }
+    """.trimIndent())
+
+    @Test
+    fun `when a command routing declared in a non-applicable class`() {
+        compilation.apply {
+            sources = listOf(wrongSignalRouted)
+        }
+        val result = compilation.compile()
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "A command routing function can be declared in a class derived"
+            it shouldContain simply<Aggregate<*, *, *>>()
+            it shouldContain simply<ProcessManager<*, *, *>>()
+            it shouldContain routeRef
+            it shouldContain " Encountered: `${Projection::class.java.canonicalName}`."
         }
     }
 }

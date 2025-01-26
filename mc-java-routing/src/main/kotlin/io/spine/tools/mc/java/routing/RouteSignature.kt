@@ -122,7 +122,7 @@ internal sealed class RouteSignature<F : RouteFun>(
         var secondParamType: KSType? = null
         if (fn.parameters.size == 2) {
             secondParamType = fn.parameters[1].type.resolve()
-            val match = contextType == secondParamType
+            val match = contextType.isSame(secondParamType)
             if (!match) {
                 // Here, knowing that the first parameter type is correct, we can complain
                 // about the type of the second parameter.

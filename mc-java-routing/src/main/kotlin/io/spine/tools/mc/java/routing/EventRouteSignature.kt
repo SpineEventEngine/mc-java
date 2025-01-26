@@ -41,10 +41,21 @@ internal class EventRouteSignature(
     override fun matchDeclaringClass(
         fn: KSFunctionDeclaration,
         declaringClass: EntityClass
-    ): Boolean {
-        val isProjection = environment.projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = environment.processManagerClass.isAssignableFrom(declaringClass.type)
-        return isProjection || isProcessManager
+    ): Boolean = environment.run {
+        val isAggregate = aggregateClass.isAssignableFrom(declaringClass.type)
+        val isProjection = projectionClass.isAssignableFrom(declaringClass.type)
+        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
+        val match = isAggregate || isProjection || isProcessManager
+        if (!match) {
+            val parent = declaringClass.superClass()
+            logger.error(
+                "An event routing function can be declared in a class derived" +
+                        " from ${processManagerClass.ref} or ${aggregateClass.ref} or" +
+                        " ${projectionClass.ref}." +
+                        " Encountered: ${parent.qualifiedRef}.",
+            fn)
+        }
+        return match
     }
 
     override fun create(

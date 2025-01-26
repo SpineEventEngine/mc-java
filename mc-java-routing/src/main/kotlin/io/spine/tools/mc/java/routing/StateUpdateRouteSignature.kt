@@ -41,9 +41,9 @@ internal class StateUpdateRouteSignature(
     override fun matchDeclaringClass(
         fn: KSFunctionDeclaration,
         declaringClass: EntityClass
-    ): Boolean {
-        val isProjection = environment.projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = environment.processManagerClass.isAssignableFrom(declaringClass.type)
+    ): Boolean = environment.run {
+        val isProjection = projectionClass.isAssignableFrom(declaringClass.type)
+        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
         return isProjection || isProcessManager
     }
 

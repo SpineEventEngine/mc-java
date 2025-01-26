@@ -54,3 +54,9 @@ internal fun Class<*>.toType(resolver: Resolver): KSType {
 internal fun String.pluralize(count: Int, pluralForm: String? = null): String {
     return if (count == 1) this else pluralForm ?: "${this}s"
 }
+
+/**
+ * Tells if this type has the same qualified name as the given one.
+ */
+internal fun KSType.isSame(other: KSType): Boolean =
+    declaration.qualifiedName?.asString() == other.declaration.qualifiedName?.asString()

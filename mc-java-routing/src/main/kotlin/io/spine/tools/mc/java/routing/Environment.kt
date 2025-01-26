@@ -28,6 +28,7 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
+import io.spine.server.aggregate.Aggregate
 import io.spine.server.entity.Entity
 import io.spine.server.procman.ProcessManager
 import io.spine.server.projection.Projection
@@ -40,7 +41,7 @@ internal class Environment(
     val logger: KSPLogger
 ) {
     val entityInterface by lazy { Entity::class.java.toType(resolver) }
-    val aggregateClass by lazy { ProcessManager::class.java.toType(resolver) }
+    val aggregateClass by lazy { Aggregate::class.java.toType(resolver) }
     val projectionClass by lazy { Projection::class.java.toType(resolver) }
     val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
 }
