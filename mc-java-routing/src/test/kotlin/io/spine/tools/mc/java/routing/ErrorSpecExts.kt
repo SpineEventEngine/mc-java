@@ -26,9 +26,11 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.java
 import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
+import io.spine.logging.testing.tapConsole
 import java.io.File
 import org.intellij.lang.annotations.Language
 
@@ -41,7 +43,8 @@ internal fun Class<*>.classpathFile(): File = File(protectionDomain.codeSource.l
  * The package directory is `io/spine/given/devices/` which matches the options of
  * proto types defined under `test/proto/given/devices/`.
  */
-private val packageDir = "io/spine/given/devices"
+@Suppress("TopLevelPropertyNaming")
+private const val packageDir = "io/spine/given/devices"
 
 /**
  * Creates an instance of [SourceFile] with the Java file containing the class
@@ -68,3 +71,17 @@ internal fun kotlinFile(
     contents = contents,
     trimIndent = true
 )
+
+/**
+ * Performs compilation with redirected console output.
+ *
+ * @see io.spine.logging.testing.ConsoleTap.install
+ * @see tapConsole
+ */
+internal fun KotlinCompilation.compileSilently(): KotlinCompilation.Result {
+    var result: KotlinCompilation.Result? = null
+    tapConsole {
+        result = compile()
+    }
+    return result!!
+}

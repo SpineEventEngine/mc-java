@@ -110,6 +110,7 @@ internal sealed class RouteSignature<F : RouteFun>(
      * The second parameter, if any, must be of the [contextClass] type.
      */
     @OverridingMethodsMustInvokeSuper
+    @Suppress("ReturnCount")
     protected open fun matchParameters(fn: KSFunctionDeclaration): Pair<KSType, KSType?>? {
         checkParamSize(fn)
 

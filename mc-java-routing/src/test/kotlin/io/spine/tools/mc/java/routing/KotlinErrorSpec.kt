@@ -31,19 +31,12 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
-import com.tschuchort.compiletesting.SourceFile
-import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.base.EventMessage
-import io.spine.given.devices.Device
-import io.spine.server.route.Route
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -71,7 +64,7 @@ internal class KotlinErrorSpec : ErrorSpecTest() {
             sources = listOf(fileLevelFunction)
         }
 
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
@@ -109,7 +102,7 @@ internal class KotlinErrorSpec : ErrorSpecTest() {
             sources = listOf(notJvmStatic)
         }
 
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
@@ -144,7 +137,7 @@ internal class KotlinErrorSpec : ErrorSpecTest() {
             sources = listOf(notCompanionMember)
         }
 
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {

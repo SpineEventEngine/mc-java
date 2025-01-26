@@ -31,8 +31,10 @@ import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.spine.base.CommandMessage
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
+import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
 import kotlin.collections.plus
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 
 /**
@@ -42,6 +44,20 @@ import org.junit.jupiter.api.BeforeEach
  */
 sealed class ErrorSpecTest {
 
+    companion object {
+
+        /**
+         * Suppress excessive console output produced by [KotlinCompilation.compile].
+         *
+         * @see <a href="https://github.com/google/ksp/issues/1687">Related issue</a>
+         * @see KotlinCompilation.compileSilently
+         */
+        @BeforeAll
+        @JvmStatic
+        fun redirectStreams() {
+            ConsoleTap.install()
+        }
+    }
     protected lateinit var compilation: KotlinCompilation
 
     @BeforeEach

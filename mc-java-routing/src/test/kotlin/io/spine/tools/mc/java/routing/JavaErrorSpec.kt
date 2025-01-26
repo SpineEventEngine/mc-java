@@ -74,7 +74,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(nonStatic)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
 
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
@@ -108,7 +108,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(noParameters)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "The method `route()`"
@@ -142,7 +142,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(tooManyParameters)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "The method `route()`"
@@ -176,7 +176,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(wrongSecondParameter)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "The second parameter of the method `route()`"
@@ -215,7 +215,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(nonEntityClass)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "The declaring class of the method `route()`"
@@ -252,7 +252,7 @@ internal class JavaErrorSpec : ErrorSpecTest() {
         compilation.apply {
             sources = listOf(wrongSignalRouted)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
         result.exitCode shouldBe COMPILATION_ERROR
         result.messages.let {
             it shouldContain "A command routing function can be declared in a class derived"

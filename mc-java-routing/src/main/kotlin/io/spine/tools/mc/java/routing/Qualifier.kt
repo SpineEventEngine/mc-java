@@ -71,6 +71,7 @@ internal class Qualifier(
         return result
     }
 
+    @Suppress("ReturnCount")
     private fun qualify(fn: KSFunctionDeclaration, declaringClass: EntityClass): RouteFun? {
         commandRoutes.match(fn, declaringClass)?.let {
             return it

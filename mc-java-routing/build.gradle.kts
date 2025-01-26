@@ -30,6 +30,7 @@ import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
+import io.spine.dependency.local.Logging
 import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
@@ -50,6 +51,7 @@ dependencies {
 
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
+    testImplementation(Logging.testLib)
 }
 
 configurations
