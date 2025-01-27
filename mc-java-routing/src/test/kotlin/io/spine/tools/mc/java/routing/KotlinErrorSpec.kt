@@ -31,6 +31,7 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -147,5 +148,36 @@ internal class KotlinErrorSpec : ErrorSpecTest() {
             it shouldContain "a member of a companion object and annotated with"
             it shouldContain jvmStaticRef
         }
+    }
+
+    /**
+     * Correct routing method.
+     */
+    private val companionMember = kotlinFile("CompanionMember", """
+    package io.spine.given.devices
+    
+    import io.spine.given.devices.events.StatusReported
+    import io.spine.server.projection.Projection
+    import io.spine.server.route.Route
+        
+    class CompanionMember : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
+    
+        companion object {
+            @Route
+            @JvmStatic
+            fun route(e: StatusReported): DeviceId {
+                return event.getDevice()
+            }
+        }
+    }
+    """.trimIndent())
+
+    @Test
+    fun `accept a function defined in a companion object`() {
+        compilation.apply {
+            sources = listOf(companionMember)
+        }
+        val result = compilation.compileSilently()
+        result.exitCode shouldBe ExitCode.OK
     }
 }

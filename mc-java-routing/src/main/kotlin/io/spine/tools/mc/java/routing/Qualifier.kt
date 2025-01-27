@@ -62,6 +62,9 @@ internal class Qualifier(
             if (qualified != null) {
                 result.add(qualified)
             } else {
+                environment.logger.error(
+                    "Unqualified function encountered: `${fn.qualifiedName?.asString()}`."
+                )
                 errorCount += 1
             }
         }

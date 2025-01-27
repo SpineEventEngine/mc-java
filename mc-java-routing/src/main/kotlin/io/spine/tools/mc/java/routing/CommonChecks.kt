@@ -30,6 +30,7 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.Origin
 import funRef
 import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
@@ -58,7 +59,12 @@ internal fun KSFunctionDeclaration.commonChecks(environment: Environment): Int {
 private fun Boolean.toErrorCount(): Int = if (this) 0 else 1
 
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
-    val isStatic = functionKind == FunctionKind.STATIC
+    val isStatic = when (origin) {
+        Origin.JAVA -> functionKind == FunctionKind.STATIC
+        Origin.KOTLIN -> parentDeclaration is KSClassDeclaration &&
+                (parentDeclaration as KSClassDeclaration).isCompanionObject
+        else -> false
+    } 
     if (!isStatic) {
         logger.error(msg(
             "The $funRef annotated with $routeRef must be" +

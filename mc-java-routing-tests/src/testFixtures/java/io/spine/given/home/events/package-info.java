@@ -24,38 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.local.CoreJava
+@CheckReturnValue
+@ParametersAreNonnullByDefault
+package io.spine.given.home.events;
 
-plugins {
-    kotlin("jvm")
-    ksp
-    `java-test-fixtures`
-    id("io.spine.mc-java")
-}
+import com.google.errorprone.annotations.CheckReturnValue;
 
-dependencies {
-    testImplementation(kotlin("stdlib"))
-    kspTest(project(":mc-java-routing"))
-    kspTestFixtures(project(":mc-java-routing"))
-    testFixturesImplementation(CoreJava.server)
-}
-                                                                    
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-    }
-}
-
-// Avoid Gradle warning on disabled execution optimization because of the absence of
-// explicit or implicit dependencies.
-afterEvaluate {
-    val kspTestFixturesKotlin by tasks.getting
-    val launchTestFixturesProtoData by tasks.getting
-    kspTestFixturesKotlin.dependsOn(launchTestFixturesProtoData)
-}
+import javax.annotation.ParametersAreNonnullByDefault;

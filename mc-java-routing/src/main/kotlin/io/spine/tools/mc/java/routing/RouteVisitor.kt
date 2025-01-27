@@ -33,6 +33,7 @@ import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -52,7 +53,8 @@ internal sealed class RouteVisitor<F : RouteFun>(
         originalFile = classDeclaration.containingFile!!
         packageName = originalFile.packageName.asString()
         val className = classDeclaration.simpleName.asString() + classNameSuffix
-        routingClass = TypeSpec.Companion.classBuilder(className)
+        routingClass = TypeSpec.classBuilder(className)
+            .addModifiers(KModifier.INTERNAL)
         functions.forEach { it.fn.accept(this, Unit) }
     }
 
@@ -78,7 +80,7 @@ internal class CommandRouteVisitor(
     environment: Environment
 ) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, environment)  {
 
-    override val classNameSuffix: String = "$\$CommandRouting"
+    override val classNameSuffix: String = "_CommandRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
@@ -91,7 +93,7 @@ internal class EventRouteVisitor(
     environment: Environment
 ) : RouteVisitor<EventRouteFun>(functions, codeGenerator, environment) {
 
-    override val classNameSuffix: String = "$\$EventRouting"
+    override val classNameSuffix: String = "_EventRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
@@ -104,7 +106,7 @@ internal class StateUpdateRouteVisitor(
     environment: Environment
 ) : RouteVisitor<StateUpdateRouteFun>(functions, codeGenerator, environment) {
 
-    override val classNameSuffix: String = "$\$StateUpdateRouting"
+    override val classNameSuffix: String = "_StateUpdateRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.

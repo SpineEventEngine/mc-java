@@ -66,6 +66,7 @@ sealed class ErrorSpecTest {
         val baseJar = CommandMessage::class.java.classpathFile()
         val coreJar = EventContext::class.java.classpathFile()
         val serverJar = Route::class.java.classpathFile()
+        val processorJar = RouteProcessorProvider::class.java.classpathFile()
         val compiledProtos = Device::class.java.classpathFile()
 
         compilation.apply {
@@ -75,6 +76,7 @@ sealed class ErrorSpecTest {
                 baseJar,
                 coreJar,
                 serverJar,
+                processorJar,
                 compiledProtos
             )
         }

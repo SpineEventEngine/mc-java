@@ -24,38 +24,47 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.local.CoreJava
+package io.spine.given.home
 
-plugins {
-    kotlin("jvm")
-    ksp
-    `java-test-fixtures`
-    id("io.spine.mc-java")
-}
+import io.spine.core.Subscribe
+import io.spine.given.home.events.DeviceMoved
+import io.spine.given.home.events.RoomAdded
+import io.spine.given.home.events.RoomEvent
+import io.spine.given.home.events.RoomRenamed
+import io.spine.server.entity.alter
+import io.spine.server.projection.Projection
+import io.spine.server.route.Route
 
-dependencies {
-    testImplementation(kotlin("stdlib"))
-    kspTest(project(":mc-java-routing"))
-    kspTestFixtures(project(":mc-java-routing"))
-    testFixturesImplementation(CoreJava.server)
-}
-                                                                    
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-    }
-}
+internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
-// Avoid Gradle warning on disabled execution optimization because of the absence of
-// explicit or implicit dependencies.
-afterEvaluate {
-    val kspTestFixturesKotlin by tasks.getting
-    val launchTestFixturesProtoData by tasks.getting
-    kspTestFixturesKotlin.dependsOn(launchTestFixturesProtoData)
+    @Subscribe
+    fun on(e: RoomAdded) = alter {
+        name = e.name
+    }
+
+    @Subscribe
+    fun on(e: RoomRenamed) = alter {
+        name = e.name
+    }
+
+    @Subscribe
+    fun on(e: DeviceMoved) = alter {
+        if (id == e.prevRoom) {
+            //
+        }
+        if (id == e.room) {
+            //
+        }
+    }
+
+    companion object {
+
+        @Route
+        @JvmStatic
+        fun route(e: RoomEvent): RoomId = e.room
+
+//        @Route
+//        @JvmStatic
+//        fun routeMoved(e: DeviceMoved): Set<RoomId> = setOf(e.prevRoom, e.room)
+    }
 }
