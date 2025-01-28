@@ -26,6 +26,10 @@
 
 package io.spine.given.home
 
+import com.google.protobuf.Message
+import io.spine.base.EventMessage
+import io.spine.base.MessageContext
+import io.spine.core.EventContext
 import io.spine.core.Subscribe
 import io.spine.given.home.events.DeviceMoved
 import io.spine.given.home.events.RoomAdded
@@ -33,7 +37,13 @@ import io.spine.given.home.events.RoomEvent
 import io.spine.given.home.events.RoomRenamed
 import io.spine.server.entity.alter
 import io.spine.server.projection.Projection
+import io.spine.server.projection.ProjectionRepository
+import io.spine.server.route.EventRouting
+import io.spine.server.route.EventRoutingSetup
 import io.spine.server.route.Route
+import io.spine.server.route.StateRoutingSetup
+import io.spine.server.route.StateUpdateRouting
+import kotlin.apply
 
 internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
@@ -50,10 +60,13 @@ internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
     @Subscribe
     fun on(e: DeviceMoved) = alter {
         if (id == e.prevRoom) {
-            //
+            val toRemove = deviceBuilderList.find { b -> b.uuid == e.device.uuid }
+            if (toRemove != null) {
+                deviceBuilderList.remove(toRemove)
+            }
         }
         if (id == e.room) {
-            //
+            addDevice(e.device)
         }
     }
 
@@ -66,5 +79,29 @@ internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
         @Route
         @JvmStatic
         fun routeMoved(e: DeviceMoved): Set<RoomId> = setOf(e.prevRoom, e.room)
+    }
+}
+
+internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProjection, Room>() {
+
+    override fun setupEventRouting(routing: EventRouting<RoomId>) {
+        super.setupEventRouting(routing)
+        EventRoutingSetup.apply(entityClass(), routing)
+    }
+
+    override fun setupStateRouting(routing: StateUpdateRouting<RoomId>) {
+        super.setupStateRouting(routing)
+        StateRoutingSetup.apply(entityClass(), routing)
+    }
+}
+
+@Suppress("unused") // Loaded dynamically.
+internal object RoomProjectionEventRouting: EventRoutingSetup<RoomId> {
+
+    override fun setup(routing: EventRouting<RoomId>) {
+        routing.run {
+            route<DeviceMoved> { e, _ -> RoomProjection.routeMoved(e) }
+            unicast<RoomEvent> { e -> RoomProjection.route(e) }
+        }
     }
 }
