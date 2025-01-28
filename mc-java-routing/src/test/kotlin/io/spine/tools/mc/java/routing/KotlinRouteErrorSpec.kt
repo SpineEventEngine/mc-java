@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test
 
 @ExperimentalCompilerApi
 @DisplayName("`RouteProcessor` should detect Kotlin code errors")
-internal class KotlinErrorSpec : ErrorSpecTest() {
+internal class KotlinRouteErrorSpec : RouteCompilationTest() {
 
     /**
      * Error: The function must be a static method of a class.

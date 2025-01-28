@@ -46,9 +46,17 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * This test suite covers handling errors associated with misuse of
+ * the [Route][io.spine.server.route.Route] annotation in the Java code.
+ *
+ * For tests of the positive scenarios please see [JavaRouteSpec].
+ *
+ * @see KotlinRouteErrorSpec
+ */
 @ExperimentalCompilerApi
 @DisplayName("`RouteProcessor` should detect Java code errors")
-internal class JavaErrorSpec : ErrorSpecTest() {
+internal class JavaRouteErrorSpec : RouteCompilationTest() {
 
     /*
      * Error: non-static method.

@@ -26,16 +26,10 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.KSDeclaration
 
 /**
- * Obtains a simple name of the type surrounded with back ticks.
+ * Obtains the qualified name of this declaration or `null`
+ * if the declaration does not have a qualified name.
  */
-internal val KSType.ref: String
-    get() = "`${declaration.simpleName.asString()}`"
-
-/**
- * Obtains a qualified name of the type surrouned with back ticks.
- */
-internal val KSType.qualifiedRef: String
-    get() = "`${declaration.qualifiedName?.asString()}`"
+internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()

@@ -44,4 +44,5 @@ internal class Environment(
     val aggregateClass by lazy { Aggregate::class.java.toType(resolver) }
     val projectionClass by lazy { Projection::class.java.toType(resolver) }
     val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
+    val setClass by lazy { Set::class.java.toType(resolver) }
 }

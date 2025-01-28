@@ -46,7 +46,7 @@ internal class EntityClass(
         }
         check(asEntity != null) {
             "The class `${decl.qualifiedName!!.asString()}`" +
-                    " must implement ${entityInterface.declaration.qualifiedName!!.asString()}`."
+                    " must implement ${entityInterface.declaration.qualified()}`."
         }
         val firstTypeArgument = asEntity.element!!.typeArguments.first()
         firstTypeArgument.type!!.resolve()
@@ -58,5 +58,15 @@ internal class EntityClass(
             (superType is KSClassDeclaration) && (superType.classKind == CLASS)
         }
         return found!!.resolve()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is EntityClass) return false
+        return decl == other.decl
+    }
+
+    override fun hashCode(): Int {
+        return decl.hashCode()
     }
 }

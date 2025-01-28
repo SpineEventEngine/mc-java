@@ -58,6 +58,51 @@ internal class EventRouteSignature(
         return match
     }
 
+    @Suppress("ReturnCount") // Prefer a sooner exit to reduce nesting.
+    override fun matchReturnType(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): KSType? = environment.run {
+        val unicast = super.matchReturnType(fn, declaringClass)
+        if (unicast != null) {
+            return unicast
+        }
+        // Return type is not the entity ID.
+        val returnType = fn.returnType?.resolve()!!
+        if (!setClass.isAssignableFrom(returnType)) {
+            logger.error(
+                "A multicast routing function for events must return" +
+                        " a ${setClass.ref}` of entity identifiers." +
+                        " Encountered: ${returnType.qualifiedRef}.",
+                fn
+            )
+            return null
+        }
+        // The returned type is a `Set`. Let's check the generic argument.
+        val firstArg = returnType.arguments.firstOrNull()
+        if (firstArg == null) {
+            logger.error(
+                "A multicast routing function for events must return" +
+                        " a `Set` whose generic argument is an entity identifier." +
+                        " Encountered: no argument.",
+                fn
+            )
+            return null
+        }
+        val argumentClass = firstArg.type!!.resolve()
+        if (!declaringClass.idClass.isAssignableFrom(argumentClass)) {
+            logger.error(
+                "A multicast routing function for events must return" +
+                        " a `Set` whose generic argument is an entity identifier." +
+                        " Expected: ${declaringClass.idClass.ref}." +
+                        " Encountered: ${argumentClass.qualifiedRef}.",
+                fn
+            )
+            return null
+        }
+        return returnType
+    }
+
     override fun create(
         fn: KSFunctionDeclaration,
         declaringClass: EntityClass,

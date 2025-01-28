@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.google.protobuf.MessageOrBuilder
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.spine.base.CommandMessage
@@ -33,16 +34,17 @@ import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
+import io.spine.validate.ValidatingBuilder
 import kotlin.collections.plus
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 
 /**
- * Abstract base for tests checking handling errors using the [Route] annotation.
+ * Abstract base for tests checking handling compilation of the [Route] annotation.
  *
  * The tests use types from the Protobuf code generated for the `given.devices` proto package.
  */
-sealed class ErrorSpecTest {
+sealed class RouteCompilationTest {
 
     companion object {
 
@@ -63,22 +65,21 @@ sealed class ErrorSpecTest {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
-        val baseJar = CommandMessage::class.java.classpathFile()
-        val coreJar = EventContext::class.java.classpathFile()
-        val serverJar = Route::class.java.classpathFile()
-        val processorJar = RouteProcessorProvider::class.java.classpathFile()
-        val compiledProtos = Device::class.java.classpathFile()
+
+        val dependencyJars = setOf(
+            MessageOrBuilder::class.java, // Protobuf
+            CommandMessage::class.java, // Base
+            ValidatingBuilder::class.java, // Validation runtime
+            EventContext::class.java, // CoreJava.core
+            Route::class.java, // CoreJava.server
+            RouteProcessorProvider::class.java, // RouteProcessor
+            Device::class.java // Compiled protos
+        ).map { it.classpathFile() }
 
         compilation.apply {
             javaPackagePrefix = "io.spine.routing.given"
             symbolProcessorProviders = listOf(RouteProcessorProvider())
-            classpaths = classpaths + listOf(
-                baseJar,
-                coreJar,
-                serverJar,
-                processorJar,
-                compiledProtos
-            )
+            classpaths = classpaths + dependencyJars
         }
     }
 }
