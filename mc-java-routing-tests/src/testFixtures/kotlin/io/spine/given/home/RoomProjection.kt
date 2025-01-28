@@ -63,8 +63,8 @@ internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
         @JvmStatic
         fun route(e: RoomEvent): RoomId = e.room
 
-//        @Route
-//        @JvmStatic
-//        fun routeMoved(e: DeviceMoved): Set<RoomId> = setOf(e.prevRoom, e.room)
+        @Route
+        @JvmStatic
+        fun routeMoved(e: DeviceMoved): Set<RoomId> = setOf(e.prevRoom, e.room)
     }
 }
