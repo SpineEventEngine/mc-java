@@ -68,7 +68,9 @@ public interface CommandRoutingSetup<I : Any> :
     RoutingSetup<I, CommandMessage, CommandContext, I, CommandRouting<I>> {
 
     public companion object :
-        RoutingSetupDiscovery<CommandMessage, CommandContext, CommandRouting<Any>>("CommandRouting") {
+        RoutingSetupDiscovery<CommandMessage, CommandContext, CommandRouting<Any>>(
+            "CommandRouting"
+        ) {
 
         public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: CommandRouting<I>) {
             @Suppress("UNCHECKED_CAST")
