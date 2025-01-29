@@ -36,9 +36,6 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
-import io.spine.server.route.CommandRoutingSetup
-import io.spine.server.route.EventRoutingSetup
-import io.spine.server.route.StateRoutingSetup
 
 internal sealed class RouteVisitor<F : RouteFun>(
     private val functions: List<F>,
@@ -83,7 +80,7 @@ internal class CommandRouteVisitor(
     environment: Environment
 ) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, environment)  {
 
-    override val classNameSuffix: String = CommandRoutingSetup.classSuffix
+    override val classNameSuffix: String = "CommandRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
@@ -96,7 +93,7 @@ internal class EventRouteVisitor(
     environment: Environment
 ) : RouteVisitor<EventRouteFun>(functions, codeGenerator, environment) {
 
-    override val classNameSuffix: String = EventRoutingSetup.classSuffix
+    override val classNameSuffix: String = "EventRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
@@ -109,7 +106,7 @@ internal class StateUpdateRouteVisitor(
     environment: Environment
 ) : RouteVisitor<StateUpdateRouteFun>(functions, codeGenerator, environment) {
 
-    override val classNameSuffix: String = StateRoutingSetup.classSuffix
+    override val classNameSuffix: String = "StateUpdateRouting"
 
     override fun generateCode(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.

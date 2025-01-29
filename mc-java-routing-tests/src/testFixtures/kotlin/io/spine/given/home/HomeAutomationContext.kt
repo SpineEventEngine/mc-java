@@ -26,11 +26,15 @@
 
 package io.spine.given.home
 
+import com.google.auto.service.AutoService
 import io.spine.core.Subscribe
 import io.spine.given.home.events.DeviceMoved
 import io.spine.given.home.events.RoomAdded
 import io.spine.given.home.events.RoomEvent
 import io.spine.given.home.events.RoomRenamed
+import io.spine.protobuf.isDefault
+import io.spine.server.BoundedContext
+import io.spine.server.entity.Entity
 import io.spine.server.entity.alter
 import io.spine.server.projection.Projection
 import io.spine.server.projection.ProjectionRepository
@@ -40,7 +44,11 @@ import io.spine.server.route.Route
 import io.spine.server.route.StateRoutingSetup
 import io.spine.server.route.StateUpdateRouting
 
-internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
+fun homeAutomation(): BoundedContext = BoundedContext.singleTenant("HomeAutomation")
+    .add(RoomProjectionRepository())
+    .build()
+
+public class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
     @Subscribe
     fun on(e: RoomAdded) = alter {
@@ -73,7 +81,8 @@ internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
         @Route
         @JvmStatic
-        fun routeMoved(e: DeviceMoved): Set<RoomId> = setOf(e.prevRoom, e.room)
+        fun routeMoved(e: DeviceMoved): Set<RoomId> =
+            if (e.prevRoom.isDefault()) setOf(e.room) else setOf(e.prevRoom, e.room)
     }
 }
 
@@ -81,6 +90,13 @@ internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProje
 
     override fun setupEventRouting(routing: EventRouting<RoomId>) {
         super.setupEventRouting(routing)
+
+        // Remove routs added via reflective class analysis.
+        routing.run {
+            remove<RoomEvent>()
+            remove<DeviceMoved>()
+        }
+
         EventRoutingSetup.apply(entityClass(), routing)
     }
 
@@ -90,8 +106,13 @@ internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProje
     }
 }
 
-@Suppress("unused") // Loaded dynamically.
-internal object RoomProjectionEventRouting : EventRoutingSetup<RoomId> {
+/**
+ * This class simulates the generated code.
+ */
+@AutoService(EventRoutingSetup::class)
+public class RoomProjectionEventRoutingX : EventRoutingSetup<RoomId> {
+
+    override fun entityClass(): Class<out Entity<RoomId, *>> = RoomProjection::class.java
 
     override fun setup(routing: EventRouting<RoomId>) {
         routing.run {

@@ -33,6 +33,7 @@ import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Guava
 import io.spine.dependency.lib.Jackson
 import io.spine.dependency.lib.Kotlin
+import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ArtifactVersion
@@ -135,6 +136,8 @@ fun Module.forceConfigurations() {
                     Kotlin.stdLibJdk7,
                     KotlinX.Coroutines.core,
                     KotlinX.Coroutines.jdk8,
+                    KotlinPoet.ksp,
+                    KotlinPoet.lib,
                     Protobuf.compiler,
                     Grpc.api,
                     Grpc.core,

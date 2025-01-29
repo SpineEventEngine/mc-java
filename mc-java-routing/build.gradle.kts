@@ -42,12 +42,12 @@ plugins {
 
 dependencies {
     ksp(AutoServiceKsp.processor)
+    compileOnlyApi(AutoService.annotations)
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
     implementation(KotlinPoet.lib)
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
-    implementation(AutoService.annotations)
 
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)

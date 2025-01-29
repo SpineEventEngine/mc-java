@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.lib.AutoService
+import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.local.CoreJava
 
 plugins {
@@ -34,7 +36,12 @@ plugins {
 }
 
 dependencies {
+    ksp(AutoServiceKsp.processor)
+    compileOnlyApi(AutoService.annotations)
+
     testImplementation(kotlin("stdlib"))
+    testImplementation(CoreJava.testUtilServer)
+
     kspTest(project(":mc-java-routing"))
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
