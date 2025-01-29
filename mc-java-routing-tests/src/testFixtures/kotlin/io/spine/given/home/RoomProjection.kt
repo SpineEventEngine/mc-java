@@ -26,10 +26,6 @@
 
 package io.spine.given.home
 
-import com.google.protobuf.Message
-import io.spine.base.EventMessage
-import io.spine.base.MessageContext
-import io.spine.core.EventContext
 import io.spine.core.Subscribe
 import io.spine.given.home.events.DeviceMoved
 import io.spine.given.home.events.RoomAdded
@@ -43,7 +39,6 @@ import io.spine.server.route.EventRoutingSetup
 import io.spine.server.route.Route
 import io.spine.server.route.StateRoutingSetup
 import io.spine.server.route.StateUpdateRouting
-import kotlin.apply
 
 internal class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
@@ -96,7 +91,7 @@ internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProje
 }
 
 @Suppress("unused") // Loaded dynamically.
-internal object RoomProjectionEventRouting: EventRoutingSetup<RoomId> {
+internal object RoomProjectionEventRouting : EventRoutingSetup<RoomId> {
 
     override fun setup(routing: EventRouting<RoomId>) {
         routing.run {
