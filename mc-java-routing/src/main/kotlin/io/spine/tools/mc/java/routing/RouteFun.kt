@@ -32,9 +32,13 @@ import com.google.devtools.ksp.symbol.KSType
 internal sealed class RouteFun(
     val fn: KSFunctionDeclaration,
     val declaringClass: EntityClass,
-    protected val parameters: Pair<KSType, KSType?>,
-    protected val returnType: KSType
-)
+    parameters: Pair<KSType, KSType?>,
+    val returnType: KSType
+) {
+    val messageParameter: KSType = parameters.first
+    val contextParameter: KSType? = parameters.second
+    val acceptsContext: Boolean = contextParameter != null
+}
 
 internal class CommandRouteFun(
     fn: KSFunctionDeclaration,
