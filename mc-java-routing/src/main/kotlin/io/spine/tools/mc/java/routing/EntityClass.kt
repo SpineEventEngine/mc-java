@@ -29,6 +29,8 @@ package io.spine.tools.mc.java.routing
 import com.google.devtools.ksp.symbol.ClassKind.CLASS
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.KSTypeArgument
+import com.google.devtools.ksp.symbol.KSTypeReference
 
 internal class EntityClass(
     private val decl: KSClassDeclaration,
@@ -40,7 +42,7 @@ internal class EntityClass(
 
     val type: KSType by lazy { decl.asStarProjectedType() }
 
-    val idClass: KSType by lazy {
+    val idClassTypeArgument: KSTypeArgument by lazy {
         val asEntity = decl.superTypes.find {
             entityInterface.isAssignableFrom(it.resolve())
         }
@@ -48,8 +50,15 @@ internal class EntityClass(
             "The class `${decl.qualifiedName!!.asString()}`" +
                     " must implement ${entityInterface.declaration.qualified()}`."
         }
-        val firstTypeArgument = asEntity.element!!.typeArguments.first()
-        firstTypeArgument.type!!.resolve()
+        asEntity.element!!.typeArguments.first()
+    }
+
+    val idClassReference: KSTypeReference by lazy {
+        idClassTypeArgument.type!!
+    }
+
+    val idClass: KSType by lazy {
+        idClassReference.resolve()
     }
 
     fun superClass(): KSType {

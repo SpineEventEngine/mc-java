@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.google.auto.service.AutoService
 import com.google.protobuf.MessageOrBuilder
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.symbolProcessorProviders
@@ -67,6 +68,7 @@ sealed class RouteCompilationTest {
         compilation = KotlinCompilation()
 
         val dependencyJars = setOf(
+            AutoService::class.java,
             MessageOrBuilder::class.java, // Protobuf
             CommandMessage::class.java, // Base
             ValidatingBuilder::class.java, // Validation runtime

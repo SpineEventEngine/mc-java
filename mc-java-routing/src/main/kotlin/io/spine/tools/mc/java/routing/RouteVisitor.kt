@@ -26,18 +26,25 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
+import io.spine.tools.mc.java.routing.Environment.ClassType
 
 internal sealed class RouteVisitor<F : RouteFun>(
+    protected val setupType: ClassType,
     private val functions: List<F>,
     protected val codeGenerator: CodeGenerator,
     protected val environment: Environment,
@@ -45,24 +52,45 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     private lateinit var packageName: String
     private lateinit var originalFile: KSFile
-    private lateinit var routingClass: TypeSpec.Builder
+    protected lateinit var routingClass: TypeSpec.Builder
 
     protected abstract val classNameSuffix: String
+
+    val idClassTypeArgument: KSTypeArgument by lazy {
+        val fn = functions.first()
+        fn.declaringClass.idClassTypeArgument
+    }
 
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
         originalFile = classDeclaration.containingFile!!
         packageName = originalFile.packageName.asString()
         val className = classDeclaration.simpleName.asString() + classNameSuffix
-        routingClass = TypeSpec.classBuilder(className)
-            .addModifiers(KModifier.INTERNAL)
+        createClass(className)
         functions.forEach { it.fn.accept(this, Unit) }
     }
 
-    protected abstract fun generateCode(function: KSFunctionDeclaration)
+    @OverridingMethodsMustInvokeSuper
+    protected open fun createClass(className: String) {
+        val annotation = AnnotationSpec.builder(AutoService::class)
+            .addMember("%T::class", setupType.cls)
+            .build()
+
+        routingClass = TypeSpec.classBuilder(className)
+            // Must be `public` because created reflectively via `AutoService`
+            .addModifiers(KModifier.PUBLIC)
+            .addAnnotation(annotation)
+
+        val superInterface = setupType.type
+            .replace(listOf(idClassTypeArgument))
+            .toTypeName()
+        routingClass.addSuperinterface(superInterface)
+    }
 
     override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-        generateCode(function)
+        addRoute(function)
     }
+
+    protected abstract fun addRoute(function: KSFunctionDeclaration)
 
     fun writeFile() {
         val cls = routingClass.build()
@@ -78,11 +106,16 @@ internal class CommandRouteVisitor(
     functions: List<CommandRouteFun>,
     codeGenerator: CodeGenerator,
     environment: Environment
-) : RouteVisitor<CommandRouteFun>(functions, codeGenerator, environment)  {
+) : RouteVisitor<CommandRouteFun>(
+    environment.commandRoutingSetup,
+    functions,
+    codeGenerator,
+    environment
+) {
 
     override val classNameSuffix: String = "CommandRouting"
 
-    override fun generateCode(function: KSFunctionDeclaration) {
+    override fun addRoute(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 }
@@ -91,11 +124,20 @@ internal class EventRouteVisitor(
     functions: List<EventRouteFun>,
     codeGenerator: CodeGenerator,
     environment: Environment
-) : RouteVisitor<EventRouteFun>(functions, codeGenerator, environment) {
+) : RouteVisitor<EventRouteFun>(
+    environment.eventRoutingSetup,
+    functions,
+    codeGenerator,
+    environment
+) {
 
     override val classNameSuffix: String = "EventRouting"
 
-    override fun generateCode(function: KSFunctionDeclaration) {
+    override fun createClass(className: String): Unit = environment.run {
+        super.createClass(className)
+    }
+
+    override fun addRoute(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 }
@@ -104,11 +146,16 @@ internal class StateUpdateRouteVisitor(
     functions: List<StateUpdateRouteFun>,
     codeGenerator: CodeGenerator,
     environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(functions, codeGenerator, environment) {
+) : RouteVisitor<StateUpdateRouteFun>(
+    environment.stateRoutingSetup,
+    functions,
+    codeGenerator,
+    environment
+) {
 
     override val classNameSuffix: String = "StateUpdateRouting"
 
-    override fun generateCode(function: KSFunctionDeclaration) {
+    override fun addRoute(function: KSFunctionDeclaration) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 }

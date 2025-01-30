@@ -48,6 +48,7 @@ dependencies {
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
 
+    testImplementation(AutoService.annotations)
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
     testImplementation(Logging.testLib)

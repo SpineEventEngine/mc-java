@@ -28,10 +28,14 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSType
 import io.spine.server.aggregate.Aggregate
 import io.spine.server.entity.Entity
 import io.spine.server.procman.ProcessManager
 import io.spine.server.projection.Projection
+import io.spine.server.route.CommandRoutingSetup
+import io.spine.server.route.EventRoutingSetup
+import io.spine.server.route.StateRoutingSetup
 
 /**
  * Provides instances required for resolving types or reporting errors or warnings.
@@ -45,4 +49,13 @@ internal class Environment(
     val projectionClass by lazy { Projection::class.java.toType(resolver) }
     val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
     val setClass by lazy { Set::class.java.toType(resolver) }
+
+    val commandRoutingSetup = ClassType(CommandRoutingSetup::class.java)
+    val eventRoutingSetup = ClassType(EventRoutingSetup::class.java)
+    val stateRoutingSetup = ClassType(StateRoutingSetup::class.java)
+
+    inner class ClassType(val cls: Class<out Any>) {
+        val type: KSType by lazy { cls.toType(resolver) }
+    }
 }
+

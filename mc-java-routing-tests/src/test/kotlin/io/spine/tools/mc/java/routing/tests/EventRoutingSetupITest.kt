@@ -54,7 +54,6 @@ internal class EventRoutingSetupITest {
                     name = n1
                 }
             )
-
             context.receivesEvent(
                 deviceMoved {
                     device = lamp
