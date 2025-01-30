@@ -45,7 +45,6 @@ dependencies {
     compileOnlyApi(AutoService.annotations)
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
-    implementation(KotlinPoet.lib)
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
 

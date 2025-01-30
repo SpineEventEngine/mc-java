@@ -24,9 +24,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.lib.KotlinPoet
+import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
+import io.spine.dependency.local.ModelCompiler
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 import io.spine.dependency.local.Validation
 
@@ -41,29 +45,30 @@ dependencies {
 
     val apiDeps = arrayOf(
         Logging.lib,
-        Spine.modelCompiler,
+        ModelCompiler.lib,
         ProtoData.java,
         Validation.config,
-        ToolBase.pluginBase
+        ToolBase.pluginBase,
+        KotlinPoet.lib,
     )
     apiDeps.forEach {
         api(it) {
             excludeSpineBase()
         }
     }
-    api(Spine.base)
+    api(Base.lib)
 
     arrayOf(
-        Spine.base,
+        Base.lib,
         gradleTestKit() /* for creating a Gradle project. */,
-        Spine.testlib,
+        TestLib.lib,
         ProtoData.testlib /* `PipelineSetup` API. */
     ).forEach {
         // Expose using API level for the submodules.
         testFixturesApi(it)
     }
 
-    testImplementation(Spine.testlib)
+    testImplementation(TestLib.lib)
     testImplementation(gradleTestKit())
     testImplementation(ToolBase.pluginTestlib)
 }
