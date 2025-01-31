@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,10 +35,9 @@ import io.spine.protodata.ast.MessageType
 import io.spine.protodata.java.MessageOrEnumConvention
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
-import io.spine.tools.java.code.GeneratedBy
-import io.spine.tools.java.code.field.FieldName
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.methodSpec
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.signal.rejection.Javadoc.forConstructorOfThrowable
 import io.spine.tools.mc.java.signal.rejection.Javadoc.forThrowableOf
 import javax.lang.model.element.Modifier.FINAL
@@ -81,7 +80,7 @@ internal class RThrowableCode(
 
     fun toPoet(): TypeSpec = classSpec(simpleClassName) {
         addJavadoc(forThrowableOf(rejection))
-        addAnnotation(GeneratedBy.spineModelCompiler())
+        addAnnotation(GeneratedAnnotation.forJavaPoet())
         addModifiers(PUBLIC)
         superclass(RejectionThrowable::class.java)
         addField(serialVersionUID())
@@ -126,7 +125,7 @@ private val messageThrown = NoArgMethod("messageThrown")
 private fun serialVersionUID(): FieldSpec {
     return FieldSpec.builder(
         Long::class.javaPrimitiveType,
-        FieldName.serialVersionUID().value(), PRIVATE, STATIC, FINAL)
+        "serialVersionUID", PRIVATE, STATIC, FINAL)
         .initializer("0L")
         .build()
 }

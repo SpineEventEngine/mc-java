@@ -33,7 +33,7 @@ import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
 
 internal class EntityClass(
-    private val decl: KSClassDeclaration,
+    val decl: KSClassDeclaration,
     entityInterface: KSType
 ) {
     fun accept(visitor: RouteVisitor<*>, data: Unit) {

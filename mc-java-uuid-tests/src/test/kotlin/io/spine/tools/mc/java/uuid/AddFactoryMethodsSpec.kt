@@ -39,7 +39,7 @@ import org.junit.jupiter.api.io.TempDir
 @DisplayName("`AddFactoryMethods` should")
 internal class AddFactoryMethodsSpec {
 
-    private val annotationText = GeneratedAnnotation.create().text
+    private val annotationText = GeneratedAnnotation.forPsi().text
 
     companion object : UuidPluginTestSetup(
         AddFactoryMethods::class.java,

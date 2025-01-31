@@ -33,9 +33,14 @@ import io.spine.server.aggregate.Aggregate
 import io.spine.server.entity.Entity
 import io.spine.server.procman.ProcessManager
 import io.spine.server.projection.Projection
+import io.spine.server.route.CommandRouting
 import io.spine.server.route.CommandRoutingSetup
+import io.spine.server.route.EventRouting
 import io.spine.server.route.EventRoutingSetup
+import io.spine.server.route.MessageRouting
 import io.spine.server.route.StateRoutingSetup
+import io.spine.server.route.StateUpdateRouting
+import kotlin.reflect.KClass
 
 /**
  * Provides instances required for resolving types or reporting errors or warnings.
@@ -44,18 +49,21 @@ internal class Environment(
     val resolver: Resolver,
     val logger: KSPLogger
 ) {
-    val entityInterface by lazy { Entity::class.java.toType(resolver) }
-    val aggregateClass by lazy { Aggregate::class.java.toType(resolver) }
-    val projectionClass by lazy { Projection::class.java.toType(resolver) }
-    val processManagerClass by lazy { ProcessManager::class.java.toType(resolver) }
-    val setClass by lazy { Set::class.java.toType(resolver) }
+    val entityInterface by lazy { Entity::class.toType(resolver) }
+    val aggregateClass by lazy { Aggregate::class.toType(resolver) }
+    val projectionClass by lazy { Projection::class.toType(resolver) }
+    val processManagerClass by lazy { ProcessManager::class.toType(resolver) }
+    val setClass by lazy { Set::class.toType(resolver) }
 
-    val commandRoutingSetup = ClassType(CommandRoutingSetup::class.java)
-    val eventRoutingSetup = ClassType(EventRoutingSetup::class.java)
-    val stateRoutingSetup = ClassType(StateRoutingSetup::class.java)
+    val commandRoutingSetup = SetupType(CommandRoutingSetup::class, CommandRouting::class)
+    val eventRoutingSetup = SetupType(EventRoutingSetup::class, EventRouting::class)
+    val stateRoutingSetup = SetupType(StateRoutingSetup::class, StateUpdateRouting::class)
 
-    inner class ClassType(val cls: Class<out Any>) {
-        val type: KSType by lazy { cls.toType(resolver) }
+    inner class SetupType(
+        val setupClass: KClass<out Any>,
+        val routingClass: KClass<out MessageRouting<*, *, *>>
+    ) {
+        val type: KSType by lazy { setupClass.toType(resolver) }
     }
 }
 

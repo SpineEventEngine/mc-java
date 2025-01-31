@@ -28,21 +28,27 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSType
+import kotlin.reflect.KClass
 
 /**
- * Converts this class into [com.google.devtools.ksp.symbol.KSType] using the given resolver.
+ * Converts this class into [KSType] using the given resolver.
  */
-internal fun Class<*>.toType(resolver: Resolver): KSType {
-    val name = resolver.getKSNameFromString(canonicalName)
+internal fun KClass<*>.toType(resolver: Resolver): KSType {
+    val name = resolver.getKSNameFromString(qualifiedName!!)
     val classDecl = resolver.getClassDeclarationByName(name)
     // This is a reminder to add corresponding JAR to `KotlinCompilation` in tests.
     check(classDecl != null) {
-        "Unable to find the declaration of `$canonicalName`." +
+        "Unable to find the declaration of `$qualifiedName!!`." +
                 " Make sure the class is in the compilation classpath."
     }
     val type = classDecl.asStarProjectedType()
     return type
 }
+
+/**
+ * Converts this class into [KSType] using the given resolver.
+ */
+internal fun Class<*>.toType(resolver: Resolver): KSType = kotlin.toType(resolver)
 
 /**
  * Transform this string into a plural form if the count is greater than one.
