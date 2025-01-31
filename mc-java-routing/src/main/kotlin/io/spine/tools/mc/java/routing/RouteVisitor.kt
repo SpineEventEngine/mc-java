@@ -36,9 +36,11 @@ import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
@@ -59,9 +61,12 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     private lateinit var packageName: String
     private lateinit var originalFile: KSFile
-    protected lateinit var routingClass: TypeSpec.Builder
 
     protected abstract val classNameSuffix: String
+
+    protected lateinit var routingClass: TypeSpec.Builder
+    protected lateinit var setupFun: FunSpec.Builder
+    protected lateinit var routingRunBlock: CodeBlock.Builder
 
     val entityClass: EntityClass by lazy {
         val fn = functions.first()
@@ -77,7 +82,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
         packageName = originalFile.packageName.asString()
         val className = classDeclaration.simpleName.asString() + classNameSuffix
         createClass(className)
-        functions.forEach { it.fn.accept(this, Unit) }
+        handleFunctions()
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -98,6 +103,9 @@ internal sealed class RouteVisitor<F : RouteFun>(
         addEntityClassFunction()
     }
 
+    /**
+     * Adds the method that overrides [io.spine.server.route.RoutingSetup.entityClass].
+     */
     protected fun addEntityClassFunction() {
         val entityType = Entity::class.asClassName().parameterizedBy(
             idClassTypeArgument.type!!.toTypeName(),
@@ -107,14 +115,38 @@ internal sealed class RouteVisitor<F : RouteFun>(
             WildcardTypeName.producerOf(entityType)
         )
 
-        // Define the method that overrides the interface method
         val funSpec = FunSpec.builder("entityClass")
             .addModifiers(KModifier.OVERRIDE)
             .returns(classOfEntityInterface)
-            .addCode("= %T::class.java\n", entityClass.type.toClassName())
+            .addCode("return %T::class.java\n", entityClass.type.toClassName())
             .build()
 
         routingClass.addFunction(funSpec)
+    }
+
+    private fun handleFunctions() {
+        openSetupFunction()
+        functions.forEach { it.fn.accept(this, Unit) }
+        closeSetupFunction()
+    }
+
+    private fun openSetupFunction() {
+        val paramName = "routing"
+        val paramType = setupType.routingClass.asClassName()
+            .parameterizedBy(idClassTypeArgument.type!!.toTypeName())
+        val param = ParameterSpec.builder(paramName, paramType)
+        setupFun = FunSpec.builder("setup")
+            .addModifiers(KModifier.OVERRIDE)
+            .addParameter(param.build())
+
+        routingRunBlock = CodeBlock.builder()
+            .add("%N.run {\n", paramName)
+    }
+
+    private fun closeSetupFunction() {
+        routingRunBlock.add("}\n")
+        setupFun.addCode(routingRunBlock.build())
+        routingClass.addFunction(setupFun.build())
     }
 
     override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {

@@ -109,7 +109,7 @@ internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProje
 /**
  * This class simulates the generated code.
  */
-@AutoService(EventRoutingSetup::class)
+//@AutoService(EventRoutingSetup::class)
 public class RoomProjectionEventRoutingX : EventRoutingSetup<RoomId> {
 
     override fun entityClass(): Class<out Entity<RoomId, *>> = RoomProjection::class.java
