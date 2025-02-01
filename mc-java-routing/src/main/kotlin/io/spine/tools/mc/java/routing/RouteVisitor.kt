@@ -48,6 +48,7 @@ import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.entity.Entity
+import io.spine.string.Indent
 import io.spine.tools.mc.java.routing.Environment.SetupType
 
 internal sealed class RouteVisitor<F : RouteFun>(
@@ -151,6 +152,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
     fun writeFile() {
         val cls = routingClass.build()
         val code = FileSpec.builder(packageName, cls.name!!)
+            .indent(Indent.defaultJavaIndent.value)
             .addType(cls)
             .build()
         val deps = Dependencies(true, originalFile)
