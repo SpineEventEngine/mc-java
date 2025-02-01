@@ -73,7 +73,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
         fn.declaringClass
     }
 
-    val idClassTypeArgument: KSTypeArgument by lazy {
+    private val idClassTypeArgument: KSTypeArgument by lazy {
         entityClass.idClassTypeArgument
     }
 

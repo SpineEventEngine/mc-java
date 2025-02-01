@@ -37,7 +37,7 @@ import io.spine.server.route.Route
 
 internal class RouteProcessor(
     private val codeGenerator: CodeGenerator,
-    internal val logger: KSPLogger
+    private val logger: KSPLogger
 ) : SymbolProcessor {
 
     private lateinit var environment: Environment
