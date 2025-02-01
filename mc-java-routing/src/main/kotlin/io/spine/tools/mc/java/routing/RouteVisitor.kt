@@ -30,7 +30,6 @@ import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
@@ -80,7 +79,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
         packageName = originalFile.packageName.asString()
         val className = classDeclaration.simpleName.asString() + classNameSuffix
         createClass(className)
-        handleFunctions()
+        handleRouteFunctions()
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -122,9 +121,9 @@ internal sealed class RouteVisitor<F : RouteFun>(
         routingClass.addFunction(funSpec)
     }
 
-    private fun handleFunctions() {
+    private fun handleRouteFunctions() {
         openSetupFunction()
-        functions.forEach { it.fn.accept(this, Unit) }
+        functions.forEach { addRoute(it) }
         closeSetupFunction()
     }
 
@@ -138,20 +137,16 @@ internal sealed class RouteVisitor<F : RouteFun>(
             .addParameter(param.build())
 
         routingRunBlock = CodeBlock.builder()
-            .add("%N.run {\n", paramName)
+            .beginControlFlow("%N.run", paramName)
     }
 
+    protected abstract fun addRoute(fn: F)
+
     private fun closeSetupFunction() {
-        routingRunBlock.add("}\n")
+        routingRunBlock.endControlFlow()
         setupFun.addCode(routingRunBlock.build())
         routingClass.addFunction(setupFun.build())
     }
-
-    override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-        addRoute(function)
-    }
-
-    protected abstract fun addRoute(function: KSFunctionDeclaration)
 
     fun writeFile() {
         val cls = routingClass.build()
@@ -173,7 +168,7 @@ internal class CommandRouteVisitor(
 ) {
     override val classNameSuffix: String = "CommandRouting"
 
-    override fun addRoute(function: KSFunctionDeclaration) {
+    override fun addRoute(fn: CommandRouteFun) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 }
@@ -192,8 +187,32 @@ internal class EventRouteVisitor(
         super.createClass(className)
     }
 
-    override fun addRoute(function: KSFunctionDeclaration) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+    /**
+     * Adds the entry in the routing setup function inside the [routingRunBlock].
+     *
+     * For a multicast route it would be something like:
+     * ```kotlin
+     * route<MyEvent> { e, c -> MyEntity.myRouteFun(e, c) }
+     * ```
+     * For an unicast route it would be something like:
+     * ```kotlin
+     * unicast<MyEvent> { e, c -> MyEntity.myRoutFun(e, c) }
+     * ```
+     * If a route function does not accept context, the lambdas would have only the `e` parameter.
+     */
+    override fun addRoute(fn: EventRouteFun) {
+        val params = if (fn.acceptsContext) "e, c" else "e"
+        val entryFn = if (fn.isUnicast) "unicast" else "route"
+
+        routingRunBlock.add(
+            "%L<%T> { %L -> %T.%L(%L) }\n",
+            entryFn,
+            fn.messageClass,
+            params,
+            entityClass.type.toClassName(),
+            fn.decl.simpleName.asString(),
+            params
+        )
     }
 }
 
@@ -208,7 +227,7 @@ internal class StateUpdateRouteVisitor(
 
     override val classNameSuffix: String = "StateUpdateRouting"
 
-    override fun addRoute(function: KSFunctionDeclaration) {
+    override fun addRoute(fn: StateUpdateRouteFun) {
         //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 }

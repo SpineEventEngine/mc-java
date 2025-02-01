@@ -28,16 +28,22 @@ package io.spine.tools.mc.java.routing
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ksp.toClassName
 
 internal sealed class RouteFun(
-    val fn: KSFunctionDeclaration,
+    val decl: KSFunctionDeclaration,
     val declaringClass: EntityClass,
     parameters: Pair<KSType, KSType?>,
     val returnType: KSType
 ) {
     val messageParameter: KSType = parameters.first
+    val messageClass: ClassName = messageParameter.toClassName()
     val contextParameter: KSType? = parameters.second
+    val contextClass: ClassName? = contextParameter?.toClassName()
     val acceptsContext: Boolean = contextParameter != null
+
+    val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
 }
 
 internal class CommandRouteFun(

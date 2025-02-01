@@ -51,17 +51,17 @@ fun homeAutomation(): BoundedContext = BoundedContext.singleTenant("HomeAutomati
 public class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
     @Subscribe
-    fun on(e: RoomAdded) = alter {
+    internal fun on(e: RoomAdded) = alter {
         name = e.name
     }
 
     @Subscribe
-    fun on(e: RoomRenamed) = alter {
+    internal fun on(e: RoomRenamed) = alter {
         name = e.name
     }
 
     @Subscribe
-    fun on(e: DeviceMoved) = alter {
+    internal fun on(e: DeviceMoved) = alter {
         if (id == e.prevRoom) {
             val toRemove = deviceBuilderList.find { b -> b.uuid == e.device.uuid }
             if (toRemove != null) {
@@ -116,7 +116,7 @@ public class RoomProjectionEventRoutingX : EventRoutingSetup<RoomId> {
 
     override fun setup(routing: EventRouting<RoomId>) {
         routing.run {
-            route<DeviceMoved> { e, _ -> RoomProjection.routeMoved(e) }
+            route<DeviceMoved> { e -> RoomProjection.routeMoved(e) }
             unicast<RoomEvent> { e -> RoomProjection.route(e) }
         }
     }
