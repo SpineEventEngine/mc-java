@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.routing
 
 import com.google.auto.service.AutoService
-import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
@@ -55,7 +54,6 @@ import io.spine.tools.mc.java.routing.Environment.SetupType
 internal sealed class RouteVisitor<F : RouteFun>(
     protected val setupType: SetupType,
     private val functions: List<F>,
-    protected val codeGenerator: CodeGenerator,
     protected val environment: Environment,
 ) : KSVisitorVoid() {
 
@@ -161,21 +159,18 @@ internal sealed class RouteVisitor<F : RouteFun>(
             .addType(cls)
             .build()
         val deps = Dependencies(true, originalFile)
-        code.writeTo(codeGenerator, deps)
+        code.writeTo(environment.codeGenerator, deps)
     }
 }
 
 internal class CommandRouteVisitor(
     functions: List<CommandRouteFun>,
-    codeGenerator: CodeGenerator,
     environment: Environment
 ) : RouteVisitor<CommandRouteFun>(
     environment.commandRoutingSetup,
     functions,
-    codeGenerator,
     environment
 ) {
-
     override val classNameSuffix: String = "CommandRouting"
 
     override fun addRoute(function: KSFunctionDeclaration) {
@@ -185,15 +180,12 @@ internal class CommandRouteVisitor(
 
 internal class EventRouteVisitor(
     functions: List<EventRouteFun>,
-    codeGenerator: CodeGenerator,
     environment: Environment
 ) : RouteVisitor<EventRouteFun>(
     environment.eventRoutingSetup,
     functions,
-    codeGenerator,
     environment
 ) {
-
     override val classNameSuffix: String = "EventRouting"
 
     override fun createClass(className: String): Unit = environment.run {
@@ -207,12 +199,10 @@ internal class EventRouteVisitor(
 
 internal class StateUpdateRouteVisitor(
     functions: List<StateUpdateRouteFun>,
-    codeGenerator: CodeGenerator,
     environment: Environment
 ) : RouteVisitor<StateUpdateRouteFun>(
     environment.stateRoutingSetup,
     functions,
-    codeGenerator,
     environment
 ) {
 

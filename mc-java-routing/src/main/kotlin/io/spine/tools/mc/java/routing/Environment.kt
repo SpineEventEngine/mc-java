@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSType
@@ -47,7 +48,8 @@ import kotlin.reflect.KClass
  */
 internal class Environment(
     val resolver: Resolver,
-    val logger: KSPLogger
+    val logger: KSPLogger,
+    val codeGenerator: CodeGenerator
 ) {
     val entityInterface by lazy { Entity::class.toType(resolver) }
     val aggregateClass by lazy { Aggregate::class.toType(resolver) }

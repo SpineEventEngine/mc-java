@@ -43,7 +43,7 @@ internal class RouteProcessor(
     private lateinit var environment: Environment
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        this.environment = Environment(resolver, logger)
+        this.environment = Environment(resolver, logger, codeGenerator)
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val allValid = allAnnotated.filter { it.validate() }
             .map { it as KSFunctionDeclaration }
@@ -61,7 +61,7 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<CommandRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val crv = CommandRouteVisitor(functions, codeGenerator, environment)
+            val crv = CommandRouteVisitor(functions, environment)
             declaringClass.accept(crv, Unit)
             crv.writeFile()
         }
@@ -71,7 +71,7 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<EventRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val erv = EventRouteVisitor(functions, codeGenerator, environment)
+            val erv = EventRouteVisitor(functions, environment)
             declaringClass.accept(erv, Unit)
             erv.writeFile()
         }
@@ -81,7 +81,7 @@ internal class RouteProcessor(
         val routing = qualified.filterIsInstance<StateUpdateRouteFun>()
         val grouped = routing.groupByClasses()
         grouped.forEach { (declaringClass, functions) ->
-            val erv = StateUpdateRouteVisitor(functions, codeGenerator, environment)
+            val erv = StateUpdateRouteVisitor(functions, environment)
             declaringClass.accept(erv, Unit)
             erv.writeFile()
         }
@@ -90,3 +90,50 @@ internal class RouteProcessor(
 
 private fun <F : RouteFun> List<F>.groupByClasses(): Map<EntityClass, List<F>> =
     groupBy { it.declaringClass }
+        .mapValues { (_, list) ->
+            RouteFunComparator.sort(list)
+        }
+
+/**
+ * Compares two [RouteFun] instances by their [messageParameter][RouteFun.messageParameter]
+ * properties, putting more abstract type further in the sorting order.
+ */
+private class RouteFunComparator : Comparator<RouteFun> {
+
+    @Suppress("ReturnCount")
+    override fun compare(o1: RouteFun, o2: RouteFun): Int {
+        val m1 = o1.messageParameter
+        val m2 = o2.messageParameter
+
+        if (m1 == m2) {
+            return 0
+        }
+        // An interface should come after a class in the sorting.
+        if (m1.isInterface && !m2.isInterface) {
+            return 1
+        }
+        if (!m1.isInterface && m2.isInterface) {
+            return -1
+        }
+        // Both are either classes or interfaces.
+        // The one that is more abstract goes further in sorting.
+        if (m1.isAssignableFrom(m2)) {
+            return 1
+        }
+        if (m2.isAssignableFrom(m1)) {
+            return -1
+        }
+        val n1 = m1.declaration.qualifiedName?.asString()
+        val n2 = m2.declaration.qualifiedName?.asString()
+        return compareValues(n1, n2)
+    }
+
+    companion object {
+
+        fun <F : RouteFun> sort(list: List<F>): List<F> {
+            val comparator = RouteFunComparator()
+            return list.sortedWith(comparator)
+        }
+    }
+}
+

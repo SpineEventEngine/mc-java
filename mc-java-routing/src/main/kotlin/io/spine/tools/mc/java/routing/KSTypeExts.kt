@@ -26,7 +26,16 @@
 
 package io.spine.tools.mc.java.routing
 
+import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
+
+/**
+ * Tells if this type represents an interface.
+ */
+internal val KSType.isInterface: Boolean
+    get() = (declaration is KSClassDeclaration)
+            && (declaration as KSClassDeclaration).classKind == INTERFACE
 
 /**
  * Obtains a simple name of the type surrounded with back ticks.
