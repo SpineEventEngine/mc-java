@@ -26,7 +26,6 @@
 
 package io.spine.given.home
 
-import com.google.auto.service.AutoService
 import io.spine.core.Subscribe
 import io.spine.given.home.events.DeviceMoved
 import io.spine.given.home.events.RoomAdded
@@ -34,7 +33,6 @@ import io.spine.given.home.events.RoomEvent
 import io.spine.given.home.events.RoomRenamed
 import io.spine.protobuf.isDefault
 import io.spine.server.BoundedContext
-import io.spine.server.entity.Entity
 import io.spine.server.entity.alter
 import io.spine.server.projection.Projection
 import io.spine.server.projection.ProjectionRepository
@@ -103,21 +101,5 @@ internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProje
     override fun setupStateRouting(routing: StateUpdateRouting<RoomId>) {
         super.setupStateRouting(routing)
         StateRoutingSetup.apply(entityClass(), routing)
-    }
-}
-
-/**
- * This class simulates the generated code.
- */
-//@AutoService(EventRoutingSetup::class)
-public class RoomProjectionEventRoutingX : EventRoutingSetup<RoomId> {
-
-    override fun entityClass(): Class<out Entity<RoomId, *>> = RoomProjection::class.java
-
-    override fun setup(routing: EventRouting<RoomId>) {
-        routing.run {
-            route<DeviceMoved> { e -> RoomProjection.routeMoved(e) }
-            unicast<RoomEvent> { e -> RoomProjection.route(e) }
-        }
     }
 }

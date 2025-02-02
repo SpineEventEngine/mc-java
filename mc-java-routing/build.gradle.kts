@@ -47,6 +47,7 @@ dependencies {
     implementation(Ksp.symbolProcessingApi)
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
+    implementation(project(":mc-java-base"))
 
     testImplementation(AutoService.annotations)
     testImplementation(Kotest.assertions)

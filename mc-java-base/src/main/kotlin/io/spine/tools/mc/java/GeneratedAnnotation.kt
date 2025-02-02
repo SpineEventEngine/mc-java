@@ -27,15 +27,14 @@
 package io.spine.tools.mc.java
 
 import com.intellij.psi.PsiAnnotation
-import com.squareup.javapoet.AnnotationSpec as JAnnotationSpec
-import com.squareup.javapoet.CodeBlock
-import com.squareup.kotlinpoet.AnnotationSpec as KAnnotationSpec
 import io.spine.annotation.Generated
 import io.spine.tools.java.reference
 import io.spine.tools.mc.java.GeneratedAnnotation.forPsi
 import io.spine.tools.mc.java.VersionHolder.version
 import io.spine.tools.psi.java.Environment.elementFactory
 import org.intellij.lang.annotations.Language
+import com.squareup.javapoet.AnnotationSpec as JAnnotationSpec
+import com.squareup.kotlinpoet.AnnotationSpec as KAnnotationSpec
 
 /**
  * Creates [PsiAnnotation] for marking code elements created by McJava.
@@ -78,7 +77,7 @@ public object GeneratedAnnotation {
      */
     public fun forJavaPoet(value: String = defaultValue): JAnnotationSpec =
         JAnnotationSpec.builder(Generated::class.java)
-            .addMember("value", CodeBlock.of(value))
+            .addMember("value", "\"%L\"", value)
             .build()
 
 
@@ -90,6 +89,6 @@ public object GeneratedAnnotation {
      */
     public fun forKotlinPoet(value: String = defaultValue): KAnnotationSpec =
         KAnnotationSpec.builder(Generated::class)
-            .addMember("value", CodeBlock.of(value))
+            .addMember("\"%L\"", value)
             .build()
 }

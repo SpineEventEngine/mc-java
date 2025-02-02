@@ -49,6 +49,7 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.entity.Entity
 import io.spine.string.Indent
+import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.routing.Environment.SetupType
 
 internal sealed class RouteVisitor<F : RouteFun>(
@@ -85,14 +86,16 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     @OverridingMethodsMustInvokeSuper
     protected open fun createClass(className: String) {
-        val annotation = AnnotationSpec.builder(AutoService::class)
+        val generated = GeneratedAnnotation.forKotlinPoet()
+        val autoService = AnnotationSpec.builder(AutoService::class)
             .addMember("%T::class", setupType.setupClass)
             .build()
 
         routingClass = TypeSpec.classBuilder(className)
             // Must be `public` because created reflectively via `AutoService`
             .addModifiers(KModifier.PUBLIC)
-            .addAnnotation(annotation)
+            .addAnnotation(generated)
+            .addAnnotation(autoService)
 
         val superInterface = setupType.type
             .replace(listOf(idClassTypeArgument))
