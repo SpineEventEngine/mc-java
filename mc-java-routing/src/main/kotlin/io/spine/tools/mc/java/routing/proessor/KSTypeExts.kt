@@ -24,19 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.tools.mc.java.routing.proessor
 
-import io.spine.base.MessageContext
-import io.spine.server.entity.Entity
-import io.spine.type.KnownMessage
+import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 
-public interface RoutingSetup<
-        I : Any,
-        M : KnownMessage,
-        C : MessageContext,
-        R : Any,
-        U : MessageRouting<M, C, R>> {
+/**
+ * Tells if this type represents an interface.
+ */
+internal val KSType.isInterface: Boolean
+    get() = (declaration is KSClassDeclaration)
+            && (declaration as KSClassDeclaration).classKind == INTERFACE
 
-    public fun entityClass(): Class<out Entity<I, *>>
-    public fun setup(routing: U)
-}
+/**
+ * Obtains a simple name of the type surrounded with back ticks.
+ */
+internal val KSType.ref: String
+    get() = "`${declaration.simpleName.asString()}`"
+
+/**
+ * Obtains a qualified name of the type surrouned with back ticks.
+ */
+internal val KSType.qualifiedRef: String
+    get() = "`${declaration.qualifiedName?.asString()}`"

@@ -24,42 +24,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.ksp.toClassName
+import com.google.devtools.ksp.validate
+import io.spine.server.route.Route
 
-internal sealed class RouteFun(
-    val decl: KSFunctionDeclaration,
-    val declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) {
-    val messageParameter: KSType = parameters.first
-    val messageClass: ClassName = messageParameter.toClassName()
-    val acceptsContext: Boolean = parameters.second != null
-    val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
+internal class RouteProcessor(
+    private val codeGenerator: CodeGenerator,
+    private val logger: KSPLogger
+) : SymbolProcessor {
+
+    private lateinit var environment: Environment
+
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        this.environment = Environment(resolver, logger, codeGenerator)
+        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
+        val allValid = allAnnotated.filter { it.validate() }
+            .map { it as KSFunctionDeclaration }
+
+        RouteVisitor.process(allValid, environment)
+
+        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
+        return unprocessed
+    }
 }
-
-internal class CommandRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)
-
-internal class EventRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)
-
-internal class StateUpdateRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)

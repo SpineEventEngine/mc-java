@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.Dependencies
@@ -51,7 +51,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.entity.Entity
 import io.spine.string.Indent
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.routing.Environment.SetupType
+import io.spine.tools.mc.java.routing.proessor.Environment.SetupType
 
 internal sealed class RouteVisitor<F : RouteFun>(
     protected val setupType: SetupType,

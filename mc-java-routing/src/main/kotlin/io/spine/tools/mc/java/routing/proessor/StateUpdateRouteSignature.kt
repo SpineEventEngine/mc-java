@@ -24,19 +24,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.tools.mc.java.routing.proessor
 
-import io.spine.base.MessageContext
-import io.spine.server.entity.Entity
-import io.spine.type.KnownMessage
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
+import io.spine.base.EntityState
+import io.spine.core.EventContext
 
-public interface RoutingSetup<
-        I : Any,
-        M : KnownMessage,
-        C : MessageContext,
-        R : Any,
-        U : MessageRouting<M, C, R>> {
+internal class StateUpdateRouteSignature(
+    environment: Environment
+) : RouteSignature<StateUpdateRouteFun>(
+    EntityState::class.java,
+    EventContext::class.java,
+    environment
+) {
+    override fun matchDeclaringClass(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass
+    ): Boolean = environment.run {
+        val isProjection = projectionClass.isAssignableFrom(declaringClass.type)
+        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
+        return isProjection || isProcessManager
+    }
 
-    public fun entityClass(): Class<out Entity<I, *>>
-    public fun setup(routing: U)
+    override fun create(
+        fn: KSFunctionDeclaration,
+        declaringClass: EntityClass,
+        parameters: Pair<KSType, KSType?>,
+        returnType: KSType
+    ): StateUpdateRouteFun = StateUpdateRouteFun(fn, declaringClass, parameters, returnType)
 }

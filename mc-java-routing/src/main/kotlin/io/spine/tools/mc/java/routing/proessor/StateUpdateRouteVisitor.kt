@@ -24,33 +24,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.validate
-import io.spine.server.route.Route
+internal class StateUpdateRouteVisitor(
+    functions: List<StateUpdateRouteFun>,
+    environment: Environment
+) : RouteVisitor<StateUpdateRouteFun>(
+    environment.stateRoutingSetup,
+    functions,
+    environment
+) {
 
-internal class RouteProcessor(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
-) : SymbolProcessor {
+    override val classNameSuffix: String = "StateUpdateRouting"
 
-    private lateinit var environment: Environment
+    override fun addRoute(fn: StateUpdateRouteFun) {
+        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+    }
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        this.environment = Environment(resolver, logger, codeGenerator)
-        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val allValid = allAnnotated.filter { it.validate() }
-            .map { it as KSFunctionDeclaration }
-
-        RouteVisitor.process(allValid, environment)
-
-        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
-        return unprocessed
+    companion object {
+        fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(qualified) { functions ->
+                StateUpdateRouteVisitor(functions, environment)
+            }
+        }
     }
 }

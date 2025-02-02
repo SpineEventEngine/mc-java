@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.FunctionKind
@@ -33,8 +33,8 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.Origin
 import funRef
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.jvmStaticRef
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
+import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.jvmStaticRef
+import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
 import msg
 
 /**

@@ -24,27 +24,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.server.route
 
-internal class StateUpdateRouteVisitor(
-    functions: List<StateUpdateRouteFun>,
-    environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(
-    environment.stateRoutingSetup,
-    functions,
-    environment
-) {
+import io.spine.base.CommandMessage
+import io.spine.core.CommandContext
+import io.spine.server.entity.Entity
 
-    override val classNameSuffix: String = "StateUpdateRouting"
+public interface CommandRoutingSetup<I : Any> :
+    RoutingSetup<I, CommandMessage, CommandContext, I, CommandRouting<I>> {
 
-    override fun addRoute(fn: StateUpdateRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-    }
+    public companion object {
 
-    companion object {
-        fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(qualified) { functions ->
-                StateUpdateRouteVisitor(functions, environment)
+        public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: CommandRouting<I>) {
+            val found = RoutingSetupRegistry.find(cls, CommandRoutingSetup::class.java)
+            found?.let {
+                @Suppress("UNCHECKED_CAST")
+                (it as CommandRoutingSetup<I>).setup(routing)
             }
         }
     }

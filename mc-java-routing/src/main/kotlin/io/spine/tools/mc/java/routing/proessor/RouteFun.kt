@@ -24,27 +24,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
-import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
-import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ksp.toClassName
 
-/**
- * Tells if this type represents an interface.
- */
-internal val KSType.isInterface: Boolean
-    get() = (declaration is KSClassDeclaration)
-            && (declaration as KSClassDeclaration).classKind == INTERFACE
+internal sealed class RouteFun(
+    val decl: KSFunctionDeclaration,
+    val declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) {
+    val messageParameter: KSType = parameters.first
+    val messageClass: ClassName = messageParameter.toClassName()
+    val acceptsContext: Boolean = parameters.second != null
+    val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
+}
 
-/**
- * Obtains a simple name of the type surrounded with back ticks.
- */
-internal val KSType.ref: String
-    get() = "`${declaration.simpleName.asString()}`"
+internal class CommandRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)
 
-/**
- * Obtains a qualified name of the type surrouned with back ticks.
- */
-internal val KSType.qualifiedRef: String
-    get() = "`${declaration.qualifiedName?.asString()}`"
+internal class EventRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)
+
+internal class StateUpdateRouteFun(
+    fn: KSFunctionDeclaration,
+    declaringClass: EntityClass,
+    parameters: Pair<KSType, KSType?>,
+    returnType: KSType
+) : RouteFun(fn, declaringClass, parameters, returnType)

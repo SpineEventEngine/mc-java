@@ -35,6 +35,7 @@ import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
+import io.spine.tools.mc.java.routing.proessor.RouteProcessorProvider
 import io.spine.validate.ValidatingBuilder
 import kotlin.collections.plus
 import org.junit.jupiter.api.BeforeAll

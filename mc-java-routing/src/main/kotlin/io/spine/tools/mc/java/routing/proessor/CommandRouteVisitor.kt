@@ -24,33 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import io.spine.base.EntityState
-import io.spine.core.EventContext
-
-internal class StateUpdateRouteSignature(
+internal class CommandRouteVisitor(
+    functions: List<CommandRouteFun>,
     environment: Environment
-) : RouteSignature<StateUpdateRouteFun>(
-    EntityState::class.java,
-    EventContext::class.java,
+) : RouteVisitor<CommandRouteFun>(
+    environment.commandRoutingSetup,
+    functions,
     environment
 ) {
-    override fun matchDeclaringClass(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass
-    ): Boolean = environment.run {
-        val isProjection = projectionClass.isAssignableFrom(declaringClass.type)
-        val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
-        return isProjection || isProcessManager
+    override val classNameSuffix: String = "CommandRouting"
+
+    override fun addRoute(fn: CommandRouteFun) {
+        //TODO:2025-01-22:alexander.yevsyukov: Implement.
     }
 
-    override fun create(
-        fn: KSFunctionDeclaration,
-        declaringClass: EntityClass,
-        parameters: Pair<KSType, KSType?>,
-        returnType: KSType
-    ): StateUpdateRouteFun = StateUpdateRouteFun(fn, declaringClass, parameters, returnType)
+    companion object {
+        fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified) { functions ->
+                CommandRouteVisitor(functions, environment)
+            }
+        }
+    }
 }

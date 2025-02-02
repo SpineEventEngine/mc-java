@@ -26,17 +26,21 @@
 
 package io.spine.server.route
 
-import io.spine.base.MessageContext
+import io.spine.base.EventMessage
+import io.spine.core.EventContext
 import io.spine.server.entity.Entity
-import io.spine.type.KnownMessage
 
-public interface RoutingSetup<
-        I : Any,
-        M : KnownMessage,
-        C : MessageContext,
-        R : Any,
-        U : MessageRouting<M, C, R>> {
+public interface EventRoutingSetup<I : Any> :
+    RoutingSetup<I, EventMessage, EventContext, Set<I>, EventRouting<I>> {
 
-    public fun entityClass(): Class<out Entity<I, *>>
-    public fun setup(routing: U)
+    public companion object {
+
+        public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: EventRouting<I>) {
+            val fount = RoutingSetupRegistry.find(cls, EventRoutingSetup::class.java)
+            fount?.let {
+                @Suppress("UNCHECKED_CAST")
+                (it as EventRoutingSetup<I>).setup(routing)
+            }
+        }
+    }
 }

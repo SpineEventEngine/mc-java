@@ -24,10 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import io.spine.tools.mc.java.routing.RouteSignature.Companion.routeRef
+import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
 
 /**
  * The helper class which transforms the incoming sequence with [functions] into

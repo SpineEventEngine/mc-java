@@ -24,27 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.proessor
 
-internal class CommandRouteVisitor(
-    functions: List<CommandRouteFun>,
-    environment: Environment
-) : RouteVisitor<CommandRouteFun>(
-    environment.commandRoutingSetup,
-    functions,
-    environment
-) {
-    override val classNameSuffix: String = "CommandRouting"
+import com.google.devtools.ksp.symbol.KSDeclaration
 
-    override fun addRoute(fn: CommandRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-    }
-
-    companion object {
-        fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified) { functions ->
-                CommandRouteVisitor(functions, environment)
-            }
-        }
-    }
-}
+/**
+ * Obtains the qualified name of this declaration or `null`
+ * if the declaration does not have a qualified name.
+ */
+internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()

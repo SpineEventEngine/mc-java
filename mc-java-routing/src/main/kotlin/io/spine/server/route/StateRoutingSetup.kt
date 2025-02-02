@@ -24,12 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.server.route
 
-import com.google.devtools.ksp.symbol.KSDeclaration
+import io.spine.base.EntityState
+import io.spine.core.EventContext
+import io.spine.server.entity.Entity
 
-/**
- * Obtains the qualified name of this declaration or `null`
- * if the declaration does not have a qualified name.
- */
-internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+public interface StateRoutingSetup<I : Any> :
+    RoutingSetup<I, EntityState<*>, EventContext, Set<I>, StateUpdateRouting<I>> {
+
+    public companion object {
+
+        public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: StateUpdateRouting<I>) {
+            val found = RoutingSetupRegistry.find(cls, StateRoutingSetup::class.java)
+            found?.let {
+                @Suppress("UNCHECKED_CAST")
+                (it as StateRoutingSetup<I>).setup(routing)
+            }
+        }
+    }
+}
