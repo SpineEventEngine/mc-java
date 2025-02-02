@@ -62,10 +62,10 @@ internal class Environment(
     val stateRoutingSetup = SetupType(StateRoutingSetup::class, StateUpdateRouting::class)
 
     inner class SetupType(
-        val setupClass: KClass<out Any>,
+        val cls: KClass<out Any>,
         val routingClass: KClass<out MessageRouting<*, *, *>>
     ) {
-        val type: KSType by lazy { setupClass.toType(resolver) }
+        val type: KSType by lazy { cls.toType(resolver) }
     }
 }
 

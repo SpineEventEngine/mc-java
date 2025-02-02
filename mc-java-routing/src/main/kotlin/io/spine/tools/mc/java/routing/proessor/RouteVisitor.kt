@@ -54,15 +54,15 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.routing.proessor.Environment.SetupType
 
 internal sealed class RouteVisitor<F : RouteFun>(
-    protected val setupType: SetupType,
+    protected val setup: SetupType,
     private val functions: List<F>,
     protected val environment: Environment,
 ) : KSVisitorVoid() {
 
+    protected abstract val classNameSuffix: String
+
     private lateinit var packageName: String
     private lateinit var originalFile: KSFile
-
-    protected abstract val classNameSuffix: String
 
     protected lateinit var routingClass: TypeSpec.Builder
     protected lateinit var setupFun: FunSpec.Builder
@@ -89,7 +89,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
     protected open fun createClass(className: String) {
         val generated = GeneratedAnnotation.forKotlinPoet()
         val autoService = AnnotationSpec.builder(AutoService::class)
-            .addMember("%T::class", setupType.setupClass)
+            .addMember("%T::class", setup.cls)
             .build()
 
         routingClass = TypeSpec.classBuilder(className)
@@ -99,7 +99,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
             .addAnnotation(generated)
             .addAnnotation(autoService)
 
-        val superInterface = setupType.type
+        val superInterface = setup.type
             .replace(listOf(idClassTypeArgument))
             .toTypeName()
         routingClass.addSuperinterface(superInterface)
@@ -108,9 +108,9 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     private fun classKDoc(): CodeBlock = CodeBlock.builder()
         .add("Configures [%T] of the repository managing [%T] instances.\n\n",
-            setupType.routingClass.asClassName(),
+            setup.routingClass.asClassName(),
             entityClass.type.toClassName())
-        .add("@see %T.apply()\n", setupType.setupClass.asClassName())
+        .add("@see %T.apply()\n", setup.cls.asClassName())
         .build()
 
     /**
@@ -142,7 +142,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     private fun openSetupFunction() {
         val paramName = "routing"
-        val paramType = setupType.routingClass.asClassName()
+        val paramType = setup.routingClass.asClassName()
             .parameterizedBy(idClassTypeArgument.type!!.toTypeName())
         val param = ParameterSpec.builder(paramName, paramType)
         setupFun = FunSpec.builder("setup")
