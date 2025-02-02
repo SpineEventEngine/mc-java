@@ -53,7 +53,7 @@ internal class EntityClass(
         asEntity.element!!.typeArguments.first()
     }
 
-    val idClassReference: KSTypeReference by lazy {
+    private val idClassReference: KSTypeReference by lazy {
         idClassTypeArgument.type!!
     }
 

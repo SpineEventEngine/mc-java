@@ -92,6 +92,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
             .build()
 
         routingClass = TypeSpec.classBuilder(className)
+            .addKdoc(classKDoc())
             // Must be `public` because created reflectively via `AutoService`
             .addModifiers(KModifier.PUBLIC)
             .addAnnotation(generated)
@@ -104,10 +105,17 @@ internal sealed class RouteVisitor<F : RouteFun>(
         addEntityClassFunction()
     }
 
+    private fun classKDoc(): CodeBlock = CodeBlock.builder()
+        .add("Configures [%T] of the repository managing [%T] instances.\n\n",
+            setupType.routingClass.asClassName(),
+            entityClass.type.toClassName())
+        .add("@see %T.apply()\n", setupType.setupClass.asClassName())
+        .build()
+
     /**
      * Adds the method that overrides [io.spine.server.route.RoutingSetup.entityClass].
      */
-    protected fun addEntityClassFunction() {
+    private fun addEntityClassFunction() {
         val entityType = Entity::class.asClassName().parameterizedBy(
             idClassTypeArgument.type!!.toTypeName(),
             STAR
@@ -187,10 +195,6 @@ internal class EventRouteVisitor(
     environment
 ) {
     override val classNameSuffix: String = "EventRouting"
-
-    override fun createClass(className: String): Unit = environment.run {
-        super.createClass(className)
-    }
 
     /**
      * Adds the entry in the routing setup function inside the [routingRunBlock].
