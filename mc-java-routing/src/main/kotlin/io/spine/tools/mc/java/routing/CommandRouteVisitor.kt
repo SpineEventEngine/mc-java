@@ -26,31 +26,25 @@
 
 package io.spine.tools.mc.java.routing
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.validate
-import io.spine.server.route.Route
+internal class CommandRouteVisitor(
+    functions: List<CommandRouteFun>,
+    environment: Environment
+) : RouteVisitor<CommandRouteFun>(
+    environment.commandRoutingSetup,
+    functions,
+    environment
+) {
+    override val classNameSuffix: String = "CommandRouting"
 
-internal class RouteProcessor(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
-) : SymbolProcessor {
+    override fun addRoute(fn: CommandRouteFun) {
+        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+    }
 
-    private lateinit var environment: Environment
-
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        this.environment = Environment(resolver, logger, codeGenerator)
-        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val allValid = allAnnotated.filter { it.validate() }
-            .map { it as KSFunctionDeclaration }
-
-        RouteVisitor.process(allValid, environment)
-
-        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
-        return unprocessed
+    companion object {
+        fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified) { functions ->
+                CommandRouteVisitor(functions, environment)
+            }
+        }
     }
 }

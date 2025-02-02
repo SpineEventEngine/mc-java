@@ -30,6 +30,7 @@ import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
@@ -169,74 +170,89 @@ internal sealed class RouteVisitor<F : RouteFun>(
         val deps = Dependencies(true, originalFile)
         code.writeTo(environment.codeGenerator, deps)
     }
-}
 
-internal class CommandRouteVisitor(
-    functions: List<CommandRouteFun>,
-    environment: Environment
-) : RouteVisitor<CommandRouteFun>(
-    environment.commandRoutingSetup,
-    functions,
-    environment
-) {
-    override val classNameSuffix: String = "CommandRouting"
+    companion object {
 
-    override fun addRoute(fn: CommandRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+        internal fun process(
+            allValid: Sequence<KSFunctionDeclaration>,
+            environment: Environment
+        ) {
+            val qualified = RouteSignature.qualify(allValid, environment)
+            CommandRouteVisitor.process(qualified, environment)
+            EventRouteVisitor.process(qualified, environment)
+            StateUpdateRouteVisitor.process(qualified, environment)
+        }
+
+        internal inline fun <V : RouteVisitor<F>, reified F : RouteFun> runVisitors(
+            qualified: List<RouteFun>,
+            createVisitor: (List<F>) -> V
+        ) {
+            val routing = qualified.filterIsInstance<F>()
+            val grouped = routing.groupByClasses()
+            grouped.forEach { (declaringClass, functions) ->
+                val v = createVisitor(functions)
+                declaringClass.accept(v, Unit)
+                v.writeFile()
+            }
+        }
     }
 }
 
-internal class EventRouteVisitor(
-    functions: List<EventRouteFun>,
-    environment: Environment
-) : RouteVisitor<EventRouteFun>(
-    environment.eventRoutingSetup,
-    functions,
-    environment
-) {
-    override val classNameSuffix: String = "EventRouting"
+/**
+ * Groups this list of route functions by the classes in which they are declared.
+ *
+ * The grouped functions are then sorted by the [first parameter type][RouteFun.messageParameter],
+ * putting classes first, and then less abstract interfaces, and so on down to more abstract ones.
+ *
+ * This order will be used when adding routes for each [entity class][RouteFun.declaringClass].
+ *
+ * @see RouteFunComparator
+ */
+private fun <F : RouteFun> List<F>.groupByClasses(): Map<EntityClass, List<F>> =
+    groupBy { it.declaringClass }
+        .mapValues { (_, list) ->
+            RouteFunComparator.sort(list)
+        }
 
-    /**
-     * Adds the entry in the routing setup function inside the [routingRunBlock].
-     *
-     * For a multicast route it would be something like:
-     * ```kotlin
-     * route<MyEvent> { e, c -> MyEntity.myRouteFun(e, c) }
-     * ```
-     * For an unicast route it would be something like:
-     * ```kotlin
-     * unicast<MyEvent> { e, c -> MyEntity.myRoutFun(e, c) }
-     * ```
-     * If a route function does not accept context, the lambdas would have only the `e` parameter.
-     */
-    override fun addRoute(fn: EventRouteFun) {
-        val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) "unicast" else "route"
+/**
+ * Compares two [RouteFun] instances by their [messageParameter][RouteFun.messageParameter]
+ * properties, putting more abstract type further in the sorting order.
+ */
+private class RouteFunComparator : Comparator<RouteFun> {
 
-        routingRunBlock.add(
-            "%L<%T> { %L -> %T.%L(%L) }\n",
-            entryFn,
-            fn.messageClass,
-            params,
-            entityClass.type.toClassName(),
-            fn.decl.simpleName.asString(),
-            params
-        )
+    @Suppress("ReturnCount")
+    override fun compare(o1: RouteFun, o2: RouteFun): Int {
+        val m1 = o1.messageParameter
+        val m2 = o2.messageParameter
+
+        if (m1 == m2) {
+            return 0
+        }
+        // An interface should come after a class in the sorting.
+        if (m1.isInterface && !m2.isInterface) {
+            return 1
+        }
+        if (!m1.isInterface && m2.isInterface) {
+            return -1
+        }
+        // Both are either classes or interfaces.
+        // The one that is more abstract goes further in sorting.
+        if (m1.isAssignableFrom(m2)) {
+            return 1
+        }
+        if (m2.isAssignableFrom(m1)) {
+            return -1
+        }
+        val n1 = m1.declaration.qualifiedName?.asString()
+        val n2 = m2.declaration.qualifiedName?.asString()
+        return compareValues(n1, n2)
     }
-}
 
-internal class StateUpdateRouteVisitor(
-    functions: List<StateUpdateRouteFun>,
-    environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(
-    environment.stateRoutingSetup,
-    functions,
-    environment
-) {
+    companion object {
 
-    override val classNameSuffix: String = "StateUpdateRouting"
-
-    override fun addRoute(fn: StateUpdateRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+        fun <F : RouteFun> sort(list: List<F>): List<F> {
+            val comparator = RouteFunComparator()
+            return list.sortedWith(comparator)
+        }
     }
 }

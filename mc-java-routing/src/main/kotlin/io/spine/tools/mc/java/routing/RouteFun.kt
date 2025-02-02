@@ -35,14 +35,11 @@ internal sealed class RouteFun(
     val decl: KSFunctionDeclaration,
     val declaringClass: EntityClass,
     parameters: Pair<KSType, KSType?>,
-    val returnType: KSType
+    returnType: KSType
 ) {
     val messageParameter: KSType = parameters.first
     val messageClass: ClassName = messageParameter.toClassName()
-    val contextParameter: KSType? = parameters.second
-    val contextClass: ClassName? = contextParameter?.toClassName()
-    val acceptsContext: Boolean = contextParameter != null
-
+    val acceptsContext: Boolean = parameters.second != null
     val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
 }
 
