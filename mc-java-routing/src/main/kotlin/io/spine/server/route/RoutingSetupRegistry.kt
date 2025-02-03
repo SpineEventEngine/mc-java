@@ -29,8 +29,21 @@ package io.spine.server.route
 import io.spine.server.entity.Entity
 import java.util.*
 
+/**
+ * The alias to avoid generic parameters in signatures in this file.
+ */
 private typealias RSetup = RoutingSetup<*, *, *, *, *>
 
+/**
+ * Contains mappings from an entity class to [routing setup][RoutingSetup] instances
+ * discovered for the class.
+ *
+ * The setup instances are created using the [ServiceLoader] which scans
+ * the implementations of the following interfaces:
+ *   * [CommandRoutingSetup]
+ *   * [EventRoutingSetup]
+ *   * [StateRoutingSetup].
+ */
 internal object RoutingSetupRegistry {
 
     private val entries: Set<Entry>
@@ -49,6 +62,9 @@ internal object RoutingSetupRegistry {
         entries = grouped.map { (cls, setups) -> Entry(cls, setups) }.toSet()
     }
 
+    /**
+     * Obtains a routing setup for the given entity class, if any.
+     */
     fun find(
         entityClass: Class<out Entity<*, *>>,
         setupInterface: Class<out RSetup>
@@ -62,6 +78,9 @@ internal object RoutingSetupRegistry {
         private val setups: List<RSetup>
     ) {
         init {
+            require(setups.isNotEmpty()) {
+                "No setups passed for the entity class `${entityClass.canonicalName}`."
+            }
             // Check the consistency of grouping.
             setups.forEach { setup ->
                 require(setup.entityClass() == entityClass) {
@@ -74,10 +93,13 @@ internal object RoutingSetupRegistry {
             }
         }
 
-        fun find(
-            setupClass: Class<out RSetup>
-        ): RSetup? {
-            val found = setups.find { setupClass.isAssignableFrom(it.javaClass) }
+        /**
+         * Finds a setup with the given superclass among those found for the [entityClass].
+         */
+        fun find(setupClass: Class<out RSetup>): RSetup? {
+            val found = setups.find {
+                setupClass.isAssignableFrom(it.javaClass)
+            }
             return found
         }
     }
