@@ -24,11 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.server.route.setup
 
 import io.spine.base.CommandMessage
 import io.spine.core.CommandContext
 import io.spine.server.entity.Entity
+import io.spine.server.route.CommandRouting
 
 public interface CommandRoutingSetup<I : Any> :
     RoutingSetup<I, CommandMessage, CommandContext, I, CommandRouting<I>> {

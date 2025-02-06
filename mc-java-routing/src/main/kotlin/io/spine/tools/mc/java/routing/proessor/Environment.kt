@@ -35,11 +35,11 @@ import io.spine.server.entity.Entity
 import io.spine.server.procman.ProcessManager
 import io.spine.server.projection.Projection
 import io.spine.server.route.CommandRouting
-import io.spine.server.route.CommandRoutingSetup
+import io.spine.server.route.setup.CommandRoutingSetup
 import io.spine.server.route.EventRouting
-import io.spine.server.route.EventRoutingSetup
+import io.spine.server.route.setup.EventRoutingSetup
 import io.spine.server.route.MessageRouting
-import io.spine.server.route.StateRoutingSetup
+import io.spine.server.route.setup.StateRoutingSetup
 import io.spine.server.route.StateUpdateRouting
 import kotlin.reflect.KClass
 
@@ -63,7 +63,7 @@ internal class Environment(
 
     inner class SetupType(
         val cls: KClass<out Any>,
-        val routingClass: KClass<out MessageRouting<*, *, *>>
+        val routingClass: KClass<out MessageRouting<*, *, *, *, *>>
     ) {
         val type: KSType by lazy { cls.toType(resolver) }
     }

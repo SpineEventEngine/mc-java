@@ -24,22 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.server.route.setup
 
-import io.spine.base.EntityState
+import io.spine.base.EventMessage
 import io.spine.core.EventContext
 import io.spine.server.entity.Entity
+import io.spine.server.route.EventRouting
 
-public interface StateRoutingSetup<I : Any> :
-    RoutingSetup<I, EntityState<*>, EventContext, Set<I>, StateUpdateRouting<I>> {
+public interface EventRoutingSetup<I : Any> :
+    RoutingSetup<I, EventMessage, EventContext, Set<I>, EventRouting<I>> {
 
     public companion object {
 
-        public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: StateUpdateRouting<I>) {
-            val found = RoutingSetupRegistry.find(cls, StateRoutingSetup::class.java)
-            found?.let {
+        public fun <I : Any> apply(cls: Class<out Entity<I, *>>, routing: EventRouting<I>) {
+            val fount = RoutingSetupRegistry.find(cls, EventRoutingSetup::class.java)
+            fount?.let {
                 @Suppress("UNCHECKED_CAST")
-                (it as StateRoutingSetup<I>).setup(routing)
+                (it as EventRoutingSetup<I>).setup(routing)
             }
         }
     }

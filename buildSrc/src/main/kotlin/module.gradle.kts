@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,14 @@ import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ArtifactVersion
 import io.spine.dependency.local.Base
+import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Reflect
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
+import io.spine.dependency.local.Time
+import io.spine.dependency.local.ToolBase
 import io.spine.dependency.local.Validation
 import io.spine.dependency.test.JUnit
 import io.spine.dependency.test.Truth
@@ -131,9 +136,8 @@ fun Module.forceConfigurations() {
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
-                @Suppress("DEPRECATION") // `Kotlin.stdLibJdk7` needs to be forced.
                 force(
-                    Kotlin.stdLibJdk7,
+                    Kotlin.stdLib,
                     KotlinX.Coroutines.core,
                     KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,
@@ -146,16 +150,16 @@ fun Module.forceConfigurations() {
                     Jackson.Junior.objects,
                     Caffeine.lib,
 
-                    Spine.reflect,
-                    Spine.base,
-                    Spine.time,
-                    Spine.client,
-                    Spine.server,
-                    Spine.testlib,
-                    Spine.toolBase,
-                    Spine.pluginBase,
-                    Spine.psiJava,
-                    Spine.psiJavaBundle,
+                    Reflect.lib,
+                    Base.lib,
+                    Time.lib,
+                    CoreJava.core,
+                    CoreJava.client,
+                    CoreJava.server,
+                    TestLib.lib,
+                    ToolBase.lib,
+                    ToolBase.pluginBase,
+                    ToolBase.psiJava,
                     Logging.lib,
                     Logging.libJvm,
                     Logging.middleware,

@@ -53,7 +53,7 @@ internal class EventRouteVisitor(
      */
     override fun addRoute(fn: EventRouteFun) {
         val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) "unicast" else "route"
+        val entryFn = if (fn.isUnicast) "unicast" else ROUTE_FUN_NAME
 
         routingRunBlock.add(
             "%L<%T> { %L -> %T.%L(%L) }\n",

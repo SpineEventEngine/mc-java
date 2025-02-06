@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.server.route.setup
 
 import io.spine.server.entity.Entity
 import java.util.*

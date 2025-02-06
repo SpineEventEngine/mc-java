@@ -37,9 +37,9 @@ import io.spine.server.entity.alter
 import io.spine.server.projection.Projection
 import io.spine.server.projection.ProjectionRepository
 import io.spine.server.route.EventRouting
-import io.spine.server.route.EventRoutingSetup
+import io.spine.server.route.setup.EventRoutingSetup
 import io.spine.server.route.Route
-import io.spine.server.route.StateRoutingSetup
+import io.spine.server.route.setup.StateRoutingSetup
 import io.spine.server.route.StateUpdateRouting
 
 fun homeAutomation(): BoundedContext = BoundedContext.singleTenant("HomeAutomation")

@@ -24,18 +24,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.server.route
+package io.spine.server.route.setup
 
-import io.spine.base.MessageContext
+import io.spine.base.Routable
+import io.spine.core.SignalContext
 import io.spine.server.entity.Entity
-import io.spine.type.KnownMessage
+import io.spine.server.route.MessageRouting
 
 public interface RoutingSetup<
         I : Any,
-        M : KnownMessage,
-        C : MessageContext,
+        M : Routable,
+        C : SignalContext,
         R : Any,
-        U : MessageRouting<M, C, R>> {
+        U : MessageRouting<I, M, C, R, U>> {
 
     public fun entityClass(): Class<out Entity<I, *>>
     public fun setup(routing: U)

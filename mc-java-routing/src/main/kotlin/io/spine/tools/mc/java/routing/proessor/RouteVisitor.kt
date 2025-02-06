@@ -173,6 +173,13 @@ internal sealed class RouteVisitor<F : RouteFun>(
 
     companion object {
 
+        /**
+         * The name of the inline extension functions for classes extending
+         * [MessageRouting][io.spine.server.route.MessageRouting] which are used in
+         * the generated code of [RoutingSetup][io.spine.server.route.RoutingSetup] classes.
+         */
+        internal const val ROUTE_FUN_NAME: String = "route"
+
         internal fun process(
             allValid: Sequence<KSFunctionDeclaration>,
             environment: Environment

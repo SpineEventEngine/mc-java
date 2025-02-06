@@ -35,19 +35,23 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.validate
 import io.spine.server.route.Route
 
+/**
+ * Gathers all functions annotated with [Route] and initiates their processing
+ * by [RouteVisitor]s.
+ *
+ * @see RouteVisitor.process
+ */
 internal class RouteProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private lateinit var environment: Environment
-
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        this.environment = Environment(resolver, logger, codeGenerator)
         val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
         val allValid = allAnnotated.filter { it.validate() }
             .map { it as KSFunctionDeclaration }
 
+        val environment = Environment(resolver, logger, codeGenerator)
         RouteVisitor.process(allValid, environment)
 
         val unprocessed = allAnnotated.filterNot { it.validate() }.toList()

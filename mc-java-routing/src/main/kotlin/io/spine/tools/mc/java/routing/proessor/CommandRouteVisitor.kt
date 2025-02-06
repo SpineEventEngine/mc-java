@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
+import com.squareup.kotlinpoet.ksp.toClassName
+
 internal class CommandRouteVisitor(
     functions: List<CommandRouteFun>,
     environment: Environment
@@ -37,7 +39,16 @@ internal class CommandRouteVisitor(
     override val classNameSuffix: String = "CommandRouting"
 
     override fun addRoute(fn: CommandRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+        val params = if (fn.acceptsContext) "c, ctx" else "c"
+        routingRunBlock.add(
+            "%L<%T> { %L -> %T.%L(%L) }\n",
+            ROUTE_FUN_NAME,
+            fn.messageClass,
+            params,
+            entityClass.type.toClassName(),
+            fn.decl.simpleName.asString(),
+            params
+        )
     }
 
     companion object {
