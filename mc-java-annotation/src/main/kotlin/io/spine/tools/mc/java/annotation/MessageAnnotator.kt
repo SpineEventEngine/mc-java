@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -39,7 +39,7 @@ internal class MessageAnnotator :
     MessageOrEnumAnnotator<MessageAnnotations>(MessageAnnotations::class.java) {
 
     private val messageOrBuilderConvention by lazy {
-        MessageOrBuilderConvention(typeSystem!!)
+        MessageOrBuilderConvention(typeSystem)
     }
 
     override fun annotateType(view: MessageAnnotations, annotationClass: Class<out Annotation>) {
@@ -54,7 +54,7 @@ internal class MessageAnnotator :
 
     private fun Class<out Annotation>.annotate(cls: ClassName) {
         ApiAnnotation(cls, this).let {
-            it.registerWith(context!!)
+            it.registerWith(context)
             it.doRender(sources)
         }
     }

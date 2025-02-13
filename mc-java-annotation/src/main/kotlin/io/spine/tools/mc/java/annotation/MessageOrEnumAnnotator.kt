@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ internal sealed class MessageOrEnumAnnotator<T>(viewClass: Class<T>) :
     TypeAnnotator<T>(viewClass) where T : EntityState<*>, T : WithOptions {
 
     protected val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+        MessageOrEnumConvention(typeSystem)
     }
 
     override fun needsAnnotation(apiOption: ApiOption, header: ProtoFileHeader): Boolean {

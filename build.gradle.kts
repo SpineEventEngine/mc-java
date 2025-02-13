@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,10 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.dependency.lib.Grpc.api,
+                    io.spine.dependency.lib.KotlinX.Coroutines.core,
+                    io.spine.dependency.lib.KotlinX.Coroutines.core,
+                    io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
+
                     io.spine.dependency.local.Base.libForBuildScript,
                     io.spine.dependency.local.Reflect.lib,
                     toolBase.lib,

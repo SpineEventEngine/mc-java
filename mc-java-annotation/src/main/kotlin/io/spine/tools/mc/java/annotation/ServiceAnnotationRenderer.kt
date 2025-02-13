@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,13 @@ internal class ServiceAnnotationRenderer :
     TypeAnnotator<ServiceAnnotations>(ServiceAnnotations::class.java) {
 
     private val convention by lazy {
-        GrpcServiceConvention(typeSystem!!)
+        GrpcServiceConvention(typeSystem)
     }
 
     override fun annotateType(view: ServiceAnnotations, annotationClass: Class<out Annotation>) {
         val serviceClass = convention.declarationFor(view.service).name
         val annotation = ApiAnnotation(serviceClass, annotationClass)
-        annotation.registerWith(context!!)
+        annotation.registerWith(context)
         annotation.renderSources(sources)
     }
 

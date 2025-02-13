@@ -43,11 +43,11 @@ internal class FieldAnnotator :
     ProtoAnnotator<MessageFieldAnnotations>(MessageFieldAnnotations::class.java) {
 
     private val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+        MessageOrEnumConvention(typeSystem)
     }
 
     private val messageOrBuilderConvention by lazy {
-        MessageOrBuilderConvention(typeSystem!!)
+        MessageOrBuilderConvention(typeSystem)
     }
 
     override fun annotate(view: MessageFieldAnnotations) {
@@ -60,7 +60,7 @@ internal class FieldAnnotator :
         view: MessageFieldAnnotations,
         fieldOption: FieldOptions
     ) {
-        val messageType = typeSystem!!.findMessage(view.type)!!.first
+        val messageType = typeSystem.findMessage(view.type)!!.first
         fieldOption.optionList.forEach { option ->
             val apiOption = ApiOption.findMatching(option)
             check(apiOption != null) {
