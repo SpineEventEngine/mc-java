@@ -27,17 +27,23 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
+import com.google.protobuf.GeneratedMessageV3
 import io.spine.base.FieldPath
 import io.spine.base.copy
 import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
 import io.spine.option.CompareByOption
+import io.spine.protobuf.defaultInstance
+import io.spine.protodata.Compilation
 import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.Option
 import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
+import io.spine.protodata.ast.qualifiedName
+import io.spine.protodata.ast.unpack
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MethodCall
@@ -45,13 +51,16 @@ import io.spine.protodata.java.javaClass
 import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.protodata.java.toPsi
 import io.spine.protodata.render.SourceFile
+import io.spine.protodata.type.fileOf
+import io.spine.string.simply
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
-import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.psi.addFirst
+import io.spine.type.typeName
+import java.io.File
 
 /**
  * Builds and inserts a static `comparator` field into the messages that qualify
@@ -67,14 +76,24 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
+    /** The declaration of the [CompareByOption] option in the [type]. */
+    private val option: Option by lazy {
+        type.option<CompareByOption>()
+    }
+
+    /** The full path to the proto file declaring the [type]. */
+    private val protoSource: File by lazy {
+        typeSystem.fileOf(type)!!
+    }
+
     override fun doRender() {
-        val option = compareByOption(type)
-        val comparisonFields = option.fieldList.map(::toComparisonField)
+        val compareBy = option.unpack<CompareByOption>()
+        val comparisonFields = compareBy.fieldList.map(::toComparisonField)
         require(comparisonFields.isNotEmpty()) {
             "The `(compare_by)` option should have at least one field specified."
         }
 
-        val comparator = ComparatorBuilder(cls, option.descending)
+        val comparator = ComparatorBuilder(cls, compareBy.descending)
         comparisonFields.forEach { comparator.comparingBy(it) }
 
         val javaField = comparator.build().toPsi()
@@ -83,19 +102,20 @@ public class AddComparator(
     }
 
     /**
-     * Queries the [CompareByOption] option for the given message [type].
-     */
-    private fun compareByOption(type: MessageType) = select(ComparableMessage::class.java)
-        .findById(type)!!
-        .option
-
-    /**
      * Maps the field [path] to an appropriate instance of [ComparisonField],
      * depending on the field type.
      */
     private fun toComparisonField(path: String): ComparisonField {
-        val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
-        val field = typeSystem.resolve(fieldPath, type)
+        val fieldPath = path.toFieldPath()
+        val field = try {
+            typeSystem.resolve(fieldPath, type)
+        } catch (e: IllegalStateException) {
+            Compilation.error(
+                protoSource, option.span.startLine, option.span.startColumn,
+                "Unable to find a field with the path `$path` in the type `${type.qualifiedName}`."
+            )
+        }
+
         val fieldType = field.type
 
         check(field.type.cardinality == CARDINALITY_SINGLE) {
@@ -227,3 +247,27 @@ public class AddComparator(
 
 private val MessageType.hasCompareByOption: Boolean
     get() = optionList.find<CompareByOption>() != null
+
+/**
+ * Transforms this potentially dot-delimited string into [FieldPath].
+ *
+ * If there are no dots in this string the returned [FieldPath] contains
+ * only this string.
+ */
+private fun String.toFieldPath() = fieldPath {
+    fieldName.addAll(this@toFieldPath.split("."))
+}
+
+/**
+ * Finds the instance of [Option] which contains the message with the given
+ * type [T] as its value.
+ *
+ * @throws IllegalStateException if the option with the given type is not found.
+ */
+private inline fun <reified T : GeneratedMessageV3> MessageType.option(): Option {
+    val optionUrl = T::class.java.defaultInstance.typeName.toUrl().value()
+    optionList.find { opt -> opt.value.typeUrl == optionUrl }?.let { return it }
+        ?: error(
+            "The message `${name.qualifiedName}` must have the `${simply<T>()}` option."
+        )
+}
