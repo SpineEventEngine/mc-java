@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java
 
+import com.google.protobuf.Descriptors.GenericDescriptor
 import com.google.protobuf.Message
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -35,13 +36,13 @@ import io.spine.protodata.params.WorkingDirectory
 import io.spine.protodata.plugin.Plugin
 import io.spine.protodata.render.SourceFile
 import io.spine.protodata.render.SourceFileSet
-import io.spine.protodata.util.Format
 import io.spine.protodata.settings.SettingsDirectory
 import io.spine.protodata.testing.PipelineSetup
 import io.spine.protodata.testing.PipelineSetup.Companion.byResources
 import io.spine.protodata.testing.pipelineParams
 import io.spine.protodata.testing.withRequestFile
 import io.spine.protodata.testing.withSettingsDir
+import io.spine.protodata.util.Format
 import io.spine.tools.code.Java
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.mc.java.gradle.settings.CodegenSettings
@@ -101,7 +102,11 @@ abstract class PluginTestSetup<S: Message>(
      * [settings] will be written to the [WorkingDirectory.settingsDirectory] before
      * creation of a [Pipeline][io.spine.protodata.backend.Pipeline].
      */
-    fun setup(projectDir: Path, settings: S): PipelineSetup {
+    fun setup(
+        projectDir: Path,
+        settings: S,
+        excludedDescriptors: List<GenericDescriptor> = listOf()
+    ): PipelineSetup {
         val workingDir = projectDir.resolve("build").resolve(Directories.PROTODATA_WORKING_DIR)
         val workingDirectory = WorkingDirectory(workingDir)
         val requestFile = workingDirectory.requestDirectory.file(SourceSetName("testFixtures"))
@@ -119,6 +124,9 @@ abstract class PluginTestSetup<S: Message>(
                 JavaCodeStyleFormatterPlugin()
             ),
             outputRoot = outputDir,
+            descriptorFilter = {
+                excludedDescriptors.find { d -> d.fullName == it.fullName } == null
+            }
         ) {
             writeSettings(it, settings)
         }
@@ -134,11 +142,14 @@ abstract class PluginTestSetup<S: Message>(
      *
      * @see createSettings
      */
-    fun runPipeline(projectDir: Path) {
+    fun runPipeline(
+        projectDir: Path,
+        excludedDescriptors: List<GenericDescriptor> = listOf()
+    ) {
         // Clear the cache of previously parsed files to avoid repeated code generation.
         SourceFile.clearCache()
         val settings = createSettings(projectDir)
-        val setup = setup(projectDir, settings)
+        val setup = setup(projectDir, settings, excludedDescriptors)
         val pipeline = setup.createPipeline()
         pipeline()
         this.sourceFileSet = pipeline.sources[0]
