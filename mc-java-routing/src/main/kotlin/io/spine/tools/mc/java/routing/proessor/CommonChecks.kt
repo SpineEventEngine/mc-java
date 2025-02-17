@@ -84,8 +84,7 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Int {
         // This case is Kotlin-only because in Java a function would belong to a class.
         logger.error(
             "The $funRef annotated with $routeRef must be" +
-                    " a member of a companion object of an entity class" +
-                    " annotated with $jvmStaticRef.",
+                    " a member of a companion object of an entity class.",
             this
         )
     }

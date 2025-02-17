@@ -35,7 +35,6 @@ import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
@@ -71,8 +70,7 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
         result.messages.let {
             it shouldContain "`route()`" // The name of the function in error.
             it shouldContain routeRef
-            it shouldContain "a member of a companion object of an entity class"
-            it shouldContain jvmStaticRef
+            it shouldContain "a member of a companion object of an entity class."
         }
     }
 
@@ -106,7 +104,6 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
         result.messages.let {
             it shouldContain "`route()`" // The name of the function in error.
             it shouldContain routeRef
-            // The error is the same as for not annotated as `JvmStatic`.
             it shouldContain "a member of a companion object."
         }
     }
