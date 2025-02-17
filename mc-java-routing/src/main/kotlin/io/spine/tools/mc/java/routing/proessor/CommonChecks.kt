@@ -31,6 +31,8 @@ import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.Origin
+import com.google.devtools.ksp.symbol.Origin.JAVA
+import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import funRef
 import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.jvmStaticRef
@@ -60,16 +62,14 @@ private fun Boolean.toErrorCount(): Int = if (this) 0 else 1
 
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
     val isStatic = when (origin) {
-        Origin.JAVA -> functionKind == FunctionKind.STATIC
-        Origin.KOTLIN -> parentDeclaration is KSClassDeclaration &&
+        JAVA -> functionKind == FunctionKind.STATIC
+        KOTLIN -> parentDeclaration is KSClassDeclaration &&
                 (parentDeclaration as KSClassDeclaration).isCompanionObject
         else -> false
     } 
     if (!isStatic) {
         logger.error(msg(
-            "The $funRef annotated with $routeRef must be" +
-                    " a member of a companion object and annotated with $jvmStaticRef.",
-
+            "The $funRef annotated with $routeRef must be a member of a companion object.",
             "The $funRef annotated with $routeRef must be `static`."
         ),
             this

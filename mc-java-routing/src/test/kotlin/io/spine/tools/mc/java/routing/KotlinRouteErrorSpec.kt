@@ -77,44 +77,6 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
     }
 
     /**
-     * Error: The method must be annotated as `JvmStatic`.
-     */
-    private val notJvmStatic = kotlinFile("NotJvmStatic", """
-    package io.spine.given.devices
-    
-    import io.spine.given.devices.events.StatusReported
-    import io.spine.server.projection.Projection
-    import io.spine.server.route.Route
-        
-    class NotJvmStatic : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
-                    
-        companion object {
-            @Route
-            fun route(e: StatusReported): DeviceId {
-                return event.getDevice()
-            }
-        }
-    }
-    """.trimIndent())
-
-    @Test
-    fun `when a function is not 'JvmStatic''`() {
-        compilation.apply {
-            sources = listOf(notJvmStatic)
-        }
-
-        val result = compilation.compileSilently()
-
-        result.exitCode shouldBe COMPILATION_ERROR
-        result.messages.let {
-            it shouldContain "`route()`" // The name of the function in error.
-            it shouldContain routeRef
-            it shouldContain "a member of a companion object and annotated with"
-            it shouldContain jvmStaticRef
-        }
-    }
-
-    /**
      * Error: The method must belong to a companion object.
      */
     private val notCompanionMember = kotlinFile("NotCompanionMember", """
@@ -145,8 +107,7 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
             it shouldContain "`route()`" // The name of the function in error.
             it shouldContain routeRef
             // The error is the same as for not annotated as `JvmStatic`.
-            it shouldContain "a member of a companion object and annotated with"
-            it shouldContain jvmStaticRef
+            it shouldContain "a member of a companion object."
         }
     }
 
