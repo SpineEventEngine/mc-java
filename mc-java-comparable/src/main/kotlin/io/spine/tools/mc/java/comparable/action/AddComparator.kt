@@ -43,6 +43,7 @@ import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
 import io.spine.protodata.ast.qualifiedName
+import io.spine.protodata.ast.toJava
 import io.spine.protodata.ast.unpack
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
@@ -83,7 +84,7 @@ public class AddComparator(
 
     /** The full path to the proto file declaring the [type]. */
     private val protoSource: File by lazy {
-        typeSystem.fileOf(type)!!
+        type.file.toJava()
     }
 
     override fun doRender() {
