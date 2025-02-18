@@ -27,7 +27,7 @@
 package io.spine.dependency.test
 
 /**
- * A library for in-process compilation of Kotlin and Java code compilation.
+ * A library for in-process compilation of Kotlin and Java code.
  *
  * @see <a href="https://github.com/tschuchortdev/kotlin-compile-testing">GitHub repo</a>
  */
