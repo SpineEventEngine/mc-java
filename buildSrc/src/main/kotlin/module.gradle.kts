@@ -138,6 +138,7 @@ fun Module.forceConfigurations() {
             resolutionStrategy {
                 force(
                     Kotlin.stdLib,
+                    KotlinX.Coroutines.bom,
                     KotlinX.Coroutines.core,
                     KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,

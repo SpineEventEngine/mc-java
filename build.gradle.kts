@@ -60,7 +60,7 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.dependency.lib.Grpc.api,
-                    io.spine.dependency.lib.KotlinX.Coroutines.core,
+                    io.spine.dependency.lib.KotlinX.Coroutines.bom,
                     io.spine.dependency.lib.KotlinX.Coroutines.core,
                     io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
 
