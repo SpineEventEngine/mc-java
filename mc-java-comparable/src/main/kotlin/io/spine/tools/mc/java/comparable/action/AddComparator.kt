@@ -27,13 +27,11 @@
 package io.spine.tools.mc.java.comparable.action
 
 import com.google.protobuf.Empty
-import com.google.protobuf.GeneratedMessageV3
 import io.spine.base.FieldPath
 import io.spine.base.copy
 import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
 import io.spine.option.CompareByOption
-import io.spine.protobuf.defaultInstance
 import io.spine.protodata.Compilation
 import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.MessageType
@@ -42,7 +40,7 @@ import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
-import io.spine.protodata.ast.qualifiedName
+import io.spine.protodata.ast.option
 import io.spine.protodata.ast.toJava
 import io.spine.protodata.ast.unpack
 import io.spine.protodata.context.CodegenContext
@@ -52,15 +50,12 @@ import io.spine.protodata.java.javaClass
 import io.spine.protodata.java.render.DirectMessageAction
 import io.spine.protodata.java.toPsi
 import io.spine.protodata.render.SourceFile
-import io.spine.protodata.type.fileOf
-import io.spine.string.simply
 import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.psi.addFirst
-import io.spine.type.typeName
 import java.io.File
 
 /**
@@ -257,18 +252,4 @@ private val MessageType.hasCompareByOption: Boolean
  */
 private fun String.toFieldPath() = fieldPath {
     fieldName.addAll(this@toFieldPath.split("."))
-}
-
-/**
- * Finds the instance of [Option] which contains the message with the given
- * type [T] as its value.
- *
- * @throws IllegalStateException if the option with the given type is not found.
- */
-private inline fun <reified T : GeneratedMessageV3> MessageType.option(): Option {
-    val optionUrl = T::class.java.defaultInstance.typeName.toUrl().value()
-    optionList.find { opt -> opt.value.typeUrl == optionUrl }?.let { return it }
-        ?: error(
-            "The message `${name.qualifiedName}` must have the `${simply<T>()}` option."
-        )
 }
