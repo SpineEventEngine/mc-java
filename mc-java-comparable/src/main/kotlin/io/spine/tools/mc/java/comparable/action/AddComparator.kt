@@ -41,7 +41,6 @@ import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
 import io.spine.protodata.ast.option
-import io.spine.protodata.ast.toJava
 import io.spine.protodata.ast.unpack
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
@@ -56,7 +55,6 @@ import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.psi.addFirst
-import java.io.File
 
 /**
  * Builds and inserts a static `comparator` field into the messages that qualify
@@ -75,11 +73,6 @@ public class AddComparator(
     /** The declaration of the [CompareByOption] option in the [type]. */
     private val option: Option by lazy {
         type.option<CompareByOption>()
-    }
-
-    /** The full path to the proto file declaring the [type]. */
-    private val protoSource: File by lazy {
-        type.file.toJava()
     }
 
     override fun doRender() {
@@ -101,6 +94,7 @@ public class AddComparator(
      * Maps the field [path] to an appropriate instance of [ComparisonField],
      * depending on the field type.
      */
+    @Suppress("SwallowedException") // We transform "unknown field" into compilation error.
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = path.toFieldPath()
         val field = try {
