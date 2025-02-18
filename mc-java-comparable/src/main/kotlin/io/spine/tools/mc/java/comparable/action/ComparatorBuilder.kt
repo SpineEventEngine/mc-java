@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import com.intellij.psi.PsiClass
 import io.spine.base.FieldPath
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.Expression
-import io.spine.protodata.java.InitField
+import io.spine.protodata.java.FieldDeclaration
 import io.spine.protodata.java.ParameterizedClassName
 import io.spine.protodata.java.call
 import io.spine.string.camelCase
@@ -67,7 +67,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
     /**
      * Builds a private static `comparator` Java field.
      */
-    fun build(): InitField<Comparator<Message>> {
+    fun build(): FieldDeclaration<Comparator<Message>> {
         val comparator = ClassName(Comparator::class)
         var comparisons = comparator.call<Comparator<Message>>("comparing", fields.first())
         for (i in 1 until fields.size) {
@@ -76,7 +76,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
         if (reversed) {
             comparisons = comparisons.chain("reversed")
         }
-        return InitField(
+        return FieldDeclaration(
             modifiers = "private static final",
             type = ParameterizedClassName(comparator, message),
             name = "comparator",

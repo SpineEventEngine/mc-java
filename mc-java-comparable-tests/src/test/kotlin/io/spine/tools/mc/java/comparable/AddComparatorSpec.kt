@@ -41,7 +41,10 @@ import io.spine.tools.mc.java.comparable.given.Account
 import io.spine.tools.mc.java.comparable.given.BytesProhibited
 import io.spine.tools.mc.java.comparable.given.Citizen
 import io.spine.tools.mc.java.comparable.given.Debtor
+import io.spine.tools.mc.java.comparable.given.InvalidNested
+import io.spine.tools.mc.java.comparable.given.Invalid
 import io.spine.tools.mc.java.comparable.given.MapsProhibited
+import io.spine.tools.mc.java.comparable.given.Name
 import io.spine.tools.mc.java.comparable.given.NestedBytesProhibited
 import io.spine.tools.mc.java.comparable.given.NestedMapsProhibited
 import io.spine.tools.mc.java.comparable.given.NestedNonComparableProhibited
@@ -77,7 +80,16 @@ internal class AddComparatorSpec {
         @JvmStatic
         fun setup(@TempDir projectDir: Path) {
             withLoggingMutedIn(AddComparator::class.java.packageName) {
-                runPipeline(projectDir)
+                runPipeline(
+                    projectDir,
+                    // Exclude files and message types that cause errors.
+                    // We'll test negative cases separately.
+                    listOf(
+                        InvalidNested.getDescriptor(),
+                        Invalid.getDescriptor(),
+                        Name.getDescriptor()
+                    )
+                )
             }
         }
     }

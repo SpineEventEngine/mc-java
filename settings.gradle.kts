@@ -41,6 +41,8 @@ include(
     "mc-java-marker-tests",
     "mc-java-message-group",
     "mc-java-message-group-tests",
+    "mc-java-routing",
+    "mc-java-routing-tests",
     "mc-java-uuid",
     "mc-java-uuid-tests",
     "mc-java-plugin-bundle"

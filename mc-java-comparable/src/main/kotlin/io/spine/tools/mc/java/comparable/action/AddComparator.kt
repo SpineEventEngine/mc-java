@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,16 @@ import io.spine.base.copy
 import io.spine.base.fieldPath
 import io.spine.compare.ComparatorRegistry
 import io.spine.option.CompareByOption
+import io.spine.protodata.Compilation
 import io.spine.protodata.ast.Cardinality.CARDINALITY_SINGLE
 import io.spine.protodata.ast.MessageType
+import io.spine.protodata.ast.Option
 import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
+import io.spine.protodata.ast.option
+import io.spine.protodata.ast.unpack
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MethodCall
@@ -49,7 +53,6 @@ import io.spine.tools.code.Java
 import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.base.joined
 import io.spine.tools.mc.java.base.resolve
-import io.spine.tools.mc.java.comparable.ComparableMessage
 import io.spine.tools.mc.java.comparable.WellKnownComparables.isWellKnownComparable
 import io.spine.tools.psi.addFirst
 
@@ -67,42 +70,50 @@ public class AddComparator(
     context: CodegenContext
 ) : DirectMessageAction<Empty>(type, file, Empty.getDefaultInstance(), context) {
 
+    /** The declaration of the [CompareByOption] option in the [type]. */
+    private val option: Option by lazy {
+        type.option<CompareByOption>()
+    }
+
     override fun doRender() {
-        val option = compareByOption(type)
-        val comparisonFields = option.fieldList.map(::toComparisonField)
+        val compareBy = option.unpack<CompareByOption>()
+        val comparisonFields = compareBy.fieldList.map(::toComparisonField)
         require(comparisonFields.isNotEmpty()) {
             "The `(compare_by)` option should have at least one field specified."
         }
 
-        val comparator = ComparatorBuilder(cls, option.descending)
+        val comparator = ComparatorBuilder(cls, compareBy.descending)
         comparisonFields.forEach { comparator.comparingBy(it) }
 
         val javaField = comparator.build().toPsi()
-            .apply { addFirst(GeneratedAnnotation.create()) }
+            .apply { addFirst(GeneratedAnnotation.forPsi()) }
         cls.addAfter(javaField, cls.lBrace)
     }
-
-    /**
-     * Queries the [CompareByOption] option for the given message [type].
-     */
-    private fun compareByOption(type: MessageType) = select(ComparableMessage::class.java)
-        .findById(type)!!
-        .option
 
     /**
      * Maps the field [path] to an appropriate instance of [ComparisonField],
      * depending on the field type.
      */
+    @Suppress("SwallowedException") // We transform "unknown field" into compilation error.
     private fun toComparisonField(path: String): ComparisonField {
-        val fieldPath = fieldPath { fieldName.addAll(path.split(".")) }
-        val field = typeSystem.resolve(fieldPath, type)
+        val fieldPath = path.toFieldPath()
+        val field = try {
+            typeSystem.resolve(fieldPath, type)
+        } catch (e: IllegalStateException) {
+            Compilation.error(type.file, option.span) {
+                "Unable to find a field with the path `$path` in the type `${type.qualifiedName}`."
+            }
+        }
+
         val fieldType = field.type
 
-        check(field.type.cardinality == CARDINALITY_SINGLE) {
-            "Repeated fields or maps can't participate in comparison. " +
-                    "The invalid field: `$field`, its type: `$fieldType`. " +
-                    "Please, make sure the type of the passed field is compatible with " +
-                    "the `(compare_by)` option."
+        if (field.type.cardinality != CARDINALITY_SINGLE) {
+            Compilation.error(type.file, field.span) {
+                "Repeated fields or maps can't participate in comparison. " +
+                        "The invalid field: `$field`, its type: `$fieldType`. " +
+                        "Please, make sure the type of the passed field is compatible with " +
+                        "the `(compare_by)` option."
+            }
         }
 
         return when {
@@ -227,3 +238,13 @@ public class AddComparator(
 
 private val MessageType.hasCompareByOption: Boolean
     get() = optionList.find<CompareByOption>() != null
+
+/**
+ * Transforms this potentially dot-delimited string into [FieldPath].
+ *
+ * If there are no dots in this string the returned [FieldPath] contains
+ * only this string.
+ */
+private fun String.toFieldPath() = fieldPath {
+    fieldName.addAll(this@toFieldPath.split("."))
+}

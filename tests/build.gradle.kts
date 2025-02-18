@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,9 @@ buildscript {
         all {
             resolutionStrategy {
                 force(
+                    io.spine.dependency.lib.KotlinX.Coroutines.bom,
+                    io.spine.dependency.lib.KotlinX.Coroutines.core,
+                    io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
                     grpc.api,
                     "io.spine:protodata:${protoData.version}",
                     spine.reflect,

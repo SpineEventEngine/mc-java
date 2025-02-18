@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 buildscript {
     standardSpineSdkRepositories()
 
-    val spine = io.spine.dependency.local.Spine
     val toolBase = io.spine.dependency.local.ToolBase
     val coreJava = io.spine.dependency.local.CoreJava
     val validation = io.spine.dependency.local.Validation
@@ -61,8 +60,12 @@ buildscript {
             resolutionStrategy {
                 force(
                     io.spine.dependency.lib.Grpc.api,
-                    spine.baseForBuildScript,
-                    spine.reflect,
+                    io.spine.dependency.lib.KotlinX.Coroutines.bom,
+                    io.spine.dependency.lib.KotlinX.Coroutines.core,
+                    io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
+
+                    io.spine.dependency.local.Base.libForBuildScript,
+                    io.spine.dependency.local.Reflect.lib,
                     toolBase.lib,
                     coreJava.server,
                     logging.lib,
@@ -95,12 +98,7 @@ private object BuildSettings {
 }
 
 spinePublishing {
-    modules = productionModules.map { it.name }
-        // Do not publish the validation codegen module as it is deprecated in favor of
-        // ProtoData-based code generation of the Validation library.
-        // The module is still kept for the sake of historical reference.
-        .filter { !it.contains("mc-java-validation") }
-        .toSet()
+    modules = productionModules.map { it.name }.toSet()
     destinations = PublishingRepos.run {
         setOf(
             cloudArtifactRegistry,

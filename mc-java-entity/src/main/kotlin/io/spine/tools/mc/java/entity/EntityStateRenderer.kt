@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class EntityStateRenderer :
 
     override fun doRender(type: MessageType, file: SourceFile<Java>) {
         execute {
-            RenderActions(type, file, settings.actions, context!!).apply()
+            RenderActions(type, file, settings.actions, context).apply()
         }
     }
 }

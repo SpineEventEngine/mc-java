@@ -26,7 +26,9 @@
 
 import io.spine.dependency.build.ErrorProne
 import io.spine.dependency.lib.AutoService
-import io.spine.dependency.local.Spine
+import io.spine.dependency.local.Base
+import io.spine.dependency.local.ModelCompiler
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
 dependencies {
@@ -38,13 +40,13 @@ dependencies {
     ErrorProne.annotations.forEach { api(it) }
     implementation(ErrorProne.GradlePlugin.lib)
 
-    implementation(Spine.base)
+    implementation(Base.lib)
     implementation(ToolBase.pluginBase)
-    implementation(Spine.modelCompiler)
+    implementation(ModelCompiler.lib)
 
     testImplementation(ErrorProne.testHelpers)
     testImplementation(gradleKotlinDsl())
-    testImplementation(Spine.testlib)
+    testImplementation(TestLib.lib)
 }
 
 /**

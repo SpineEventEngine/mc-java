@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.annotation
 
 import io.spine.protodata.ast.FieldName
 import io.spine.protodata.ast.MessageType
-import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MessageOrBuilderConvention
 import io.spine.protodata.java.MessageOrEnumConvention
 import io.spine.tools.java.reference
@@ -44,11 +43,11 @@ internal class FieldAnnotator :
     ProtoAnnotator<MessageFieldAnnotations>(MessageFieldAnnotations::class.java) {
 
     private val convention by lazy {
-        MessageOrEnumConvention(typeSystem!!)
+        MessageOrEnumConvention(typeSystem)
     }
 
     private val messageOrBuilderConvention by lazy {
-        MessageOrBuilderConvention(typeSystem!!)
+        MessageOrBuilderConvention(typeSystem)
     }
 
     override fun annotate(view: MessageFieldAnnotations) {
@@ -61,7 +60,7 @@ internal class FieldAnnotator :
         view: MessageFieldAnnotations,
         fieldOption: FieldOptions
     ) {
-        val messageType = typeSystem!!.findMessage(view.type)!!.first
+        val messageType = typeSystem.findMessage(view.type)!!.first
         fieldOption.optionList.forEach { option ->
             val apiOption = ApiOption.findMatching(option)
             check(apiOption != null) {
