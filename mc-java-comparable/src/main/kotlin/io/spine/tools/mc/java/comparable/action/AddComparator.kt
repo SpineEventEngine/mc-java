@@ -106,19 +106,20 @@ public class AddComparator(
         val field = try {
             typeSystem.resolve(fieldPath, type)
         } catch (e: IllegalStateException) {
-            Compilation.error(
-                protoSource, option.span.startLine, option.span.startColumn,
+            Compilation.error(type.file, option.span) {
                 "Unable to find a field with the path `$path` in the type `${type.qualifiedName}`."
-            )
+            }
         }
 
         val fieldType = field.type
 
-        check(field.type.cardinality == CARDINALITY_SINGLE) {
-            "Repeated fields or maps can't participate in comparison. " +
-                    "The invalid field: `$field`, its type: `$fieldType`. " +
-                    "Please, make sure the type of the passed field is compatible with " +
-                    "the `(compare_by)` option."
+        if (field.type.cardinality != CARDINALITY_SINGLE) {
+            Compilation.error(type.file, field.span) {
+                "Repeated fields or maps can't participate in comparison. " +
+                        "The invalid field: `$field`, its type: `$fieldType`. " +
+                        "Please, make sure the type of the passed field is compatible with " +
+                        "the `(compare_by)` option."
+            }
         }
 
         return when {
