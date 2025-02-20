@@ -29,35 +29,19 @@ package io.spine.tools.mc.java.comparable
 import com.google.protobuf.Duration
 import com.google.protobuf.Message
 import com.google.protobuf.Timestamp
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiField
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 import io.spine.string.lowerCamelCase
-import io.spine.testing.logging.mute.withLoggingMutedIn
 import io.spine.tools.mc.java.comparable.action.AddComparator
 import io.spine.tools.mc.java.comparable.given.Account
-import io.spine.tools.mc.java.comparable.given.BytesProhibited
 import io.spine.tools.mc.java.comparable.given.Citizen
 import io.spine.tools.mc.java.comparable.given.Debtor
-import io.spine.tools.mc.java.comparable.given.InvalidNested
 import io.spine.tools.mc.java.comparable.given.Invalid
-import io.spine.tools.mc.java.comparable.given.MapsProhibited
+import io.spine.tools.mc.java.comparable.given.InvalidNested
 import io.spine.tools.mc.java.comparable.given.Name
-import io.spine.tools.mc.java.comparable.given.NestedBytesProhibited
-import io.spine.tools.mc.java.comparable.given.NestedMapsProhibited
-import io.spine.tools.mc.java.comparable.given.NestedNonComparableProhibited
-import io.spine.tools.mc.java.comparable.given.NestedNonExistingProhibited
-import io.spine.tools.mc.java.comparable.given.NestedOneOfProhibited
-import io.spine.tools.mc.java.comparable.given.NestedRepeatedProhibited
 import io.spine.tools.mc.java.comparable.given.NestedTimestampAndDuration
 import io.spine.tools.mc.java.comparable.given.NestedValues
 import io.spine.tools.mc.java.comparable.given.NoCompareByOption
-import io.spine.tools.mc.java.comparable.given.NonComparableProhibited
-import io.spine.tools.mc.java.comparable.given.NonExistingProhibited
-import io.spine.tools.mc.java.comparable.given.OneOfProhibited
-import io.spine.tools.mc.java.comparable.given.RepeatedProhibited
 import io.spine.tools.mc.java.comparable.given.Traveler
 import io.spine.tools.mc.java.comparable.given.WithTimestampAndDuration
 import io.spine.tools.mc.java.comparable.given.WithValues
@@ -79,14 +63,14 @@ internal class AddComparatorSpec {
         @BeforeAll
         @JvmStatic
         fun setup(@TempDir projectDir: Path) {
-            withLoggingMutedIn(AddComparator::class.java.packageName) {
+            muteLogging {
                 runPipeline(
                     projectDir,
                     // Exclude files and message types that cause errors.
                     // We'll test negative cases separately.
-                    listOf(
-                        InvalidNested.getDescriptor(),
+                    excludedDescriptors = listOf(
                         Invalid.getDescriptor(),
+                        InvalidNested.getDescriptor(),
                         Name.getDescriptor()
                     )
                 )
@@ -94,8 +78,7 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested
-    inner class
+    @Nested inner class
     `generate comparator with` {
 
         @Test
@@ -153,8 +136,7 @@ internal class AddComparatorSpec {
         }
     }
 
-    @Nested
-    inner class
+    @Nested inner class
     `generate comparator with nested` {
 
         @Test
@@ -203,48 +185,7 @@ internal class AddComparatorSpec {
     `not generate comparator` {
 
         @Test
-        fun `without the corresponding option`() = assertNoComparator<NoCompareByOption>()
-
-        @Test
-        fun `with a non-comparable field`() = assertNoComparator<NonComparableProhibited>()
-
-        @Test
-        fun `with a bytes field`() = assertNoComparator<BytesProhibited>()
-
-        @Test
-        fun `with a repeated field`() = assertNoComparator<RepeatedProhibited>()
-
-        @Test
-        fun `with a map field`() = assertNoComparator<MapsProhibited>()
-
-        @Test
-        fun `with a non-existing field`() = assertNoComparator<NonExistingProhibited>()
-
-        @Test
-        fun `with a oneof field`() = assertNoComparator<OneOfProhibited>()
-    }
-
-    @Nested
-    inner class
-    `not generate comparator with nested` {
-
-        @Test
-        fun `non-comparable field`() = assertNoComparator<NestedNonComparableProhibited>()
-
-        @Test
-        fun `bytes field`() = assertNoComparator<NestedBytesProhibited>()
-
-        @Test
-        fun `repeated field`() = assertNoComparator<NestedRepeatedProhibited>()
-
-        @Test
-        fun `map field`() = assertNoComparator<NestedMapsProhibited>()
-
-        @Test
-        fun `non-existing field`() = assertNoComparator<NestedNonExistingProhibited>()
-
-        @Test
-        fun `oneof field`() = assertNoComparator<NestedOneOfProhibited>()
+        fun `without the 'compare_by' option`() = assertNoComparator<NoCompareByOption>()
     }
 
     /**
@@ -259,19 +200,7 @@ internal class AddComparatorSpec {
         field.shouldNotBeNull()
         field.text shouldContain expected
     }
-
-    /**
-     * Asserts that the given message doesn't have a comparator.
-     */
-    private inline fun <reified T : Message> assertNoComparator() {
-        val psiClass = generatedCodeOf(T::class.simpleName!!)
-        val field = psiClass.findComparatorField()
-        field.shouldBeNull()
-    }
 }
-
-private fun PsiClass.findComparatorField(): PsiField? =
-    fields.firstOrNull { it.name == "comparator" }
 
 private inline fun <reified T> fromRegistry() =
     "io.spine.compare.ComparatorRegistry.get(${T::class.java.canonicalName}.class)"
