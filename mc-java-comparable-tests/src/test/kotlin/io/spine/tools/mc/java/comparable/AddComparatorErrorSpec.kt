@@ -31,6 +31,7 @@ import io.spine.tools.mc.java.comparable.given.BytesProhibited
 import io.spine.tools.mc.java.comparable.given.MapsProhibited
 import io.spine.tools.mc.java.comparable.given.NestedBytesProhibited
 import io.spine.tools.mc.java.comparable.given.NestedMapsProhibited
+import io.spine.tools.mc.java.comparable.given.NestedMessage
 import io.spine.tools.mc.java.comparable.given.NestedNonComparableProhibited
 import io.spine.tools.mc.java.comparable.given.NestedNonExistingProhibited
 import io.spine.tools.mc.java.comparable.given.NestedOneOfProhibited
@@ -47,14 +48,25 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
-
-@DisplayName("`AddComparator` should report an error if '(compare_by)' option refers to a")
+@DisplayName("`AddComparator` should report an error if '(compare_by)' option refers to")
 internal class AddComparatorErrorSpec {
+
+    /**
+     * The piece of the error message which lists the supported types.
+     */
+    private val supportedTypes =
+        "Supported field types are: primitives, enums, and comparable messages."
 
     /**
      * The part of the error message instructing the user to read the docs.
      */
     private val callToAction = "Please see the `(compare_by)` option documentation for details."
+
+    /**
+     * The introduction part of the error message telling that maps and repeated fields are
+     * not supported for comparison.
+     */
+    private val repeatedAndMapsProlog = "Repeated fields or maps cannot participate in comparison."
 
     private lateinit var projectDir: Path
 
@@ -64,7 +76,7 @@ internal class AddComparatorErrorSpec {
     }
 
     @Test
-    fun `non comparable message`() {
+    fun `a non comparable message`() {
         val error = compile<NonComparableProhibited>(projectDir)
         error.message.let {
             // The field path.
@@ -79,7 +91,7 @@ internal class AddComparatorErrorSpec {
     }
 
     @Test
-    fun `'bytes' field`() {
+    fun `a 'bytes' field`() {
         val error = compile<BytesProhibited>(projectDir)
         error.message.let {
             // The field path.
@@ -91,46 +103,149 @@ internal class AddComparatorErrorSpec {
         }
     }
 
-    @Nested
-    inner class
-    `not generate comparator` {
-
-        @Test
-        fun `with a bytes field`() = assertNoComparator<BytesProhibited>()
-
-        @Test
-        fun `with a repeated field`() = assertNoComparator<RepeatedProhibited>()
-
-        @Test
-        fun `with a map field`() = assertNoComparator<MapsProhibited>()
-
-        @Test
-        fun `with a non-existing field`() = assertNoComparator<NonExistingProhibited>()
-
-        @Test
-        fun `with a oneof field`() = assertNoComparator<OneOfProhibited>()
+    @Test
+    fun `a repeated field`() {
+        val error = compile<RepeatedProhibited>(projectDir)
+        error.message.let {
+            val descriptor = RepeatedProhibited.getDescriptor()
+            // The prolog of the message.
+            it shouldContain repeatedAndMapsProlog
+            // The field path.
+            it shouldContain "`${descriptor.fullName}.gender`"
+            // The declaring message.
+            it shouldContain descriptor.name
+            // The type of the field.
+            it shouldContain "`repeated string`"
+            // Reference to the option.
+            it shouldContain "`(compare_by)` option"
+        }
     }
 
-    @Nested
-    inner class
-    `not generate comparator with nested` {
+    @Test
+    fun `a map field`() {
+        val error = compile<MapsProhibited>(projectDir)
+        error.message.let {
+            // The prolog of the message.
+            it shouldContain repeatedAndMapsProlog
+            // The field path.
+            it shouldContain "`${MapsProhibited.getDescriptor().fullName}.results`"
+            // The type of the field.
+            it shouldContain "`map<string, int32>`"
+            // Reference to the option.
+            it shouldContain "`(compare_by)` option"
+        }
+    }
+
+    @Test
+    fun `an immediate field which does not exist`() {
+        val error = compile<NonExistingProhibited>(projectDir)
+        error.message.let {
+            // Referring to the field belonging directly to the message (not a path).
+            it shouldContain "Unable to find a field with the name `non_existing_field`"
+            // The declaring type.
+            it shouldContain NonExistingProhibited.getDescriptor().fullName
+        }
+    }
+
+    @Test
+    fun `an option under 'oneof' which does not exist`() {
+        val error = compile<OneOfProhibited>(projectDir)
+        error.message.let {
+            // Referring to the field belonging directly to the message (not a path).
+            it shouldContain "Unable to find a field with the name `drink`"
+            // The declaring type.
+            it shouldContain OneOfProhibited.getDescriptor().fullName
+        }
+    }
+
+    @Nested inner class
+    `a nested field which is` {
 
         @Test
-        fun `non-comparable field`() = assertNoComparator<NestedNonComparableProhibited>()
+        fun `non-comparable`() {
+            val error = compile<NestedNonComparableProhibited>(projectDir)
+            error.message.let {
+                // Referring to a field path.
+                it shouldContain "The field `nested.id`"
+                // The declaring message.
+                it shouldContain NestedNonComparableProhibited.getDescriptor().fullName
+                // The type of the field.
+                it shouldContain NoCompareByOption.getDescriptor().fullName
+
+                it shouldContain supportedTypes
+                it shouldContain callToAction
+            }
+        }
 
         @Test
-        fun `bytes field`() = assertNoComparator<NestedBytesProhibited>()
+        fun `bytes field`() {
+            val error = compile<NestedBytesProhibited>(projectDir)
+            error.message.let {
+                // Referring to a field path.
+                it shouldContain "The field `nested.data`"
+                // The declaring message.
+                it shouldContain NestedBytesProhibited.getDescriptor().fullName
+                // The type of the field.
+                it shouldContain "bytes"
+            }
+        }
 
         @Test
-        fun `repeated field`() = assertNoComparator<NestedRepeatedProhibited>()
+        fun `repeated field`() {
+            val error = compile<NestedRepeatedProhibited>(projectDir)
+            error.message.let {
+                val descriptor = NestedMessage.getDescriptor()
+                // The prolog of the message.
+                it shouldContain repeatedAndMapsProlog
+                // The field qualified name.
+                it shouldContain "`${descriptor.fullName}.gender`"
+                // The declaring message.
+                it shouldContain descriptor.name
+                // The type of the field.
+                it shouldContain "`repeated string`"
+                // Reference to the option.
+                it shouldContain "`(compare_by)` option"
+            }
+        }
 
         @Test
-        fun `map field`() = assertNoComparator<NestedMapsProhibited>()
+        fun `map field`() {
+            val error = compile<NestedMapsProhibited>(projectDir)
+            error.message.let {
+                val descriptor = NestedMessage.getDescriptor()
+                // The prolog of the message.
+                it shouldContain repeatedAndMapsProlog
+                // The field qualified name.
+                it shouldContain "`${descriptor.fullName}.results`"
+                // The declaring message.
+                it shouldContain descriptor.name
+                // The type of the field.
+                it shouldContain "`map<string, int32>`"
+                // Reference to the option.
+                it shouldContain "`(compare_by)` option"
+            }
+        }
 
         @Test
-        fun `non-existing field`() = assertNoComparator<NestedNonExistingProhibited>()
+        fun `non-existing field`() {
+            val error = compile<NestedNonExistingProhibited>(projectDir)
+            error.message.let {
+                // Referring to the field belonging to a nested message.
+                it shouldContain "Unable to find a field with the path `nested.non_existing_field`"
+                // The declaring type.
+                it shouldContain NestedNonExistingProhibited.getDescriptor().fullName
+            }
+        }
 
         @Test
-        fun `oneof field`() = assertNoComparator<NestedOneOfProhibited>()
+        fun `oneof field`() {
+            val error = compile<NestedOneOfProhibited>(projectDir)
+            error.message.let {
+                // Referring to the field belonging to the nested message.
+                it shouldContain "Unable to find a field with the path `nested.drink`"
+                // The declaring type.
+                it shouldContain NestedOneOfProhibited.getDescriptor().fullName
+            }
+        }
     }
 }

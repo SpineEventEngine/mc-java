@@ -104,18 +104,21 @@ public class AddComparator(
             typeSystem.resolve(fieldPath, type)
         } catch (e: IllegalStateException) {
             Compilation.error(type.file, option.span) {
-                "Unable to find a field with the path `$path` in the type `${type.qualifiedName}`."
+                val isImmediate = !path.contains(".")
+                val pathOrField = if (isImmediate) "name" else "path"
+                "Unable to find a field with the $pathOrField `$path`" +
+                        " in the type `${type.qualifiedName}`."
             }
         }
 
         val fieldType = field.type
 
-        Compilation.check(field.type.cardinality == CARDINALITY_SINGLE, type.file, field.span) {
+        Compilation.check(field.type.cardinality == CARDINALITY_SINGLE, type.file, option.span) {
             "Repeated fields or maps cannot participate in comparison." +
-                    " The invalid field `${field.qualifiedName}`has the type" +
-                    " `${fieldType.name}`." +
-                    " Please make sure the type of the referred field is compatible with" +
-                    " the `(compare_by)` option."
+                    " The field `${field.qualifiedName}` has the type" +
+                    " `${fieldType.name}` which does not support comparison." +
+                    " Please see the documentation of the `(compare_by)` option" +
+                    " for the details on the supported field types."
         }
 
         return when {
