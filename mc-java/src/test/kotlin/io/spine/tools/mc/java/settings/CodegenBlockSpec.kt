@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,11 +155,11 @@ class CodegenBlockSpec {
         fun events() {
             val action1 = "org.example.event.codegen.Action1"
             val action2 = "org.example.event.codegen.Action2"
-            val prefix = "my_"
+            val infix = "my_"
             options.codegen { settings ->
                 settings.forEvents { events ->
                     with(events) {
-                        includeFiles(by().prefix(prefix))
+                        includeFiles(by().infix(infix))
                         useActions(action1, action2)
                     }
                 }
@@ -167,7 +167,7 @@ class CodegenBlockSpec {
 
             signalSettings.events.run {
                 patternList shouldHaveSize 1
-                patternList[0].prefix shouldBe prefix
+                patternList[0].infix shouldBe infix
                 actions.actionMap.keys shouldBe
                         DEFAULT_EVENT_ACTIONS.keys + setOf(action1, action2)
             }
