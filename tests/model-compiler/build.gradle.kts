@@ -74,7 +74,7 @@ modelCompiler {
 
 tasks.findByName("launchTestProtoData")?.apply { this as JavaExec
     debugOptions {
-        enabled.set(true) // Set this option to `true` to enable remote debugging.
+        enabled.set(false) // Set this option to `true` to enable remote debugging.
         port.set(5566)
         server.set(true)
         suspend.set(true)
