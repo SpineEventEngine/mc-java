@@ -60,7 +60,9 @@ internal fun PsiClass.findComparatorField(): PsiField? =
     fields.firstOrNull { it.name == "comparator" }
 
 /**
- * Compiles only the given message.
+ * Compiles only the given message expecting the [Compilation.Error] to be thrown.
+ *
+ * If the error is not thrown, the test calling this fixture fails.
  *
  * @param M The type of the message to compile.
  * @param projectDir The working directory for the test project.
