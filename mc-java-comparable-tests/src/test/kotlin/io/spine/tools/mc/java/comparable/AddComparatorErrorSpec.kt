@@ -76,7 +76,7 @@ internal class AddComparatorErrorSpec {
     }
 
     @Test
-    fun `a non comparable message`() {
+    fun `a non-comparable message`() {
         val error = compile<NonComparableProhibited>(projectDir)
         error.message.let {
             // The field path.

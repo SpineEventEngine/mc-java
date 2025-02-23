@@ -103,7 +103,7 @@ abstract class PluginTestSetup<S: Message>(
      * [settings] will be written to the [WorkingDirectory.settingsDirectory] before
      * creation of a [Pipeline][io.spine.protodata.backend.Pipeline].
      *
-     * @param projectDir The directory in which create the compilation environment.
+     * @param projectDir The directory to create the compilation environment.
      * @param settings The plugin settings used by the test.
      * @param descriptorFilter The filter to accept descriptors during the compilation.
      *   Accepts all by default.
