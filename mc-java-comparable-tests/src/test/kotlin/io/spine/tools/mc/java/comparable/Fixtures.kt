@@ -62,6 +62,8 @@ internal fun PsiClass.findComparatorField(): PsiField? =
 /**
  * Compiles only the given message.
  *
+ * @param M The type of the message to compile.
+ * @param projectDir The working directory for the test project.
  * @return compilation error thrown during the compilation.
  */
 inline fun <reified M: Message> compile(projectDir: Path): Compilation.Error {
