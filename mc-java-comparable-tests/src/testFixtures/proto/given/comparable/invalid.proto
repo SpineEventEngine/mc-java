@@ -34,13 +34,17 @@ option (type_url_prefix) = "type.spine.io";
 option java_package = "io.spine.tools.mc.java.comparable.given";
 option java_multiple_files = true;
 
-import "google/protobuf/timestamp.proto";
-
-// This file declares messages that contradict the `compare_by` contract.
+// This file declares messages that contradict the `(compare_by)` contract.
 // Message names describe in which way a message is incompatible with the option.
 
 message NoCompareByOption {
     string uuid = 1;
+}
+
+message EmptyCompareByOption {
+    option (compare_by) = {
+    };
+    string value = 1;
 }
 
 message NonComparableProhibited {

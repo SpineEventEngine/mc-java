@@ -68,7 +68,7 @@ internal fun PsiClass.findComparatorField(): PsiField? =
  * @param projectDir The working directory for the test project.
  * @return compilation error thrown during the compilation.
  */
-inline fun <reified M: Message> compile(projectDir: Path): Compilation.Error {
+inline fun <reified M: Message> assertCompilationFails(projectDir: Path): Compilation.Error {
     val message = M::class.java.defaultInstance.descriptorForType
     val setup = ComparablePluginTestSetup(AddComparator::class)
     val error = assertThrows<Compilation.Error> {

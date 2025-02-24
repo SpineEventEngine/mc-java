@@ -81,7 +81,7 @@ public class AddComparator(
     override fun doRender() {
         val compareBy = option.unpack<CompareByOption>()
         val comparisonFields = compareBy.fieldList.map(::toComparisonField)
-        require(comparisonFields.isNotEmpty()) {
+        Compilation.check(comparisonFields.isNotEmpty(), type.file, option.span) {
             "The `(compare_by)` option should have at least one field specified."
         }
 
@@ -107,6 +107,7 @@ public class AddComparator(
                 val isImmediate = !path.contains(".")
                 val pathOrField = if (isImmediate) "name" else "path"
                 "Unable to find a field with the $pathOrField `$path`" +
+                        " referred in the `(compare_by)` option" +
                         " in the type `${type.qualifiedName}`."
             }
         }
@@ -160,11 +161,13 @@ public class AddComparator(
 
             is PrimitiveComparisonField -> {
                 Compilation.check(field.type != PT_UNKNOWN, type.file, option.span) {
-                    "The field `${path.joined}` has an unknown primitive type:" +
+                    "The field `${path.joined}`referred in the `(compare_by) option" +
+                            " has an unknown primitive type:" +
                             " `${field.type.name}`."
                 }
                 Compilation.check(field.type != TYPE_BYTES, type.file, option.span) {
-                    "The field `${path.joined}` declared in the type `${type.qualifiedName}`" +
+                    "The field `${path.joined}` referred in the `(compare_by)` option" +
+                            " declared in the type `${type.qualifiedName}`" +
                             " has a non-comparable `bytes` type."
                 }
                 comparingBy(path)
@@ -173,6 +176,7 @@ public class AddComparator(
             is MessageComparisonField -> {
                 Compilation.check(field.type.hasCompareByOption, type.file, option.span) {
                     "The type of the `${path.joined}` field (`${field.type.qualifiedName}`)" +
+                            " referred in the `(compare_by)` option" +
                             " should have the `(compare_by)` option itself" +
                             " to participate in the comparison."
                 }
