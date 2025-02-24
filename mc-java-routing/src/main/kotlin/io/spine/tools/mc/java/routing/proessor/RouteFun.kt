@@ -31,18 +31,45 @@ import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ksp.toClassName
 
+/**
+ * Provides information about a route function detected in the [declaringClass]
+ *
+ * @property decl The declaration of the function
+ * @property declaringClass The class that declares the function.
+ * @param parameters The parameter(s) of the function.
+ *  If the [Pair.second] property is non-null the function accepts a context parameter.
+ * @param returnType The type returned by the function.
+ */
 internal sealed class RouteFun(
     val decl: KSFunctionDeclaration,
     val declaringClass: EntityClass,
     parameters: Pair<KSType, KSType?>,
     returnType: KSType
 ) {
+    /**
+     * The type of the first parameter of the route function.
+     */
     val messageParameter: KSType = parameters.first
+
+    /**
+     * The class name of the first parameter.
+     */
     val messageClass: ClassName = messageParameter.toClassName()
+
+    /**
+     * Tells if the function accepts a context parameter.
+     */
     val acceptsContext: Boolean = parameters.second != null
+
+    /**
+     * Tells if the function returns one identifier rather than a set of identifiers.
+     */
     val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
 }
 
+/**
+ * The declaration of a route function for commands.
+ */
 internal class CommandRouteFun(
     fn: KSFunctionDeclaration,
     declaringClass: EntityClass,
@@ -50,6 +77,9 @@ internal class CommandRouteFun(
     returnType: KSType
 ) : RouteFun(fn, declaringClass, parameters, returnType)
 
+/**
+ * The declaration of a route function for events.
+ */
 internal class EventRouteFun(
     fn: KSFunctionDeclaration,
     declaringClass: EntityClass,
@@ -57,6 +87,9 @@ internal class EventRouteFun(
     returnType: KSType
 ) : RouteFun(fn, declaringClass, parameters, returnType)
 
+/**
+ * The declaration of a route function for entity states.
+ */
 internal class StateUpdateRouteFun(
     fn: KSFunctionDeclaration,
     declaringClass: EntityClass,
