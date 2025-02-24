@@ -27,15 +27,14 @@
 package io.spine.tools.mc.java.routing.proessor
 
 import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.symbol.FileLocation
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Origin
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import funRef
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.jvmStaticRef
 import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
 import msg
 
@@ -120,4 +119,50 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
         return null
     }
     return EntityClass(declaringClass, environment.entityInterface)
+}
+
+/**
+ * Checks if given [functions] do not have the same type as the first parameter.
+ *
+ * If duplicates are found they are [reported][KSPLogger.error], and the function returns `true`.
+ *
+ * @return `true` if duplicating route functions found, `false` otherwise.
+ */
+internal fun <F : RouteFun> findDuplicatedRoutes(
+    declaringClass: EntityClass,
+    functions: List<F>,
+    environment: Environment
+): Boolean {
+    val grouped = functions.groupBy { fn -> fn.messageClass }
+    val logger = environment.logger
+    var found = false
+    grouped.forEach {
+        var routes = it.value
+        if (routes.size > 1) {
+            // Sort duplicates by line numbers.
+            routes = routes.sortedBy { fn -> (fn.decl.location as? FileLocation)?.lineNumber }
+
+            val nl = System.lineSeparator()
+
+            // The qualified message class to be mentioned once in the error message.
+            // The functions will have the simple name.
+            val messageType = routes[0].messageClass.canonicalName
+
+            // List the duplicates.
+            val duplicates = routes.map { fn ->
+                " * `${fn.asString(qualifiedParameters = false)}`"
+            }.joinToString(nl)
+
+            logger.error(
+                "The class `$declaringClass` declares more than one route function" +
+                        " for the same message class `$messageType`:$nl" +
+                        duplicates + nl +
+                "Please have only one function per routed message class.",
+                // Give the last duplicate as the error pointer to be reported.
+                // This would allow the user to scroll back for the duplicate(s).
+                routes.last().decl)
+        }
+        found = true
+    }
+    return found
 }

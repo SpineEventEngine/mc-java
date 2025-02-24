@@ -43,7 +43,10 @@ internal class StateUpdateRouteVisitor(
 
     companion object {
         fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(qualified) { functions ->
+            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(
+                qualified,
+                environment
+            ) { functions ->
                 StateUpdateRouteVisitor(functions, environment)
             }
         }

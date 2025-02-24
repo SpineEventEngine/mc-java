@@ -35,6 +35,7 @@ import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
 import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
@@ -105,6 +106,47 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
             it shouldContain "`route()`" // The name of the function in error.
             it shouldContain routeRef
             it shouldContain "a member of a companion object."
+        }
+    }
+
+    private val duplicatedRoutes = kotlinFile("DuplicatedRoutes", """
+    package io.spine.given.devices
+
+    import io.spine.core.EventContext
+    import io.spine.given.devices.events.StatusReported
+    import io.spine.given.devices.events.DeviceRegistered
+    import io.spine.server.projection.Projection
+    import io.spine.server.route.Route
+        
+    class DuplicatedRoutes : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
+    
+        companion object {
+            @Route fun route(e: StatusReported): DeviceId = event.getDevice()
+            @Route fun route(e: DeviceRegistered): DeviceId = event.getDevice()
+            @Route fun routeAgain(e: StatusReported, ctx: EventContext): DeviceId = 
+                event.getDevice()
+        }
+    }            
+    """.trimIndent())
+
+    @Test
+    fun `when two or more route functions accept the same message type`() {
+        compilation.apply {
+            sources = listOf(duplicatedRoutes)
+        }
+
+        val result = compilation.compileSilently()
+
+        result.exitCode shouldBe COMPILATION_ERROR
+        result.messages.let {
+            it shouldContain "The class `io.spine.given.devices.DuplicatedRoutes` declares more" +
+                    " than one route function for the same message class" +
+                    " `io.spine.given.devices.events.StatusReported`:"
+            it shouldContain "`route(StatusReported)`"
+            it shouldContain "`routeAgain(StatusReported, EventContext)`"
+            it shouldContain "Please have only one function per routed message class."
+            // Not duplicated.
+            it shouldNotContain "DeviceRegistered"
         }
     }
 

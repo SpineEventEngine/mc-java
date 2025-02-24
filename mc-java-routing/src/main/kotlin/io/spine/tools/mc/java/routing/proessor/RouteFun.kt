@@ -30,6 +30,7 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ksp.toClassName
+import shortName
 
 /**
  * Provides information about a route function detected in the [declaringClass]
@@ -62,9 +63,65 @@ internal sealed class RouteFun(
     val acceptsContext: Boolean = parameters.second != null
 
     /**
+     * The class of the message context, if the function accepts the second parameter.
+     */
+    private val contextClass: ClassName? by lazy {
+        parameters.second?.toClassName()
+    }
+
+    /**
      * Tells if the function returns one identifier rather than a set of identifiers.
      */
     val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
+
+    /**
+     * Obtains the name of the function with the types of its parameters.
+     *
+     * @param qualifiedParameters If `true` the parameter types will be fully qualified.
+     *  Otherwise, simple names will be used for the parameter types.
+     */
+    fun asString(qualifiedParameters: Boolean): String {
+        return buildString {
+            append(decl.shortName)
+            append("(")
+            append(
+                if (qualifiedParameters) messageClass.canonicalName
+                else messageClass.simpleName
+            )
+            if (acceptsContext) {
+                append(", ")
+                // There is no need for the qualified name for the context parameter.
+                append(
+                    if (qualifiedParameters) contextClass!!.canonicalName
+                    else contextClass!!.simpleName
+                )
+            }
+            append(")")
+        }
+    }
+
+    /**
+     * Gives the name of the function with fully qualified names for parameters.
+     */
+    override fun toString(): String = asString(qualifiedParameters = true)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RouteFun
+
+        if (decl != other.decl) return false
+        if (declaringClass != other.declaringClass) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = decl.hashCode()
+        result = 31 * result + declaringClass.hashCode()
+        return result
+    }
 }
 
 /**

@@ -29,6 +29,14 @@ import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
 
 /**
+ * Obtains the short name of the function.
+ *
+ * @returns just a name without braces.
+ */
+internal val KSFunctionDeclaration.shortName: String
+    get() = simpleName.getShortName()
+
+/**
  * Selects either diagnostic message depending on
  * the [origin][KSFunctionDeclaration.origin] of the declaration.
  *
@@ -47,6 +55,6 @@ internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
  */
 internal val KSFunctionDeclaration.funRef: String
     get() {
-        val shortRef = "`${simpleName.getShortName()}()`"
+        val shortRef = "`$shortName()`"
         return msg("function $shortRef", "method $shortRef")
     }

@@ -151,7 +151,6 @@ internal sealed class RouteSignature<F : RouteFun>(
     companion object {
 
         val routeRef by lazy { "`@${simply<Route>()}`" }
-        val jvmStaticRef by lazy { "`@${simply<JvmStatic>()}`" }
 
         fun qualify(
             functions: Sequence<KSFunctionDeclaration>,

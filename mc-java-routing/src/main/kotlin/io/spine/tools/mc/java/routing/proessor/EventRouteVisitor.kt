@@ -72,7 +72,7 @@ internal class EventRouteVisitor(
          * Processes the given route functions using [EventRouteVisitor].
          */
         internal fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<EventRouteVisitor, EventRouteFun>(qualified) { functions ->
+            runVisitors<EventRouteVisitor, EventRouteFun>(qualified, environment) { functions ->
                 EventRouteVisitor(functions, environment)
             }
         }

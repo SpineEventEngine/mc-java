@@ -53,7 +53,7 @@ internal class CommandRouteVisitor(
 
     companion object {
         fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified) { functions ->
+            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified, environment) { functions ->
                 CommandRouteVisitor(functions, environment)
             }
         }

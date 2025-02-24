@@ -32,16 +32,32 @@ import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
 
+/**
+ * Provides information about an entity class.
+ *
+ * @property decl The declaration of the class.
+ * @param entityInterface The type of the [io.spine.server.entity.Entity]
+ *  interface for resolving generic parameters.
+ */
 internal class EntityClass(
     val decl: KSClassDeclaration,
     entityInterface: KSType
 ) {
+    /**
+     * Makes the given visitor visit the class declaration.
+     */
     fun accept(visitor: RouteVisitor<*>, data: Unit) {
         decl.accept(visitor, data)
     }
 
+    /**
+     * The type of the entity class resolved without generic parameters.
+     */
     val type: KSType by lazy { decl.asStarProjectedType() }
 
+    /**
+     * The type of the entity identifiers as [KSTypeArgument].
+     */
     val idClassTypeArgument: KSTypeArgument by lazy {
         val asEntity = decl.superTypes.find {
             entityInterface.isAssignableFrom(it.resolve())
@@ -53,14 +69,23 @@ internal class EntityClass(
         asEntity.element!!.typeArguments.first()
     }
 
+    /**
+     * The reference to the ID class.
+     */
     private val idClassReference: KSTypeReference by lazy {
         idClassTypeArgument.type!!
     }
 
+    /**
+     * The type of the entity identifiers.
+     */
     val idClass: KSType by lazy {
         idClassReference.resolve()
     }
 
+    /**
+     * The class which this entity class extends.
+     */
     fun superClass(): KSType {
         val found = decl.superTypes.find {
             val superType = it.resolve().declaration
@@ -77,5 +102,12 @@ internal class EntityClass(
 
     override fun hashCode(): Int {
         return decl.hashCode()
+    }
+
+    /**
+     * Obtains the qualified name of the entity class.
+     */
+    override fun toString(): String {
+        return decl.qualifiedName!!.asString()
     }
 }
