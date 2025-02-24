@@ -71,6 +71,8 @@ plugins {
     kotlin("jvm")
     id("write-manifest")
     id("com.google.protobuf")
+    id("dokka-for-java")
+    id("dokka-for-kotlin")
     id("net.ltgt.errorprone")
     id("pmd-settings")
     `maven-publish`

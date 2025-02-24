@@ -81,12 +81,14 @@ message NestedMapsProhibited {
 
 message NestedNonExistingProhibited {
     option (compare_by) = {
-        field: "non_existing_field"
+        field: "nested.non_existing_field"
     };
+    NestedMessage nested = 1;
 }
 
 message NestedOneOfProhibited {
     option (compare_by) = {
-        field: "drink"
+        field: "nested.drink"
     };
+    NestedMessage nested = 1;
 }

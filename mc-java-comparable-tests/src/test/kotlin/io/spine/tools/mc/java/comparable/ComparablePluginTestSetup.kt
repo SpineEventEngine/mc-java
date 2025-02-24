@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import kotlin.reflect.KClass
  * The base class for companion objects of test suites that test codegen
  * actions of [ComparablePlugin].
  */
-abstract class ComparablePluginTestSetup(
+open class ComparablePluginTestSetup(
     private val actionClass: KClass<out MessageAction<*>>
 ) : PluginTestSetup<Comparables>(ComparablePlugin(), ComparablePlugin.SETTINGS_ID) {
 

@@ -77,7 +77,7 @@ internal class JavaRouteSpec : RouteCompilationTest() {
         compilation.apply {
             sources = listOf(twoRoutes)
         }
-        val result = compilation.compile()
+        val result = compilation.compileSilently()
 
         result.exitCode shouldBe ExitCode.OK
     }

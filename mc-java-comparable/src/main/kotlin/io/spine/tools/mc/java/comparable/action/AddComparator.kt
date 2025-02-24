@@ -40,8 +40,11 @@ import io.spine.protodata.ast.PrimitiveType.PT_UNKNOWN
 import io.spine.protodata.ast.PrimitiveType.TYPE_BYTES
 import io.spine.protodata.ast.cardinality
 import io.spine.protodata.ast.find
+import io.spine.protodata.ast.name
 import io.spine.protodata.ast.option
+import io.spine.protodata.ast.qualifiedName
 import io.spine.protodata.ast.unpack
+import io.spine.protodata.check
 import io.spine.protodata.context.CodegenContext
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.MethodCall
@@ -78,8 +81,9 @@ public class AddComparator(
     override fun doRender() {
         val compareBy = option.unpack<CompareByOption>()
         val comparisonFields = compareBy.fieldList.map(::toComparisonField)
-        require(comparisonFields.isNotEmpty()) {
-            "The `(compare_by)` option should have at least one field specified."
+        Compilation.check(comparisonFields.isNotEmpty(), type.file, option.span) {
+            "The `(compare_by)` option declared in the type `${type.qualifiedName}`" +
+                    " should have at least one field specified."
         }
 
         val comparator = ComparatorBuilder(cls, compareBy.descending)
@@ -94,26 +98,29 @@ public class AddComparator(
      * Maps the field [path] to an appropriate instance of [ComparisonField],
      * depending on the field type.
      */
-    @Suppress("SwallowedException") // We transform "unknown field" into compilation error.
+    @Suppress("SwallowedException") // We transform "unknown field" into the compilation error.
     private fun toComparisonField(path: String): ComparisonField {
         val fieldPath = path.toFieldPath()
         val field = try {
             typeSystem.resolve(fieldPath, type)
         } catch (e: IllegalStateException) {
             Compilation.error(type.file, option.span) {
-                "Unable to find a field with the path `$path` in the type `${type.qualifiedName}`."
+                val isImmediate = !path.contains(".")
+                val pathOrField = if (isImmediate) "name" else "path"
+                "Unable to find a field with the $pathOrField `$path`" +
+                        " referred in the `(compare_by)` option" +
+                        " in the type `${type.qualifiedName}`."
             }
         }
 
         val fieldType = field.type
 
-        if (field.type.cardinality != CARDINALITY_SINGLE) {
-            Compilation.error(type.file, field.span) {
-                "Repeated fields or maps can't participate in comparison. " +
-                        "The invalid field: `$field`, its type: `$fieldType`. " +
-                        "Please, make sure the type of the passed field is compatible with " +
-                        "the `(compare_by)` option."
-            }
+        Compilation.check(field.type.cardinality == CARDINALITY_SINGLE, type.file, option.span) {
+            "Repeated fields or maps cannot participate in comparison." +
+                    " The field `${field.qualifiedName}` has the type" +
+                    " `${fieldType.name}` which does not support comparison." +
+                    " Please see the documentation of the `(compare_by)` option" +
+                    " for the details on the supported field types."
         }
 
         return when {
@@ -130,7 +137,7 @@ public class AddComparator(
                 }
             }
 
-            else -> unsupportedFieldType(fieldPath, fieldType)
+            else -> unsupportedFieldType(fieldPath, fieldType.name)
         }
     }
 
@@ -154,19 +161,25 @@ public class AddComparator(
             is EnumComparisonField -> comparingBy(path)
 
             is PrimitiveComparisonField -> {
-                check(field.type != PT_UNKNOWN) {
-                    "The field `${path.joined}` has an unknown primitive type: `$type`."
+                Compilation.check(field.type != PT_UNKNOWN, type.file, option.span) {
+                    "The field `${path.joined}`referred in the `(compare_by) option" +
+                            " has an unknown primitive type:" +
+                            " `${field.type.name}`."
                 }
-                check(field.type != TYPE_BYTES) {
-                    "The field `${path.joined}` has a non-comparable `bytes[]` type."
+                Compilation.check(field.type != TYPE_BYTES, type.file, option.span) {
+                    "The field `${path.joined}` referred in the `(compare_by)` option" +
+                            " declared in the type `${type.qualifiedName}`" +
+                            " has a non-comparable `bytes` type."
                 }
                 comparingBy(path)
             }
 
             is MessageComparisonField -> {
-                check(field.type.hasCompareByOption) {
-                    "The type of the `${path.joined}` field should have the `(compare_by)` " +
-                            "option itself to participate in comparison."
+                Compilation.check(field.type.hasCompareByOption, type.file, option.span) {
+                    "The type of the `${path.joined}` field (`${field.type.qualifiedName}`)" +
+                            " referred in the `(compare_by)` option" +
+                            " should have the `(compare_by)` option itself" +
+                            " to participate in the comparison."
                 }
                 comparingBy(path)
             }
@@ -193,10 +206,11 @@ public class AddComparator(
         val hasCompareByOption = field.type.hasCompareByOption
         when {
             hasCompareByOption -> {
-                check(fromRegistry == null) {
-                    "The type of the `${path.joined}` field must either have the `(compare_by)` " +
-                            "option specified OR have a `Comparator` registered in " +
-                            "the `ComparatorRegistry`, but not both simultaneously."
+                Compilation.check(fromRegistry == null, type.file, option.span) {
+                    "The type of the `${path.joined}` field must either have" +
+                            " the `(compare_by)` option specified OR" +
+                            " have a `Comparator` registered in the `ComparatorRegistry`," +
+                            " but not both simultaneously."
                 }
                 comparingBy(path)
             }
@@ -212,12 +226,12 @@ public class AddComparator(
 
             clazz.isWellKnownComparable -> comparingBy(path.copy { fieldName.add("value") })
 
-            else -> unsupportedFieldType(path, field.type)
+            else -> unsupportedFieldType(path, field.type.qualifiedName)
         }
     }
 
     /**
-     * Throws [IllegalStateException] to indicate that the passed [fieldPath]
+     * Throws [Compilation.Error] to indicate that the passed [fieldPath]
      * denotes a field with an unsupported type.
      *
      * This error is meant to serve as a safe net for cases when the passed field
@@ -228,12 +242,13 @@ public class AddComparator(
      * Note: the names of method arguments are prefixed with "field" intentionally.
      * So not to clash with [type] class member.
      */
-    private fun unsupportedFieldType(fieldPath: FieldPath, fieldType: Any?): Nothing = error(
-        "The field `$fieldPath` declared in the message `$type` is not of the supported type " +
-                " (`$fieldType`) for the comparison. Supported field types are: " +
-                "primitives, enums, and comparable messages. Checks out docs to " +
-                "the `(compare_by)` option for details."
-    )
+    private fun unsupportedFieldType(fieldPath: FieldPath, fieldType: String): Nothing =
+        Compilation.error(type.file, option.span) {
+            "The field `${fieldPath.joined}` declared in the message `${type.qualifiedName}`" +
+                    " has the type `$fieldType` which does not support the comparison." +
+                    " Supported field types are: primitives, enums, and comparable messages." +
+                    " Please see the `(compare_by)` option documentation for details."
+        }
 }
 
 private val MessageType.hasCompareByOption: Boolean

@@ -30,6 +30,7 @@ import com.google.protobuf.Descriptors.GenericDescriptor
 import com.google.protobuf.Message
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.spine.protodata.backend.DescriptorFilter
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
 import io.spine.protodata.params.Directories
 import io.spine.protodata.params.WorkingDirectory
@@ -101,11 +102,16 @@ abstract class PluginTestSetup<S: Message>(
      *
      * [settings] will be written to the [WorkingDirectory.settingsDirectory] before
      * creation of a [Pipeline][io.spine.protodata.backend.Pipeline].
+     *
+     * @param projectDir The directory to create the compilation environment.
+     * @param settings The plugin settings used by the test.
+     * @param descriptorFilter The filter to accept descriptors during the compilation.
+     *   Accepts all by default.
      */
     fun setup(
         projectDir: Path,
         settings: S,
-        excludedDescriptors: List<GenericDescriptor> = listOf()
+        descriptorFilter: (GenericDescriptor) -> Boolean = { true }
     ): PipelineSetup {
         val workingDir = projectDir.resolve("build").resolve(Directories.PROTODATA_WORKING_DIR)
         val workingDirectory = WorkingDirectory(workingDir)
@@ -124,9 +130,7 @@ abstract class PluginTestSetup<S: Message>(
                 JavaCodeStyleFormatterPlugin()
             ),
             outputRoot = outputDir,
-            descriptorFilter = {
-                excludedDescriptors.find { d -> d.fullName == it.fullName } == null
-            }
+            descriptorFilter = descriptorFilter
         ) {
             writeSettings(it, settings)
         }
@@ -140,16 +144,33 @@ abstract class PluginTestSetup<S: Message>(
     /**
      * Runs the pipeline with the plugin settings obtained from [createSettings].
      *
+     * @param excludedDescriptors The descriptors to be excluded from the compilation.
      * @see createSettings
      */
     fun runPipeline(
         projectDir: Path,
         excludedDescriptors: List<GenericDescriptor> = listOf()
     ) {
+        val descriptorFilter: DescriptorFilter = {
+            excludedDescriptors.find { d -> d.fullName == it.fullName } == null
+        }
+        runPipeline(projectDir, descriptorFilter)
+    }
+
+    /**
+     * Runs the pipeline with the plugin settings obtained from [createSettings] and
+     * given descriptor filter.
+     *
+     * @see createSettings
+     */
+    fun runPipeline(
+        projectDir: Path,
+        descriptorFilter: DescriptorFilter
+    ) {
         // Clear the cache of previously parsed files to avoid repeated code generation.
         SourceFile.clearCache()
         val settings = createSettings(projectDir)
-        val setup = setup(projectDir, settings, excludedDescriptors)
+        val setup = setup(projectDir, settings, descriptorFilter)
         val pipeline = setup.createPipeline()
         pipeline()
         this.sourceFileSet = pipeline.sources[0]

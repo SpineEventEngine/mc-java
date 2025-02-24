@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ modelCompiler {
                 markAs("io.spine.test.tools.mc.java.protoc.DocumentMessage")
             }
 
-            forMessages(by().prefix("spine/tools/mc/java/protoc/prefix_generation")) {
+            forMessages(by().infix("spine/tools/mc/java/protoc/prefix_generation")) {
                 markAs("io.spine.test.tools.mc.java.protoc.PrefixedMessage")
                 useAction(methodAction)
                 useAction(nestedClassAction)

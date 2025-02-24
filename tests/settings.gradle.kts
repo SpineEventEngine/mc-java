@@ -33,7 +33,7 @@ include(
     "model-compiler",
     "rejection",
     "mc-java-comparable",
-//    "validation-smoke"
+    "validation-smoke"
 )
 
 /*
