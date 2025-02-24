@@ -82,7 +82,8 @@ public class AddComparator(
         val compareBy = option.unpack<CompareByOption>()
         val comparisonFields = compareBy.fieldList.map(::toComparisonField)
         Compilation.check(comparisonFields.isNotEmpty(), type.file, option.span) {
-            "The `(compare_by)` option should have at least one field specified."
+            "The `(compare_by)` option declared in the type `${type.qualifiedName}`" +
+                    " should have at least one field specified."
         }
 
         val comparator = ComparatorBuilder(cls, compareBy.descending)

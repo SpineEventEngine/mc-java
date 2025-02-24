@@ -82,7 +82,9 @@ internal class AddComparatorErrorSpec {
         error.message.let {
             // The start of the option declaration.
             it shouldContain "/invalid.proto:45:5"
-            it shouldContain "The `(compare_by)` option should have at least one field specified."
+            it shouldContain "The `(compare_by)` option"
+            it shouldContain EmptyCompareByOption.getDescriptor().name
+            it shouldContain "should have at least one field specified."
         }
     }
 
