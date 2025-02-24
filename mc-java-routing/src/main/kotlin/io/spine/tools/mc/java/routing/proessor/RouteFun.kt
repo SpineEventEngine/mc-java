@@ -89,20 +89,14 @@ internal sealed class RouteFun(
      *  Otherwise, simple names will be used for the parameter types.
      */
     fun asString(qualifiedParameters: Boolean): String {
+        fun ClassName.name(): String = if (qualifiedParameters) canonicalName else simpleName
         return buildString {
             append(decl.shortName)
             append("(")
-            append(
-                if (qualifiedParameters) messageClass.canonicalName
-                else messageClass.simpleName
-            )
+            append(messageClass.name())
             if (acceptsContext) {
                 append(", ")
-                // There is no need for the qualified name for the context parameter.
-                append(
-                    if (qualifiedParameters) contextClass!!.canonicalName
-                    else contextClass!!.simpleName
-                )
+                append(contextClass!!.name())
             }
             append(")")
         }
