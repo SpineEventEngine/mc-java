@@ -31,5 +31,5 @@
  *
  * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
  */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.264")
+val mcJavaVersion by extra("2.0.0-SNAPSHOT.265")
 val versionToPublish by extra(mcJavaVersion)
