@@ -104,7 +104,7 @@ internal class AddComparatorErrorSpec {
     }
 
     @Test
-    fun `a repeated field`() {
+    fun `a 'repeated' field`() {
         val error = compile<RepeatedProhibited>(projectDir)
         error.message.let {
             val descriptor = RepeatedProhibited.getDescriptor()
@@ -122,7 +122,7 @@ internal class AddComparatorErrorSpec {
     }
 
     @Test
-    fun `a map field`() {
+    fun `a 'map' field`() {
         val error = compile<MapsProhibited>(projectDir)
         error.message.let {
             // The prolog of the message.
@@ -178,7 +178,7 @@ internal class AddComparatorErrorSpec {
         }
 
         @Test
-        fun `bytes field`() {
+        fun `'bytes' field`() {
             val error = compile<NestedBytesProhibited>(projectDir)
             error.message.let {
                 // Referring to a field path.
@@ -191,7 +191,7 @@ internal class AddComparatorErrorSpec {
         }
 
         @Test
-        fun `repeated field`() {
+        fun `'repeated' field`() {
             val error = compile<NestedRepeatedProhibited>(projectDir)
             error.message.let {
                 val descriptor = NestedMessage.getDescriptor()
@@ -209,7 +209,7 @@ internal class AddComparatorErrorSpec {
         }
 
         @Test
-        fun `map field`() {
+        fun `'map' field`() {
             val error = compile<NestedMapsProhibited>(projectDir)
             error.message.let {
                 val descriptor = NestedMessage.getDescriptor()
@@ -238,7 +238,7 @@ internal class AddComparatorErrorSpec {
         }
 
         @Test
-        fun `oneof field`() {
+        fun `'oneof' field`() {
             val error = compile<NestedOneOfProhibited>(projectDir)
             error.message.let {
                 // Referring to the field belonging to the nested message.
