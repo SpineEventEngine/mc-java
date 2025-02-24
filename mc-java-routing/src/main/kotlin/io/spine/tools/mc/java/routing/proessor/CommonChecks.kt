@@ -133,36 +133,37 @@ internal fun <F : RouteFun> findDuplicatedRoutes(
     functions: List<F>,
     environment: Environment
 ): Boolean {
-    val grouped = functions.groupBy { fn -> fn.messageClass }
     val logger = environment.logger
+    val nl = System.lineSeparator()
     var found = false
+    // Group functions by the first parameter.
+    val grouped = functions.groupBy { fn -> fn.messageClass }
     grouped.forEach {
         var routes = it.value
-        if (routes.size > 1) {
-            // Sort duplicates by line numbers.
-            routes = routes.sortedBy { fn -> (fn.decl.location as? FileLocation)?.lineNumber }
-
-            val nl = System.lineSeparator()
-
-            // The qualified message class to be mentioned once in the error message.
-            // The functions will have the simple name.
-            val messageType = routes[0].messageClass.canonicalName
-
-            // List the duplicates.
-            val duplicates = routes.map { fn ->
-                " * `${fn.asString(qualifiedParameters = false)}`"
-            }.joinToString(nl)
-
-            logger.error(
-                "The class `$declaringClass` declares more than one route function" +
-                        " for the same message class `$messageType`:$nl" +
-                        duplicates + nl +
-                "Please have only one function per routed message class.",
-                // Give the last duplicate as the error pointer to be reported.
-                // This would allow the user to scroll back for the duplicate(s).
-                routes.last().decl)
+        if (routes.size <= 1) {
+            return@forEach
         }
         found = true
+        // Sort duplicates by line numbers.
+        routes = routes.sortedBy { fn -> (fn.decl.location as? FileLocation)?.lineNumber }
+
+        // The qualified message class to be mentioned once in the error message.
+        // The functions will have the simple name.
+        val messageType = routes[0].messageClass.canonicalName
+
+        // List the duplicates.
+        val duplicates = routes.joinToString(nl) { fn ->
+            " * `${fn.asString(qualifiedParameters = false)}`"
+        }
+        logger.error(
+            "The class `$declaringClass` declares more than one route function" +
+                    " for the same message class `$messageType`:$nl" +
+                    duplicates + nl +
+                    "Please have only one function per routed message class.",
+            // Give the last duplicate as the error pointer to be reported.
+            // This would allow the user to scroll back for the duplicate(s).
+            routes.last().decl
+        )
     }
     return found
 }
