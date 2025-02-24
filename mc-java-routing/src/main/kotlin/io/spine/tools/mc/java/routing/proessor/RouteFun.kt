@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
+import com.google.devtools.ksp.symbol.FileLocation
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
@@ -47,6 +48,13 @@ internal sealed class RouteFun(
     parameters: Pair<KSType, KSType?>,
     returnType: KSType
 ) {
+    /**
+     * The line number of the function declaration.
+     */
+    val lineNumber: Int by lazy {
+        (decl.location as? FileLocation)?.lineNumber ?: 0
+    }
+
     /**
      * The type of the first parameter of the route function.
      */

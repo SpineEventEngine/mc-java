@@ -145,7 +145,7 @@ internal fun <F : RouteFun> findDuplicatedRoutes(
         }
         found = true
         // Sort duplicates by line numbers.
-        routes = routes.sortedBy { fn -> (fn.decl.location as? FileLocation)?.lineNumber }
+        routes = routes.sortedBy { fn -> fn.lineNumber }
 
         // The qualified message class to be mentioned once in the error message.
         // The functions will have the simple name.
