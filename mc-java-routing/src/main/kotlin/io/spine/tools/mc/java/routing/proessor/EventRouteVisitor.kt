@@ -28,6 +28,15 @@ package io.spine.tools.mc.java.routing.proessor
 
 import com.squareup.kotlinpoet.ksp.toClassName
 
+/**
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.EventRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;EventRouting][classNameSuffix].
+ *
+ * @see RouteVisitor
+ */
 internal class EventRouteVisitor(
     functions: List<EventRouteFun>,
     environment: Environment
@@ -39,13 +48,15 @@ internal class EventRouteVisitor(
     override val classNameSuffix: String = "EventRouting"
 
     /**
-     * Adds the entry in the routing setup function inside the [routingRunBlock].
+     * Adds an entry for the given function [fn] in the routing
+     * [setup][io.spine.server.route.setup.EventRoutingSetup.setup] function
+     * inside the [routingRunBlock].
      *
-     * For a multicast route it would be something like:
+     * For a [multicast][io.spine.server.route.Multicast] route it would be something like:
      * ```kotlin
      * route<MyEvent> { e, c -> MyEntity.myRouteFun(e, c) }
      * ```
-     * For an unicast route it would be something like:
+     * For an [unicast][io.spine.server.route.Unicast] route it would be something like:
      * ```kotlin
      * unicast<MyEvent> { e, c -> MyEntity.myRoutFun(e, c) }
      * ```
@@ -53,7 +64,7 @@ internal class EventRouteVisitor(
      */
     override fun addRoute(fn: EventRouteFun) {
         val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) "unicast" else ROUTE_FUN_NAME
+        val entryFn = if (fn.isUnicast) UNICAST_FUN_NAME else ROUTE_FUN_NAME
 
         routingRunBlock.add(
             "%L<%T> { %L -> %T.%L(%L) }\n",

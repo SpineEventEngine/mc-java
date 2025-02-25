@@ -28,6 +28,15 @@ package io.spine.tools.mc.java.routing.proessor
 
 import com.squareup.kotlinpoet.ksp.toClassName
 
+/**
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.CommandRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;CommandRouting][classNameSuffix].
+ *
+ * @see RouteVisitor
+ */
 internal class CommandRouteVisitor(
     functions: List<CommandRouteFun>,
     environment: Environment
@@ -52,6 +61,10 @@ internal class CommandRouteVisitor(
     }
 
     companion object {
+
+        /**
+         * Processes the given route functions using [CommandRouteVisitor].
+         */
         fun process(qualified: List<RouteFun>, environment: Environment) {
             runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified, environment) { functions ->
                 CommandRouteVisitor(functions, environment)
