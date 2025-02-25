@@ -26,33 +26,25 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
-import com.squareup.kotlinpoet.ksp.toClassName
-
+/**
+ * Creates a routing setup class for tuning
+ * [StateUpdateRouting][io.spine.server.route.StateUpdateRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;StateUpdateRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
+ */
 internal class StateUpdateRouteVisitor(
     functions: List<StateUpdateRouteFun>,
     environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(
+) : MulticastRouteVisitor<StateUpdateRouteFun>(
     environment.stateRoutingSetup,
     functions,
     environment
 ) {
-
     override val classNameSuffix: String = "StateUpdateRouting"
-
-    override fun addRoute(fn: StateUpdateRouteFun) {
-        val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) UNICAST_FUN_NAME else ROUTE_FUN_NAME
-
-        routingRunBlock.add(
-            "%L<%T> { %L -> %T.%L(%L) }\n",
-            entryFn,
-            fn.messageClass,
-            params,
-            entityClass.type.toClassName(),
-            fn.decl.simpleName.asString(),
-            params
-        )
-    }
+    override val messageParameterName: String = "s"
 
     companion object {
 

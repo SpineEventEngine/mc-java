@@ -75,7 +75,7 @@ import io.spine.tools.mc.java.routing.proessor.Environment.SetupType
 internal sealed class RouteVisitor<F : RouteFun>(
     private val setup: SetupType,
     private val functions: List<F>,
-    protected val environment: Environment,
+    protected val environment: Environment
 ) : KSVisitorVoid() {
 
     /**
