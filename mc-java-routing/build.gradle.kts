@@ -42,14 +42,18 @@ plugins {
 
 dependencies {
     ksp(AutoServiceKsp.processor)
-    compileOnlyApi(AutoService.annotations)
+    implementation(AutoService.annotations)?.because(
+        """
+        We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
+        a service provider but also for annotating the generated code.        
+        """.trimIndent()
+    )
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
 
-    testImplementation(AutoService.annotations)
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
     testImplementation(Logging.testLib)
