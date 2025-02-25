@@ -244,6 +244,13 @@ internal sealed class RouteVisitor<F : RouteFun>(
          */
         const val UNICAST_FUN_NAME: String = "unicast"
 
+        /**
+         * Runs all the visitors through the given sequence of found functions.
+         *
+         * @see CommandRouteVisitor
+         * @see EventRouteVisitor
+         * @see StateUpdateRouteVisitor
+         */
         fun process(
             allValid: Sequence<KSFunctionDeclaration>,
             environment: Environment
@@ -254,12 +261,32 @@ internal sealed class RouteVisitor<F : RouteFun>(
             StateUpdateRouteVisitor.process(qualified, environment)
         }
 
+        /**
+         * Runs a visitor through the list of given functions.
+         *
+         * The visitor runs only through a sub-list of functions containing only
+         * instances of the generic parameter [F] of this function.
+         * For example, a [CommandRouteVisitor] ([V]) will only run
+         * through [CommandRouteFun] ([F]) instances.
+         *
+         * The function also performs the check for
+         * [duplicated route functions][EntityClass.findDuplicatedRoutes] per declaring class.
+         * If such duplicates are found, errors will be logged and <em>all</em> the functions of
+         * the declaring class will not be processed by the visitor.
+         *
+         * @param V The type of the [RouteVisitor] used during the traversal.
+         * @param F The type of the [RouteFun] processed by the visitor.
+         * @param allFunctions All the routing functions found by the annotation processor and
+         *   [transformed][Qualifier] into [RouteFun] instances.
+         * @param environment The environment of the code generation.
+         * @param createVisitor The function to create an instance of the visitor class.
+         */
         inline fun <V : RouteVisitor<F>, reified F : RouteFun> runVisitors(
-            qualified: List<RouteFun>,
+            allFunctions: List<RouteFun>,
             environment: Environment,
             createVisitor: (List<F>) -> V
         ) {
-            val routing = qualified.filterIsInstance<F>()
+            val routing = allFunctions.filterIsInstance<F>()
             val grouped = routing.groupByClasses()
             grouped.forEach { (declaringClass, functions) ->
                 if (!declaringClass.findDuplicatedRoutes(functions, environment)) {
