@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
+import com.squareup.kotlinpoet.ksp.toClassName
+
 internal class StateUpdateRouteVisitor(
     functions: List<StateUpdateRouteFun>,
     environment: Environment
@@ -38,10 +40,25 @@ internal class StateUpdateRouteVisitor(
     override val classNameSuffix: String = "StateUpdateRouting"
 
     override fun addRoute(fn: StateUpdateRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
+        val params = if (fn.acceptsContext) "e, c" else "e"
+        val entryFn = if (fn.isUnicast) UNICAST_FUN_NAME else ROUTE_FUN_NAME
+
+        routingRunBlock.add(
+            "%L<%T> { %L -> %T.%L(%L) }\n",
+            entryFn,
+            fn.messageClass,
+            params,
+            entityClass.type.toClassName(),
+            fn.decl.simpleName.asString(),
+            params
+        )
     }
 
     companion object {
+
+        /**
+         * Processes the given route functions using [StateUpdateRouteVisitor].
+         */
         fun process(qualified: List<RouteFun>, environment: Environment) {
             runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(
                 qualified,

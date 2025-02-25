@@ -50,6 +50,7 @@ import io.spine.server.route.Route
 fun homeAutomation(): BoundedContext = BoundedContext.singleTenant("HomeAutomation")
     .add(RoomProjection::class.java)
     .add(DeviceAggregate::class.java)
+    .add(HomeProjection::class.java)
     .build()
 
 @VisibleForTesting
@@ -121,5 +122,26 @@ class DeviceAggregate : Aggregate<DeviceId, Device, Device.Builder>() {
 
         @Route
         fun command(c: SetState): DeviceId = c.device
+    }
+}
+
+@VisibleForTesting
+class HomeProjection : Projection<String, Home, Home.Builder>() {
+
+    @Subscribe
+    internal fun on(updated: Room) = alter {
+        val builder = roomBuilderList.find { b -> b.id == updated.id }
+        if (builder != null) {
+            builder.clear().mergeFrom(updated)
+        } else {
+            addRoom(updated)
+        }
+    }
+
+    companion object {
+        const val SINGLETON_ID = "OurHome"
+
+        @Route
+        internal fun room(@Suppress("UNUSED_PARAMETER") r: Room): String = SINGLETON_ID
     }
 }
