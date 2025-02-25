@@ -26,45 +26,25 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
-import com.squareup.kotlinpoet.ksp.toClassName
-
+/**
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.EventRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;EventRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
+ */
 internal class EventRouteVisitor(
     functions: List<EventRouteFun>,
     environment: Environment
-) : RouteVisitor<EventRouteFun>(
+) : MulticastRouteVisitor<EventRouteFun>(
     environment.eventRoutingSetup,
     functions,
     environment
 ) {
     override val classNameSuffix: String = "EventRouting"
-
-    /**
-     * Adds the entry in the routing setup function inside the [routingRunBlock].
-     *
-     * For a multicast route it would be something like:
-     * ```kotlin
-     * route<MyEvent> { e, c -> MyEntity.myRouteFun(e, c) }
-     * ```
-     * For an unicast route it would be something like:
-     * ```kotlin
-     * unicast<MyEvent> { e, c -> MyEntity.myRoutFun(e, c) }
-     * ```
-     * If a route function does not accept context, the lambdas would have only the `e` parameter.
-     */
-    override fun addRoute(fn: EventRouteFun) {
-        val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) "unicast" else ROUTE_FUN_NAME
-
-        routingRunBlock.add(
-            "%L<%T> { %L -> %T.%L(%L) }\n",
-            entryFn,
-            fn.messageClass,
-            params,
-            entityClass.type.toClassName(),
-            fn.decl.simpleName.asString(),
-            params
-        )
-    }
+    override val messageParameterName: String = "e"
 
     companion object {
 
@@ -72,7 +52,7 @@ internal class EventRouteVisitor(
          * Processes the given route functions using [EventRouteVisitor].
          */
         internal fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<EventRouteVisitor, EventRouteFun>(qualified) { functions ->
+            runVisitors<EventRouteVisitor, EventRouteFun>(qualified, environment) { functions ->
                 EventRouteVisitor(functions, environment)
             }
         }

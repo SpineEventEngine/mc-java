@@ -26,54 +26,46 @@
 
 package io.spine.tools.mc.java.routing.tests
 
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import io.spine.given.home.DeviceId
-import io.spine.given.home.Room
+import io.spine.given.home.Home
+import io.spine.given.home.HomeProjection
+import io.spine.given.home.HomeProjection.Companion.SINGLETON_ID
 import io.spine.given.home.RoomId
-import io.spine.given.home.RoomProjection
-import io.spine.given.home.events.deviceMoved
 import io.spine.given.home.events.roomAdded
 import io.spine.given.home.homeAutomation
 import io.spine.testing.server.blackbox.BlackBox
-import org.junit.jupiter.api.Test
 import io.spine.testing.server.blackbox.assertEntity
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
-@DisplayName("Generated `EventRoutingSetup` should")
-internal class EventRoutingSetupITest {
+@DisplayName("Generated `StateRoutingSetup` should")
+internal class StateRoutingSetupITest {
 
-    /**
-     * This test verifies that routing functions declared in the [RoomProjection] class
-     * effectively work because the state of the projection is expected after
-     * the dispatched events.
-     */
     @Test
     fun `apply generated routes`() {
         BlackBox.from(homeAutomation()).use { context ->
             val r1 = RoomId.generate()
-            val lamp = DeviceId.generate()
-            val n1 = "Living Room"
-            
+            val r2 = RoomId.generate()
+
             context.receivesEvent(
                 roomAdded {
                     room = r1
-                    name = n1
+                    name = "Living Room"
                 }
             )
             context.receivesEvent(
-                deviceMoved {
-                    device = lamp
-                    room = r1
+                roomAdded {
+                    room = r2
+                    name = "Bedroom"
                 }
             )
 
-            val room = context.assertEntity<RoomProjection, RoomId>(r1).actual()?.state() as Room
+            val home = context.assertEntity<HomeProjection, String>(SINGLETON_ID)
+                .actual()?.state() as Home
 
-            room.run {
-                name shouldBe n1
-                deviceList shouldContain lamp
-            }
+            // This means that two `Room` instances were routed by the routing
+            // function directing all the updates to the singleton.
+            home.roomList.map { it.name } shouldBe listOf("Living Room", "Bedroom")
         }
     }
 }

@@ -26,24 +26,36 @@
 
 package io.spine.tools.mc.java.routing.proessor
 
+/**
+ * Creates a routing setup class for tuning
+ * [StateUpdateRouting][io.spine.server.route.StateUpdateRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;StateUpdateRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
+ */
 internal class StateUpdateRouteVisitor(
     functions: List<StateUpdateRouteFun>,
     environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(
+) : MulticastRouteVisitor<StateUpdateRouteFun>(
     environment.stateRoutingSetup,
     functions,
     environment
 ) {
-
     override val classNameSuffix: String = "StateUpdateRouting"
-
-    override fun addRoute(fn: StateUpdateRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-    }
+    override val messageParameterName: String = "s"
 
     companion object {
+
+        /**
+         * Processes the given route functions using [StateUpdateRouteVisitor].
+         */
         fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(qualified) { functions ->
+            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(
+                qualified,
+                environment
+            ) { functions ->
                 StateUpdateRouteVisitor(functions, environment)
             }
         }
