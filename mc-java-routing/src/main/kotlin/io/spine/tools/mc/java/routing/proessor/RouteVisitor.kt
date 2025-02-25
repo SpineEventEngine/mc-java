@@ -235,7 +235,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
             val routing = qualified.filterIsInstance<F>()
             val grouped = routing.groupByClasses()
             grouped.forEach { (declaringClass, functions) ->
-                if (!findDuplicatedRoutes(declaringClass, functions, environment)) {
+                if (!declaringClass.findDuplicatedRoutes(functions, environment)) {
                 val v = createVisitor(functions)
                     declaringClass.accept(v, Unit)
                     v.writeFile()

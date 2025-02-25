@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.routing.proessor
 
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.symbol.FileLocation
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
@@ -102,6 +101,19 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
     return (!wrongNumber).toErrorCount()
 }
 
+/**
+ * Obtains the entity class which declares this function.
+ *
+ * If the function is declared in a Kotlin companion object (which is the right way to declare
+ * routing functions in Kotlin), the function obtains the class enclosing the companion object.
+ *
+ * The function checks if the declaring class implements the [Entity] interface.
+ * If it does not, the error is logged using the logger of the [environment] pointing to
+ * this function declaration as the source of the error, and `null` is returned.
+ *
+ * @return The entity class which declares this routing function, or `null` if the class
+ *  does not implement the [Entity] interface.
+ */
 internal fun KSFunctionDeclaration.declaringClass(environment: Environment): EntityClass? {
     val parent = parentDeclaration!!.qualifiedName!!
     var declaringClass = environment.resolver.getClassDeclarationByName(parent)!!
@@ -128,8 +140,7 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
  *
  * @return `true` if duplicating route functions found, `false` otherwise.
  */
-internal fun <F : RouteFun> findDuplicatedRoutes(
-    declaringClass: EntityClass,
+internal fun <F : RouteFun> EntityClass.findDuplicatedRoutes(
     functions: List<F>,
     environment: Environment
 ): Boolean {
@@ -156,7 +167,7 @@ internal fun <F : RouteFun> findDuplicatedRoutes(
             " * `${fn.asString(qualifiedParameters = false)}`"
         }
         logger.error(
-            "The class `$declaringClass` declares more than one route function" +
+            "The class `$this` declares more than one route function" +
                     " for the same message class `$messageType`:$nl" +
                     duplicates + nl +
                     "Please have only one function per routed message class.",

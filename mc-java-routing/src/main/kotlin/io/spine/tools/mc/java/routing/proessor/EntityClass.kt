@@ -38,6 +38,8 @@ import com.google.devtools.ksp.symbol.KSTypeReference
  * @property decl The declaration of the class.
  * @param entityInterface The type of the [io.spine.server.entity.Entity]
  *  interface for resolving generic parameters.
+ *  This is a supportive parameter that we pass instead of [Environment] instance
+ *  to narrow down the dependencies of this class.
  */
 internal class EntityClass(
     val decl: KSClassDeclaration,
@@ -100,14 +102,10 @@ internal class EntityClass(
         return decl == other.decl
     }
 
-    override fun hashCode(): Int {
-        return decl.hashCode()
-    }
+    override fun hashCode(): Int = decl.hashCode()
 
     /**
      * Obtains the qualified name of the entity class.
      */
-    override fun toString(): String {
-        return decl.qualifiedName!!.asString()
-    }
+    override fun toString(): String = decl.qualifiedName!!.asString()
 }
