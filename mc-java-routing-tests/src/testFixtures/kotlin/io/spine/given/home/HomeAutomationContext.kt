@@ -26,27 +26,34 @@
 
 package io.spine.given.home
 
+import com.google.common.annotations.VisibleForTesting
 import io.spine.core.Subscribe
+import io.spine.given.home.commands.AddDevice
+import io.spine.given.home.commands.SetState
+import io.spine.given.home.events.DeviceAdded
 import io.spine.given.home.events.DeviceMoved
 import io.spine.given.home.events.RoomAdded
 import io.spine.given.home.events.RoomEvent
 import io.spine.given.home.events.RoomRenamed
+import io.spine.given.home.events.StateChanged
+import io.spine.given.home.events.deviceAdded
+import io.spine.given.home.events.stateChanged
 import io.spine.protobuf.isDefault
 import io.spine.server.BoundedContext
+import io.spine.server.aggregate.Aggregate
+import io.spine.server.aggregate.Apply
+import io.spine.server.command.Assign
 import io.spine.server.entity.alter
 import io.spine.server.projection.Projection
-import io.spine.server.projection.ProjectionRepository
-import io.spine.server.route.EventRouting
-import io.spine.server.route.setup.EventRoutingSetup
 import io.spine.server.route.Route
-import io.spine.server.route.setup.StateRoutingSetup
-import io.spine.server.route.StateUpdateRouting
 
 fun homeAutomation(): BoundedContext = BoundedContext.singleTenant("HomeAutomation")
-    .add(RoomProjectionRepository())
+    .add(RoomProjection::class.java)
+    .add(DeviceAggregate::class.java)
     .build()
 
-public class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
+@VisibleForTesting
+class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
     @Subscribe
     internal fun on(e: RoomAdded) = alter {
@@ -73,33 +80,46 @@ public class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
 
     companion object {
 
+        /**
+         * The routing function accepting the interface.
+         */
         @Route
-        @JvmStatic
         fun route(e: RoomEvent): RoomId = e.room
 
+        /**
+         * The routing function by event class.
+         */
         @Route
-        @JvmStatic
         fun routeMoved(e: DeviceMoved): Set<RoomId> =
             if (e.prevRoom.isDefault()) setOf(e.room) else setOf(e.prevRoom, e.room)
     }
 }
 
-internal class RoomProjectionRepository : ProjectionRepository<RoomId, RoomProjection, Room>() {
+@VisibleForTesting
+class DeviceAggregate : Aggregate<DeviceId, Device, Device.Builder>() {
 
-    override fun setupEventRouting(routing: EventRouting<RoomId>) {
-        super.setupEventRouting(routing)
+    @Assign
+    internal fun handle(c: AddDevice): DeviceAdded =
+        deviceAdded { device = c.device; name = c.name }
 
-        // Remove routs added via reflective class analysis.
-        routing.run {
-            remove<RoomEvent>()
-            remove<DeviceMoved>()
-        }
+    @Assign
+    internal fun handle(c: SetState): StateChanged =
+        stateChanged { device = id(); current = c.state }
 
-        EventRoutingSetup.apply(entityClass(), routing)
+    @Apply
+    private fun event(e: DeviceAdded) = alter {
+        name = e.name
+        state = State.OFF
     }
 
-    override fun setupStateRouting(routing: StateUpdateRouting<RoomId>) {
-        super.setupStateRouting(routing)
-        StateRoutingSetup.apply(entityClass(), routing)
+    @Apply
+    private fun event(e: StateChanged) = alter {
+        state = e.current
+    }
+
+    companion object {
+
+        @Route
+        fun command(c: SetState): DeviceId = c.device
     }
 }
