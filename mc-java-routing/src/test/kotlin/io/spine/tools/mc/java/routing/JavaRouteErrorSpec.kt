@@ -41,7 +41,7 @@ import io.spine.server.entity.Entity
 import io.spine.server.procman.ProcessManager
 import io.spine.server.projection.Projection
 import io.spine.string.simply
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
+import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

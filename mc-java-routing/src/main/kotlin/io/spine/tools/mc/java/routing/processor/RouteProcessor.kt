@@ -24,12 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
-import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.validate
+import io.spine.server.route.Route
 
 /**
- * Obtains the qualified name of this declaration or `null`
- * if the declaration does not have a qualified name.
+ * Gathers all functions annotated with [Route] and initiates their processing
+ * by [RouteVisitor]s.
+ *
+ * @see RouteVisitor.process
  */
-internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+internal class RouteProcessor(
+    private val codeGenerator: CodeGenerator,
+    private val logger: KSPLogger
+) : SymbolProcessor {
+
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
+        val allValid = allAnnotated.filter { it.validate() }
+            .map { it as KSFunctionDeclaration }
+
+        val environment = Environment(resolver, logger, codeGenerator)
+        RouteVisitor.process(allValid, environment)
+
+        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
+        return unprocessed
+    }
+}

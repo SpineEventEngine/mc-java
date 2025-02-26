@@ -24,10 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.squareup.kotlinpoet.ksp.toClassName
-import io.spine.tools.mc.java.routing.proessor.Environment.SetupType
+import io.spine.tools.mc.java.routing.processor.Environment.SetupType
 
 /**
  * The base class for generators of the routing setup classes that
