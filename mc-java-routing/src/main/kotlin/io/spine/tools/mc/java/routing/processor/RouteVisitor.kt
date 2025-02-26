@@ -53,8 +53,10 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.routing.processor.Environment.SetupType
 
 /**
- * The base class for code generators implementing routing setup classes
- * adding calls to the type of route functions specified by the generic parameter [F].
+ * The base class for code generators implementing routing setup classes.
+ *
+ * The type of the generated setup class is determined by the [setup] property.
+ * The type of the generated route functions is specified by the generic parameter [F].
  *
  * The visitor generates a class named after the class declaring routing function(s)
  * using the pattern: [entityClass] + [classNameSuffix]. The class is generated
