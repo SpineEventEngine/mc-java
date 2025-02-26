@@ -24,37 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
+
+import com.google.devtools.ksp.symbol.KSDeclaration
 
 /**
- * Creates a routing setup class for tuning
- * [EventRouting][io.spine.server.route.EventRouting] of a repository.
- *
- * The generated setup class will have the name after the pattern
- * [&lt;EntityClass&gt;EventRouting][classNameSuffix].
- *
- * @see MulticastRouteVisitor
+ * Obtains the qualified name of this declaration or `null`
+ * if the declaration does not have a qualified name.
  */
-internal class EventRouteVisitor(
-    functions: List<EventRouteFun>,
-    environment: Environment
-) : MulticastRouteVisitor<EventRouteFun>(
-    environment.eventRoutingSetup,
-    functions,
-    environment
-) {
-    override val classNameSuffix: String = "EventRouting"
-    override val messageParameterName: String = "e"
-
-    companion object {
-
-        /**
-         * Processes the given route functions using [EventRouteVisitor].
-         */
-        internal fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<EventRouteVisitor, EventRouteFun>(qualified, environment) { functions ->
-                EventRouteVisitor(functions, environment)
-            }
-        }
-    }
-}
+internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()

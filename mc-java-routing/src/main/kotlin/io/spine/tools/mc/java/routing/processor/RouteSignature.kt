@@ -24,16 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
-import funRef
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.qualify
+import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.qualify
 import io.spine.type.KnownMessage
 
 /**

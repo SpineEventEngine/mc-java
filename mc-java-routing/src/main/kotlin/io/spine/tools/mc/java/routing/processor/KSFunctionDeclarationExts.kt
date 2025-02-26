@@ -1,4 +1,4 @@
-/*
+package io.spine.tools.mc.java.routing.processor/*
  * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,37 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
-
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.validate
-import io.spine.server.route.Route
+import com.google.devtools.ksp.symbol.Origin.JAVA
+import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
 
 /**
- * Gathers all functions annotated with [Route] and initiates their processing
- * by [RouteVisitor]s.
+ * Obtains the short name of the function.
  *
- * @see RouteVisitor.process
+ * @returns just a name without braces.
  */
-internal class RouteProcessor(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
-) : SymbolProcessor {
+internal val KSFunctionDeclaration.shortName: String
+    get() = simpleName.getShortName()
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val allValid = allAnnotated.filter { it.validate() }
-            .map { it as KSFunctionDeclaration }
-
-        val environment = Environment(resolver, logger, codeGenerator)
-        RouteVisitor.process(allValid, environment)
-
-        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
-        return unprocessed
+/**
+ * Selects either diagnostic message depending on
+ * the [origin][KSFunctionDeclaration.origin] of the declaration.
+ *
+ * For origins [JAVA] and [JAVA_LIB] the value of the [java] parameter is returned.
+ * Otherwise, the [kotlin] string is returned.
+ */
+internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
+    if (origin == JAVA || origin == JAVA_LIB) {
+        java
+    } else {
+        kotlin
     }
-}
+
+/**
+ * Obtains the text for referencing this function in a diagnostic message.
+ */
+internal val KSFunctionDeclaration.funRef: String
+    get() {
+        val shortRef = "`$shortName()`"
+        return msg("function $shortRef", "method $shortRef")
+    }

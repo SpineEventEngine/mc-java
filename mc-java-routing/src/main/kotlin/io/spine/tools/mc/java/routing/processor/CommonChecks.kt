@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.FunctionKind
@@ -32,10 +32,8 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
-import funRef
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
-import msg
+import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
 /**
  * Runs general usage checks for this function declaration.

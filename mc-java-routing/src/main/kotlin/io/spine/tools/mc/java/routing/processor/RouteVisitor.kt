@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.auto.service.AutoService
 import com.google.devtools.ksp.processing.Dependencies
@@ -50,7 +50,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.entity.Entity
 import io.spine.string.Indent
 import io.spine.tools.mc.java.GeneratedAnnotation
-import io.spine.tools.mc.java.routing.proessor.Environment.SetupType
+import io.spine.tools.mc.java.routing.processor.Environment.SetupType
 
 /**
  * The base class for code generators implementing routing setup classes

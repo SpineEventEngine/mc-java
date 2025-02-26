@@ -24,20 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
-
-import com.google.auto.service.AutoService
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
-import com.google.devtools.ksp.processing.SymbolProcessorProvider
+package io.spine.tools.mc.java.routing.processor
 
 /**
- * Creates a symbol processor for the [Route][io.spine.server.route.Route] annotation.
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.EventRouting] of a repository.
  *
- * @see RouteProcessor
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;EventRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
  */
-@AutoService(SymbolProcessorProvider::class)
-public class RouteProcessorProvider : SymbolProcessorProvider {
-    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
-        RouteProcessor(environment.codeGenerator, environment.logger)
+internal class EventRouteVisitor(
+    functions: List<EventRouteFun>,
+    environment: Environment
+) : MulticastRouteVisitor<EventRouteFun>(
+    environment.eventRoutingSetup,
+    functions,
+    environment
+) {
+    override val classNameSuffix: String = "EventRouting"
+    override val messageParameterName: String = "e"
+
+    companion object {
+
+        /**
+         * Processes the given route functions using [EventRouteVisitor].
+         */
+        internal fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<EventRouteVisitor, EventRouteFun>(qualified, environment) { functions ->
+                EventRouteVisitor(functions, environment)
+            }
+        }
+    }
 }
