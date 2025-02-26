@@ -28,10 +28,38 @@ package io.spine.tools.mc.java.routing.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
 
+/**
+ * Configures a Gradle project to run KSP with
+ * [RouteProcessor][io.spine.tools.mc.java.routing.processor.RouteProcessor].
+ */
 public class RoutingPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) {
-        TODO("Not yet implemented")
+    override fun apply(project: Project) {
+        project.applyKspPlugin()
     }
+}
+
+/**
+ * Applies [KspGradlePlugin] if it is not yet added to the project.
+ *
+ * The function finds the most recent version compatible with the Kotlin
+ * runtime of the current Gradle runtime.
+ */
+private fun Project.applyKspPlugin() =
+    with(KspGradlePlugin) {
+        if (pluginManager.hasPlugin(id)) {
+            return
+        }
+        val version = findCompatible(KotlinVersion.CURRENT)
+        buildscript.dependencies.add(
+            CLASSPATH_CONFIGURATION,
+            gradlePluginArtifact(version)
+        )
+        pluginManager.apply(id)
+    }
+
+private fun Project.copyToGeneratedDir() {
+    // From `build/generated/ksp/main/kotlin` etc. to `projectRoot/generated/ksp/`.
 }
