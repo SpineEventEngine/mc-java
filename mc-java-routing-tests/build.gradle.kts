@@ -45,11 +45,6 @@ dependencies {
     kspTest(project(":mc-java-routing"))
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
-    
-    testFixturesImplementation(project(":mc-java-routing"))?.because(
-        "We need this dependency temporarily, until the interfaces defined" +
-                " in the package `io.spine.server.route` are moved to CoreJava."
-    )
 }
                                                                     
 kotlin {

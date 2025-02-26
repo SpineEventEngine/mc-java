@@ -31,6 +31,7 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
+import io.spine.dependency.local.ToolBase
 import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
@@ -41,6 +42,7 @@ plugins {
 }
 
 dependencies {
+    // Dependencies for the code generation part.
     ksp(AutoServiceKsp.processor)
     implementation(AutoService.annotations)?.because(
         """
@@ -53,6 +55,10 @@ dependencies {
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
+
+    // The dependencies for Gradle plugin part.
+    compileOnly(gradleApi())
+    implementation(ToolBase.pluginBase)
 
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
