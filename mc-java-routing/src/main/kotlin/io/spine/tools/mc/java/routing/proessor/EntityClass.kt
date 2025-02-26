@@ -46,7 +46,7 @@ internal class EntityClass(
     entityInterface: KSType
 ) {
     /**
-     * Makes the given visitor visit the class declaration.
+     * Applies the given visitor to the class declaration.
      */
     fun accept(visitor: RouteVisitor<*>, data: Unit) {
         decl.accept(visitor, data)
