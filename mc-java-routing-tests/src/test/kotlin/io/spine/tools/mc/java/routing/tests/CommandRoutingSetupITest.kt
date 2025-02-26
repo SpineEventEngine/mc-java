@@ -54,9 +54,9 @@ internal class CommandRoutingSetupITest {
                 }
             )
 
-            var lamp = context.readState(l1)
             // The first command is handled using the standard routing
             // via the first command field.
+            var lamp = context.readState(l1)
             lamp.state shouldBe State.OFF
 
             context.receivesCommand(
@@ -66,8 +66,8 @@ internal class CommandRoutingSetupITest {
                 }
             )
 
-            lamp = context.readState(l1)
             // The command was handled via custom routing declared in the class.
+            lamp = context.readState(l1)
             lamp.state shouldBe State.ON
         }
     }
