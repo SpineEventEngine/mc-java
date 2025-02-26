@@ -270,7 +270,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
          * through [CommandRouteFun] ([F]) instances.
          *
          * The function also performs the check for
-         * [duplicated route functions][EntityClass.findDuplicatedRoutes] per declaring class.
+         * [duplicated route functions][EntityClass.hasDuplicatedRoutes] per declaring class.
          * If such duplicates are found, errors will be logged and <em>all</em> the functions of
          * the declaring class will not be processed by the visitor.
          *
@@ -289,7 +289,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
             val routing = allFunctions.filterIsInstance<F>()
             val grouped = routing.groupByClasses()
             grouped.forEach { (declaringClass, functions) ->
-                if (!declaringClass.findDuplicatedRoutes(functions, environment)) {
+                if (!declaringClass.hasDuplicatedRoutes(functions, environment)) {
                 val v = createVisitor(functions)
                     declaringClass.accept(v, Unit)
                     v.writeFile()

@@ -140,7 +140,7 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
  *
  * @return `true` if duplicating route functions found, `false` otherwise.
  */
-internal fun <F : RouteFun> EntityClass.findDuplicatedRoutes(
+internal fun <F : RouteFun> EntityClass.hasDuplicatedRoutes(
     functions: List<F>,
     environment: Environment
 ): Boolean {
