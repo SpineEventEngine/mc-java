@@ -29,7 +29,6 @@ package io.spine.tools.mc.java.routing.processor
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
-import funRef
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply

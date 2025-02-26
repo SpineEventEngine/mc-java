@@ -32,10 +32,8 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
-import funRef
 import io.spine.server.entity.Entity
 import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
-import msg
 
 /**
  * Runs general usage checks for this function declaration.

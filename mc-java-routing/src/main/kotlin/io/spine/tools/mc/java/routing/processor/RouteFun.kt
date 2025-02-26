@@ -31,7 +31,6 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ksp.toClassName
-import shortName
 
 /**
  * Provides information about a route function detected in the [declaringClass]
