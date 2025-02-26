@@ -88,7 +88,7 @@ class RoomProjection : Projection<RoomId, Room, Room.Builder>() {
         fun route(e: RoomEvent): RoomId = e.room
 
         /**
-         * The routing function by event class.
+         * The routing function accepting the event class.
          */
         @Route
         fun routeMoved(e: DeviceMoved): Set<RoomId> =

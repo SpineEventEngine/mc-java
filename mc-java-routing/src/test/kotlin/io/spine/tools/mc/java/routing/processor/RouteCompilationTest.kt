@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.auto.service.AutoService
 import com.google.protobuf.MessageOrBuilder
@@ -35,7 +35,6 @@ import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
-import io.spine.tools.mc.java.routing.processor.RouteProcessorProvider
 import io.spine.validate.ValidatingBuilder
 import kotlin.collections.plus
 import org.junit.jupiter.api.BeforeAll

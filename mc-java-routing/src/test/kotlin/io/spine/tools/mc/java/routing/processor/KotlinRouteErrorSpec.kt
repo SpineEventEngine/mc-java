@@ -29,7 +29,7 @@
     "MissingPackageInfo" /* don't need them for these tests. */
 )
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.processor
 
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
@@ -145,7 +145,7 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
             it shouldContain "`route(StatusReported)`"
             it shouldContain "`routeAgain(StatusReported, EventContext)`"
             it shouldContain "Please have only one function per routed message class."
-            // Not duplicated.
+            // The route for this event is not duplicated.
             it shouldNotContain "DeviceRegistered"
         }
     }

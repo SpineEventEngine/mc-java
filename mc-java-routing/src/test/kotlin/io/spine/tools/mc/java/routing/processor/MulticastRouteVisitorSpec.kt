@@ -1,4 +1,4 @@
-package io.spine.tools.mc.java.routing.processor/*
+/*
  * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,37 +26,27 @@ package io.spine.tools.mc.java.routing.processor/*
 
 package io.spine.tools.mc.java.routing.processor
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Origin.JAVA
-import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-/**
- * Obtains the short name of the function.
- *
- * @returns just a name without braces.
- */
-internal val KSFunctionDeclaration.shortName: String
-    get() = simpleName.getShortName()
+@DisplayName("`MulticastRouteVisitor` should")
+internal class MulticastRouteVisitorSpec {
 
-/**
- * Selects either diagnostic message depending on
- * the [origin][KSFunctionDeclaration.origin] of the declaration.
- *
- * For origins [JAVA] and [JAVA_LIB] the value of the [java] parameter is returned.
- * Otherwise, the [kotlin] string is returned.
- */
-internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
-    if (origin == JAVA || origin == JAVA_LIB) {
-        java
-    } else {
-        kotlin
+    @Test
+    fun `prohibit 'c' as the message parameter name`() {
+        assertThrows<IllegalStateException> {
+            StubVisitor("c", "SomeSuffix").checkMessageParameterName()
+        }
     }
+}
 
-/**
- * Obtains the text for referencing this function in a diagnostic message.
- */
-internal val KSFunctionDeclaration.funRef: String
-    get() {
-        val shortRef = "`$shortName()`"
-        return msg("function $shortRef", "method $shortRef")
-    }
+private class StubVisitor(
+    override val messageParameterName: String,
+    override val classNameSuffix: String,
+) : MulticastRouteVisitor<EventRouteFun>(
+    stubEnvironment.eventRoutingSetup,
+    listOf(),
+    stubEnvironment
+)
+

@@ -53,8 +53,10 @@ import io.spine.tools.mc.java.GeneratedAnnotation
 import io.spine.tools.mc.java.routing.processor.Environment.SetupType
 
 /**
- * The base class for code generators implementing routing setup classes
- * adding calls to the type of route functions specified by the generic parameter [F].
+ * The base class for code generators implementing routing setup classes.
+ *
+ * The type of the generated setup class is determined by the [setup] property.
+ * The type of the generated route functions is specified by the generic parameter [F].
  *
  * The visitor generates a class named after the class declaring routing function(s)
  * using the pattern: [entityClass] + [classNameSuffix]. The class is generated
@@ -270,7 +272,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
          * through [CommandRouteFun] ([F]) instances.
          *
          * The function also performs the check for
-         * [duplicated route functions][EntityClass.findDuplicatedRoutes] per declaring class.
+         * [duplicated route functions][EntityClass.hasDuplicatedRoutes] per declaring class.
          * If such duplicates are found, errors will be logged and <em>all</em> the functions of
          * the declaring class will not be processed by the visitor.
          *
@@ -289,7 +291,7 @@ internal sealed class RouteVisitor<F : RouteFun>(
             val routing = allFunctions.filterIsInstance<F>()
             val grouped = routing.groupByClasses()
             grouped.forEach { (declaringClass, functions) ->
-                if (!declaringClass.findDuplicatedRoutes(functions, environment)) {
+                if (!declaringClass.hasDuplicatedRoutes(functions, environment)) {
                 val v = createVisitor(functions)
                     declaringClass.accept(v, Unit)
                     v.writeFile()

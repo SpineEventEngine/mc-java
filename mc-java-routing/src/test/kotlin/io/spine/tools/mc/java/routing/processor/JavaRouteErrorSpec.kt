@@ -29,7 +29,7 @@
     "MissingPackageInfo" /* don't need them for these tests. */
 )
 
-package io.spine.tools.mc.java.routing
+package io.spine.tools.mc.java.routing.processor
 
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.COMPILATION_ERROR
 import io.kotest.matchers.shouldBe
