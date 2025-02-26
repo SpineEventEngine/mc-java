@@ -60,6 +60,7 @@ private fun notImplemented(): Nothing = TODO("Not implemented.")
 /**
  * The stub implementation of [Resolver] which throws [NotImplementedError] from all functions.
  */
+@Suppress("TooManyFunctions")
 private class NotResolver : Resolver {
 
     override val builtIns: KSBuiltIns
@@ -80,8 +81,9 @@ private class NotResolver : Resolver {
         notImplemented()
 
     @KspExperimental
-    override fun getDeclarationsInSourceOrder(container: KSDeclarationContainer): Sequence<KSDeclaration> =
-        notImplemented()
+    override fun getDeclarationsInSourceOrder(
+        container: KSDeclarationContainer
+    ): Sequence<KSDeclaration> = notImplemented()
 
     override fun getFunctionDeclarationsByName(
         name: KSName,
