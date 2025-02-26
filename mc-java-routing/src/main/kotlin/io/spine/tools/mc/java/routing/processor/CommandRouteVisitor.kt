@@ -24,40 +24,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.squareup.kotlinpoet.ksp.toClassName
 
-internal class EventRouteVisitor(
-    functions: List<EventRouteFun>,
+/**
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.CommandRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;CommandRouting][classNameSuffix].
+ *
+ * @see RouteVisitor
+ */
+internal class CommandRouteVisitor(
+    functions: List<CommandRouteFun>,
     environment: Environment
-) : RouteVisitor<EventRouteFun>(
-    environment.eventRoutingSetup,
+) : RouteVisitor<CommandRouteFun>(
+    environment.commandRoutingSetup,
     functions,
     environment
 ) {
-    override val classNameSuffix: String = "EventRouting"
+    override val classNameSuffix: String = "CommandRouting"
 
-    /**
-     * Adds the entry in the routing setup function inside the [routingRunBlock].
-     *
-     * For a multicast route it would be something like:
-     * ```kotlin
-     * route<MyEvent> { e, c -> MyEntity.myRouteFun(e, c) }
-     * ```
-     * For an unicast route it would be something like:
-     * ```kotlin
-     * unicast<MyEvent> { e, c -> MyEntity.myRoutFun(e, c) }
-     * ```
-     * If a route function does not accept context, the lambdas would have only the `e` parameter.
-     */
-    override fun addRoute(fn: EventRouteFun) {
-        val params = if (fn.acceptsContext) "e, c" else "e"
-        val entryFn = if (fn.isUnicast) "unicast" else ROUTE_FUN_NAME
-
+    override fun addRoute(fn: CommandRouteFun) {
+        val params = if (fn.acceptsContext) "c, ctx" else "c"
         routingRunBlock.add(
             "%L<%T> { %L -> %T.%L(%L) }\n",
-            entryFn,
+            ROUTE_FUN_NAME,
             fn.messageClass,
             params,
             entityClass.type.toClassName(),
@@ -69,11 +63,11 @@ internal class EventRouteVisitor(
     companion object {
 
         /**
-         * Processes the given route functions using [EventRouteVisitor].
+         * Processes the given route functions using [CommandRouteVisitor].
          */
-        internal fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<EventRouteVisitor, EventRouteFun>(qualified) { functions ->
-                EventRouteVisitor(functions, environment)
+        fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified, environment) { functions ->
+                CommandRouteVisitor(functions, environment)
             }
         }
     }

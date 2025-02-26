@@ -24,20 +24,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Origin
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
-import funRef
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.jvmStaticRef
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
-import msg
+import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
 /**
  * Runs general usage checks for this function declaration.
@@ -103,6 +99,19 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
     return (!wrongNumber).toErrorCount()
 }
 
+/**
+ * Obtains the entity class which declares this function.
+ *
+ * If the function is declared in a Kotlin companion object (which is the right way to declare
+ * routing functions in Kotlin), the function obtains the class enclosing the companion object.
+ *
+ * The function checks if the declaring class implements the [Entity] interface.
+ * If it does not, the error is logged using the logger of the [environment] pointing to
+ * this function declaration as the source of the error, and `null` is returned.
+ *
+ * @return The entity class which declares this routing function, or `null` if the class
+ *  does not implement the [Entity] interface.
+ */
 internal fun KSFunctionDeclaration.declaringClass(environment: Environment): EntityClass? {
     val parent = parentDeclaration!!.qualifiedName!!
     var declaringClass = environment.resolver.getClassDeclarationByName(parent)!!
@@ -120,4 +129,50 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
         return null
     }
     return EntityClass(declaringClass, environment.entityInterface)
+}
+
+/**
+ * Checks if given [functions] do not have the same type as the first parameter.
+ *
+ * If duplicates are found they are [reported][KSPLogger.error], and the function returns `true`.
+ *
+ * @return `true` if duplicating route functions found, `false` otherwise.
+ */
+internal fun <F : RouteFun> EntityClass.hasDuplicatedRoutes(
+    functions: List<F>,
+    environment: Environment
+): Boolean {
+    val logger = environment.logger
+    val nl = System.lineSeparator()
+    var found = false
+    // Group functions by the first parameter.
+    val grouped = functions.groupBy { fn -> fn.messageClass }
+    grouped.forEach {
+        var routes = it.value
+        if (routes.size <= 1) {
+            return@forEach
+        }
+        found = true
+        // Sort duplicates by line numbers.
+        routes = routes.sortedBy { fn -> fn.lineNumber }
+
+        // The qualified message class to be mentioned once in the error message.
+        // The functions will have the simple name.
+        val messageType = routes[0].messageClass.canonicalName
+
+        // List the duplicates.
+        val duplicates = routes.joinToString(nl) { fn ->
+            " * `${fn.asString(qualifiedParameters = false)}`"
+        }
+        logger.error(
+            "The class `$this` declares more than one route function" +
+                    " for the same message class `$messageType`:$nl" +
+                    duplicates + nl +
+                    "Please have only one function per routed message class.",
+            // Give the last duplicate as the error pointer to be reported.
+            // This would allow the user to scroll back for the duplicate(s).
+            routes.last().decl
+        )
+    }
+    return found
 }

@@ -24,27 +24,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
-import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSType
-
-/**
- * Tells if this type represents an interface.
- */
-internal val KSType.isInterface: Boolean
-    get() = (declaration is KSClassDeclaration)
-            && (declaration as KSClassDeclaration).classKind == INTERFACE
+import com.google.auto.service.AutoService
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 /**
- * Obtains a simple name of the type surrounded with back ticks.
+ * Creates a symbol processor for the [Route][io.spine.server.route.Route] annotation.
+ *
+ * @see RouteProcessor
  */
-internal val KSType.ref: String
-    get() = "`${declaration.simpleName.asString()}`"
-
-/**
- * Obtains a qualified name of the type surrouned with back ticks.
- */
-internal val KSType.qualifiedRef: String
-    get() = "`${declaration.qualifiedName?.asString()}`"
+@AutoService(SymbolProcessorProvider::class)
+public class RouteProcessorProvider : SymbolProcessorProvider {
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
+        RouteProcessor(environment.codeGenerator, environment.logger)
+}

@@ -24,37 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
-
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.validate
-import io.spine.server.route.Route
+package io.spine.tools.mc.java.routing.processor
 
 /**
- * Gathers all functions annotated with [Route] and initiates their processing
- * by [RouteVisitor]s.
+ * Creates a routing setup class for tuning
+ * [EventRouting][io.spine.server.route.EventRouting] of a repository.
  *
- * @see RouteVisitor.process
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;EventRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
  */
-internal class RouteProcessor(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
-) : SymbolProcessor {
+internal class EventRouteVisitor(
+    functions: List<EventRouteFun>,
+    environment: Environment
+) : MulticastRouteVisitor<EventRouteFun>(
+    environment.eventRoutingSetup,
+    functions,
+    environment
+) {
+    override val classNameSuffix: String = "EventRouting"
+    override val messageParameterName: String = "e"
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
-        val allValid = allAnnotated.filter { it.validate() }
-            .map { it as KSFunctionDeclaration }
+    companion object {
 
-        val environment = Environment(resolver, logger, codeGenerator)
-        RouteVisitor.process(allValid, environment)
-
-        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
-        return unprocessed
+        /**
+         * Processes the given route functions using [EventRouteVisitor].
+         */
+        internal fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<EventRouteVisitor, EventRouteFun>(qualified, environment) { functions ->
+                EventRouteVisitor(functions, environment)
+            }
+        }
     }
 }

@@ -24,29 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Origin.JAVA
-import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
+package io.spine.tools.mc.java.routing.processor
+
+import com.google.devtools.ksp.symbol.KSDeclaration
 
 /**
- * Selects either diagnostic message depending on
- * the [origin][KSFunctionDeclaration.origin] of the declaration.
- *
- * For origins [JAVA] and [JAVA_LIB] the value of the [java] parameter is returned.
- * Otherwise, the [kotlin] string is returned.
+ * Obtains the qualified name of this declaration or `null`
+ * if the declaration does not have a qualified name.
  */
-internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
-    if (origin == JAVA || origin == JAVA_LIB) {
-        java
-    } else {
-        kotlin
-    }
-
-/**
- * Obtains the text for referencing this function in a diagnostic message.
- */
-internal val KSFunctionDeclaration.funRef: String
-    get() {
-        val shortRef = "`${simpleName.getShortName()}()`"
-        return msg("function $shortRef", "method $shortRef")
-    }
+internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()

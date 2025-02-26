@@ -26,54 +26,55 @@
 
 package io.spine.tools.mc.java.routing.tests
 
-import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.shouldBe
+import io.spine.given.home.Device
+import io.spine.given.home.DeviceAggregate
 import io.spine.given.home.DeviceId
-import io.spine.given.home.Room
-import io.spine.given.home.RoomId
-import io.spine.given.home.RoomProjection
-import io.spine.given.home.events.deviceMoved
-import io.spine.given.home.events.roomAdded
+import io.kotest.matchers.shouldBe
+import io.spine.given.home.State
+import io.spine.given.home.commands.addDevice
+import io.spine.given.home.commands.setState
 import io.spine.given.home.homeAutomation
 import io.spine.testing.server.blackbox.BlackBox
-import org.junit.jupiter.api.Test
 import io.spine.testing.server.blackbox.assertEntity
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
-@DisplayName("Generated `EventRoutingSetup` should")
-internal class EventRoutingSetupITest {
+@DisplayName("Generated `CommandRoutingSetup` should")
+internal class CommandRoutingSetupITest {
 
-    /**
-     * This test verifies that routing functions declared in the [RoomProjection] class
-     * effectively work because the state of the projection is expected after
-     * the dispatched events.
-     */
     @Test
     fun `apply generated routes`() {
         BlackBox.from(homeAutomation()).use { context ->
-            val r1 = RoomId.generate()
-            val lamp = DeviceId.generate()
-            val n1 = "Living Room"
-            
-            context.receivesEvent(
-                roomAdded {
-                    room = r1
-                    name = n1
-                }
-            )
-            context.receivesEvent(
-                deviceMoved {
-                    device = lamp
-                    room = r1
+            val l1 = DeviceId.generate()
+
+            context.receivesCommand(
+                addDevice {
+                    device = l1
+                    name = "First Lamp"
                 }
             )
 
-            val room = context.assertEntity<RoomProjection, RoomId>(r1).actual()?.state() as Room
+            // The first command is handled using the standard routing
+            // via the first command field.
+            var lamp = context.readState(l1)
+            lamp.state shouldBe State.OFF
 
-            room.run {
-                name shouldBe n1
-                deviceList shouldContain lamp
-            }
+            context.receivesCommand(
+                setState {
+                    device = l1
+                    state = State.ON
+                }
+            )
+
+            // The command was handled via custom routing declared in the class.
+            lamp = context.readState(l1)
+            lamp.state shouldBe State.ON
         }
     }
 }
+
+/**
+ * Reads the state of the [DeviceAggregate] with the given ID.
+ */
+private fun BlackBox.readState(id: DeviceId) =
+    assertEntity<DeviceAggregate, DeviceId>(id).actual()?.state() as Device

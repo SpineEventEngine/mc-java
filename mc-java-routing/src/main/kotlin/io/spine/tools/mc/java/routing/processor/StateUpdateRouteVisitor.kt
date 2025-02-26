@@ -24,12 +24,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
-
-import com.google.devtools.ksp.symbol.KSDeclaration
+package io.spine.tools.mc.java.routing.processor
 
 /**
- * Obtains the qualified name of this declaration or `null`
- * if the declaration does not have a qualified name.
+ * Creates a routing setup class for tuning
+ * [StateUpdateRouting][io.spine.server.route.StateUpdateRouting] of a repository.
+ *
+ * The generated setup class will have the name after the pattern
+ * [&lt;EntityClass&gt;StateUpdateRouting][classNameSuffix].
+ *
+ * @see MulticastRouteVisitor
  */
-internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+internal class StateUpdateRouteVisitor(
+    functions: List<StateUpdateRouteFun>,
+    environment: Environment
+) : MulticastRouteVisitor<StateUpdateRouteFun>(
+    environment.stateRoutingSetup,
+    functions,
+    environment
+) {
+    override val classNameSuffix: String = "StateUpdateRouting"
+    override val messageParameterName: String = "s"
+
+    companion object {
+
+        /**
+         * Processes the given route functions using [StateUpdateRouteVisitor].
+         */
+        fun process(qualified: List<RouteFun>, environment: Environment) {
+            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(
+                qualified,
+                environment
+            ) { functions ->
+                StateUpdateRouteVisitor(functions, environment)
+            }
+        }
+    }
+}

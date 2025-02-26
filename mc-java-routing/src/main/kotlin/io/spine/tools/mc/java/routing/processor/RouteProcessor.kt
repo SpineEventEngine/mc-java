@@ -24,38 +24,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
-import com.squareup.kotlinpoet.ksp.toClassName
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.validate
+import io.spine.server.route.Route
 
-internal class CommandRouteVisitor(
-    functions: List<CommandRouteFun>,
-    environment: Environment
-) : RouteVisitor<CommandRouteFun>(
-    environment.commandRoutingSetup,
-    functions,
-    environment
-) {
-    override val classNameSuffix: String = "CommandRouting"
+/**
+ * Gathers all functions annotated with [Route] and initiates their processing
+ * by [RouteVisitor]s.
+ *
+ * @see RouteVisitor.process
+ */
+internal class RouteProcessor(
+    private val codeGenerator: CodeGenerator,
+    private val logger: KSPLogger
+) : SymbolProcessor {
 
-    override fun addRoute(fn: CommandRouteFun) {
-        val params = if (fn.acceptsContext) "c, ctx" else "c"
-        routingRunBlock.add(
-            "%L<%T> { %L -> %T.%L(%L) }\n",
-            ROUTE_FUN_NAME,
-            fn.messageClass,
-            params,
-            entityClass.type.toClassName(),
-            fn.decl.simpleName.asString(),
-            params
-        )
-    }
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        val allAnnotated = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
+        val allValid = allAnnotated.filter { it.validate() }
+            .map { it as KSFunctionDeclaration }
 
-    companion object {
-        fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<CommandRouteVisitor, CommandRouteFun>(qualified) { functions ->
-                CommandRouteVisitor(functions, environment)
-            }
-        }
+        val environment = Environment(resolver, logger, codeGenerator)
+        RouteVisitor.process(allValid, environment)
+
+        val unprocessed = allAnnotated.filterNot { it.validate() }.toList()
+        return unprocessed
     }
 }

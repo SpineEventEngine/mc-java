@@ -24,28 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
-internal class StateUpdateRouteVisitor(
-    functions: List<StateUpdateRouteFun>,
-    environment: Environment
-) : RouteVisitor<StateUpdateRouteFun>(
-    environment.stateRoutingSetup,
-    functions,
-    environment
-) {
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-    override val classNameSuffix: String = "StateUpdateRouting"
+@DisplayName("`MulticastRouteVisitor` should")
+internal class MulticastRouteVisitorSpec {
 
-    override fun addRoute(fn: StateUpdateRouteFun) {
-        //TODO:2025-01-22:alexander.yevsyukov: Implement.
-    }
-
-    companion object {
-        fun process(qualified: List<RouteFun>, environment: Environment) {
-            runVisitors<StateUpdateRouteVisitor, StateUpdateRouteFun>(qualified) { functions ->
-                StateUpdateRouteVisitor(functions, environment)
-            }
+    @Test
+    fun `prohibit 'c' as the message parameter name`() {
+        assertThrows<IllegalStateException> {
+            StubVisitor("c", "SomeSuffix").checkMessageParameterName()
         }
     }
 }
+
+private class StubVisitor(
+    override val messageParameterName: String,
+    override val classNameSuffix: String,
+) : MulticastRouteVisitor<EventRouteFun>(
+    stubEnvironment.eventRoutingSetup,
+    listOf(),
+    stubEnvironment
+)
+

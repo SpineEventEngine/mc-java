@@ -24,42 +24,39 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.ksp.toClassName
+import com.google.devtools.ksp.symbol.Origin.JAVA
+import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
 
-internal sealed class RouteFun(
-    val decl: KSFunctionDeclaration,
-    val declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) {
-    val messageParameter: KSType = parameters.first
-    val messageClass: ClassName = messageParameter.toClassName()
-    val acceptsContext: Boolean = parameters.second != null
-    val isUnicast: Boolean = returnType.declaration.typeParameters.isEmpty()
-}
+/**
+ * Obtains the short name of the function.
+ *
+ * @returns just a name without braces.
+ */
+internal val KSFunctionDeclaration.shortName: String
+    get() = simpleName.getShortName()
 
-internal class CommandRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)
+/**
+ * Selects either diagnostic message depending on
+ * the [origin][KSFunctionDeclaration.origin] of the declaration.
+ *
+ * For origins [JAVA] and [JAVA_LIB] the value of the [java] parameter is returned.
+ * Otherwise, the [kotlin] string is returned.
+ */
+internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
+    if (origin == JAVA || origin == JAVA_LIB) {
+        java
+    } else {
+        kotlin
+    }
 
-internal class EventRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)
-
-internal class StateUpdateRouteFun(
-    fn: KSFunctionDeclaration,
-    declaringClass: EntityClass,
-    parameters: Pair<KSType, KSType?>,
-    returnType: KSType
-) : RouteFun(fn, declaringClass, parameters, returnType)
+/**
+ * Obtains the text for referencing this function in a diagnostic message.
+ */
+internal val KSFunctionDeclaration.funRef: String
+    get() {
+        val shortRef = "`$shortName()`"
+        return msg("function $shortRef", "method $shortRef")
+    }

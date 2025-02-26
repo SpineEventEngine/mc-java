@@ -24,36 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import io.spine.base.CommandMessage
-import io.spine.core.CommandContext
+import io.spine.base.EntityState
+import io.spine.core.EventContext
 
-internal class CommandRouteSignature(
+internal class StateUpdateRouteSignature(
     environment: Environment
-) : RouteSignature<CommandRouteFun>(
-    CommandMessage::class.java,
-    CommandContext::class.java,
+) : RouteSignature<StateUpdateRouteFun>(
+    EntityState::class.java,
+    EventContext::class.java,
     environment
 ) {
     override fun matchDeclaringClass(
         fn: KSFunctionDeclaration,
         declaringClass: EntityClass
     ): Boolean = environment.run {
-        val isAggregate = aggregateClass.isAssignableFrom(declaringClass.type)
+        val isProjection = projectionClass.isAssignableFrom(declaringClass.type)
         val isProcessManager = processManagerClass.isAssignableFrom(declaringClass.type)
-        val match = isAggregate || isProcessManager
-        if (!match) {
-            val parent = declaringClass.superClass()
-            logger.error(
-                "A command routing function can be declared in a class derived" +
-                        " from ${processManagerClass.ref} or ${aggregateClass.ref}." +
-                        " Encountered: ${parent.qualifiedRef}.",
-            fn)
-        }
-        return match
+        return isProjection || isProcessManager
     }
 
     override fun create(
@@ -61,5 +52,5 @@ internal class CommandRouteSignature(
         declaringClass: EntityClass,
         parameters: Pair<KSType, KSType?>,
         returnType: KSType
-    ): CommandRouteFun = CommandRouteFun(fn, declaringClass, parameters, returnType)
+    ): StateUpdateRouteFun = StateUpdateRouteFun(fn, declaringClass, parameters, returnType)
 }

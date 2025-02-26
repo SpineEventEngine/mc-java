@@ -24,14 +24,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.proessor
+package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import io.spine.tools.mc.java.routing.proessor.RouteSignature.Companion.routeRef
+import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
 /**
  * The helper class which transforms the incoming sequence with [functions] into
- * a list containing [CommandRouteFun] or [EventRouteFun].
+ * a list containing [CommandRouteFun], [EventRouteFun], or [StateUpdateRouteFun].
  *
  * If a function is not recognized to be one of these types,
  * the compilation terminates with an error.
@@ -45,6 +45,16 @@ internal class Qualifier(
     private val eventRoutes = EventRouteSignature(environment)
     private val stateRoutes = StateUpdateRouteSignature(environment)
 
+    /**
+     * Transforms the incoming sequence of [KSFunctionDeclaration] instances
+     * into the list of [RouteFun] by analyzing their signatures.
+     *
+     * Each function goes through [common checks][KSFunctionDeclaration.commonChecks].
+     * Failed checks are reported as errors via [Environment.logger].
+     *
+     * If at least one error is detected, the function terminates with [IllegalStateException]
+     * after all the functions are checked.
+     */
     fun run(): List<RouteFun> {
         val result = mutableListOf<RouteFun>()
         functions.forEach { fn ->
