@@ -145,7 +145,7 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
             it shouldContain "`route(StatusReported)`"
             it shouldContain "`routeAgain(StatusReported, EventContext)`"
             it shouldContain "Please have only one function per routed message class."
-            // Not duplicated.
+            // The route for this event is not duplicated.
             it shouldNotContain "DeviceRegistered"
         }
     }
