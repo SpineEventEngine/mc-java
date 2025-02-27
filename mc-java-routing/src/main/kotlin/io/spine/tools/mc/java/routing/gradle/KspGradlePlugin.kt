@@ -52,9 +52,14 @@ internal object KspGradlePlugin {
     private const val group = "com.google.devtools.ksp"
 
     /**
+     * The Maven reference to the plugin module
+     */
+    public const val module = "$group:symbol-processing-gradle-plugin"
+
+    /**
      * Obtains Maven coordinates of the KSP Gradle Plugin with the given version.
      */
-    fun gradlePluginArtifact(version: String) = "$group:symbol-processing-gradle-plugin:$version"
+    fun gradlePluginArtifact(version: String) = "$module:$version"
 
     /**
      * The map from [KotlinVersion] to the latest KSP Gradle Plugin version which
