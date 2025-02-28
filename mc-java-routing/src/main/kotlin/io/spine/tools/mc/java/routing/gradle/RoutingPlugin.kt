@@ -26,9 +26,12 @@
 
 package io.spine.tools.mc.java.routing.gradle
 
+import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.gradle.project.sourceSetNames
+import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.task.TaskWithSourceSetName
+import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
@@ -43,15 +46,17 @@ import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
  *     When adding, we find the most recent version of the KSP Gradle Plugin which
  *     is compatible with the version of Kotlin used in the current Gradle runtime.
  *
- *  2.    
+ *  2. Makes a KSP task depend on a `LaunchProtoData` task for the same source set.
+ *
+ *  3. Replace the output of KSP tasks to generate the code to [Project.generatedDir]
+ *     instead of the default directory set by the KSP Gradle Plugin.
  */
 public class RoutingPlugin : Plugin<Project> {
 
     override fun apply(project: Project): Unit = project.run {
         applyKspPlugin()
         makeKspDependOnProtoData()
-        configureCopyingToGeneratedDir()
-        configureSourceSets()
+        replaceKspOutputDirs()
     }
 }
 
@@ -73,7 +78,9 @@ private fun Project.applyKspPlugin() =
                 gradlePluginArtifact(version)
             )
         }
-        pluginManager.apply(id)
+        project.afterEvaluate {
+            pluginManager.apply(id)
+        }
     }
 
 /**
@@ -85,42 +92,43 @@ private fun Project.applyKspPlugin() =
  */
 private fun Project.makeKspDependOnProtoData() {
     afterEvaluate {
-        sourceSetNames.forEach { ssn ->
-            val kspTaskName = KspTskName(ssn)
-            val kspTask = tasks.findByName(kspTaskName.value())
+        val kspTasks = kspTasks()
+        kspTasks.forEach { (ssn, kspTask) ->
             val protoDataTaskName = ProtoDataTaskName(ssn)
             val protoDataTask = tasks.findByName(protoDataTaskName.value())
             if (protoDataTask != null) {
-                kspTask?.dependsOn(protoDataTask)
+                kspTask.dependsOn(protoDataTask)
             }
         }
     }
 }
 
-private fun Project.defaultKspTargetDir(ssn: SourceSetName): String =
-    "build/generated/ksp/${ssn.value}/kotlin/"
-
-private fun Project.configureCopyingToGeneratedDir() {
-    sourceSetNames.forEach { ssn ->
-
+/**
+ * Lists KSP tasks found in this project for its source sets.
+ */
+private fun Project.kspTasks(): Map<SourceSetName, KspTaskJvm> {
+    val withNulls = sourceSetNames.associateWith { ssn ->
+        val kspTaskName = KspTskName(ssn)
+        tasks.findByName(kspTaskName.value())
     }
-    // From `build/generated/ksp/main/kotlin` etc. to `projectRoot/generated/ksp/`.
+    val result = withNulls.filterValues { it != null }
+        .mapValues { it.value!! as KspTaskJvm }
+    return result
 }
 
-private fun Project.configureSourceSets() {
-    // It should be something like:
-    /*
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("$projectDir/generated/ksp/main/kotlin")
+/**
+ * The function replaces default destination directory defied by
+ * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
+ * the one we used for all the generated code at the level of the project root.
+ */
+private fun Project.replaceKspOutputDirs() {
+    afterEvaluate {
+        kspTasks().forEach { (_, kspTask) ->
+            val current = kspTask.destination.get().path
+            val replaced = current.replace("$buildDir/generated", generatedDir.toString())
+            kspTask.destination.set(File(replaced))
+        }
     }
-    sourceSets.test {
-        kotlin.srcDir("$projectDir/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("$projectDir/generated/ksp/testFixtures/kotlin")
-    }
-*/
 }
 
 //TODO:2025-02-27:alexander.yevsyukov: This should go to ToolBase.

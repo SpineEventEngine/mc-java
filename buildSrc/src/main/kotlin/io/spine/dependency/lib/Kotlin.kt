@@ -38,6 +38,11 @@ object Kotlin {
     const val version = "1.9.24"
 
     /**
+     * The version of Kotlin which comes with Gradle is used for the builds.
+     */
+    const val buildVersion = "1.8.22"
+
+    /**
      * The version of the JetBrains annotations library, which is a transitive
      * dependency for us via Kotlin libraries.
      *
@@ -65,7 +70,10 @@ object Kotlin {
     const val jetbrainsAnnotations = "org.jetbrains:annotations:$annotationsVersion"
 
     object Compiler {
-        const val version = "1.8.22"
-        const val embeddable = "$group:kotlin-compiler-embeddable:$version"
+        const val embeddable = "$group:kotlin-compiler-embeddable:$buildVersion"
+    }
+
+    object GradlePlugin {
+        const val lib = "$group:kotlin-gradle-plugin:$buildVersion"
     }
 }

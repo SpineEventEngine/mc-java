@@ -93,6 +93,8 @@ plugins {
     java
 }
 
+println("**** Kotlin version: ${KotlinVersion.CURRENT}")
+
 private object BuildSettings {
     const val TIMEOUT_MINUTES = 42L
 }

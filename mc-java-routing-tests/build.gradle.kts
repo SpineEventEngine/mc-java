@@ -46,18 +46,6 @@ dependencies {
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
 }
-                                                                    
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-    }
-}
 
 // Avoid Gradle warning on disabled execution optimization because of the absence of
 // explicit or implicit dependencies.

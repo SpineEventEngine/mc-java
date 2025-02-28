@@ -50,6 +50,7 @@ dependencies {
         ":mc-java-message-group",
         ":mc-java-uuid",
         ":mc-java-comparable",
+        ":mc-java-routing"
     ).forEach {
         implementation(project(it))
     }

@@ -54,7 +54,7 @@ internal object KspGradlePlugin {
     /**
      * The Maven reference to the plugin module
      */
-    public const val module = "$group:symbol-processing-gradle-plugin"
+    const val module = "$group:symbol-processing-gradle-plugin"
 
     /**
      * Obtains Maven coordinates of the KSP Gradle Plugin with the given version.
@@ -70,7 +70,11 @@ internal object KspGradlePlugin {
      *
      * Only release (not Beta or RC) versions are listed.
      */
+    @Suppress("MagicNumber")
     private val versions: Map<KotlinVersion, String> = sortedMapOf(
+        kv(1, 7, 0) to "1.0.6",
+        kv(1, 7, 10) to "1.0.6",
+        kv(1, 7, 22) to "1.0.8",
         kv(1, 8, 22) to "1.0.11",
         kv(1, 9, 0) to "1.0.13",
         kv(1, 9, 10) to "1.0.13",
