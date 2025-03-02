@@ -31,17 +31,21 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
+import io.spine.dependency.local.TestLib
+import io.spine.dependency.local.ToolBase
 import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    kotlin("jvm")
-    ksp
     id("io.spine.mc-java")
+    ksp
 }
 
 dependencies {
-    ksp(AutoServiceKsp.processor)
+    // Dependencies for the code generation part.
+    ksp(AutoServiceKsp.processor)?.because(
+        "`RouteProcessorProvider` is annotated with `@AutoService`."
+    )
     implementation(AutoService.annotations)?.because(
         """
         We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
@@ -54,8 +58,19 @@ dependencies {
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
 
+    // The dependencies for Gradle plugin part.
+    compileOnly(gradleApi())
+    compileOnly(gradleKotlinDsl())
+    compileOnly(Ksp.gradlePlugin)
+    compileOnly(Kotlin.GradlePlugin.lib)
+    implementation(ToolBase.pluginBase)
+
+    testImplementation(gradleKotlinDsl())
+    testImplementation(Kotlin.GradlePlugin.lib)
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
+    testImplementation(gradleTestKit())
+    testImplementation(TestLib.lib)
     testImplementation(Logging.testLib)
 }
 

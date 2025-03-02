@@ -29,7 +29,6 @@ import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.local.CoreJava
 
 plugins {
-    kotlin("jvm")
     ksp
     `java-test-fixtures`
     id("io.spine.mc-java")
@@ -45,23 +44,6 @@ dependencies {
     kspTest(project(":mc-java-routing"))
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
-    
-    testFixturesImplementation(project(":mc-java-routing"))?.because(
-        "We need this dependency temporarily, until the interfaces defined" +
-                " in the package `io.spine.server.route` are moved to CoreJava."
-    )
-}
-                                                                    
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-    }
 }
 
 // Avoid Gradle warning on disabled execution optimization because of the absence of

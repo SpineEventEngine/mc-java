@@ -50,4 +50,5 @@ object Ksp {
     const val group = "com.google.devtools.ksp"
     const val symbolProcessingApi = "$group:symbol-processing-api:$version"
     const val symbolProcessing = "$group:symbol-processing:$version"
+    const val gradlePlugin = "$group:symbol-processing-gradle-plugin:$version"
 }
