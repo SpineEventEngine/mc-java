@@ -37,9 +37,8 @@ import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    kotlin("jvm")
-    ksp
     id("io.spine.mc-java")
+    ksp
 }
 
 dependencies {

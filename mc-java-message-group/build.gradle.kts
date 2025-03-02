@@ -27,6 +27,7 @@
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Reflect
 import io.spine.dependency.local.Spine
 import io.spine.dependency.local.ToolBase
 
@@ -36,7 +37,7 @@ plugins {
 
 dependencies {
     arrayOf(
-        Spine.reflect,
+        Reflect.lib,
         Logging.lib,
         CoreJava.server,
         ToolBase.psiJava,

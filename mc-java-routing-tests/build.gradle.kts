@@ -29,7 +29,6 @@ import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.local.CoreJava
 
 plugins {
-    kotlin("jvm")
     ksp
     `java-test-fixtures`
     id("io.spine.mc-java")
