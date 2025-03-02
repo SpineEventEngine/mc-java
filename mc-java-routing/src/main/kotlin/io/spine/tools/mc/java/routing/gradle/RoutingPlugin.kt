@@ -28,6 +28,12 @@ package io.spine.tools.mc.java.routing.gradle
 
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.spine.tools.code.SourceSetName
+import io.spine.tools.gradle.Artifact
+import io.spine.tools.gradle.Artifact.SPINE_TOOLS_GROUP
+import io.spine.tools.gradle.Dependency
+import io.spine.tools.gradle.DependencyVersions
+import io.spine.tools.gradle.ThirdPartyDependency
+import io.spine.tools.gradle.artifact
 import io.spine.tools.gradle.project.sourceSetNames
 import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.task.TaskWithSourceSetName
@@ -71,6 +77,7 @@ private fun Project.applyKspPlugin() =
         val alreadyInClasspath =
             rootProject.buildscriptClasspathHas(module)
                     || project.buildscriptClasspathHas(module)
+
         if (!alreadyInClasspath) {
             val version = findCompatible(KotlinVersion.CURRENT)
             buildscript.dependencies.add(
@@ -78,8 +85,15 @@ private fun Project.applyKspPlugin() =
                 gradlePluginArtifact(version)
             )
         }
+
         project.afterEvaluate {
             pluginManager.apply(id)
+            val routingPlugin = routingKspPlugin.notation()
+            configurations
+                .filter { it.name.startsWith("ksp") }
+                .forEach {
+                    project.dependencies.add(it.name, routingPlugin)
+                }
         }
     }
 
@@ -92,6 +106,10 @@ private fun Project.applyKspPlugin() =
  */
 private fun Project.makeKspDependOnProtoData() {
     afterEvaluate {
+        //TODO:2025-03-02:alexander.yevsyukov: If no KSP tasks found yet, this means that
+        // this `afterEvaluate` block is executed before the one which KSP Gradle Plugin does.
+        // We need to find the way to establish the dependency on ProtoData tasks from KSP tasks
+        // in a lazily evaluated manner.
         val kspTasks = kspTasks()
         kspTasks.forEach { (ssn, kspTask) ->
             val protoDataTaskName = ProtoDataTaskName(ssn)
@@ -151,4 +169,21 @@ private fun Project.buildscriptClasspathHas(module: String): Boolean {
     return classpath?.let {
         it.dependencies.any { dep -> "${dep.group}:${dep.name}" == module }
     } ?: false
+}
+
+private const val MODULE_NAME = "spine-mc-java-routing"
+private val versions = DependencyVersions.loadFor(MODULE_NAME)
+
+internal val routingVersion: String by lazy {
+    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MODULE_NAME)
+    versions.versionOf(self)
+        .orElseThrow { error("Unable to load versions of `$self`.") }
+}
+
+private val routingKspPlugin: Artifact by lazy {
+    artifact {
+        useSpineToolsGroup()
+        name = "spine-mc-java-routing"
+        version = routingVersion
+    }
 }
