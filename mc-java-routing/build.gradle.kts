@@ -66,6 +66,7 @@ dependencies {
     compileOnly(Kotlin.GradlePlugin.lib)
     implementation(ToolBase.pluginBase)
 
+    testImplementation(gradleKotlinDsl())
     testImplementation(Kotlin.GradlePlugin.lib)
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
