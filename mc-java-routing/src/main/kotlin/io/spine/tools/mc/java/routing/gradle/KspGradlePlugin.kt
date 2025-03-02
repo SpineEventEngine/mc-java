@@ -74,6 +74,7 @@ internal object KspGradlePlugin {
     private val versions: Map<KotlinVersion, String> = sortedMapOf(
         kv(1, 7, 0) to "1.0.6",
         kv(1, 7, 10) to "1.0.6",
+        kv(1, 7, 20) to "1.0.6",
         kv(1, 7, 22) to "1.0.8",
         kv(1, 8, 22) to "1.0.11",
         kv(1, 9, 0) to "1.0.13",
