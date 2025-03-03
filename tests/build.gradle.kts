@@ -65,6 +65,7 @@ buildscript {
         }
         classpath(protoData.pluginLib)
         classpath(io.spine.dependency.local.McJava.pluginLib(mcJavaVersion))
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:1.7.10-1.0.6")
     }
 
     with(configurations) {
@@ -90,6 +91,14 @@ buildscript {
                     logging.libJvm,
                     logging.middleware,
                     io.spine.dependency.local.Validation.runtime,
+
+                    // Temporarily force this dependencies during the migration to new versions.
+                    "org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.7.10",
+                    "org.jetbrains.kotlin:kotlin-project-model:1.7.10",
+                    "org.jetbrains.kotlin:kotlin-tooling-core:1.7.10",
+                    "org.jetbrains.kotlin:kotlin-gradle-plugin-model:1.7.10",
+                    "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10",
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0"
                 )
             }
         }
