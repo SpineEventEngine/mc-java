@@ -83,7 +83,7 @@ public abstract class WriteProtoDataSettings : DefaultTask() {
 
     @TaskAction
     @Throws(IOException::class)
-    private fun writeFile() {
+    public fun writeFile() {
         val dir = settingsDirectory()
         forValidationPlugin(dir)
         forAnnotationPlugin(dir)
