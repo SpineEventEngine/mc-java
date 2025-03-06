@@ -68,6 +68,7 @@ configurations
             Ksp.symbolProcessingApi,
             Ksp.symbolProcessing,
             Kotlin.Compiler.embeddable,
+            KotlinCompileTesting.libKsp,
         )
     }
 }
