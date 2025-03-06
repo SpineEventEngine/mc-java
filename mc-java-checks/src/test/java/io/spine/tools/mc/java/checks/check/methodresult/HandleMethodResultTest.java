@@ -38,6 +38,8 @@ class HandleMethodResultTest {
 
     @BeforeEach
     void setUp() {
+        //noinspection unused
+        var sanityCheck = new HandleMethodResult();
         helper = CompilationTestHelper.newInstance(HandleMethodResult.class, getClass());
     }
 

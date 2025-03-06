@@ -24,10 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.local.Base
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
-import io.spine.dependency.local.Spine
+import io.spine.dependency.local.Reflect
+import io.spine.dependency.local.TestLib
 
 plugins {
     id("io.spine.mc-java")
@@ -35,8 +37,8 @@ plugins {
 
 dependencies {
     arrayOf(
-        Spine.base,
-        Spine.reflect,
+        Base.lib,
+        Reflect.lib,
         Logging.lib,
         CoreJava.server,
         ProtoData.java,
@@ -47,7 +49,7 @@ dependencies {
 
     arrayOf(
         gradleTestKit(),
-        Spine.testlib,
+        TestLib.lib,
         ProtoData.testlib
     ).forEach {
         testImplementation(it)

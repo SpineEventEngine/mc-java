@@ -87,7 +87,7 @@ plugins {
     idea
     errorprone
     jacoco
-    `gradle-doctor`
+//    `gradle-doctor`
     id("project-report")
     protobuf
     java
