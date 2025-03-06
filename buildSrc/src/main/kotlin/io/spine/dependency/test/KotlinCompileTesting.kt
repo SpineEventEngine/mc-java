@@ -33,7 +33,7 @@ package io.spine.dependency.test
  */
 @Suppress("unused", "ConstPropertyName")
 object KotlinCompileTesting {
-    private const val version = "1.5.0" // Compatible with Kotlin Compiler 1.8.22.
+    private const val version = "1.6.0"
     private const val group = "com.github.tschuchortdev"
     const val lib = "$group:kotlin-compile-testing:$version"
     const val libKsp = "$group:kotlin-compile-testing-ksp:$version"

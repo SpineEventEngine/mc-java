@@ -33,6 +33,7 @@ import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
 import io.spine.logging.testing.tapConsole
 import java.io.File
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 /**
  * Obtains the path to the classpath element which contains the receiver class.
@@ -78,6 +79,7 @@ internal fun kotlinFile(
  * @see io.spine.logging.testing.ConsoleTap.install
  * @see tapConsole
  */
+@ExperimentalCompilerApi
 internal fun KotlinCompilation.compileSilently(): KotlinCompilation.Result {
     var result: KotlinCompilation.Result? = null
     tapConsole {
