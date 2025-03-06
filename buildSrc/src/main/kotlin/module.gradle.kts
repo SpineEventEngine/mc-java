@@ -140,6 +140,7 @@ fun Module.forceConfigurations() {
                     Kotlin.scriptRuntime,
                     KotlinX.Coroutines.bom,
                     KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.coreJvm,
                     KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,
                     KotlinPoet.lib,
