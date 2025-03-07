@@ -33,6 +33,7 @@ import com.tschuchort.compiletesting.configureKsp
 import io.spine.base.CommandMessage
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
+import io.spine.logging.WithLogging
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
 import io.spine.validate.ValidatingBuilder
@@ -74,6 +75,7 @@ sealed class RouteCompilationTest {
             AutoService::class.java,
             MessageOrBuilder::class.java, // Protobuf
             CommandMessage::class.java, // Base
+            WithLogging::class.java, // Logging library.
             ValidatingBuilder::class.java, // Validation runtime
             EventContext::class.java, // CoreJava.core
             Route::class.java, // CoreJava.server
