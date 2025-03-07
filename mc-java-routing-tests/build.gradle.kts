@@ -24,9 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
+import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.local.CoreJava
+import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
     kotlin("jvm")
@@ -42,14 +45,8 @@ dependencies {
     testImplementation(kotlin("stdlib"))
     testImplementation(CoreJava.testUtilServer)
 
-    kspTest(project(":mc-java-routing"))
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
-    
-    testFixturesImplementation(project(":mc-java-routing"))?.because(
-        "We need this dependency temporarily, until the interfaces defined" +
-                " in the package `io.spine.server.route` are moved to CoreJava."
-    )
 }
                                                                     
 kotlin {
@@ -71,3 +68,19 @@ afterEvaluate {
     val launchTestFixturesProtoData by tasks.getting
     kspTestFixturesKotlin.dependsOn(launchTestFixturesProtoData)
 }
+
+configurations
+    // https://detekt.dev/docs/gettingstarted/gradle/#dependencies
+    .matching { it.name != "detekt" }
+    .all {
+        resolutionStrategy {
+            force(
+                Ksp.symbolProcessingApi,
+                Ksp.symbolProcessing,
+                Ksp.symbolProcessingAaEmb,
+                Ksp.symbolProcessingCommonDeps,
+                Kotlin.Compiler.embeddable,
+                KotlinCompileTesting.libKsp,
+            )
+        }
+    }

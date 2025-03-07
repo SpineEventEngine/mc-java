@@ -45,7 +45,8 @@ dependencies {
     implementation(AutoService.annotations)?.because(
         """
         We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
-        a service provider but also for annotating the generated code.        
+        a service provider but also for annotating the generated code and therefore need
+        the `AutoService` class on runtime.        
         """.trimIndent()
     )
     implementation(kotlin("stdlib"))
