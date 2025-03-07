@@ -115,6 +115,11 @@ internal sealed class RouteSignature<F : RouteFun>(
 
         val firstParamType = fn.parameters[0].type.resolve()
         if (!messageType.isAssignableFrom(firstParamType)) {
+            environment.logger.warn(
+                "The message type `${messageClass.simpleName}` is not assignable" +
+                        " from ${firstParamType.qualifiedRef}.", fn
+            )
+
             // Even if the parameter does not match, it could be another kind of
             // routing function, so we simply return `false`.
             return null
