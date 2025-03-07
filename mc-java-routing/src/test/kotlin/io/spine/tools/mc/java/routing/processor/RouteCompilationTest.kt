@@ -30,14 +30,12 @@ import com.google.auto.service.AutoService
 import com.google.protobuf.MessageOrBuilder
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.configureKsp
-import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.spine.base.CommandMessage
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
 import io.spine.validate.ValidatingBuilder
-import kotlin.collections.plus
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.JvmTarget
 import org.junit.jupiter.api.BeforeAll
