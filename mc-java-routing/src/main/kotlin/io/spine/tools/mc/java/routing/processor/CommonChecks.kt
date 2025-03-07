@@ -122,7 +122,8 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
         // We need the enclosing entity class.
         declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
     }
-    if (!environment.entityInterface.isAssignableFrom(declaringClass.asStarProjectedType())) {
+    val projectedType = declaringClass.asStarProjectedType()
+    if (!environment.entityInterface.isAssignableFrom(projectedType)) {
         environment.logger.error(
             "The declaring class of the $funRef annotated with $routeRef" +
                     " must implement the `${Entity::class.java.canonicalName}` interface.",
