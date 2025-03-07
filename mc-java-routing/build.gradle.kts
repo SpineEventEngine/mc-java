@@ -67,6 +67,8 @@ configurations
         force(
             Ksp.symbolProcessingApi,
             Ksp.symbolProcessing,
+            Ksp.symbolProcessingAaEmb,
+            Ksp.symbolProcessingCommonDeps,
             Kotlin.Compiler.embeddable,
             KotlinCompileTesting.libKsp,
         )
