@@ -78,9 +78,9 @@ internal class Qualifier(
                 errorCount += 1
             }
         }
-        if (errorCount > 0) {
-            error("${"Error".pluralize(errorCount)} using $routeRef.")
-        }
+//        if (errorCount > 0) {
+//            error("${"Error".pluralize(errorCount)} using $routeRef.")
+//        }
         return result
     }
 

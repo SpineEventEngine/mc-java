@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.routing.processor
 import com.google.auto.service.AutoService
 import com.google.protobuf.MessageOrBuilder
 import com.tschuchort.compiletesting.KotlinCompilation
+import com.tschuchort.compiletesting.configureKsp
 import com.tschuchort.compiletesting.symbolProcessorProviders
 import io.spine.base.CommandMessage
 import io.spine.core.EventContext
@@ -84,7 +85,9 @@ sealed class RouteCompilationTest {
 
         compilation.apply {
             javaPackagePrefix = "io.spine.routing.given"
-            symbolProcessorProviders = listOf(RouteProcessorProvider())
+            configureKsp (useKsp2 = true) {
+                symbolProcessorProviders += RouteProcessorProvider()
+            }
             classpaths = classpaths + dependencyJars
         }
     }

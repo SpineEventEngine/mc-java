@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing.processor
 
+import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.java
@@ -80,8 +81,8 @@ internal fun kotlinFile(
  * @see tapConsole
  */
 @ExperimentalCompilerApi
-internal fun KotlinCompilation.compileSilently(): KotlinCompilation.Result {
-    var result: KotlinCompilation.Result? = null
+internal fun KotlinCompilation.compileSilently(): JvmCompilationResult {
+    var result: JvmCompilationResult? = null
     tapConsole {
         result = compile()
     }
