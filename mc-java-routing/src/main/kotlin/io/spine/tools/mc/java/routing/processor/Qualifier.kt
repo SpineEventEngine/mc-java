@@ -27,7 +27,6 @@
 package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
 /**
  * The helper class which transforms the incoming sequence with [functions] into
@@ -73,14 +72,11 @@ internal class Qualifier(
                 result.add(qualified)
             } else {
                 environment.logger.error(
-                    "Unqualified function encountered: `${fn.qualifiedName?.asString()}`."
+                    "Unqualified function encountered: `${fn.qualifiedName?.asString()}`.", fn
                 )
                 errorCount += 1
             }
         }
-//        if (errorCount > 0) {
-//            error("${"Error".pluralize(errorCount)} using $routeRef.")
-//        }
         return result
     }
 
