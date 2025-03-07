@@ -202,7 +202,10 @@ fun Project.configureTaskDependencies() {
             dependOn(kspKotlin)
         }
         val dokkaJavadoc = "dokkaJavadoc"
-        dokkaJavadoc.dependOn(launchProtoData)
+        dokkaJavadoc.run {
+            dependOn(launchProtoData)
+            dependOn(kspKotlin)
+        }
         "publishPluginJar".dependOn(createVersionFile)
         kspKotlin.dependOn("compileKotlin")
         "kspTestKotlin".dependOn("compileTestKotlin")
