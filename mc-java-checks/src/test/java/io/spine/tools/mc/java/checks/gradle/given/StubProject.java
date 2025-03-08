@@ -79,8 +79,8 @@ public final class StubProject {
                 .build();
         project.getPluginManager()
                .apply("java");
-        project.task(generateProto.name());
-        project.task(generateTestProto.name());
+        project.getTasks().register(generateProto.name());
+        project.getTasks().register(generateTestProto.name());
         return project;
     }
 
