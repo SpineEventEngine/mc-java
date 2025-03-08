@@ -29,14 +29,16 @@ package io.spine.tools.mc.java.routing.processor
 import com.google.auto.service.AutoService
 import com.google.protobuf.MessageOrBuilder
 import com.tschuchort.compiletesting.KotlinCompilation
-import com.tschuchort.compiletesting.symbolProcessorProviders
+import com.tschuchort.compiletesting.configureKsp
 import io.spine.base.CommandMessage
 import io.spine.core.EventContext
 import io.spine.given.devices.Device
+import io.spine.logging.WithLogging
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
 import io.spine.validate.ValidatingBuilder
-import kotlin.collections.plus
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+import org.jetbrains.kotlin.config.JvmTarget
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 
@@ -45,6 +47,7 @@ import org.junit.jupiter.api.BeforeEach
  *
  * The tests use types from the Protobuf code generated for the `given.devices` proto package.
  */
+@ExperimentalCompilerApi
 sealed class RouteCompilationTest {
 
     companion object {
@@ -66,11 +69,13 @@ sealed class RouteCompilationTest {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
+        compilation.jvmTarget = JvmTarget.JVM_17.description
 
         val dependencyJars = setOf(
             AutoService::class.java,
             MessageOrBuilder::class.java, // Protobuf
             CommandMessage::class.java, // Base
+            WithLogging::class.java, // Logging library.
             ValidatingBuilder::class.java, // Validation runtime
             EventContext::class.java, // CoreJava.core
             Route::class.java, // CoreJava.server
@@ -80,7 +85,9 @@ sealed class RouteCompilationTest {
 
         compilation.apply {
             javaPackagePrefix = "io.spine.routing.given"
-            symbolProcessorProviders = listOf(RouteProcessorProvider())
+            configureKsp (useKsp2 = true) {
+                symbolProcessorProviders += RouteProcessorProvider()
+            }
             classpaths = classpaths + dependencyJars
         }
     }

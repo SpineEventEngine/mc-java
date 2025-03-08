@@ -95,7 +95,7 @@ public final class StubProject {
     }
 
     /**
-     * Returns underlying Gradle project.
+     * Returns the underlying Gradle project.
      */
     public Project get() {
         return project;

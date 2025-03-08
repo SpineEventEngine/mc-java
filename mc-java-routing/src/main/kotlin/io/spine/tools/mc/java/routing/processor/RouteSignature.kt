@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.routing.processor
 
+import com.google.devtools.ksp.getJavaClassByName
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
@@ -115,6 +117,11 @@ internal sealed class RouteSignature<F : RouteFun>(
 
         val firstParamType = fn.parameters[0].type.resolve()
         if (!messageType.isAssignableFrom(firstParamType)) {
+            environment.logger.warn(
+                "\nThe message type ${messageType.qualifiedRef} is not assignable" +
+                        " from ${firstParamType.qualifiedRef}.", fn
+            )
+
             // Even if the parameter does not match, it could be another kind of
             // routing function, so we simply return `false`.
             return null

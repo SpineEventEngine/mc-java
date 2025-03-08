@@ -43,6 +43,6 @@ message DeviceRegistered {
 }
 
 message StatusReported {
-    DeviceId device = 1[(required) = true];
+    DeviceId device = 1 [(required) = true];
     string status = 2 [(required) = true];
 }

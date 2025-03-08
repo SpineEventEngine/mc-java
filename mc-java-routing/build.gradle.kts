@@ -45,7 +45,8 @@ dependencies {
     implementation(AutoService.annotations)?.because(
         """
         We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
-        a service provider but also for annotating the generated code.        
+        a service provider but also for annotating the generated code and therefore need
+        the `AutoService` class on runtime.        
         """.trimIndent()
     )
     implementation(kotlin("stdlib"))
@@ -67,7 +68,10 @@ configurations
         force(
             Ksp.symbolProcessingApi,
             Ksp.symbolProcessing,
+            Ksp.symbolProcessingAaEmb,
+            Ksp.symbolProcessingCommonDeps,
             Kotlin.Compiler.embeddable,
+            KotlinCompileTesting.libKsp,
         )
     }
 }
@@ -77,4 +81,21 @@ afterEvaluate {
     val kspTestKotlin by tasks.getting
     val launchTestProtoData by tasks.getting
     kspTestKotlin.dependsOn(launchTestProtoData)
+}
+
+if (JavaVersion.current() >= JavaVersion.VERSION_16) {
+    tasks.withType<Test>().configureEach {
+        jvmArgs(
+            "--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+        )
+    }
 }

@@ -30,6 +30,8 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.Modifier
+import com.google.devtools.ksp.symbol.Modifier.JAVA_STATIC
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import io.spine.server.entity.Entity
@@ -58,7 +60,7 @@ private fun Boolean.toErrorCount(): Int = if (this) 0 else 1
 
 private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
     val isStatic = when (origin) {
-        JAVA -> functionKind == FunctionKind.STATIC
+        JAVA -> modifiers.contains(JAVA_STATIC)
         KOTLIN -> parentDeclaration is KSClassDeclaration &&
                 (parentDeclaration as KSClassDeclaration).isCompanionObject
         else -> false
@@ -120,7 +122,8 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
         // We need the enclosing entity class.
         declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
     }
-    if (!environment.entityInterface.isAssignableFrom(declaringClass.asStarProjectedType())) {
+    val projectedType = declaringClass.asStarProjectedType()
+    if (!environment.entityInterface.isAssignableFrom(projectedType)) {
         environment.logger.error(
             "The declaring class of the $funRef annotated with $routeRef" +
                     " must implement the `${Entity::class.java.canonicalName}` interface.",

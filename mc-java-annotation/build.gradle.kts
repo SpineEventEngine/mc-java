@@ -26,7 +26,6 @@
 
 import io.spine.dependency.lib.Roaster
 import io.spine.dependency.local.Logging
-import io.spine.dependency.local.Spine
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
@@ -50,7 +49,7 @@ dependencies {
         exclude(group = guavaGroup)
     }
 
-    testImplementation(Spine.pluginTestlib)
+    testImplementation(ToolBase.pluginTestlib)
     testImplementation(gradleTestKit())
 }
 

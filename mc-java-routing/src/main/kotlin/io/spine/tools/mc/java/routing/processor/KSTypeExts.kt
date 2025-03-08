@@ -44,7 +44,7 @@ internal val KSType.ref: String
     get() = "`${declaration.simpleName.asString()}`"
 
 /**
- * Obtains a qualified name of the type surrouned with back ticks.
+ * Obtains a qualified name of the type surrounded with back ticks.
  */
 internal val KSType.qualifiedRef: String
     get() = "`${declaration.qualifiedName?.asString()}`"

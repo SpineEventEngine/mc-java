@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 
 plugins {
     id("io.spine.mc-java")
@@ -33,5 +33,5 @@ plugins {
 dependencies {
     implementation(project(":mc-java-base"))
     testImplementation(gradleTestKit())
-    testImplementation(Spine.testlib)
+    testImplementation(TestLib.lib)
 }

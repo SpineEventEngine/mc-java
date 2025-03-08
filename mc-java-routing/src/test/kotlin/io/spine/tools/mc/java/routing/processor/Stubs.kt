@@ -33,6 +33,7 @@ import com.google.devtools.ksp.processing.KSBuiltIns
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSDeclarationContainer
@@ -109,6 +110,9 @@ private class NotResolver : Resolver {
 
     override fun getKSNameFromString(name: String): KSName = notImplemented()
 
+    @KspExperimental
+    override fun getModuleName(): KSName = notImplemented()
+
     override fun getNewFiles(): Sequence<KSFile> = notImplemented()
 
     @KspExperimental
@@ -117,6 +121,14 @@ private class NotResolver : Resolver {
 
     @KspExperimental
     override fun getOwnerJvmClassName(declaration: KSPropertyDeclaration): String? =
+        notImplemented()
+
+    @KspExperimental
+    override fun getPackageAnnotations(packageName: String): Sequence<KSAnnotation> =
+        notImplemented()
+
+    @KspExperimental
+    override fun getPackagesWithAnnotation(annotationName: String): Sequence<String> =
         notImplemented()
 
     override fun getPropertyDeclarationByName(

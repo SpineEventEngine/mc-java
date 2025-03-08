@@ -24,9 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Reflect
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
 plugins {
@@ -35,9 +38,9 @@ plugins {
 
 dependencies {
     arrayOf(
-        Spine.reflect,
+        Reflect.lib,
         Logging.lib,
-        Spine.base,
+        Base.lib,
         ToolBase.psiJava,
         project(":mc-java-base")
     ).forEach {
@@ -46,7 +49,7 @@ dependencies {
 
     arrayOf(
         gradleTestKit(),
-        Spine.testlib,
+        TestLib.lib,
         ProtoData.testlib
     ).forEach {
         testImplementation(it)

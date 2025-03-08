@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing.processor
 
+import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.java
@@ -33,6 +34,7 @@ import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
 import io.spine.logging.testing.tapConsole
 import java.io.File
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 /**
  * Obtains the path to the classpath element which contains the receiver class.
@@ -78,8 +80,9 @@ internal fun kotlinFile(
  * @see io.spine.logging.testing.ConsoleTap.install
  * @see tapConsole
  */
-internal fun KotlinCompilation.compileSilently(): KotlinCompilation.Result {
-    var result: KotlinCompilation.Result? = null
+@ExperimentalCompilerApi
+internal fun KotlinCompilation.compileSilently(): JvmCompilationResult {
+    var result: JvmCompilationResult? = null
     tapConsole {
         result = compile()
     }
