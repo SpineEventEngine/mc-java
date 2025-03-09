@@ -35,7 +35,7 @@
 .java-version
 
 # Kotlin internal directory.
-BuildSrc/.kotlin
+buildSrc/.kotlin
 
 # IntelliJ IDEA modules and interim config files.
 *.iml
