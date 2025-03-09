@@ -26,8 +26,6 @@
 
 package io.spine.tools.mc.java.routing.processor
 
-import com.google.devtools.ksp.getJavaClassByName
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
