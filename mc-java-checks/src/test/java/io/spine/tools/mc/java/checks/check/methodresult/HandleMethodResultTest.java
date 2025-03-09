@@ -38,7 +38,7 @@ class HandleMethodResultTest {
 
     @BeforeEach
     void setUp() {
-        //noinspection unused
+        @SuppressWarnings("unused") // This is to check that the constructor works.
         var sanityCheck = new HandleMethodResult();
         helper = CompilationTestHelper.newInstance(HandleMethodResult.class, getClass());
     }
