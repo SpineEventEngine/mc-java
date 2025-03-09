@@ -36,13 +36,11 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.lib.Protobuf
-import io.spine.dependency.local.ArtifactVersion
 import io.spine.dependency.local.Base
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.Reflect
-import io.spine.dependency.local.Spine
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.Time
 import io.spine.dependency.local.ToolBase
@@ -63,7 +61,6 @@ import java.util.*
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
@@ -94,7 +91,7 @@ project.run {
 
     val javaVersion = BuildSettings.javaVersion
     configureJava(javaVersion)
-    configureKotlin(javaVersion)
+    configureKotlin()
     setupTests()
 
     val generatedDir = "$projectDir/generated"
@@ -140,8 +137,10 @@ fun Module.forceConfigurations() {
             resolutionStrategy {
                 force(
                     Kotlin.stdLib,
+                    Kotlin.scriptRuntime,
                     KotlinX.Coroutines.bom,
                     KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.coreJvm,
                     KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,
                     KotlinPoet.lib,
@@ -190,13 +189,12 @@ fun Module.configureJava(javaVersion: JavaLanguageVersion) {
     }
 }
 
-fun Module.configureKotlin(javaVersion: JavaLanguageVersion) {
+fun Module.configureKotlin() {
     kotlin {
         explicitApi()
-    }
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = javaVersion.toString()
-        setFreeCompilerArgs()
+        compilerOptions {
+            setFreeCompilerArgs()
+        }
     }
 }
 
@@ -206,6 +204,20 @@ fun Module.setupTests() {
         withType<Test> {
             useJUnitPlatform()
             configureLogging()
+            // See https://github.com/gradle/gradle/issues/18647.
+            jvmArgs(
+                "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                "--add-opens", "java.base/java.util=ALL-UNNAMED",
+                // Entries required for ErrorProne.
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+            )
         }
     }
 }

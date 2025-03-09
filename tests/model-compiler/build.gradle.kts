@@ -38,7 +38,9 @@ modelCompiler {
     java {
         codegen {
             // Turn off validation codegen during the transition to the new ProtoData API.
-            validation().enabled.set(false)
+            validation {
+                enabled.set(false)
+            }
 
             val methodAction = "io.spine.tools.mc.java.mgroup.given.AddOwnTypeMethod"
             val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"

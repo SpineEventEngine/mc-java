@@ -26,7 +26,6 @@
 
 @file:Suppress("RemoveRedundantQualifierName") // To prevent IDEA replacing FQN imports.
 
-import Build_gradle.Module
 import io.spine.dependency.build.Dokka
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.CoreJava

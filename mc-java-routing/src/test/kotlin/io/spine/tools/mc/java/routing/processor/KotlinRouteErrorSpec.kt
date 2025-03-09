@@ -166,7 +166,7 @@ internal class KotlinRouteErrorSpec : RouteCompilationTest() {
             @Route
             @JvmStatic
             fun route(e: StatusReported): DeviceId {
-                return event.getDevice()
+                return e.getDevice()
             }
         }
     }

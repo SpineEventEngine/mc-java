@@ -32,6 +32,6 @@ import io.spine.base.EventMessage;
 import io.spine.given.home.DeviceId;
 
 @GeneratedMixin
-public interface DeviceEvent extends EventMessage{
+public interface DeviceEvent extends EventMessage {
     DeviceId getDevice();
 }

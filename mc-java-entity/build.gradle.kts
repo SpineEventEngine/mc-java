@@ -26,7 +26,7 @@
 
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
-import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
 plugins {
@@ -43,7 +43,7 @@ dependencies {
         implementation(it)
     }
 
-    testImplementation(Spine.testlib)
+    testImplementation(TestLib.lib)
 }
 
 forceBaseInProtoTasks()
