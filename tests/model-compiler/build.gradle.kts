@@ -41,7 +41,6 @@ modelCompiler {
             validation {
                 enabled.set(false)
             }
-            //validation().enabled.set(false)
 
             val methodAction = "io.spine.tools.mc.java.mgroup.given.AddOwnTypeMethod"
             val nestedClassAction = "io.spine.tools.mc.java.mgroup.given.NestClassAction"
