@@ -72,8 +72,8 @@ val grGitVersion = "4.1.1"
 /**
  * The version of the Kotlin Gradle plugin used by the build process.
  *
- * This is likely the same [version of Kotlin][io.spine.dependency.lib.Kotlin.buildVersion]
- * which is used to build the project.
+ * This version may change from the [version of Kotlin][io.spine.dependency.lib.Kotlin.version]
+ * used by the project.
  */
 val kotlinVersion = "2.1.10"
 
@@ -149,12 +149,8 @@ configurations.all {
 
             // Force Kotlin lib versions avoiding using those bundled with Gradle.
             "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
-            "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-
-            "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
+            "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         )
     }
 }

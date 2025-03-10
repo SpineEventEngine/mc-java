@@ -24,7 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.devtools.ksp.KspExperimental
 import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
@@ -38,16 +37,18 @@ import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    id("io.spine.mc-java")
     ksp
+    id("io.spine.mc-java")
 }
 
 ksp {
-    @OptIn(KspExperimental::class)
+    @OptIn(com.google.devtools.ksp.KspExperimental::class)
     useKsp2.set(true)
 }
 
 dependencies {
+    compileOnly(Kotlin.Compiler.embeddable)
+
     // Dependencies for the code generation part.
     ksp(AutoServiceKsp.processor)?.because(
         "`RouteProcessorProvider` is annotated with `@AutoService`."
@@ -61,19 +62,21 @@ dependencies {
     )
     implementation(kotlin("stdlib"))
     implementation(Ksp.symbolProcessingApi)
+    implementation(Ksp.gradlePlugin)
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
 
-    // The dependencies for Gradle plugin part.
+    // The dependencies for the Gradle plugin part.
     compileOnly(gradleApi())
     compileOnly(gradleKotlinDsl())
-    compileOnly(Ksp.gradlePlugin)
+//    compileOnly(Ksp.gradlePlugin)
     compileOnly(Kotlin.GradlePlugin.lib)
     implementation(ToolBase.pluginBase)
 
     testImplementation(gradleKotlinDsl())
     testImplementation(Kotlin.GradlePlugin.lib)
+//    testCompileOnly(Kotlin.Compiler.embeddable)
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
     testImplementation(gradleTestKit())
