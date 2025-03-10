@@ -37,8 +37,8 @@ import io.spine.logging.WithLogging
 import io.spine.logging.testing.ConsoleTap
 import io.spine.server.route.Route
 import io.spine.validate.ValidatingBuilder
+import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
-import org.jetbrains.kotlin.config.JvmTarget
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 
@@ -47,7 +47,7 @@ import org.junit.jupiter.api.BeforeEach
  *
  * The tests use types from the Protobuf code generated for the `given.devices` proto package.
  */
-@ExperimentalCompilerApi
+@OptIn(ExperimentalCompilerApi::class)
 sealed class RouteCompilationTest {
 
     companion object {
@@ -69,7 +69,7 @@ sealed class RouteCompilationTest {
     @BeforeEach
     fun prepareCompilation() {
         compilation = KotlinCompilation()
-        compilation.jvmTarget = JvmTarget.JVM_17.description
+        compilation.jvmTarget = JavaVersion.VERSION_17.toString()
 
         val dependencyJars = setOf(
             AutoService::class.java,

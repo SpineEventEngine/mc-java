@@ -80,7 +80,7 @@ internal fun kotlinFile(
  * @see io.spine.logging.testing.ConsoleTap.install
  * @see tapConsole
  */
-@ExperimentalCompilerApi
+@OptIn(ExperimentalCompilerApi::class)
 internal fun KotlinCompilation.compileSilently(): JvmCompilationResult {
     var result: JvmCompilationResult? = null
     tapConsole {

@@ -24,19 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.dependency.local
+package io.spine.tools.mc.java.routing.gradle
 
-/**
- * Spine Base module.
- *
- * @see <a href="https://github.com/SpineEventEngine/base">spine-base</a>
- */
-@Suppress("ConstPropertyName")
-object Base {
-    const val version = "2.0.0-SNAPSHOT.301"
-    const val versionForBuildScript = "2.0.0-SNAPSHOT.301"
-    const val group = Spine.group
-    const val artifact = "spine-base"
-    const val lib = "$group:$artifact:$version"
-    const val libForBuildScript = "$group:$artifact:$versionForBuildScript"
+import org.gradle.workers.WorkAction
+import org.gradle.workers.WorkParameters
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+
+// https://kotlinlang.org/docs/whatsnew21.html#compiler-symbols-hidden-from-the-kotlin-gradle-plugin-api
+public abstract class ActionUsingKotlinCompiler : WorkAction<WorkParameters.None> {
+    override fun execute() {
+        println("Kotlin compiler version: ${KotlinCompilerVersion.getVersion()}")
+    }
 }

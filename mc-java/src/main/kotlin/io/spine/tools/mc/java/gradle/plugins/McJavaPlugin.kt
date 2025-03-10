@@ -38,6 +38,7 @@ import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.McJavaOptions.Companion.name
 import io.spine.tools.mc.java.gradle.mcJava
+import io.spine.tools.mc.java.routing.gradle.RoutingPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -88,7 +89,8 @@ private fun Project.createAndApplyPlugins() {
         CleaningPlugin(),
         EnableGrpcPlugin(),
         McJavaChecksPlugin(),
-        ProtoDataConfigPlugin()
+        ProtoDataConfigPlugin(),
+        RoutingPlugin()
     ).forEach {
         apply(it)
     }

@@ -34,7 +34,6 @@ import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.Reflect
-import io.spine.dependency.local.Spine
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.Time
 import io.spine.dependency.local.ToolBase
@@ -47,7 +46,6 @@ import io.spine.gradle.kotlin.setFreeCompilerArgs
 import io.spine.gradle.publish.PublishingRepos.gitHub
 import io.spine.gradle.standardToSpineSdk
 import io.spine.gradle.testing.configureLogging
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 
@@ -69,7 +67,7 @@ buildscript {
         }
         classpath(protoData.pluginLib)
         classpath(io.spine.dependency.local.McJava.pluginLib(mcJavaVersion))
-        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:1.7.10-1.0.6")
+        classpath(io.spine.dependency.build.Ksp.gradlePlugin)
     }
 
     with(configurations) {
