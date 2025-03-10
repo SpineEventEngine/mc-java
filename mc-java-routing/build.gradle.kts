@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.devtools.ksp.KspExperimental
 import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
@@ -41,6 +42,11 @@ plugins {
     ksp
 }
 
+ksp {
+    @OptIn(KspExperimental::class)
+    useKsp2.set(true)
+}
+
 dependencies {
     // Dependencies for the code generation part.
     ksp(AutoServiceKsp.processor)?.because(
@@ -49,7 +55,8 @@ dependencies {
     implementation(AutoService.annotations)?.because(
         """
         We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
-        a service provider but also for annotating the generated code.        
+        a service provider but also for annotating the generated code and therefore need
+        the `AutoService` class on runtime.        
         """.trimIndent()
     )
     implementation(kotlin("stdlib"))
@@ -82,7 +89,10 @@ configurations
         force(
             Ksp.symbolProcessingApi,
             Ksp.symbolProcessing,
+            Ksp.symbolProcessingAaEmb,
+            Ksp.symbolProcessingCommonDeps,
             Kotlin.Compiler.embeddable,
+            KotlinCompileTesting.libKsp,
         )
     }
 }
@@ -92,4 +102,21 @@ afterEvaluate {
     val kspTestKotlin by tasks.getting
     val launchTestProtoData by tasks.getting
     kspTestKotlin.dependsOn(launchTestProtoData)
+}
+
+if (JavaVersion.current() >= JavaVersion.VERSION_16) {
+    tasks.withType<Test>().configureEach {
+        jvmArgs(
+            "--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+            "--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+        )
+    }
 }

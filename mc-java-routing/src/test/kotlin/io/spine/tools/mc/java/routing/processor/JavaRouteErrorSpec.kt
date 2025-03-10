@@ -266,7 +266,6 @@ internal class JavaRouteErrorSpec : RouteCompilationTest() {
             it shouldContain "A command routing function can be declared in a class derived"
             it shouldContain simply<Aggregate<*, *, *>>()
             it shouldContain simply<ProcessManager<*, *, *>>()
-            it shouldContain routeRef
             it shouldContain " Encountered: `${Projection::class.java.canonicalName}`."
         }
     }

@@ -30,9 +30,13 @@ import io.spine.dependency.build.ErrorProne
 import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinX
+import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
 import io.spine.dependency.local.ProtoData
+import io.spine.dependency.local.Reflect
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.TestLib
+import io.spine.dependency.local.Time
 import io.spine.dependency.local.ToolBase
 import io.spine.dependency.local.Validation
 import io.spine.dependency.test.JUnit
@@ -65,11 +69,11 @@ buildscript {
         }
         classpath(protoData.pluginLib)
         classpath(io.spine.dependency.local.McJava.pluginLib(mcJavaVersion))
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:1.7.10-1.0.6")
     }
 
     with(configurations) {
         doForceVersions(this)
-        val spine = io.spine.dependency.local.Spine
         val toolBase = io.spine.dependency.local.ToolBase
         val logging = io.spine.dependency.local.Logging
         val grpc = io.spine.dependency.lib.Grpc
@@ -81,15 +85,22 @@ buildscript {
                     io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
                     grpc.api,
                     "io.spine:protodata:${protoData.version}",
-                    spine.reflect,
-                    spine.base,
-                    spine.time,
+                    io.spine.dependency.local.Reflect.lib,
+                    io.spine.dependency.local.Base.lib,
+                    io.spine.dependency.local.Time.lib,
                     toolBase.lib,
                     toolBase.pluginBase,
                     logging.lib,
                     logging.libJvm,
                     logging.middleware,
                     io.spine.dependency.local.Validation.runtime,
+
+                    io.spine.dependency.lib.Kotlin.GradlePlugin.api,
+                    io.spine.dependency.lib.Kotlin.GradlePlugin.lib,
+                    io.spine.dependency.lib.Kotlin.GradlePlugin.model,
+                    io.spine.dependency.lib.Kotlin.toolingCore,
+
+                    io.spine.dependency.lib.KotlinX.Coroutines.coreJvm,
                 )
             }
         }
@@ -99,6 +110,7 @@ buildscript {
 @Suppress("RemoveRedundantQualifierName") // Cannot use imports here.
 plugins {
     java
+    kotlin("jvm")
     idea
     id("com.google.protobuf")
     id("net.ltgt.errorprone")
@@ -127,16 +139,16 @@ allprojects {
         all {
             resolutionStrategy {
                 force(
-                    Kotlin.stdLibJdk7,
+                    Kotlin.stdLib,
                     KotlinX.Coroutines.core,
                     KotlinX.Coroutines.jdk8,
                     Grpc.api,
-                    Spine.reflect,
-                    Spine.base,
-                    Spine.time,
-                    Spine.testlib,
-                    Spine.toolBase,
-                    Spine.pluginBase,
+                    Reflect.lib,
+                    Base.lib,
+                    Time.lib,
+                    TestLib.lib,
+                    ToolBase.lib,
+                    ToolBase.pluginBase,
                     Logging.lib,
                     Logging.libJvm,
                     Logging.middleware,
@@ -165,8 +177,8 @@ subprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = BuildSettings.javaVersionCompat
+        targetCompatibility = BuildSettings.javaVersionCompat
 
         tasks.withType<JavaCompile>().configureEach {
             configureJavac()
@@ -174,18 +186,20 @@ subprojects {
         }
     }
 
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-        setFreeCompilerArgs()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(BuildSettings.jvmTarget)
+            setFreeCompilerArgs()
+        }
     }
 
     dependencies {
         errorprone(ErrorProne.core)
         errorproneJavac(ErrorProne.javacPlugin)
         ErrorProne.annotations.forEach { compileOnly(it) }
-        implementation(Spine.base)
+        implementation(Base.lib)
         implementation(Logging.lib)
-        testImplementation(Spine.testlib)
+        testImplementation(TestLib.lib)
         Truth.libs.forEach { testImplementation(it) }
         testRuntimeOnly(JUnit.runner)
     }
