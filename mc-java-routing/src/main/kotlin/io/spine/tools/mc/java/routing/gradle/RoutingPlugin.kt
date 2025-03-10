@@ -59,10 +59,31 @@ import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
  */
 public class RoutingPlugin : Plugin<Project> {
 
-    override fun apply(project: Project): Unit = project.run {
-        applyKspPlugin()
-        makeKspDependOnProtoData()
-        replaceKspOutputDirs()
+    override fun apply(target: Project) {
+
+        val myDependencyScope = target.configurations.create("myDependencyScope")
+        target.dependencies.add(
+            myDependencyScope.name,
+            "$KOTLIN_COMPILER_EMBEDDABLE:$KOTLIN_COMPILER_VERSION"
+        )
+        val myResolvableConfiguration = target.configurations.create("myResolvable") {
+            it.extendsFrom(myDependencyScope)
+        }
+        target.tasks.register("myTask", TaskUsingKotlinCompiler::class.java) {
+            it.kotlinCompiler.from(myResolvableConfiguration)
+        }
+
+        target.run {
+            applyKspPlugin()
+            makeKspDependOnProtoData()
+            replaceKspOutputDirs()
+        }
+    }
+
+    public companion object {
+        public const val KOTLIN_COMPILER_EMBEDDABLE: String =
+            "org.jetbrains.kotlin:kotlin-compiler-embeddable"
+        public const val KOTLIN_COMPILER_VERSION: String = "2.1.10"
     }
 }
 
@@ -143,7 +164,8 @@ private fun Project.replaceKspOutputDirs() {
     afterEvaluate {
         kspTasks().forEach { (_, kspTask) ->
             val current = kspTask.destination.get().path
-            val replaced = current.replace("$buildDir/generated", generatedDir.toString())
+            val buildGenerated = layout.buildDirectory.dir("generated").get().asFile.path
+            val replaced = current.replace(buildGenerated, generatedDir.toString())
             kspTask.destination.set(File(replaced))
         }
     }

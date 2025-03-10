@@ -31,8 +31,22 @@ import io.spine.testing.SlowTest
 import io.spine.tools.gradle.project.sourceSets
 import java.io.File
 import java.net.URI
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.problems.Problem
+import org.gradle.api.problems.ProblemId
+import org.gradle.api.problems.ProblemReporter
+import org.gradle.api.problems.ProblemSpec
+import org.gradle.api.problems.internal.AdditionalDataBuilderFactory
+import org.gradle.api.problems.internal.InternalProblem
+import org.gradle.api.problems.internal.InternalProblemBuilder
+import org.gradle.api.problems.internal.InternalProblemReporter
+import org.gradle.api.problems.internal.InternalProblemSpec
+import org.gradle.api.problems.internal.InternalProblems
+import org.gradle.api.problems.internal.ProblemsProgressEventEmitterHolder
+import org.gradle.internal.operations.OperationIdentifier
+import org.gradle.internal.reflect.Instantiator
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -48,6 +62,10 @@ internal class RoutingPluginTest {
         @BeforeAll
         @JvmStatic
         fun setupProject(@TempDir projectDir: File) {
+            // See: https://github.com/gradle/gradle/issues/31862#issuecomment-2687633265
+            // and stub classes below.
+            ProblemsProgressEventEmitterHolder.init(InternalProblemsStub())
+
             project = ProjectBuilder.builder()
                 .withProjectDir(projectDir)
                 .build()
@@ -85,4 +103,56 @@ fun RepositoryHandler.applyStandard() {
     maven {
         it.url = URI("$registryBaseUrl/snapshots")
     }
+}
+
+////////////// Stubs copied from ToolBase `PlugableProjectSpec.kt`
+
+/**
+ * The stub class for workaround for
+ * [this Gradle issue](https://github.com/gradle/gradle/issues/31862).
+ *
+ * @see <a href="https://github.com/gradle/gradle/issues/31862#issuecomment-2687633265">
+ *     Workaround</a>
+ */
+private class InternalProblemsStub : InternalProblems {
+    override fun getReporter(): ProblemReporter = notImplemented()
+    override fun getInternalReporter(): InternalProblemReporter = InternalProblemReporterStub()
+    override fun getAdditionalDataBuilderFactory(): AdditionalDataBuilderFactory = notImplemented()
+    override fun getInstantiator(): Instantiator = notImplemented()
+    override fun getProblemBuilder(): InternalProblemBuilder = notImplemented()
+}
+
+private fun notImplemented(): Nothing = TODO("Not yet implemented")
+
+/**
+ * The stub class for workaround for
+ * [this Gradle issue](https://github.com/gradle/gradle/issues/31862).
+ *
+ * @see <a href="https://github.com/gradle/gradle/issues/31862#issuecomment-2687633265">
+ *     Workaround</a>
+ */
+private class InternalProblemReporterStub : InternalProblemReporter {
+    override fun create(problemId: ProblemId, action: Action<in ProblemSpec>): Problem =
+        notImplemented()
+    override fun report(problem: Problem, id: OperationIdentifier) = notImplemented()
+    override fun report(problemId: ProblemId, spec: Action<in ProblemSpec>) = notImplemented()
+    override fun report(problem: Problem) = notImplemented()
+    override fun report(problems: MutableCollection<out Problem>) = notImplemented()
+
+    override fun throwing(
+        exception: Throwable,
+        problemId: ProblemId,
+        spec: Action<in ProblemSpec>
+    ): RuntimeException = notImplemented()
+
+    override fun throwing(exception: Throwable, problem: Problem): RuntimeException =
+        notImplemented()
+
+    override fun throwing(
+        exception: Throwable,
+        problems: MutableCollection<out Problem>
+    ): RuntimeException = notImplemented()
+
+    override fun internalCreate(action: Action<in InternalProblemSpec>): InternalProblem =
+        notImplemented()
 }

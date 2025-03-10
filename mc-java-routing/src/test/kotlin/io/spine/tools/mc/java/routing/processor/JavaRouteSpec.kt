@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test
  *
  * @see JavaRouteErrorSpec
  */
-@ExperimentalCompilerApi
+@OptIn(ExperimentalCompilerApi::class)
 @DisplayName("`RouteProcessor` should detect Java code errors")
 internal class JavaRouteSpec : RouteCompilationTest() {
 
