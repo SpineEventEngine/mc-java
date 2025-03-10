@@ -24,12 +24,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.301")
-val versionToPublish by extra(mcJavaVersion)
+package io.spine.tools.mc.java.routing.gradle
+
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.tasks.Classpath
+import org.gradle.api.tasks.TaskAction
+import org.gradle.workers.WorkerExecutor
+import javax.inject.Inject
+
+// https://kotlinlang.org/docs/whatsnew21.html#compiler-symbols-hidden-from-the-kotlin-gradle-plugin-api
+public abstract class TaskUsingKotlinCompiler: DefaultTask() {
+    
+    @get:Inject
+    public abstract val executor: WorkerExecutor
+
+    @get:Classpath
+    public abstract val kotlinCompiler: ConfigurableFileCollection
+
+    @TaskAction
+    public fun compile() {
+        val workQueue = executor.classLoaderIsolation {
+            it.classpath.from(kotlinCompiler)
+        }
+        workQueue.submit(ActionUsingKotlinCompiler::class.java) {}
+    }
+}

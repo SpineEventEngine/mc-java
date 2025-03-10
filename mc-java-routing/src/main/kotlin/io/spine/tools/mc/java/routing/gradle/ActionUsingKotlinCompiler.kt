@@ -24,12 +24,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * The version of McJava to publish.
- *
- * Do not rename this property, as it is also used in the integration tests via its name.
- *
- * For versions of Spine-based dependencies please see [io.spine.internal.dependency.spine].
- */
-val mcJavaVersion by extra("2.0.0-SNAPSHOT.301")
-val versionToPublish by extra(mcJavaVersion)
+package io.spine.tools.mc.java.routing.gradle
+
+import org.gradle.workers.WorkAction
+import org.gradle.workers.WorkParameters
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+
+// https://kotlinlang.org/docs/whatsnew21.html#compiler-symbols-hidden-from-the-kotlin-gradle-plugin-api
+public abstract class ActionUsingKotlinCompiler : WorkAction<WorkParameters.None> {
+    override fun execute() {
+        println("Kotlin compiler version: ${KotlinCompilerVersion.getVersion()}")
+    }
+}
