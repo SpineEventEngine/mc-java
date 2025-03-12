@@ -35,6 +35,7 @@ import io.spine.tools.gradle.DependencyVersions
 import io.spine.tools.gradle.ThirdPartyDependency
 import io.spine.tools.gradle.artifact
 import io.spine.tools.gradle.project.sourceSetNames
+import io.spine.protodata.gradle.ProtoDataTaskName
 import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.task.TaskWithSourceSetName
 import java.io.File
@@ -59,21 +60,8 @@ import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
  */
 public class RoutingPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) {
-
-        val myDependencyScope = target.configurations.create("myDependencyScope")
-        target.dependencies.add(
-            myDependencyScope.name,
-            "$KOTLIN_COMPILER_EMBEDDABLE:$KOTLIN_COMPILER_VERSION"
-        )
-        val myResolvableConfiguration = target.configurations.create("myResolvable") {
-            it.extendsFrom(myDependencyScope)
-        }
-        target.tasks.register("myTask", TaskUsingKotlinCompiler::class.java) {
-            it.kotlinCompiler.from(myResolvableConfiguration)
-        }
-
-        target.run {
+    override fun apply(project: Project) {
+        project.run {
             applyKspPlugin()
             makeKspDependOnProtoData()
             replaceKspOutputDirs()
@@ -175,13 +163,6 @@ private fun Project.replaceKspOutputDirs() {
 public class KspTskName(ssn: SourceSetName) :
     TaskWithSourceSetName("ksp${ssn.toInfix()}Kotlin", ssn)
 
-//TODO:2025-02-27:alexander.yevsyukov: This should be a part of ProtoData.
-/**
- * The name of the `LaunchProtoData` task for the given source set.
- */
-public class ProtoDataTaskName(ssn: SourceSetName) :
-    TaskWithSourceSetName("launch${ssn.toInfix()}ProtoData", ssn)
-
 /**
  * Tells if the given module already present in the `compile` configuration
  * of the `buildscript` of this project.
@@ -205,7 +186,7 @@ internal val routingVersion: String by lazy {
 private val routingKspPlugin: Artifact by lazy {
     artifact {
         useSpineToolsGroup()
-        name = "spine-mc-java-routing"
+        name = MODULE_NAME
         version = routingVersion
     }
 }
