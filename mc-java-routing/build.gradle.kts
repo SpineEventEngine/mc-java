@@ -31,6 +31,7 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
+import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 import io.spine.dependency.test.Kotest
@@ -64,6 +65,7 @@ dependencies {
     implementation(Ksp.symbolProcessingApi)
     implementation(Ksp.gradlePlugin)
     implementation(KotlinPoet.ksp)
+    implementation(ProtoData.gradleApi)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
 

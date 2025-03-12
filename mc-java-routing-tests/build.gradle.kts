@@ -33,6 +33,8 @@ import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
     kotlin("jvm")
+    /* We still apply the KSP plugin here because we run these tests
+       using the `dogfooding` version of McJava. */
     ksp
     `java-test-fixtures`
     id("io.spine.mc-java")
