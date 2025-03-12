@@ -26,6 +26,9 @@
 
 package io.spine.tools.mc.java.routing.gradle
 
+import org.gradle.api.Project
+import java.nio.file.Path
+
 internal object KspGradlePlugin {
 
     /**
@@ -44,6 +47,11 @@ internal object KspGradlePlugin {
         }
         val pluginVersion = versions[mostRecentCompatible]
         return "$mostRecentCompatible-$pluginVersion"
+    }
+
+    fun defaultTargetDirectory(project: Project): Path {
+        val generatedDir = project.layout.buildDirectory.dir("generated")
+        return generatedDir.get().asFile.toPath()
     }
 
     /**

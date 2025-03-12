@@ -150,10 +150,11 @@ private fun Project.kspTasks(): Map<SourceSetName, KspTaskJvm> {
  */
 private fun Project.replaceKspOutputDirs() {
     afterEvaluate {
+        val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
+        val underProject = generatedDir.toString()
         kspTasks().forEach { (_, kspTask) ->
             val current = kspTask.destination.get().path
-            val buildGenerated = layout.buildDirectory.dir("generated").get().asFile.path
-            val replaced = current.replace(buildGenerated, generatedDir.toString())
+            val replaced = current.replace(underBuild, underProject)
             kspTask.destination.set(File(replaced))
         }
     }
