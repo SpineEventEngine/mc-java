@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
+import com.google.devtools.ksp.gradle.KspExtension
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.spine.protodata.gradle.ProtoDataTaskName
 import io.spine.tools.code.SourceSetName
@@ -36,6 +37,7 @@ import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
+import org.gradle.kotlin.dsl.findByType
 
 /**
  * Configures a Gradle project to run [KSP](https://kotlinlang.org/docs/ksp-overview.html) with
@@ -87,6 +89,10 @@ private fun Project.applyKspPlugin(mavenCoordinates: String) {
 
         afterEvaluate {
             pluginManager.apply(id)
+            extensions.findByType<KspExtension>()?.apply {
+                @OptIn(com.google.devtools.ksp.KspExperimental::class)
+                useKsp2.set(true)
+            }
             configurations
                 .filter { it.name.startsWith("ksp") }
                 .forEach { kspConfiguration ->
