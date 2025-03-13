@@ -34,26 +34,29 @@ import io.spine.tools.gradle.ThirdPartyDependency
 import io.spine.tools.gradle.artifact
 import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin
 
+/**
+ * Applies this module as a plugin to KSP by calculating [mavenCoordinates].
+ */
 public class RoutingPlugin : KspBasedPlugin() {
 
     override val mavenCoordinates: String
         get() = routingKspPlugin.notation()
 
-}
+    private val moduleName = "spine-mc-java-routing"
+    private val versions = DependencyVersions.loadFor(moduleName)
 
-private const val MODULE_NAME = "spine-mc-java-routing"
-private val versions = DependencyVersions.loadFor(MODULE_NAME)
+    private val routingVersion: String by lazy {
+        val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, moduleName)
+        versions.versionOf(self)
+            .orElseThrow { error("Unable to load versions of `$self`.") }
+    }
 
-internal val routingVersion: String by lazy {
-    val self: Dependency = ThirdPartyDependency(SPINE_TOOLS_GROUP, MODULE_NAME)
-    versions.versionOf(self)
-        .orElseThrow { error("Unable to load versions of `$self`.") }
-}
-
-private val routingKspPlugin: Artifact by lazy {
-    artifact {
-        useSpineToolsGroup()
-        name = MODULE_NAME
-        version = routingVersion
+    private val routingKspPlugin: Artifact by lazy {
+        artifact {
+            useSpineToolsGroup()
+            name = moduleName
+            version = routingVersion
+        }
     }
 }
+

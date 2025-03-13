@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.gradle.api.Project
 /**
  * Spine Model Compiler for Java Gradle plugin.
  *
- * Applies dependent plugins.
+ * Applies all McJava sub-plugins to the given project.
  */
 public class McJavaPlugin : LanguagePlugin(name(), McJavaOptions::class.java.kotlin) {
 
@@ -85,13 +85,14 @@ private fun Project.setProtocArtifact() {
  * Creates all the plugins that are parts of `mc-java` and applies them to this project.
  */
 private fun Project.createAndApplyPlugins() {
-    listOf(
+    val plugins: List<Plugin<Project>> = listOf(
         CleaningPlugin(),
         EnableGrpcPlugin(),
         McJavaChecksPlugin(),
         ProtoDataConfigPlugin(),
-        RoutingPlugin()
-    ).forEach {
+        RoutingPlugin() as Plugin<Project>
+    )
+    plugins.forEach {
         apply(it)
     }
 }
