@@ -29,6 +29,7 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
+import io.spine.dependency.test.Kotest
 
 dependencies {
     compileOnlyApi(Kotlin.Compiler.embeddable)
@@ -47,4 +48,5 @@ dependencies {
     testImplementation(gradleKotlinDsl())
     testImplementation(Kotlin.GradlePlugin.lib)
     testImplementation(TestLib.lib)
+    testImplementation(Kotest.assertions)
 }

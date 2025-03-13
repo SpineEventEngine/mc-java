@@ -26,14 +26,15 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
+import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
 import io.spine.testing.SlowTest
 import io.spine.tools.gradle.project.sourceSets
 import java.io.File
-import java.net.URI
 import org.gradle.api.Action
 import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.problems.Problem
 import org.gradle.api.problems.ProblemId
 import org.gradle.api.problems.ProblemReporter
@@ -47,6 +48,7 @@ import org.gradle.api.problems.internal.InternalProblems
 import org.gradle.api.problems.internal.ProblemsProgressEventEmitterHolder
 import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.reflect.Instantiator
+import org.gradle.kotlin.dsl.withType
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -70,11 +72,14 @@ internal class KspBasedPluginTest {
                 .withProjectDir(projectDir)
                 .build()
 
-            project.buildscript.repositories.applyStandard()
+            project.buildscript.repositories.run {
+                mavenLocal()
+                mavenCentral()
+            }
 
             project.pluginManager.run {
                 apply("java")
-                apply("org.jetbrains.kotlin.jvm")
+                apply("org.jetbrains.kotlin.jvm") // This plugin in the test classpath dependency.
                 apply(StubPlugin::class.java)
             }
 
@@ -91,6 +96,17 @@ internal class KspBasedPluginTest {
     fun `KSP plugin is applied`() {
         project.plugins.findPlugin(KspGradlePlugin.id) shouldNotBe null
     }
+
+    @Test
+    fun `KSP tasks output is redirected`() {
+        val projectRoot = project.projectDir.absolutePath
+        project.tasks.withType<KspTaskJvm>().forEach { task ->
+            task.destination.get().absolutePath.let { path ->
+                path shouldNotContain "/build/"
+                path shouldContain "$projectRoot/generated/ksp"
+            }
+        }
+    }
 }
 
 private class StubPlugin : KspBasedPlugin() {
@@ -102,20 +118,6 @@ private class StubPlugin : KspBasedPlugin() {
     override val mavenCoordinates: String = "org.example:core:1.0.0"
 
 }
-
-fun RepositoryHandler.applyStandard() {
-    mavenLocal()
-    mavenCentral()
-    val registryBaseUrl = "https://europe-maven.pkg.dev/spine-event-engine"
-    maven {
-        it.url = URI("$registryBaseUrl/releases")
-    }
-    maven {
-        it.url = URI("$registryBaseUrl/snapshots")
-    }
-}
-
-////////////// Stubs copied from ToolBase `PlugableProjectSpec.kt`
 
 /**
  * The stub class for workaround for
