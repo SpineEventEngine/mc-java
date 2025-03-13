@@ -26,153 +26,19 @@
 
 package io.spine.tools.mc.java.routing.gradle
 
-import com.google.devtools.ksp.gradle.KspTaskJvm
-import io.spine.tools.code.SourceSetName
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.gradle.Artifact.SPINE_TOOLS_GROUP
 import io.spine.tools.gradle.Dependency
 import io.spine.tools.gradle.DependencyVersions
 import io.spine.tools.gradle.ThirdPartyDependency
 import io.spine.tools.gradle.artifact
-import io.spine.tools.gradle.project.sourceSetNames
-import io.spine.protodata.gradle.ProtoDataTaskName
-import io.spine.tools.gradle.protobuf.generatedDir
-import io.spine.tools.gradle.task.TaskWithSourceSetName
-import java.io.File
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
+import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin
 
-/**
- * Configures a Gradle project to run [KSP](https://kotlinlang.org/docs/ksp-overview.html) with
- * [RouteProcessor][io.spine.tools.mc.java.routing.processor.RouteProcessor].
- *
- * The plugin performs the following configuration steps:
- *
- *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) if it is not added already.
- *     When adding, we find the most recent version of the KSP Gradle Plugin which
- *     is compatible with the version of Kotlin used in the current Gradle runtime.
- *
- *  2. Makes a KSP task depend on a `LaunchProtoData` task for the same source set.
- *
- *  3. Replace the output of KSP tasks to generate the code to [Project.generatedDir]
- *     instead of the default directory set by the KSP Gradle Plugin.
- */
-public class RoutingPlugin : Plugin<Project> {
+public class RoutingPlugin : KspBasedPlugin() {
 
-    override fun apply(project: Project) {
-        project.run {
-            applyKspPlugin()
-            makeKspDependOnProtoData()
-            replaceKspOutputDirs()
-        }
-    }
+    override val mavenCoordinates: String
+        get() = routingKspPlugin.notation()
 
-    public companion object {
-        public const val KOTLIN_COMPILER_EMBEDDABLE: String =
-            "org.jetbrains.kotlin:kotlin-compiler-embeddable"
-        public const val KOTLIN_COMPILER_VERSION: String = "2.1.10"
-    }
-}
-
-/**
- * Applies [KspGradlePlugin], if it is not yet added, to this project.
- */
-private fun Project.applyKspPlugin() =
-    with(KspGradlePlugin) {
-        if (pluginManager.hasPlugin(id)) {
-            return
-        }
-        val alreadyInClasspath =
-            rootProject.buildscriptClasspathHas(module)
-                    || project.buildscriptClasspathHas(module)
-
-        if (!alreadyInClasspath) {
-            val version = findCompatible(KotlinVersion.CURRENT)
-            buildscript.dependencies.add(
-                CLASSPATH_CONFIGURATION,
-                gradlePluginArtifact(version)
-            )
-        }
-
-        project.afterEvaluate {
-            pluginManager.apply(id)
-            val routingPlugin = routingKspPlugin.notation()
-            configurations
-                .filter { it.name.startsWith("ksp") }
-                .forEach {
-                    project.dependencies.add(it.name, routingPlugin)
-                }
-        }
-    }
-
-/**
- * Makes `ksp<SourceSetName>Kotlin` tasks depend on corresponding
- * `launch<SourceSetName>ProtoData` tasks.
- *
- * This dependency is needed to avoid Gradle warning on disabled execution
- * optimization because of the absence of explicit or implicit dependencies.
- */
-private fun Project.makeKspDependOnProtoData() {
-    afterEvaluate {
-        //TODO:2025-03-02:alexander.yevsyukov: If no KSP tasks found yet, this means that
-        // this `afterEvaluate` block is executed before the one which KSP Gradle Plugin does.
-        // We need to find the way to establish the dependency on ProtoData tasks from KSP tasks
-        // in a lazily evaluated manner.
-        val kspTasks = kspTasks()
-        kspTasks.forEach { (ssn, kspTask) ->
-            val protoDataTaskName = ProtoDataTaskName(ssn)
-            val protoDataTask = tasks.findByName(protoDataTaskName.value())
-            if (protoDataTask != null) {
-                kspTask.dependsOn(protoDataTask)
-            }
-        }
-    }
-}
-
-/**
- * Lists KSP tasks found in this project for its source sets.
- */
-private fun Project.kspTasks(): Map<SourceSetName, KspTaskJvm> {
-    val withNulls = sourceSetNames.associateWith { ssn ->
-        val kspTaskName = KspTskName(ssn)
-        tasks.findByName(kspTaskName.value())
-    }
-    val result = withNulls.filterValues { it != null }
-        .mapValues { it.value!! as KspTaskJvm }
-    return result
-}
-
-/**
- * The function replaces default destination directory defied by
- * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
- * the one we used for all the generated code at the level of the project root.
- */
-private fun Project.replaceKspOutputDirs() {
-    afterEvaluate {
-        val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
-        val underProject = generatedDir.toString()
-        kspTasks().forEach { (_, kspTask) ->
-            val current = kspTask.destination.get().path
-            val replaced = current.replace(underBuild, underProject)
-            kspTask.destination.set(File(replaced))
-        }
-    }
-}
-
-//TODO:2025-02-27:alexander.yevsyukov: This should go to ToolBase.
-public class KspTskName(ssn: SourceSetName) :
-    TaskWithSourceSetName("ksp${ssn.toInfix()}Kotlin", ssn)
-
-/**
- * Tells if the given module already present in the `compile` configuration
- * of the `buildscript` of this project.
- */
-private fun Project.buildscriptClasspathHas(module: String): Boolean {
-    val classpath = buildscript.configurations.findByName(CLASSPATH_CONFIGURATION)
-    return classpath?.let {
-        it.dependencies.any { dep -> "${dep.group}:${dep.name}" == module }
-    } ?: false
 }
 
 private const val MODULE_NAME = "spine-mc-java-routing"

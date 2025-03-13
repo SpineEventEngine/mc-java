@@ -32,6 +32,9 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
+import io.spine.tools.mc.java.ksp.processor.funRef
+import io.spine.tools.mc.java.ksp.processor.isSame
+import io.spine.tools.mc.java.ksp.processor.toType
 import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.qualify
 import io.spine.type.KnownMessage
 

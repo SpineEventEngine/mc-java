@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.gradle
+package io.spine.tools.mc.java.ksp.gradle
 
 import io.kotest.matchers.shouldNotBe
 import io.spine.testing.SlowTest
@@ -53,7 +53,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 
 @SlowTest
-internal class RoutingPluginTest {
+internal class KspBasedPluginTest {
 
     companion object {
 
@@ -75,7 +75,7 @@ internal class RoutingPluginTest {
             project.pluginManager.run {
                 apply("java")
                 apply("org.jetbrains.kotlin.jvm")
-                apply(RoutingPlugin::class.java)
+                apply(StubPlugin::class.java)
             }
 
             project.sourceSets.run {
@@ -91,6 +91,16 @@ internal class RoutingPluginTest {
     fun `KSP plugin is applied`() {
         project.plugins.findPlugin(KspGradlePlugin.id) shouldNotBe null
     }
+}
+
+private class StubPlugin : KspBasedPlugin() {
+
+    /**
+     * We don't need real coordinates in this property because no compilation
+     * takes place in these tests.
+     */
+    override val mavenCoordinates: String = "org.example:core:1.0.0"
+
 }
 
 fun RepositoryHandler.applyStandard() {

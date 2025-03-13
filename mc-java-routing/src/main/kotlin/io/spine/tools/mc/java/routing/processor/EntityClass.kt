@@ -31,6 +31,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
+import io.spine.tools.mc.java.ksp.processor.qualified
 
 /**
  * Provides information about an entity class.

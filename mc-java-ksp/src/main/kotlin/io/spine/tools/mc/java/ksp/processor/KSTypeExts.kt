@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -24,35 +24,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "mc-java"
+package io.spine.tools.mc.java.ksp.processor
 
-include(
-    "mc-java",
-    "mc-java-annotation",
-    "mc-java-base",
-    "mc-java-checks",
-    "mc-java-comparable",
-    "mc-java-comparable-tests",
-    "mc-java-entity",
-    "mc-java-entity-tests",
-    "mc-java-signal",
-    "mc-java-signal-tests",
-    "mc-java-ksp",
-    "mc-java-marker",
-    "mc-java-marker-tests",
-    "mc-java-message-group",
-    "mc-java-message-group-tests",
-    "mc-java-routing",
-    "mc-java-routing-tests",
-    "mc-java-uuid",
-    "mc-java-uuid-tests",
-    "mc-java-plugin-bundle"
-)
+import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenLocal()
-        mavenCentral()
-    }
-}
+/**
+ * Tells if this type represents an interface.
+ */
+public val KSType.isInterface: Boolean
+    get() = (declaration is KSClassDeclaration)
+            && (declaration as KSClassDeclaration).classKind == INTERFACE
+
+/**
+ * Obtains a simple name of the type surrounded with back ticks.
+ */
+public val KSType.ref: String
+    get() = "`${declaration.simpleName.asString()}`"
+
+/**
+ * Obtains a qualified name of the type surrounded with back ticks.
+ */
+public val KSType.qualifiedRef: String
+    get() = "`${declaration.qualifiedName?.asString()}`"

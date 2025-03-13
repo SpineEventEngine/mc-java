@@ -30,6 +30,8 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import io.spine.base.EventMessage
 import io.spine.core.EventContext
+import io.spine.tools.mc.java.ksp.processor.qualifiedRef
+import io.spine.tools.mc.java.ksp.processor.ref
 
 internal class EventRouteSignature(
     environment: Environment

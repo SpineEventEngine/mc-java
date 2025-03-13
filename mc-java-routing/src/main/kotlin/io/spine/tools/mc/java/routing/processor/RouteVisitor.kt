@@ -50,6 +50,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import io.spine.server.entity.Entity
 import io.spine.string.Indent
 import io.spine.tools.mc.java.GeneratedAnnotation
+import io.spine.tools.mc.java.ksp.processor.isInterface
 import io.spine.tools.mc.java.routing.processor.Environment.SetupType
 
 /**

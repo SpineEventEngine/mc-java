@@ -24,27 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.processor
+package io.spine.tools.mc.java.ksp.processor
 
-import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.KSDeclaration
 
 /**
- * Tells if this type represents an interface.
+ * Obtains the qualified name of this declaration or `null`
+ * if the declaration does not have a qualified name.
  */
-internal val KSType.isInterface: Boolean
-    get() = (declaration is KSClassDeclaration)
-            && (declaration as KSClassDeclaration).classKind == INTERFACE
-
-/**
- * Obtains a simple name of the type surrounded with back ticks.
- */
-internal val KSType.ref: String
-    get() = "`${declaration.simpleName.asString()}`"
-
-/**
- * Obtains a qualified name of the type surrounded with back ticks.
- */
-internal val KSType.qualifiedRef: String
-    get() = "`${declaration.qualifiedName?.asString()}`"
+public fun KSDeclaration.qualified(): String? = qualifiedName?.asString()

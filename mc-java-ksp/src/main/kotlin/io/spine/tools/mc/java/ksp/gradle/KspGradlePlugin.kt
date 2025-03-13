@@ -24,23 +24,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.gradle
+package io.spine.tools.mc.java.ksp.gradle
 
 import org.gradle.api.Project
 import java.nio.file.Path
 
-internal object KspGradlePlugin {
+public object KspGradlePlugin {
 
     /**
      * The ID of the Gradle plugin.
      */
-    const val id = "com.google.devtools.ksp"
+    public const val id: String = "com.google.devtools.ksp"
 
     /**
      * Obtains the full most recent version of KSP plugin compatible with
      * the given Kotlin version.
      */
-    fun findCompatible(kv: KotlinVersion): String {
+    public fun findCompatible(kv: KotlinVersion): String {
         val mostRecentCompatible = versions.keys.findLast { kv >= it }
         checkNotNull(mostRecentCompatible) {
             "Unable to find the KSP plugin version compatible with Kotlin $kv."
@@ -49,7 +49,7 @@ internal object KspGradlePlugin {
         return "$mostRecentCompatible-$pluginVersion"
     }
 
-    fun defaultTargetDirectory(project: Project): Path {
+    public fun defaultTargetDirectory(project: Project): Path {
         val generatedDir = project.layout.buildDirectory.dir("generated")
         return generatedDir.get().asFile.toPath()
     }
@@ -62,12 +62,12 @@ internal object KspGradlePlugin {
     /**
      * The Maven reference to the plugin module
      */
-    const val module = "$group:symbol-processing-gradle-plugin"
+    public const val module: String = "$group:symbol-processing-gradle-plugin"
 
     /**
      * Obtains Maven coordinates of the KSP Gradle Plugin with the given version.
      */
-    fun gradlePluginArtifact(version: String) = "$module:$version"
+    public fun gradlePluginArtifact(version: String): String = "$module:$version"
 
     /**
      * The map from [KotlinVersion] to the latest KSP Gradle Plugin version which

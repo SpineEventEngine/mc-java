@@ -27,14 +27,14 @@
 package io.spine.tools.mc.java.routing.processor
 
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.Modifier
 import com.google.devtools.ksp.symbol.Modifier.JAVA_STATIC
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import io.spine.server.entity.Entity
+import io.spine.tools.mc.java.ksp.processor.funRef
+import io.spine.tools.mc.java.ksp.processor.msg
 import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
 /**

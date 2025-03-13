@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.processor
+package io.spine.tools.mc.java.ksp.processor
 
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSType
@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
 /**
  * Converts this class into [KSType] using the given resolver.
  */
-internal fun KClass<*>.toType(resolver: Resolver): KSType {
+public fun KClass<*>.toType(resolver: Resolver): KSType {
     val name = resolver.getKSNameFromString(qualifiedName!!)
     val classDecl = resolver.getClassDeclarationByName(name)
     // This is a reminder to add corresponding JAR to `KotlinCompilation` in tests.
@@ -48,7 +48,7 @@ internal fun KClass<*>.toType(resolver: Resolver): KSType {
 /**
  * Converts this class into [KSType] using the given resolver.
  */
-internal fun Class<*>.toType(resolver: Resolver): KSType = kotlin.toType(resolver)
+public fun Class<*>.toType(resolver: Resolver): KSType = kotlin.toType(resolver)
 
 /**
  * Transform this string into a plural form if the count is greater than one.
@@ -57,12 +57,12 @@ internal fun Class<*>.toType(resolver: Resolver): KSType = kotlin.toType(resolve
  *   be appended to this string in the returned result.
  * @return this string if count == 1, [pluralForm], if specified, "${this}s" otherwise.
  */
-internal fun String.pluralize(count: Int, pluralForm: String? = null): String {
+public fun String.pluralize(count: Int, pluralForm: String? = null): String {
     return if (count == 1) this else pluralForm ?: "${this}s"
 }
 
 /**
  * Tells if this type has the same qualified name as the given one.
  */
-internal fun KSType.isSame(other: KSType): Boolean =
+public fun KSType.isSame(other: KSType): Boolean =
     declaration.qualifiedName?.asString() == other.declaration.qualifiedName?.asString()
