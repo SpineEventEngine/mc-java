@@ -62,7 +62,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine</groupId>
     <artifactId>protodata</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -91,14 +91,20 @@ all modules and does not describe the project structure per-subproject.
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
+    <artifactId>protodata-gradle-api</artifactId>
+    <version>0.93.0</version>
+    <scope>compile</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-java</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-params</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
     <scope>compile</scope>
   </dependency>
   <dependency>
@@ -188,7 +194,7 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-testlib</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
     <scope>test</scope>
   </dependency>
   <dependency>
@@ -335,12 +341,12 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-fat-cli</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-protoc</artifactId>
-    <version>0.92.11</version>
+    <version>0.93.0</version>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
