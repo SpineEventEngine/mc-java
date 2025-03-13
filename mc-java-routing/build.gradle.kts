@@ -31,7 +31,6 @@ import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
-import io.spine.dependency.local.TestLib
 import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 

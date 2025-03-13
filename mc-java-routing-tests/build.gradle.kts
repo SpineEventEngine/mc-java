@@ -101,7 +101,6 @@ configurations
                 Ksp.symbolProcessing,
                 Ksp.symbolProcessingAaEmb,
                 Ksp.symbolProcessingCommonDeps,
-//                Kotlin.Compiler.embeddable,
                 KotlinCompileTesting.libKsp,
             )
         }
