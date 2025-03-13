@@ -101,13 +101,15 @@ internal class KspBasedPluginTest {
     fun `KSP tasks output is redirected`() {
         val projectRoot = project.projectDir.absolutePath
         project.tasks.withType<KspTaskJvm>().forEach { task ->
-            task.destination.get().absolutePath.let { path ->
+            task.destination.get().absolutePath.toUnix().let { path ->
                 path shouldNotContain "/build/"
                 path shouldContain "$projectRoot/generated/ksp"
             }
         }
     }
 }
+
+private fun String.toUnix(): String = replace('\\', '/')
 
 private class StubPlugin : KspBasedPlugin() {
 
