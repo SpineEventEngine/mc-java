@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package io.spine.tools.mc.java.gradle;
 
 import io.spine.tools.gradle.task.TaskName;
@@ -71,7 +72,7 @@ class McJavaPluginSpec {
                                    .isTrue();
         }
 
-        private Task task(TaskName taskName) {
+        private static Task task(TaskName taskName) {
             var task = tasks.getByName(taskName.name());
             assertThat(task).isNotNull();
             return task;
