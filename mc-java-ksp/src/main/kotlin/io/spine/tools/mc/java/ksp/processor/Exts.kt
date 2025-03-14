@@ -51,17 +51,6 @@ public fun KClass<*>.toType(resolver: Resolver): KSType {
 public fun Class<*>.toType(resolver: Resolver): KSType = kotlin.toType(resolver)
 
 /**
- * Transform this string into a plural form if the count is greater than one.
- *
- * @param pluralForm Optional parameter to be used for count > 1. If not specified `"s"` will
- *   be appended to this string in the returned result.
- * @return this string if count == 1, [pluralForm], if specified, "${this}s" otherwise.
- */
-public fun String.pluralize(count: Int, pluralForm: String? = null): String {
-    return if (count == 1) this else pluralForm ?: "${this}s"
-}
-
-/**
  * Tells if this type has the same qualified name as the given one.
  */
 public fun KSType.isSame(other: KSType): Boolean =

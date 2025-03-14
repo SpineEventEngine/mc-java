@@ -30,6 +30,7 @@ import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
+import io.spine.io.toUnix
 import io.spine.testing.SlowTest
 import io.spine.tools.gradle.project.sourceSets
 import java.io.File
@@ -132,8 +133,6 @@ internal class KspBasedPluginTest {
         }
     }
 }
-
-private fun String.toUnix(): String = replace('\\', '/')
 
 private class StubPlugin : KspBasedPlugin() {
 

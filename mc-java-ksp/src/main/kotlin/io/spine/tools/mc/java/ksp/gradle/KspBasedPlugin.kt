@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
+import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.gradle.KspExtension
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.spine.protodata.gradle.ProtoDataTaskName
@@ -37,6 +38,7 @@ import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.findByType
 
 /**
@@ -90,7 +92,7 @@ private fun Project.applyKspPlugin(mavenCoordinates: String) {
         afterEvaluate {
             pluginManager.apply(id)
             extensions.findByType<KspExtension>()?.apply {
-                @OptIn(com.google.devtools.ksp.KspExperimental::class)
+                @OptIn(KspExperimental::class)
                 useKsp2.set(true)
             }
             configurations
@@ -122,10 +124,6 @@ private fun Project.buildscriptClasspathHas(module: String): Boolean {
  */
 private fun Project.makeKspDependOnProtoData() {
     afterEvaluate {
-        //TODO:2025-03-02:alexander.yevsyukov: If no KSP tasks found yet, this means that
-        // this `afterEvaluate` block is executed before the one which KSP Gradle Plugin does.
-        // We need to find the way to establish the dependency on ProtoData tasks from KSP tasks
-        // in a lazily evaluated manner.
         val kspTasks = kspTasks()
         kspTasks.forEach { (ssn, kspTask) ->
             val protoDataTaskName = ProtoDataTaskName(ssn)
@@ -167,5 +165,8 @@ private fun Project.replaceKspOutputDirs() {
     }
 }
 
+/**
+ * Obtains the name of a `kspKotlin` task for the source set with the specified name.
+ */
 public class KspTskName(ssn: SourceSetName) :
     TaskWithSourceSetName("ksp${ssn.toInfix()}Kotlin", ssn)
