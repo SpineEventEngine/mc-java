@@ -32,8 +32,6 @@ import io.spine.dependency.local.CoreJava
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    kotlin("jvm")
-    `java-test-fixtures`
     /* We still apply the KSP plugin here because we run these tests
        using the `dogfooding` version of McJava. */
     ksp
@@ -65,6 +63,7 @@ ksp {
     // so that they do not duplicate those produced by ProtoData.
     excludedSources.from.run {
         add("build/generated/source/proto/testFixtures/java")
+        add("build/generated/source/proto/testFixtures/kotlin")
         add("build/generated/source/proto/testFixtures/grpc")
     }
 }
@@ -72,6 +71,8 @@ ksp {
 kotlin {
     sourceSets.testFixtures {
         // Adding the output of ProtoData for this source set.
+        // This addresses this Gradle issue https://github.com/gradle/gradle/issues/11094
+        // which is related to this KGP issue: https://youtrack.jetbrains.com/issue/KT-20760.
         kotlin.srcDir("generated/testFixtures/java")
     }
 }

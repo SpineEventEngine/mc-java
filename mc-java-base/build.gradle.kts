@@ -35,7 +35,6 @@ import io.spine.dependency.local.Validation
 
 plugins {
     id("io.spine.mc-java")
-    `java-test-fixtures`
 }
 
 dependencies {
