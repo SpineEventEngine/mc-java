@@ -33,10 +33,10 @@ import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
     kotlin("jvm")
+    `java-test-fixtures`
     /* We still apply the KSP plugin here because we run these tests
        using the `dogfooding` version of McJava. */
     ksp
-    `java-test-fixtures`
     id("io.spine.mc-java")
 }
 
@@ -47,23 +47,9 @@ dependencies {
     testImplementation(kotlin("stdlib"))
     testImplementation(CoreJava.testUtilServer)
 
+    /* This makes our KSP processor work on the `testFixtures` source set. */
     kspTestFixtures(project(":mc-java-routing"))
     testFixturesImplementation(CoreJava.server)
-}
-
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
-    }
-    sourceSets.testFixtures {
-        kotlin.srcDir("build/generated/ksp/testFixtures/kotlin")
-
-        // Adding the output of ProtoData for this source set.
-        kotlin.srcDir("generated/testFixtures/java")
-    }
 }
 
 ksp {
@@ -80,6 +66,13 @@ ksp {
     excludedSources.from.run {
         add("build/generated/source/proto/testFixtures/java")
         add("build/generated/source/proto/testFixtures/grpc")
+    }
+}
+
+kotlin {
+    sourceSets.testFixtures {
+        // Adding the output of ProtoData for this source set.
+        kotlin.srcDir("generated/testFixtures/java")
     }
 }
 
