@@ -50,8 +50,10 @@ import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.reflect.Instantiator
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testfixtures.ProjectBuilder
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.CleanupMode
 import org.junit.jupiter.api.io.TempDir
 
 @SlowTest
@@ -59,11 +61,26 @@ internal class KspBasedPluginTest {
 
     companion object {
 
+        private lateinit var projectDir: File
         private lateinit var project: Project
 
+        /**
+         * Creates the project in the given directory.
+         *
+         * The directory is set not to be cleaned up by JUnit because cleanup sometimes
+         * fails under Windows.
+         * See [this comment](https://github.com/gradle/gradle/issues/12535#issuecomment-1064926489)
+         * on the corresponding issue for details:
+         *
+         * The [projectDir] is set to be removed in the [removeTempDir] method.
+         *
+         * @see removeTempDir
+         */
         @BeforeAll
         @JvmStatic
-        fun setupProject(@TempDir projectDir: File) {
+        fun setupProject(@TempDir(cleanup = CleanupMode.NEVER) projectDir: File) {
+            this.projectDir = projectDir
+            
             // See: https://github.com/gradle/gradle/issues/31862#issuecomment-2687633265
             // and stub classes below.
             ProblemsProgressEventEmitterHolder.init(InternalProblemsStub())
@@ -79,7 +96,8 @@ internal class KspBasedPluginTest {
 
             project.pluginManager.run {
                 apply("java")
-                apply("org.jetbrains.kotlin.jvm") // This plugin in the test classpath dependency.
+                // This plugin is in the test classpath dependency, so it comes without the version.
+                apply("org.jetbrains.kotlin.jvm")
                 apply(StubPlugin::class.java)
             }
 
@@ -89,6 +107,12 @@ internal class KspBasedPluginTest {
 
             // Force evaluation of the project.
             project.evaluationDependsOn(":")
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun removeTempDir() {
+            projectDir.deleteOnExit()
         }
     }
 
