@@ -29,6 +29,12 @@ package io.spine.tools.mc.java.ksp.gradle
 import org.gradle.api.Project
 import java.nio.file.Path
 
+/**
+ * The coordinates and utilities for working with Kotlin Symbol Processing Gradle Plugin.
+ *
+ * @see <a href="https://github.com/google/ksp">KSP GitHub repository</a>
+ */
+@Suppress("ConstPropertyName")
 public object KspGradlePlugin {
 
     /**
