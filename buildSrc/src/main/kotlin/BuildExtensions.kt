@@ -241,7 +241,14 @@ fun Task.remoteDebug(enabled: Boolean = true) { this as JavaExec
     }
 }
 
-private fun Project.setRemoteDebug(taskName: String, enabled: Boolean = true) =
+/**
+ * Sets the remote debug option for the task with the given name.
+ *
+ * The port number is [5566][BuildSettings.REMOTE_DEBUG_PORT].
+ *
+ * @param enabled If `true` the task will be suspended.
+ */
+public fun Project.setRemoteDebug(taskName: String, enabled: Boolean = true) =
     tasks.findByName(taskName)?.remoteDebug(enabled)
 
 /**
