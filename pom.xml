@@ -246,6 +246,12 @@ all modules and does not describe the project structure per-subproject.
     <scope>test</scope>
   </dependency>
   <dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-gradle-plugin</artifactId>
+    <version>2.1.10</version>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
     <groupId>org.junit.jupiter</groupId>
     <artifactId>junit-jupiter-api</artifactId>
     <version>5.10.0</version>
@@ -454,12 +460,6 @@ all modules and does not describe the project structure per-subproject.
     <groupId>org.jetbrains.kotlin</groupId>
     <artifactId>kotlin-compiler-embeddable</artifactId>
     <version>2.1.10</version>
-  </dependency>
-  <dependency>
-    <groupId>org.jetbrains.kotlin</groupId>
-    <artifactId>kotlin-gradle-plugin</artifactId>
-    <version>2.1.10</version>
-    <scope>provided</scope>
   </dependency>
   <dependency>
     <groupId>org.jetbrains.kotlin</groupId>
