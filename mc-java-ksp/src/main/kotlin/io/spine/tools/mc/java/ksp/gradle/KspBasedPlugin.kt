@@ -28,12 +28,8 @@ package io.spine.tools.mc.java.ksp.gradle
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.gradle.KspExtension
-import com.google.devtools.ksp.gradle.KspTaskJvm
 import io.spine.protodata.gradle.ProtoDataTaskName
-import io.spine.tools.code.SourceSetName
-import io.spine.tools.gradle.project.sourceSetNames
 import io.spine.tools.gradle.protobuf.generatedDir
-import io.spine.tools.gradle.task.TaskWithSourceSetName
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -57,21 +53,73 @@ import org.gradle.kotlin.dsl.findByType
  */
 public abstract class KspBasedPlugin : Plugin<Project> {
 
+    /**
+     * The Maven coordinates of the plugin to be added to KSP configurations
+     * in the project to which the plugin is applied.
+     */
     protected abstract val mavenCoordinates: String
 
     override fun apply(project: Project) {
         project.run {
-            applyKspPlugin(mavenCoordinates)
-            makeKspDependOnProtoData()
-            replaceKspOutputDirs()
+            pluginManager.withPlugin(KspGradlePlugin.id) {
+                applyCommonSetup(project)
+                addPluginToKspConfigurations()
+            }
+            applyKspPlugin()
         }
+    }
+
+    private fun Project.addPluginToKspConfigurations() {
+        configurations
+            .filter { it.name.startsWith(configurationNamePrefix) }
+            .forEach { kspConfiguration ->
+                project.dependencies.add(kspConfiguration.name, mavenCoordinates)
+            }
+    }
+
+    protected companion object {
+
+        /** The prefix common to all KSP configurations of a project. */
+        private const val configurationNamePrefix: String = "ksp"
+
+        /** Stores if [applyCommonSetup] should do its job. */
+        private var commonSetupApplied: Boolean = false
+
+        /**
+         * Applies tunings common to all KSP-based plugins to the given [project].
+         *
+         * This function does it only once, remembering the state in
+         * the [commonSetupApplied] variable.
+         */
+        private fun applyCommonSetup(project: Project) {
+            synchronized(this) {
+                if (!commonSetupApplied) {
+                    project.run {
+                        useKsp2()
+                        makeKspTasksDependOnProtoData()
+                        replaceKspOutputDirs()
+                    }
+                    commonSetupApplied = true
+                }
+            }
+        }
+    }
+}
+
+private val Project.kspExtension: KspExtension?
+    get() = extensions.findByType<KspExtension>()
+
+private fun Project.useKsp2() {
+    kspExtension?.apply {
+        @OptIn(KspExperimental::class)
+        useKsp2.set(true)
     }
 }
 
 /**
  * Applies [KspGradlePlugin], if it is not yet added, to this project.
  */
-private fun Project.applyKspPlugin(mavenCoordinates: String) {
+private fun Project.applyKspPlugin() {
     with(KspGradlePlugin) {
         if (pluginManager.hasPlugin(id)) {
             return
@@ -88,18 +136,7 @@ private fun Project.applyKspPlugin(mavenCoordinates: String) {
             )
         }
 
-        afterEvaluate {
-            pluginManager.apply(id)
-            extensions.findByType<KspExtension>()?.apply {
-                @OptIn(KspExperimental::class)
-                useKsp2.set(true)
-            }
-            configurations
-                .filter { it.name.startsWith("ksp") }
-                .forEach { kspConfiguration ->
-                    project.dependencies.add(kspConfiguration.name, mavenCoordinates)
-                }
-        }
+        pluginManager.apply(id)
     }
 }
 
@@ -121,7 +158,7 @@ private fun Project.buildscriptClasspathHas(module: String): Boolean {
  * This dependency is needed to avoid Gradle warning on disabled execution
  * optimization because of the absence of explicit or implicit dependencies.
  */
-private fun Project.makeKspDependOnProtoData() {
+private fun Project.makeKspTasksDependOnProtoData() {
     afterEvaluate {
         val kspTasks = kspTasks()
         kspTasks.forEach { (ssn, kspTask) ->
@@ -132,19 +169,6 @@ private fun Project.makeKspDependOnProtoData() {
             }
         }
     }
-}
-
-/**
- * Lists KSP tasks found in this project for its source sets.
- */
-private fun Project.kspTasks(): Map<SourceSetName, KspTaskJvm> {
-    val withNulls = sourceSetNames.associateWith { ssn ->
-        val kspTaskName = KspTskName(ssn)
-        tasks.findByName(kspTaskName.value())
-    }
-    val result = withNulls.filterValues { it != null }
-        .mapValues { it.value!! as KspTaskJvm }
-    return result
 }
 
 /**
@@ -164,8 +188,3 @@ private fun Project.replaceKspOutputDirs() {
     }
 }
 
-/**
- * Obtains the name of a `kspKotlin` task for the source set with the specified name.
- */
-public class KspTskName(ssn: SourceSetName) :
-    TaskWithSourceSetName("ksp${ssn.toInfix()}Kotlin", ssn)
