@@ -241,6 +241,9 @@ fun Task.remoteDebug(enabled: Boolean = true) { this as JavaExec
     }
 }
 
+private fun Project.setRemoteDebug(taskName: String, enabled: Boolean = true) =
+    tasks.findByName(taskName)?.remoteDebug(enabled)
+
 /**
  * Sets remote debug options for the `launchProtoData` task.
  *
@@ -248,9 +251,9 @@ fun Task.remoteDebug(enabled: Boolean = true) { this as JavaExec
  *
  * @see remoteDebug
  */
-fun Project.protoDataRemoteDebug(enabled: Boolean = true) {
-    tasks.findByName("launchProtoData")?.remoteDebug(enabled)
-}
+fun Project.protoDataRemoteDebug(enabled: Boolean = true) =
+    setRemoteDebug("launchProtoData", enabled)
+
 
 /**
  * Sets remote debug options for the `launchTestProtoData` task.
@@ -259,6 +262,16 @@ fun Project.protoDataRemoteDebug(enabled: Boolean = true) {
  *
  * @see remoteDebug
  */
-fun Project.testProtoDataRemoteDebug(enabled: Boolean = true) {
-    tasks.findByName("launchTestProtoData")?.remoteDebug(enabled)
-}
+fun Project.testProtoDataRemoteDebug(enabled: Boolean = true) =
+    setRemoteDebug("launchTestProtoData", enabled)
+
+/**
+ * Sets remote debug options for the `launchTestFixturesProtoData` task.
+ *
+ * @param enabled if `true` the task will be suspended.
+ *
+ * @see remoteDebug
+ */
+fun Project.testFixturesProtoDataRemoteDebug(enabled: Boolean = true) =
+    setRemoteDebug("launchTestFixturesProtoData", enabled)
+
