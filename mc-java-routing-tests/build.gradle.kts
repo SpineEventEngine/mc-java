@@ -30,6 +30,7 @@ import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.test.KotlinCompileTesting
+import io.spine.tools.gradle.project.sourceSets
 
 plugins {
     /* We still apply the KSP plugin here because we run these tests
@@ -66,13 +67,23 @@ ksp {
         add("build/generated/source/proto/testFixtures/kotlin")
         add("build/generated/source/proto/testFixtures/grpc")
     }
-}
 
-kotlin {
     sourceSets.testFixtures {
-        // Adding the output of ProtoData for this source set.
-        // This addresses this Gradle issue https://github.com/gradle/gradle/issues/11094
-        // which is related to this KGP issue: https://youtrack.jetbrains.com/issue/KT-20760.
+        /* We need to add these sources because original Protobuf-generated files
+           are filtered via `excludedSources` above.
+           The KSP Gradle Plugin analyzes source sets and task outputs before
+           ProtoData comes into play.
+           When we modify the source directories in `GenerateProtoTask.configureSourceSetDirs()`
+           in ProtoData Gradle Plugin, it does not affect the input of KSP tasks.
+           See `com.google.devtools.ksp.gradle.KspAATask.registerKspAATask()` with the following
+           code block:
+           ```kotlin
+              .map {
+                 // @SkipWhenEmpty doesn't work well with File.
+                 project.objects.fileTree().from(it)
+              }
+           ```
+         */
         kotlin.srcDir("generated/testFixtures/java")
     }
 }
