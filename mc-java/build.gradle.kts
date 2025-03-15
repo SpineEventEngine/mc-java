@@ -25,6 +25,7 @@
  */
 
 import io.spine.dependency.lib.Grpc
+import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.TestLib
@@ -60,6 +61,7 @@ dependencies {
         gradleApi(),
         gradleKotlinDsl(),
         gradleTestKit(),
+        Kotlin.GradlePlugin.lib,
         TestLib.lib,
         ToolBase.pluginTestlib,
         testFixtures(project(":mc-java-base"))
