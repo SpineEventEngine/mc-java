@@ -119,24 +119,26 @@ private fun Project.useKsp2() {
 /**
  * Applies [KspGradlePlugin], if it is not yet added, to this project.
  */
-private fun Project.applyKspPlugin() {
-    with(KspGradlePlugin) {
-        if (pluginManager.hasPlugin(id)) {
-            return
-        }
-        val alreadyInClasspath =
-            rootProject.buildscriptClasspathHas(module)
-                    || buildscriptClasspathHas(module)
+private fun Project.applyKspPlugin() = with(KspGradlePlugin) {
+    if (pluginManager.hasPlugin(id)) {
+        return
+    }
+    val alreadyInClasspath = rootProject.buildscriptClasspathHas(module)
+            || project.buildscriptClasspathHas(module)
 
-        if (!alreadyInClasspath) {
-            val version = findCompatible(KotlinVersion.CURRENT)
-            buildscript.dependencies.add(
-                CLASSPATH_CONFIGURATION,
-                gradlePluginArtifact(version)
-            )
-        }
-
+    if (alreadyInClasspath) {
         pluginManager.apply(id)
+    } else {
+        val version = findCompatible(KotlinVersion.CURRENT)
+        buildscript.dependencies.add(
+            CLASSPATH_CONFIGURATION,
+            gradlePluginArtifact(version)
+        )
+        // We just applied to the buildscript classpath,
+        // so we can add the plugin only after the project evaluation.
+        afterEvaluate {
+            pluginManager.apply(id)
+        }
     }
 }
 
@@ -181,9 +183,9 @@ private fun Project.replaceKspOutputDirs() {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
         kspTasks().forEach { (_, kspTask) ->
-            val current = kspTask.destination.get().path
+            val current = kspTask.kspConfig.outputBaseDir.get().path
             val replaced = current.replace(underBuild, underProject)
-            kspTask.destination.set(File(replaced))
+            kspTask.kspConfig.outputBaseDir.set(File(replaced))
         }
     }
 }

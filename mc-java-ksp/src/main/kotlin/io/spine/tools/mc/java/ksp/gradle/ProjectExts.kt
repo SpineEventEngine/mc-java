@@ -26,7 +26,7 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
-import com.google.devtools.ksp.gradle.KspTaskJvm
+import com.google.devtools.ksp.gradle.KspAATask
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.gradle.project.sourceSetNames
 import org.gradle.api.Project
@@ -34,12 +34,12 @@ import org.gradle.api.Project
 /**
  * Lists KSP tasks found in this project for its source sets.
  */
-public fun Project.kspTasks(): Map<SourceSetName, KspTaskJvm> {
+public fun Project.kspTasks(): Map<SourceSetName, KspAATask> {
     val withNulls = sourceSetNames.associateWith { ssn ->
         val kspTaskName = KspTskName(ssn)
         tasks.findByName(kspTaskName.value())
     }
     val result = withNulls.filterValues { it != null }
-        .mapValues { it.value!! as KspTaskJvm }
+        .mapValues { it.value!! as KspAATask }
     return result
 }
