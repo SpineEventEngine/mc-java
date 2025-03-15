@@ -62,10 +62,25 @@ public abstract class KspBasedPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.run {
             pluginManager.withPlugin(KspGradlePlugin.id) {
-                applyCommonSetup(project)
+                applyCommonSettings()
                 addPluginToKspConfigurations()
             }
             applyKspPlugin()
+        }
+    }
+
+    /**
+     * Applies tunings common to all KSP-based plugins to this project,
+     * unless it was [already done][commonSettingsApplied].
+     */
+    private fun Project.applyCommonSettings() {
+        synchronized(lock) {
+            if (!commonSettingsApplied.contains(this)) {
+                useKsp2()
+                makeKspTasksDependOnProtoData()
+                replaceKspOutputDirs()
+                commonSettingsApplied.add(this)
+            }
         }
     }
 
@@ -79,30 +94,20 @@ public abstract class KspBasedPlugin : Plugin<Project> {
 
     protected companion object {
 
-        /** The prefix common to all KSP configurations of a project. */
-        private const val configurationNamePrefix: String = "ksp"
-
-        /** Stores if [applyCommonSetup] should do its job. */
-        private var commonSetupApplied: Boolean = false
+        /**
+         * The synchronization lock used by [applyCommonSettings].
+         */
+        private val lock = Any()
 
         /**
-         * Applies tunings common to all KSP-based plugins to the given [project].
-         *
-         * This function does it only once, remembering the state in
-         * the [commonSetupApplied] variable.
+         * The prefix common to all KSP configurations of a project.
          */
-        private fun applyCommonSetup(project: Project) {
-            synchronized(this) {
-                if (!commonSetupApplied) {
-                    project.run {
-                        useKsp2()
-                        makeKspTasksDependOnProtoData()
-                        replaceKspOutputDirs()
-                    }
-                    commonSetupApplied = true
-                }
-            }
-        }
+        private const val configurationNamePrefix: String = "ksp"
+
+        /**
+         * Contains projects to which [KspBasedPlugin]s already applied common settings.
+         */
+        private val commonSettingsApplied: MutableSet<Project> = mutableSetOf()
     }
 }
 
@@ -183,9 +188,10 @@ private fun Project.replaceKspOutputDirs() {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
         kspTasks().forEach { (_, kspTask) ->
-            val current = kspTask.kspConfig.outputBaseDir.get().path
+            val outputBaseDir = kspTask.kspConfig.outputBaseDir
+            val current = outputBaseDir.get().path
             val replaced = current.replace(underBuild, underProject)
-            kspTask.kspConfig.outputBaseDir.set(File(replaced))
+            outputBaseDir.set(File(replaced))
         }
     }
 }
