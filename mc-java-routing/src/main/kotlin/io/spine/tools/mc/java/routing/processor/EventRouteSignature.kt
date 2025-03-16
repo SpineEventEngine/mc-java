@@ -73,8 +73,10 @@ internal class EventRouteSignature(
         val returnType = fn.returnType?.resolve()!!
         if (!setClass.isAssignableFrom(returnType)) {
             logger.error(
-                "A multicast routing function for events must return" +
-                        " a ${setClass.ref} of entity identifiers." +
+                "A routing function for events routed to" +
+                        " `$declaringClass` must return either an identifier" +
+                        " of the type ${declaringClass.idClass.qualifiedRef}" +
+                        " or a ${setClass.ref} of entity identifiers." +
                         " Encountered: ${returnType.qualifiedRef}.",
                 fn
             )
