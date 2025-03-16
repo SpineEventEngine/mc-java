@@ -32,5 +32,5 @@ import io.spine.tools.gradle.task.TaskWithSourceSetName
 /**
  * Obtains the name of a `kspKotlin` task for the source set with the specified name.
  */
-public class KspTskName(ssn: SourceSetName) :
+public class KspTaskName(ssn: SourceSetName) :
     TaskWithSourceSetName("ksp${ssn.toInfix()}Kotlin", ssn)
