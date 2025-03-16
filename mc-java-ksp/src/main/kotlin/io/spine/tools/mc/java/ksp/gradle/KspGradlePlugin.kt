@@ -57,5 +57,3 @@ public object KspGradlePlugin {
      */
     public const val module: String = "$group:symbol-processing-gradle-plugin"
 }
-
-
