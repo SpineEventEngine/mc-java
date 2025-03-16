@@ -26,8 +26,8 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
-import org.gradle.api.Project
 import java.nio.file.Path
+import org.gradle.api.Project
 
 /**
  * The coordinates and utilities for working with Kotlin Symbol Processing Gradle Plugin.
@@ -41,19 +41,6 @@ public object KspGradlePlugin {
      * The ID of the Gradle plugin.
      */
     public const val id: String = "com.google.devtools.ksp"
-
-    /**
-     * Obtains the full most recent version of KSP plugin compatible with
-     * the given Kotlin version.
-     */
-    public fun findCompatible(kv: KotlinVersion): String {
-        val mostRecentCompatible = versions.keys.findLast { kv >= it }
-        checkNotNull(mostRecentCompatible) {
-            "Unable to find the KSP plugin version compatible with Kotlin $kv."
-        }
-        val pluginVersion = versions[mostRecentCompatible]
-        return "$mostRecentCompatible-$pluginVersion"
-    }
 
     public fun defaultTargetDirectory(project: Project): Path {
         val generatedDir = project.layout.buildDirectory.dir("generated")
@@ -69,45 +56,6 @@ public object KspGradlePlugin {
      * The Maven reference to the plugin module
      */
     public const val module: String = "$group:symbol-processing-gradle-plugin"
-
-    /**
-     * Obtains Maven coordinates of the KSP Gradle Plugin with the given version.
-     */
-    public fun gradlePluginArtifact(version: String): String = "$module:$version"
-
-    /**
-     * The map from [KotlinVersion] to the latest KSP Gradle Plugin version which
-     * supports this version of Kotlin.
-     *
-     * The map resembles the [combined version numbers](https://github.com/google/ksp/releases) of
-     * the KSP Gradle Plugin for finding the best match for a Gradle project.
-     *
-     * Only release (not Beta or RC) versions are listed.
-     */
-    @Suppress("MagicNumber")
-    private val versions: Map<KotlinVersion, String> = sortedMapOf(
-        kv(1, 7, 0) to "1.0.6",
-        kv(1, 7, 10) to "1.0.6",
-        kv(1, 7, 20) to "1.0.6",
-        kv(1, 7, 22) to "1.0.8",
-        kv(1, 8, 22) to "1.0.11",
-        kv(1, 9, 0) to "1.0.13",
-        kv(1, 9, 10) to "1.0.13",
-        kv(1, 9, 20) to "1.0.14",
-        kv(1, 9, 21) to "1.0.16",
-        kv(1, 9, 22) to "1.0.17",
-        kv(1, 9, 23) to "1.0.19",
-        kv(1, 9, 24) to "1.0.20",
-        kv(1, 9, 25) to "1.0.20",
-        kv(2, 0, 0) to "1.0.23",
-        kv(2, 0, 10) to "1.0.24",
-        kv(2, 0, 20) to "1.0.25",
-        kv(2, 0, 21) to "1.0.28",
-        kv(2, 1, 0) to "1.0.29",
-        kv(2, 1, 10) to "1.0.30",
-    )
-
-    private fun kv(major: Int, minor: Int, patch: Int) = KotlinVersion(major, minor, patch)
 }
 
 
