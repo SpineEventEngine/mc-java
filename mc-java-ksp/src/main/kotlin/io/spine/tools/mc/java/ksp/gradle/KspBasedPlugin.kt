@@ -41,7 +41,6 @@ import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
-import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.SourceSet
 import org.gradle.kotlin.dsl.findByType
@@ -170,34 +169,7 @@ private fun Project.applyKspPlugin() = with(KspGradlePlugin) {
     if (pluginManager.hasPlugin(id)) {
         return
     }
-    val alreadyInClasspath = rootProject.buildscriptClasspathHas(module)
-            || project.buildscriptClasspathHas(module)
-
-    if (alreadyInClasspath) {
-        pluginManager.apply(id)
-    } else {
-        val version = findCompatible(KotlinVersion.CURRENT)
-        buildscript.dependencies.add(
-            CLASSPATH_CONFIGURATION,
-            gradlePluginArtifact(version)
-        )
-        // We just applied to the buildscript classpath,
-        // so we can add the plugin only after the project evaluation.
-        afterEvaluate {
-            pluginManager.apply(id)
-        }
-    }
-}
-
-/**
- * Tells if the given module already present in the `compile` configuration
- * of the `buildscript` of this project.
- */
-private fun Project.buildscriptClasspathHas(module: String): Boolean {
-    val classpath = buildscript.configurations.findByName(CLASSPATH_CONFIGURATION)
-    return classpath?.let {
-        it.dependencies.any { dep -> "${dep.group}:${dep.name}" == module }
-    } ?: false
+    pluginManager.apply(id)
 }
 
 /**

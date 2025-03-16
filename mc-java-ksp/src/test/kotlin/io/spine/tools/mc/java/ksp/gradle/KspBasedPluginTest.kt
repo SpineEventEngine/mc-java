@@ -26,7 +26,8 @@
 
 package io.spine.tools.mc.java.ksp.gradle
 
-import com.google.devtools.ksp.gradle.KspTaskJvm
+import com.google.devtools.ksp.gradle.KspAATask
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
@@ -98,6 +99,7 @@ internal class KspBasedPluginTest {
                 mavenCentral()
             }
 
+
             project.pluginManager.run {
                 apply("java")
                 // This plugin is in the test classpath dependency, so it comes without the version.
@@ -134,10 +136,18 @@ internal class KspBasedPluginTest {
     @Test
     fun `KSP tasks output is redirected`() {
         val projectRoot = project.projectDir.absolutePath
-        project.tasks.withType<KspTaskJvm>().forEach { task ->
-            task.destination.get().absolutePath.toUnix().let { path ->
-                path shouldNotContain "/build/"
-                path shouldContain "$projectRoot/generated/ksp"
+        val tasks = project.tasks.withType<KspAATask>()
+        tasks.size shouldBeGreaterThan 0
+        tasks.forEach { task ->
+            arrayOf(
+                task.kspConfig.outputBaseDir,
+                task.kspConfig.javaOutputDir,
+                task.kspConfig.kotlinOutputDir
+            ).forEach {
+                it.get().absolutePath.toUnix().let { path ->
+                    path shouldNotContain "/build/"
+                    path shouldContain "$projectRoot/generated/ksp"
+                }
             }
         }
     }
