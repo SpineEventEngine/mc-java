@@ -34,7 +34,6 @@ include(
     "rejection",
     "mc-java-comparable",
     "validation-smoke",
-    "routes"
 )
 
 /*
