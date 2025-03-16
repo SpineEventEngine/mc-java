@@ -26,6 +26,8 @@
 
 package io.spine.tools.mc.java.ksp.processor
 
+import com.google.devtools.ksp.symbol.ClassKind
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 
 /**
@@ -33,3 +35,11 @@ import com.google.devtools.ksp.symbol.KSDeclaration
  * if the declaration does not have a qualified name.
  */
 public fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+
+public fun KSClassDeclaration.superclass(): KSClassDeclaration? {
+    val found = superTypes.find { type ->
+        val superDecl = (type.resolve().declaration as KSClassDeclaration)
+        superDecl.classKind == ClassKind.CLASS
+    }
+    return found?.resolve()?.declaration as? KSClassDeclaration
+}
