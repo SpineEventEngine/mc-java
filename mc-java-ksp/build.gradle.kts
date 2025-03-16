@@ -32,21 +32,31 @@ import io.spine.dependency.local.ToolBase
 import io.spine.dependency.test.Kotest
 
 dependencies {
+    // The dependencies of the processor part.
     compileOnlyApi(Kotlin.Compiler.embeddable)
-    api(kotlin("stdlib"))
     api(Ksp.symbolProcessingApi)
-    api(Ksp.gradlePlugin)
-    api(ProtoData.gradleApi)
 
     // The dependencies for the Gradle plugin part.
     compileOnlyApi(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
     compileOnlyApi(Kotlin.GradlePlugin.lib)
-    api(ToolBase.pluginBase)
 
-    testImplementation(gradleTestKit())
-    testImplementation(gradleKotlinDsl())
-    testImplementation(Kotlin.GradlePlugin.lib)
-    testImplementation(TestLib.lib)
-    testImplementation(Kotest.assertions)
+    api(ToolBase.pluginBase)
+    api(ProtoData.gradleApi)?.because(
+        "We want KSP-based plugins use this API directly."
+    )
+    api(Ksp.gradlePlugin)?.because(
+        "This is `api` dependency because we add this plugin from our code."
+    )
+
+    // Test dependencies.
+    arrayOf(
+        gradleTestKit(),
+        gradleKotlinDsl(),
+        Kotlin.GradlePlugin.lib,
+        TestLib.lib,
+        Kotest.assertions
+    ).forEach {
+        testImplementation(it)
+    }
 }

@@ -43,7 +43,6 @@ dependencies {
     ksp(AutoServiceKsp.processor)
     compileOnlyApi(AutoService.annotations)
 
-    testImplementation(kotlin("stdlib"))
     testImplementation(CoreJava.testUtilServer)
 
     /* This makes our KSP processor work on the `testFixtures` source set. */

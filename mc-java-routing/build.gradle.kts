@@ -24,6 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.devtools.ksp.KspExperimental
 import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
@@ -40,7 +41,7 @@ plugins {
 }
 
 ksp {
-    @OptIn(com.google.devtools.ksp.KspExperimental::class)
+    @OptIn(KspExperimental::class)
     useKsp2.set(true)
 }
 
