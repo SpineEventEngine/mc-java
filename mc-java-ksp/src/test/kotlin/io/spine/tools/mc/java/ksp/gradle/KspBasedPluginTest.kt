@@ -99,7 +99,6 @@ internal class KspBasedPluginTest {
                 mavenCentral()
             }
 
-
             project.pluginManager.run {
                 apply("java")
                 // This plugin is in the test classpath dependency, so it comes without the version.
@@ -160,7 +159,6 @@ private class StubPlugin : KspBasedPlugin() {
      * takes place in these tests.
      */
     override val mavenCoordinates: String = "org.example:core:1.0.0"
-
 }
 
 /**
