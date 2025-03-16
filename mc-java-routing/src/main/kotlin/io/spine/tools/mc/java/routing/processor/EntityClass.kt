@@ -31,6 +31,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
+import io.spine.tools.mc.java.ksp.processor.qualified
 
 /**
  * Provides information about an entity class.
@@ -66,7 +67,7 @@ internal class EntityClass(
         }
         check(asEntity != null) {
             "The class `${decl.qualifiedName!!.asString()}`" +
-                    " must implement ${entityInterface.declaration.qualified()}`."
+                    " must implement `${entityInterface.declaration.qualified()}`."
         }
         asEntity.element!!.typeArguments.first()
     }
@@ -82,7 +83,7 @@ internal class EntityClass(
      * The type of the entity identifiers.
      */
     val idClass: KSType by lazy {
-        idClassReference.resolve()
+        idClassReference.resolve().makeNotNullable()
     }
 
     /**
@@ -93,7 +94,7 @@ internal class EntityClass(
             val superType = it.resolve().declaration
             (superType is KSClassDeclaration) && (superType.classKind == CLASS)
         }
-        return found!!.resolve()
+        return found!!.resolve().makeNotNullable()
     }
 
     override fun equals(other: Any?): Boolean {

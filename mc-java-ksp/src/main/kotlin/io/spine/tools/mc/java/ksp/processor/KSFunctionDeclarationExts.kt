@@ -24,7 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.processor
+package io.spine.tools.mc.java.ksp.processor
 
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.Origin.JAVA
@@ -35,7 +35,7 @@ import com.google.devtools.ksp.symbol.Origin.JAVA_LIB
  *
  * @returns just a name without braces.
  */
-internal val KSFunctionDeclaration.shortName: String
+public val KSFunctionDeclaration.shortName: String
     get() = simpleName.getShortName()
 
 /**
@@ -45,7 +45,7 @@ internal val KSFunctionDeclaration.shortName: String
  * For origins [JAVA] and [JAVA_LIB] the value of the [java] parameter is returned.
  * Otherwise, the [kotlin] string is returned.
  */
-internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
+public fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
     if (origin == JAVA || origin == JAVA_LIB) {
         java
     } else {
@@ -55,7 +55,7 @@ internal fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
 /**
  * Obtains the text for referencing this function in a diagnostic message.
  */
-internal val KSFunctionDeclaration.funRef: String
+public val KSFunctionDeclaration.funRef: String
     get() {
         val shortRef = "`$shortName()`"
         return msg("function $shortRef", "method $shortRef")

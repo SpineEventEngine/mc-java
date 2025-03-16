@@ -24,12 +24,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.spine.tools.mc.java.routing.processor
+package io.spine.tools.mc.java.ksp.gradle
 
-import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.gradle.KspAATask
+import io.spine.tools.code.SourceSetName
+import io.spine.tools.gradle.project.sourceSetNames
+import org.gradle.api.Project
 
 /**
- * Obtains the qualified name of this declaration or `null`
- * if the declaration does not have a qualified name.
+ * Lists KSP tasks found in this project for its source sets.
  */
-internal fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+public fun Project.kspTasks(): Map<SourceSetName, KspAATask> {
+    val withNulls = sourceSetNames.associateWith { ssn ->
+        val kspTaskName = KspTaskName(ssn)
+        tasks.findByName(kspTaskName.value())
+    }
+    val result = withNulls.filterValues { it != null }
+        .mapValues { it.value!! as KspAATask }
+    return result
+}

@@ -65,6 +65,7 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 plugins {
     java
     `java-library`
+    `java-test-fixtures`
     kotlin("jvm")
     id("write-manifest")
     id("com.google.protobuf")

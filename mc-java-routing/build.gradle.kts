@@ -36,7 +36,6 @@ import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    kotlin("jvm")
     ksp
     id("io.spine.mc-java")
 }
@@ -47,7 +46,10 @@ ksp {
 }
 
 dependencies {
-    ksp(AutoServiceKsp.processor)
+    // Dependencies for the code generation part.
+    ksp(AutoServiceKsp.processor)?.because(
+        "`RouteProcessorProvider` is annotated with `@AutoService`."
+    )
     implementation(AutoService.annotations)?.because(
         """
         We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
@@ -55,12 +57,13 @@ dependencies {
         the `AutoService` class on runtime.        
         """.trimIndent()
     )
-    implementation(kotlin("stdlib"))
-    implementation(Ksp.symbolProcessingApi)
+
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
+    implementation(project(":mc-java-ksp"))
 
+    testImplementation(gradleTestKit())
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
     testImplementation(Logging.testLib)

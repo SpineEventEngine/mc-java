@@ -26,6 +26,7 @@
 
 import io.spine.dependency.lib.Grpc
 import io.spine.dependency.local.Spine
+import io.spine.dependency.local.Base
 import io.spine.gradle.standardToSpineSdk
 import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.all
@@ -79,7 +80,7 @@ subprojects {
         all {
             resolutionStrategy {
                 force(
-                    Spine.base,
+                    Base.lib,
                 )
             }
         }

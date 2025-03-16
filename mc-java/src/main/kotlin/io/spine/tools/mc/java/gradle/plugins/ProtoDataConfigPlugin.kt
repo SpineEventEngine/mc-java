@@ -55,7 +55,9 @@ import io.spine.tools.mc.java.uuid.UuidPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import io.spine.protodata.gradle.CodegenSettings as ProtoDataSettings
 import io.spine.protodata.plugin.Plugin as ProtoDataPlugin
@@ -116,12 +118,12 @@ private fun Project.configureProtoData() {
     }
 }
 
-private fun Project.createWriteSettingsTask(): WriteProtoDataSettings {
-    val result = tasks.create(WRITE_PROTODATA_SETTINGS, WriteProtoDataSettings::class.java) {
+private fun Project.createWriteSettingsTask(): Provider<WriteProtoDataSettings> {
+    val result = tasks.register<WriteProtoDataSettings>(WRITE_PROTODATA_SETTINGS) {
         val workingDir = WorkingDirectory(protoDataWorkingDir.asFile.toPath())
         val settingsDir = workingDir.settingsDirectory.path.toFile()
         val settingsDirProvider = project.layout.dir(provider { settingsDir })
-        it.settingsDir.set(settingsDirProvider)
+        this.settingsDir.set(settingsDirProvider)
     }
     return result
 }

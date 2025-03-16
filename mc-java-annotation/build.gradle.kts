@@ -30,7 +30,6 @@ import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 
 plugins {
-    `java-test-fixtures`
     id("io.spine.mc-java")
 }
 

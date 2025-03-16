@@ -33,7 +33,7 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@ExperimentalCompilerApi
+@OptIn(ExperimentalCompilerApi::class)
 @DisplayName("`Qualifier` in Kotlin should")
 internal class QualifierKotlinSpec : RouteCompilationTest() {
 

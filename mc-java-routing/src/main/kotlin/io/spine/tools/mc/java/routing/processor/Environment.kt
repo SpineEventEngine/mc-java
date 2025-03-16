@@ -41,6 +41,7 @@ import io.spine.server.route.setup.EventRoutingSetup
 import io.spine.server.route.MessageRouting
 import io.spine.server.route.setup.StateRoutingSetup
 import io.spine.server.route.StateUpdateRouting
+import io.spine.tools.mc.java.ksp.processor.toType
 import kotlin.reflect.KClass
 
 /**

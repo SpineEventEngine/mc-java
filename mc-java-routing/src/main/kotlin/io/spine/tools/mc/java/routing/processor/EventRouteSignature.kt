@@ -30,6 +30,8 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import io.spine.base.EventMessage
 import io.spine.core.EventContext
+import io.spine.tools.mc.java.ksp.processor.qualifiedRef
+import io.spine.tools.mc.java.ksp.processor.ref
 
 internal class EventRouteSignature(
     environment: Environment
@@ -71,8 +73,10 @@ internal class EventRouteSignature(
         val returnType = fn.returnType?.resolve()!!
         if (!setClass.isAssignableFrom(returnType)) {
             logger.error(
-                "A multicast routing function for events must return" +
-                        " a ${setClass.ref}` of entity identifiers." +
+                "A routing function for events routed to" +
+                        " `$declaringClass` must return either an identifier" +
+                        " of the type ${declaringClass.idClass.qualifiedRef}" +
+                        " or a ${setClass.ref} of entity identifiers." +
                         " Encountered: ${returnType.qualifiedRef}.",
                 fn
             )
