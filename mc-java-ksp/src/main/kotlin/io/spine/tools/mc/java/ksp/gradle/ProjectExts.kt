@@ -36,7 +36,7 @@ import org.gradle.api.Project
  */
 public fun Project.kspTasks(): Map<SourceSetName, KspAATask> {
     val withNulls = sourceSetNames.associateWith { ssn ->
-        val kspTaskName = KspTskName(ssn)
+        val kspTaskName = KspTaskName(ssn)
         tasks.findByName(kspTaskName.value())
     }
     val result = withNulls.filterValues { it != null }
