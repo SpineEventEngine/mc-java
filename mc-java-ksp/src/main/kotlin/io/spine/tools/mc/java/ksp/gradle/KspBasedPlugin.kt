@@ -51,14 +51,13 @@ import org.gradle.kotlin.dsl.findByType
  *
  * The plugin performs the following configuration steps:
  *
- *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) if it is not added already.
- *     When adding, we find the most recent version of the KSP Gradle Plugin which
- *     is compatible with the version of Kotlin used in the current Gradle runtime.
+ *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) to the project,
+ *     if it is not added already.
  *
  *  2. Makes a KSP task depend on a `LaunchProtoData` task for the same source set.
  *
- *  3. Replace the output of KSP tasks to generate the code to [Project.generatedDir]
- *     instead of the default directory set by the KSP Gradle Plugin.
+ *  3. Replaces the output of KSP tasks to place the generated code into [Project.generatedDir]
+ *     instead of the one under the `build` directory which is used by default.
  */
 public abstract class KspBasedPlugin : Plugin<Project> {
 
