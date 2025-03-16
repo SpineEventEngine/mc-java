@@ -156,14 +156,6 @@ tasks.shadowJar {
          */
         "org/gradle/**",
 
-        /**
-         * Remove all third-party plugin declarations as well.
-         *
-         * They should be loaded from their respective dependencies.
-         */
-        "META-INF/gradle-plugins/com**",
-        "META-INF/gradle-plugins/net**",
-        "META-INF/gradle-plugins/org**",
 
 
         // Exclude license files that cause or may cause issues with LicenseReport.
