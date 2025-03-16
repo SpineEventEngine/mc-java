@@ -35,7 +35,7 @@ import io.spine.tools.gradle.artifact
 import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin
 
 /**
- * Applies this module as a plugin to KSP by calculating [mavenCoordinates].
+ * Applies this [module][moduleName] as a plugin to KSP by calculating [mavenCoordinates].
  */
 public class RoutingPlugin : KspBasedPlugin() {
 
