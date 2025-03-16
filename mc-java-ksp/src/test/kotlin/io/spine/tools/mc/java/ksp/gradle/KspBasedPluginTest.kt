@@ -27,6 +27,7 @@
 package io.spine.tools.mc.java.ksp.gradle
 
 import com.google.devtools.ksp.gradle.KspTaskJvm
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
@@ -104,9 +105,15 @@ internal class KspBasedPluginTest {
                 apply(StubPlugin::class.java)
             }
 
+            val customSourceSet = "integrationTest"
             project.sourceSets.run {
-                create("integrationTest")
+                create(customSourceSet)
             }
+
+            val kotlinFile = projectDir.resolve("src/${customSourceSet}/kotlin/Test.kt")
+            kotlinFile.parentFile.mkdirs()
+            kotlinFile.writeText("class Test")
+            kotlinFile.exists() shouldBe true
 
             // Force evaluation of the project.
             project.evaluationDependsOn(":")
@@ -120,8 +127,8 @@ internal class KspBasedPluginTest {
     }
 
     @Test
-    fun `KSP plugin is applied`() {
-        project.plugins.findPlugin(KspGradlePlugin.id) shouldNotBe null
+    fun `apply the KSP plugin`() {
+        project.pluginManager.hasPlugin(KspGradlePlugin.id) shouldNotBe null
     }
 
     @Test
