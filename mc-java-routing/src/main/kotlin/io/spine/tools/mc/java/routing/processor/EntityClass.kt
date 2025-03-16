@@ -62,13 +62,23 @@ internal class EntityClass(
      * The type of the entity identifiers as [KSTypeArgument].
      */
     val idClassTypeArgument: KSTypeArgument by lazy {
-        val asEntity = decl.superTypes.find {
-            entityInterface.isAssignableFrom(it.resolve())
+        var superType: KSType
+        var asEntity = decl.superTypes.find { type ->
+            superType = type.resolve()
+            entityInterface.isAssignableFrom(superType)
+//            val superDecl = superType.declaration
+//                    && superDecl is KSClassDeclaration
+//                    && superDecl.classKind == CLASS
         }
         check(asEntity != null) {
             "The class `${decl.qualifiedName!!.asString()}`" +
                     " must implement `${entityInterface.declaration.qualified()}`."
         }
+//        val numTypeArgs = entityInterface.arguments.size
+//        while (asEntity.element!!.typeArguments.size < numTypeArgs) {
+//            asEntity.element
+//        }
+
         asEntity.element!!.typeArguments.first()
     }
 
