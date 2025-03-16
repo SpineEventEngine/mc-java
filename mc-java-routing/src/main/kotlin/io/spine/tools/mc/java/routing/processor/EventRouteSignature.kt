@@ -74,7 +74,7 @@ internal class EventRouteSignature(
         if (!setClass.isAssignableFrom(returnType)) {
             logger.error(
                 "A multicast routing function for events must return" +
-                        " a ${setClass.ref}` of entity identifiers." +
+                        " a ${setClass.ref} of entity identifiers." +
                         " Encountered: ${returnType.qualifiedRef}.",
                 fn
             )
