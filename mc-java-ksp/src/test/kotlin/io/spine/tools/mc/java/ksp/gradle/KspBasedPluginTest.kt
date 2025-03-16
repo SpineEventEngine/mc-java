@@ -134,7 +134,7 @@ internal class KspBasedPluginTest {
 
     @Test
     fun `KSP tasks output is redirected`() {
-        val projectRoot = project.projectDir.absolutePath
+        val projectRoot = project.projectDir.absolutePath.toUnix()
         val tasks = project.tasks.withType<KspAATask>()
         tasks.size shouldBeGreaterThan 0
         tasks.forEach { task ->
