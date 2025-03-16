@@ -67,25 +67,25 @@ ksp {
         add("build/generated/source/proto/testFixtures/kotlin")
         add("build/generated/source/proto/testFixtures/grpc")
     }
+}
 
-    sourceSets.testFixtures {
-        /* We need to add these sources because original Protobuf-generated files
-           are filtered via `excludedSources` above.
-           The KSP Gradle Plugin analyzes source sets and task outputs before
-           ProtoData comes into play.
-           When we modify the source directories in `GenerateProtoTask.configureSourceSetDirs()`
-           in ProtoData Gradle Plugin, it does not affect the input of KSP tasks.
-           See `com.google.devtools.ksp.gradle.KspAATask.registerKspAATask()` with the following
-           code block:
-           ```kotlin
-              .map {
-                 // @SkipWhenEmpty doesn't work well with File.
-                 project.objects.fileTree().from(it)
-              }
-           ```
-         */
-        kotlin.srcDir("generated/testFixtures/java")
-    }
+/* We need to add these sources because original Protobuf-generated files
+   are filtered via `excludedSources` above.
+   The KSP Gradle Plugin analyzes source sets and task outputs before
+   ProtoData comes into play.
+   When we modify the source directories in `GenerateProtoTask.configureSourceSetDirs()`
+   in ProtoData Gradle Plugin, it does not affect the input of KSP tasks.
+   See `com.google.devtools.ksp.gradle.KspAATask.registerKspAATask()` with the following
+   code block:
+   ```kotlin
+      .map {
+         // @SkipWhenEmpty doesn't work well with File.
+         project.objects.fileTree().from(it)
+      }
+   ```
+ */
+sourceSets.testFixtures {
+    kotlin.srcDir("generated/testFixtures/java")
 }
 
 // Avoid Gradle warning on disabled execution optimization because of the absence of
