@@ -86,6 +86,7 @@ public abstract class KspBasedPlugin : Plugin<Project> {
         synchronized(lock) {
             if (!commonSettingsApplied.contains(this)) {
                 useKsp2()
+                addDependencies()
                 excludeSourcesFromBuildDir()
                 addProtoDataGeneratedSources()
                 makeKspTasksDependOnProtoData()
@@ -103,6 +104,16 @@ public abstract class KspBasedPlugin : Plugin<Project> {
             }
     }
 
+    private fun Project.addDependencies() {
+        sourceSets.forEach { sourceSet ->
+            val configurationName = sourceSet.compileOnlyConfigurationName
+            dependencies.add(configurationName,
+                autoServiceAnnotations
+            )
+        }
+    }
+
+    @Suppress("ConstPropertyName")
     protected companion object {
 
         /**
@@ -115,6 +126,13 @@ public abstract class KspBasedPlugin : Plugin<Project> {
          */
         private const val configurationNamePrefix: String = "ksp"
 
+        /**
+         * The Manen coordinates of Google Auto Service annotations that
+         * we [add][Project.addDependencies] as `compileOnly` dependencies to
+         * the source sets of the project to which th
+         */
+        private const val autoServiceAnnotations: String =
+            "com.google.auto.service:auto-service-annotations:1.1.1"
         /**
          * Contains projects to which [KspBasedPlugin]s already applied common settings.
          */
