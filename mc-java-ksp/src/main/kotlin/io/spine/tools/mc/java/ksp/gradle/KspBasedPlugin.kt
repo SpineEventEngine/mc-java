@@ -34,6 +34,7 @@ import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
 import io.spine.tools.gradle.project.sourceSets
+import io.spine.tools.gradle.project.sourceSet
 import io.spine.tools.gradle.protobuf.generated
 import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
@@ -200,11 +201,19 @@ private fun Project.replaceKspOutputDirs() {
     afterEvaluate {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
-        kspTasks().forEach { (_, kspTask) ->
+        kspTasks().forEach { (ssn, kspTask) ->
             kspTask.kspConfig.run {
                 outputBaseDir.replace(underBuild, underProject)
                 kotlinOutputDir.replace(underBuild, underProject)
                 javaOutputDir.replace(underBuild, underProject)
+
+                // KSP Gradle Plugin already added its output to source sets.
+                // We need to add the replacement manually.
+                sourceSet(ssn).kotlinDirectorySet()?.run {
+                    srcDirs(kotlinOutputDir)
+                    srcDirs(javaOutputDir)
+                }
+
             }
         }
     }
