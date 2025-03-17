@@ -214,6 +214,9 @@ private fun Project.makeKspTasksDependOnProtoData() {
  * The function replaces default destination directory defied by
  * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
  * the one we used for all the generated code at the level of the project root.
+ *
+ * Also `kotlin` directory set for each source set gets new generated
+ * Kotlin and Java source directories as its inputs.
  */
 private fun Project.replaceKspOutputDirs() {
     afterEvaluate {
@@ -226,12 +229,12 @@ private fun Project.replaceKspOutputDirs() {
                 javaOutputDir.replace(underBuild, underProject)
 
                 // KSP Gradle Plugin already added its output to source sets.
-                // We need to add the replacement manually.
+                // We need to add the replacement manually because we filtered
+                // it before in `Project.excludeSourcesFromBuildDir()`.
                 sourceSet(ssn).kotlinDirectorySet()?.run {
                     srcDirs(kotlinOutputDir)
                     srcDirs(javaOutputDir)
                 }
-
             }
         }
     }
