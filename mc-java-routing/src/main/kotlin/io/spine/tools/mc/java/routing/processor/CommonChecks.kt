@@ -46,19 +46,17 @@ import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRe
  * @param environment The environment for resolving types and reporting errors or warnings.
  * @return The number of detected errors, or zero if no errors were found.
  */
-internal fun KSFunctionDeclaration.commonChecks(environment: Environment): Int {
+internal fun KSFunctionDeclaration.commonChecks(environment: Environment): Boolean {
     val logger = environment.logger
     val declaredInAClass = declaredInAClass(logger)
     val isStatic = isStatic(logger)
     val acceptsOneOrTwoParameters = acceptsOneOrTwoParameters(logger)
     return (declaredInAClass
-            + isStatic
-            + acceptsOneOrTwoParameters)
+            && isStatic
+            && acceptsOneOrTwoParameters)
 }
 
-private fun Boolean.toErrorCount(): Int = if (this) 0 else 1
-
-private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
+private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     val isStatic = when (origin) {
         JAVA -> modifiers.contains(JAVA_STATIC)
         KOTLIN -> parentDeclaration is KSClassDeclaration &&
@@ -73,10 +71,10 @@ private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Int {
             this
         )
     }
-    return isStatic.toErrorCount()
+    return isStatic
 }
 
-private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Int {
+private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
     val inClass = parentDeclaration is KSClassDeclaration
     if (!inClass) {
         // This case is Kotlin-only because in Java a function would belong to a class.
@@ -86,10 +84,10 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Int {
             this
         )
     }
-    return inClass.toErrorCount()
+    return inClass
 }
 
-private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Int {
+private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): Boolean {
     val wrongNumber = parameters.isEmpty() || parameters.size > 2
     if (wrongNumber) {
         logger.error(
@@ -98,7 +96,7 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
             this
         )
     }
-    return (!wrongNumber).toErrorCount()
+    return (!wrongNumber)
 }
 
 /**
@@ -119,9 +117,10 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
     var declaringClass = environment.resolver.getClassDeclarationByName(parent)!!
     if (declaringClass.isCompanionObject) {
         // In Kotlin routing functions are declared in a companion object.
-        // We need the enclosing entity class.
+        // So we "climb up" to the enclosing class.
         declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
     }
+    // Check that the class implements `Entity`.
     val projectedType = declaringClass.asStarProjectedType()
     if (!environment.entityInterface.isAssignableFrom(projectedType)) {
         environment.logger.error(
@@ -131,7 +130,7 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
         )
         return null
     }
-    return EntityClass(declaringClass, environment.entityInterface)
+    return EntityClass(declaringClass, environment)
 }
 
 /**

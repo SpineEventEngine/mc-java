@@ -39,7 +39,6 @@ internal class Qualifier(
     private val functions: Sequence<KSFunctionDeclaration>,
     private val environment: Environment
 ) {
-    private var errorCount = 0
     private val commandRoutes = CommandRouteSignature(environment)
     private val eventRoutes = EventRouteSignature(environment)
     private val stateRoutes = StateUpdateRouteSignature(environment)
@@ -57,16 +56,12 @@ internal class Qualifier(
     fun run(): List<RouteFun> {
         val result = mutableListOf<RouteFun>()
         functions.forEach { fn ->
-            val commonChecksErrors = fn.commonChecks(environment)
-            if (commonChecksErrors != 0) {
-                errorCount += commonChecksErrors
+            if (!fn.commonChecks(environment)) {
                 return@forEach
             }
             val declaringClass = fn.declaringClass(environment)
-            if (declaringClass == null) {
-                errorCount += 1
-                return@forEach
-            }
+                ?: return@forEach
+
             val qualified = qualify(fn, declaringClass)
             if (qualified != null) {
                 result.add(qualified)
@@ -74,7 +69,6 @@ internal class Qualifier(
                 environment.logger.error(
                     "Unqualified function encountered: `${fn.qualifiedName?.asString()}`.", fn
                 )
-                errorCount += 1
             }
         }
         return result
