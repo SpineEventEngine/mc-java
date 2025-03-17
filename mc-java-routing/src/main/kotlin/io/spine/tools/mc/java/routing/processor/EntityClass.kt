@@ -26,13 +26,12 @@
 
 package io.spine.tools.mc.java.routing.processor
 
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind.CLASS
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
-import com.google.devtools.ksp.symbol.Variance
+import io.spine.tools.mc.java.ksp.processor.toTypeArgument
 
 /**
  * Provides information about an entity class.
@@ -61,11 +60,6 @@ internal class EntityClass(
      */
     val idClassTypeArgument: KSTypeArgument by lazy {
         resolveEntityIdType(decl)
-    }
-
-    private fun KSType.toTypeArgument(resolver: Resolver): KSTypeArgument {
-        val typeRef = resolver.createKSTypeReferenceFromKSType(this)
-        return resolver.getTypeArgument(typeRef, Variance.INVARIANT)
     }
 
     @Suppress("LoopWithTooManyJumpStatements", "unused")

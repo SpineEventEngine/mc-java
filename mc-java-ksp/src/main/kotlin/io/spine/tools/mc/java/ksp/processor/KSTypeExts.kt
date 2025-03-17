@@ -26,9 +26,12 @@
 
 package io.spine.tools.mc.java.ksp.processor
 
+import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind.INTERFACE
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.KSTypeArgument
+import com.google.devtools.ksp.symbol.Variance
 
 /**
  * Tells if this type represents an interface.
@@ -48,3 +51,19 @@ public val KSType.ref: String
  */
 public val KSType.qualifiedRef: String
     get() = "`${declaration.qualifiedName?.asString()}`"
+
+/**
+ * Transforms this instance of [KSType] to an instance of [KSTypeArgument]
+ * using the given [resolver].
+ *
+ * @param resolver The resolver to create the type argument instance.
+ * @param variance The variance to use for the type argument.
+ *  The default value is [Variance.INVARIANT].
+ */
+public fun KSType.toTypeArgument(
+    resolver: Resolver,
+    variance: Variance = Variance.INVARIANT
+): KSTypeArgument {
+    val typeRef = resolver.createKSTypeReferenceFromKSType(this)
+    return resolver.getTypeArgument(typeRef, variance)
+}
