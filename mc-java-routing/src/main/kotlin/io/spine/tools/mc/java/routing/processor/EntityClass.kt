@@ -26,25 +26,23 @@
 
 package io.spine.tools.mc.java.routing.processor
 
+import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind.CLASS
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
-import io.spine.tools.mc.java.ksp.processor.qualified
+import com.google.devtools.ksp.symbol.Variance
 
 /**
  * Provides information about an entity class.
  *
  * @property decl The declaration of the class.
- * @param entityInterface The type of the [io.spine.server.entity.Entity]
- *  interface for resolving generic parameters.
- *  This is a supportive parameter that we pass instead of [Environment] instance
- *  to narrow down the dependencies of this class.
+ * @param environment The environment for resolving generic parameters.
  */
 internal class EntityClass(
     val decl: KSClassDeclaration,
-    entityInterface: KSType
+    val environment: Environment
 ) {
     /**
      * Applies the given visitor to the class declaration.
@@ -62,24 +60,21 @@ internal class EntityClass(
      * The type of the entity identifiers as [KSTypeArgument].
      */
     val idClassTypeArgument: KSTypeArgument by lazy {
-        var superType: KSType
-        var asEntity = decl.superTypes.find { type ->
-            superType = type.resolve()
-            entityInterface.isAssignableFrom(superType)
-//            val superDecl = superType.declaration
-//                    && superDecl is KSClassDeclaration
-//                    && superDecl.classKind == CLASS
-        }
-        check(asEntity != null) {
-            "The class `${decl.qualifiedName!!.asString()}`" +
-                    " must implement `${entityInterface.declaration.qualified()}`."
-        }
-//        val numTypeArgs = entityInterface.arguments.size
-//        while (asEntity.element!!.typeArguments.size < numTypeArgs) {
-//            asEntity.element
-//        }
+        resolveEntityIdType(decl)
+    }
 
-        asEntity.element!!.typeArguments.first()
+    private fun KSType.toTypeArgument(resolver: Resolver): KSTypeArgument {
+        val typeRef = resolver.createKSTypeReferenceFromKSType(this)
+        return resolver.getTypeArgument(typeRef, Variance.INVARIANT)
+    }
+
+    @Suppress("LoopWithTooManyJumpStatements", "unused")
+    private fun resolveEntityIdType(classDeclaration: KSClassDeclaration): KSTypeArgument {
+        val idGetter =
+            classDeclaration.getAllFunctions().find { it.simpleName.asString() == "id" }
+        checkNotNull(idGetter)
+        val idReturnType = idGetter.returnType!!.resolve()
+        return idReturnType.toTypeArgument(environment.resolver)
     }
 
     /**
