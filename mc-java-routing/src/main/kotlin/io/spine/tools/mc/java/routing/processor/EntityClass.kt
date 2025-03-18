@@ -31,7 +31,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
-import io.spine.tools.mc.java.ksp.processor.reference
+import io.spine.tools.mc.java.ksp.processor.diagRef
 import io.spine.tools.mc.java.ksp.processor.toTypeArgument
 
 
@@ -77,7 +77,7 @@ internal class EntityClass(
         }
         checkNotNull(idGetter) {
             "Unable to find the function named `$ID_METHOD_NAME` in" +
-                    " the class `${classDeclaration.reference}`."
+                    " the class `${classDeclaration.diagRef}`."
         }
         val idReturnType = idGetter.returnType!!.resolve()
         return idReturnType.toTypeArgument(environment.resolver)

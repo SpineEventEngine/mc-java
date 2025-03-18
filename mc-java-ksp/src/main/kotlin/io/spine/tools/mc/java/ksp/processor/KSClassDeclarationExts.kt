@@ -34,7 +34,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
  * @return The qualified name of the class, if it is available, otherwise its simple name.
  *  The returned name is wrapped in backticks.
  */
-public val KSClassDeclaration.reference: String
+public val KSClassDeclaration.diagRef: String
     get() {
         val name = qualifiedName?.asString() ?: simpleName.asString()
         return "`$name`"
