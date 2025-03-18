@@ -33,7 +33,7 @@ import com.google.devtools.ksp.symbol.Modifier.JAVA_STATIC
 import com.google.devtools.ksp.symbol.Origin.JAVA
 import com.google.devtools.ksp.symbol.Origin.KOTLIN
 import io.spine.server.entity.Entity
-import io.spine.tools.mc.java.ksp.processor.funRef
+import io.spine.tools.mc.java.ksp.processor.diagRef
 import io.spine.tools.mc.java.ksp.processor.msg
 import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.routeRef
 
@@ -65,8 +65,8 @@ private fun KSFunctionDeclaration.isStatic(logger: KSPLogger): Boolean {
     } 
     if (!isStatic) {
         logger.error(msg(
-            "The $funRef annotated with $routeRef must be a member of a companion object.",
-            "The $funRef annotated with $routeRef must be `static`."
+            "The $diagRef annotated with $routeRef must be a member of a companion object.",
+            "The $diagRef annotated with $routeRef must be `static`."
         ),
             this
         )
@@ -79,7 +79,7 @@ private fun KSFunctionDeclaration.declaredInAClass(logger: KSPLogger): Boolean {
     if (!inClass) {
         // This case is Kotlin-only because in Java a function would belong to a class.
         logger.error(
-            "The $funRef annotated with $routeRef must be" +
+            "The $diagRef annotated with $routeRef must be" +
                     " a member of a companion object of an entity class.",
             this
         )
@@ -91,7 +91,7 @@ private fun KSFunctionDeclaration.acceptsOneOrTwoParameters(logger: KSPLogger): 
     val wrongNumber = parameters.isEmpty() || parameters.size > 2
     if (wrongNumber) {
         logger.error(
-            "The $funRef annotated with $routeRef must accept one or two parameters. " +
+            "The $diagRef annotated with $routeRef must accept one or two parameters. " +
                     "Encountered: ${parameters.size}.",
             this
         )
@@ -124,7 +124,7 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
     val projectedType = declaringClass.asStarProjectedType()
     if (!environment.entityInterface.isAssignableFrom(projectedType)) {
         environment.logger.error(
-            "The declaring class of the $funRef annotated with $routeRef" +
+            "The declaring class of the $diagRef annotated with $routeRef" +
                     " must implement the `${Entity::class.java.canonicalName}` interface.",
             this
         )

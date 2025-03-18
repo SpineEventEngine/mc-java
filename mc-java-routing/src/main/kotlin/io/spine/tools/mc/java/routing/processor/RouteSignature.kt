@@ -32,7 +32,7 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
 import io.spine.core.SignalContext
 import io.spine.server.route.Route
 import io.spine.string.simply
-import io.spine.tools.mc.java.ksp.processor.funRef
+import io.spine.tools.mc.java.ksp.processor.diagRef
 import io.spine.tools.mc.java.ksp.processor.isSame
 import io.spine.tools.mc.java.ksp.processor.toType
 import io.spine.tools.mc.java.routing.processor.RouteSignature.Companion.qualify
@@ -131,7 +131,7 @@ internal sealed class RouteSignature<F : RouteFun>(
                 // about the type of the second parameter.
                 val actualSecondParamName = secondParamType.declaration.simpleName.getShortName()
                 environment.logger.error(
-                    "The second parameter of the ${fn.funRef} annotated with $routeRef" +
+                    "The second parameter of the ${fn.diagRef} annotated with $routeRef" +
                             " must be `${contextClass.simpleName}`." +
                             " Encountered: `$actualSecondParamName`.",
                     fn

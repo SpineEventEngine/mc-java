@@ -55,7 +55,7 @@ public fun KSFunctionDeclaration.msg(kotlin: String, java: String): String =
 /**
  * Obtains the text for referencing this function in a diagnostic message.
  */
-public val KSFunctionDeclaration.funRef: String
+public val KSFunctionDeclaration.diagRef: String
     get() {
         val shortRef = "`$shortName()`"
         return msg("function $shortRef", "method $shortRef")
