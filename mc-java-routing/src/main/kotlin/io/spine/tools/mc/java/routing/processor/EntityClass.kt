@@ -31,7 +31,10 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
+import io.spine.tools.mc.java.ksp.processor.reference
 import io.spine.tools.mc.java.ksp.processor.toTypeArgument
+
+
 
 /**
  * Provides information about an entity class.
@@ -59,14 +62,23 @@ internal class EntityClass(
      * The type of the entity identifiers as [KSTypeArgument].
      */
     val idClassTypeArgument: KSTypeArgument by lazy {
-        resolveEntityIdType(decl)
+        resolveIdType(decl)
     }
 
-    @Suppress("LoopWithTooManyJumpStatements", "unused")
-    private fun resolveEntityIdType(classDeclaration: KSClassDeclaration): KSTypeArgument {
-        val idGetter =
-            classDeclaration.getAllFunctions().find { it.simpleName.asString() == "id" }
-        checkNotNull(idGetter)
+    /**
+     * Obtains the type of the entity identifiers as an instance of [KSTypeArgument].
+     *
+     * The function uses the reference to the [Entity.id][ID_METHOD_NAME] function
+     * which returns the ID for resolving the type.
+     */
+    private fun resolveIdType(classDeclaration: KSClassDeclaration): KSTypeArgument {
+        val idGetter = classDeclaration.getAllFunctions().find {
+            it.simpleName.asString() == ID_METHOD_NAME
+        }
+        checkNotNull(idGetter) {
+            "Unable to find the function named `$ID_METHOD_NAME` in" +
+                    " the class `${classDeclaration.reference}`."
+        }
         val idReturnType = idGetter.returnType!!.resolve()
         return idReturnType.toTypeArgument(environment.resolver)
     }
@@ -108,4 +120,14 @@ internal class EntityClass(
      * Obtains the qualified name of the entity class.
      */
     override fun toString(): String = decl.qualifiedName!!.asString()
+
+    companion object {
+
+        /**
+         * The name of the [id][io.spine.server.entity.Entity.id] method
+         * of the [Entity][io.spine.server.entity.Entity] interface which is used
+         * for obtaining the type of the entity identifiers.
+         */
+        private const val ID_METHOD_NAME = "id"
+    }
 }
