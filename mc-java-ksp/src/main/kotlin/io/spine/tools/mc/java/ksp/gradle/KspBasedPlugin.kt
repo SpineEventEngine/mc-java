@@ -52,7 +52,7 @@ import org.gradle.kotlin.dsl.findByType
  *
  * The plugin performs the following configuration steps:
  *
- *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) to the project,
+ *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) to the project
  *     if it is not added already.
  *
  *  2. Makes a KSP task depend on a `LaunchProtoData` task for the same source set.
@@ -127,7 +127,7 @@ public abstract class KspBasedPlugin : Plugin<Project> {
         private const val configurationNamePrefix: String = "ksp"
 
         /**
-         * The Manen coordinates of Google Auto Service annotations that
+         * The Maven coordinates of Google Auto Service annotations that
          * we [add][Project.addDependencies] as `compileOnly` dependencies to
          * the source sets of the project to which th
          */
