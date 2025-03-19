@@ -26,10 +26,16 @@
 
 package io.spine.tools.mc.java.ksp.processor
 
-import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 
 /**
- * Obtains the qualified name of this declaration or `null`
- * if the declaration does not have a qualified name.
+ * Obtains the string with the reference to this class declaration in diagnostic messages.
+ *
+ * @return The qualified name of the class, if it is available, otherwise its simple name.
+ *  The returned name is wrapped in backticks.
  */
-public fun KSDeclaration.qualified(): String? = qualifiedName?.asString()
+public val KSClassDeclaration.diagRef: String
+    get() {
+        val name = qualifiedName?.asString() ?: simpleName.asString()
+        return "`$name`"
+    }

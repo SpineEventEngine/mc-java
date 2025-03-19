@@ -31,20 +31,20 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeArgument
 import com.google.devtools.ksp.symbol.KSTypeReference
-import io.spine.tools.mc.java.ksp.processor.qualified
+import io.spine.tools.mc.java.ksp.processor.diagRef
+import io.spine.tools.mc.java.ksp.processor.toTypeArgument
+
+
 
 /**
  * Provides information about an entity class.
  *
  * @property decl The declaration of the class.
- * @param entityInterface The type of the [io.spine.server.entity.Entity]
- *  interface for resolving generic parameters.
- *  This is a supportive parameter that we pass instead of [Environment] instance
- *  to narrow down the dependencies of this class.
+ * @param environment The environment for resolving generic parameters.
  */
 internal class EntityClass(
     val decl: KSClassDeclaration,
-    entityInterface: KSType
+    val environment: Environment
 ) {
     /**
      * Applies the given visitor to the class declaration.
@@ -62,14 +62,25 @@ internal class EntityClass(
      * The type of the entity identifiers as [KSTypeArgument].
      */
     val idClassTypeArgument: KSTypeArgument by lazy {
-        val asEntity = decl.superTypes.find {
-            entityInterface.isAssignableFrom(it.resolve())
+        resolveIdType(decl)
+    }
+
+    /**
+     * Obtains the type of the entity identifiers as an instance of [KSTypeArgument].
+     *
+     * The function uses the reference to the [Entity.id][ID_METHOD_NAME] function
+     * which returns the ID for resolving the type.
+     */
+    private fun resolveIdType(classDeclaration: KSClassDeclaration): KSTypeArgument {
+        val idGetter = classDeclaration.getAllFunctions().find {
+            it.simpleName.asString() == ID_METHOD_NAME
         }
-        check(asEntity != null) {
-            "The class `${decl.qualifiedName!!.asString()}`" +
-                    " must implement `${entityInterface.declaration.qualified()}`."
+        checkNotNull(idGetter) {
+            "Unable to find the function named `$ID_METHOD_NAME` in" +
+                    " the class `${classDeclaration.diagRef}`."
         }
-        asEntity.element!!.typeArguments.first()
+        val idReturnType = idGetter.returnType!!.resolve()
+        return idReturnType.toTypeArgument(environment.resolver)
     }
 
     /**
@@ -109,4 +120,14 @@ internal class EntityClass(
      * Obtains the qualified name of the entity class.
      */
     override fun toString(): String = decl.qualifiedName!!.asString()
+
+    companion object {
+
+        /**
+         * The name of the [id][io.spine.server.entity.Entity.id] method
+         * of the [Entity][io.spine.server.entity.Entity] interface which is used
+         * for obtaining the type of the entity identifiers.
+         */
+        private const val ID_METHOD_NAME = "id"
+    }
 }

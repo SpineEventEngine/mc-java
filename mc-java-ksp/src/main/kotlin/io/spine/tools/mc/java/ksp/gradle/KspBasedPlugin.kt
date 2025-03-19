@@ -34,6 +34,7 @@ import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
 import io.spine.tools.gradle.project.sourceSets
+import io.spine.tools.gradle.project.sourceSet
 import io.spine.tools.gradle.protobuf.generated
 import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
@@ -51,7 +52,7 @@ import org.gradle.kotlin.dsl.findByType
  *
  * The plugin performs the following configuration steps:
  *
- *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) to the project,
+ *  1. Adds the [KSP Gradle Plugin](https://github.com/google/ksp) to the project
  *     if it is not added already.
  *
  *  2. Makes a KSP task depend on a `LaunchProtoData` task for the same source set.
@@ -85,6 +86,7 @@ public abstract class KspBasedPlugin : Plugin<Project> {
         synchronized(lock) {
             if (!commonSettingsApplied.contains(this)) {
                 useKsp2()
+                addDependencies()
                 excludeSourcesFromBuildDir()
                 addProtoDataGeneratedSources()
                 makeKspTasksDependOnProtoData()
@@ -102,6 +104,16 @@ public abstract class KspBasedPlugin : Plugin<Project> {
             }
     }
 
+    private fun Project.addDependencies() {
+        sourceSets.forEach { sourceSet ->
+            val configurationName = sourceSet.compileOnlyConfigurationName
+            dependencies.add(configurationName,
+                autoServiceAnnotations
+            )
+        }
+    }
+
+    @Suppress("ConstPropertyName")
     protected companion object {
 
         /**
@@ -114,6 +126,13 @@ public abstract class KspBasedPlugin : Plugin<Project> {
          */
         private const val configurationNamePrefix: String = "ksp"
 
+        /**
+         * The Maven coordinates of Google Auto Service annotations that
+         * we [add][Project.addDependencies] as `compileOnly` dependencies to
+         * the source sets of the project to which th
+         */
+        private const val autoServiceAnnotations: String =
+            "com.google.auto.service:auto-service-annotations:1.1.1"
         /**
          * Contains projects to which [KspBasedPlugin]s already applied common settings.
          */
@@ -195,16 +214,27 @@ private fun Project.makeKspTasksDependOnProtoData() {
  * The function replaces default destination directory defied by
  * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
  * the one we used for all the generated code at the level of the project root.
+ *
+ * Also `kotlin` directory set for each source set gets new generated
+ * Kotlin and Java source directories as its inputs.
  */
 private fun Project.replaceKspOutputDirs() {
     afterEvaluate {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
-        kspTasks().forEach { (_, kspTask) ->
+        kspTasks().forEach { (ssn, kspTask) ->
             kspTask.kspConfig.run {
                 outputBaseDir.replace(underBuild, underProject)
                 kotlinOutputDir.replace(underBuild, underProject)
                 javaOutputDir.replace(underBuild, underProject)
+
+                // KSP Gradle Plugin already added its output to source sets.
+                // We need to add the replacement manually because we filtered
+                // it before in `Project.excludeSourcesFromBuildDir()`.
+                sourceSet(ssn).kotlinDirectorySet()?.run {
+                    srcDirs(kotlinOutputDir)
+                    srcDirs(javaOutputDir)
+                }
             }
         }
     }
