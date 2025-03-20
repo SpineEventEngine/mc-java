@@ -36,28 +36,10 @@ import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    ksp
     id("io.spine.mc-java")
 }
 
-ksp {
-    @OptIn(KspExperimental::class)
-    useKsp2.set(true)
-}
-
 dependencies {
-    // Dependencies for the code generation part.
-    ksp(AutoServiceKsp.processor)?.because(
-        "`RouteProcessorProvider` is annotated with `@AutoService`."
-    )
-    implementation(AutoService.annotations)?.because(
-        """
-        We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
-        a service provider but also for annotating the generated code and therefore need
-        the `AutoService` class on runtime.        
-        """.trimIndent()
-    )
-
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
@@ -85,7 +67,7 @@ configurations
     }
 }
 
-// Avoid the missing file error for generated code when running tests out of IDE.
+// Avoid the missing file error for generated code when running tests out of the IDE.
 afterEvaluate {
     val kspTestKotlin by tasks.getting
     val launchTestProtoData by tasks.getting

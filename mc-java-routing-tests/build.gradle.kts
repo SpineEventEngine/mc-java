@@ -33,9 +33,6 @@ import io.spine.dependency.test.KotlinCompileTesting
 import io.spine.tools.gradle.project.sourceSets
 
 plugins {
-    /* We still apply the KSP plugin here because we run these tests
-       using the `dogfooding` version of McJava. */
-    ksp
     id("io.spine.mc-java")
 }
 
