@@ -33,17 +33,16 @@ import io.spine.tools.code.SourceSetName
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
-import io.spine.tools.gradle.project.sourceSets
 import io.spine.tools.gradle.project.sourceSet
+import io.spine.tools.gradle.project.sourceSets
 import io.spine.tools.gradle.protobuf.generated
 import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
+import io.spine.tools.gradle.protobuf.kotlinDirectorySet
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.SourceSet
 import org.gradle.kotlin.dsl.findByType
 
 /**
@@ -175,10 +174,6 @@ private fun Project.addProtoDataGeneratedSources() {
         )
     }
 }
-
-//TODO:2025-03-16:alexander.yevsyukov: Take the extension from ProtoData.
-private fun SourceSet.kotlinDirectorySet(): SourceDirectorySet? =
-    extensions.findByName("kotlin") as SourceDirectorySet?
 
 /**
  * Applies [KspGradlePlugin], if it is not yet added, to this project.
