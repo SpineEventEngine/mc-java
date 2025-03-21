@@ -24,10 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.devtools.ksp.KspExperimental
 import io.spine.dependency.build.Ksp
-import io.spine.dependency.lib.AutoService
-import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
