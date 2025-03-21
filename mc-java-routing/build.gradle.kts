@@ -37,6 +37,14 @@ plugins {
 }
 
 dependencies {
+    //TODO:2025-03-21:alexander.yevsyukov: Uncomment when migrating to new version of McJava.
+    // Also remove `resources/META-INF/services/` directory.
+
+    // Dependencies for the code generation part.
+//    ksp(AutoServiceKsp.processor)?.because(
+//        "`RouteProcessorProvider` is annotated with `@AutoService`."
+//    )
+
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
