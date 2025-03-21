@@ -46,8 +46,11 @@ dependencies {
         "We want KSP-based plugins use this API directly."
     )
     api(Ksp.gradlePlugin)?.because(
-        "This is `api` dependency because we add this plugin from our code."
+        "This is `api` dependency because we add this plugin from our code" +
+                " and want its API being visible to users."
     )
+
+    implementation(Ksp.symbolProcessingAaEmb)
 
     // Test dependencies.
     arrayOf(
