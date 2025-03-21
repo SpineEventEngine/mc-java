@@ -29,6 +29,7 @@
 import io.spine.dependency.build.ErrorProne
 import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Kotlin
+import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.local.Base
 import io.spine.dependency.local.Logging
@@ -67,7 +68,6 @@ buildscript {
         }
         classpath(protoData.pluginLib)
         classpath(io.spine.dependency.local.McJava.pluginLib(mcJavaVersion))
-        classpath(io.spine.dependency.build.Ksp.gradlePlugin)
     }
 
     with(configurations) {
@@ -139,7 +139,9 @@ allprojects {
                 force(
                     Kotlin.stdLib,
                     KotlinX.Coroutines.core,
+                    KotlinX.Coroutines.coreJvm,
                     KotlinX.Coroutines.jdk8,
+                    KotlinPoet.lib,
                     Grpc.api,
                     Reflect.lib,
                     Base.lib,
