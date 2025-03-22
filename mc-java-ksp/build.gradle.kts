@@ -38,6 +38,11 @@ dependencies {
     api(Ksp.symbolProcessingApi)
     api(AutoService.annotations)
 
+    implementation(Ksp.symbolProcessingAaEmb)?.because(
+        "It was not resolved automatically by KSP Gradle Plugin in integration tests." +
+                " We need go re-visit this in future versions of KSP Gradle Plugin."
+    )
+
     // The dependencies for the Gradle plugin part.
     compileOnlyApi(gradleApi())
     compileOnlyApi(gradleKotlinDsl())
@@ -50,11 +55,6 @@ dependencies {
     api(Ksp.gradlePlugin)?.because(
         "This is `api` dependency because we add this plugin from our code" +
                 " and want its API being visible to users."
-    )
-
-    implementation(Ksp.symbolProcessingAaEmb)?.because(
-        "It was not resolved automatically by KSP Gradle Plugin in integration tests." +
-                " We need go re-visit this in future versions of KSP Gradle Plugin."
     )
 
     // Test dependencies.
