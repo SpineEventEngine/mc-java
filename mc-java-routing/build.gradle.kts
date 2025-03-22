@@ -24,10 +24,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.devtools.ksp.KspExperimental
 import io.spine.dependency.build.Ksp
-import io.spine.dependency.lib.AutoService
-import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
@@ -36,27 +33,17 @@ import io.spine.dependency.test.Kotest
 import io.spine.dependency.test.KotlinCompileTesting
 
 plugins {
-    ksp
     id("io.spine.mc-java")
 }
 
-ksp {
-    @OptIn(KspExperimental::class)
-    useKsp2.set(true)
-}
-
 dependencies {
+    //TODO:2025-03-21:alexander.yevsyukov: Uncomment when migrating to new version of McJava.
+    // Also remove `resources/META-INF/services/` directory.
+
     // Dependencies for the code generation part.
-    ksp(AutoServiceKsp.processor)?.because(
-        "`RouteProcessorProvider` is annotated with `@AutoService`."
-    )
-    implementation(AutoService.annotations)?.because(
-        """
-        We use the `@AutoService` annotation not only to annotate `RouteProcessorProvider` as
-        a service provider but also for annotating the generated code and therefore need
-        the `AutoService` class on runtime.        
-        """.trimIndent()
-    )
+//    ksp(AutoServiceKsp.processor)?.because(
+//        "`RouteProcessorProvider` is annotated with `@AutoService`."
+//    )
 
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
@@ -85,7 +72,7 @@ configurations
     }
 }
 
-// Avoid the missing file error for generated code when running tests out of IDE.
+// Avoid the missing file error for generated code when running tests out of the IDE.
 afterEvaluate {
     val kspTestKotlin by tasks.getting
     val launchTestProtoData by tasks.getting

@@ -51,8 +51,6 @@ import io.spine.protodata.java.primarySetterName
 import io.spine.protodata.java.toPrimitiveName
 import io.spine.protodata.type.TypeSystem
 import io.spine.tools.java.classSpec
-import io.spine.tools.java.code.BuilderSpec
-import io.spine.tools.java.code.BuilderSpec.RETURN_STATEMENT
 import io.spine.tools.java.codeBlock
 import io.spine.tools.java.constructorSpec
 import io.spine.tools.java.javadoc.JavadocText
@@ -86,15 +84,15 @@ internal class RThrowableBuilderCode internal constructor(
     private val messageClass: PoClassName,
     private val throwableClass: PoClassName,
     private val typeSystem: TypeSystem
-) : BuilderSpec {
+) {
 
     private val rejectionConvention = RejectionThrowableConvention(typeSystem)
 
     private val simpleClassName: String = SimpleClassName.ofBuilder().value
 
-    override fun packageName(): PackageName = rejection.javaPackage()
+    fun packageName(): PackageName = rejection.javaPackage()
 
-    override fun toPoet(): TypeSpec = classSpec(simpleClassName) {
+    fun toPoet(): TypeSpec = classSpec(simpleClassName) {
         addModifiers(PUBLIC, STATIC)
         addJavadoc(forBuilderOf(rejection))
         addField(messageClass.builderField())
@@ -149,7 +147,7 @@ internal class RThrowableBuilderCode internal constructor(
         returns(builderClass())
         addParameter(poetTypeName(), parameterName)
         addStatement("\$L.\$L(\$L)", BUILDER_FIELD, primarySetterName, parameterName)
-        addStatement(RETURN_STATEMENT)
+        addStatement("return this")
 
         if (doc.leadingComment.isNotEmpty()) {
             // Add line separator to simulate the behavior of native Protobuf API.
