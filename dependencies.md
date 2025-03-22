@@ -68,6 +68,10 @@
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -236,26 +240,6 @@
      * **Project URL:** [https://github.com/JetBrains/java-annotations](https://github.com/JetBrains/java-annotations)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-build-tools-api. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-reflect. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -269,14 +253,6 @@
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -392,6 +368,10 @@
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -1129,7 +1109,7 @@
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:13 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -1413,6 +1393,26 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1519,6 +1519,10 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -1745,7 +1749,10 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -1917,7 +1924,23 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -1961,6 +1984,14 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -1989,7 +2020,15 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -1997,11 +2036,23 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -2070,7 +2121,7 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:14 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -2354,6 +2405,26 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -2460,6 +2531,10 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -2686,7 +2761,10 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -2866,7 +2944,23 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -2910,6 +3004,14 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -2938,7 +3040,15 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -2946,11 +3056,23 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -3019,7 +3141,7 @@ This report was generated on **Wed Mar 19 20:04:54 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:14 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -3706,7 +3828,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -3747,6 +3885,14 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -3855,7 +4001,7 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:14 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -4139,6 +4285,26 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4245,6 +4411,10 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -4471,7 +4641,10 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -4643,7 +4816,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -4687,6 +4876,14 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -4715,7 +4912,15 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -4723,11 +4928,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -4796,7 +5013,7 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:14 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -5450,7 +5667,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -5491,6 +5724,14 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -5603,7 +5844,7 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:15 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -5887,6 +6128,26 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -5993,6 +6254,10 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -6219,7 +6484,10 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -6391,7 +6659,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -6435,6 +6719,14 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -6463,7 +6755,15 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -6471,11 +6771,23 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -6544,7 +6856,7 @@ This report was generated on **Wed Mar 19 20:04:55 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:15 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -7198,7 +7510,23 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -7239,6 +7567,14 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -7351,7 +7687,7 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:15 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -7400,6 +7736,10 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/googleapis/sdk-platform-java](https://github.com/googleapis/sdk-platform-java)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.auto.service. **Name** : auto-service-annotations. **Version** : 1.1.1.
+     * **Project URL:** [https://github.com/google/auto/tree/main/service](https://github.com/google/auto/tree/main/service)
+     * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.code.findbugs. **Name** : jsr305. **Version** : 3.0.2.
      * **Project URL:** [http://findbugs.sourceforge.net/](http://findbugs.sourceforge.net/)
      * **License:** [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -7407,6 +7747,10 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -7638,6 +7982,10 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -8343,7 +8691,7 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:15 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -8627,6 +8975,26 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -8733,6 +9101,10 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -8959,7 +9331,10 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -9139,7 +9514,23 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -9183,6 +9574,14 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -9211,7 +9610,15 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -9219,11 +9626,23 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -9292,7 +9711,7 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:16 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -9946,7 +10365,23 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -9987,6 +10422,14 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -10099,7 +10542,7 @@ This report was generated on **Wed Mar 19 20:04:56 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:16 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -10383,6 +10826,26 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -10489,6 +10952,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -10715,7 +11182,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -10895,7 +11365,23 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -10939,6 +11425,14 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -10967,7 +11461,15 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -10975,11 +11477,23 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -11048,7 +11562,7 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:16 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -11702,7 +12216,23 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -11743,6 +12273,14 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -11855,7 +12393,7 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:16 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -11927,6 +12465,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -12096,26 +12638,6 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/JetBrains/java-annotations](https://github.com/JetBrains/java-annotations)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-build-tools-api. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-reflect. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -12129,14 +12651,6 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -12252,6 +12766,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -12727,23 +13245,7 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -12784,14 +13286,6 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
-     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
-     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -12900,7 +13394,7 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:17 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -12960,6 +13454,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 1.  **Group** : com.google.code.gson. **Name** : gson. **Version** : 2.10.1.
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
@@ -13361,10 +13859,6 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/drewhamilton/Poko](https://github.com/drewhamilton/Poko)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-1.  **Group** : dev.zacsweers.autoservice. **Name** : auto-service-ksp. **Version** : 1.2.0.
-     * **Project URL:** [https://github.com/ZacSweers/auto-service-ksp](https://github.com/ZacSweers/auto-service-ksp)
-     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
-
 1.  **Group** : dev.zacsweers.kctfork. **Name** : core. **Version** : 0.7.0.
      * **Project URL:** [https://github.com/zacsweers/kotlin-compile-testing](https://github.com/zacsweers/kotlin-compile-testing)
      * **License:** [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
@@ -13580,7 +14074,10 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -13968,7 +14465,7 @@ This report was generated on **Wed Mar 19 20:04:57 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:17 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -14124,6 +14621,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-aa-embeddable. **Version** : 2.1.10-1.0.31.
      * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -14479,7 +14980,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -14824,7 +15328,7 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:17 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -15108,6 +15612,26 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -15214,6 +15738,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -15440,7 +15968,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -15620,7 +16151,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -15664,6 +16211,14 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -15692,7 +16247,15 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -15700,11 +16263,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -15773,7 +16348,7 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:17 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -16427,7 +17002,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -16468,6 +17059,14 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -16580,7 +17179,7 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:18 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -16864,6 +17463,26 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/google/gson/gson](https://github.com/google/gson/gson)
      * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-api. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-cmdline. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-common-deps. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.google.devtools.ksp. **Name** : symbol-processing-gradle-plugin. **Version** : 2.1.10-1.0.31.
+     * **Project URL:** [https://goo.gle/ksp](https://goo.gle/ksp)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : com.google.errorprone. **Name** : error_prone_annotation. **Version** : 2.36.0.
      * **Project URL:** [https://errorprone.info/error_prone_annotation](https://errorprone.info/error_prone_annotation)
      * **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -16970,6 +17589,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : com.squareup. **Name** : kotlinpoet-jvm. **Version** : 2.0.0.
+     * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : com.squareup. **Name** : kotlinpoet-ksp. **Version** : 2.0.0.
      * **Project URL:** [https://github.com/square/kotlinpoet](https://github.com/square/kotlinpoet)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -17196,7 +17819,10 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [http://junit.org](http://junit.org)
      * **License:** [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html)
 
-1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 3.1.0.**No license information found**
+1.  **Group** : net.ltgt.gradle. **Name** : gradle-errorprone-plugin. **Version** : 4.1.0.
+     * **Project URL:** [https://github.com/tbroyer/gradle-errorprone-plugin](https://github.com/tbroyer/gradle-errorprone-plugin)
+     * **License:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 1.  **Group** : net.sf.saxon. **Name** : Saxon-HE. **Version** : 12.2.
      * **Project URL:** [http://www.saxonica.com/](http://www.saxonica.com/)
      * **License:** [Mozilla Public License Version 2.0](http://www.mozilla.org/MPL/2.0/)
@@ -17376,7 +18002,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -17420,6 +18062,14 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : atomicfu. **Version** : 0.23.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.atomicfu](https://github.com/Kotlin/kotlinx.atomicfu)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -17448,7 +18098,15 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.html](https://github.com/Kotlin/kotlinx.html)
      * **License:** [The Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-bom. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -17456,11 +18114,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-core-jvm. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.4.1.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json. **Version** : 1.6.3.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.4.1.
+     * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+     * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlinx. **Name** : kotlinx-serialization-json-jvm. **Version** : 1.6.3.
      * **Project URL:** [https://github.com/Kotlin/kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
      * **License:** [The Apache Software License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -17529,7 +18199,7 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:18 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
 
 
 
@@ -18183,7 +18853,23 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-annotations. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugin-api. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-gradle-plugins-bom. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-klib-commonizer-embeddable. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-native-utils. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -18224,6 +18910,14 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-stdlib-jdk8. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-tooling-core. **Version** : 2.1.10.
+     * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
+     * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+1.  **Group** : org.jetbrains.kotlin. **Name** : kotlin-util-io. **Version** : 2.1.10.
      * **Project URL:** [https://kotlinlang.org/](https://kotlinlang.org/)
      * **License:** [The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -18336,4 +19030,4 @@ This report was generated on **Wed Mar 19 20:04:58 WET 2025** using [Gradle-Lice
 
 The dependencies distributed under several licenses, are used according their commercial-use-friendly license.
 
-This report was generated on **Wed Mar 19 20:04:59 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
+This report was generated on **Sat Mar 22 18:24:18 WET 2025** using [Gradle-License-Report plugin](https://github.com/jk1/Gradle-License-Report) by Evgeny Naumenko, licensed under [Apache 2.0 License](https://github.com/jk1/Gradle-License-Report/blob/master/LICENSE).
