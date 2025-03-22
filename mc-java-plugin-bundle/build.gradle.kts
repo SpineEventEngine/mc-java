@@ -130,6 +130,18 @@ tasks.publish {
 tasks.shadowJar {
     exclude(
         /**
+         * Exclude Kotlin runtime because it will be provided by Gradle runtime.
+         */
+        "kotlin/**",
+        "kotlinx/**",
+
+        /**
+         * The Protobuf Gradle Plugin will be available in the classpath because
+         * McJava Gradle Plugin is applied after it.
+         */
+        "com/google/protobuf/gradle/**",
+
+        /**
          * Excluding these types to avoid clashes at user's build classpath.
          *
          * The ProtoData plugin will be added to the user's build via a dependency.
@@ -155,8 +167,6 @@ tasks.shadowJar {
          * Those required for the plugins are available at runtime anyway.
          */
         "org/gradle/**",
-
-
 
         // Exclude license files that cause or may cause issues with LicenseReport.
         // We analyze these files when building artifacts we depend on.
