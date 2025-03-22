@@ -26,15 +26,14 @@
 
 package io.spine.tools.mc.java.gradle.plugins
 
-import com.google.protobuf.gradle.ProtobufExtension
 import io.spine.string.simply
 import io.spine.tools.gradle.Artifact
 import io.spine.tools.gradle.DependencyVersions
 import io.spine.tools.gradle.protobuf.ProtobufDependencies.gradlePlugin
 import io.spine.tools.gradle.protobuf.ProtobufDependencies.protobufCompiler
+import io.spine.tools.gradle.protobuf.protobufExtension
 import io.spine.tools.mc.gradle.LanguagePlugin
 import io.spine.tools.mc.java.VersionHolder
-import io.spine.tools.mc.java.checks.gradle.McJavaChecksPlugin
 import io.spine.tools.mc.java.gradle.McJavaOptions
 import io.spine.tools.mc.java.gradle.McJavaOptions.Companion.name
 import io.spine.tools.mc.java.gradle.mcJava
@@ -70,13 +69,10 @@ private fun Project.logApplying() {
     logger.warn("Applying `${simply<McJavaPlugin>()}` (version: $version) to `$name`.")
 }
 
-private val Project.protobuf: ProtobufExtension
-    get() = extensions.getByType(ProtobufExtension::class.java)
-
 private fun Project.setProtocArtifact() {
     val ofPluginBase = DependencyVersions.loadFor(Artifact.PLUGIN_BASE_ID)
     val protocArtifact = protobufCompiler.withVersionFrom(ofPluginBase).notation()
-    protobuf.protoc { locator ->
+    protobufExtension!!.protoc { locator ->
         locator.artifact = protocArtifact
     }
 }
@@ -88,7 +84,6 @@ private fun Project.createAndApplyPlugins() {
     val plugins: List<Plugin<Project>> = listOf(
         CleaningPlugin(),
         EnableGrpcPlugin(),
-        McJavaChecksPlugin(),
         ProtoDataConfigPlugin(),
         RoutingPlugin() as Plugin<Project>
     )
