@@ -10,7 +10,7 @@ all modules and does not describe the project structure per-subproject.
  -->
 <groupId>io.spine.tools</groupId>
 <artifactId>mc-java</artifactId>
-<version>2.0.0-SNAPSHOT.304</version>
+<version>2.0.0-SNAPSHOT.305</version>
 
 <inceptionYear>2015</inceptionYear>
 
@@ -352,12 +352,12 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-fat-cli</artifactId>
-    <version>0.93.0</version>
+    <version>0.93.3</version>
   </dependency>
   <dependency>
     <groupId>io.spine.protodata</groupId>
     <artifactId>protodata-protoc</artifactId>
-    <version>0.93.0</version>
+    <version>0.93.3</version>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
@@ -372,18 +372,18 @@ all modules and does not describe the project structure per-subproject.
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-mc-java-checks</artifactId>
-    <version>2.0.0-SNAPSHOT.302</version>
+    <version>2.0.0-SNAPSHOT.304</version>
     <scope>provided</scope>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-mc-java-plugins</artifactId>
-    <version>2.0.0-SNAPSHOT.302</version>
+    <version>2.0.0-SNAPSHOT.304</version>
   </dependency>
   <dependency>
     <groupId>io.spine.tools</groupId>
     <artifactId>spine-mc-java-routing</artifactId>
-    <version>2.0.0-SNAPSHOT.302</version>
+    <version>2.0.0-SNAPSHOT.304</version>
   </dependency>
   <dependency>
     <groupId>io.spine.validation</groupId>
