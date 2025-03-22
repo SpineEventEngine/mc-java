@@ -52,7 +52,10 @@ dependencies {
                 " and want its API being visible to users."
     )
 
-    implementation(Ksp.symbolProcessingAaEmb)
+    implementation(Ksp.symbolProcessingAaEmb)?.because(
+        "It was not resolved automatically by KSP Gradle Plugin in integration tests." +
+                " We need go re-visit this in future versions of KSP Gradle Plugin."
+    )
 
     // Test dependencies.
     arrayOf(
