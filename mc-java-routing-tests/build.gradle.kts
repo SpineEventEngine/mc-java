@@ -37,13 +37,12 @@ plugins {
 }
 
 dependencies {
-    ksp(AutoServiceKsp.processor)
-    compileOnlyApi(AutoService.annotations)
-
     testImplementation(CoreJava.testUtilServer)
 
     /* This makes our KSP processor work on the `testFixtures` source set. */
+    testFixturesCompileOnly(AutoService.annotations)
     kspTestFixtures(project(":mc-java-routing"))
+    kspTestFixtures(AutoServiceKsp.processor)
     testFixturesImplementation(CoreJava.server)
 }
 
@@ -65,23 +64,27 @@ ksp {
     }
 }
 
-/* We need to add these sources because original Protobuf-generated files
-   are filtered via `excludedSources` above.
-   The KSP Gradle Plugin analyzes source sets and task outputs before
-   ProtoData comes into play.
-   When we modify the source directories in `GenerateProtoTask.configureSourceSetDirs()`
-   in ProtoData Gradle Plugin, it does not affect the input of KSP tasks.
-   See `com.google.devtools.ksp.gradle.KspAATask.registerKspAATask()` with the following
-   code block:
-   ```kotlin
-      .map {
-         // @SkipWhenEmpty doesn't work well with File.
-         project.objects.fileTree().from(it)
-      }
-   ```
- */
 sourceSets.testFixtures {
+    /* We need to add these sources because original Protobuf-generated files
+       are filtered via `excludedSources` above.
+       The KSP Gradle Plugin analyzes source sets and task outputs before
+       ProtoData comes into play.
+       When we modify the source directories in `GenerateProtoTask.configureSourceSetDirs()`
+       in ProtoData Gradle Plugin, it does not affect the input of KSP tasks.
+       See `com.google.devtools.ksp.gradle.KspAATask.registerKspAATask()` with the following
+       code block:
+       ```kotlin
+          .map {
+             // @SkipWhenEmpty doesn't work well with File.
+             project.objects.fileTree().from(it)
+          }
+       ```
+     */
     kotlin.srcDir("generated/testFixtures/java")
+
+    /* Temporarily add redirected output of KSP processor
+       until a newer dogfooding version of McJava is applied. */
+    kotlin.srcDir("generated/ksp/testFixtures/kotlin")
 }
 
 // Avoid Gradle warning on disabled execution optimization because of the absence of
