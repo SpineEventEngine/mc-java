@@ -32,7 +32,7 @@ import io.spine.protodata.gradle.Names
 import io.spine.protodata.gradle.Names.GRADLE_PLUGIN_ID
 import io.spine.protodata.gradle.plugin.LaunchProtoData
 import io.spine.protodata.java.style.JavaCodeStyleFormatterPlugin
-import io.spine.protodata.gradle.plugin.protoDataWorkingDir
+import io.spine.protodata.gradle.protoDataWorkingDir
 import io.spine.protodata.params.WorkingDirectory
 import io.spine.tools.fs.DirectoryName
 import io.spine.tools.gradle.Artifact
