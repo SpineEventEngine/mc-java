@@ -33,10 +33,12 @@ import io.spine.tools.code.SourceSetName
 import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
+import io.spine.tools.gradle.project.findKotlinCompileFor
 import io.spine.tools.gradle.project.sourceSets
 import io.spine.tools.gradle.protobuf.generated
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
 import io.spine.tools.gradle.task.findKotlinDirectorySet
+import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin.Companion.autoServiceKsp
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -71,6 +73,8 @@ public abstract class KspBasedPlugin : Plugin<Project> {
                 applyCommonSettings()
                 addPluginsToKspConfigurations()
             }
+            // If the KSP plugin is already applied, the above code would be executed.
+            // Otherwise, we apply the plugin by ourselves, which would run the above code.
             applyKspPlugin()
         }
     }
@@ -87,6 +91,7 @@ public abstract class KspBasedPlugin : Plugin<Project> {
                 makeKspIgnoreGeneratedSourceProtoDir()
                 addProtoDataGeneratedSources()
                 makeKspTasksDependOnProtoData()
+                makeCompileKotlinTasksDependOnKspTasks()
                 replaceKspOutputDirs()
                 commonSettingsApplied.add(this)
             }
@@ -211,6 +216,23 @@ private fun Project.makeKspTasksDependOnProtoData() {
             if (protoDataTask != null) {
                 kspTask.dependsOn(protoDataTask)
             }
+        }
+    }
+}
+
+/**
+ * Makes `compile<SourceSetName>Kotlin` tasks depend on `ksp<SourceSetName>Kotlin` tasks.
+ *
+ * Strangely, at the time of writing, this is not arranged by KSP Gradle Plugin.
+ * So, we set this dependency to avoid the Gradle error when McJava is applied.
+ */
+private fun Project.makeCompileKotlinTasksDependOnKspTasks() {
+    afterEvaluate {
+        val kspTasks = kspTasks()
+        kspTasks.forEach { (ssn, kspTask) ->
+            val sourceSet = sourceSets.findByName(ssn.value)
+            val compileKotlin = findKotlinCompileFor(sourceSet!!)
+            compileKotlin?.dependsOn(kspTask)
         }
     }
 }
