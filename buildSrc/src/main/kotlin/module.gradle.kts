@@ -28,6 +28,7 @@ import com.google.common.io.Files
 import io.spine.dependency.build.CheckerFramework
 import io.spine.dependency.build.ErrorProne
 import io.spine.dependency.build.FindBugs
+import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.Caffeine
 import io.spine.dependency.lib.Grpc
 import io.spine.dependency.lib.Guava
@@ -146,6 +147,9 @@ fun Module.forceConfigurations() {
                     KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,
                     KotlinPoet.lib,
+                    Ksp.symbolProcessingApi,
+                    Ksp.symbolProcessingCommonDeps,
+                    Ksp.gradlePlugin,
                     Protobuf.compiler,
                     Grpc.api,
                     Grpc.core,
