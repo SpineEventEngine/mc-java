@@ -31,7 +31,6 @@ import io.spine.base.fieldPath
 import io.spine.protodata.ast.Field
 import io.spine.protodata.ast.MessageType
 import io.spine.protodata.ast.field
-import io.spine.protodata.ast.isMessage
 import io.spine.protodata.type.TypeSystem
 
 /**
