@@ -25,6 +25,7 @@
  */
 
 import io.spine.dependency.build.Ksp
+import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.TestLib
@@ -35,6 +36,7 @@ dependencies {
     // The dependencies of the processor part.
     compileOnlyApi(Kotlin.Compiler.embeddable)
     api(Ksp.symbolProcessingApi)
+    api(AutoService.annotations)
 
     // The dependencies for the Gradle plugin part.
     compileOnlyApi(gradleApi())
@@ -46,8 +48,11 @@ dependencies {
         "We want KSP-based plugins use this API directly."
     )
     api(Ksp.gradlePlugin)?.because(
-        "This is `api` dependency because we add this plugin from our code."
+        "This is `api` dependency because we add this plugin from our code" +
+                " and want its API being visible to users."
     )
+
+    implementation(Ksp.symbolProcessingAaEmb)
 
     // Test dependencies.
     arrayOf(
