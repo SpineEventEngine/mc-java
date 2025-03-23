@@ -44,7 +44,6 @@ dependencies {
     listOf(
         ":mc-java-base",
         ":mc-java-annotation",
-        ":mc-java-checks",
         ":mc-java-entity",
         ":mc-java-signal",
         ":mc-java-marker",

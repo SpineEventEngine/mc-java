@@ -42,8 +42,7 @@ include(
  * See the `includeBuild(...)` block below for more info.
  */
 val links = mapOf(
-    "io.spine.tools:spine-mc-java" to ":mc-java",
-    "io.spine.tools:spine-mc-java-checks" to ":mc-java-checks",
+    "io.spine.tools:spine-mc-java" to ":mc-java"
 )
 
 /*
