@@ -139,6 +139,7 @@ fun Module.forceConfigurations() {
                 force(
                     Kotlin.stdLib,
                     Kotlin.scriptRuntime,
+                    Kotlin.GradlePlugin.api,
                     KotlinX.Coroutines.bom,
                     KotlinX.Coroutines.core,
                     KotlinX.Coroutines.coreJvm,
