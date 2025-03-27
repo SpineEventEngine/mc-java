@@ -35,9 +35,9 @@ import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
 import io.spine.tools.gradle.project.findKotlinCompileFor
 import io.spine.tools.gradle.project.sourceSets
-import io.spine.tools.gradle.project.sourceSet
+//import io.spine.tools.gradle.project.sourceSet
 import io.spine.tools.gradle.protobuf.generated
-import io.spine.tools.gradle.protobuf.generatedDir
+//import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
 import io.spine.tools.gradle.task.findKotlinDirectorySet
 import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin.Companion.autoServiceKsp
