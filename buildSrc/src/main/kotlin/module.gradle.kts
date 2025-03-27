@@ -176,7 +176,9 @@ fun Module.forceConfigurations() {
                     // Force the version to avoid the version conflict for
                     // the `:mc-java:ProtoData` configuration.
                     Validation.runtime,
+                    Validation.java,
                     Validation.javaBundle,
+                    Validation.config,
                     ProtoData.api,
                     ProtoData.gradleApi,
                     ProtoData.java,
