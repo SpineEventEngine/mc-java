@@ -34,8 +34,10 @@ import io.spine.tools.fs.DirectoryName.grpc
 import io.spine.tools.fs.DirectoryName.java
 import io.spine.tools.fs.DirectoryName.kotlin
 import io.spine.tools.gradle.project.findKotlinCompileFor
+import io.spine.tools.gradle.project.sourceSet
 import io.spine.tools.gradle.project.sourceSets
 import io.spine.tools.gradle.protobuf.generated
+import io.spine.tools.gradle.protobuf.generatedDir
 import io.spine.tools.gradle.protobuf.generatedSourceProtoDir
 import io.spine.tools.gradle.task.findKotlinDirectorySet
 import io.spine.tools.mc.java.ksp.gradle.KspBasedPlugin.Companion.autoServiceKsp
@@ -238,15 +240,6 @@ private fun Project.makeCompileKotlinTasksDependOnKspTasks() {
 }
 
 /**
- * **DOES NOTHING** until [File.toRelativeString] correctly supports the calculation
- * of a relative directory in a way we need for the replacement of
- * the [outputBaseDir][com.google.devtools.ksp.gradle.KspGradleConfig.outputBaseDir]
- * we want to make in this function.
- *
- * Another issue with [File.toRelativeString] is that it does not handle
- * [different file path roots](https://github.com/google/ksp/issues/1079).
- *
- * -------
  * The function replaces default destination directory defied by
  * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
  * the one we used for all the generated code at the level of the project root.
@@ -254,9 +247,7 @@ private fun Project.makeCompileKotlinTasksDependOnKspTasks() {
  * Also `kotlin` directory set for each source set gets new generated
  * Kotlin and Java source directories as its inputs.
  */
-@Suppress("UnusedReceiverParameter")
 private fun Project.replaceKspOutputDirs() {
-    /*
     afterEvaluate {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
@@ -265,18 +256,23 @@ private fun Project.replaceKspOutputDirs() {
                 outputBaseDir.replace(underBuild, underProject)
                 kotlinOutputDir.replace(underBuild, underProject)
                 javaOutputDir.replace(underBuild, underProject)
+                resourceOutputDir.replace(underBuild, underProject)
 
-                // KSP Gradle Plugin already added its output to source sets.
-                // We need to add the replacement manually because we filtered
-                // it before in `Project.excludeSourcesFromBuildDir()`.
-                sourceSet(ssn).kotlinDirectorySet()?.run {
-                    srcDirs(kotlinOutputDir)
-                    srcDirs(javaOutputDir)
+                val sourceSet = sourceSet(ssn)
+                sourceSet.run {
+                    // KSP Gradle Plugin already added its output to source sets.
+                    // We need to add the replacement manually because we filtered
+                    // it before in `Project.makeKspIgnoreGeneratedSourceProtoDir()`.
+
+                    java.srcDirs(javaOutputDir)
+                    findKotlinDirectorySet()?.srcDirs(kotlinOutputDir)
+
+                    // We need to add redirected KSP-generated resources too.
+                    resources.srcDirs(resourceOutputDir)
                 }
             }
         }
     }
-    */
 }
 
 /**
