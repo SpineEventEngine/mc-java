@@ -32,7 +32,7 @@ import io.spine.base.FieldPath
 import io.spine.protodata.java.ClassName
 import io.spine.protodata.java.Expression
 import io.spine.protodata.java.FieldDeclaration
-import io.spine.protodata.java.ParameterizedClassName
+import io.spine.protodata.java.ParameterizedTypeName
 import io.spine.protodata.java.call
 import io.spine.string.camelCase
 import io.spine.string.lowerCamelCase
@@ -78,7 +78,7 @@ internal class ComparatorBuilder(cls: PsiClass, private val reversed: Boolean = 
         }
         return FieldDeclaration(
             modifiers = "private static final",
-            type = ParameterizedClassName(comparator, message),
+            type = ParameterizedTypeName(comparator, message),
             name = "comparator",
             value = comparisons
         )
