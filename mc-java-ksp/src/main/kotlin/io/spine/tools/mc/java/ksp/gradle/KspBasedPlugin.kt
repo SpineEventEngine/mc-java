@@ -240,6 +240,15 @@ private fun Project.makeCompileKotlinTasksDependOnKspTasks() {
 }
 
 /**
+ * **DOES NOTHING** until [File.toRelativeString] correctly supports the calculation
+ * of a relative directory in a way we need for the replacement of
+ * the [outputBaseDir][com.google.devtools.ksp.gradle.KspGradleConfig.outputBaseDir]
+ * we want to make in this function.
+ *
+ * Another issue with [File.toRelativeString] is that it does not handle
+ * [different file path roots](https://github.com/google/ksp/issues/1079).
+ *
+ * -------
  * The function replaces default destination directory defied by
  * [com.google.devtools.ksp.gradle.KspGradleSubplugin.getKspOutputDir] to
  * the one we used for all the generated code at the level of the project root.
@@ -247,7 +256,9 @@ private fun Project.makeCompileKotlinTasksDependOnKspTasks() {
  * Also `kotlin` directory set for each source set gets new generated
  * Kotlin and Java source directories as its inputs.
  */
+@Suppress("UnusedReceiverParameter")
 private fun Project.replaceKspOutputDirs() {
+    /*
     afterEvaluate {
         val underBuild = KspGradlePlugin.defaultTargetDirectory(it).toString()
         val underProject = generatedDir.toString()
@@ -267,6 +278,7 @@ private fun Project.replaceKspOutputDirs() {
             }
         }
     }
+    */
 }
 
 /**
