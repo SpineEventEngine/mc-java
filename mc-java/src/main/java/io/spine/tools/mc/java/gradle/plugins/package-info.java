@@ -28,9 +28,9 @@
  * Spine Gradle plugins for code generation and build-time Protobuf model validation.
  */
 @CheckReturnValue
-@ParametersAreNonnullByDefault
+@NullMarked
 package io.spine.tools.mc.java.gradle.plugins;
 
 import com.google.errorprone.annotations.CheckReturnValue;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
