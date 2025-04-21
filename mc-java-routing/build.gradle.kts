@@ -40,7 +40,7 @@ dependencies {
     implementation(KotlinPoet.ksp)
     implementation(CoreJava.server)
     implementation(project(":mc-java-base"))
-    implementation(project(":mc-java-ksp"))
+    api(project(":mc-java-ksp"))
 
     testImplementation(gradleTestKit())
     testImplementation(Kotest.assertions)

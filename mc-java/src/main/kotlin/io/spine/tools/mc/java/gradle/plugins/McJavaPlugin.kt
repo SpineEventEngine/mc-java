@@ -85,7 +85,7 @@ private fun Project.createAndApplyPlugins() {
         CleaningPlugin(),
         EnableGrpcPlugin(),
         ProtoDataConfigPlugin(),
-        RoutingPlugin() as Plugin<Project>
+        RoutingPlugin()
     )
     plugins.forEach {
         apply(it)
