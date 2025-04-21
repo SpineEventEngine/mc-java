@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 import io.spine.logging.Logger;
 import io.spine.logging.LoggingFactory;
 import io.spine.tools.java.fs.DefaultJavaPaths;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.gradle.api.Project;
 
 import java.io.File;
