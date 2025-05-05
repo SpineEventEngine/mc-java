@@ -71,8 +71,10 @@ public class ApiAnnotationsPlugin : Plugin(
         ClassPatternAnnotator(),
         MethodPatternAnnotator()
     ),
+    views = setOf(
+        MessageAnnotationsView::class.java
+    ),
     viewRepositories = setOf(
-        MessageAnnotationsView.Repository(),
         EnumAnnotationsView.Repository(),
         ServiceAnnotationsView.Repository(),
         MessageFieldAnnotationsView.Repository()

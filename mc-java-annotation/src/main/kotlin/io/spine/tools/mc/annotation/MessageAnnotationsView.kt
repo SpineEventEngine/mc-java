@@ -30,28 +30,27 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ast.TypeName
 import io.spine.protodata.ast.event.FieldOptionDiscovered
-import io.spine.protodata.ast.event.TypeOptionDiscovered
+import io.spine.protodata.ast.event.MessageOptionDiscovered
 import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
-import io.spine.server.route.EventRouting
+import io.spine.server.route.Route
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
  * Gathers the options defined for a message type.
  *
- * Subscribes to [TypeOptionDiscovered] for obtaining directly set options.
+ * Subscribes to [MessageOptionDiscovered] for obtaining directly set options.
  *
  * Subscribes to [FileOptionMatched] events for getting matches between file level options,
  * and type options that are assumed for all the types in the file.
  *
- * @see io.spine.tools.mc.annotation.MessageAnnotationsView
+ * @see MessageAnnotationsView
  */
 internal class MessageAnnotationsView :
     View<TypeName, MessageAnnotations, MessageAnnotations.Builder>() {
 
     @Subscribe
-    fun on(@External e: TypeOptionDiscovered) = alter {
+    fun on(@External e: MessageOptionDiscovered) = alter {
         file = e.file
         // If the option was defined at the file level, overwrite it.
         optionBuilderList.find { it.name == e.option.name }?.let {
@@ -71,20 +70,15 @@ internal class MessageAnnotationsView :
         addOption(e.assumed)
     }
 
-    /**
-     * The repository for [MessageAnnotationsView] which tunes the routing of events.
-     */
-    class Repository: ViewRepository<TypeName, MessageAnnotationsView, MessageAnnotations>() {
+    companion object {
 
-        override fun setupEventRouting(routing: EventRouting<TypeName>) {
-            super.setupEventRouting(routing)
-            routing.route<FileOptionMatched> { e, _ ->
-                e.toMessageTypeName()
-            }.unicast<TypeOptionDiscovered> { e, _ ->
-                e.type
-            }.unicast<FieldOptionDiscovered> { e, _ ->
-                e.subject.declaringType
-            }
-        }
+        @Route
+        fun route(e: FileOptionMatched) = e.toMessageTypeName()
+
+        @Route
+        fun route(e: MessageOptionDiscovered) = e.subject.name
+
+        @Route
+        fun route(e: FieldOptionDiscovered) = e.subject.declaringType
     }
 }

@@ -1,11 +1,11 @@
 #
-# Copyright 2024, TeamDev. All rights reserved.
+# Copyright 2025, TeamDev. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+# https://www.apache.org/licenses/LICENSE-2.0
 #
 # Redistribution and use in source and/or binary forms, with or without
 # modification, must retain the above copyright notice and the following
@@ -31,11 +31,14 @@
 #
 # Therefore, instructions below are superset of instructions required for all the projects.
 
-# jenv version file.
+# `jenv` local configuration.
 .java-version
 
-# Kotlin internal directory.
-buildSrc/.kotlin
+# Internal tool directories.
+.fleet/
+
+# Kotlin temp directories.
+**/.kotlin/
 
 # IntelliJ IDEA modules and interim config files.
 *.iml
@@ -54,14 +57,20 @@ buildSrc/.kotlin
 
 # Gradle interim configs
 **/.gradle/**
-!**/src/**/build/**
+
+# Temp directory for Gradle TestKit runners
+**/.gradle-test-kit/**
 
 # Generated source code
 **/generated/**
+**/*.pb.dart
+**/*.pbenum.dart
+**/*.pbserver.dart
+**/*.pbjson.dart
 
 # Gradle build files
 **/build/**
-!**/src/**/build/
+!**/src/**/build/**
 
 # Build files produced by the IDE
 **/out/**
@@ -81,9 +90,6 @@ gradle-app.setting
 # Spine internal directory for storing intermediate artifacts
 **/.spine/**
 
-# Spine model compiler auto-generated resources
-/tools/gradle-plugins/model-compiler/src/main/resources/spine-protoc.gradle
-
 # Login details to Maven repository.
 # Each workstation should have developer's login defined in this file.
 credentials.tar
@@ -94,7 +100,6 @@ gcs-auth-key.json
 
 # Log files
 *.log
-tests/_out/**
 
 # Package Files #
 *.war
@@ -109,4 +114,7 @@ hs_err_pid*
 .packages
 pubspec.lock
 
-.gradle-test-kit/
+# Ignore the `tmp` directory used for building dependant repositories.
+/tmp
+
+old-dot-gradle-test-kit/

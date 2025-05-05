@@ -58,7 +58,7 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
             routing.route<FileOptionMatched> { e, _ ->
                 e.toEnumTypeName()
             }.unicast<EnumOptionDiscovered> { e, _ ->
-                e.type
+                e.subject.name
             }
         }
     }

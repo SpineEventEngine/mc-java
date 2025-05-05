@@ -77,6 +77,12 @@ tasks {
         dependsOn(rootProject.tasks.named("localPublish"))
     }
 
+    // There are no Java types in this module.
+    // The task fails complaining about this fact.
+    javadoc {
+        enabled = false
+    }
+
     withType<WriteVersions>().configureEach {
 
         // Store the version of gRPC so that we can set the artifact for `protoc`.

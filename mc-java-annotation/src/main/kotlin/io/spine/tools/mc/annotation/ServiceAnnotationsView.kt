@@ -30,7 +30,6 @@ import io.spine.core.External
 import io.spine.core.Subscribe
 import io.spine.protodata.ast.ServiceName
 import io.spine.protodata.ast.event.ServiceOptionDiscovered
-import io.spine.protodata.ast.event.TypeOptionDiscovered
 import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
@@ -40,7 +39,7 @@ import io.spine.tools.mc.annotation.event.FileOptionMatched
 /**
  * Gathers the options defined for a service.
  *
- * Subscribes to [TypeOptionDiscovered] for obtaining directly set options.
+ * Subscribes to [ServiceOptionDiscovered] for obtaining directly set options.
  *
  * Subscribes to [FileOptionMatched] events for getting matches between file level options,
  * and type options that are assumed for all the types in the file.
@@ -79,7 +78,7 @@ internal class ServiceAnnotationsView :
             routing.route<FileOptionMatched> { e, _ ->
                 e.toServiceName()
             }.unicast<ServiceOptionDiscovered> { e, _ ->
-                e.service
+                e.subject.name
             }
         }
     }
