@@ -79,9 +79,9 @@ buildscript {
         val logging = io.spine.dependency.local.Logging
         all {
             resolutionStrategy {
-                io.spine.dependency.lib.Kotlin.StdLib.artifacts.values.forEach {
-                    force(it)
-                }
+                val cfg = this@all
+                val rs = this@resolutionStrategy
+                io.spine.dependency.lib.Kotlin.StdLib.forceArtifacts(project, cfg, rs)
                 force(
                     "io.spine:protodata:${protoData.version}",
                     io.spine.dependency.local.Reflect.lib,

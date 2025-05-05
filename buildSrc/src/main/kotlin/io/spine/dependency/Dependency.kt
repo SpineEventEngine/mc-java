@@ -26,6 +26,10 @@
 
 package io.spine.dependency
 
+import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ResolutionStrategy
+
 /**
  * A dependency is a software component we use in a project.
  *
@@ -63,6 +67,19 @@ abstract class Dependency {
     fun artifact(module: String): String = artifacts[module] ?: error(
         "The dependency `${this::class.simpleName}` does not declare a module `$module`."
     )
+
+    /**
+     * Forces all artifacts of this dependency using the given resolution strategy.
+     *
+     * @param project The project in which the artifacts are forced. Used for logging.
+     * @param cfg The configuration for which the artifacts are forced.  Used for logging.
+     * @param rs The resolution strategy which forces the artifacts.
+     */
+    fun forceArtifacts(project: Project, cfg: Configuration, rs: ResolutionStrategy) {
+        artifacts.values.forEach {
+            rs.forceWithLogging(project, cfg, it)
+        }
+    }
 }
 
 /**
@@ -80,3 +97,30 @@ abstract class DependencyWithBom : Dependency() {
      */
     abstract val bom: String
 }
+
+/**
+ * Logs the result of the function using the project logger at `INFO` level.
+ */
+fun Project.log(message: () -> String) {
+    if (logger.isInfoEnabled) {
+        logger.info(message.invoke())
+    }
+}
+
+/**
+ * Returns the suffix of diagnostic messages for this configuration in the given project.
+ */
+fun Configuration.diagSuffix(project: Project): String =
+    "the configuration `$name` in the project: `${project.path}`."
+
+
+private fun ResolutionStrategy.forceWithLogging(
+    project: Project,
+    configuration: Configuration,
+    artifact: String
+) {
+    force(artifact)
+    project.log { "Forced the version of `$artifact` in " + configuration.diagSuffix(project) }
+}
+
+
