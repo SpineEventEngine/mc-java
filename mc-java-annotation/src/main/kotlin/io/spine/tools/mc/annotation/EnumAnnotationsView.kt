@@ -34,6 +34,7 @@ import io.spine.protodata.plugin.View
 import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
 import io.spine.server.route.EventRouting
+import io.spine.server.route.Route
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
@@ -49,6 +50,15 @@ internal class EnumAnnotationsView : View<TypeName, EnumAnnotations, EnumAnnotat
     @Subscribe
     fun on(@External e: EnumOptionDiscovered) = alter {
         addOption(e.option)
+    }
+
+    companion object {
+
+        @Route
+        fun route(e: FileOptionMatched) = e.toEnumTypeName()
+
+        @Route
+        fun route(e: EnumOptionDiscovered) = e.subject.name
     }
 
     class Repository: ViewRepository<TypeName, EnumAnnotationsView, EnumAnnotations>() {

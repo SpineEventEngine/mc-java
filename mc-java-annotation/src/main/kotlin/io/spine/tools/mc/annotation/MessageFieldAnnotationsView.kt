@@ -31,9 +31,8 @@ import io.spine.core.Subscribe
 import io.spine.protodata.ast.TypeName
 import io.spine.protodata.ast.event.FieldOptionDiscovered
 import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
-import io.spine.server.route.EventRouting
+import io.spine.server.route.Route
 
 /**
  * Gathers API level options defined for fields of a message.
@@ -60,21 +59,14 @@ internal class MessageFieldAnnotationsView:
         )
     }
 
-    /**
-     * The repository for [MessageAnnotationsView] which tunes the routing of events.
-     */
-    class Repository :
-        ViewRepository<TypeName, MessageFieldAnnotationsView, MessageFieldAnnotations>() {
+    companion object {
 
-        override fun setupEventRouting(routing: EventRouting<TypeName>) {
-            super.setupEventRouting(routing)
-            routing.route<FieldOptionDiscovered> { e, _ ->
-                if (ApiOption.findMatching(e.option) != null) {
-                    setOf(e.subject.declaringType)
-                } else {
-                    emptySet()
-                }
+        @Route
+        fun route(e: FieldOptionDiscovered) =
+            if (ApiOption.findMatching(e.option) != null) {
+                setOf(e.subject.declaringType)
+            } else {
+                emptySet()
             }
-        }
     }
 }

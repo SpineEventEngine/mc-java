@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class ApiAnnotationsPluginSpec {
     fun `provide views and renderers`() {
         val plugin = ApiAnnotationsPlugin()
         plugin shouldNotBe null
-        plugin.viewRepositories.size shouldNotBe 0
+        plugin.views.size shouldNotBe 0
         plugin.renderers.size shouldNotBe 0
     }
 }

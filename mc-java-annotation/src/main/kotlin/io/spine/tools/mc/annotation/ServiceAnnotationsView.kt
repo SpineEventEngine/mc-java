@@ -31,9 +31,8 @@ import io.spine.core.Subscribe
 import io.spine.protodata.ast.ServiceName
 import io.spine.protodata.ast.event.ServiceOptionDiscovered
 import io.spine.protodata.plugin.View
-import io.spine.protodata.plugin.ViewRepository
 import io.spine.server.entity.alter
-import io.spine.server.route.EventRouting
+import io.spine.server.route.Route
 import io.spine.tools.mc.annotation.event.FileOptionMatched
 
 /**
@@ -68,18 +67,12 @@ internal class ServiceAnnotationsView :
         addOption(e.assumed)
     }
 
-    /**
-     * The repository for [ServiceAnnotationsView] which tunes the routing of events.
-     */
-    class Repository: ViewRepository<ServiceName, ServiceAnnotationsView, ServiceAnnotations>() {
+    companion object {
 
-        override fun setupEventRouting(routing: EventRouting<ServiceName>) {
-            super.setupEventRouting(routing)
-            routing.route<FileOptionMatched> { e, _ ->
-                e.toServiceName()
-            }.unicast<ServiceOptionDiscovered> { e, _ ->
-                e.subject.name
-            }
-        }
+        @Route
+        fun route(e: FileOptionMatched) = e.toServiceName()
+
+        @Route
+        fun route(e: ServiceOptionDiscovered) = e.subject.name
     }
 }

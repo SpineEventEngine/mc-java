@@ -72,12 +72,10 @@ public class ApiAnnotationsPlugin : Plugin(
         MethodPatternAnnotator()
     ),
     views = setOf(
-        MessageAnnotationsView::class.java
-    ),
-    viewRepositories = setOf(
-        EnumAnnotationsView.Repository(),
-        ServiceAnnotationsView.Repository(),
-        MessageFieldAnnotationsView.Repository()
+        EnumAnnotationsView::class.java,
+        MessageAnnotationsView::class.java,
+        MessageFieldAnnotationsView::class.java,
+        ServiceAnnotationsView::class.java,
     )
 ) {
     override fun extend(context: BoundedContextBuilder) {
