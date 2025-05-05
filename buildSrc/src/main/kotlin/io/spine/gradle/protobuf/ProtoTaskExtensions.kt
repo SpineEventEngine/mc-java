@@ -24,7 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@file:Suppress("unused", "UnusedReceiverParameter") //
+@file:Suppress("unused", "UnusedReceiverParameter") /* Extensions declared in this file
+ are used in the modules that build proto files without using the Spine Compiler. */
 
 package io.spine.gradle.protobuf
 
