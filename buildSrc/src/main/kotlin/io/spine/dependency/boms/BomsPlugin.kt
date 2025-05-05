@@ -27,12 +27,12 @@
 package io.spine.dependency.boms
 
 import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
-import io.spine.dependency.log
-import io.spine.dependency.diagSuffix
 import io.spine.dependency.DependencyWithBom
+import io.spine.dependency.diagSuffix
 import io.spine.dependency.kotlinx.Coroutines
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.test.JUnit
+import io.spine.gradle.log
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration

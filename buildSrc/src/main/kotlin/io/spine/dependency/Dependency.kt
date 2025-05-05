@@ -26,6 +26,7 @@
 
 package io.spine.dependency
 
+import io.spine.gradle.log
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolutionStrategy
@@ -96,15 +97,6 @@ abstract class DependencyWithBom : Dependency() {
      * Maven coordinates of the dependency BOM.
      */
     abstract val bom: String
-}
-
-/**
- * Logs the result of the function using the project logger at `INFO` level.
- */
-fun Project.log(message: () -> String) {
-    if (logger.isInfoEnabled) {
-        logger.info(message.invoke())
-    }
 }
 
 /**
