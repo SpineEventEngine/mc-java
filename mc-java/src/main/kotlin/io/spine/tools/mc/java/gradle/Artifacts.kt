@@ -92,21 +92,6 @@ internal object McJava {
     }
 
     /**
-     * The Maven artifact containing the `spine-mc-java-protoc` uber JAR.
-     */
-    @get:JvmName("protocExe")
-    @JvmStatic
-    internal val protocExe: Artifact by lazy {
-        artifact {
-            useSpineToolsGroup()
-            name="spine-mc-java-protoc"
-            version = this@McJava.version
-            classifier = "exe"
-            extension = JAR_EXTENSION
-        }
-    }
-
-    /**
      * The Maven artifact containing the `spine-mc-java-plugins:all` fat JAR artifact.
      */
     @JvmStatic
@@ -114,10 +99,10 @@ internal object McJava {
     internal val allPlugins: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            name = SPINE_MC_JAVA_ALL_PLUGINS_NAME
-            version = this@McJava.version
-            classifier = ALL_CLASSIFIER
-            extension = JAR_EXTENSION
+            setName(SPINE_MC_JAVA_ALL_PLUGINS_NAME)
+            setVersion(this@McJava.version)
+            setClassifier(ALL_CLASSIFIER)
+            setExtension(JAR_EXTENSION)
         }
     }
 }
@@ -152,7 +137,7 @@ internal object ValidationSdk {
     @JvmStatic
     fun javaCodegenBundle(version: String = ""): Artifact = artifact {
         dependency = javaCodegenBundle
-        this@artifact.version = validationVersion(version)
+        setVersion(validationVersion(version))
     }
 
     /**
@@ -166,7 +151,7 @@ internal object ValidationSdk {
     @JvmStatic
     fun javaRuntime(version: String = ""): Artifact = artifact {
         dependency = javaRuntime
-        this@artifact.version = validationVersion(version)
+        setVersion(validationVersion(version))
     }
 
     /**
@@ -180,6 +165,6 @@ internal object ValidationSdk {
     @JvmStatic
     fun configuration(version: String = ""): Artifact = artifact {
         dependency = configuration
-        this@artifact.version = validationVersion(version)
+        setVersion(validationVersion(version))
     }
 }

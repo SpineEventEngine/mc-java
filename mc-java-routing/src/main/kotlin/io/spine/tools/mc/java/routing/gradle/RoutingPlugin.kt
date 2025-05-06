@@ -54,8 +54,8 @@ public class RoutingPlugin : KspBasedPlugin() {
     private val routingKspPlugin: Artifact by lazy {
         artifact {
             useSpineToolsGroup()
-            name = moduleName
-            version = routingVersion
+            setName(moduleName)
+            setVersion(routingVersion)
         }
     }
 }

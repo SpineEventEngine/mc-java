@@ -47,7 +47,8 @@ internal class EveryIsMessagesView : View<File, EveryIsMessages, EveryIsMessages
 
     @Subscribe
     fun on(@External e: TypeDiscovered) {
-        if (state().hasOption()) {
+        val state = state()
+        if (state.hasOption() && state.hasHeader()) {
             alter {
                 addType(e.type)
             }

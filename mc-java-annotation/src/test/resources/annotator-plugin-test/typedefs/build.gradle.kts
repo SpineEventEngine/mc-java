@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import io.spine.dependency.lib.JavaX
+
 plugins {
     id("io.spine.mc-java")
 }
@@ -42,5 +44,6 @@ modelCompiler {
 // Add Validation Java Runtime because the generated code reference
 // the `ValidatingBuilder` interface even if validation codegen is turned off.
 dependencies {
+    compileOnly(JavaX.annotations)
     implementation(io.spine.dependency.local.Validation.runtime)
 }

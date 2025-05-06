@@ -36,12 +36,11 @@ import io.spine.gradle.RunGradle
 import io.spine.gradle.publish.PublishingRepos
 import io.spine.gradle.publish.SpinePublishing
 import io.spine.gradle.publish.spinePublishing
+import io.spine.gradle.repo.standardToSpineSdk
 import io.spine.gradle.report.coverage.JacocoConfig
 import io.spine.gradle.report.license.LicenseReporter
 import io.spine.gradle.report.pom.PomGenerator
-import io.spine.gradle.standardToSpineSdk
 import java.time.Duration
-import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 buildscript {
     standardSpineSdkRepositories()
@@ -58,11 +57,6 @@ buildscript {
 
             resolutionStrategy {
                 force(
-                    io.spine.dependency.lib.Grpc.api,
-                    io.spine.dependency.lib.KotlinX.Coroutines.bom,
-                    io.spine.dependency.lib.KotlinX.Coroutines.core,
-                    io.spine.dependency.lib.KotlinX.Coroutines.jdk8,
-
                     io.spine.dependency.local.Base.libForBuildScript,
                     io.spine.dependency.local.Reflect.lib,
                     toolBase.lib,
@@ -79,6 +73,7 @@ buildscript {
     }
     dependencies {
         classpath(mcJava.pluginLib)
+        classpath(enforcedPlatform(io.spine.dependency.kotlinx.Coroutines.bom))
     }
 }
 
@@ -207,8 +202,4 @@ tasks.register<RunGradle>("checkPerformance") {
     // Uncomment the below line, and remove `task()`
     // task("clean", "build")
     task("tasks")
-}
-
-val dokkaHtmlMultiModule by tasks.getting(DokkaMultiModuleTask::class) {
-    configureStyle()
 }

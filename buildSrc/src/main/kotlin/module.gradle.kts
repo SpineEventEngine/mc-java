@@ -25,6 +25,7 @@
  */
 
 import com.google.common.io.Files
+import io.spine.dependency.boms.BomsPlugin
 import io.spine.dependency.build.CheckerFramework
 import io.spine.dependency.build.ErrorProne
 import io.spine.dependency.build.FindBugs
@@ -35,7 +36,6 @@ import io.spine.dependency.lib.Guava
 import io.spine.dependency.lib.Jackson
 import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
-import io.spine.dependency.lib.KotlinX
 import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.Base
 import io.spine.dependency.local.CoreJava
@@ -70,6 +70,7 @@ plugins {
     kotlin("jvm")
     id("write-manifest")
     id("com.google.protobuf")
+    id("module-testing")
     id("dokka-for-java")
     id("dokka-for-kotlin")
     id("net.ltgt.errorprone")
@@ -79,7 +80,7 @@ plugins {
     id("project-report")
     idea
 }
-
+apply<BomsPlugin>()
 apply<IncrementGuard>()
 apply<VersionWriter>()
 
@@ -102,8 +103,6 @@ project.run {
     setupSourceSets(generatedResources)
 
     configureTaskDependencies()
-
-    configureDocTasks()
 }
 
 typealias Module = Project
@@ -118,11 +117,6 @@ fun Module.addDependencies() {
 
         implementation(Guava.lib)
         implementation(Logging.lib)
-
-        testImplementation(Guava.testLib)
-        JUnit.api.forEach { testImplementation(it) }
-        Truth.libs.forEach { testImplementation(it) }
-        testRuntimeOnly(JUnit.runner)
     }
 }
 
@@ -138,24 +132,13 @@ fun Module.forceConfigurations() {
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
                 force(
-                    Kotlin.stdLib,
-                    Kotlin.scriptRuntime,
                     Kotlin.GradlePlugin.api,
-                    KotlinX.Coroutines.bom,
-                    KotlinX.Coroutines.core,
-                    KotlinX.Coroutines.coreJvm,
-                    KotlinX.Coroutines.jdk8,
                     KotlinPoet.ksp,
                     KotlinPoet.lib,
                     Ksp.symbolProcessingApi,
                     Ksp.symbolProcessingCommonDeps,
                     Ksp.gradlePlugin,
                     Protobuf.compiler,
-                    Grpc.api,
-                    Grpc.core,
-                    Grpc.protobuf,
-                    Grpc.stub,
-                    Jackson.Junior.objects,
                     Caffeine.lib,
 
                     Reflect.lib,
@@ -209,10 +192,7 @@ fun Module.configureKotlin() {
 
 fun Module.setupTests() {
     tasks {
-        registerTestTasks()
         withType<Test> {
-            useJUnitPlatform()
-            configureLogging()
             // See https://github.com/gradle/gradle/issues/18647.
             jvmArgs(
                 "--add-opens", "java.base/java.lang=ALL-UNNAMED",
@@ -266,18 +246,5 @@ fun Module.prepareProtocConfigVersionsTask(generatedResources: String) {
 fun Module.setupSourceSets(generatedResources: String) {
     sourceSets.main {
         resources.srcDir(generatedResources)
-    }
-}
-
-fun Module.configureDocTasks() {
-    val dokkaJavadoc by tasks.getting(DokkaTask::class)
-    tasks.register("javadocJar", Jar::class) {
-        from(dokkaJavadoc.outputDirectory)
-        archiveClassifier.set("javadoc")
-        dependsOn(dokkaJavadoc)
-    }
-
-    tasks.withType<DokkaTaskPartial>().configureEach {
-        configureForKotlin()
     }
 }

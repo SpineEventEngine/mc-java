@@ -27,10 +27,19 @@
 import io.spine.dependency.build.Ksp
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.Kotlin
+import io.spine.dependency.lib.Protobuf
 import io.spine.dependency.local.ProtoData
 import io.spine.dependency.local.TestLib
 import io.spine.dependency.local.ToolBase
 import io.spine.dependency.test.Kotest
+
+@Suppress("unused")
+val compileClasspath by configurations.getting {
+    resolutionStrategy.force(
+        Kotlin.Compiler.embeddable,
+        Kotlin.scriptRuntime
+    )
+}
 
 dependencies {
     // The dependencies of the processor part.
@@ -55,6 +64,9 @@ dependencies {
     api(Ksp.gradlePlugin)?.because(
         "This is `api` dependency because we add this plugin from our code" +
                 " and want its API being visible to users."
+    )
+    implementation(Protobuf.GradlePlugin.lib)?.because(
+        "We need `ProtobufExtension` for ignoring `generated/sources/proto/` directory."
     )
 
     // Test dependencies.

@@ -25,7 +25,7 @@
  */
 
 import io.spine.dependency.local.Validation
-import io.spine.gradle.standardToSpineSdk
+import io.spine.gradle.repo.standardToSpineSdk
 
 plugins {
     // To allow `modelCompiler` syntax below.

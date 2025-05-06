@@ -71,7 +71,15 @@ message FileOptions {
     protodata.File file = 1;
 
     // The options applied to the file.
-    repeated protodata.Option option = 2 [(required) = true];
+    //
+    // Usually, a proto file has at least one option.
+    // So, in the general case the list should not be empty.
+    // But, this message type is for the case of API-level options, and
+    // it should be empty if the file does not have such options.
+    // That is why this field is not `required`.
+    // See `FileOptionsProcess` for the example of filtering the options.
+    //
+    repeated protodata.Option option = 2;
 }
 
 // A message type which has been annotated with one or more API level options.

@@ -25,6 +25,11 @@
  */
 
 import io.spine.dependency.lib.Grpc
+import io.spine.dependency.lib.JavaX
+
+plugins {
+    `java-library`
+}
 
 modelCompiler {
     java {
@@ -58,7 +63,9 @@ modelCompiler {
 
 dependencies {
     val customAnnotations = project(":custom-annotations")
+    compileOnlyApi(JavaX.annotations)
 
+    testImplementation(platform(Grpc.bom))
     testImplementation(Grpc.stub)
     testImplementation(Grpc.protobuf)
     testImplementation(customAnnotations)
