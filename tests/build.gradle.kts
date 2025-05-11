@@ -130,6 +130,7 @@ allprojects {
         excludeProtobufLite()
         all {
             resolutionStrategy {
+                Grpc.forceArtifacts(project, this@all, this@resolutionStrategy)
                 force(
                     KotlinPoet.lib,
                     Reflect.lib,

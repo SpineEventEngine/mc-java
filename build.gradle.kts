@@ -74,6 +74,7 @@ buildscript {
     dependencies {
         classpath(mcJava.pluginLib)
         classpath(enforcedPlatform(io.spine.dependency.kotlinx.Coroutines.bom))
+        classpath(enforcedPlatform(io.spine.dependency.lib.Grpc.bom))
     }
 }
 
