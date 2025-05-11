@@ -117,4 +117,4 @@ pubspec.lock
 # Ignore the `tmp` directory used for building dependant repositories.
 /tmp
 
-old-dot-gradle-test-kit/
+.gradle-test-kit/
