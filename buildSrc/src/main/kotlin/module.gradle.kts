@@ -131,6 +131,7 @@ fun Module.forceConfigurations() {
             // Exclude in favor of `spine-validation-java-runtime`.
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
+                Grpc.forceArtifacts(project, this@all, this@resolutionStrategy)
                 force(
                     Kotlin.GradlePlugin.api,
                     KotlinPoet.ksp,
