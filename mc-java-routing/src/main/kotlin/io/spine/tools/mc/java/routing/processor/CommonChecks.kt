@@ -116,7 +116,7 @@ internal fun KSFunctionDeclaration.declaringClass(environment: Environment): Ent
     val parent = parentDeclaration!!.qualifiedName!!
     var declaringClass = environment.resolver.getClassDeclarationByName(parent)!!
     if (declaringClass.isCompanionObject) {
-        // In Kotlin routing functions are declared in a companion object.
+        // In Kotlin, routing functions are declared in a companion object.
         // So we "climb up" to the enclosing class.
         declaringClass = declaringClass.parentDeclaration!! as KSClassDeclaration
     }

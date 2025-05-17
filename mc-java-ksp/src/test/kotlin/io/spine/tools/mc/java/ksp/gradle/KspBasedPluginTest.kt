@@ -35,6 +35,7 @@ import io.kotest.matchers.string.shouldNotContain
 import io.spine.io.toUnix
 import io.spine.testing.SlowTest
 import io.spine.tools.gradle.project.sourceSets
+import io.spine.tools.mc.java.ksp.gradle.KspBasedPluginTest.Companion.removeTempDir
 import java.io.File
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -42,15 +43,14 @@ import org.gradle.api.problems.Problem
 import org.gradle.api.problems.ProblemId
 import org.gradle.api.problems.ProblemReporter
 import org.gradle.api.problems.ProblemSpec
-import org.gradle.api.problems.internal.AdditionalDataBuilderFactory
 import org.gradle.api.problems.internal.InternalProblem
 import org.gradle.api.problems.internal.InternalProblemBuilder
 import org.gradle.api.problems.internal.InternalProblemReporter
 import org.gradle.api.problems.internal.InternalProblemSpec
 import org.gradle.api.problems.internal.InternalProblems
+import org.gradle.api.problems.internal.ProblemsInfrastructure
 import org.gradle.api.problems.internal.ProblemsProgressEventEmitterHolder
 import org.gradle.internal.operations.OperationIdentifier
-import org.gradle.internal.reflect.Instantiator
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.AfterAll
@@ -173,8 +173,7 @@ private class StubPlugin : KspBasedPlugin() {
 private class InternalProblemsStub : InternalProblems {
     override fun getReporter(): ProblemReporter = notImplemented()
     override fun getInternalReporter(): InternalProblemReporter = InternalProblemReporterStub()
-    override fun getAdditionalDataBuilderFactory(): AdditionalDataBuilderFactory = notImplemented()
-    override fun getInstantiator(): Instantiator = notImplemented()
+    override fun getInfrastructure(): ProblemsInfrastructure = notImplemented()
     override fun getProblemBuilder(): InternalProblemBuilder = notImplemented()
 }
 

@@ -25,7 +25,7 @@
  */
 
 import com.google.devtools.ksp.KspExperimental
-import io.spine.dependency.build.Ksp
+import io.spine.dependency.boms.BomsPlugin
 import io.spine.dependency.lib.AutoService
 import io.spine.dependency.lib.AutoServiceKsp
 import io.spine.dependency.local.CoreJava
@@ -35,6 +35,7 @@ import io.spine.tools.gradle.project.sourceSets
 plugins {
     id("io.spine.mc-java")
 }
+apply<BomsPlugin>()
 
 dependencies {
     testImplementation(CoreJava.testUtilServer)
@@ -101,10 +102,6 @@ configurations
     .all {
         resolutionStrategy {
             force(
-                Ksp.symbolProcessingApi,
-                Ksp.symbolProcessing,
-                Ksp.symbolProcessingAaEmb,
-                Ksp.symbolProcessingCommonDeps,
                 KotlinCompileTesting.libKsp,
             )
         }
