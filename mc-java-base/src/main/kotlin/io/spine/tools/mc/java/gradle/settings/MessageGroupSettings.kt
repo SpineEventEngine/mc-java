@@ -31,6 +31,7 @@ import com.google.protobuf.TextFormat.shortDebugString
 import io.spine.tools.mc.java.settings.MessageGroup
 import io.spine.tools.mc.java.settings.Pattern
 import io.spine.tools.mc.java.settings.messageGroup
+import io.spine.type.shortDebugString
 import org.gradle.api.Project
 
 /**
@@ -57,7 +58,7 @@ public class MessageGroupSettings internal constructor(
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)
-            .add("pattern", shortDebugString(pattern))
+            .add("pattern", pattern.shortDebugString())
             .toString()
     }
 }
