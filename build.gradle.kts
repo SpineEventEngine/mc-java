@@ -56,6 +56,11 @@ buildscript {
             exclude(group = "io.spine", module = "spine-logging-backend")
 
             resolutionStrategy {
+                io.spine.dependency.build.Ksp.forceArtifacts(
+                    project,
+                    this@all,
+                    this@resolutionStrategy
+                )
                 force(
                     io.spine.dependency.local.Base.libForBuildScript,
                     io.spine.dependency.local.Reflect.lib,
