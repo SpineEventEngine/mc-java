@@ -61,7 +61,18 @@ buildscript {
                     this@all,
                     this@resolutionStrategy
                 )
+                io.spine.dependency.lib.Kotlin.forceArtifacts(
+                    project,
+                    this@all,
+                    this@resolutionStrategy
+                )
+                io.spine.dependency.lib.Kotlin.StdLib.forceArtifacts(
+                    project,
+                    this@all,
+                    this@resolutionStrategy
+                )
                 force(
+                    io.spine.dependency.lib.Kotlin.bom,
                     io.spine.dependency.local.Base.libForBuildScript,
                     io.spine.dependency.local.Reflect.lib,
                     toolBase.lib,
@@ -77,10 +88,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath(io.spine.dependency.build.Ksp.run { artifact(gradlePlugin) })
-        classpath(mcJava.pluginLib)
         classpath(enforcedPlatform(io.spine.dependency.kotlinx.Coroutines.bom))
         classpath(enforcedPlatform(io.spine.dependency.lib.Grpc.bom))
+        classpath(io.spine.dependency.build.Ksp.run { artifact(gradlePlugin) })
+        classpath(mcJava.pluginLib)
     }
 }
 
