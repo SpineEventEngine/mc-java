@@ -29,6 +29,7 @@ package io.spine.tools.mc.java.routing.processor
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode.OK
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotContain
+import io.spine.tools.mc.java.routing.processor.Qualifier.Companion.errorMsgPrefix
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -66,9 +67,7 @@ internal class QualifierKotlinSpec : RouteCompilationTest() {
         val result = compilation.compileSilently()
 
         result.exitCode shouldBe OK
-        result.messages.let {
-            it shouldNotContain "Unqualified function encountered: "
-        }
+        result.messages shouldNotContain errorMsgPrefix
     }
 
     private val singleCastEventRoute = kotlinFile("SingleCastEventRoute", """
@@ -100,8 +99,6 @@ internal class QualifierKotlinSpec : RouteCompilationTest() {
         val result = compilation.compileSilently()
 
         result.exitCode shouldBe OK
-        result.messages.let {
-            it shouldNotContain "Unqualified function encountered: "
-        }
+        result.messages shouldNotContain errorMsgPrefix
     }
 }

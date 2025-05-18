@@ -26,6 +26,7 @@
 
 package io.spine.tools.mc.java.routing.processor
 
+import com.google.common.annotations.VisibleForTesting
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 
 /**
@@ -67,7 +68,7 @@ internal class Qualifier(
                 result.add(qualified)
             } else {
                 environment.logger.error(
-                    "Unqualified function encountered: `${fn.qualifiedName?.asString()}`.", fn
+                    "$errorMsgPrefix`${fn.qualifiedName?.asString()}`.", fn
                 )
             }
         }
@@ -84,5 +85,15 @@ internal class Qualifier(
             return it
         }
         return null
+    }
+
+    companion object {
+
+        /**
+         * The prefix used by [Qualifier] for reporting a function
+         * which was not recognized as a valid routing function.
+         */
+        @VisibleForTesting
+        const val errorMsgPrefix = "Unqualified function encountered: "
     }
 }
