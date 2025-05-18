@@ -50,17 +50,52 @@ internal class QualifierKotlinSpec : RouteCompilationTest() {
         companion object {
                     
            /**
-            * The routing function accepting the event class.   
+            * The routing function accepting the event class and
+            * returning a set of IDs.   
             */
             @Route
-            fun route(e: StatusReported): Set<DeviceId> = setOf(e.getDevice())
+            fun route(e: StatusReported) = setOf(e.getDevice())
         }
     }
     """.trimIndent())
 
     @Test
-    fun `detect companion event route functions returning 'Set'`() {
+    fun `detect multi-cast event routes`() {
         compilation.sources = listOf(multicastEventRoute)
+
+        val result = compilation.compileSilently()
+
+        result.exitCode shouldBe OK
+        result.messages.let {
+            it shouldNotContain "Unqualified function encountered: "
+        }
+    }
+
+    private val singleCastEventRoute = kotlinFile("SingleCastEventRoute", """
+
+    package io.spine.given.devices
+    
+    import io.spine.given.devices.events.StatusReported
+    import io.spine.server.projection.Projection
+    import io.spine.server.route.Route
+
+    class SingleCastEventRoute : Projection<DeviceId, DeviceStatus, DeviceStatus.Builder>() {
+    
+        companion object {
+                    
+           /**
+            * The routing function accepting the event class and
+            * returning single ID.   
+            */
+            @Route
+            fun route(e: StatusReported) = e.getDevice()
+        }
+    }
+    """.trimIndent())
+
+    @Test
+    fun `detect single-cast routing function`() {
+        compilation.sources = listOf(singleCastEventRoute)
 
         val result = compilation.compileSilently()
 
