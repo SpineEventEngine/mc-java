@@ -54,23 +54,15 @@ buildscript {
     configurations {
         all {
             exclude(group = "io.spine", module = "spine-logging-backend")
-
             resolutionStrategy {
-                io.spine.dependency.build.Ksp.forceArtifacts(
-                    project,
-                    this@all,
-                    this@resolutionStrategy
-                )
-                io.spine.dependency.lib.Kotlin.forceArtifacts(
-                    project,
-                    this@all,
-                    this@resolutionStrategy
-                )
-                io.spine.dependency.lib.Kotlin.StdLib.forceArtifacts(
-                    project,
-                    this@all,
-                    this@resolutionStrategy
-                )
+                val configuration = this@all
+                val strategy = this@resolutionStrategy
+                io.spine.dependency.build.Ksp
+                    .forceArtifacts(project, configuration, strategy)
+                io.spine.dependency.lib.Kotlin
+                    .forceArtifacts(project, configuration, strategy)
+                io.spine.dependency.lib.Kotlin.StdLib
+                    .forceArtifacts(project, configuration, strategy)
                 force(
                     io.spine.dependency.lib.Kotlin.bom,
                     io.spine.dependency.local.Base.libForBuildScript,
@@ -90,7 +82,6 @@ buildscript {
     dependencies {
         classpath(enforcedPlatform(io.spine.dependency.kotlinx.Coroutines.bom))
         classpath(enforcedPlatform(io.spine.dependency.lib.Grpc.bom))
-        classpath(io.spine.dependency.build.Ksp.run { artifact(gradlePlugin) })
         classpath(mcJava.pluginLib)
     }
 }
