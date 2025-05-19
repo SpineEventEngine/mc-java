@@ -44,10 +44,10 @@ val compileClasspath by configurations.getting {
 dependencies {
     // The dependencies of the processor part.
     compileOnlyApi(Kotlin.Compiler.embeddable)
-    api(Ksp.symbolProcessingApi)
+    api(Ksp.artifact(Ksp.symbolProcessingApi))
     api(AutoService.annotations)
 
-    implementation(Ksp.symbolProcessingAaEmb)?.because(
+    implementation(Ksp.artifact(Ksp.symbolProcessingAaEmb))?.because(
         "It was not resolved automatically by KSP Gradle Plugin in integration tests." +
                 " We need go re-visit this in future versions of KSP Gradle Plugin."
     )
@@ -61,7 +61,7 @@ dependencies {
     api(ProtoData.gradleApi)?.because(
         "We want KSP-based plugins use this API directly."
     )
-    api(Ksp.gradlePlugin)?.because(
+    api(Ksp.artifact(Ksp.gradlePlugin))?.because(
         "This is `api` dependency because we add this plugin from our code" +
                 " and want its API being visible to users."
     )

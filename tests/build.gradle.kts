@@ -83,6 +83,7 @@ buildscript {
                 val rs = this@resolutionStrategy
                 io.spine.dependency.lib.Kotlin.StdLib.forceArtifacts(project, cfg, rs)
                 force(
+                    io.spine.dependency.lib.Kotlin.bom,
                     "io.spine:protodata:${protoData.version}",
                     io.spine.dependency.local.Reflect.lib,
                     io.spine.dependency.local.Base.lib,
@@ -132,6 +133,7 @@ allprojects {
             resolutionStrategy {
                 Grpc.forceArtifacts(project, this@all, this@resolutionStrategy)
                 force(
+                    Kotlin.bom,
                     KotlinPoet.lib,
                     Reflect.lib,
                     Base.lib,
