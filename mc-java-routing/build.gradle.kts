@@ -24,8 +24,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import io.spine.dependency.build.Ksp
-import io.spine.dependency.lib.Kotlin
 import io.spine.dependency.lib.KotlinPoet
 import io.spine.dependency.local.CoreJava
 import io.spine.dependency.local.Logging
@@ -46,22 +44,6 @@ dependencies {
     testImplementation(Kotest.assertions)
     testImplementation(KotlinCompileTesting.libKsp)
     testImplementation(Logging.testLib)
-}
-
-configurations
-    // https://detekt.dev/docs/gettingstarted/gradle/#dependencies
-    .matching { it.name != "detekt" }
-    .all {
-    resolutionStrategy {
-        force(
-            Ksp.symbolProcessingApi,
-            Ksp.symbolProcessing,
-            Ksp.symbolProcessingAaEmb,
-            Ksp.symbolProcessingCommonDeps,
-            Kotlin.Compiler.embeddable,
-            KotlinCompileTesting.libKsp,
-        )
-    }
 }
 
 // Avoid the missing file error for generated code when running tests out of the IDE.

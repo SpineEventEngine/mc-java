@@ -132,13 +132,13 @@ fun Module.forceConfigurations() {
             exclude("io.spine", "spine-validate")
             resolutionStrategy {
                 Grpc.forceArtifacts(project, this@all, this@resolutionStrategy)
+                Ksp.forceArtifacts(project, this@all, this@resolutionStrategy)
                 force(
+                    Kotlin.bom,
+                    Kotlin.Compiler.embeddable,
                     Kotlin.GradlePlugin.api,
                     KotlinPoet.ksp,
                     KotlinPoet.lib,
-                    Ksp.symbolProcessingApi,
-                    Ksp.symbolProcessingCommonDeps,
-                    Ksp.gradlePlugin,
                     Protobuf.compiler,
                     Caffeine.lib,
 

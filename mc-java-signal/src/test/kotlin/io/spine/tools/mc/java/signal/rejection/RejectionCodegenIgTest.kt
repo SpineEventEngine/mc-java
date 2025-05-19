@@ -1,11 +1,11 @@
 /*
- * Copyright 2024, TeamDev. All rights reserved.
+ * Copyright 2025, TeamDev. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Redistribution and use in source and/or binary forms, with or without
  * modification, must retain the above copyright notice and the following
@@ -28,7 +28,6 @@ package io.spine.tools.mc.java.signal.rejection
 
 import io.kotest.matchers.shouldBe
 import io.spine.testing.SlowTest
-import io.spine.testing.TempDir
 import io.spine.tools.code.SourceSetName
 import io.spine.tools.code.SourceSetName.Companion.main
 import io.spine.tools.code.SourceSetName.Companion.test
@@ -47,6 +46,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 /**
  * Tests the code generation of rejections.
@@ -81,10 +81,12 @@ internal class RejectionCodegenIgTest {
         
         private lateinit var moduleDir: File
 
+        @TempDir
+        lateinit var projectDir: File
+
         @BeforeAll
         @JvmStatic
         fun generateRejections() {
-            val projectDir = TempDir.forClass(RejectionCodegenIgTest::class.java)
             val project: GradleProject = GradleProject.setupAt(projectDir)
                 .fromResources("rejection-codegen-test")
                 .copyBuildSrc()
@@ -96,11 +98,12 @@ internal class RejectionCodegenIgTest {
                    Remember to turn it OFF before committing your code so that tests run faster.
 
                    IMPORTANT: Running with `enableRunnerDebug()` turned on fails
-                   under Windows in CI environment because internally Gradle tries to
-                   access Windows Registry which requires special permissions for a process.
+                   under Windows in the CI environment because internally Gradle tries to
+                   access the Windows Registry, which requires special permissions for a process.
                 */
                  //.enableRunnerDebug()
                 .create()
+            waitForBuildSrc(projectDir)
             (project.runner as DefaultGradleRunner).withJvmArguments(
                 "-Xmx8g",
                 "-XX:MaxMetaspaceSize=1512m",
@@ -110,9 +113,41 @@ internal class RejectionCodegenIgTest {
             moduleDir = projectDir.toPath()
                 .resolve("sub-module")
                 .toFile()
+
             // Executing the `compileTestJava` task should generate rejection types from both
             // `test` and `main` source sets.
             project.executeTask(compileTestJava)
+        }
+
+        /**
+         * This function waits till the `buildSrc/build.gradle.kts` is fully
+         * available to avoid the issues during parallel Gradle task execution.
+         */
+        @Suppress("LoopWithTooManyJumpStatements")
+        private fun waitForBuildSrc(projectDir: File) {
+            val buildGradleFile = projectDir.resolve("buildSrc/build.gradle.kts")
+            fun wait() = Thread.sleep(100)
+            while (!buildGradleFile.exists()) {
+                // Wait for the build script to appear.
+                // The tests fail to see the file during parallel execution of Gradle.
+                wait()
+            }
+            var fileReady = false
+            while (fileReady.not()) {
+                try {
+                    // See if the file is fully written by expecting the final closing brace.
+                    val lines = buildGradleFile.readLines()
+                    if (!lines.any { it.startsWith("}")}) {
+                        wait()
+                        continue
+                    }
+                } catch (_: Exception) {
+                    // The file is not ready yet.
+                    wait()
+                    continue
+                }
+                fileReady = true
+            }
         }
     }
 
